@@ -13,7 +13,7 @@ Obrigado pelo interesse em contribuir. Este projeto é [AGPL-3.0](../LICENSE). P
 ### Antes de começar
 
 - Lê o [README](../README.md) e, se fores configurar infra, [`docs/self-hosting.md`](docs/self-hosting.md).
-- Procura [issues abertas](https://github.com/xmajox/queima-asfalto/issues) ou abre uma com os [templates em `.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) para discutir mudanças grandes antes de implementar.
+- Procura [issues abertas](https://github.com/Seven-Panda-Labs/queima-asfalto/issues) ou abre uma com os [templates em `.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) para discutir mudanças grandes antes de implementar.
 
 ### Setup local
 
@@ -22,7 +22,7 @@ Obrigado pelo interesse em contribuir. Este projeto é [AGPL-3.0](../LICENSE). P
 **Opção A — emuladores (sem projeto Firebase)** — recomendado para a maioria das contribuições:
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -36,7 +36,7 @@ Ver [`docs/emulators.md`](docs/emulators.md).
 **Opção B — projeto Firebase teu** (Google Sign-In, dados na cloud):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -156,7 +156,7 @@ Para uma nova plataforma de timing, segue [`docs/adding-a-results-connector.md`]
 
 - Mensagens em **inglês**, imperativo: `Fix share invite email normalization`.
 - Um commit por PR é aceitável; histórico limpo preferível a WIP commits.
-- Não forces push para `main` — usa PR.
+- Não forces push para `main` — **todo o código entra via PR**; push directo a `main` está proibido para contribuições normais.
 
 ### Licença
 
@@ -175,7 +175,7 @@ Thank you for contributing. This project is [AGPL-3.0](../LICENSE). Please follo
 ### Before you start
 
 - Read the [README](../README.md) and, for infrastructure setup, [`docs/self-hosting.md`](docs/self-hosting.md).
-- Check [open issues](https://github.com/xmajox/queima-asfalto/issues) or open one using the [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) forms to discuss larger changes before implementing.
+- Check [open issues](https://github.com/Seven-Panda-Labs/queima-asfalto/issues) or open one using the [`.github/ISSUE_TEMPLATE/`](.github/ISSUE_TEMPLATE/) forms to discuss larger changes before implementing.
 
 ### Local setup
 
@@ -184,7 +184,7 @@ Thank you for contributing. This project is [AGPL-3.0](../LICENSE). Please follo
 **Option A — emulators (no Firebase project)** — recommended for most contributions:
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -198,7 +198,7 @@ See [`docs/emulators.md`](docs/emulators.md).
 **Option B — your Firebase project** (Google Sign-In, cloud data):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -318,7 +318,7 @@ For a new timing platform, follow [`docs/adding-a-results-connector.md`](docs/ad
 
 - Messages in **English**, imperative mood: `Fix share invite email normalization`.
 - One commit per PR is fine; clean history beats WIP commits.
-- Do not force-push to `main` — use a PR.
+- Do not force-push to `main` — **all code enters via PR**; direct pushes to `main` are forbidden for normal contributions.
 
 ### License
 

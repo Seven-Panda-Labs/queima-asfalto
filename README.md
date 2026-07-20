@@ -94,6 +94,7 @@ Alterações de versão devem actualizar `package.json`, `change-log.md` e `chan
 
 | Ficheiro | Conteúdo |
 |----------|----------|
+| [`AGENTS.md`](AGENTS.md) | Instruções para agentes de IA (branches, PRs, CI) |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | Como contribuir (setup, testes, changelog, PRs) |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Código de conduta da comunidade (Contributor Covenant 2.1) |
 | [`SECURITY.md`](SECURITY.md) | Reportar vulnerabilidades |
@@ -116,7 +117,7 @@ Histórico de versões: [`change-log.md`](change-log.md) · [`change-log.en.md`]
 
 ### Contribuir
 
-Issues e pull requests são bem-vindos. Lê [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, estilo de PR).
+Issues e pull requests são bem-vindos. Lê [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, estilo de PR). Agentes de IA: [`AGENTS.md`](AGENTS.md).
 
 ---
 
@@ -201,6 +202,7 @@ Version bumps must update `package.json`, `change-log.md`, and `change-log.en.md
 
 | File | Contents |
 |------|----------|
+| [`AGENTS.md`](AGENTS.md) | Instructions for AI agents (branches, PRs, CI) |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute (setup, tests, changelog, PRs) |
 | [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community code of conduct (Contributor Covenant 2.1) |
 | [`SECURITY.md`](SECURITY.md) | Report security vulnerabilities |
@@ -223,4 +225,4 @@ Release history: [`change-log.md`](change-log.md) · [`change-log.en.md`](change
 
 ### Contributing
 
-Issues and pull requests are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, PR style).
+Issues and pull requests are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, PR style). AI agents: [`AGENTS.md`](AGENTS.md).
