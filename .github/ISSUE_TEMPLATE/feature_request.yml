@@ -1,0 +1,47 @@
+name: Feature request / Pedido de funcionalidade
+description: Suggest an improvement or new capability / Sugere uma melhoria ou funcionalidade nova
+title: "[Feature]: "
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For larger changes, discuss here before opening a PR. See [CONTRIBUTING.md](https://github.com/xmajox/queima-asfalto/blob/main/CONTRIBUTING.md).
+
+        Para mudanças grandes, discute aqui antes de abrir PR.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or use case / Problema ou caso de uso
+      description: What problem does this solve? Who benefits? / Que problema resolve? Quem beneficia?
+      placeholder: As a runner, I want … / Como corredor, quero …
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution / Solução proposta
+      description: How might this work in the app? / Como poderia funcionar na app?
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered / Alternativas consideradas
+      placeholder: I also thought about … / Também pensei em …
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: Scope / Âmbito
+      options:
+        - label: I'm willing to open a PR for this / Estou disposto a abrir PR
+          required: false
+        - label: This affects self-hosters / Afecta self-hosters
+          required: false

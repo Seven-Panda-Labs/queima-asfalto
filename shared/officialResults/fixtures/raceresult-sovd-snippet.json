@@ -1,0 +1,15 @@
+{
+  "DataFields": [
+    "BIB",
+    "ID",
+    "GesPlp",
+    "[BIB]",
+    "IF([Namensschutz]=0;[AnzeigeTitel];\"XXX\")",
+    "iif([CLUB]=\"\";iif([CITY]=\"\";\"\";\"(\" & [CITY] & \")\");[CLUB])",
+    "IF([AYN19]=1;[ZeitmitStatus]&\"*\";[ZeitMitStatus])"
+  ],
+  "data": [
+    ["186", "49", "1.", "186", "MASLOWSKI Jennifer", "A Fair Future e.V.", "14:53"],
+    [89]
+  ]
+}

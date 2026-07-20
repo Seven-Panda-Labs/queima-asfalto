@@ -1,0 +1,67 @@
+name: Connector request / Pedido de conector
+description: Request official results import for a timing platform / Pedir importação de resultados de uma plataforma de timing
+title: "[Connector]: "
+labels:
+  - connector
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Queima Asfalto imports official race results via connectors (Parkrun, Sportive Live, Wiclax, etc.). Use this form to request a **new platform** or report a **broken connector**.
+
+        A app importa resultados oficiais via conectores. Usa este formulário para pedir uma **plataforma nova** ou reportar um **conector avariado**.
+
+  - type: dropdown
+    id: request_type
+    attributes:
+      label: Request type / Tipo de pedido
+      options:
+        - New connector / Conector novo
+        - Existing connector broken / Conector existente avariado
+    validations:
+      required: true
+
+  - type: input
+    id: platform
+    attributes:
+      label: Platform name / Nome da plataforma
+      placeholder: e.g. MyRace, AIMS, local timing company
+    validations:
+      required: true
+
+  - type: input
+    id: example_url
+    attributes:
+      label: Example results URL / URL de exemplo de resultados
+      description: Public results page for a past event (no personal data needed). / Página pública de um evento passado.
+      placeholder: https://…
+    validations:
+      required: true
+
+  - type: textarea
+    id: search_method
+    attributes:
+      label: How do athletes find their result? / Como é que os atletas encontram o resultado?
+      description: By name, bib number, category filter, API, etc. / Por nome, dorsal, categoria, API, etc.
+      placeholder: Surname search on event page; results in HTML table; …
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Extra notes / Notas extra
+      description: Auth required? Rate limits? Similar connector already in the app? / Requer auth? Limites? Conector similar?
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution / Contribuição
+      options:
+        - label: I can provide HTML/fixture samples (anonymized) / Posso fornecer HTML/fixtures anonimizados
+          required: false
+        - label: I'm willing to help implement or test / Posso ajudar a implementar ou testar
+          required: false

@@ -1,0 +1,28 @@
+#!/bin/sh
+# Bloqueia commit se package.json mudou de versão sem changelogs em dia.
+
+set -e
+
+STAGED=$(git diff --cached --name-only)
+
+echo "$STAGED" | grep -qx 'package.json' || exit 0
+
+STAGED_VERSION=$(git show :package.json | node -e "console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).version)")
+
+HEAD_VERSION=$(
+  git show HEAD:package.json 2>/dev/null |
+    node -e "try{console.log(JSON.parse(require('fs').readFileSync(0,'utf8')).version)}catch{process.exit(1)}" ||
+    echo ''
+)
+
+[ "$STAGED_VERSION" != "$HEAD_VERSION" ] || exit 0
+
+for file in change-log.md change-log.en.md; do
+  echo "$STAGED" | grep -qx "$file" || {
+    echo "pre-commit: package.json bumped to ${STAGED_VERSION} but ${file} is not staged."
+    echo "Add a ## [${STAGED_VERSION}] section at the top of both changelog files and git add them."
+    exit 1
+  }
+done
+
+npm run check:changelog --silent

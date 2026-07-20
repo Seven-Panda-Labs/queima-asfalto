@@ -1,0 +1,34 @@
+import changelogEn from '../../change-log.en.md?raw'
+import changelogPt from '../../change-log.md?raw'
+
+export type ChangelogLocale = 'pt' | 'en'
+
+const CHANGELOG_BY_LOCALE: Record<ChangelogLocale, string> = {
+  pt: changelogPt,
+  en: changelogEn,
+}
+
+export function resolveChangelogLocale(language: string): ChangelogLocale {
+  return language.startsWith('en') ? 'en' : 'pt'
+}
+
+const VERSION_HEADING = /^## \[[^\]]+\]/m
+const APPENDIX_HEADING = /^## (Legenda|Referências|Legend|References)\s*$/m
+
+/** User-facing body: version history only (drops header and repo appendix sections). */
+export function prepareChangelogForDisplay(markdown: string): string {
+  const versionMatch = VERSION_HEADING.exec(markdown)
+  let body =
+    versionMatch && versionMatch.index != null ? markdown.slice(versionMatch.index) : markdown
+
+  const appendixMatch = APPENDIX_HEADING.exec(body)
+  if (appendixMatch && appendixMatch.index != null) {
+    body = body.slice(0, appendixMatch.index)
+  }
+
+  return body.trim()
+}
+
+export function getChangelogMarkdown(locale: ChangelogLocale): string {
+  return prepareChangelogForDisplay(CHANGELOG_BY_LOCALE[locale])
+}

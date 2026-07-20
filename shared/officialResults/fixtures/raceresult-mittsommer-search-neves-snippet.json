@@ -1,0 +1,29 @@
+{
+  "DataFields": [
+    "BIB",
+    "ID",
+    "[MWPlp]",
+    "AnzeigeName",
+    "GeschlechtMW",
+    "AGEGROUP1.NAMESHORT",
+    "CLUB",
+    "Nettozeit"
+  ],
+  "data": {
+    "#1_5 km Lauf": {
+      "#2_M": [
+        [
+          "623",
+          "534",
+          "88.",
+          "Griesbach, Dieter",
+          "M",
+          "M70",
+          "",
+          "0:51:47"
+        ],
+        [93]
+      ]
+    }
+  }
+}

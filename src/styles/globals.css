@@ -1,0 +1,135 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-accent: #f97316;
+  --color-success: #10b981;
+  --color-danger: #ef4444;
+  --color-foreground: #1f2937;
+  --color-muted: #6b7280;
+  --color-background: #f9fafb;
+  --color-surface: #ffffff;
+  --color-border: #e5e7eb;
+  --color-warning-bg: #fffbeb;
+  --color-warning-border: #fde68a;
+  --color-warning-fg: #78350f;
+
+  --color-status-planned-bg: #e2e8f0;
+  --color-status-planned-fg: #475569;
+  --color-status-planned-dot: #475569;
+  --color-status-confirmed-bg: #2563eb;
+  --color-status-confirmed-fg: #ffffff;
+  --color-status-confirmed-dot: #2563eb;
+  --color-status-completed-bg: #d1fae5;
+  --color-status-completed-fg: #065f46;
+  --color-status-completed-dot: #065f46;
+  --color-status-missed-bg: #fed7aa;
+  --color-status-missed-fg: #92400e;
+  --color-status-missed-dot: #92400e;
+  --color-status-cancelled-bg: #fee2e2;
+  --color-status-cancelled-fg: #991b1b;
+  --color-status-cancelled-dot: #991b1b;
+
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-sans: 'Poppins', system-ui, sans-serif;
+}
+
+.dark {
+  --color-primary: #2563eb;
+  --color-primary-hover: #1d4ed8;
+  --color-accent: #f97316;
+  --color-success: #20ca91;
+  --color-danger: #f15b5b;
+  --color-foreground: #eaeaea;
+  --color-muted: #a1a1a1;
+  --color-background: #121212;
+  --color-surface: #1e1e1e;
+  --color-border: #333333;
+  --color-warning-bg: #3b2a14;
+  --color-warning-border: #92400e;
+  --color-warning-fg: #fde68a;
+
+  --color-status-planned-bg: #2a2a2a;
+  --color-status-planned-fg: #d1d5db;
+  --color-status-planned-dot: #a1a1a1;
+  --color-status-confirmed-bg: #2563eb;
+  --color-status-confirmed-fg: #ffffff;
+  --color-status-confirmed-dot: #2563eb;
+  --color-status-completed-bg: #143d2f;
+  --color-status-completed-fg: #20ca91;
+  --color-status-completed-dot: #20ca91;
+  --color-status-missed-bg: #4a2c12;
+  --color-status-missed-fg: #fdba74;
+  --color-status-missed-dot: #f97316;
+  --color-status-cancelled-bg: #4a1f1f;
+  --color-status-cancelled-fg: #f15b5b;
+  --color-status-cancelled-dot: #f15b5b;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-background font-sans text-foreground antialiased;
+  }
+
+  #root {
+    @apply min-h-screen;
+  }
+}
+
+@layer components {
+  .changelog {
+    @apply text-sm leading-relaxed text-foreground;
+  }
+
+  .changelog h2 {
+    @apply mt-8 border-t border-border pt-6 font-display text-2xl tracking-wide text-primary first:mt-0 first:border-t-0 first:pt-0;
+  }
+
+  .changelog h3 {
+    @apply mt-4 text-base font-semibold text-foreground;
+  }
+
+  .changelog p {
+    @apply mt-2 text-muted;
+  }
+
+  .changelog ul {
+    @apply mt-2 list-disc space-y-1 pl-5 text-foreground;
+  }
+
+  .changelog li {
+    @apply leading-relaxed;
+  }
+
+  .changelog a {
+    @apply font-semibold text-primary underline-offset-2 hover:underline;
+  }
+
+  .changelog strong {
+    @apply font-semibold text-foreground;
+  }
+
+  .changelog hr {
+    @apply my-6 border-border;
+  }
+
+  .changelog h4 {
+    @apply mt-6 font-display text-lg tracking-wide text-primary first:mt-0;
+  }
+
+  .changelog table {
+    @apply mt-4 w-full border-collapse text-left text-xs sm:text-sm;
+  }
+
+  .changelog th,
+  .changelog td {
+    @apply border border-border px-2 py-2 align-top;
+  }
+
+  .changelog th {
+    @apply bg-background font-semibold text-foreground;
+  }
+}

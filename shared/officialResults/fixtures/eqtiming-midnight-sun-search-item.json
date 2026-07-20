@@ -1,0 +1,313 @@
+{
+  "Deltaker": {
+    "Klasse": {
+      "Navn": "M 55-59",
+      "Rangering": true,
+      "Runder": 0,
+      "UID": 853783,
+      "VisTider": true,
+      "AlderFom": 40,
+      "AlderTom": 44,
+      "Kjonn": "m"
+    },
+    "Pulje": {
+      "WaveStartTidFormatert": null,
+      "BruttoTid": false,
+      "EtappeUID": 0,
+      "Leading": false,
+      "Navn": "Halvmaraton",
+      "Runder": 0,
+      "StartTid": "2023-06-17T22:30:00",
+      "UID": 289263,
+      "WaveStartTid": null
+    },
+    "Utover": {
+      "UID": 6292249,
+      "Fornavn": "Dag",
+      "Etternavn": "Nese",
+      "Kjonn": "m",
+      "Klubb": {
+        "UID": 0,
+        "Navn": "",
+        "SAID": null
+      },
+      "Team": {
+        "UID": 0,
+        "Navn": "",
+        "SAID": null
+      },
+      "Land": {
+        "UID": 172,
+        "Navn": "Portugal",
+        "ISO2": "PT",
+        "ISO3": "PRT",
+        "Fifa": "POR",
+        "IOC": "POR",
+        "Longitude": null,
+        "Latitude": null
+      },
+      "Klubbnavn": "",
+      "NavnFormatert": "Dag Nese",
+      "Alder": 55,
+      "Enhet": null,
+      "NotDuplicates": null
+    },
+    "Etappe": {
+      "UID": 231574,
+      "Navn": "Mizuno Halvmaraton",
+      "StasjonsOppsettUID": 0,
+      "Nivaa": 0
+    },
+    "UID": 11129243,
+    "Startnummer": 2472,
+    "FullStartnummer": 2472,
+    "Skive": null,
+    "Klubbnavn": "",
+    "Arrangement": {
+      "UID": 62417,
+      "Navn": "Midnight Sun Marathon 2023",
+      "Aktiv": "2023-06-17T00:00:00",
+      "TidsSone": "Europe/Oslo",
+      "Dato": "2023-06-17T00:00:00",
+      "ForsteStart": "2023-06-17T16:00:00",
+      "Sortering": 0,
+      "Publiseres": true,
+      "Kjede": null,
+      "Forbund": {
+        "UID": 17,
+        "Navn": "Norges Friidrettsforbund",
+        "Land": {
+          "UID": 160,
+          "Navn": "Norway",
+          "ISO2": "NO",
+          "ISO3": "NOR",
+          "Fifa": "NOR",
+          "IOC": "NOR",
+          "Longitude": null,
+          "Latitude": null
+        }
+      },
+      "KlubbFormat": null
+    },
+    "Data": [],
+    "KlubbTeamFormatert": "",
+    "Chips": ";",
+    "Chip1": null,
+    "Chip2": null,
+    "Status": {
+      "Navn": "Registrert",
+      "Visible": true,
+      "Betalt": null,
+      "UID": 1
+    },
+    "BekreftetTid": null,
+    "GPSDevice": null,
+    "EQMENotInUse": false,
+    "IgnoreForTracking": false,
+    "Lag": {
+      "Deltakere": [],
+      "UID": 0,
+      "Navn": "",
+      "Kortnavn": "",
+      "Leder": ""
+    },
+    "Alder": 40,
+    "Klubb": {
+      "UID": 0,
+      "Navn": "",
+      "SAID": null
+    },
+    "EQLisens": false,
+    "EventLicenseUID": null,
+    "Team": {
+      "UID": 0,
+      "Navn": "",
+      "SAID": null
+    },
+    "Registrert": "2022-12-02T10:15:18.557128",
+    "Region": {
+      "UID": 0,
+      "Navn": "",
+      "ShortName": null
+    },
+    "AKDeltatt": 0,
+    "SisteGPSPosisjon": null,
+    "Anonym": false,
+    "Premie": null,
+    "Rally": {
+      "SponsorName": null,
+      "DriverClass": null,
+      "ServiceName": null,
+      "CarMake": null,
+      "CodriverFirstname": null,
+      "CodriverSurname": null,
+      "CodriverClub": null
+    },
+    "LagNavn": "",
+    "TeamName": null,
+    "Lisens": {},
+    "StafettDeltakere": {},
+    "EtappeDeltaker": {
+      "12995232": {
+        "UID": 12995232,
+        "DNS": false,
+        "DNF": false,
+        "DNC": false,
+        "DSQ": false,
+        "LAP": false,
+        "DNQ": false,
+        "Fullfort": false,
+        "Etappe": {
+          "UID": 231574,
+          "Navn": "Mizuno Halvmaraton",
+          "StasjonsOppsettUID": 0,
+          "Nivaa": 1
+        },
+        "Passeringer": {},
+        "Startrekkefolge": 0,
+        "Starttid": "2023-06-17T22:30:14.66",
+        "StarttidNetto": "0001-01-01T00:00:00",
+        "DSQArsak": "",
+        "FlagTime": null,
+        "Kommunike": [],
+        "Poeng": 0.0,
+        "Startnummer": 0,
+        "Runcount": 0,
+        "StarttidFormatert": "22:30:14",
+        "KommunikeTekst": "",
+        "Pulje": {
+          "WaveStartTidFormatert": "",
+          "BruttoTid": false,
+          "EtappeUID": 231574,
+          "Leading": false,
+          "Navn": "Halvmaraton",
+          "Runder": 0,
+          "StartTid": "2023-06-17T22:30:00",
+          "UID": 289263,
+          "WaveStartTid": null
+        },
+        "LL": false,
+        "Tidsstraff": 0,
+        "ChTime": null,
+        "Relegated": false,
+        "FFChecked": null
+      }
+    }
+  },
+  "StasjonsOppsett": {
+    "Stasjon": {
+      "UID": 154602,
+      "Navn": "M\u00e5l",
+      "Latitude": 0.0,
+      "Longitude": 0.0
+    },
+    "Km": 21.098,
+    "Rundenummer": 1,
+    "Er_offentlig": true,
+    "Etappenummer": 0,
+    "UID": 1204621,
+    "Navn": "M\u00e5l",
+    "SekunderGlatting": 0,
+    "Sortering": 21,
+    "Er_stopp": true,
+    "Er_start": false
+  },
+  "Arrangement": {
+    "UID": 62417,
+    "Navn": "Midnight Sun Marathon 2023",
+    "Aktiv": "2023-06-17T00:00:00",
+    "TidsSone": "Europe/Oslo",
+    "Dato": "2023-06-17T00:00:00",
+    "ForsteStart": "0001-01-01T00:00:00",
+    "Sortering": 0,
+    "Publiseres": true,
+    "Kjede": null,
+    "Forbund": {
+      "UID": 0,
+      "Navn": null,
+      "Land": null
+    },
+    "KlubbFormat": null
+  },
+  "Diff": {
+    "Total": 3283000,
+    "Klasse": 3283000,
+    "Kjonn": 3283000,
+    "TotalFormatert": "54:43",
+    "KlasseFormatert": "54:43",
+    "KjonnFormatert": "54:43",
+    "TotalRunde": 0,
+    "KjonnRunde": 0,
+    "KlasseRunde": 0,
+    "SplittTotal": 44000,
+    "SplittKlasse": 43000,
+    "SplittKjonn": 44000,
+    "MerkeTid": 0,
+    "MerkeTidFormatert": null
+  },
+  "Trend": {
+    "Klasse": 0,
+    "Total": -9,
+    "Kjonn": -7
+  },
+  "Splitt": {
+    "Tid": 84000,
+    "Km": 0.3,
+    "Hastighet": 12.86,
+    "Tempo": 4.667,
+    "TotalHastighet": 10.12,
+    "TotalTempo": 5.931,
+    "Formatert": "1:24"
+  },
+  "Plassering": {
+    "Diff": 0,
+    "Total": 443,
+    "Klasse": 11,
+    "Kjonn": 533,
+    "SplittTotal": 1106,
+    "SplittKlasse": 44,
+    "SplittKjonn": 623
+  },
+  "PasseringsTid": "2023-06-18T00:35:23.6500000",
+  "GlattetTid": "2023-06-18T00:35:23.6500000",
+  "Tillegg": "",
+  "StatusTekst": "TIME",
+  "Formatert": "1:50:23",
+  "OmgangsTidFormatert": "1:50:23",
+  "NettoFormatert": "1:50:23",
+  "NettoOmgangsTidFormatert": "1:50:23",
+  "AkkumulertTidGlattet": 7508990,
+  "OmgangsTidGlattet": 7508990,
+  "OmgangsTid": 7508990,
+  "PoengMS": 0,
+  "TimezoneOffset": "+0200",
+  "AkkumulertTidNetto": 7508990,
+  "OmgangsTidNetto": 7508990,
+  "RangeringsTid": 7508990,
+  "SeriePoeng": 0,
+  "SerieBonusSekunder": 0,
+  "Rundenummer": 1,
+  "EtappeDeltakerUID": 12995232,
+  "StasjonsOppsettUID": 1204621,
+  "EDStatus": 0,
+  "Aktiv": true,
+  "FlagTime": null,
+  "RankPoeng": 0,
+  "RankThenValue": null,
+  "SerieGjeldende": true,
+  "TidStatus": "",
+  "DisplayTid": 7508990,
+  "DisplayTidOmgang": 7508990,
+  "AkkumulertTidUtenTillegg": 7508990,
+  "TUID": 0,
+  "RangeringsKlasse": false,
+  "PasseringstidAsDateTime": "2023-06-18T00:35:23.65",
+  "Passeringer": {},
+  "KlasseUID": 853783,
+  "AkkumulertTid": 7508990,
+  "Status": 0,
+  "SETid": "0001-01-01T00:00:00",
+  "ForrigeRunde": null,
+  "RankValue": 999999998007508990,
+  "SplitRankValue": null
+}

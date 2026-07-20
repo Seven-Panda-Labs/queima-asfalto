@@ -1,0 +1,17 @@
+{
+  "DataFields": [
+    "BIB",
+    "ID",
+    "MitStatus([AUTORANK.p])",
+    "MitStatus([AKPlp])&\" \"&[AGEGROUP.NAMESHORT]",
+    "FLNAME",
+    "YEAR",
+    "CLUB",
+    "TIME"
+  ],
+  "data": [
+    ["68484", "1899", "1.", "1. MJ U18", "Kjell Arved Brandt", "2006", "Triathlon Team Sachsen", "15:34"],
+    ["67478", "3660", "2.", "1. M55", "Miguel Molero-Eichwein", "1968", "", "15:39"],
+    [826]
+  ]
+}

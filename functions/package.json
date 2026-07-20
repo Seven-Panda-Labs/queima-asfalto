@@ -1,0 +1,24 @@
+{
+  "name": "queima-asfalto-functions",
+  "type": "module",
+  "main": "lib/index.js",
+  "engines": {
+    "node": "24"
+  },
+  "scripts": {
+    "build": "rm -rf src/shared && cp -r ../shared/officialResults src/shared && rm -f src/shared/*.test.ts && mkdir -p src/shared/shares && cp ../shared/shares/*.ts src/shared/shares && rm -f src/shared/shares/*.test.ts && mkdir -p src/shared/reminders && cp ../shared/reminders/*.ts src/shared/reminders && rm -f src/shared/reminders/*.test.ts && tsc",
+    "watch": "npm run build && tsc --watch"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2",
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.2.5",
+    "pdf-parse": "^2.4.5"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.3"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
+  }
+}

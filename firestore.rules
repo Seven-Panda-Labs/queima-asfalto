@@ -1,0 +1,295 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function validEventStatus(status) {
+      return status in ['planned', 'confirmed', 'completed', 'missed', 'cancelled',
+        'Planeado', 'Confirmado', 'Concluído', 'Faltou', 'Cancelado', 'Agendado'];
+    }
+
+    function validEventType(eventType) {
+      return eventType in ['km_5', 'km_10', 'km_21_1', 'km_42_2',
+        '5Km', '10Km', '21.1Km', '42.2Km', 'Outra'];
+    }
+
+    function validCoordinates(lat, lng) {
+      return lat is number && lng is number
+        && lat >= -90 && lat <= 90
+        && lng >= -180 && lng <= 180;
+    }
+
+    function validOptionalCoordinates(data) {
+      return (!('locationLat' in data) || data.locationLat == null)
+        && (!('locationLng' in data) || data.locationLng == null)
+        || validCoordinates(data.locationLat, data.locationLng);
+    }
+
+    function validOptionalGeocodeFields(data) {
+      return validOptionalCoordinates(data)
+        && (!('locationGeocodeQuery' in data) || data.locationGeocodeQuery == null || data.locationGeocodeQuery is string)
+        && (!('locationGeocodedAt' in data) || data.locationGeocodedAt == null || data.locationGeocodedAt is timestamp);
+    }
+
+    function validResultsPlatform(platform) {
+      return platform in ['parkrun', 'davengo', 'sporthive', 'myraceresult', 'sccevents', 'maxfunsports', 'myracepartner', 'strassenlauf', 'zielzeit', 'eqtiming', 'nsfberlin', 'runczech', 'ultimate', 'vcrunning', 'wiclax', 'timataka', 'mikatiming'];
+    }
+
+    function validOptionalResultsFields(data) {
+      return (!('resultsUrl' in data) || data.resultsUrl == null || data.resultsUrl is string)
+        && (!('resultsPlatform' in data) || data.resultsPlatform == null || validResultsPlatform(data.resultsPlatform))
+        && (!('parkrunEventSlug' in data) || data.parkrunEventSlug == null || data.parkrunEventSlug is string)
+        && (!('parkrunCountryUrl' in data) || data.parkrunCountryUrl == null || data.parkrunCountryUrl is string);
+    }
+
+    function validEventWrite(data) {
+      return data.keys().hasAll(['userId', 'name', 'date', 'realDistance', 'eventType', 'location', 'status'])
+        && isOwner(data.userId)
+        && validEventStatus(data.status)
+        && validEventType(data.eventType)
+        && data.realDistance is number
+        && data.realDistance > 0
+        && data.name is string
+        && data.name.size() > 0
+        && data.location is string
+        && validOptionalGeocodeFields(data)
+        && validOptionalResultsFields(data);
+    }
+
+    function validEventUpdate() {
+      let data = request.resource.data;
+      return resource.data.userId == request.auth.uid
+        && data.userId == resource.data.userId
+        && data.name is string
+        && data.name.size() > 0
+        && data.location is string
+        && data.realDistance is number
+        && data.realDistance > 0
+        && validEventStatus(data.status)
+        && validEventType(data.eventType)
+        && validOptionalGeocodeFields(data)
+        && validOptionalResultsFields(data)
+        && (!('time' in data) || data.time == null || data.time is string)
+        && (!('pace' in data) || data.pace == null || data.pace is string)
+        && (!('classification' in data) || data.classification == null || data.classification is string)
+        && (!('notes' in data) || data.notes == null || data.notes is string)
+        && (!('resultsVerified' in data) || data.resultsVerified == null || data.resultsVerified is bool);
+    }
+
+    function validGoalWrite(data) {
+      return data.keys().hasAll(['userId', 'eventType', 'targetCount', 'year'])
+        && isOwner(data.userId)
+        && validEventType(data.eventType)
+        && data.targetCount is int
+        && data.targetCount > 0
+        && data.year is int;
+    }
+
+    function validPerformanceGoalType(type) {
+      return type in ['pr_target', 'pace_target', 'time_target'];
+    }
+
+    function validPerformanceGoalWrite(data) {
+      return data.keys().hasAll(['userId', 'type', 'eventType', 'year'])
+        && isOwner(data.userId)
+        && validPerformanceGoalType(data.type)
+        && validEventType(data.eventType)
+        && data.year is int
+        && (data.type != 'pace_target' || ('targetPace' in data && data.targetPace is string && data.targetPace.size() > 0))
+        && (data.type != 'time_target' || ('targetTime' in data && data.targetTime is string && data.targetTime.size() > 0))
+        && (data.type != 'pr_target' || (!('targetPace' in data) || data.targetPace == null) && (!('targetTime' in data) || data.targetTime == null));
+    }
+
+    function validPerformanceGoalUpdate() {
+      let data = request.resource.data;
+      return resource.data.userId == request.auth.uid
+        && data.userId == resource.data.userId
+        && validPerformanceGoalType(data.type)
+        && validEventType(data.eventType)
+        && data.year is int
+        && (data.type != 'pace_target' || (data.targetPace is string && data.targetPace.size() > 0))
+        && (data.type != 'time_target' || (data.targetTime is string && data.targetTime.size() > 0))
+        && (!('emoji' in data) || data.emoji == null || data.emoji is string)
+        && (!('notes' in data) || data.notes == null || data.notes is string)
+        && (!('targetPace' in data) || data.targetPace == null || data.targetPace is string)
+        && (!('targetTime' in data) || data.targetTime == null || data.targetTime is string);
+    }
+
+
+    function validDisciplineList(list) {
+      return list is list
+        && list.size() > 0
+        && list.size() <= 4
+        && validEventType(list[0])
+        && (list.size() < 2 || validEventType(list[1]))
+        && (list.size() < 3 || validEventType(list[2]))
+        && (list.size() < 4 || validEventType(list[3]));
+    }
+
+    function validBucketListDisciplines(data) {
+      return ('disciplines' in data && validDisciplineList(data.disciplines))
+        || ('eventType' in data && validEventType(data.eventType));
+    }
+
+    function validBucketListWrite(data) {
+      return data.keys().hasAll(['userId', 'name', 'location', 'realDistance'])
+        && isOwner(data.userId)
+        && validBucketListDisciplines(data)
+        && data.realDistance is number
+        && data.realDistance > 0
+        && data.name is string
+        && data.name.size() > 0
+        && data.location is string
+        && validOptionalGeocodeFields(data);
+    }
+
+    function validBucketListUpdate() {
+      let data = request.resource.data;
+      return resource.data.userId == request.auth.uid
+        && data.userId == resource.data.userId
+        && data.name is string
+        && data.name.size() > 0
+        && data.location is string
+        && data.realDistance is number
+        && data.realDistance > 0
+        && validBucketListDisciplines(data)
+        && validOptionalGeocodeFields(data)
+        && (!('targetMonth' in data) || data.targetMonth == null || data.targetMonth is string)
+        && (!('link' in data) || data.link == null || data.link is string)
+        && (!('emoji' in data) || data.emoji == null || data.emoji is string)
+        && (!('notes' in data) || data.notes == null || data.notes is string);
+    }
+
+    function validEventMediaType(type) {
+      return type in ['photo', 'video'];
+    }
+
+    function validEventMediaFileExtension(storagePath) {
+      return storagePath.matches('.*\\.(jpg|png|webp|heic|heif|mp4|mov|webm|bin)$');
+    }
+
+    function validEventMediaStoragePath(storagePath, userId, eventId, mediaId) {
+      return storagePath.matches(
+        '^users/' + userId + '/events/' + eventId + '/media/' + mediaId + '\\.(jpg|png|webp|heic|heif|mp4|mov|webm|bin)$'
+      );
+    }
+
+    function validEventMediaDownloadUrl(downloadUrl, userId, eventId, mediaId) {
+      let encodedObject = 'users%2F' + userId + '%2Fevents%2F' + eventId + '%2Fmedia%2F' + mediaId;
+      let extension = '\\.(jpg|png|webp|heic|heif|mp4|mov|webm|bin)';
+      return downloadUrl.matches(
+          '^https://firebasestorage\\.googleapis\\.com/v0/b/[^/]+/o/' + encodedObject + extension + '\\?.*$'
+        )
+        || downloadUrl.matches(
+          '^https://[a-z0-9.-]+\\.firebasestorage\\.app/o/' + encodedObject + extension + '\\?.*$'
+        );
+    }
+
+    function validEventMediaWrite(data, eventId, mediaId) {
+      return data.keys().hasAll(['userId', 'type', 'storagePath', 'downloadUrl', 'mimeType', 'sizeBytes'])
+        && isOwner(data.userId)
+        && validEventMediaType(data.type)
+        && data.storagePath is string
+        && data.downloadUrl is string
+        && validEventMediaFileExtension(data.storagePath)
+        && validEventMediaStoragePath(data.storagePath, data.userId, eventId, mediaId)
+        && validEventMediaDownloadUrl(data.downloadUrl, data.userId, eventId, mediaId)
+        && data.mimeType is string
+        && data.sizeBytes is number
+        && data.sizeBytes > 0
+        && (
+          (data.type == 'photo' && data.sizeBytes <= 5 * 1024 * 1024)
+          || (data.type == 'video' && data.sizeBytes <= 100 * 1024 * 1024)
+        )
+        && (!('durationSeconds' in data) || data.durationSeconds == null || data.durationSeconds is number);
+    }
+
+    match /users/{userId} {
+      allow read, write: if isOwner(userId);
+
+      match /reminderDispatches/{reminderId} {
+        allow read: if isOwner(userId);
+        allow write: if false;
+      }
+
+      match /rateLimits/{limitId} {
+        allow read: if isOwner(userId);
+        allow write: if false;
+      }
+    }
+
+    match /events/{eventId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if validEventWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validEventUpdate();
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+
+      match /media/{mediaId} {
+        allow read: if isSignedIn()
+          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid;
+        allow create: if isSignedIn()
+          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid
+          && validEventMediaWrite(request.resource.data, eventId, mediaId);
+        allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+        allow update: if false;
+      }
+    }
+
+
+    match /bucketListItems/{itemId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if validBucketListWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validBucketListUpdate();
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /goals/{goalId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if validGoalWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validGoalWrite(request.resource.data);
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    match /performanceGoals/{goalId} {
+      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow create: if validPerformanceGoalWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validPerformanceGoalUpdate();
+      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    function isShareParticipant() {
+      return isSignedIn() && (
+        resource.data.ownerId == request.auth.uid
+        || resource.data.granteeId == request.auth.uid
+        || (
+          resource.data.status == 'pending'
+          && resource.data.granteeEmail == request.auth.token.email.lower()
+        )
+      );
+    }
+
+    match /shares/{shareId} {
+      allow read: if isShareParticipant();
+      allow create, update, delete: if false;
+    }
+  }
+}

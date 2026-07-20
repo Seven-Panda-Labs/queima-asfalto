@@ -1,0 +1,20 @@
+{
+  "DataFields": [
+    "BIB",
+    "ID",
+    "MitStatus([AUTORANK.p])",
+    "AGEGROUP.NAMESHORT",
+    "AnzeigeName",
+    "YEAR",
+    "CLUB",
+    "PACE",
+    "Ziel.CHIP",
+    "Ziel"
+  ],
+  "data": {
+    "#3_Fun-Lauf 6 km": [
+      ["1195", "2416", "90.", "F", "PEÑA, Maria", "", "", "6:00", "42:10", "42:21"],
+      [127]
+    ]
+  }
+}

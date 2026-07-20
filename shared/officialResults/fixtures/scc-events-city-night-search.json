@@ -1,0 +1,26 @@
+{
+  "recordsTotal": 8904,
+  "recordsFiltered": 1,
+  "data": [
+    {
+      "id": 7342,
+      "event": "adidas Runners City Night 2025",
+      "ident": "CN10",
+      "description": "10km Lauf",
+      "startnummer": "11469",
+      "name": "Vollmann, Wolfgang",
+      "vorname": "Wolfgang",
+      "nachname": "Vollmann",
+      "sex": "M",
+      "ak": "75",
+      "nation": "GER",
+      "verein": "",
+      "sex_platz": 4391,
+      "platz": 6891,
+      "ak_platz": 5,
+      "netto": "01:03:01",
+      "brutto": "01:16:04",
+      "daytime": "00:00:00"
+    }
+  ]
+}

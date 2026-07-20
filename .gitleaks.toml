@@ -1,0 +1,13 @@
+title = "queima-asfalto gitleaks"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholder env templates and lockfiles"
+paths = [
+  '''(?i)\.env\.example$''',
+  '''(?i)functions/\.env\.example$''',
+  '''(?i)package-lock\.json$''',
+  '''(?i)functions/package-lock\.json$''',
+]

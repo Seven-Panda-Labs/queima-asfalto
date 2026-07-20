@@ -1,0 +1,3 @@
+results_startrecord = 1000;
+results_querystring = 'eventid=6736&mode=results&distance=1&category=&language=us';
+document.getElementById('divResults_Status').innerHTML='31644 participant(s) found';
