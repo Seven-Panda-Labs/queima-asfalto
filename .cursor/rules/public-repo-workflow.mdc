@@ -1,0 +1,34 @@
+---
+description: Public repo — feature branches and PRs only; never push main without explicit user request
+alwaysApply: true
+---
+
+# Public repository workflow
+
+Repo: **Seven-Panda-Labs/queima-asfalto** (public). Read [AGENTS.md](../../AGENTS.md) for full context.
+
+## Git
+
+1. Branch from updated `main`: `feat/…`, `fix/…`, `docs/…`, `chore/…`
+2. **Never** `git push origin main` unless the user explicitly requests an emergency hotfix
+3. **Never** force-push `main` / `master`
+4. Push feature branches: `git push -u origin HEAD`
+5. Open PRs with `gh pr create --base main` when the user asks
+
+## Before PR / handoff
+
+- Run `npm run check` on the branch
+- No secrets (`.env.local`, keys, service accounts) or real PII in fixtures
+- One focused change per PR; minimal diff
+
+## User consent required
+
+- **Commits** — only when the user explicitly asks
+- **Push** — only when the user explicitly asks (to a feature branch, not `main`)
+- **Deploy** (`npm run deploy`) — only when explicitly requested
+
+## Do not
+
+- Skip hooks (`--no-verify`) without user request
+- Change `git config`
+- Mix unrelated refactors with the task
