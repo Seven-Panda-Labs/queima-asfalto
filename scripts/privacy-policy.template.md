@@ -7,7 +7,7 @@
 
 O responsável pelo tratamento dos dados pessoais nesta instância é **{{CONTROLLER_NAME}}**, operador de **{{HOSTING_URL}}** (a seguir «nós» ou «o operador»).
 
-O software [Queima Asfalto](https://github.com/xmajox/queima-asfalto) é open source (AGPL-3.0). Os autores do código **não** são responsáveis pelo tratamento de dados na tua instância self-hosted.
+O software [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) é open source (AGPL-3.0). Os autores do código **não** são responsáveis pelo tratamento de dados na tua instância self-hosted.
 
 #### 2. Âmbito
 
@@ -82,7 +82,7 @@ Nos termos do RGPD, os utilizadores podem solicitar:
 
 #### 9. Segurança
 
-Medidas incluídas no software: regras Firestore/Storage por utilizador, autenticação obrigatória, redacção server-side em partilhas, rate limiting em lookups. Ver [restrições no Console](https://github.com/xmajox/queima-asfalto/blob/main/docs/console-restrictions.md) e [self-hosting](https://github.com/xmajox/queima-asfalto/blob/main/docs/self-hosting.md).
+Medidas incluídas no software: regras Firestore/Storage por utilizador, autenticação obrigatória, redacção server-side em partilhas, rate limiting em lookups. Ver [restrições no Console](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) e [self-hosting](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### 10. Alterações
 
@@ -103,7 +103,7 @@ Instância: {{HOSTING_URL}}
 
 The data controller for this instance is **{{CONTROLLER_NAME}}**, operator of **{{HOSTING_URL}}** (“we” or “the operator”).
 
-The [Queima Asfalto](https://github.com/xmajox/queima-asfalto) software is open source (AGPL-3.0). The code authors are **not** data controllers for your self-hosted instance.
+The [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) software is open source (AGPL-3.0). The code authors are **not** data controllers for your self-hosted instance.
 
 #### 2. Scope
 
@@ -178,7 +178,7 @@ Under GDPR, users may request:
 
 #### 9. Security
 
-Software measures include per-user Firestore/Storage rules, mandatory authentication, server-side redaction on shares, lookup rate limiting. See [console restrictions](https://github.com/xmajox/queima-asfalto/blob/main/docs/console-restrictions.md) and [self-hosting](https://github.com/xmajox/queima-asfalto/blob/main/docs/self-hosting.md).
+Software measures include per-user Firestore/Storage rules, mandatory authentication, server-side redaction on shares, lookup rate limiting. See [console restrictions](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) and [self-hosting](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### 10. Changes
 

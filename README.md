@@ -3,10 +3,9 @@
 </p>
 
 <p align="center">
-  <!-- version/license: static shields (repo private). After going public, switch to img.shields.io/github/package-json/v and /github/license -->
-  <a href="https://github.com/xmajox/queima-asfalto/actions/workflows/ci.yml"><img src="https://github.com/xmajox/queima-asfalto/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/xmajox/queima-asfalto/blob/main/package.json"><img src="https://img.shields.io/badge/version-1.11.0-blue" alt="version"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-blue.svg" alt="license"></a>
+  <a href="https://github.com/Seven-Panda-Labs/queima-asfalto/actions/workflows/ci.yml"><img src="https://github.com/Seven-Panda-Labs/queima-asfalto/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/package.json"><img src="https://img.shields.io/github/package-json/v/Seven-Panda-Labs/queima-asfalto" alt="version"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/Seven-Panda-Labs/queima-asfalto" alt="license"></a>
 </p>
 
 # Queima Asfalto
@@ -41,7 +40,7 @@ React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Sto
 **Sem projeto Firebase na cloud** — emuladores locais (recomendado para contribuir):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -55,7 +54,7 @@ Guia completo: [`docs/emulators.md`](docs/emulators.md) (login «Entrar (emulado
 **Com projeto Firebase teu** (Google Sign-In, deploy):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 cp .env.example .env.local
@@ -149,7 +148,7 @@ React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Sto
 **No cloud Firebase project** — local emulators (recommended for contributors):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -163,7 +162,7 @@ Full guide: [`docs/emulators.md`](docs/emulators.md) (“Sign in (emulator)”, 
 **With your own Firebase project** (Google Sign-In, deploy):
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 cp .env.example .env.local
