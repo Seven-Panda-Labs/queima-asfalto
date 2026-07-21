@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        For larger changes, discuss here before opening a PR. See [CONTRIBUTING.md](https://github.com/xmajox/queima-asfalto/blob/main/CONTRIBUTING.md).
+        For larger changes, discuss here before opening a PR. See [CONTRIBUTING.md](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/CONTRIBUTING.md).
 
         Para mudanças grandes, discute aqui antes de abrir PR.
 

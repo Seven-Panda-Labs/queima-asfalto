@@ -53,7 +53,7 @@ Maintenance notes.
 
 ## Referências
 
-- [Issues GitHub](https://github.com/xmajox/queima-asfalto/issues)`
+- [Issues GitHub](https://github.com/Seven-Panda-Labs/queima-asfalto/issues)`
 
     expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] — 2026-01-01
 
@@ -75,7 +75,7 @@ Maintenance notes.
 
 ## References
 
-- [GitHub Issues](https://github.com/xmajox/queima-asfalto/issues)`
+- [GitHub Issues](https://github.com/Seven-Panda-Labs/queima-asfalto/issues)`
 
     expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] — 2026-01-01
 

@@ -31,10 +31,10 @@ Se fazes deploy da tua própria instância, és responsável pelo uso que os teu
 
 - Informa os utilizadores (por exemplo com este aviso ou equivalente na tua política de privacidade).
 - Revisa os termos dos sites de timing que os teus utilizadores importam com frequência.
-- Ajusta limites em [`docs/cloud-functions-limits.md`](https://github.com/xmajox/queima-asfalto/blob/main/docs/cloud-functions-limits.md) se necessário.
+- Ajusta limites em [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) se necessário.
 - Considera desactivar ou restringir a funcionalidade se não puderes cumprir os termos aplicáveis.
 
-Documentação completa para operadores: [`docs/timing-scraping-disclaimer.md`](https://github.com/xmajox/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Documentação completa para operadores: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
 
 #### Software
 
@@ -73,10 +73,10 @@ If you deploy your own instance, you are responsible for how your users use this
 
 - Inform users (for example with this notice or equivalent wording in your privacy policy).
 - Review the terms of timing sites your users import from frequently.
-- Tune limits in [`docs/cloud-functions-limits.md`](https://github.com/xmajox/queima-asfalto/blob/main/docs/cloud-functions-limits.md) if needed.
+- Tune limits in [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) if needed.
 - Consider disabling or restricting the feature if you cannot meet applicable terms.
 
-Full operator documentation: [`docs/timing-scraping-disclaimer.md`](https://github.com/xmajox/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Full operator documentation: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
 
 #### Software
 

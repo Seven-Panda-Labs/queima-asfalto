@@ -55,7 +55,7 @@ Substitui os marcadores `{{...}}` antes de publicar (página web, README da inst
 
 O responsável pelo tratamento dos dados pessoais nesta instância é **{{CONTROLLER_NAME}}**, operador de **{{HOSTING_URL}}** (a seguir «nós» ou «o operador»).
 
-O software [Queima Asfalto](https://github.com/xmajox/queima-asfalto) é open source (AGPL-3.0). Os autores do código **não** são responsáveis pelo tratamento de dados na tua instância self-hosted.
+O software [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) é open source (AGPL-3.0). Os autores do código **não** são responsáveis pelo tratamento de dados na tua instância self-hosted.
 
 #### 2. Âmbito
 
@@ -231,7 +231,7 @@ Replace `{{...}}` placeholders before publishing (web page, instance README, or 
 
 The data controller for this instance is **{{CONTROLLER_NAME}}**, operator of **{{HOSTING_URL}}** (“we” or “the operator”).
 
-The [Queima Asfalto](https://github.com/xmajox/queima-asfalto) software is open source (AGPL-3.0). The code authors are **not** data controllers for your self-hosted instance.
+The [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) software is open source (AGPL-3.0). The code authors are **not** data controllers for your self-hosted instance.
 
 #### 2. Scope
 

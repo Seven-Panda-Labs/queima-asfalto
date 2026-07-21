@@ -1,8 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: Security vulnerability / Vulnerabilidade de segurança
-    url: https://github.com/xmajox/queima-asfalto/blob/main/SECURITY.md
+    url: https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/SECURITY.md
     about: Report privately by email — do not open a public issue. / Reporta por email — não abras issue pública.
   - name: Contributing guide / Guia de contribuição
-    url: https://github.com/xmajox/queima-asfalto/blob/main/CONTRIBUTING.md
+    url: https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/CONTRIBUTING.md
     about: Local setup, `npm run check`, changelog, and PR style.

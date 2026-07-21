@@ -109,7 +109,7 @@ Sem Geoapify a app funciona; autocomplete de local e geocodificação no formul�
 ### Passo 8 — Clonar e instalar
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
@@ -327,7 +327,7 @@ Without Geoapify the app works; location autocomplete and geocoding on the event
 ### Step 8 — Clone and install
 
 ```bash
-git clone https://github.com/xmajox/queima-asfalto.git
+git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
 cd queima-asfalto
 npm install
 npm --prefix functions install
