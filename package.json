@@ -16,6 +16,7 @@
     "check:changelog": "tsx scripts/verify-changelog.ts",
     "check:licenses": "tsx scripts/verify-licenses.ts",
     "check": "npm --prefix functions run build && npm run lint && npm run test && npm run test:rules && npm run check:changelog",
+    "seed:demo-user": "tsx scripts/seed-demo-user.ts",
     "setup:githooks": "git config core.hooksPath .githooks",
     "test": "vitest run",
     "test:rules": "firebase emulators:exec --only firestore --project demo-queima-asfalto \"vitest run --config vitest.config.rules.ts\"",

@@ -20,6 +20,15 @@
 
 PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resultados, ritmo e metas de performance. Funciona offline e sincroniza via Firebase.
 
+<p align="center">
+  <img src="assets/screenshots/dashboard.png" alt="Painel" width="49%" />
+  <img src="assets/screenshots/events.png" alt="Calendário de eventos" width="49%" />
+  <br />
+  <img src="assets/screenshots/goals.png" alt="Objetivos e metas" width="49%" />
+  <img src="assets/screenshots/results.png" alt="Resultados" width="49%" />
+</p>
+<p align="center"><sub>Capturas da instância em <a href="https://queima-asfalto.web.app">queima-asfalto.web.app</a></sub></p>
+
 ### Funcionalidades
 
 - Calendário de eventos com estados, localização e mapa
