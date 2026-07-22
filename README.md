@@ -27,7 +27,6 @@ PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resulta
   <img src="assets/screenshots/goals.png" alt="Objetivos e metas" width="49%" />
   <img src="assets/screenshots/results.png" alt="Resultados" width="49%" />
 </p>
-<p align="center"><sub>Capturas da instância em <a href="https://queima-asfalto.web.app">queima-asfalto.web.app</a></sub></p>
 
 ### Funcionalidades
 
