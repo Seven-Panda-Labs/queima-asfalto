@@ -19,5 +19,6 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["vite.config.ts", "scripts/**/*.ts", "src/services/geoapify.ts"]
+  "include": ["vite.config.ts", "scripts/**/*.ts", "src/services/geoapify.ts"],
+  "exclude": ["scripts/seed-demo-user.ts"]
 }

@@ -6,22 +6,24 @@ import App from './App.tsx'
 import { AuthProvider } from './contexts/AuthContext.tsx'
 import { ThemeProvider } from './contexts/ThemeContext.tsx'
 import { ToastProvider } from './contexts/ToastContext.tsx'
+import { initI18n } from './i18n/index.ts'
 import './services/firebase.ts'
-import './i18n/index.ts'
 import './styles/globals.css'
 
 registerSW({ immediate: true })
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <BrowserRouter>
-      <AuthProvider>
-        <ThemeProvider>
-          <ToastProvider>
-            <App />
-          </ToastProvider>
-        </ThemeProvider>
-      </AuthProvider>
-    </BrowserRouter>
-  </StrictMode>,
-)
+void initI18n().then(() => {
+  createRoot(document.getElementById('root')!).render(
+    <StrictMode>
+      <BrowserRouter>
+        <AuthProvider>
+          <ThemeProvider>
+            <ToastProvider>
+              <App />
+            </ToastProvider>
+          </ThemeProvider>
+        </AuthProvider>
+      </BrowserRouter>
+    </StrictMode>,
+  )
+})

@@ -1,5 +1,6 @@
 import type { EventStatus, EventType } from '../src/domain/eventCodes.js'
-import type { PerformanceGoalType } from '../src/types/PerformanceGoal.js'
+
+type PerformanceGoalType = 'pr_target' | 'pace_target' | 'time_target'
 
 export const DEMO_USER_ID = 'sEbl8eWuYtN2Nbnq7DrWE57Vayq2'
 

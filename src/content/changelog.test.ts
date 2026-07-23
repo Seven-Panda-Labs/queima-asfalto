@@ -90,24 +90,24 @@ Maintenance notes.
 describe('getChangelogMarkdown', () => {
   const versionPattern = new RegExp(`^## \\[${packageJson.version.replace(/\./g, '\\.')}\\]`)
 
-  it('includes the current package version in pt changelog', () => {
-    expect(getChangelogMarkdown('pt')).toMatch(versionPattern)
+  it('includes the current package version in pt changelog', async () => {
+    await expect(getChangelogMarkdown('pt')).resolves.toMatch(versionPattern)
   })
 
-  it('includes the current package version in en changelog', () => {
-    expect(getChangelogMarkdown('en')).toMatch(versionPattern)
+  it('includes the current package version in en changelog', async () => {
+    await expect(getChangelogMarkdown('en')).resolves.toMatch(versionPattern)
   })
 
-  it('includes the current package version in es changelog', () => {
-    expect(getChangelogMarkdown('es')).toMatch(versionPattern)
+  it('includes the current package version in es changelog', async () => {
+    await expect(getChangelogMarkdown('es')).resolves.toMatch(versionPattern)
   })
 
-  it('includes the current package version in de changelog', () => {
-    expect(getChangelogMarkdown('de')).toMatch(versionPattern)
+  it('includes the current package version in de changelog', async () => {
+    await expect(getChangelogMarkdown('de')).resolves.toMatch(versionPattern)
   })
 
-  it('omits legend and references appendix from displayed changelog', () => {
-    expect(getChangelogMarkdown('pt')).not.toMatch(/^## (Legenda|Referências)/m)
-    expect(getChangelogMarkdown('en')).not.toMatch(/^## (Legend|References)/m)
+  it('omits legend and references appendix from displayed changelog', async () => {
+    await expect(getChangelogMarkdown('pt')).resolves.not.toMatch(/^## (Legenda|Referências)/m)
+    await expect(getChangelogMarkdown('en')).resolves.not.toMatch(/^## (Legend|References)/m)
   })
 })
