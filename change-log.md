@@ -4,6 +4,14 @@
 
 ---
 
+## [1.12.1] — 2026-07-23
+
+### Alterado
+
+- Várias melhorias de desempenho e atualizações de segurança.
+
+---
+
 ## [1.12.0] — 2026-07-23
 
 ### Adicionado
