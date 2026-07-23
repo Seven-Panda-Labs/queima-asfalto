@@ -4,6 +4,14 @@
 
 ---
 
+## [1.13.0] — 2026-07-23
+
+### Adicionado
+
+- **Memórias:** lightbox para ver fotos e vídeos em ecrã inteiro, com navegação por setas, teclado e swipe em mobile.
+
+---
+
 ## [1.12.1] — 2026-07-23
 
 ### Alterado

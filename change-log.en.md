@@ -4,6 +4,14 @@
 
 ---
 
+## [1.13.0] — 2026-07-23
+
+### Added
+
+- **Memories:** lightbox to view photos and videos fullscreen, with arrow, keyboard, and mobile swipe navigation.
+
+---
+
 ## [1.12.1] — 2026-07-23
 
 ### Changed

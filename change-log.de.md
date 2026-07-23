@@ -4,6 +4,14 @@
 
 ---
 
+## [1.13.0] — 2026-07-23
+
+### Hinzugefügt
+
+- **Erinnerungen:** Lightbox für Fotos und Videos im Vollbild, mit Pfeil-, Tastatur- und Wischgesten-Navigation auf dem Handy.
+
+---
+
 ## [1.12.1] — 2026-07-23
 
 ### Geändert
