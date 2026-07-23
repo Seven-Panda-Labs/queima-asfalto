@@ -4,6 +4,14 @@
 
 ---
 
+## [1.13.0] — 2026-07-23
+
+### Añadido
+
+- **Recuerdos:** visor a pantalla completa para fotos y vídeos, con navegación por flechas, teclado y deslizamiento en móvil.
+
+---
+
 ## [1.12.1] — 2026-07-23
 
 ### Cambiado
