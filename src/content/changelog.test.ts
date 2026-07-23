@@ -12,9 +12,12 @@ describe('resolveChangelogLocale', () => {
     expect(resolveChangelogLocale('en-GB')).toBe('en')
   })
 
-  it('defaults other languages to pt', () => {
+  it('defaults other languages to en', () => {
     expect(resolveChangelogLocale('pt')).toBe('pt')
     expect(resolveChangelogLocale('pt-PT')).toBe('pt')
+    expect(resolveChangelogLocale('es')).toBe('es')
+    expect(resolveChangelogLocale('de')).toBe('de')
+    expect(resolveChangelogLocale('fr')).toBe('en')
   })
 })
 
@@ -93,6 +96,14 @@ describe('getChangelogMarkdown', () => {
 
   it('includes the current package version in en changelog', () => {
     expect(getChangelogMarkdown('en')).toMatch(versionPattern)
+  })
+
+  it('includes the current package version in es changelog', () => {
+    expect(getChangelogMarkdown('es')).toMatch(versionPattern)
+  })
+
+  it('includes the current package version in de changelog', () => {
+    expect(getChangelogMarkdown('de')).toMatch(versionPattern)
   })
 
   it('omits legend and references appendix from displayed changelog', () => {

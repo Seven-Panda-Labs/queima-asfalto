@@ -1,6 +1,19 @@
 # Changelog
 
-[Português](change-log.md) | [English](change-log.en.md)
+[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md)
+
+---
+
+## [1.12.0] — 2026-07-23
+
+### Adicionado
+
+- **Idiomas:** suporte a espanhol (es-ES) e alemão na app — UI, emojis, lembretes push, changelog, política de privacidade e aviso de resultados oficiais.
+- **Definições:** selector de idioma com Português, English, Español e Deutsch.
+
+### Alterado
+
+- Fallback de traduções em falta passa a inglês; detecção automática do browser para `pt`, `en`, `es` e `de`.
 
 ---
 

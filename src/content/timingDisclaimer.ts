@@ -1,8 +1,9 @@
 import timingDisclaimerSource from '../../timing-disclaimer.md?raw'
+import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
 
-export type TimingDisclaimerLocale = 'pt' | 'en'
+export type TimingDisclaimerLocale = ContentLocale
 
-const LOCALE_MARKER = /^---locale:(pt|en)---$/gm
+const LOCALE_MARKER = /^---locale:(pt|en|es|de)---$/gm
 
 function parseLocaleSections(template: string): Map<TimingDisclaimerLocale, string> {
   const sections = new Map<TimingDisclaimerLocale, string>()
@@ -22,7 +23,7 @@ function parseLocaleSections(template: string): Map<TimingDisclaimerLocale, stri
 const DISCLAIMER_BY_LOCALE = parseLocaleSections(timingDisclaimerSource)
 
 export function resolveTimingDisclaimerLocale(language: string): TimingDisclaimerLocale {
-  return language.startsWith('en') ? 'en' : 'pt'
+  return resolveContentLocale(language)
 }
 
 export function getTimingDisclaimerMarkdown(locale: TimingDisclaimerLocale): string {

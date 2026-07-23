@@ -4,4 +4,6 @@ export const privacyPolicyContent = {
   instanceName: '',
   pt: '',
   en: '',
+  es: '',
+  de: '',
 } as const

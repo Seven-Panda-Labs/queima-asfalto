@@ -1,9 +1,10 @@
 import { privacyPolicyContent } from '#privacy-policy-content'
+import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
 
-export type PrivacyPolicyLocale = 'pt' | 'en'
+export type PrivacyPolicyLocale = ContentLocale
 
 export function resolvePrivacyPolicyLocale(language: string): PrivacyPolicyLocale {
-  return language.startsWith('en') ? 'en' : 'pt'
+  return resolveContentLocale(language)
 }
 
 export function isPrivacyPolicyAvailable(): boolean {
@@ -11,7 +12,7 @@ export function isPrivacyPolicyAvailable(): boolean {
 }
 
 export function getPrivacyPolicyMarkdown(locale: PrivacyPolicyLocale): string {
-  return locale === 'en' ? privacyPolicyContent.en : privacyPolicyContent.pt
+  return privacyPolicyContent[locale]
 }
 
 export function getPrivacyPolicyInstanceName(): string {

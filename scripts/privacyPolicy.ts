@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-export type PrivacyPolicyLocale = 'pt' | 'en'
+export type PrivacyPolicyLocale = 'pt' | 'en' | 'es' | 'de'
 
 export type PrivacyPolicyValues = {
   INSTANCE_NAME: string
@@ -27,6 +27,10 @@ const DEFAULT_RETENTION_PT =
   'Pedidos de apagamento por email; resposta em até 30 dias.'
 const DEFAULT_RETENTION_EN =
   'Erasure requests by email; response within 30 days.'
+const DEFAULT_RETENTION_ES =
+  'Solicitudes de supresión por email; respuesta en un plazo de 30 días.'
+const DEFAULT_RETENTION_DE =
+  'Löschanfragen per E-Mail; Antwort innerhalb von 30 Tagen.'
 
 export function loadEnvFile(path: string, env: NodeJS.ProcessEnv = process.env): void {
   let content: string
@@ -65,6 +69,14 @@ function yesNoPt(enabled: boolean): string {
 
 function yesNoEn(enabled: boolean): string {
   return enabled ? 'yes' : 'no'
+}
+
+function yesNoEs(enabled: boolean): string {
+  return enabled ? 'sí' : 'no'
+}
+
+function yesNoDe(enabled: boolean): string {
+  return enabled ? 'ja' : 'nein'
 }
 
 export function missingPrivacyEnvKeys(env: NodeJS.ProcessEnv = process.env): string[] {
@@ -114,6 +126,26 @@ export function resolvePrivacyPolicyValuesForLocale(
     }
   }
 
+  if (locale === 'es') {
+    return {
+      ...values,
+      USES_ANALYTICS: yesNoEs(usesAnalytics),
+      USES_GEOAPIFY: yesNoEs(usesGeoapify),
+      USES_PUSH: yesNoEs(usesPush),
+      RETENTION_POLICY: env.PRIVACY_RETENTION_POLICY_ES?.trim() || DEFAULT_RETENTION_ES,
+    }
+  }
+
+  if (locale === 'de') {
+    return {
+      ...values,
+      USES_ANALYTICS: yesNoDe(usesAnalytics),
+      USES_GEOAPIFY: yesNoDe(usesGeoapify),
+      USES_PUSH: yesNoDe(usesPush),
+      RETENTION_POLICY: env.PRIVACY_RETENTION_POLICY_DE?.trim() || DEFAULT_RETENTION_DE,
+    }
+  }
+
   return {
     ...values,
     USES_ANALYTICS: yesNoEn(usesAnalytics),
@@ -134,7 +166,7 @@ export function substitutePlaceholders(
 
 export function parseLocaleSections(template: string): Map<PrivacyPolicyLocale, string> {
   const sections = new Map<PrivacyPolicyLocale, string>()
-  const pattern = /^---locale:(pt|en)---$/gm
+  const pattern = /^---locale:(pt|en|es|de)---$/gm
   const matches = [...template.matchAll(pattern)]
 
   for (let i = 0; i < matches.length; i += 1) {
