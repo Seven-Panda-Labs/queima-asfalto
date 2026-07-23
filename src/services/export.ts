@@ -1,9 +1,9 @@
-import * as XLSX from 'xlsx'
 import type { BucketListItem } from '../types/BucketListItem'
 import type { Event } from '../types/Event'
 import { formatEventStatusLabel, formatEventTypeLabel, isEnglishLocale } from '../i18n/formatters'
 import { serializeDisciplinesCell } from '../utils/bucketListDisciplines'
 import { formatDatePt } from '../utils/date'
+import { loadXlsx } from './xlsxLoader'
 
 const EXPORT_COLUMNS_PT = [
   'Data',
@@ -78,11 +78,12 @@ function bucketListItemToRow(
   }
 }
 
-export function exportEventsToExcel(
+export async function exportEventsToExcel(
   events: Event[],
   filename?: string,
   bucketListItems?: BucketListItem[],
-): void {
+): Promise<void> {
+  const XLSX = await loadXlsx()
   const useEnglish = isEnglishLocale()
   const columns = useEnglish ? EXPORT_COLUMNS_EN : EXPORT_COLUMNS_PT
   const rows = useEnglish ? events.map(eventToRowEn) : events.map(eventToRowPt)

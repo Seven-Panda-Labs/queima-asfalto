@@ -20,6 +20,7 @@ export default defineConfig({
   },
   test: {
     environment: 'jsdom',
+    setupFiles: ['./src/i18n/vitest.setup.ts'],
     exclude: [...configDefaults.exclude, 'firestore.rules.test.ts'],
     server: {
       deps: {

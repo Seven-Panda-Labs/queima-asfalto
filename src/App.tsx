@@ -17,7 +17,12 @@ import { Login } from './pages/Login/Login'
 import { NotFound } from './pages/NotFound/NotFound'
 import { Results } from './pages/Results/Results'
 import { Settings } from './pages/Settings/Settings'
-import { Changelog } from './pages/Changelog/Changelog'
+
+const Changelog = lazy(() =>
+  import('./pages/Changelog/Changelog').then((module) => ({
+    default: module.Changelog,
+  })),
+)
 
 const PrivacyPolicy = lazy(() =>
   import('./pages/PrivacyPolicy/PrivacyPolicy').then((module) => ({
@@ -56,7 +61,11 @@ export default function App() {
             <Route path="objetivos/:id/editar" element={<GoalForm />} />
             <Route path="resultados" element={<Results />} />
             <Route path="definicoes" element={<Settings />} />
-            <Route path="novidades" element={<Changelog />} />
+            <Route path="novidades" element={
+              <Suspense fallback={null}>
+                <Changelog />
+              </Suspense>
+            } />
             <Route path="aviso-resultados" element={
               <Suspense fallback={null}>
                 <TimingDisclaimer />

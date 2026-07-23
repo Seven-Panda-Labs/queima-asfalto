@@ -1,8 +1,10 @@
-import * as XLSX from 'xlsx'
+import type { WorkBook } from 'xlsx'
 import type { BucketListItemCreate } from '../types/BucketListItem'
 import { deriveEventTypeFromName } from '../utils/deriveEventTypeFromName'
 import { parseDisciplinesCell } from '../utils/bucketListDisciplines'
 import { IMPORT_SKIP_REASONS } from '../types/importSkipReasons'
+import type { XlsxModule } from './xlsxLoader'
+import { loadXlsx } from './xlsxLoader'
 
 export type ParsedBucketListRow = {
   item: BucketListItemCreate
@@ -39,7 +41,7 @@ function rowPreview(row: unknown[]): string {
   return row.map((cell) => cellText(cell)).filter(Boolean).join(' | ').slice(0, 120)
 }
 
-function findBucketListSheetName(workbook: XLSX.WorkBook): string | null {
+function findBucketListSheetName(workbook: WorkBook): string | null {
   for (const sheetName of workbook.SheetNames) {
     if (sheetName.trim().toLowerCase().includes('bucket')) {
       return sheetName
@@ -89,7 +91,10 @@ function buildItemFromRow(row: unknown[], columns: ColumnMap): BucketListItemCre
   }
 }
 
-export function parseBucketListFromWorkbook(workbook: XLSX.WorkBook): ParseBucketListResult {
+export function parseBucketListFromWorkbook(
+  workbook: WorkBook,
+  XLSX: XlsxModule,
+): ParseBucketListResult {
   const items: ParsedBucketListRow[] = []
   const skipped: SkippedBucketListRow[] = []
 
@@ -134,7 +139,8 @@ export function parseBucketListFromWorkbook(workbook: XLSX.WorkBook): ParseBucke
   return { items, skipped }
 }
 
-export function parseBucketListWorkbook(buffer: ArrayBuffer): ParseBucketListResult {
+export async function parseBucketListWorkbook(buffer: ArrayBuffer): Promise<ParseBucketListResult> {
+  const XLSX = await loadXlsx()
   const workbook = XLSX.read(buffer, { type: 'array', cellDates: false })
-  return parseBucketListFromWorkbook(workbook)
+  return parseBucketListFromWorkbook(workbook, XLSX)
 }

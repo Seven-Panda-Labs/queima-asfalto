@@ -1,17 +1,18 @@
-import changelogEn from '../../change-log.en.md?raw'
-import changelogPt from '../../change-log.md?raw'
-import changelogEs from '../../change-log.es.md?raw'
-import changelogDe from '../../change-log.de.md?raw'
 import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
 
 export type ChangelogLocale = ContentLocale
 
-const CHANGELOG_BY_LOCALE: Record<ChangelogLocale, string> = {
-  pt: changelogPt,
-  en: changelogEn,
-  es: changelogEs,
-  de: changelogDe,
+const CHANGELOG_LOADERS: Record<
+  ChangelogLocale,
+  () => Promise<{ default: string }>
+> = {
+  pt: () => import('../../change-log.md?raw'),
+  en: () => import('../../change-log.en.md?raw'),
+  es: () => import('../../change-log.es.md?raw'),
+  de: () => import('../../change-log.de.md?raw'),
 }
+
+const changelogCache = new Map<ChangelogLocale, string>()
 
 export function resolveChangelogLocale(language: string): ChangelogLocale {
   return resolveContentLocale(language)
@@ -35,6 +36,12 @@ export function prepareChangelogForDisplay(markdown: string): string {
   return body.trim()
 }
 
-export function getChangelogMarkdown(locale: ChangelogLocale): string {
-  return prepareChangelogForDisplay(CHANGELOG_BY_LOCALE[locale])
+export async function getChangelogMarkdown(locale: ChangelogLocale): Promise<string> {
+  const cached = changelogCache.get(locale)
+  if (cached) return cached
+
+  const mod = await CHANGELOG_LOADERS[locale]()
+  const markdown = prepareChangelogForDisplay(mod.default)
+  changelogCache.set(locale, markdown)
+  return markdown
 }

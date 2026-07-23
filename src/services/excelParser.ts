@@ -1,4 +1,4 @@
-import * as XLSX from 'xlsx'
+import type { WorkBook } from 'xlsx'
 import type { EventCreate, EventStatus, EventType } from '../types/Event'
 import { EVENT_STATUSES, EVENT_TYPES } from '../types/Event'
 import { deriveEventType } from '../utils/eventValidation'
@@ -9,6 +9,8 @@ import {
 } from '../utils/excelConverters'
 import { IMPORT_SKIP_REASONS } from '../types/importSkipReasons'
 import { calculatePace } from '../utils/pace'
+import type { XlsxModule } from './xlsxLoader'
+import { loadXlsx } from './xlsxLoader'
 
 export type ParsedRow = {
   event: EventCreate
@@ -300,7 +302,7 @@ function parseExportSheet(sheetName: string, rows: unknown[][]): ParsedRow[] {
   return events
 }
 
-export function isExportWorkbook(workbook: XLSX.WorkBook): boolean {
+function isExportWorkbook(workbook: WorkBook, XLSX: XlsxModule): boolean {
   const hasPlanoSheet = workbook.SheetNames.some((name) => name.startsWith('Plano'))
   if (hasPlanoSheet) return false
 
@@ -311,12 +313,14 @@ export function isExportWorkbook(workbook: XLSX.WorkBook): boolean {
   return isExportHeaderRow(rows[0] ?? [])
 }
 
-export function parseWorkbook(buffer: ArrayBuffer): ParseWorkbookResult {
-  const workbook = XLSX.read(buffer, { type: 'array', cellDates: false })
+export function parseWorkbookFromWorkbook(
+  workbook: WorkBook,
+  XLSX: XlsxModule,
+): ParseWorkbookResult {
   const events: ParsedRow[] = []
   const skipped: SkippedRow[] = []
 
-  if (isExportWorkbook(workbook)) {
+  if (isExportWorkbook(workbook, XLSX)) {
     for (const sheetName of workbook.SheetNames) {
       const sheet = workbook.Sheets[sheetName]
       const rows = XLSX.utils.sheet_to_json<unknown[]>(sheet, { header: 1, defval: '' })
@@ -334,4 +338,10 @@ export function parseWorkbook(buffer: ArrayBuffer): ParseWorkbookResult {
   }
 
   return { events, skipped }
+}
+
+export async function parseWorkbook(buffer: ArrayBuffer): Promise<ParseWorkbookResult> {
+  const XLSX = await loadXlsx()
+  const workbook = XLSX.read(buffer, { type: 'array', cellDates: false })
+  return parseWorkbookFromWorkbook(workbook, XLSX)
 }

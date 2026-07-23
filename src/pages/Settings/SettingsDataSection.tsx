@@ -22,7 +22,7 @@ export function SettingsDataSection() {
 
     setExporting(true)
     try {
-      exportEventsToExcel(allEvents, undefined, bucketListItems)
+      await exportEventsToExcel(allEvents, undefined, bucketListItems)
       toast.success(t('settings.exportSuccess'))
     } catch {
       toast.error(t('settings.exportError'))
