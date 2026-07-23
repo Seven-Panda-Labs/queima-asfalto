@@ -11,7 +11,7 @@ function workbookToBuffer(build: (wb: XLSX.WorkBook) => void): ArrayBuffer {
 }
 
 describe('parseWorkbook legacy Plano sheets', () => {
-  it('maps Corrido to Concluído and parses event row', () => {
+  it('maps Corrido to Concluído and parses event row', async () => {
     const buffer = workbookToBuffer((wb) => {
       const sheet = XLSX.utils.aoa_to_sheet([
         ['Local', 'Data', 'Evento(s)', 'Distância', 'Estado', 'Tempo', 'Ritmo', 'Classificação'],
@@ -20,14 +20,14 @@ describe('parseWorkbook legacy Plano sheets', () => {
       XLSX.utils.book_append_sheet(wb, sheet, 'Plano 2026')
     })
 
-    const { events, skipped } = parseWorkbook(buffer)
+    const { events, skipped } = await parseWorkbook(buffer)
     expect(events).toHaveLength(1)
     expect(events[0].event.status).toBe('completed')
     expect(events[0].event.name).toBe('ParkRun Test')
     expect(skipped).toHaveLength(0)
   })
 
-  it('maps Perdido to Faltou', () => {
+  it('maps Perdido to Faltou', async () => {
     const buffer = workbookToBuffer((wb) => {
       const sheet = XLSX.utils.aoa_to_sheet([
         ['Local', 'Data', 'Evento(s)', 'Distância', 'Estado'],
@@ -36,11 +36,11 @@ describe('parseWorkbook legacy Plano sheets', () => {
       XLSX.utils.book_append_sheet(wb, sheet, 'Plano 2026')
     })
 
-    const { events } = parseWorkbook(buffer)
+    const { events } = await parseWorkbook(buffer)
     expect(events[0].event.status).toBe('missed')
   })
 
-  it('skips note rows like Parkruns?', () => {
+  it('skips note rows like Parkruns?', async () => {
     const buffer = workbookToBuffer((wb) => {
       const sheet = XLSX.utils.aoa_to_sheet([
         ['Local', 'Data', 'Evento(s)', 'Distância', 'Estado'],
@@ -49,12 +49,12 @@ describe('parseWorkbook legacy Plano sheets', () => {
       XLSX.utils.book_append_sheet(wb, sheet, 'Plano 2026')
     })
 
-    const { events, skipped } = parseWorkbook(buffer)
+    const { events, skipped } = await parseWorkbook(buffer)
     expect(events).toHaveLength(0)
     expect(skipped.some((row) => row.reason === IMPORT_SKIP_REASONS.NOTE_ROW)).toBe(true)
   })
 
-  it('supports Plano 2022 layout with date in first column', () => {
+  it('supports Plano 2022 layout with date in first column', async () => {
     const buffer = workbookToBuffer((wb) => {
       const sheet = XLSX.utils.aoa_to_sheet([
         ['', 'Local', 'Evento(s)', 'Distância', 'Estado'],
@@ -63,7 +63,7 @@ describe('parseWorkbook legacy Plano sheets', () => {
       XLSX.utils.book_append_sheet(wb, sheet, 'Plano 2022')
     })
 
-    const { events } = parseWorkbook(buffer)
+    const { events } = await parseWorkbook(buffer)
     expect(events).toHaveLength(1)
     expect(events[0].event.status).toBe('planned')
   })
@@ -77,7 +77,7 @@ describe('deriveEventType', () => {
 })
 
 describe('parseWorkbook export format', () => {
-  it('imports exported app format (round-trip)', () => {
+  it('imports exported app format (round-trip)', async () => {
     const buffer = workbookToBuffer((wb) => {
       const sheet = XLSX.utils.json_to_sheet([
         {
@@ -96,7 +96,7 @@ describe('parseWorkbook export format', () => {
       XLSX.utils.book_append_sheet(wb, sheet, 'Eventos')
     })
 
-    const { events } = parseWorkbook(buffer)
+    const { events } = await parseWorkbook(buffer)
     expect(events).toHaveLength(1)
     expect(events[0].event.name).toBe('Export Test')
     expect(events[0].event.eventType).toBe('km_5')

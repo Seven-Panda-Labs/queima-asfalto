@@ -1,6 +1,8 @@
-import * as XLSX from 'xlsx'
+import type { WorkBook } from 'xlsx'
 import type { EventType } from '../types/Event'
 import type { GoalCreate } from '../types/Goal'
+import type { XlsxModule } from './xlsxLoader'
+import { loadXlsx } from './xlsxLoader'
 
 export type ParsedGoal = {
   goal: GoalCreate
@@ -42,8 +44,7 @@ function extractGoalsFromText(text: string, year: number): GoalCreate[] {
   return goals
 }
 
-export function extractGoalsFromWorkbook(buffer: ArrayBuffer): ParsedGoal[] {
-  const workbook = XLSX.read(buffer, { type: 'array' })
+export function extractGoalsFromWorkbook(workbook: WorkBook, XLSX: XlsxModule): ParsedGoal[] {
   const parsed: ParsedGoal[] = []
   const seen = new Set<string>()
 
@@ -71,4 +72,10 @@ export function extractGoalsFromWorkbook(buffer: ArrayBuffer): ParsedGoal[] {
   }
 
   return parsed
+}
+
+export async function extractGoalsFromExcel(buffer: ArrayBuffer): Promise<ParsedGoal[]> {
+  const XLSX = await loadXlsx()
+  const workbook = XLSX.read(buffer, { type: 'array' })
+  return extractGoalsFromWorkbook(workbook, XLSX)
 }

@@ -5,10 +5,9 @@ import { ImportReport } from '../../components/ImportReport'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import type { ParsedGoal } from '../../services/excelGoalParser'
-import { extractGoalsFromWorkbook } from '../../services/excelGoalParser'
+import { parseImportWorkbook } from '../../services/excelImport'
 import type { ParsedBucketListRow } from '../../services/excelBucketListParser'
-import { parseBucketListWorkbook } from '../../services/excelBucketListParser'
-import { parseWorkbook, type ParsedRow, type SkippedRow } from '../../services/excelParser'
+import type { ParsedRow, SkippedRow } from '../../services/excelParser'
 import { importData, type ImportResult } from '../../services/import'
 
 type ImportStep = 'idle' | 'parsing' | 'preview' | 'importing' | 'done' | 'error'
@@ -64,9 +63,8 @@ export function ImportSection({ embedded = false }: ImportSectionProps) {
 
     try {
       const buffer = await file.arrayBuffer()
-      const parsed = parseWorkbook(buffer)
-      const parsedGoals = extractGoalsFromWorkbook(buffer)
-      const parsedBucketList = parseBucketListWorkbook(buffer)
+      const { parsed, goals: parsedGoals, bucketList: parsedBucketList } =
+        await parseImportWorkbook(buffer)
 
       setEvents(parsed.events)
       setGoals(parsedGoals)

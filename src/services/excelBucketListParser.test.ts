@@ -13,7 +13,7 @@ function workbookToBuffer(rows: unknown[][], sheetName: string): ArrayBuffer {
 }
 
 describe('parseBucketListWorkbook', () => {
-  it('parses bucket list sheet with trimmed headers', () => {
+  it('parses bucket list sheet with trimmed headers', async () => {
     const buffer = workbookToBuffer(
       [
         ['Event ', 'Location ', 'Approx. Dates', 'Link'],
@@ -27,7 +27,7 @@ describe('parseBucketListWorkbook', () => {
       '🪣Bucket list ',
     )
 
-    const { items, skipped } = parseBucketListWorkbook(buffer)
+    const { items, skipped } = await parseBucketListWorkbook(buffer)
     expect(skipped).toHaveLength(0)
     expect(items).toHaveLength(1)
     expect(items[0].item.name).toBe('Berlin Marathon')
@@ -38,7 +38,7 @@ describe('parseBucketListWorkbook', () => {
     expect(items[0].item.realDistance).toBe(42.2)
   })
 
-  it('derives half marathon type from event name', () => {
+  it('derives half marathon type from event name', async () => {
     const buffer = workbookToBuffer(
       [
         ['Event', 'Location', 'Approx. Dates', 'Link'],
@@ -47,20 +47,20 @@ describe('parseBucketListWorkbook', () => {
       'Bucket List',
     )
 
-    const { items } = parseBucketListWorkbook(buffer)
+    const { items } = await parseBucketListWorkbook(buffer)
     expect(items).toHaveLength(1)
     expect(items[0].item.disciplines).toEqual(['km_21_1'])
     expect(items[0].item.realDistance).toBe(21.1)
   })
 
-  it('returns empty result when no bucket sheet exists', () => {
+  it('returns empty result when no bucket sheet exists', async () => {
     const buffer = workbookToBuffer([['Event', 'Location']], 'Plano 2026')
-    const { items, skipped } = parseBucketListWorkbook(buffer)
+    const { items, skipped } = await parseBucketListWorkbook(buffer)
     expect(items).toHaveLength(0)
     expect(skipped).toHaveLength(0)
   })
 
-  it('skips rows without event name', () => {
+  it('skips rows without event name', async () => {
     const buffer = workbookToBuffer(
       [
         ['Event', 'Location', 'Approx. Dates', 'Link'],
@@ -69,13 +69,13 @@ describe('parseBucketListWorkbook', () => {
       'Bucket list',
     )
 
-    const { items, skipped } = parseBucketListWorkbook(buffer)
+    const { items, skipped } = await parseBucketListWorkbook(buffer)
     expect(items).toHaveLength(0)
     expect(skipped).toHaveLength(1)
     expect(skipped[0].reason).toBe(IMPORT_SKIP_REASONS.MISSING_EVENT_NAME)
   })
 
-  it('parses seven reference-style bucket list rows', () => {
+  it('parses seven reference-style bucket list rows', async () => {
     const buffer = workbookToBuffer(
       [
         ['Event ', 'Location ', 'Approx. Dates', 'Link'],
@@ -90,7 +90,7 @@ describe('parseBucketListWorkbook', () => {
       '🪣Bucket list ',
     )
 
-    const { items, skipped } = parseBucketListWorkbook(buffer)
+    const { items, skipped } = await parseBucketListWorkbook(buffer)
     expect(skipped).toHaveLength(0)
     expect(items).toHaveLength(7)
     expect(items[0].item.name).toBe('Spitsbergen Marathon')
@@ -98,7 +98,7 @@ describe('parseBucketListWorkbook', () => {
     expect(items[0].item.disciplines).toEqual(['km_42_2'])
   })
 
-  it('parses explicit disciplines column', () => {
+  it('parses explicit disciplines column', async () => {
     const buffer = workbookToBuffer(
       [
         ['Event', 'Location', 'Approx. Dates', 'Link', 'Disciplines'],
@@ -107,7 +107,7 @@ describe('parseBucketListWorkbook', () => {
       'Bucket list',
     )
 
-    const { items } = parseBucketListWorkbook(buffer)
+    const { items } = await parseBucketListWorkbook(buffer)
     expect(items).toHaveLength(1)
     expect(items[0].item.disciplines).toEqual(['km_5', 'km_10'])
   })
