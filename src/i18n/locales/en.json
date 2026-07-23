@@ -31,7 +31,9 @@
     "dash": "-",
     "language": "Language",
     "languagePt": "Português",
-    "languageEn": "English (UK)",
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch",
     "remove": "Remove"
   },
   "nav": {
@@ -57,21 +59,27 @@
     "subtitle": "Version history and app improvements.",
     "languageToggle": "Changelog language",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "privacy": {
     "title": "Privacy policy",
     "subtitle": "How we process your data on this app instance.",
     "languageToggle": "Policy language",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "timingDisclaimer": {
     "title": "Notice — official results",
     "subtitle": "Third-party timing site scraping and terms of use.",
     "languageToggle": "Notice language",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "eventStatus": {
     "planned": "Planned",

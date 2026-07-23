@@ -81,3 +81,87 @@ Full operator documentation: [`docs/timing-scraping-disclaimer.md`](https://gith
 #### Software
 
 Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The code authors do not guarantee ongoing availability of connectors and are not liable for third-party terms violations arising from use of this feature.
+
+---locale:es---
+#### Aviso — importación de resultados oficiales
+
+**Última actualización:** 2026-07-20
+
+#### Qué hace esta funcionalidad
+
+Queima Asfalto puede **buscar tiempos y clasificaciones** en sitios web de cronometraje de terceros (organizadores de carreras, plataformas de resultados, Parkrun, etc.) cuando indicas un enlace público de resultados o un identificador compatible y solicitas una búsqueda.
+
+Cada búsqueda la **inicias tú** y ejecuta peticiones HTTP automatizadas desde la instancia (normalmente mediante la Cloud Function `lookupOfficialResults`) contra páginas o APIs **de acceso público**.
+
+#### Sin afiliación
+
+No estamos afiliados, respaldados ni somos representantes de ningún organizador de carreras ni proveedor de cronometraje (entre otros, Parkrun, mika:timing, Sporthive, MyRaceResult, EQ Timing, Davengo y plataformas similares). Los nombres de servicios y marcas pertenecen a sus respectivos titulares.
+
+#### Términos de servicio de terceros
+
+Cada sitio de cronometraje tiene sus **propios términos de uso**, políticas de privacidad y reglas sobre acceso automatizado, copia de datos o uso comercial de los resultados. **Puedes ser responsable** de garantizar que tu uso de esta funcionalidad cumple esos términos.
+
+Este aviso **no constituye asesoramiento jurídico**. En caso de duda, contacta con el operador de tu instancia o con un profesional cualificado.
+
+#### Limitaciones
+
+- Los datos importados provienen de fuentes externas: **pueden estar incompletos, desactualizados o ser incorrectos**. Confirma siempre antes de aplicar un resultado.
+- Los sitios pueden **cambiar formatos**, bloquear el acceso o imponer límites sin previo aviso; la funcionalidad puede dejar de funcionar temporal o permanentemente.
+- La app incluye **límites de frecuencia** entre búsquedas para reducir la carga en los sitios; esto no sustituye el cumplimiento de los términos de cada proveedor.
+
+#### Operadores de instancias self-hosted
+
+Si despliegas tu propia instancia, eres responsable de cómo tus usuarios usan esta funcionalidad. Recomendaciones:
+
+- Informa a los usuarios (por ejemplo con este aviso o un texto equivalente en tu política de privacidad).
+- Revisa los términos de los sitios de cronometraje desde los que tus usuarios importan con frecuencia.
+- Ajusta los límites en [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) si es necesario.
+- Considera desactivar o restringir la funcionalidad si no puedes cumplir los términos aplicables.
+
+Documentación completa para operadores: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+
+#### Software
+
+Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal cual»**. Los autores del código no garantizan la disponibilidad continua de los conectores y no se hacen responsables de violaciones de términos de terceros derivadas del uso de esta funcionalidad.
+
+---locale:de---
+#### Hinweis — Import offizieller Ergebnisse
+
+**Zuletzt aktualisiert:** 2026-07-20
+
+#### Was diese Funktion macht
+
+Queima Asfalto kann **Zielzeiten und Platzierungen** auf Timing-Websites von Drittanbietern (Veranstalter, Ergebnisplattformen, Parkrun usw.) **nachschlagen**, wenn du einen öffentlichen Ergebnislink oder eine kompatible Kennung angibst und eine Suche anforderst.
+
+Jede Suche wird **von dir gestartet** und führt automatisierte HTTP-Anfragen von der Instanz aus (in der Regel über die Cloud Function `lookupOfficialResults`) gegen **öffentlich zugängliche** Seiten oder APIs aus.
+
+#### Keine Verbindung
+
+Wir sind weder verbunden mit noch befürwortet von oder Vertreter eines Veranstalters oder Timing-Anbieters (unter anderem Parkrun, mika:timing, Sporthive, MyRaceResult, EQ Timing, Davengo und ähnliche Plattformen). Dienstnamen und Marken gehören den jeweiligen Inhabern.
+
+#### Nutzungsbedingungen Dritter
+
+Jede Timing-Website hat **eigene Nutzungsbedingungen**, Datenschutzrichtlinien und Regeln zu automatisiertem Zugriff, Datenkopie oder kommerzieller Nutzung von Ergebnissen. **Du kannst dafür verantwortlich sein**, dass deine Nutzung dieser Funktion diesen Bedingungen entspricht.
+
+Dieser Hinweis ist **keine Rechtsberatung**. Im Zweifel wende dich an den Betreiber deiner Instanz oder an qualifizierte Beratung.
+
+#### Einschränkungen
+
+- Importierte Daten stammen aus externen Quellen: sie **können unvollständig, veraltet oder fehlerhaft sein**. Bestätige immer, bevor du ein Ergebnis übernimmst.
+- Websites können **Formate ändern**, den Zugriff sperren oder Limits ohne Vorankündigung einführen; die Funktion kann vorübergehend oder dauerhaft ausfallen.
+- Die App enthält **Ratenlimits** zwischen Suchen, um die Belastung der Websites zu reduzieren; das ersetzt nicht die Einhaltung der Bedingungen jedes Anbieters.
+
+#### Betreiber selbst gehosteter Instanzen
+
+Wenn du deine eigene Instanz betreibst, bist du dafür verantwortlich, wie deine Nutzer diese Funktion verwenden. Empfehlungen:
+
+- Informiere Nutzer (z. B. mit diesem Hinweis oder gleichwertigem Text in deiner Datenschutzerklärung).
+- Prüfe die Bedingungen der Timing-Websites, von denen deine Nutzer häufig importieren.
+- Passe Limits in [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) bei Bedarf an.
+- Erwäge, die Funktion zu deaktivieren oder einzuschränken, wenn du die geltenden Bedingungen nicht erfüllen kannst.
+
+Vollständige Dokumentation für Betreiber: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+
+#### Software
+
+Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie besehen“**. Die Codeautoren garantieren keine dauerhafte Verfügbarkeit von Konnektoren und haften nicht für Verstöße gegen Drittanbieter-Bedingungen, die aus der Nutzung dieser Funktion entstehen.

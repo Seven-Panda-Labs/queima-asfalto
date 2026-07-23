@@ -1,6 +1,19 @@
 # Changelog
 
-[Português](change-log.md) | [English](change-log.en.md)
+[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md)
+
+---
+
+## [1.12.0] — 2026-07-23
+
+### Added
+
+- **Languages:** Spanish (es-ES) and German support — UI, emoji labels, push reminders, changelog, privacy policy, and official results notice.
+- **Settings:** language selector with Português, English, Español, and Deutsch.
+
+### Changed
+
+- Missing translation keys fall back to English; browser language detection for `pt`, `en`, `es`, and `de`.
 
 ---
 

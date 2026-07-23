@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import { LanguageToggle } from '../../components/LanguageToggle/LanguageToggle'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { isPrivacyPolicyEnabled } from '../../config/privacyPolicy'
 import {
@@ -10,13 +11,6 @@ import {
   resolvePrivacyPolicyLocale,
   type PrivacyPolicyLocale,
 } from '../../content/privacyPolicy'
-
-function localeToggleClass(active: boolean): string {
-  return [
-    'rounded-md px-3 py-1.5 text-sm font-semibold transition-colors',
-    active ? 'bg-primary text-white' : 'text-muted hover:bg-background hover:text-foreground',
-  ].join(' ')
-}
 
 export function PrivacyPolicy() {
   const { t, i18n } = useTranslation()
@@ -30,24 +24,12 @@ export function PrivacyPolicy() {
 
   return (
     <PageShell title={t('privacy.title')} description={t('privacy.subtitle')}>
-      <div className="mt-6 flex justify-end gap-2" role="group" aria-label={t('privacy.languageToggle')}>
-        <button
-          type="button"
-          className={localeToggleClass(locale === 'pt')}
-          aria-pressed={locale === 'pt'}
-          onClick={() => setLocale('pt')}
-        >
-          {t('privacy.languagePt')}
-        </button>
-        <button
-          type="button"
-          className={localeToggleClass(locale === 'en')}
-          aria-pressed={locale === 'en'}
-          onClick={() => setLocale('en')}
-        >
-          {t('privacy.languageEn')}
-        </button>
-      </div>
+      <LanguageToggle
+        locale={locale}
+        onChange={setLocale}
+        ariaLabelKey="privacy.languageToggle"
+        labelKeyPrefix="privacy"
+      />
 
       <article className="changelog mt-6 rounded-lg border border-border bg-surface p-6">
         <ReactMarkdown

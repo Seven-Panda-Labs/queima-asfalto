@@ -1,7 +1,8 @@
 import i18n from '../i18n'
+import { resolveIntlLocale } from '../i18n/locale'
 
 function getIntlLocale(): string {
-  return i18n.language === 'en' ? 'en-GB' : 'pt-PT'
+  return resolveIntlLocale(i18n.language)
 }
 
 /** @deprecated Use getWeekdays() for locale-aware labels */

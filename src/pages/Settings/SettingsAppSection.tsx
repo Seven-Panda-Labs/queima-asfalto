@@ -1,14 +1,22 @@
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../../contexts/AuthContext'
 import { applyLanguage, type AppLanguage } from '../../i18n'
+import { normalizeAppLanguage } from '../../i18n/locale'
 import { updateUserAppLanguage } from '../../services/users'
 import { NotificationPrefsSection } from './NotificationPrefsSection'
 import { ThemePreferenceButtons } from './ThemePreferenceButtons'
 
+const LANGUAGE_BUTTONS: Array<{ code: AppLanguage; labelKey: string }> = [
+  { code: 'pt', labelKey: 'common.languagePt' },
+  { code: 'en', labelKey: 'common.languageEn' },
+  { code: 'es', labelKey: 'common.languageEs' },
+  { code: 'de', labelKey: 'common.languageDe' },
+]
+
 export function SettingsAppSection() {
   const { t, i18n } = useTranslation()
   const { user } = useAuth()
-  const currentLanguage = (i18n.language === 'en' ? 'en' : 'pt') as AppLanguage
+  const currentLanguage = normalizeAppLanguage(i18n.language)
 
   async function handleLanguageChange(language: AppLanguage) {
     await applyLanguage(language, user?.uid ?? null)
@@ -23,30 +31,21 @@ export function SettingsAppSection() {
         <h2 className="text-lg font-semibold text-foreground">{t('settings.languageSection')}</h2>
         <p className="mt-2 text-sm text-muted">{t('settings.languageSubtitle')}</p>
         <div className="mt-4 flex flex-wrap gap-3">
-          <button
-            type="button"
-            onClick={() => void handleLanguageChange('pt')}
-            className={[
-              'rounded-md border px-4 py-2 text-sm font-semibold transition-colors',
-              currentLanguage === 'pt'
-                ? 'border-primary bg-primary text-white'
-                : 'border-border text-foreground hover:bg-background',
-            ].join(' ')}
-          >
-            {t('common.languagePt')}
-          </button>
-          <button
-            type="button"
-            onClick={() => void handleLanguageChange('en')}
-            className={[
-              'rounded-md border px-4 py-2 text-sm font-semibold transition-colors',
-              currentLanguage === 'en'
-                ? 'border-primary bg-primary text-white'
-                : 'border-border text-foreground hover:bg-background',
-            ].join(' ')}
-          >
-            {t('common.languageEn')}
-          </button>
+          {LANGUAGE_BUTTONS.map(({ code, labelKey }) => (
+            <button
+              key={code}
+              type="button"
+              onClick={() => void handleLanguageChange(code)}
+              className={[
+                'rounded-md border px-4 py-2 text-sm font-semibold transition-colors',
+                currentLanguage === code
+                  ? 'border-primary bg-primary text-white'
+                  : 'border-border text-foreground hover:bg-background',
+              ].join(' ')}
+            >
+              {t(labelKey)}
+            </button>
+          ))}
         </div>
       </section>
 

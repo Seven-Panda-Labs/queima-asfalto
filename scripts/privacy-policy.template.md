@@ -189,3 +189,195 @@ We will post the update date at the top of this page. Material changes may be no
 **{{CONTROLLER_NAME}}**  
 Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
 Instance: {{HOSTING_URL}}
+
+---locale:es---
+#### Política de privacidad — {{INSTANCE_NAME}}
+
+**Última actualización:** {{EFFECTIVE_DATE}}
+
+#### 1. Quiénes somos
+
+El responsable del tratamiento de datos personales en esta instancia es **{{CONTROLLER_NAME}}**, operador de **{{HOSTING_URL}}** («nosotros» o «el operador»).
+
+El software [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) es de código abierto (AGPL-3.0). Los autores del código **no** son responsables del tratamiento de datos en tu instancia self-hosted.
+
+#### 2. Ámbito
+
+Esta política se aplica a los usuarios que crean una cuenta y usan la PWA en **{{HOSTING_URL}}**.
+
+#### 3. Datos que podemos tratar
+
+Según las funcionalidades activadas, la instancia puede tratar:
+
+| Categoría | Ejemplos | Dónde |
+|-----------|----------|-------|
+| **Cuenta** | Nombre, email, identificador de Google (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
+| **Perfil de resultados** | Nombre para clasificaciones, alias, Parkrunner ID, Parkruns favoritos | Firestore `users/{uid}` |
+| **Contenido de la app** | Eventos, metas, resultados, notas, ubicaciones, coordenadas GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Multimedia** | Fotos y vídeos de eventos | Firebase Storage |
+| **Compartidos** | Email del invitado, permisos, datos compartidos redactados | Firestore `shares`, Cloud Functions |
+| **Notificaciones** (si están activadas) | Tokens FCM, preferencias de recordatorio, idioma, desplazamiento de zona horaria | Firestore `users/{uid}` |
+| **Preferencias locales** | Tema, idioma, modos de vista | `localStorage` del navegador (prefijo por usuario) |
+| **Analytics** (si está activado) | Vistas de página, metadatos del navegador | Google Analytics vía Firebase (`measurementId`) |
+| **Geocodificación** (si está activada) | Texto de búsqueda de ubicación, coordenadas | Peticiones del navegador a la API Geoapify |
+| **Importación de resultados** | Nombre/Parkrunner ID, URL pública del evento | Cloud Function `lookupOfficialResults` → peticiones HTTP a **sitios de cronometraje de terceros** |
+
+No recopilamos intencionadamente datos de menores de 16 años. Si crees que un menor ha facilitado datos, contáctanos.
+
+#### 4. Finalidades y bases legales (RGPD)
+
+| Finalidad | Base legal típica |
+|-----------|-------------------|
+| Crear cuenta y sincronizar datos entre dispositivos | Ejecución de contrato / pasos precontractuales (art. 6.1(b)) |
+| Compartidos entre usuarios | Ejecución de contrato |
+| Recordatorios push (opt-in) | Consentimiento (art. 6.1(a)) — el usuario activa en Ajustes |
+| Analytics (si está activado) | Consentimiento o interés legítimo, según tu configuración y jurisdicción |
+| Seguridad y prevención de abusos | Interés legítimo (art. 6.1(f)) |
+| Importación de resultados oficiales | Ejecución de contrato (funcionalidad solicitada por el usuario) |
+
+#### 5. Encargados del tratamiento y terceros
+
+| Servicio | Proveedor | Datos típicos | Notas |
+|----------|-----------|---------------|-------|
+| Auth, base de datos, archivos, funciones, push | Google Firebase / Google Cloud | Según la sección 3 | Región configurada: **{{FIREBASE_REGION}}**. [Privacidad de Google](https://policies.google.com/privacy) |
+| Autocompletado / mapa | Geoapify ({{USES_GEOAPIFY}}) | Consultas de ubicación | [Privacidad de Geoapify](https://www.geoapify.com/privacy-policy) |
+| Inicio de sesión | Google (OAuth) | Email, nombre, foto de perfil de Google | Política de Google |
+| Sitios de cronometraje | Varios (públicos) | Nombre o ID en páginas de resultados públicas | Scraping solo de URLs **públicas**; sujeto a los ToS de cada sitio |
+
+Lista completa de dependencias de código abierto: `npm run licenses` en el repositorio.
+
+#### 6. Conservación
+
+- **Cuenta y contenido:** mientras exista la cuenta o hasta solicitud de supresión.
+- **Tokens FCM no válidos:** eliminados automáticamente por la función `dispatchReminders` cuando se detectan.
+- **Logs de Firebase/Google Cloud:** según la retención configurada en tu proyecto GCP (recomendado: definir y documentar).
+
+**Política de esta instancia:** {{RETENTION_POLICY}}
+
+#### 7. Transferencias internacionales
+
+Firebase y Google pueden procesar datos fuera del EEE (p. ej., EE. UU.), con cláusulas contractuales tipo o mecanismos equivalentes ofrecidos por Google. Consulta la documentación de tu proyecto Firebase / Google Cloud.
+
+#### 8. Tus derechos
+
+En virtud del RGPD, los usuarios pueden solicitar:
+
+- Acceso, rectificación, supresión
+- Limitación u oposición al tratamiento
+- Portabilidad (datos que hayan facilitado, en formato estructurado)
+- Retirar el consentimiento (p. ej., notificaciones push) sin afectar tratamientos anteriores
+- Presentar una reclamación ante una autoridad de control (Portugal: [CNPD](https://www.cnpd.pt))
+
+**Solicitudes:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Plazo de respuesta recomendado: 30 días.
+
+**Supresión de cuenta:** el operador debe eliminar `users/{uid}`, eventos, multimedia en Storage y compartidos (Firebase Console o script). El software aún no incluye un botón automático de «eliminar cuenta».
+
+#### 9. Seguridad
+
+Medidas incluidas en el software: reglas Firestore/Storage por usuario, autenticación obligatoria, redacción en el servidor en compartidos, limitación de frecuencia en búsquedas. Consulta [restricciones en la consola](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) y [self-hosting](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
+
+#### 10. Cambios
+
+Publicaremos la fecha de actualización en la parte superior de esta página. Los cambios relevantes pueden comunicarse por email o aviso en la app.
+
+#### 11. Contacto
+
+**{{CONTROLLER_NAME}}**  
+Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
+Instancia: {{HOSTING_URL}}
+
+---locale:de---
+#### Datenschutzerklärung — {{INSTANCE_NAME}}
+
+**Zuletzt aktualisiert:** {{EFFECTIVE_DATE}}
+
+#### 1. Wer wir sind
+
+Verantwortlicher für die Verarbeitung personenbezogener Daten in dieser Instanz ist **{{CONTROLLER_NAME}}**, Betreiber von **{{HOSTING_URL}}** („wir“ oder „der Betreiber“).
+
+Die [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto)-Software ist Open Source (AGPL-3.0). Die Codeautoren sind **nicht** Verantwortliche für die Datenverarbeitung in deiner selbst gehosteten Instanz.
+
+#### 2. Geltungsbereich
+
+Diese Richtlinie gilt für Nutzer, die sich registrieren und die PWA unter **{{HOSTING_URL}}** verwenden.
+
+#### 3. Daten, die wir verarbeiten können
+
+Je nach aktivierten Funktionen kann die Instanz Folgendes verarbeiten:
+
+| Kategorie | Beispiele | Wo |
+|-----------|-----------|-----|
+| **Konto** | Name, E-Mail, Google-Kennung (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
+| **Ergebnisprofil** | Name für Ranglisten, Aliase, Parkrunner ID, Lieblings-Parkruns | Firestore `users/{uid}` |
+| **App-Inhalte** | Events, Ziele, Ergebnisse, Notizen, Orte, GPS-Koordinaten | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Medien** | Event-Fotos und -Videos | Firebase Storage |
+| **Freigaben** | E-Mail des Eingeladenen, Berechtigungen, redigierte geteilte Daten | Firestore `shares`, Cloud Functions |
+| **Benachrichtigungen** (falls aktiviert) | FCM-Tokens, Erinnerungseinstellungen, Sprache, Zeitzonenversatz | Firestore `users/{uid}` |
+| **Lokale Einstellungen** | Theme, Sprache, Ansichtsmodi | Browser-`localStorage` (präfix pro Nutzer) |
+| **Analytics** (falls aktiviert) | Seitenaufrufe, Browser-Metadaten | Google Analytics über Firebase (`measurementId`) |
+| **Geokodierung** (falls aktiviert) | Ortssuchtext, Koordinaten | Browser-Anfragen an die Geoapify-API |
+| **Ergebnisimport** | Name/Parkrunner ID, öffentliche Event-URL | Cloud Function `lookupOfficialResults` → HTTP-Anfragen an **Timing-Websites Dritter** |
+
+Wir erfassen wissentlich keine Daten von Kindern unter 16 Jahren. Kontaktiere uns, wenn du glaubst, dass ein Kind Daten bereitgestellt hat.
+
+#### 4. Zwecke und Rechtsgrundlagen (DSGVO)
+
+| Zweck | Typische Rechtsgrundlage |
+|-------|--------------------------|
+| Konto und Synchronisation zwischen Geräten | Vertrag / vorvertragliche Schritte (Art. 6 Abs. 1 lit. b) |
+| Freigaben zwischen Nutzern | Vertrag |
+| Push-Erinnerungen (Opt-in) | Einwilligung (Art. 6 Abs. 1 lit. a) — Nutzer aktiviert in Einstellungen |
+| Analytics (falls aktiviert) | Einwilligung oder berechtigtes Interesse, je nach Setup und Rechtsordnung |
+| Sicherheit und Missbrauchsprävention | Berechtigtes Interesse (Art. 6 Abs. 1 lit. f) |
+| Import offizieller Ergebnisse | Vertrag (vom Nutzer angeforderte Funktion) |
+
+#### 5. Auftragsverarbeiter und Dritte
+
+| Dienst | Anbieter | Typische Daten | Hinweise |
+|--------|----------|----------------|----------|
+| Auth, Datenbank, Dateien, Funktionen, Push | Google Firebase / Google Cloud | Gemäß Abschnitt 3 | Konfigurierte Region: **{{FIREBASE_REGION}}**. [Google-Datenschutz](https://policies.google.com/privacy) |
+| Autovervollständigung / Karte | Geoapify ({{USES_GEOAPIFY}}) | Standortabfragen | [Geoapify-Datenschutz](https://www.geoapify.com/privacy-policy) |
+| Anmeldung | Google (OAuth) | E-Mail, Name, Google-Profilfoto | Google-Richtlinie |
+| Timing-Websites | Verschiedene (öffentlich) | Name oder ID auf öffentlichen Ergebnisseiten | Scraping nur **öffentlicher** URLs; unterliegt den ToS jeder Website |
+
+Vollständige Open-Source-Abhängigkeitsliste: `npm run licenses` im Repository.
+
+#### 6. Aufbewahrung
+
+- **Konto und Inhalte:** solange das Konto besteht oder bis zur Löschanfrage.
+- **Ungültige FCM-Tokens:** automatisch entfernt durch `dispatchReminders`, wenn erkannt.
+- **Firebase/Google-Cloud-Logs:** gemäß Aufbewahrung in deinem GCP-Projekt (empfohlen: festlegen und dokumentieren).
+
+**Richtlinie dieser Instanz:** {{RETENTION_POLICY}}
+
+#### 7. Internationale Übermittlungen
+
+Firebase und Google können Daten außerhalb des EWR verarbeiten (z. B. USA), mit Standardvertragsklauseln oder gleichwertigen Mechanismen. Siehe die Dokumentation deines Firebase- / Google-Cloud-Projekts.
+
+#### 8. Deine Rechte
+
+Nach DSGVO können Nutzer Folgendes beantragen:
+
+- Auskunft, Berichtigung, Löschung
+- Einschränkung oder Widerspruch gegen die Verarbeitung
+- Datenübertragbarkeit (von ihnen bereitgestellte Daten in strukturiertem Format)
+- Widerruf der Einwilligung (z. B. Push-Benachrichtigungen) ohne Beeinträchtigung früherer Verarbeitung
+- Beschwerde bei einer Aufsichtsbehörde (Portugal: [CNPD](https://www.cnpd.pt))
+
+**Anfragen:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Empfohlene Antwortfrist: 30 Tage.
+
+**Kontolöschung:** der Betreiber muss `users/{uid}`, Events, Storage-Medien und Freigaben löschen (Firebase Console oder Skript). Die Software enthält noch keinen automatischen „Konto löschen“-Button.
+
+#### 9. Sicherheit
+
+Software-Maßnahmen umfassen Firestore/Storage-Regeln pro Nutzer, obligatorische Authentifizierung, serverseitige Redaktion bei Freigaben, Ratenbegrenzung bei Lookups. Siehe [Console-Einschränkungen](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) und [Self-Hosting](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
+
+#### 10. Änderungen
+
+Wir veröffentlichen das Aktualisierungsdatum oben auf dieser Seite. Wesentliche Änderungen können per E-Mail oder In-App-Hinweis mitgeteilt werden.
+
+#### 11. Kontakt
+
+**{{CONTROLLER_NAME}}**  
+E-Mail: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
+Instanz: {{HOSTING_URL}}

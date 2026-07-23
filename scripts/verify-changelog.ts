@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 /**
  * Verifica que a versão em package.json coincide com a entrada mais recente
- * em change-log.md e change-log.en.md.
+ * em change-log.md, change-log.en.md, change-log.es.md e change-log.de.md.
  *
  * Uso: npm run check:changelog
  */
@@ -13,6 +13,8 @@ const PACKAGE_JSON = resolve(ROOT, 'package.json')
 const CHANGELOG_FILES = [
   { path: resolve(ROOT, 'change-log.md'), label: 'change-log.md' },
   { path: resolve(ROOT, 'change-log.en.md'), label: 'change-log.en.md' },
+  { path: resolve(ROOT, 'change-log.es.md'), label: 'change-log.es.md' },
+  { path: resolve(ROOT, 'change-log.de.md'), label: 'change-log.de.md' },
 ] as const
 
 const packageVersion = JSON.parse(readFileSync(PACKAGE_JSON, 'utf8')).version as string
@@ -43,7 +45,7 @@ if (mismatched.length > 0) {
     )
   }
   console.error(
-    `Add a ## [${packageVersion}] — YYYY-MM-DD section at the top of both change-log.md and change-log.en.md.`,
+    `Add a ## [${packageVersion}] — YYYY-MM-DD section at the top of all change-log*.md files.`,
   )
   process.exit(1)
 }

@@ -31,7 +31,9 @@
     "dash": "-",
     "language": "Idioma",
     "languagePt": "Português",
-    "languageEn": "English (UK)",
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch",
     "remove": "Remover"
   },
   "nav": {
@@ -57,21 +59,27 @@
     "subtitle": "Histórico de versões e melhorias da app.",
     "languageToggle": "Idioma do changelog",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "privacy": {
     "title": "Política de privacidade",
     "subtitle": "Como tratamos os teus dados nesta instância da app.",
     "languageToggle": "Idioma da política",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "timingDisclaimer": {
     "title": "Aviso — resultados oficiais",
     "subtitle": "Scraping de sites de timing de terceiros e termos de uso.",
     "languageToggle": "Idioma do aviso",
     "languagePt": "Português",
-    "languageEn": "English"
+    "languageEn": "English",
+    "languageEs": "Español",
+    "languageDe": "Deutsch"
   },
   "eventStatus": {
     "planned": "Planeado",
@@ -340,7 +348,8 @@
     "performanceInProgress": "Em progresso",
     "performanceNoData": "Sem dados",
     "performanceFailed": "Falhada",
-    "countHint": "Conta eventos Concluídos deste tipo no ano"
+    "countHint": "Conta eventos Concluídos deste tipo no ano",
+    "newGoal": "➕ Novo objetivo"
   },
   "results": {
     "title": "Resultados",

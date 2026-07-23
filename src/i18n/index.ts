@@ -2,27 +2,32 @@ import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
 import pt from './locales/pt.json'
 import en from './locales/en.json'
+import es from './locales/es.json'
+import de from './locales/de.json'
 import { buildEmojiLocaleResources } from '../constants/emojis'
 import { guestStorageKey } from '../config/app'
 import { scopedStorageKey } from '../utils/userStorage'
+import { normalizeAppLanguage } from './locale'
+import { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
+
+export { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
 
 const emojiLocales = buildEmojiLocaleResources()
 
-export const SUPPORTED_LANGUAGES = ['pt', 'en'] as const
-export type AppLanguage = (typeof SUPPORTED_LANGUAGES)[number]
-
 const GUEST_LANGUAGE_KEY = guestStorageKey('language-guest')
 
+function isAppLanguage(value: string | null): value is AppLanguage {
+  return value === 'pt' || value === 'en' || value === 'es' || value === 'de'
+}
+
 export function resolveBrowserLanguage(): AppLanguage {
-  const nav = navigator.language.toLowerCase()
-  if (nav.startsWith('en')) return 'en'
-  return 'pt'
+  return normalizeAppLanguage(navigator.language)
 }
 
 export function getStoredLanguage(userId?: string | null): AppLanguage | null {
   const key = userId ? scopedStorageKey(userId, 'language') : GUEST_LANGUAGE_KEY
   const stored = localStorage.getItem(key)
-  if (stored === 'pt' || stored === 'en') return stored
+  if (isAppLanguage(stored)) return stored
   return null
 }
 
@@ -51,9 +56,11 @@ void i18n.use(initReactI18next).init({
   resources: {
     pt: { translation: { ...pt, emojis: emojiLocales.pt } },
     en: { translation: { ...en, emojis: emojiLocales.en } },
+    es: { translation: { ...es, emojis: emojiLocales.es } },
+    de: { translation: { ...de, emojis: emojiLocales.de } },
   },
   lng: resolveBrowserLanguage(),
-  fallbackLng: 'pt',
+  fallbackLng: 'en',
   supportedLngs: [...SUPPORTED_LANGUAGES],
   interpolation: { escapeValue: false },
 })
