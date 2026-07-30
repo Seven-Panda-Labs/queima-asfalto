@@ -180,6 +180,57 @@ describe('firestore.rules', () => {
       await assertFails(db.doc('users/user-alice').get())
       await assertFails(db.doc('users/user-alice').set({ displayName: 'Hacked' }))
     })
+
+    it('denies clients from setting accountStatus on create', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.doc(`users/${userId}`).set({
+          name: 'Alice',
+          accountStatus: 'approved',
+        }),
+      )
+    })
+  })
+
+  describe('account approval', () => {
+    it('denies pending users from creating events', async () => {
+      const userId = 'user-pending'
+      await seedDocument(`users/${userId}`, {
+        name: 'Pending',
+        accountStatus: 'pending',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(db.collection('events').doc('event-1').set(validEventPayload(userId)))
+    })
+
+    it('allows approved users to create events', async () => {
+      const userId = 'user-approved'
+      await seedDocument(`users/${userId}`, {
+        name: 'Approved',
+        accountStatus: 'approved',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(db.collection('events').doc('event-1').set(validEventPayload(userId)))
+    })
+
+    it('allows pending users to update their profile without accountStatus', async () => {
+      const userId = 'user-pending'
+      await seedDocument(`users/${userId}`, {
+        name: 'Pending',
+        accountStatus: 'pending',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(
+        db.doc(`users/${userId}`).update({
+          appLanguage: 'pt',
+        }),
+      )
+    })
   })
 
   describe('events', () => {

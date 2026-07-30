@@ -29,6 +29,7 @@ Copia [`.env.example`](../.env.example) para `.env.local` na raiz do projeto.
 | `VITE_APP_STORAGE_PREFIX` | Não | Prefixo de `localStorage` (predefinição: `VITE_FIREBASE_PROJECT_ID`) |
 | `VITE_USE_FIREBASE_EMULATORS` | Não | `true` para Auth, Firestore, Storage e Functions emulados — ver [`emulators.md`](./emulators.md) |
 | `VITE_FUNCTIONS_EMULATOR` | Não | `true` para **só** Functions emuladas (modo híbrido com projeto real) |
+| `VITE_ACCOUNT_APPROVAL_REQUIRED` | Não | `true` para exigir aprovação de novas contas (deve coincidir com `ACCOUNT_APPROVAL_REQUIRED` nas Functions) |
 
 \* Recomendado em produção.
 
@@ -68,6 +69,11 @@ Copia [`functions/.env.example`](../functions/.env.example) para `functions/.env
 | `FUNCTIONS_REGION` | Não | Região de deploy (predefinição: `europe-west1`). Deve coincidir com `VITE_FIREBASE_FUNCTIONS_REGION`. |
 | `FUNCTIONS_SERVICE_ACCOUNT` | Não | Email da service account para funções callable (partilhas, lookup de resultados). Se omitida, usa a conta predefinida do projeto. Ver Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | Não | Fuso horário de `dispatchReminders` (predefinição: `Europe/Lisbon`) |
+| `ACCOUNT_APPROVAL_REQUIRED` | Não | `true` para activar aprovação de contas novas (blocking functions). Requer [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) no projeto. |
+| `ADMIN_EMAIL` | Sim* | Email do administrador (auto-aprovado; destinatário futuro de notificações) |
+| `APP_PUBLIC_URL` | Sim* | URL pública da PWA (links futuros nos emails) |
+
+\* Obrigatórias quando `ACCOUNT_APPROVAL_REQUIRED=true`.
 
 Exemplo de service account: `firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com`
 
@@ -132,6 +138,7 @@ Copy [`.env.example`](../.env.example) to `.env.local` at the project root.
 | `VITE_APP_STORAGE_PREFIX` | No | `localStorage` key prefix (default: `VITE_FIREBASE_PROJECT_ID`) |
 | `VITE_USE_FIREBASE_EMULATORS` | No | `true` for emulated Auth, Firestore, Storage, and Functions — see [`emulators.md`](./emulators.md) |
 | `VITE_FUNCTIONS_EMULATOR` | No | `true` for **Functions only** (hybrid mode with a real project) |
+| `VITE_ACCOUNT_APPROVAL_REQUIRED` | No | `true` to require admin approval for new accounts (must match `ACCOUNT_APPROVAL_REQUIRED` in Functions) |
 
 \* Recommended in production.
 
@@ -171,6 +178,11 @@ Copy [`functions/.env.example`](../functions/.env.example) to `functions/.env` (
 | `FUNCTIONS_REGION` | No | Deploy region (default: `europe-west1`). Must match `VITE_FIREBASE_FUNCTIONS_REGION`. |
 | `FUNCTIONS_SERVICE_ACCOUNT` | No | Service account email for callable functions (shares, results lookup). If omitted, uses the project default runtime account. See Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | No | Time zone for `dispatchReminders` (default: `Europe/Lisbon`) |
+| `ACCOUNT_APPROVAL_REQUIRED` | No | `true` to enable new-account approval (blocking functions). Requires [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) on the project. |
+| `ADMIN_EMAIL` | Yes* | Site administrator email (auto-approved; future notification recipient) |
+| `APP_PUBLIC_URL` | Yes* | Public PWA URL (future email links) |
+
+\* Required when `ACCOUNT_APPROVAL_REQUIRED=true`.
 
 Example service account: `firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com`
 

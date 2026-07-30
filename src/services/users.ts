@@ -7,6 +7,9 @@ import {
 } from '../types/NotificationPrefs'
 import type { UserResultsProfile } from '../types/UserResultsProfile'
 import { formatParkrunnerId } from '../../shared/officialResults/parkrunnerId'
+import { isAppLanguage } from '../../shared/account/types'
+import { isAccountApprovalEnabled } from '../config/accountApproval'
+import i18n from '../i18n'
 import { db } from './firebase'
 
 function parseUserResultsProfile(data: Record<string, unknown>): UserResultsProfile {
@@ -34,8 +37,13 @@ function parseUserResultsProfile(data: Record<string, unknown>): UserResultsProf
 export async function ensureUserProfile(user: User): Promise<void> {
   const ref = doc(db, 'users', user.uid)
   const snapshot = await getDoc(ref)
+  const approvalEnabled = isAccountApprovalEnabled()
 
   if (!snapshot.exists()) {
+    if (approvalEnabled) {
+      return
+    }
+
     await setDoc(ref, {
       name: user.displayName ?? '',
       email: user.email ?? '',
@@ -43,6 +51,32 @@ export async function ensureUserProfile(user: User): Promise<void> {
       createdAt: serverTimestamp(),
       updatedAt: serverTimestamp(),
     })
+    return
+  }
+
+  const data = snapshot.data() ?? {}
+  const patch: Record<string, unknown> = {
+    updatedAt: serverTimestamp(),
+  }
+
+  const name = user.displayName ?? ''
+  const email = user.email ?? ''
+  if (data.name !== name) {
+    patch.name = name
+  }
+  if (data.email !== email) {
+    patch.email = email
+  }
+
+  if (!('appLanguage' in data) || data.appLanguage == null) {
+    const languageCode = i18n.language?.split('-')[0]?.toLowerCase()
+    if (isAppLanguage(languageCode)) {
+      patch.appLanguage = languageCode
+    }
+  }
+
+  if (Object.keys(patch).length > 1) {
+    await setDoc(ref, patch, { merge: true })
   }
 }
 

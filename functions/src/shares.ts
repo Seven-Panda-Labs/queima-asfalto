@@ -22,6 +22,7 @@ import type {
 } from './shared/shares/types.js'
 import { DEFAULT_SHARE_PERMISSIONS } from './shared/shares/types.js'
 import { callableFunctionOptions } from './functionOptions.js'
+import { requireApprovedAccount } from './accountApproval/requireApprovedAccount.js'
 
 const SHARES_COLLECTION = 'shares'
 const BUCKET_LIST_COLLECTION = 'bucketListItems'
@@ -50,6 +51,15 @@ function requireAuthUid(request: { auth?: { uid?: string } }): string {
   if (!uid) {
     throw new HttpsError('unauthenticated', 'Authentication required.')
   }
+  return uid
+}
+
+async function requireApprovedAuthUid(
+  request: { auth?: { uid?: string } },
+  db: Firestore,
+): Promise<string> {
+  const uid = requireAuthUid(request)
+  await requireApprovedAccount(db, uid)
   return uid
 }
 
@@ -238,7 +248,8 @@ function validateBucketListItemInput(item: unknown): Record<string, unknown> {
 }
 
 export const inviteShare = onCall(callableOptions, async (request) => {
-  const ownerId = requireAuthUid(request)
+  const db = getFirestore()
+  const ownerId = await requireApprovedAuthUid(request, db)
   const granteeEmailRaw = (request.data as { granteeEmail?: string })?.granteeEmail
   const permissions = parsePermissionsInput((request.data as { permissions?: unknown })?.permissions)
 
@@ -256,7 +267,6 @@ export const inviteShare = onCall(callableOptions, async (request) => {
     throw new HttpsError('invalid-argument', 'You cannot invite yourself.')
   }
 
-  const db = getFirestore()
   const existing = await findOpenShare(db, ownerId, granteeEmail)
   if (existing) {
     throw new HttpsError('already-exists', 'An active or pending share already exists for this email.')
@@ -298,11 +308,11 @@ export const inviteShare = onCall(callableOptions, async (request) => {
 })
 
 export const acceptShare = onCall(callableOptions, async (request) => {
-  const uid = requireAuthUid(request)
+  const db = getFirestore()
+  const uid = await requireApprovedAuthUid(request, db)
   const shareId = (request.data as { shareId?: string })?.shareId
   if (!shareId) throw new HttpsError('invalid-argument', 'shareId is required.')
 
-  const db = getFirestore()
   const share = await getShareById(db, shareId)
   if (share.status !== 'pending') {
     throw new HttpsError('failed-precondition', 'Share is not pending.')
@@ -324,11 +334,11 @@ export const acceptShare = onCall(callableOptions, async (request) => {
 })
 
 export const declineShare = onCall(callableOptions, async (request) => {
-  const uid = requireAuthUid(request)
+  const db = getFirestore()
+  const uid = await requireApprovedAuthUid(request, db)
   const shareId = (request.data as { shareId?: string })?.shareId
   if (!shareId) throw new HttpsError('invalid-argument', 'shareId is required.')
 
-  const db = getFirestore()
   const share = await getShareById(db, shareId)
   if (share.status !== 'pending') {
     throw new HttpsError('failed-precondition', 'Share is not pending.')
@@ -347,11 +357,11 @@ export const declineShare = onCall(callableOptions, async (request) => {
 })
 
 export const revokeShare = onCall(callableOptions, async (request) => {
-  const uid = requireAuthUid(request)
+  const db = getFirestore()
+  const uid = await requireApprovedAuthUid(request, db)
   const shareId = (request.data as { shareId?: string })?.shareId
   if (!shareId) throw new HttpsError('invalid-argument', 'shareId is required.')
 
-  const db = getFirestore()
   const share = await getShareById(db, shareId)
   if (share.status === 'revoked') {
     return { success: true }
@@ -372,12 +382,12 @@ export const revokeShare = onCall(callableOptions, async (request) => {
 })
 
 export const updateSharePermissions = onCall(callableOptions, async (request) => {
-  const uid = requireAuthUid(request)
+  const db = getFirestore()
+  const uid = await requireApprovedAuthUid(request, db)
   const shareId = (request.data as { shareId?: string })?.shareId
   const permissions = parsePermissionsInput((request.data as { permissions?: unknown })?.permissions)
   if (!shareId) throw new HttpsError('invalid-argument', 'shareId is required.')
 
-  const db = getFirestore()
   const share = await getShareById(db, shareId)
   if (share.ownerId !== uid) {
     throw new HttpsError('permission-denied', 'Only the owner can update permissions.')
@@ -396,9 +406,9 @@ export const updateSharePermissions = onCall(callableOptions, async (request) =>
 })
 
 export const listShares = onCall(callableOptions, async (request) => {
-  const uid = requireAuthUid(request)
-  const email = normalizeEmail(request.auth?.token.email ?? '')
   const db = getFirestore()
+  const uid = await requireApprovedAuthUid(request, db)
+  const email = normalizeEmail(request.auth?.token.email ?? '')
 
   const [sentSnapshot, receivedByIdSnapshot, receivedByEmailSnapshot] = await Promise.all([
     db.collection(SHARES_COLLECTION).where('ownerId', '==', uid).where('status', 'in', ['pending', 'active']).get(),
@@ -440,7 +450,8 @@ export const listShares = onCall(callableOptions, async (request) => {
 })
 
 export const getSharedSnapshot = onCall(callableOptions, async (request) => {
-  const granteeId = requireAuthUid(request)
+  const db = getFirestore()
+  const granteeId = await requireApprovedAuthUid(request, db)
   const ownerId = (request.data as { ownerId?: string })?.ownerId
   const sections = (request.data as { sections?: SharedDataSection[] })?.sections
 
@@ -449,7 +460,6 @@ export const getSharedSnapshot = onCall(callableOptions, async (request) => {
     throw new HttpsError('invalid-argument', 'sections is required.')
   }
 
-  const db = getFirestore()
   const share = await getActiveShareBetween(db, ownerId, granteeId)
   if (!share) {
     throw new HttpsError('permission-denied', 'No active share found.')
@@ -526,12 +536,12 @@ async function requireBucketListWrite(
 }
 
 export const createSharedBucketListItem = onCall(callableOptions, async (request) => {
-  const granteeId = requireAuthUid(request)
+  const db = getFirestore()
+  const granteeId = await requireApprovedAuthUid(request, db)
   const ownerId = (request.data as { ownerId?: string })?.ownerId
   const item = validateBucketListItemInput((request.data as { item?: unknown })?.item)
   if (!ownerId) throw new HttpsError('invalid-argument', 'ownerId is required.')
 
-  const db = getFirestore()
   await requireBucketListWrite(db, ownerId, granteeId)
 
   const now = FieldValue.serverTimestamp()
@@ -550,7 +560,8 @@ export const createSharedBucketListItem = onCall(callableOptions, async (request
 })
 
 export const updateSharedBucketListItem = onCall(callableOptions, async (request) => {
-  const granteeId = requireAuthUid(request)
+  const db = getFirestore()
+  const granteeId = await requireApprovedAuthUid(request, db)
   const ownerId = (request.data as { ownerId?: string })?.ownerId
   const itemId = (request.data as { itemId?: string })?.itemId
   const patch = validateBucketListPatch((request.data as { patch?: unknown })?.patch)
@@ -558,7 +569,6 @@ export const updateSharedBucketListItem = onCall(callableOptions, async (request
     throw new HttpsError('invalid-argument', 'ownerId and itemId are required.')
   }
 
-  const db = getFirestore()
   await requireBucketListWrite(db, ownerId, granteeId)
 
   const ref = db.collection(BUCKET_LIST_COLLECTION).doc(itemId)
@@ -580,14 +590,14 @@ export const updateSharedBucketListItem = onCall(callableOptions, async (request
 })
 
 export const deleteSharedBucketListItem = onCall(callableOptions, async (request) => {
-  const granteeId = requireAuthUid(request)
+  const db = getFirestore()
+  const granteeId = await requireApprovedAuthUid(request, db)
   const ownerId = (request.data as { ownerId?: string })?.ownerId
   const itemId = (request.data as { itemId?: string })?.itemId
   if (!ownerId || !itemId) {
     throw new HttpsError('invalid-argument', 'ownerId and itemId are required.')
   }
 
-  const db = getFirestore()
   await requireBucketListWrite(db, ownerId, granteeId)
 
   const ref = db.collection(BUCKET_LIST_COLLECTION).doc(itemId)

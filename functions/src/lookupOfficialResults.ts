@@ -12,6 +12,7 @@ import { resolveSccEventsUrlParts } from './connectors/sccEvents.js'
 import { resolveWiclaxUrlParts } from './connectors/wiclax.js'
 import { reserveOfficialResultsLookup } from './officialResultsLookupRateLimit.js'
 import { callableFunctionOptions, LOOKUP_CALLABLE_CONCURRENCY, LOOKUP_CALLABLE_MAX_INSTANCES } from './functionOptions.js'
+import { requireApprovedAccount } from './accountApproval/requireApprovedAccount.js'
 
 initializeApp()
 
@@ -70,6 +71,7 @@ export const lookupOfficialResults = onCall(
     }
 
     const db = getFirestore()
+    await requireApprovedAccount(db, userId)
     await reserveOfficialResultsLookup(db, userId)
 
     const eventSnap = await db.collection('events').doc(eventId).get()
