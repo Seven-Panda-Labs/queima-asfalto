@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.0] — 2026-07-30
+
+### Adicionado
+
+- **Self-hosting:** aprovação manual de contas novas (opcional) — ecrã de pendente/rejeitado, email ao administrador com links aprovar/rejeitar (Resend), notificação ao utilizador, regras Firestore/Storage e funções de blocking Auth; ver `docs/configuration.md` e `docs/self-hosting.md`.
+
+---
+
 ## [1.13.0] — 2026-07-23
 
 ### Adicionado

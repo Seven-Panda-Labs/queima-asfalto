@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.0] — 2026-07-30
+
+### Added
+
+- **Self-hosting:** optional manual approval for new accounts — pending/rejected screens, admin email with approve/reject links (Resend), user notification, Firestore/Storage rules and blocking Auth functions; see `docs/configuration.md` and `docs/self-hosting.md`.
+
+---
+
 ## [1.13.0] — 2026-07-23
 
 ### Added
