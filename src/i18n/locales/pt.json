@@ -119,6 +119,13 @@
     "emulator": "Entrar (emulador)",
     "emulatorHint": "Modo emulador — sem Google OAuth. Ver docs/emulators.md."
   },
+  "accountApproval": {
+    "pendingTitle": "À espera de aprovação",
+    "pendingMessage": "A tua conta foi criada com sucesso. Um administrador da instância tem de a aprovar antes de poderes usar a aplicação.",
+    "rejectedTitle": "Acesso não aprovado",
+    "rejectedMessage": "Esta conta não foi aprovada. Contacta o administrador da instância se achares que é um engano.",
+    "signOut": "Terminar sessão"
+  },
   "dashboard": {
     "nextEvent": "Próximo evento",
     "noUpcoming": "Sem eventos futuros planeados ou confirmados.",

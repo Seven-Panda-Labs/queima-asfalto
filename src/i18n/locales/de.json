@@ -119,6 +119,13 @@
     "emulator": "Anmelden (Emulator)",
     "emulatorHint": "Emulator-Modus — kein Google OAuth. Siehe docs/emulators.md."
   },
+  "accountApproval": {
+    "pendingTitle": "Warten auf Freigabe",
+    "pendingMessage": "Dein Konto wurde erstellt. Ein Administrator muss es freigeben, bevor du die App nutzen kannst.",
+    "rejectedTitle": "Zugang nicht freigegeben",
+    "rejectedMessage": "Dieses Konto wurde nicht freigegeben. Wende dich an den Administrator, wenn du glaubst, dass das ein Fehler ist.",
+    "signOut": "Abmelden"
+  },
   "dashboard": {
     "nextEvent": "Nächstes Event",
     "noUpcoming": "Keine geplanten oder bestätigten Events in Sicht.",

@@ -119,6 +119,13 @@
     "emulator": "Iniciar sesión (emulador)",
     "emulatorHint": "Modo emulador — sin Google OAuth. Ver docs/emulators.md."
   },
+  "accountApproval": {
+    "pendingTitle": "Pendiente de aprobación",
+    "pendingMessage": "Tu cuenta se creó correctamente. Un administrador del sitio debe aprobarla antes de que puedas usar la aplicación.",
+    "rejectedTitle": "Acceso no aprobado",
+    "rejectedMessage": "Esta cuenta no fue aprobada. Contacta al administrador del sitio si crees que es un error.",
+    "signOut": "Cerrar sesión"
+  },
   "dashboard": {
     "nextEvent": "Próximo evento",
     "noUpcoming": "No hay eventos planificados o confirmados próximos.",

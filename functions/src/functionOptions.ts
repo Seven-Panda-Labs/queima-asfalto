@@ -1,4 +1,5 @@
 import type { CallableOptions } from 'firebase-functions/v2/https'
+import type { BlockingOptions } from 'firebase-functions/v2/identity'
 import type { ScheduleOptions } from 'firebase-functions/v2/scheduler'
 
 const DEFAULT_REGION = 'europe-west1'
@@ -34,6 +35,25 @@ export function callableFunctionOptions(overrides: Partial<CallableOptions> = {}
     maxInstances: CALLABLE_MAX_INSTANCES,
     concurrency: CALLABLE_CONCURRENCY,
     invoker: 'public',
+    ...overrides,
+  }
+
+  const serviceAccount = resolveServiceAccount()
+  if (serviceAccount) {
+    options.serviceAccount = serviceAccount
+  }
+
+  return options
+}
+
+export function blockingFunctionOptions(
+  overrides: Omit<Partial<BlockingOptions>, 'region' | 'serviceAccount'> = {},
+): BlockingOptions {
+  const options: BlockingOptions = {
+    region: resolveRegion(),
+    timeoutSeconds: 10,
+    memory: '256MiB',
+    maxInstances: 10,
     ...overrides,
   }
 

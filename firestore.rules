@@ -10,6 +10,32 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    function userAccountStatus(userId) {
+      let userDoc = get(/databases/$(database)/documents/users/$(userId));
+      return userDoc != null && userDoc.data != null && 'accountStatus' in userDoc.data
+        ? userDoc.data.accountStatus
+        : 'approved';
+    }
+
+    function isApprovedUser(userId) {
+      return userAccountStatus(userId) == 'approved';
+    }
+
+    function clientPreservesAccountApprovalFields() {
+      return !('accountStatus' in request.resource.data)
+        && !('approvedAt' in request.resource.data)
+        && !('approvedBy' in request.resource.data)
+        && !('rejectedAt' in request.resource.data);
+    }
+
+    function clientPreservesAccountApprovalOnUpdate() {
+      return (!('accountStatus' in request.resource.data)
+          || request.resource.data.accountStatus == resource.data.accountStatus)
+        && !('approvedAt' in request.resource.data)
+        && !('approvedBy' in request.resource.data)
+        && !('rejectedAt' in request.resource.data);
+    }
+
     function validEventStatus(status) {
       return status in ['planned', 'confirmed', 'completed', 'missed', 'cancelled',
         'Planeado', 'Confirmado', 'Concluído', 'Faltou', 'Cancelado', 'Agendado'];
@@ -52,6 +78,7 @@ service cloud.firestore {
     function validEventWrite(data) {
       return data.keys().hasAll(['userId', 'name', 'date', 'realDistance', 'eventType', 'location', 'status'])
         && isOwner(data.userId)
+        && isApprovedUser(data.userId)
         && validEventStatus(data.status)
         && validEventType(data.eventType)
         && data.realDistance is number
@@ -66,6 +93,7 @@ service cloud.firestore {
     function validEventUpdate() {
       let data = request.resource.data;
       return resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid)
         && data.userId == resource.data.userId
         && data.name is string
         && data.name.size() > 0
@@ -86,6 +114,7 @@ service cloud.firestore {
     function validGoalWrite(data) {
       return data.keys().hasAll(['userId', 'eventType', 'targetCount', 'year'])
         && isOwner(data.userId)
+        && isApprovedUser(data.userId)
         && validEventType(data.eventType)
         && data.targetCount is int
         && data.targetCount > 0
@@ -99,6 +128,7 @@ service cloud.firestore {
     function validPerformanceGoalWrite(data) {
       return data.keys().hasAll(['userId', 'type', 'eventType', 'year'])
         && isOwner(data.userId)
+        && isApprovedUser(data.userId)
         && validPerformanceGoalType(data.type)
         && validEventType(data.eventType)
         && data.year is int
@@ -110,6 +140,7 @@ service cloud.firestore {
     function validPerformanceGoalUpdate() {
       let data = request.resource.data;
       return resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid)
         && data.userId == resource.data.userId
         && validPerformanceGoalType(data.type)
         && validEventType(data.eventType)
@@ -141,6 +172,7 @@ service cloud.firestore {
     function validBucketListWrite(data) {
       return data.keys().hasAll(['userId', 'name', 'location', 'realDistance'])
         && isOwner(data.userId)
+        && isApprovedUser(data.userId)
         && validBucketListDisciplines(data)
         && data.realDistance is number
         && data.realDistance > 0
@@ -153,6 +185,7 @@ service cloud.firestore {
     function validBucketListUpdate() {
       let data = request.resource.data;
       return resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid)
         && data.userId == resource.data.userId
         && data.name is string
         && data.name.size() > 0
@@ -195,6 +228,7 @@ service cloud.firestore {
     function validEventMediaWrite(data, eventId, mediaId) {
       return data.keys().hasAll(['userId', 'type', 'storagePath', 'downloadUrl', 'mimeType', 'sizeBytes'])
         && isOwner(data.userId)
+        && isApprovedUser(data.userId)
         && validEventMediaType(data.type)
         && data.storagePath is string
         && data.downloadUrl is string
@@ -212,7 +246,10 @@ service cloud.firestore {
     }
 
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read: if isOwner(userId);
+      allow create: if isOwner(userId) && clientPreservesAccountApprovalFields();
+      allow update: if isOwner(userId) && clientPreservesAccountApprovalOnUpdate();
+      allow delete: if false;
 
       match /reminderDispatches/{reminderId} {
         allow read: if isOwner(userId);
@@ -226,54 +263,74 @@ service cloud.firestore {
     }
 
     match /events/{eventId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
       allow create: if validEventWrite(request.resource.data);
       allow update: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validEventUpdate();
-      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
 
       match /media/{mediaId} {
         allow read: if isSignedIn()
-          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid;
+          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid);
         allow create: if isSignedIn()
           && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid)
           && validEventMediaWrite(request.resource.data, eventId, mediaId);
-        allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+        allow delete: if isSignedIn()
+          && resource.data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid);
         allow update: if false;
       }
     }
 
 
     match /bucketListItems/{itemId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
       allow create: if validBucketListWrite(request.resource.data);
       allow update: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validBucketListUpdate();
-      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
     }
 
     match /goals/{goalId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
       allow create: if validGoalWrite(request.resource.data);
       allow update: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validGoalWrite(request.resource.data);
-      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
     }
 
     match /performanceGoals/{goalId} {
-      allow read: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
       allow create: if validPerformanceGoalWrite(request.resource.data);
       allow update: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validPerformanceGoalUpdate();
-      allow delete: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
     }
 
     function isShareParticipant() {

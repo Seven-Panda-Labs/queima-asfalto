@@ -119,6 +119,13 @@
     "emulator": "Sign in (emulator)",
     "emulatorHint": "Emulator mode — no Google OAuth. See docs/emulators.md."
   },
+  "accountApproval": {
+    "pendingTitle": "Awaiting approval",
+    "pendingMessage": "Your account was created successfully. A site administrator must approve it before you can use the app.",
+    "rejectedTitle": "Access not approved",
+    "rejectedMessage": "This account was not approved. Contact the site administrator if you think this is a mistake.",
+    "signOut": "Sign out"
+  },
   "dashboard": {
     "nextEvent": "Next event",
     "noUpcoming": "No upcoming planned or confirmed events.",

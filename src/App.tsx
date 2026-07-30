@@ -3,6 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import { AnalyticsTracker } from './components/AnalyticsTracker/AnalyticsTracker'
 import { Layout } from './components/Layout/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
+import { AccountApprovalGate } from './components/AccountApprovalGate/AccountApprovalGate'
 import { BucketList } from './pages/BucketList/BucketList'
 import { BucketListForm } from './pages/BucketList/BucketListForm'
 import { Dashboard } from './pages/Dashboard/Dashboard'
@@ -44,6 +45,7 @@ export default function App() {
         <Route path="/login" element={<Login />} />
 
         <Route element={<ProtectedRoute />}>
+          <Route element={<AccountApprovalGate />}>
           <Route element={<Layout />}>
             <Route index element={<Dashboard />} />
             <Route path="eventos" element={<Events />} />
@@ -81,6 +83,7 @@ export default function App() {
             />
             <Route path="partilhas" element={<Navigate to="/definicoes?tab=partilhas" replace />} />
             <Route path="definicoes/importar" element={<Navigate to="/definicoes?tab=dados&import=1" replace />} />
+          </Route>
           </Route>
         </Route>
 
