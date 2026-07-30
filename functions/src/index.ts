@@ -2,6 +2,7 @@ export {
   accountApprovalBeforeUserCreated,
   accountApprovalBeforeUserSignedIn,
 } from './accountApproval/blocking.js'
+export { accountApprovalAction } from './accountApproval/approveAccountAction.js'
 export { lookupOfficialResults } from './lookupOfficialResults.js'
 export { dispatchReminders } from './reminders.js'
 export {

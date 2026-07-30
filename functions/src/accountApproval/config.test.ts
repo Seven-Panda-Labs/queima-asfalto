@@ -40,6 +40,9 @@ describe('assertAccountApprovalConfig', () => {
     process.env.ACCOUNT_APPROVAL_REQUIRED = 'true'
     process.env.ADMIN_EMAIL = 'admin@example.com'
     process.env.APP_PUBLIC_URL = 'https://example.web.app'
+    process.env.RESEND_API_KEY = 're_test'
+    process.env.EMAIL_FROM = 'QA <noreply@example.com>'
+    process.env.APPROVAL_TOKEN_SECRET = 'long-secret-for-tests'
     expect(() => assertAccountApprovalConfig()).not.toThrow()
     expect(getAdminEmail()).toBe('admin@example.com')
   })
