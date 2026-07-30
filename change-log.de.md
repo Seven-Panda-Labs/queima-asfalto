@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.0] — 2026-07-30
+
+### Hinzugefügt
+
+- **Self-Hosting:** optionale manuelle Freigabe neuer Konten — Bildschirme „ausstehend“/„abgelehnt“, Admin-E-Mail mit Freigabe-/Ablehnungslinks (Resend), Benutzerbenachrichtigung, Firestore-/Storage-Regeln und Blocking-Auth-Funktionen; siehe `docs/configuration.md` und `docs/self-hosting.md`.
+
+---
+
 ## [1.13.0] — 2026-07-23
 
 ### Hinzugefügt

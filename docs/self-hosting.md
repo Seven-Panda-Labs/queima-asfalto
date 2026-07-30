@@ -130,6 +130,39 @@ cp functions/.env.example functions/.env
    - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — email em **Project settings → Service accounts**
    - `SCHEDULER_TIMEZONE=Europe/Lisbon` — fuso dos lembretes agendados
 
+Detalhes de todas as variáveis: [`configuration.md`](./configuration.md).
+
+### Passo 9b — Aprovação de contas novas (opcional)
+
+Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para exigir **aprovação manual** de novos registos (útil em self-hosting fechado), activa o fluxo da issue [#176](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/176).
+
+**Requisitos extra**
+
+| Requisito | Motivo |
+|-----------|--------|
+| [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) no projeto Firebase | Cloud Functions de blocking (`beforeUserCreated` / `beforeUserSignedIn`) |
+| Conta [Resend](https://resend.com/) + domínio/remetente verificado | Emails ao admin (aprovar/rejeitar) e ao utilizador |
+| Deploy de **Hosting + Functions** | Rewrite `/api/account-approval` → `accountApprovalAction` (já em `firebase.json`) |
+
+**Configuração**
+
+1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
+2. **`functions/.env`** (com `ACCOUNT_APPROVAL_REQUIRED=true`):
+   - `ADMIN_EMAIL` — email do administrador (conta auto-aprovada)
+   - `APP_PUBLIC_URL` — URL pública da PWA (ex. `https://YOUR_PROJECT.web.app`)
+   - `RESEND_API_KEY`, `EMAIL_FROM` — API e remetente Resend
+   - `APPROVAL_TOKEN_SECRET` — segredo aleatório (≥16 caracteres) para links nos emails
+   - `INSTANCE_NAME` (opcional) — nome nos emails
+3. Volta a fazer **`npm run build`** e **`firebase deploy`** (ou `npm run deploy`) para aplicar env nas Functions e o rewrite no Hosting.
+
+**Fluxo**
+
+1. Novo utilizador entra com Google → ecrã «À espera de aprovação».
+2. Admin recebe email com links **Aprovar** / **Rejeitar**.
+3. Utilizador aprovado recebe email e pode usar a app; rejeitado vê mensagem e não acede aos dados.
+
+Sem esta opção, ignora este passo — a instância mantém o comportamento anterior.
+
 ### Passo 10 — Firebase CLI
 
 ```bash
@@ -179,6 +212,8 @@ Deploy parcial:
 | `lookupOfficialResults` | Callable (importação resultados oficiais) |
 | `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable (partilhas) |
 | `dispatchReminders` | Agendada (cada 60 min, Cloud Scheduler) |
+| `accountApprovalBeforeUserCreated`, `accountApprovalBeforeUserSignedIn` | Blocking Auth (só se `ACCOUNT_APPROVAL_REQUIRED=true`) |
+| `accountApprovalAction` | HTTP (links de aprovação; rewrite Hosting `/api/account-approval`) |
 
 Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `concurrency`): [`cloud-functions-limits.md`](./cloud-functions-limits.md).
 
@@ -199,6 +234,7 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 - [ ] Confirmar que o aviso `/aviso-resultados` está acessível (incluído na app; ver [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md))
 - [ ] Convite de partilha por email (Cloud Function `inviteShare`)
 - [ ] Activar notificações em Definições (FCM)
+- [ ] (Opcional) Com aprovação activa: registo de utilizador de teste → email ao admin → aprovar → login completo
 
 ### Domínio customizado (opcional)
 
@@ -217,6 +253,8 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 | Geoapify 403 | Referrers na chave Geoapify; domínio de produção incluído |
 | `dispatchReminders` não corre | Plano Blaze; Cloud Scheduler API activa; logs em Functions → `dispatchReminders` |
 | Storage upload negado | Regras deployadas; utilizador autenticado; ficheiro dentro dos limites (`storage.rules`) |
+| Aprovação: login bloqueado / sem email | Identity Platform activo; `functions/.env` completo; Resend e domínio OK; redeploy Functions + Hosting |
+| Link de aprovação inválido | `APPROVAL_TOKEN_SECRET` igual ao deploy; token expirado (7 dias); `APP_PUBLIC_URL` correcto |
 
 ---
 
@@ -348,6 +386,39 @@ cp functions/.env.example functions/.env
    - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — from **Project settings → Service accounts**
    - `SCHEDULER_TIMEZONE=Europe/Lisbon` — time zone for scheduled reminders
 
+All variables: [`configuration.md`](./configuration.md).
+
+### Step 9b — New account approval (optional)
+
+By default, any Google Sign-In user can use the instance. To require **manual approval** for new sign-ups (useful for closed self-hosting), enable the flow from issue [#176](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/176).
+
+**Extra requirements**
+
+| Requirement | Why |
+|-------------|-----|
+| [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) on the Firebase project | Blocking Cloud Functions (`beforeUserCreated` / `beforeUserSignedIn`) |
+| [Resend](https://resend.com/) account + verified domain/sender | Emails to admin (approve/reject) and to the user |
+| Deploy **Hosting + Functions** | Rewrite `/api/account-approval` → `accountApprovalAction` (already in `firebase.json`) |
+
+**Configuration**
+
+1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
+2. **`functions/.env`** (with `ACCOUNT_APPROVAL_REQUIRED=true`):
+   - `ADMIN_EMAIL` — administrator email (auto-approved account)
+   - `APP_PUBLIC_URL` — public PWA URL (e.g. `https://YOUR_PROJECT.web.app`)
+   - `RESEND_API_KEY`, `EMAIL_FROM` — Resend API and sender
+   - `APPROVAL_TOKEN_SECRET` — random secret (≥16 characters) for email links
+   - `INSTANCE_NAME` (optional) — name in emails
+3. Run **`npm run build`** and **`firebase deploy`** (or `npm run deploy`) again so Functions env and the Hosting rewrite apply.
+
+**Flow**
+
+1. New user signs in with Google → “Waiting for approval” screen.
+2. Admin receives email with **Approve** / **Reject** links.
+3. Approved user gets email and can use the app; rejected users see a message and cannot access data.
+
+If you do not need this, skip this step — the instance keeps the previous behavior.
+
 ### Step 10 — Firebase CLI
 
 ```bash
@@ -397,6 +468,8 @@ Partial deploy:
 | `lookupOfficialResults` | Callable (official results import) |
 | `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable (sharing) |
 | `dispatchReminders` | Scheduled (every 60 min, Cloud Scheduler) |
+| `accountApprovalBeforeUserCreated`, `accountApprovalBeforeUserSignedIn` | Blocking Auth (only if `ACCOUNT_APPROVAL_REQUIRED=true`) |
+| `accountApprovalAction` | HTTP (approval links; Hosting rewrite `/api/account-approval`) |
 
 Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency`): [`cloud-functions-limits.md`](./cloud-functions-limits.md).
 
@@ -417,6 +490,7 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 - [ ] Confirm the `/aviso-resultados` notice is reachable (built into the app; see [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md))
 - [ ] Share invite by email (`inviteShare`)
 - [ ] Enable notifications in Settings (FCM)
+- [ ] (Optional) With approval enabled: test sign-up → admin email → approve → full access
 
 ### Custom domain (optional)
 
@@ -435,3 +509,5 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 | Geoapify 403 | Referrers on Geoapify key; production domain included |
 | `dispatchReminders` not running | Blaze plan; Cloud Scheduler API enabled; Functions logs for `dispatchReminders` |
 | Storage upload denied | Rules deployed; authenticated user; file within limits (`storage.rules`) |
+| Approval: blocked login / no email | Identity Platform enabled; complete `functions/.env`; Resend and domain OK; redeploy Functions + Hosting |
+| Invalid approval link | Same `APPROVAL_TOKEN_SECRET` as deploy; token expired (7 days); correct `APP_PUBLIC_URL` |
