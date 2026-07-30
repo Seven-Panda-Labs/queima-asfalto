@@ -17,6 +17,7 @@ import {
   buildLegacyApprovedUserProfile,
   resolveInitialAccountStatus,
 } from './userProfile.js'
+import { notifyAdminNewUser } from './notifications.js'
 
 function ensureAdminApp(): void {
   if (getApps().length === 0) {
@@ -61,6 +62,19 @@ export const accountApprovalBeforeUserCreated = beforeUserCreated(
         registrationLocale,
       }),
     )
+
+    if (accountStatus === 'pending') {
+      try {
+        await notifyAdminNewUser({
+          uid: user.uid,
+          name: user.displayName ?? '',
+          email: user.email ?? '',
+          registrationLocale,
+        })
+      } catch (error) {
+        console.error('Failed to send admin new-user email:', error)
+      }
+    }
   },
 )
 

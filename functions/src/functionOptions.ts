@@ -1,4 +1,4 @@
-import type { CallableOptions } from 'firebase-functions/v2/https'
+import type { CallableOptions, HttpsOptions } from 'firebase-functions/v2/https'
 import type { BlockingOptions } from 'firebase-functions/v2/identity'
 import type { ScheduleOptions } from 'firebase-functions/v2/scheduler'
 
@@ -54,6 +54,24 @@ export function blockingFunctionOptions(
     timeoutSeconds: 10,
     memory: '256MiB',
     maxInstances: 10,
+    ...overrides,
+  }
+
+  const serviceAccount = resolveServiceAccount()
+  if (serviceAccount) {
+    options.serviceAccount = serviceAccount
+  }
+
+  return options
+}
+
+export function httpFunctionOptions(overrides: Partial<HttpsOptions> = {}): HttpsOptions {
+  const options: HttpsOptions = {
+    region: resolveRegion(),
+    timeoutSeconds: 30,
+    memory: '256MiB',
+    maxInstances: 10,
+    invoker: 'public',
     ...overrides,
   }
 

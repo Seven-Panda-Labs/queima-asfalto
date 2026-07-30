@@ -4,6 +4,10 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
+        "source": "/api/account-approval",
+        "function": "accountApprovalAction"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }

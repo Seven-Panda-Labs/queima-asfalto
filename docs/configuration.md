@@ -75,6 +75,14 @@ Copia [`functions/.env.example`](../functions/.env.example) para `functions/.env
 
 \* Obrigatórias quando `ACCOUNT_APPROVAL_REQUIRED=true`.
 
+| Variável | Obrigatória | Descrição |
+|----------|-------------|-----------|
+| `RESEND_API_KEY` | Sim* | API key [Resend](https://resend.com/) para emails transaccionais |
+| `EMAIL_FROM` | Sim* | Remetente verificado no Resend (ex. `Instância <noreply@dominio.com>`) |
+| `APPROVAL_TOKEN_SECRET` | Sim* | Segredo HMAC (≥16 caracteres) para links de aprovação/rejeição |
+| `INSTANCE_NAME` | Não | Nome da instância nos emails (predefinição: `Queima Asfalto`) |
+| `APPROVAL_HANDLER_BASE_URL` | Não | URL base do handler HTTP; predefinição: `{APP_PUBLIC_URL}/api/account-approval` (rewrite no Hosting) |
+
 Exemplo de service account: `firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com`
 
 ### Limites de escala (Gen 2)
@@ -183,6 +191,14 @@ Copy [`functions/.env.example`](../functions/.env.example) to `functions/.env` (
 | `APP_PUBLIC_URL` | Yes* | Public PWA URL (future email links) |
 
 \* Required when `ACCOUNT_APPROVAL_REQUIRED=true`.
+
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `RESEND_API_KEY` | Yes* | [Resend](https://resend.com/) API key for transactional email |
+| `EMAIL_FROM` | Yes* | Verified Resend sender (e.g. `Instance <noreply@your-domain.com>`) |
+| `APPROVAL_TOKEN_SECRET` | Yes* | HMAC secret (≥16 chars) for approve/reject links |
+| `INSTANCE_NAME` | No | Instance name in emails (default: `Queima Asfalto`) |
+| `APPROVAL_HANDLER_BASE_URL` | No | Handler base URL; default `{APP_PUBLIC_URL}/api/account-approval` (Hosting rewrite) |
 
 Example service account: `firebase-adminsdk-xxxxx@your-project-id.iam.gserviceaccount.com`
 
