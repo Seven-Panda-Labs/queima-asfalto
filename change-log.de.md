@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.1] — 2026-08-01
+
+### Behoben
+
+- **Offizielle Ergebnisse:** MikaTiming-Connector (Multi-Event-Suche und Netto-Zeiten); mehr Speicher für die Lookup-Callable.
+
+---
+
 ## [1.14.0] — 2026-07-30
 
 ### Hinzugefügt

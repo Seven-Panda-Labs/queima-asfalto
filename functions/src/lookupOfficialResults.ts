@@ -58,6 +58,7 @@ export const lookupOfficialResults = onCall(
   callableFunctionOptions({
     maxInstances: LOOKUP_CALLABLE_MAX_INSTANCES,
     concurrency: LOOKUP_CALLABLE_CONCURRENCY,
+    memory: '512MiB',
   }),
   async (request): Promise<{ candidates: OfficialResultCandidate[] }> => {
     if (!request.auth?.uid) {
