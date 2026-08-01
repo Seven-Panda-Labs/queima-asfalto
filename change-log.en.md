@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.2] — 2026-08-02
+
+### Fixed
+
+- **Official results:** MikaTiming picks the correct overall rank column (layout varies by event).
+
+---
+
 ## [1.14.1] — 2026-08-01
 
 ### Fixed

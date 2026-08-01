@@ -7,6 +7,7 @@ import {
   buildMikaTimingSearchFormFields,
   parseMikaTimingDisplayName,
   parseMikaTimingMaxListPage,
+  parseMikaTimingOverallPlaceColumn,
   parseMikaTimingSearchEventCodesFromHtml,
   parseMikaTimingSearchRows,
   parseMikaTimingTime,
@@ -85,7 +86,7 @@ describe('parseMikaTimingSearchRows', () => {
     const rows = parseMikaTimingSearchRows(cityNightFixture)
     expect(rows).toEqual([
       {
-        position: 369,
+        position: 3273,
         displayName: 'Rodrigo Neves',
         firstName: 'Rodrigo',
         lastName: 'Neves',
@@ -93,6 +94,16 @@ describe('parseMikaTimingSearchRows', () => {
         event: 'CN10',
       },
     ])
+  })
+})
+
+describe('parseMikaTimingOverallPlaceColumn', () => {
+  it('uses secondary column for Chicago overall place', () => {
+    expect(parseMikaTimingOverallPlaceColumn(chicagoFixture)).toBe('secondary')
+  })
+
+  it('uses primary column for City Night overall place', () => {
+    expect(parseMikaTimingOverallPlaceColumn(cityNightFixture)).toBe('primary')
   })
 })
 

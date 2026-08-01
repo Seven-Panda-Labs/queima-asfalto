@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.2] — 2026-08-02
+
+### Behoben
+
+- **Offizielle Ergebnisse:** MikaTiming nutzt die richtige Gesamtplatz-Spalte (layoutabhängig pro Event).
+
+---
+
 ## [1.14.1] — 2026-08-01
 
 ### Behoben

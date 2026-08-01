@@ -163,23 +163,64 @@ export function parseMikaTimingSearchEventCodesFromHtml(html: string): string[] 
   return [...codes]
 }
 
+export type MikaTimingOverallPlaceColumn = 'primary' | 'secondary'
+
+function extractListGroupHeaderHtml(html: string): string | undefined {
+  const match = /<li class="[^"]*list-group-header[^"]*"[^>]*>([\s\S]*?)<\/li>/i.exec(html)
+  return match?.[1]
+}
+
+/** Which place column is overall rank (varies by event layout). */
+export function parseMikaTimingOverallPlaceColumn(html: string): MikaTimingOverallPlaceColumn {
+  const header = extractListGroupHeaderHtml(html) ?? ''
+  if (
+    /field-place_nosex[\s\S]{0,240}?place-secondary|place-secondary[\s\S]{0,120}?Overall/i.test(
+      header,
+    )
+  ) {
+    return 'secondary'
+  }
+  if (
+    /field-place_all[\s\S]{0,240}?place-primary|field-place_age[\s\S]{0,240}?place-secondary/i.test(
+      header,
+    )
+  ) {
+    return 'primary'
+  }
+  return 'secondary'
+}
+
+function parseOverallPlaceFromRow(
+  rowHtml: string,
+  column: MikaTimingOverallPlaceColumn,
+): number | null {
+  const pattern =
+    column === 'primary'
+      ? /class="[^"]*\bplace-primary\b[^"]*\bnumeric\b[^"]*"[^>]*>\s*(\d+)\s*</i
+      : /class="[^"]*\bplace-secondary\b[^"]*\bnumeric\b[^"]*"[^>]*>\s*(\d+)\s*</i
+  const placeMatch = pattern.exec(rowHtml)
+  if (!placeMatch?.[1]) return null
+  const position = Number(placeMatch[1])
+  return Number.isFinite(position) ? position : null
+}
+
 export function parseMikaTimingSearchRows(html: string): MikaTimingSearchRow[] {
   const rows: MikaTimingSearchRow[] = []
+  const placeColumn = parseMikaTimingOverallPlaceColumn(html)
 
   for (const rowMatch of html.matchAll(
     /<li class="[^"]*list-group-item row(?![^"]*list-group-header)[^"]*">([\s\S]*?)<\/li>/gi,
   )) {
     const rowHtml = rowMatch[1] ?? ''
-    const placeMatch = /class="[^"]*place-secondary[^"]*numeric"[^>]*>\s*(\d+)\s*</i.exec(rowHtml)
+    const position = parseOverallPlaceFromRow(rowHtml, placeColumn)
     const nameMatch = /<h4 class="[^"]*type-fullname"[^>]*>\s*<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/i.exec(
       rowHtml,
     )
-    if (!placeMatch?.[1] || !nameMatch?.[2]) continue
+    if (position === null || !nameMatch?.[2]) continue
 
-    const position = Number(placeMatch[1])
     const rawName = stripHtml(nameMatch[2])
     const time = parseFinishTimeFromRow(rowHtml)
-    if (!Number.isFinite(position) || !rawName || !time) continue
+    if (!rawName || !time) continue
 
     const { displayName, firstName, lastName } = parseMikaTimingDisplayName(rawName)
     rows.push({
@@ -217,9 +258,12 @@ export function parseMikaTimingMaxListPage(html: string): number {
 }
 
 export function parseMikaTimingMaxOverallPlace(html: string): number | undefined {
-  const places = [...html.matchAll(/place-secondary hidden-xs numeric"[^>]*>\s*(\d+)\s*</gi)].map(
-    (match) => Number(match[1]),
-  )
+  const column = parseMikaTimingOverallPlaceColumn(html)
+  const pattern =
+    column === 'primary'
+      ? /\bplace-primary\b[^"]*\bnumeric\b[^>]*>\s*(\d+)\s*</gi
+      : /\bplace-secondary\b[^"]*\bnumeric\b[^>]*>\s*(\d+)\s*</gi
+  const places = [...html.matchAll(pattern)].map((match) => Number(match[1]))
   if (places.length === 0) return undefined
   return Math.max(...places)
 }
