@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.2] — 2026-08-02
+
+### Corregido
+
+- **Resultados oficiales:** MikaTiming usa la columna de clasificación general correcta (varía por evento).
+
+---
+
 ## [1.14.1] — 2026-08-01
 
 ### Corregido
