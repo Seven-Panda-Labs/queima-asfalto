@@ -1,11 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import chicagoFixture from './fixtures/mikatiming-chicago-search-neves.html?raw'
+import cityNightFixture from './fixtures/mikatiming-city-night-search-neves.html?raw'
 import { detectPlatformFromUrl } from './detectPlatform'
 import { matchesResultsProfile } from './matchName'
 import {
   buildMikaTimingSearchFormFields,
   parseMikaTimingDisplayName,
   parseMikaTimingMaxListPage,
+  parseMikaTimingSearchEventCodesFromHtml,
   parseMikaTimingSearchRows,
   parseMikaTimingTime,
   parseMikaTimingUrl,
@@ -77,6 +79,26 @@ describe('parseMikaTimingSearchRows', () => {
       time: '03:25:50',
       event: 'MAR',
     })
+  })
+
+  it('parses SCC City Night netto time labels', () => {
+    const rows = parseMikaTimingSearchRows(cityNightFixture)
+    expect(rows).toEqual([
+      {
+        position: 369,
+        displayName: 'Rodrigo Neves',
+        firstName: 'Rodrigo',
+        lastName: 'Neves',
+        time: '00:54:38',
+        event: 'CN10',
+      },
+    ])
+  })
+})
+
+describe('parseMikaTimingSearchEventCodesFromHtml', () => {
+  it('reads event codes from multi-discipline search shells', () => {
+    expect(parseMikaTimingSearchEventCodesFromHtml(cityNightFixture).sort()).toEqual(['CN10', 'CN5M'])
   })
 })
 

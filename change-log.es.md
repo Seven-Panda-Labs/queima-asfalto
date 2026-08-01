@@ -4,6 +4,14 @@
 
 ---
 
+## [1.14.1] — 2026-08-01
+
+### Corregido
+
+- **Resultados oficiales:** conector MikaTiming (búsqueda multi-disciplina y tiempos Netto); más memoria en la callable de lookup.
+
+---
+
 ## [1.14.0] — 2026-07-30
 
 ### Añadido

@@ -7,6 +7,7 @@ import {
   parseMikaTimingEventFromHtml,
   parseMikaTimingMaxListPage,
   parseMikaTimingMaxOverallPlace,
+  parseMikaTimingSearchEventCodesFromHtml,
   parseMikaTimingSearchRows,
   type MikaTimingUrlParts,
 } from '../shared/mikaTiming.js'
@@ -71,6 +72,17 @@ async function fetchMikaTimingTotalParticipants(
   return parseMikaTimingMaxOverallPlace(lastPageHtml)
 }
 
+async function searchMikaTimingRows(
+  parts: MikaTimingUrlParts,
+  searchName: string,
+  event?: string,
+): Promise<{ html: string; rows: ReturnType<typeof parseMikaTimingSearchRows> }> {
+  const searchUrl = `${parts.baseUrl}?pid=search`
+  const searchFields = buildMikaTimingSearchFormFields({ ...parts, event }, searchName)
+  const html = await fetchMikaTimingHtml(searchUrl, parts.baseUrl, searchFields)
+  return { html, rows: parseMikaTimingSearchRows(html) }
+}
+
 export async function lookupMikaTiming(
   resultsUrl: string,
   profile: UserResultsProfile,
@@ -81,11 +93,18 @@ export async function lookupMikaTiming(
   const searchName = buildMikaTimingSearchTerm(profile)
   if (!searchName) return []
 
-  const searchUrl = `${parts.baseUrl}?pid=search`
-  const searchFields = buildMikaTimingSearchFormFields(parts, searchName)
-  const html = await fetchMikaTimingHtml(searchUrl, parts.baseUrl, searchFields)
-  const rows = parseMikaTimingSearchRows(html)
-  const match = rows.find((row) => matchesResultsProfile(profile, row.displayName))
+  let { html, rows } = await searchMikaTimingRows(parts, searchName, parts.event)
+  let match = rows.find((row) => matchesResultsProfile(profile, row.displayName))
+
+  if (!match && !parts.event) {
+    const eventCodes = parseMikaTimingSearchEventCodesFromHtml(html)
+    for (const event of eventCodes) {
+      const retry = await searchMikaTimingRows(parts, searchName, event)
+      match = retry.rows.find((row) => matchesResultsProfile(profile, row.displayName))
+      if (match) break
+    }
+  }
+
   if (!match) return []
 
   const event = match.event ?? parts.event

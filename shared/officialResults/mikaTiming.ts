@@ -130,21 +130,37 @@ export function parseMikaTimingEventFromHref(href: string): string | undefined {
 }
 
 function parseFinishTimeFromRow(rowHtml: string): string | null {
-  const labeled = [
-    ...rowHtml.matchAll(
-      /<div class="[^"]*\btype-time\b"[^>]*>[\s\S]*?list-label">Finish<\/div>\s*([^<]+)</gi,
-    ),
+  const labeledPatterns = [
+    /list-label">Finish<\/div>\s*([^<]+)/i,
+    /list-label">Time Total \(Netto\)<\/div>\s*([^<]+)/i,
+    /list-label">[^<]*\bNetto\b[^<]*<\/div>\s*([^<]+)/i,
   ]
-  if (labeled.length > 0) {
-    return parseMikaTimingTime(stripHtml(labeled[labeled.length - 1]![1] ?? ''))
+  for (const pattern of labeledPatterns) {
+    const match = pattern.exec(rowHtml)
+    if (match?.[1]) {
+      const time = parseMikaTimingTime(stripHtml(match[1]))
+      if (time) return time
+    }
   }
 
   const times = [...rowHtml.matchAll(/<div class="[^"]*\btype-time\b"[^>]*>([\s\S]*?)<\/div>/gi)]
-    .map((match) => stripHtml(match[1] ?? ''))
-    .map((value) => parseMikaTimingTime(value))
+    .map((match) => {
+      const inner = match[1] ?? ''
+      const withoutLabelDivs = inner.replace(/<div[^>]*>[\s\S]*?<\/div>/gi, '')
+      return parseMikaTimingTime(stripHtml(withoutLabelDivs))
+    })
     .filter((value): value is string => value !== null)
 
   return times.at(-1) ?? null
+}
+
+/** Event codes from multi-discipline search shells (e.g. `event-CN10` on result rows). */
+export function parseMikaTimingSearchEventCodesFromHtml(html: string): string[] {
+  const codes = new Set<string>()
+  for (const match of html.matchAll(/\bevent-([A-Z][A-Z0-9]*)\b/g)) {
+    codes.add(match[1]!)
+  }
+  return [...codes]
 }
 
 export function parseMikaTimingSearchRows(html: string): MikaTimingSearchRow[] {
