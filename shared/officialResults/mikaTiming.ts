@@ -257,6 +257,14 @@ export function parseMikaTimingMaxListPage(html: string): number {
   return maxPage
 }
 
+/** Total finisher count from list header (reliable when pagination does not expose max place). */
+export function parseMikaTimingListParticipantCount(html: string): number | undefined {
+  const match = /list-info__text str_num">(\d+) Results</i.exec(html)
+  if (!match?.[1]) return undefined
+  const count = Number(match[1])
+  return Number.isFinite(count) ? count : undefined
+}
+
 export function parseMikaTimingMaxOverallPlace(html: string): number | undefined {
   const column = parseMikaTimingOverallPlaceColumn(html)
   const pattern =
@@ -325,7 +333,7 @@ export function buildMikaTimingListFormFields(
     startpage_type: 'lists',
     event_main_group: 'runner',
     event: parts.event ?? 'MAR',
-    'search[sex]': 'N',
+    'search[sex]': '',
     'search[age_class]': '%',
     num_results: numResults,
     submit: '',

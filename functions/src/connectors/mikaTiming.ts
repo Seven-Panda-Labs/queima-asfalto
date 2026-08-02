@@ -6,6 +6,7 @@ import {
   isMikatimingResultsHtml,
   parseMikaTimingEventFromHtml,
   parseMikaTimingMaxListPage,
+  parseMikaTimingListParticipantCount,
   parseMikaTimingMaxOverallPlace,
   parseMikaTimingSearchEventCodesFromHtml,
   parseMikaTimingSearchRows,
@@ -61,6 +62,9 @@ async function fetchMikaTimingTotalParticipants(
   const listUrl = `${parts.baseUrl}?pid=list&pidp=start&page=1`
   const listFields = buildMikaTimingListFormFields({ ...parts, event })
   const firstPageHtml = await fetchMikaTimingHtml(listUrl, parts.baseUrl, listFields)
+  const fromHeader = parseMikaTimingListParticipantCount(firstPageHtml)
+  if (fromHeader !== undefined) return fromHeader
+
   const maxPage = parseMikaTimingMaxListPage(firstPageHtml)
 
   const lastPageUrl = `${parts.baseUrl}?pid=list&pidp=start&page=${maxPage}`

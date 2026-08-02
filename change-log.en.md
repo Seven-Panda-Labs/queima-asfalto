@@ -9,6 +9,7 @@
 ### Fixed
 
 - **Official results:** MikaTiming picks the correct overall rank column (layout varies by event).
+- **Official results:** MikaTiming finisher count without sex filter (list header).
 
 ---
 
