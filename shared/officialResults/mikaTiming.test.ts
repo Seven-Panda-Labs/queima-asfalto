@@ -6,6 +6,7 @@ import { matchesResultsProfile } from './matchName'
 import {
   buildMikaTimingSearchFormFields,
   parseMikaTimingDisplayName,
+  parseMikaTimingListParticipantCount,
   parseMikaTimingMaxListPage,
   parseMikaTimingOverallPlaceColumn,
   parseMikaTimingSearchEventCodesFromHtml,
@@ -147,6 +148,13 @@ describe('buildMikaTimingSearchFormFields', () => {
       'search[start_no]': '',
       submit: '',
     })
+  })
+})
+
+describe('parseMikaTimingListParticipantCount', () => {
+  it('reads finisher count from list header', () => {
+    const html = '<span class="list-info__text str_num">9371 Results</span>'
+    expect(parseMikaTimingListParticipantCount(html)).toBe(9371)
   })
 })
 

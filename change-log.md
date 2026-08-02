@@ -9,6 +9,7 @@
 ### Corrigido
 
 - **Resultados oficiais:** MikaTiming usa a coluna de classificação geral correta (varia por evento).
+- **Resultados oficiais:** total de participantes MikaTiming sem filtro de sexo (cabeçalho da lista).
 
 ---
 

@@ -9,6 +9,7 @@
 ### Behoben
 
 - **Offizielle Ergebnisse:** MikaTiming nutzt die richtige Gesamtplatz-Spalte (layoutabhängig pro Event).
+- **Offizielle Ergebnisse:** MikaTiming-Teilnehmerzahl ohne Geschlechtsfilter (Listenkopf).
 
 ---
 
