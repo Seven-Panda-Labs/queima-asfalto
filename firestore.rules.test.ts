@@ -231,6 +231,104 @@ describe('firestore.rules', () => {
         }),
       )
     })
+
+    it('denies stripping accountStatus with a full profile overwrite', async () => {
+      const userId = 'user-pending'
+      await seedDocument(`users/${userId}`, {
+        name: 'Pending',
+        email: 'pending@example.com',
+        accountStatus: 'pending',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // A set() without merge simply omits accountStatus. Allowing it would let
+      // the user inherit the "approved" default in userAccountStatus().
+      await assertFails(db.doc(`users/${userId}`).set({ name: 'Pending' }))
+      await assertFails(db.doc(`users/${userId}`).update({ accountStatus: null }))
+      await assertFails(db.collection('events').doc('event-1').set(validEventPayload(userId)))
+    })
+
+    it('denies a rejected user from clearing their rejection', async () => {
+      const userId = 'user-rejected'
+      await seedDocument(`users/${userId}`, {
+        name: 'Rejected',
+        accountStatus: 'rejected',
+        rejectedAt: Timestamp.fromDate(new Date('2026-01-01T00:00:00Z')),
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(db.doc(`users/${userId}`).set({ name: 'Rejected' }))
+      await assertFails(db.doc(`users/${userId}`).update({ rejectedAt: null }))
+      await assertFails(
+        db.doc(`users/${userId}`).update({ accountStatus: 'approved' }),
+      )
+      await assertFails(db.collection('events').doc('event-1').set(validEventPayload(userId)))
+    })
+
+    it('allows profile updates once the server has written the approval fields', async () => {
+      const userId = 'user-approved'
+      await seedDocument(`users/${userId}`, {
+        name: 'Approved',
+        accountStatus: 'approved',
+        approvedAt: Timestamp.fromDate(new Date('2026-01-01T00:00:00Z')),
+        approvedBy: 'admin@example.com',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // On an update request.resource.data is the post-merge document, so a
+      // presence check on approvedAt would deny every one of these.
+      await assertSucceeds(db.doc(`users/${userId}`).set({ appLanguage: 'pt' }, { merge: true }))
+      await assertSucceeds(
+        db.doc(`users/${userId}`).set(
+          { notificationsEnabled: true, reminderDaysBefore: 3, reminderTime: '08:00' },
+          { merge: true },
+        ),
+      )
+      await assertSucceeds(
+        db.doc(`users/${userId}`).set({ resultFirstName: 'Zé' }, { merge: true }),
+      )
+      await assertSucceeds(db.doc(`users/${userId}`).update({ appLanguage: 'en' }))
+    })
+
+    it('denies changing or forging the approval fields on an approved profile', async () => {
+      const userId = 'user-approved'
+      await seedDocument(`users/${userId}`, {
+        name: 'Approved',
+        accountStatus: 'approved',
+        approvedAt: Timestamp.fromDate(new Date('2026-01-01T00:00:00Z')),
+        approvedBy: 'admin@example.com',
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.doc(`users/${userId}`).update({
+          approvedAt: Timestamp.fromDate(new Date('2026-02-02T00:00:00Z')),
+        }),
+      )
+      await assertFails(db.doc(`users/${userId}`).update({ approvedBy: 'me@example.com' }))
+      await assertFails(db.doc(`users/${userId}`).update({ approvedAt: null }))
+      await assertFails(db.doc(`users/${userId}`).set({ name: 'Approved' }))
+    })
+
+    it('denies adding approval fields to a profile that has none', async () => {
+      const userId = 'user-plain'
+      await seedDocument(`users/${userId}`, { name: 'Plain' })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(db.doc(`users/${userId}`).set({ appLanguage: 'pt' }, { merge: true }))
+      await assertFails(db.doc(`users/${userId}`).update({ accountStatus: 'approved' }))
+      await assertFails(
+        db.doc(`users/${userId}`).update({
+          approvedAt: Timestamp.fromDate(new Date('2026-01-01T00:00:00Z')),
+        }),
+      )
+      await assertFails(db.doc(`users/${userId}`).update({ approvedBy: 'me@example.com' }))
+    })
   })
 
   describe('events', () => {
@@ -800,6 +898,37 @@ describe('firestore.rules', () => {
             reminderTime: '08:00',
             resultFirstName: 'Zé',
             resultLastName: 'Ninguém',
+          },
+          { merge: true },
+        ),
+      )
+    })
+
+    it('allows a profile restore on an account the server already approved', async () => {
+      await seedDocument(`users/${userId}`, {
+        name: 'Alice',
+        email: 'alice@example.com',
+        accountStatus: 'approved',
+        approvedAt: Timestamp.fromDate(new Date('2026-01-01T00:00:00Z')),
+        approvedBy: 'admin@example.com',
+      })
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // The exact payload sanitizeProfileForRestore() produces: approval fields
+      // and fcmTokens stripped, everything else restored verbatim.
+      await assertSucceeds(
+        db.doc(`users/${userId}`).set(
+          {
+            name: 'Zé Ninguém',
+            email: 'ze@example.test',
+            appLanguage: 'pt',
+            notificationsEnabled: true,
+            reminderDaysBefore: 3,
+            reminderTime: '08:30',
+            resultFirstName: 'Zé',
+            resultNameAliases: ['Ze Ninguem'],
+            createdAt: Timestamp.fromDate(new Date('2025-10-01T10:00:00Z')),
+            updatedAt: Timestamp.fromDate(new Date('2026-08-01T10:00:00Z')),
           },
           { merge: true },
         ),

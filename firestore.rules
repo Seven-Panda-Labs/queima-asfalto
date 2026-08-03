@@ -10,6 +10,10 @@ service cloud.firestore {
       return isSignedIn() && request.auth.uid == userId;
     }
 
+    // A missing accountStatus means "approved" so instances that never enabled
+    // account approval keep working. That default is only safe because
+    // clientPreservesAccountApprovalOnUpdate() makes the field immutable from
+    // the client — otherwise stripping it would be a privilege escalation.
     function userAccountStatus(userId) {
       let userDoc = get(/databases/$(database)/documents/users/$(userId));
       return userDoc != null && userDoc.data != null && 'accountStatus' in userDoc.data
@@ -28,12 +32,22 @@ service cloud.firestore {
         && !('rejectedAt' in request.resource.data);
     }
 
+    // The approval fields must come out of an update byte-identical: absent
+    // stays absent, present stays unchanged.
+    //
+    // Checking `!(field in request.resource.data)` instead would be wrong twice
+    // over. On an update, request.resource.data is the *post-merge* document,
+    // not the patch, so once the server has written approvedAt every client
+    // write is denied. And a full overwrite that simply omits accountStatus
+    // passes such a check, letting a pending user strip the field and inherit
+    // the "approved" default in userAccountStatus().
     function clientPreservesAccountApprovalOnUpdate() {
-      return (!('accountStatus' in request.resource.data)
-          || request.resource.data.accountStatus == resource.data.accountStatus)
-        && !('approvedAt' in request.resource.data)
-        && !('approvedBy' in request.resource.data)
-        && !('rejectedAt' in request.resource.data);
+      let incoming = request.resource.data;
+      let current = resource.data;
+      return incoming.get('accountStatus', null) == current.get('accountStatus', null)
+        && incoming.get('approvedAt', null) == current.get('approvedAt', null)
+        && incoming.get('approvedBy', null) == current.get('approvedBy', null)
+        && incoming.get('rejectedAt', null) == current.get('rejectedAt', null);
     }
 
     function validEventStatus(status) {

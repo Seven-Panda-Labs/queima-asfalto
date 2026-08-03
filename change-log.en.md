@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.1] — 2026-08-03
+
+### Fixed
+
+- **Security:** Firestore rules now treat the account approval fields as immutable from the client. A pending or rejected account could previously strip its own `accountStatus` in a single write and gain full access.
+- **Settings:** on instances with account approval enabled, saving language, notification preferences and results profile works again. Every write was denied once the account had been approved.
+
+---
+
 ## [1.15.0] — 2026-08-03
 
 ### Added

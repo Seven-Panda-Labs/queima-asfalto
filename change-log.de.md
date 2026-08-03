@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.1] — 2026-08-03
+
+### Behoben
+
+- **Sicherheit:** Die Firestore-Regeln behandeln die Felder zur Kontofreigabe jetzt als clientseitig unveränderlich. Ein wartendes oder abgelehntes Konto konnte zuvor mit einem einzigen Schreibvorgang sein eigenes `accountStatus` entfernen und volle Zugriffsrechte erhalten.
+- **Einstellungen:** Auf Instanzen mit aktivierter Kontofreigabe lassen sich Sprache, Benachrichtigungseinstellungen und Ergebnisprofil wieder speichern. Bisher wurde jeder Schreibvorgang abgelehnt, sobald das Konto freigegeben war.
+
+---
+
 ## [1.15.0] — 2026-08-03
 
 ### Hinzugefügt
