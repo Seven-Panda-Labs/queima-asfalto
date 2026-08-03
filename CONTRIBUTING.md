@@ -46,11 +46,13 @@ cp .firebaserc.example .firebaserc
 
 Preenche `.env.local` (ver [`.env.example`](../.env.example) e [`docs/configuration.md`](docs/configuration.md)). Plano Spark gratuito chega para dev.
 
-Activa o hook de pre-commit (recomendado, uma vez por clone):
+Activa os git hooks (recomendado, uma vez por clone):
 
 ```bash
 npm run setup:githooks
 ```
+
+O `pre-commit` bloqueia bumps de `package.json` sem changelogs em stage; o `pre-push` bloqueia push para `main`/`master`.
 
 ```bash
 npm run dev          # http://localhost:5173
@@ -208,11 +210,13 @@ cp .firebaserc.example .firebaserc
 
 Fill in `.env.local` (see [`.env.example`](../.env.example) and [`docs/configuration.md`](docs/configuration.md)). Free Spark plan is enough for dev.
 
-Enable the pre-commit hook (recommended, once per clone):
+Enable the git hooks (recommended, once per clone):
 
 ```bash
 npm run setup:githooks
 ```
+
+`pre-commit` blocks `package.json` bumps without staged changelogs; `pre-push` blocks pushes to `main`/`master`.
 
 ```bash
 npm run dev          # http://localhost:5173

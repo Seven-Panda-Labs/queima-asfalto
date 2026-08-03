@@ -2,11 +2,20 @@
 
 **Public repository:** [github.com/Seven-Panda-Labs/queima-asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto)
 
-This file defines how AI agents (Cursor, CI bots, etc.) should work in this repo **from July 2026 onward**. Humans: see [CONTRIBUTING.md](CONTRIBUTING.md) as well.
+This file defines how AI agents (Claude Code, Cursor, Copilot, CI bots, etc.) should work in this repo. Humans: see [CONTRIBUTING.md](CONTRIBUTING.md) as well.
+
+It is the **single source of truth** — tool-specific files only point here, never restate rules:
+
+| Tool | File |
+|------|------|
+| Claude Code | `CLAUDE.md` (symlink to this file) |
+| Cursor | [`.cursor/rules/public-repo-workflow.mdc`](.cursor/rules/public-repo-workflow.mdc) (pointer) |
 
 ## Golden rule
 
 **Nothing lands on `main` without a reviewed PR and green CI.** Do not push directly to `main`, except when the user explicitly requests an emergency hotfix **and** confirms they may bypass the normal flow.
+
+This is enforced, not just documented — see [Enforcement](#enforcement).
 
 ## Mandatory Git workflow
 
@@ -59,6 +68,17 @@ This file defines how AI agents (Cursor, CI bots, etc.) should work in this repo
 - `--no-verify` / skip hooks without request
 - Secrets, real PII, or credentials in code, commits, or PRs
 - Large PRs mixing feature + refactor + formatting
+
+## Enforcement
+
+Local git hooks (enable once per clone with `npm run setup:githooks`):
+
+| Hook | Blocks |
+|------|--------|
+| `.githooks/pre-push` | Any push to `main` / `master`, including force-push and delete |
+| `.githooks/pre-commit` | `package.json` version bump without staged changelogs |
+
+The pre-push hook covers every agent and human that shells out to `git`. Emergency hotfix, only on explicit user instruction: `ALLOW_MAIN_PUSH=1 git push origin main`.
 
 ## Commits
 

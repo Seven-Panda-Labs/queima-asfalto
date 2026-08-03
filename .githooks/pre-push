@@ -1,0 +1,28 @@
+#!/bin/sh
+# Bloqueia push para main/master. Nada entra em main sem PR revisto.
+# Hotfix de emergência (decisão explícita do maintainer):
+#   ALLOW_MAIN_PUSH=1 git push origin main
+
+set -e
+
+if [ "$ALLOW_MAIN_PUSH" = "1" ]; then
+  exit 0
+fi
+
+# stdin: <local ref> <local sha> <remote ref> <remote sha>
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  case "$remote_ref" in
+  refs/heads/main | refs/heads/master)
+    branch=${remote_ref#refs/heads/}
+    echo "pre-push: refusing to push to '${branch}'."
+    echo "Open a pull request instead:"
+    echo "  git switch -c feat/short-description"
+    echo "  git push -u origin HEAD"
+    echo "  gh pr create --base main"
+    echo "Emergency hotfix (maintainer decision): ALLOW_MAIN_PUSH=1 git push origin ${branch}"
+    exit 1
+    ;;
+  esac
+done
+
+exit 0
