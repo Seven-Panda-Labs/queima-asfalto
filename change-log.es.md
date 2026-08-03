@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.1] — 2026-08-03
+
+### Corregido
+
+- **Seguridad:** las reglas de Firestore tratan ahora los campos de aprobación de cuenta como inmutables desde el cliente. Antes, una cuenta pendiente o rechazada podía borrar su propio `accountStatus` en una sola escritura y obtener acceso total.
+- **Ajustes:** en instancias con la aprobación de cuentas activada, vuelve a guardarse el idioma, las preferencias de notificaciones y el perfil de resultados. Todas las escrituras se rechazaban una vez aprobada la cuenta.
+
+---
+
 ## [1.15.0] — 2026-08-03
 
 ### Añadido
