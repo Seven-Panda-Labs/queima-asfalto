@@ -63,9 +63,22 @@ No projeto Firebase:
 |---------|---------|-------|
 | **Authentication** | Build → Authentication → Get started | Provider **Google** (passo 4) |
 | **Firestore** | Build → Firestore → Create database | Modo **production**; região à tua escolha (ex. `europe-west1`) |
-| **Storage** | Build → Storage → Get started | Regras iniciais; o deploy sobrescreve com `storage.rules` |
+| **Storage** | Build → Storage → Get started | Regras iniciais; o deploy sobrescreve com `storage.rules`. Para o backup incluir os ficheiros de fotos/vídeos, configura **CORS** no bucket (ver abaixo) |
 | **Hosting** | Build → Hosting → Get started | O deploy envia `dist/` |
 | **Functions** | Será activado no primeiro `firebase deploy --only functions` | Node **24** (ver `firebase.json`) |
+
+#### CORS no bucket (necessário para o backup com fotos e vídeos)
+
+O backup lê os ficheiros com a API `getBytes` do Storage, que é sujeita a CORS. Sem isto, o backup ainda funciona — mas só com os metadados das fotos e vídeos.
+
+```bash
+cat > cors.json <<'JSON'
+[{ "origin": ["https://TEU-PROJETO.web.app"], "method": ["GET"], "maxAgeSeconds": 3600 }]
+JSON
+gcloud storage buckets update gs://TEU-PROJETO.appspot.com --cors-file=cors.json
+```
+
+Substitui `TEU-PROJETO` e acrescenta `http://localhost:5173` se quiseres testar em dev.
 
 ### Passo 4 — Authentication (Google)
 
@@ -230,6 +243,7 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 - [ ] Login com Google em produção
 - [ ] Criar/editar evento com localização (Geoapify)
 - [ ] Upload de foto num evento (Storage)
+- [ ] Exportar backup em Definições → Dados com «Incluir os ficheiros de fotos e vídeos» e confirmar que o `.zip` traz a pasta `media/` (requer CORS)
 - [ ] Importar resultado oficial num evento com URL de timing (Cloud Function `lookupOfficialResults`)
 - [ ] Confirmar que o aviso `/aviso-resultados` está acessível (incluído na app; ver [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md))
 - [ ] Convite de partilha por email (Cloud Function `inviteShare`)
@@ -253,6 +267,7 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 | Geoapify 403 | Referrers na chave Geoapify; domínio de produção incluído |
 | `dispatchReminders` não corre | Plano Blaze; Cloud Scheduler API activa; logs em Functions → `dispatchReminders` |
 | Storage upload negado | Regras deployadas; utilizador autenticado; ficheiro dentro dos limites (`storage.rules`) |
+| Backup sem a pasta `media/` | Falta **CORS** no bucket (ver Passo 3), ou as fotos/vídeos passam do limite de 300 MB. Sem CORS o backup continua a funcionar, mas só com metadados |
 | Aprovação: login bloqueado / sem email | Identity Platform activo; `functions/.env` completo; Resend e domínio OK; redeploy Functions + Hosting |
 | Link de aprovação inválido | `APPROVAL_TOKEN_SECRET` igual ao deploy; token expirado (7 dias); `APP_PUBLIC_URL` correcto |
 
@@ -319,9 +334,22 @@ In your Firebase project:
 |---------|---------|-------|
 | **Authentication** | Build → Authentication → Get started | **Google** provider (step 4) |
 | **Firestore** | Build → Firestore → Create database | **Production** mode; pick a region (e.g. `europe-west1`) |
-| **Storage** | Build → Storage → Get started | Initial rules; deploy overwrites with `storage.rules` |
+| **Storage** | Build → Storage → Get started | Initial rules; deploy overwrites with `storage.rules`. For backups to include the photo/video files, configure **CORS** on the bucket (see below) |
 | **Hosting** | Build → Hosting → Get started | Deploy sends `dist/` |
 | **Functions** | Enabled on first `firebase deploy --only functions` | Node **24** (see `firebase.json`) |
+
+#### Bucket CORS (required for backups with photos and videos)
+
+The backup reads the files with the Storage `getBytes` API, which is subject to CORS. Without it the backup still works — with photo and video metadata only.
+
+```bash
+cat > cors.json <<'JSON'
+[{ "origin": ["https://YOUR-PROJECT.web.app"], "method": ["GET"], "maxAgeSeconds": 3600 }]
+JSON
+gcloud storage buckets update gs://YOUR-PROJECT.appspot.com --cors-file=cors.json
+```
+
+Replace `YOUR-PROJECT`, and add `http://localhost:5173` if you want to test in dev.
 
 ### Step 4 — Authentication (Google)
 
@@ -486,6 +514,7 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 - [ ] Google Sign-In in production
 - [ ] Create/edit event with location (Geoapify)
 - [ ] Upload photo on an event (Storage)
+- [ ] Export a backup in Settings → Data with “Include the photo and video files” and confirm the `.zip` contains the `media/` folder (needs CORS)
 - [ ] Import official result on a timed event URL (`lookupOfficialResults`)
 - [ ] Confirm the `/aviso-resultados` notice is reachable (built into the app; see [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md))
 - [ ] Share invite by email (`inviteShare`)
@@ -509,5 +538,6 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 | Geoapify 403 | Referrers on Geoapify key; production domain included |
 | `dispatchReminders` not running | Blaze plan; Cloud Scheduler API enabled; Functions logs for `dispatchReminders` |
 | Storage upload denied | Rules deployed; authenticated user; file within limits (`storage.rules`) |
+| Backup has no `media/` folder | Bucket **CORS** is missing (see step 3), or the photos/videos exceed the 300 MB limit. Without CORS the backup still works, metadata only |
 | Approval: blocked login / no email | Identity Platform enabled; complete `functions/.env`; Resend and domain OK; redeploy Functions + Hosting |
 | Invalid approval link | Same `APPROVAL_TOKEN_SECRET` as deploy; token expired (7 days); correct `APP_PUBLIC_URL` |

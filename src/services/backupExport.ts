@@ -1,16 +1,20 @@
 import { collection, doc, getDoc, getDocs, query, where } from 'firebase/firestore'
+import { getBytes, ref } from 'firebase/storage'
 import { APP_VERSION } from '../appVersion'
 import { downloadBlob } from '../utils/downloadBlob'
-import { db } from './firebase'
+import { db, storage } from './firebase'
 import { loadFflate } from './zipLoader'
 import {
   BACKUP_SECTION_COLLECTIONS,
   PROFILE_FIELDS_NEVER_EXPORTED,
   backupFileName,
   buildBackupTextFiles,
+  emptyBackupMediaFiles,
   emptyBackupSections,
   encodeDocumentData,
+  planMediaExport,
   type BackupDocument,
+  type BackupMediaFiles,
   type BackupPayload,
   type BackupSectionKey,
 } from './backupFormat'
@@ -18,9 +22,13 @@ import {
 /** Concurrent per-event media queries. Keeps progress meaningful without stalling the app. */
 const MEDIA_READ_CONCURRENCY = 8
 
+/** Binary downloads are far heavier than metadata queries, so fewer at once. */
+const MEDIA_DOWNLOAD_CONCURRENCY = 4
+
 export type BackupExportProgress =
   | { phase: 'collections' }
   | { phase: 'media'; done: number; total: number }
+  | { phase: 'mediaFiles'; done: number; total: number; bytes: number; totalBytes: number }
   | { phase: 'zipping' }
 
 export type BackupExportWarning =
@@ -28,12 +36,21 @@ export type BackupExportWarning =
   | 'media_partially_read'
   | 'shares_export_only'
   | 'media_binaries_excluded'
+  | 'media_files_included'
+  | 'media_files_too_large'
+  | 'media_files_partially_downloaded'
   | 'no_data'
+
+export type BackupExportOptions = {
+  /** Download photo and video binaries into the zip. Defaults to true. */
+  includeMediaFiles?: boolean
+}
 
 export type BackupExportResult = {
   filename: string
   sizeBytes: number
   counts: Record<BackupSectionKey, number>
+  mediaFileCount: number
   warnings: BackupExportWarning[]
 }
 
@@ -153,10 +170,67 @@ async function readEventMedia(
   return { documents: perEvent.flat(), partial }
 }
 
+/**
+ * Downloads the photo and video binaries planned for this backup.
+ *
+ * `getBytes` is the CORS-sensitive Storage API: on a real bucket it needs a CORS
+ * configuration allowing the app origin (see docs/self-hosting.md). A download
+ * failure degrades to a warning rather than losing the whole backup.
+ */
+async function downloadMediaFiles(
+  mediaDocuments: readonly BackupDocument[],
+  onProgress?: (progress: BackupExportProgress) => void,
+): Promise<{ mediaFiles: BackupMediaFiles; warnings: BackupExportWarning[] }> {
+  const plan = planMediaExport(mediaDocuments)
+  const warnings: BackupExportWarning[] = []
+
+  if (plan.capExceeded) {
+    return { mediaFiles: emptyBackupMediaFiles(), warnings: ['media_files_too_large'] }
+  }
+  if (plan.files.length === 0) {
+    return { mediaFiles: emptyBackupMediaFiles(), warnings: [] }
+  }
+
+  const mediaFiles = emptyBackupMediaFiles()
+  let done = 0
+  let bytes = 0
+  let failed = 0
+  onProgress?.({ phase: 'mediaFiles', done, total: plan.files.length, bytes, totalBytes: plan.totalBytes })
+
+  await mapWithConcurrency(plan.files, MEDIA_DOWNLOAD_CONCURRENCY, async (file) => {
+    try {
+      const buffer = await getBytes(ref(storage, file.storagePath))
+      mediaFiles.set(file.entryName, new Uint8Array(buffer))
+      bytes += buffer.byteLength
+    } catch {
+      failed += 1
+    } finally {
+      done += 1
+      onProgress?.({
+        phase: 'mediaFiles',
+        done,
+        total: plan.files.length,
+        bytes,
+        totalBytes: plan.totalBytes,
+      })
+    }
+  })
+
+  if (failed > 0 || plan.skipped.length > 0) warnings.push('media_files_partially_downloaded')
+  if (mediaFiles.size > 0) warnings.push('media_files_included')
+
+  return { mediaFiles, warnings }
+}
+
 export async function collectUserBackup(
   userId: string,
+  options: BackupExportOptions = {},
   onProgress?: (progress: BackupExportProgress) => void,
-): Promise<{ payload: BackupPayload; warnings: BackupExportWarning[] }> {
+): Promise<{
+  payload: BackupPayload
+  mediaFiles: BackupMediaFiles
+  warnings: BackupExportWarning[]
+}> {
   onProgress?.({ phase: 'collections' })
 
   const [events, goals, performanceGoals, bucketListItems, shares, userProfile] = await Promise.all(
@@ -184,7 +258,16 @@ export async function collectUserBackup(
   sections.shares = shares
   sections.userProfile = userProfile
 
-  const warnings: BackupExportWarning[] = ['media_binaries_excluded']
+  const warnings: BackupExportWarning[] = []
+  let mediaFiles = emptyBackupMediaFiles()
+
+  if (options.includeMediaFiles !== false && media.documents.length > 0) {
+    const downloaded = await downloadMediaFiles(media.documents, onProgress)
+    mediaFiles = downloaded.mediaFiles
+    warnings.push(...downloaded.warnings)
+  }
+  if (mediaFiles.size === 0) warnings.push('media_binaries_excluded')
+
   if (shares.length > 0) warnings.push('shares_export_only')
   if (media.partial) warnings.push('media_partially_read')
   if (events.fromCache) warnings.push('from_cache')
@@ -199,19 +282,28 @@ export async function collectUserBackup(
 
   return {
     payload: { userId, exportedAt: new Date(), appVersion: APP_VERSION, sections },
+    mediaFiles,
     warnings,
   }
 }
 
 export async function buildUserBackupZip(
   payload: BackupPayload,
+  mediaFiles: BackupMediaFiles = emptyBackupMediaFiles(),
 ): Promise<{ blob: Blob; filename: string }> {
   const { zipSync, strToU8 } = await loadFflate()
 
-  const entries = Object.fromEntries(
-    Object.entries(buildBackupTextFiles(payload)).map(([name, text]) => [name, strToU8(text)]),
-  )
-  const zipped = zipSync(entries, { level: 6, mtime: payload.exportedAt })
+  const entries: Record<string, [Uint8Array, { level: 0 | 6 }]> = {}
+  for (const [name, text] of Object.entries(buildBackupTextFiles(payload, mediaFiles))) {
+    entries[name] = [strToU8(text), { level: 6 }]
+  }
+  for (const [name, bytes] of mediaFiles) {
+    // Photos and videos are already compressed: deflating them burns CPU for
+    // roughly no gain, so they go in stored.
+    entries[name] = [bytes, { level: 0 }]
+  }
+
+  const zipped = zipSync(entries, { mtime: payload.exportedAt })
 
   return {
     blob: new Blob([zipped as BlobPart], { type: 'application/zip' }),
@@ -222,12 +314,13 @@ export async function buildUserBackupZip(
 /** Collects, zips and downloads the signed-in user's whole dataset. */
 export async function exportUserBackup(
   userId: string,
+  options: BackupExportOptions = {},
   onProgress?: (progress: BackupExportProgress) => void,
 ): Promise<BackupExportResult> {
-  const { payload, warnings } = await collectUserBackup(userId, onProgress)
+  const { payload, mediaFiles, warnings } = await collectUserBackup(userId, options, onProgress)
 
   onProgress?.({ phase: 'zipping' })
-  const { blob, filename } = await buildUserBackupZip(payload)
+  const { blob, filename } = await buildUserBackupZip(payload, mediaFiles)
   downloadBlob(blob, filename)
 
   const counts = {} as Record<BackupSectionKey, number>
@@ -235,5 +328,5 @@ export async function exportUserBackup(
     counts[key as BackupSectionKey] = documents.length
   }
 
-  return { filename, sizeBytes: blob.size, counts, warnings }
+  return { filename, sizeBytes: blob.size, counts, mediaFileCount: mediaFiles.size, warnings }
 }

@@ -4,6 +4,15 @@
 
 ---
 
+## [1.16.0] — 2026-08-03
+
+### Añadido
+
+- **Copia con fotos y vídeos:** el `.zip` de la copia ahora incluye los archivos de fotos y vídeos, no solo sus metadatos. Puedes desactivar la opción antes de exportar; por encima de 300 MB la copia solo guarda los datos.
+- **Restauración de fotos y vídeos:** con los archivos en el `.zip`, las fotos y vídeos vuelven incluso en el modo «sustituir todo» y al restaurar en otra cuenta — antes solo se recuperaban si seguían en la cuenta.
+
+---
+
 ## [1.15.1] — 2026-08-03
 
 ### Corregido

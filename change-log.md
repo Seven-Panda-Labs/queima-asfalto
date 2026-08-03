@@ -4,6 +4,15 @@
 
 ---
 
+## [1.16.0] — 2026-08-03
+
+### Adicionado
+
+- **Backup com fotos e vídeos:** o `.zip` de backup passa a incluir os ficheiros de fotos e vídeos, não só os metadados. Podes desligar a opção antes de exportar; acima de 300 MB o backup fica só com os dados.
+- **Restauro de fotos e vídeos:** com os ficheiros no `.zip`, as fotos e vídeos voltam mesmo no modo «substituir tudo» e ao restaurar noutra conta — antes só eram recuperáveis se ainda estivessem na conta.
+
+---
+
 ## [1.15.1] — 2026-08-03
 
 ### Corrigido

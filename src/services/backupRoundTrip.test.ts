@@ -210,11 +210,19 @@ function buildPayload(): { payload: BackupPayload; raw: ReturnType<typeof rawFix
   }
 }
 
-function zipPayload(payload: BackupPayload): Uint8Array {
-  const files = Object.fromEntries(
-    Object.entries(buildBackupTextFiles(payload)).map(([name, text]) => [name, strToU8(text)]),
-  )
-  return zipSync(files, { level: 6, mtime: payload.exportedAt })
+/** Mirrors buildUserBackupZip: json deflated, binaries stored. */
+function zipPayload(
+  payload: BackupPayload,
+  mediaFiles: Map<string, Uint8Array> = new Map(),
+): Uint8Array {
+  const entries: Record<string, [Uint8Array, { level: 0 | 6 }]> = {}
+  for (const [name, text] of Object.entries(buildBackupTextFiles(payload, mediaFiles))) {
+    entries[name] = [strToU8(text), { level: 6 }]
+  }
+  for (const [name, bytes] of mediaFiles) {
+    entries[name] = [bytes, { level: 0 }]
+  }
+  return zipSync(entries, { mtime: payload.exportedAt })
 }
 
 function unzipToText(bytes: Uint8Array): Record<string, string> {
@@ -319,6 +327,75 @@ describe('backup zip round trip', () => {
     expect(() => parseBackupTextFiles(files)).toThrow(
       expect.objectContaining({ code: 'count_mismatch' }),
     )
+  })
+
+  it('round-trips photo and video binaries byte for byte', () => {
+    const { payload } = buildPayload()
+    // Non-text bytes on purpose: a JPEG SOI marker and a high-entropy tail.
+    const photo = new Uint8Array([0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0xff])
+    const video = new Uint8Array(2048)
+    for (let index = 0; index < video.length; index += 1) video[index] = (index * 31 + 7) % 256
+
+    const mediaFiles = new Map([
+      ['media/event-complete/media-photo.jpg', photo],
+      ['media/event-complete/media-video.mp4', video],
+    ])
+
+    const bytes = zipPayload(payload, mediaFiles)
+    const entries = unzipSync(bytes)
+
+    expect(new Uint8Array(entries['media/event-complete/media-photo.jpg'])).toEqual(photo)
+    expect(new Uint8Array(entries['media/event-complete/media-video.mp4'])).toEqual(video)
+  })
+
+  it('stores binaries uncompressed and still deflates the json', () => {
+    const { payload } = buildPayload()
+    // Highly compressible, so a deflated entry would be much smaller than stored.
+    const compressible = new Uint8Array(4096)
+    const mediaFiles = new Map([['media/event-complete/media-photo.jpg', compressible]])
+
+    const bytes = zipPayload(payload, mediaFiles)
+    const entries = unzipSync(bytes)
+
+    expect(new Uint8Array(entries['media/event-complete/media-photo.jpg'])).toEqual(compressible)
+    // The stored 4 KiB survives in the archive rather than collapsing to ~30 bytes.
+    expect(bytes.byteLength).toBeGreaterThan(4096)
+    // The JSON, by contrast, is deflated well below its own length.
+    expect(bytes.byteLength).toBeLessThan(
+      4096 + Object.values(buildBackupTextFiles(payload, mediaFiles)).join('').length,
+    )
+  })
+
+  it('separates media entries from json when reading, and counts them in the manifest', () => {
+    const { payload } = buildPayload()
+    const mediaFiles = new Map([
+      ['media/event-complete/media-photo.jpg', new Uint8Array([1, 2, 3, 4])],
+    ])
+
+    const entries = unzipSync(zipPayload(payload, mediaFiles))
+    const text: Record<string, string> = {}
+    const binaries = new Map<string, Uint8Array>()
+    for (const [name, data] of Object.entries(entries)) {
+      if (name.startsWith('media/')) binaries.set(name, data)
+      else text[name] = strFromU8(data)
+    }
+
+    const parsed = parseBackupTextFiles(text, binaries)
+
+    expect(parsed.manifest.mediaFiles).toEqual({ count: 1, sizeBytes: 4 })
+    expect(parsed.mediaFiles.size).toBe(1)
+    expect(parsed.unknownFiles).toEqual([])
+    // Metadata is unaffected by the presence of binaries.
+    expect(parsed.sections).toEqual(payload.sections)
+  })
+
+  it('reads a metadata-only backup as carrying no binaries', () => {
+    const { payload } = buildPayload()
+
+    const parsed = parseBackupTextFiles(unzipToText(zipPayload(payload)))
+
+    expect(parsed.mediaFiles.size).toBe(0)
+    expect(parsed.manifest.mediaFiles).toEqual({ count: 0, sizeBytes: 0 })
   })
 
   it('reads an xlsx-shaped zip as a missing manifest rather than a corrupt file', () => {

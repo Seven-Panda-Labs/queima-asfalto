@@ -251,12 +251,18 @@ export function BackupSection({ embedded = false }: BackupSectionProps) {
         title={t('backup.confirmReplaceTitle')}
         message={
           existing
-            ? t('backup.confirmReplaceMessage', {
-                events: existing.events,
-                goals: existing.goals,
-                performanceGoals: existing.performanceGoals,
-                bucketListItems: existing.bucketListItems,
-              })
+            ? t(
+                // Photos and videos are only destroyed when the zip cannot put them back.
+                summary?.hasMediaFiles
+                  ? 'backup.confirmReplaceMessageWithMedia'
+                  : 'backup.confirmReplaceMessage',
+                {
+                  events: existing.events,
+                  goals: existing.goals,
+                  performanceGoals: existing.performanceGoals,
+                  bucketListItems: existing.bucketListItems,
+                },
+              )
             : t('backup.confirmReplaceMessageGeneric')
         }
         confirmLabel={t('backup.confirmReplaceConfirm')}
