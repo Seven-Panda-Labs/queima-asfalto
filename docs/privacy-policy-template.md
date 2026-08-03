@@ -122,7 +122,7 @@ Nos termos do GDPR, os utilizadores podem solicitar:
 
 - Acesso, rectificação, apagamento
 - Limitação ou oposição ao tratamento
-- Portabilidade (dados fornecidos por eles, em formato estruturado)
+- Portabilidade (dados fornecidos por eles, em formato estruturado) — disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
 - Retirar consentimento (ex.: notificações push) sem afectar tratamentos anteriores
 - Reclamação junto da autoridade de controlo (em Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -298,7 +298,7 @@ Under GDPR, users may request:
 
 - Access, rectification, erasure
 - Restriction or objection to processing
-- Portability (data they provided, in a structured format)
+- Portability (data they provided, in a structured format) — available directly in the app under Settings → Data → “Export backup (.zip)”
 - Withdraw consent (e.g. push notifications) without affecting prior processing
 - Lodge a complaint with a supervisory authority (Portugal: [CNPD](https://www.cnpd.pt))
 

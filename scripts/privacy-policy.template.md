@@ -72,7 +72,7 @@ Nos termos do RGPD, os utilizadores podem solicitar:
 
 - Acesso, rectificação, apagamento
 - Limitação ou oposição ao tratamento
-- Portabilidade (dados fornecidos por eles, em formato estruturado)
+- Portabilidade (dados fornecidos por eles, em formato estruturado) — disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
 - Retirar consentimento (ex.: notificações push) sem afectar tratamentos anteriores
 - Reclamação junto da autoridade de controlo (em Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -168,7 +168,7 @@ Under GDPR, users may request:
 
 - Access, rectification, erasure
 - Restriction or objection to processing
-- Portability (data they provided, in a structured format)
+- Portability (data they provided, in a structured format) — available directly in the app under Settings → Data → “Export backup (.zip)”
 - Withdraw consent (e.g. push notifications) without affecting prior processing
 - Lodge a complaint with a supervisory authority (Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -264,7 +264,7 @@ En virtud del RGPD, los usuarios pueden solicitar:
 
 - Acceso, rectificación, supresión
 - Limitación u oposición al tratamiento
-- Portabilidad (datos que hayan facilitado, en formato estructurado)
+- Portabilidad (datos que hayan facilitado, en formato estructurado) — disponible directamente en la app en Ajustes → Datos → «Exportar copia (.zip)»
 - Retirar el consentimiento (p. ej., notificaciones push) sin afectar tratamientos anteriores
 - Presentar una reclamación ante una autoridad de control (Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -360,7 +360,7 @@ Nach DSGVO können Nutzer Folgendes beantragen:
 
 - Auskunft, Berichtigung, Löschung
 - Einschränkung oder Widerspruch gegen die Verarbeitung
-- Datenübertragbarkeit (von ihnen bereitgestellte Daten in strukturiertem Format)
+- Datenübertragbarkeit (von ihnen bereitgestellte Daten in strukturiertem Format) — direkt in der App unter Einstellungen → Daten → „Backup exportieren (.zip)“
 - Widerruf der Einwilligung (z. B. Push-Benachrichtigungen) ohne Beeinträchtigung früherer Verarbeitung
 - Beschwerde bei einer Aufsichtsbehörde (Portugal: [CNPD](https://www.cnpd.pt))
 
