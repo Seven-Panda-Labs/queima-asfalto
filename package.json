@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.14.2",
+  "version": "1.15.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -28,6 +28,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
     "chart.js": "^4.5.1",
+    "fflate": "^0.8.3",
     "firebase": "^12.15.0",
     "i18next": "^26.3.3",
     "leaflet": "^1.9.4",

@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.0] — 2026-08-03
+
+### Added
+
+- **Full backup:** export all your data as JSON inside a `.zip` file (events, goals, performance goals, bucket list, photo and video metadata, preferences and shares).
+- **Restore backup:** upload a backup `.zip` to put your data back, keeping the original document ids. You can merge into your current data or replace everything.
+
+---
+
 ## [1.14.2] — 2026-08-02
 
 ### Fixed

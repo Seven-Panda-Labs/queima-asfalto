@@ -44,3 +44,21 @@ export function formatImportSkipReason(reason: string): string {
   if (i18n.exists(key)) return i18n.t(key)
   return reason
 }
+
+export function formatBackupSectionLabel(section: string): string {
+  const key = `backup.sections.${section}`
+  if (i18n.exists(key)) return i18n.t(key)
+  return section
+}
+
+export function formatBackupRejectReason(reason: string): string {
+  const key = `backup.rejectReasons.${reason}`
+  if (i18n.exists(key)) return i18n.t(key)
+  return reason
+}
+
+export function formatBackupWarning(warning: string): string {
+  const key = `backup.warnings.${warning}`
+  if (i18n.exists(key)) return i18n.t(key)
+  return warning
+}

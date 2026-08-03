@@ -629,4 +629,195 @@ describe('firestore.rules', () => {
       await assertFails(db.doc(`users/${userId}/rateLimits/officialResults`).get())
     })
   })
+
+  describe('backup restore', () => {
+    const userId = 'user-alice'
+
+    async function seedApproved(): Promise<void> {
+      await seedDocument(`users/${userId}`, { name: 'Alice', accountStatus: 'approved' })
+    }
+
+    it('allows restoring every collection at explicit document ids', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(db.collection('goals').doc('goal-1').set(validGoalPayload(userId)))
+      await assertSucceeds(
+        db.collection('performanceGoals').doc('pg-1').set(validPerformanceGoalPayload(userId)),
+      )
+      await assertSucceeds(
+        db.collection('bucketListItems').doc('bucket-1').set(validBucketListPayload(userId)),
+      )
+    })
+
+    it('allows restoring an event that kept its legacy portuguese encodings', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-legacy')
+          .set(validEventPayload(userId, { status: 'Concluído', eventType: '21.1Km' })),
+      )
+    })
+
+    it('allows restoring an event with its original createdAt and updatedAt', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-1')
+          .set(
+            validEventPayload(userId, {
+              createdAt: Timestamp.fromDate(new Date('2024-01-15T10:00:00Z')),
+              updatedAt: Timestamp.fromDate(new Date('2024-02-20T11:30:00Z')),
+            }),
+          ),
+      )
+    })
+
+    it('allows restoring media metadata verbatim at preserved ids', async () => {
+      await seedApproved()
+      await seedEvent(userId, 'event-1')
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-1')
+          .collection('media')
+          .doc('media-1')
+          .set(validMediaPayload(userId, 'event-1', 'media-1')),
+      )
+    })
+
+    it('denies re-restoring a media document that already exists', async () => {
+      await seedApproved()
+      await seedEvent(userId, 'event-1')
+      await seedDocument(
+        'events/event-1/media/media-1',
+        validMediaPayload(userId, 'event-1', 'media-1'),
+      )
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // media is `allow update: if false`, so a merge-mode restore must pre-read
+      // existing ids and skip them rather than overwriting.
+      await assertFails(
+        db
+          .collection('events')
+          .doc('event-1')
+          .collection('media')
+          .doc('media-1')
+          .set(validMediaPayload(userId, 'event-1', 'media-1')),
+      )
+    })
+
+    it('allows a 500 document batch of explicit-id event creates', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // Each create costs one get(users/{uid}) for isApprovedUser(). Repeated
+      // access calls to the *same* document are counted once, so the batched
+      // write stays inside the 20 access call budget at any chunk size.
+      const batch = db.batch()
+      for (let index = 0; index < 500; index += 1) {
+        batch.set(db.collection('events').doc(`event-${index}`), validEventPayload(userId))
+      }
+
+      await assertSucceeds(batch.commit())
+    })
+
+    it('allows a media batch spanning 19 distinct events but denies 20', async () => {
+      await seedApproved()
+      for (let index = 0; index < 20; index += 1) {
+        await seedEvent(userId, `event-${index}`)
+      }
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      function mediaBatch(distinctEvents: number, mediaSuffix: string) {
+        const batch = db.batch()
+        for (let index = 0; index < distinctEvents; index += 1) {
+          const eventId = `event-${index}`
+          const mediaId = `media-${mediaSuffix}-${index}`
+          batch.set(
+            db.collection('events').doc(eventId).collection('media').doc(mediaId),
+            validMediaPayload(userId, eventId, mediaId),
+          )
+        }
+        return batch
+      }
+
+      // validEventMediaWrite costs get(users/{uid}) plus get(events/{eventId}),
+      // and each distinct event is a distinct access call: 1 + 19 = 20 is the
+      // ceiling, 1 + 20 exceeds it and rejects the whole batch. This is why
+      // media writes are grouped by parent event and chunked.
+      await assertSucceeds(mediaBatch(19, 'ok').commit())
+      await assertFails(mediaBatch(20, 'over').commit())
+    })
+
+    it('allows many media documents in one batch when they share a parent event', async () => {
+      await seedApproved()
+      await seedEvent(userId, 'event-1')
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      const batch = db.batch()
+      for (let index = 0; index < 100; index += 1) {
+        const mediaId = `media-${index}`
+        batch.set(
+          db.collection('events').doc('event-1').collection('media').doc(mediaId),
+          validMediaPayload(userId, 'event-1', mediaId),
+        )
+      }
+
+      await assertSucceeds(batch.commit())
+    })
+
+    it('denies a restored profile that carries the server owned approval fields', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.doc(`users/${userId}`).set(
+          { appLanguage: 'pt', accountStatus: 'approved', approvedAt: Timestamp.now() },
+          { merge: true },
+        ),
+      )
+    })
+
+    it('allows a profile restore that only carries client owned fields', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db.doc(`users/${userId}`).set(
+          {
+            appLanguage: 'pt',
+            notificationsEnabled: true,
+            reminderDaysBefore: 3,
+            reminderTime: '08:00',
+            resultFirstName: 'Zé',
+            resultLastName: 'Ninguém',
+          },
+          { merge: true },
+        ),
+      )
+    })
+
+    it('allows exporting shares by ownerId and by granteeId but not unfiltered', async () => {
+      await seedDocument(
+        'shares/share-revoked',
+        validSharePayload({ ownerId: userId, status: 'revoked' }),
+      )
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      // The backup reads shares directly rather than through the listShares
+      // callable, which filters out revoked and declined invites.
+      await assertSucceeds(db.collection('shares').where('ownerId', '==', userId).get())
+      await assertSucceeds(db.collection('shares').where('granteeId', '==', userId).get())
+      await assertFails(db.collection('shares').get())
+    })
+  })
 })

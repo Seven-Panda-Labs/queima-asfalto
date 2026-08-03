@@ -54,7 +54,7 @@ A PWA fala **directamente** com Firestore e Storage (com regras de segurança no
 |--------|-------------|------------------|
 | UI | `src/pages/`, `src/components/` | Rotas, formulários, dashboards, mapa |
 | Estado / hooks | `src/hooks/`, `src/contexts/` | Auth, partilhas, cooldown de lookup |
-| Serviços cliente | `src/services/` | Firestore, Storage, callables, Geoapify, export/import |
+| Serviços cliente | `src/services/` | Firestore, Storage, callables, Geoapify, export/import, backup zip |
 | Lógica partilhada | `shared/` | Detecção de plataforma, parsing de URLs, permissões de partilha, lembretes — usada pela app **e** pelas Functions |
 | Backend | `functions/src/` | Callables, agendador, conectores de timing |
 | Regras | `firestore.rules`, `storage.rules` | Isolamento por `userId`, validação de paths |
@@ -135,6 +135,8 @@ Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcio
 | `shares/{id}` | participantes | Convites e permissões de partilha |
 
 Índices compostos: `firestore.indexes.json`. Testes de regras: `firestore.rules.test.ts`.
+
+O backup completo (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exporta `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` e `users/{uid}` como JSON num `.zip`, preservando os IDs no restauro. `shares` só é exportado — apenas as Cloud Functions o escrevem. Ficam de fora os ficheiros binários no Storage, `reminderDispatches`, `rateLimits` e `fcmTokens`.
 
 ### Cloud Functions
 
@@ -236,7 +238,7 @@ The PWA talks **directly** to Firestore and Storage (with security rules on the 
 |-------|----------|----------------|
 | UI | `src/pages/`, `src/components/` | Routes, forms, dashboards, map |
 | State / hooks | `src/hooks/`, `src/contexts/` | Auth, shares, lookup cooldown |
-| Client services | `src/services/` | Firestore, Storage, callables, Geoapify, export/import |
+| Client services | `src/services/` | Firestore, Storage, callables, Geoapify, export/import, backup zip |
 | Shared logic | `shared/` | Platform detection, URL parsing, share permissions, reminders — used by the app **and** Functions |
 | Backend | `functions/src/` | Callables, scheduler, timing connectors |
 | Rules | `firestore.rules`, `storage.rules` | `userId` isolation, path validation |
@@ -317,6 +319,8 @@ Scheduling logic in `shared/reminders/`; optional local queue in `src/services/r
 | `shares/{id}` | participants | Share invites and permissions |
 
 Composite indexes: `firestore.indexes.json`. Rules tests: `firestore.rules.test.ts`.
+
+The full backup (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exports `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` and `users/{uid}` as JSON inside a `.zip`, preserving document ids on restore. `shares` is export-only — only Cloud Functions write it. Storage binaries, `reminderDispatches`, `rateLimits` and `fcmTokens` are left out.
 
 ### Cloud Functions
 

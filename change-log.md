@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.0] — 2026-08-03
+
+### Adicionado
+
+- **Backup completo:** exporta todos os teus dados em JSON dentro de um ficheiro `.zip` (eventos, objetivos, metas de performance, bucket list, metadados de fotos e vídeos, preferências e partilhas).
+- **Restaurar backup:** volta a carregar um `.zip` de backup para repor os dados, com os IDs originais preservados. Podes juntar aos dados actuais ou substituir tudo.
+
+---
+
 ## [1.14.2] — 2026-08-02
 
 ### Corrigido
