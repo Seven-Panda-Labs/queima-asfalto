@@ -93,7 +93,7 @@ Deploy completo (Firebase, Auth, Functions, FCM, Geoapify): [`docs/self-hosting.
 | `npm run build` | Build de produção |
 | `npm run test` | Testes (Vitest) |
 | `npm run check` | Lint + testes + verificação do changelog |
-| `npm run setup:githooks` | Activa o pre-commit hook (uma vez por clone) |
+| `npm run setup:githooks` | Activa os git hooks: pre-commit + pre-push (uma vez por clone) |
 
 Alterações de versão devem actualizar `package.json`, `change-log.md` e `change-log.en.md`.
 
@@ -201,7 +201,7 @@ Full deploy guide (Firebase, Auth, Functions, FCM, Geoapify): [`docs/self-hostin
 | `npm run build` | Production build |
 | `npm run test` | Tests (Vitest) |
 | `npm run check` | Lint + tests + changelog verification |
-| `npm run setup:githooks` | Enable pre-commit hook (once per clone) |
+| `npm run setup:githooks` | Enable git hooks: pre-commit + pre-push (once per clone) |
 
 Version bumps must update `package.json`, `change-log.md`, and `change-log.en.md`.
 
