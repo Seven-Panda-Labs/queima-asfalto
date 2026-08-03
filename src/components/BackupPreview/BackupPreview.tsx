@@ -91,6 +91,14 @@ export function BackupPreview({
             )
           })}
           {summary.counts.userProfile > 0 ? <li>{t('backup.countUserProfile')}</li> : null}
+          {summary.hasMediaFiles ? (
+            <li className="text-success">
+              {t('backup.countMediaFiles', {
+                count: summary.mediaFileCount,
+                mb: Math.max(1, Math.round(summary.mediaFileBytes / (1024 * 1024))),
+              })}
+            </li>
+          ) : null}
         </ul>
 
         {mode === 'merge' && existing === null ? (
@@ -102,14 +110,20 @@ export function BackupPreview({
         ) : null}
       </div>
 
-      <div className="rounded-lg border border-warning-border bg-warning-bg p-4">
-        <h3 className="font-semibold text-warning-fg">{t('backup.warningsTitle')}</h3>
-        <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-warning-fg">
-          {visibleWarnings(summary.warnings, mode).map((warning) => (
-            <li key={warning}>{formatBackupWarning(warning)}</li>
-          ))}
-        </ul>
-      </div>
+      {(() => {
+        const warnings = visibleWarnings(summary, mode)
+        if (warnings.length === 0) return null
+        return (
+          <div className="rounded-lg border border-warning-border bg-warning-bg p-4">
+            <h3 className="font-semibold text-warning-fg">{t('backup.warningsTitle')}</h3>
+            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-warning-fg">
+              {warnings.map((warning) => (
+                <li key={warning}>{formatBackupWarning(warning)}</li>
+              ))}
+            </ul>
+          </div>
+        )
+      })()}
 
       {rejections.length > 0 ? (
         <div>
@@ -172,7 +186,9 @@ export function BackupPreview({
           <span>
             <span className="font-semibold text-danger">{t('backup.modeReplace')}</span>
             <span id="backup-mode-replace-hint" className="block text-xs text-muted">
-              {t('backup.modeReplaceHint')}
+              {summary.hasMediaFiles
+                ? t('backup.modeReplaceHintWithMedia')
+                : t('backup.modeReplaceHint')}
             </span>
           </span>
         </label>
@@ -203,12 +219,17 @@ export function BackupPreview({
   )
 }
 
-/** Replace-mode media loss only applies when replacing, and vice versa. */
+/**
+ * Replace mode only destroys photos and videos when the zip cannot put them
+ * back, so that warning is conditional on both the mode and the zip's contents.
+ */
 function visibleWarnings(
-  warnings: readonly BackupRestoreWarning[],
+  summary: BackupSummary,
   mode: BackupRestoreMode,
 ): BackupRestoreWarning[] {
   const extra: BackupRestoreWarning[] =
-    mode === 'replace' ? ['media_not_restored_replace_mode'] : []
-  return [...new Set([...warnings, ...extra])]
+    mode === 'replace' && !summary.hasMediaFiles && summary.counts.eventMedia > 0
+      ? ['media_not_restored_replace_mode']
+      : []
+  return [...new Set([...summary.warnings, ...extra])]
 }

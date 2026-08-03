@@ -136,7 +136,7 @@ Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcio
 
 Índices compostos: `firestore.indexes.json`. Testes de regras: `firestore.rules.test.ts`.
 
-O backup completo (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exporta `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` e `users/{uid}` como JSON num `.zip`, preservando os IDs no restauro. `shares` só é exportado — apenas as Cloud Functions o escrevem. Ficam de fora os ficheiros binários no Storage, `reminderDispatches`, `rateLimits` e `fcmTokens`.
+O backup completo (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exporta `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` e `users/{uid}` como JSON num `.zip`, preservando os IDs no restauro. Opcionalmente inclui as fotos e vídeos do Storage em `media/<eventId>/<mediaId>.<ext>`, até 300 MB (`MAX_BACKUP_MEDIA_TOTAL_BYTES`); com os ficheiros presentes o restauro volta a fazer upload e gera novos `downloadUrl`, o que permite recuperar media também no modo «substituir» e entre contas. `shares` só é exportado — apenas as Cloud Functions o escrevem. Ficam de fora `reminderDispatches`, `rateLimits` e `fcmTokens`.
 
 ### Cloud Functions
 
@@ -320,7 +320,7 @@ Scheduling logic in `shared/reminders/`; optional local queue in `src/services/r
 
 Composite indexes: `firestore.indexes.json`. Rules tests: `firestore.rules.test.ts`.
 
-The full backup (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exports `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` and `users/{uid}` as JSON inside a `.zip`, preserving document ids on restore. `shares` is export-only — only Cloud Functions write it. Storage binaries, `reminderDispatches`, `rateLimits` and `fcmTokens` are left out.
+The full backup (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exports `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems` and `users/{uid}` as JSON inside a `.zip`, preserving document ids on restore. It optionally includes the Storage photos and videos at `media/<eventId>/<mediaId>.<ext>`, up to 300 MB (`MAX_BACKUP_MEDIA_TOTAL_BYTES`); when the files are present the restore re-uploads them and mints fresh `downloadUrl`s, which is what makes media restorable in replace mode and across accounts. `shares` is export-only — only Cloud Functions write it. `reminderDispatches`, `rateLimits` and `fcmTokens` are left out.
 
 ### Cloud Functions
 

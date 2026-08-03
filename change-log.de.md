@@ -4,6 +4,15 @@
 
 ---
 
+## [1.16.0] — 2026-08-03
+
+### Hinzugefügt
+
+- **Backup mit Fotos und Videos:** Die Backup-`.zip` enthält jetzt die Foto- und Videodateien, nicht mehr nur deren Metadaten. Du kannst die Option vor dem Export abwählen; über 300 MB enthält das Backup nur die Daten.
+- **Fotos und Videos wiederherstellen:** Liegen die Dateien in der `.zip`, kommen Fotos und Videos auch im Modus „Alles ersetzen“ und beim Wiederherstellen in einem anderen Konto zurück — vorher nur, wenn sie noch im Konto lagen.
+
+---
+
 ## [1.15.1] — 2026-08-03
 
 ### Behoben

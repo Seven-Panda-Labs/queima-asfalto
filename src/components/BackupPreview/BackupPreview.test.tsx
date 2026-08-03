@@ -34,6 +34,7 @@ const manifest: BackupManifest = {
     userProfile: 'userProfile.json',
     shares: 'shares.json',
   },
+  mediaFiles: { count: 0, sizeBytes: 0 },
   restorable: [],
   exportOnly: ['shares'],
   omitted: ['storageBinaries'],
@@ -44,9 +45,22 @@ function summaryWith(overrides: Partial<BackupSummary> = {}): BackupSummary {
     counts: manifest.counts,
     restorableTotal: 23,
     crossAccount: false,
+    mediaFileCount: 0,
+    mediaFileBytes: 0,
+    hasMediaFiles: false,
     warnings: ['media_binaries_not_restored', 'reminders_not_restored', 'shares_not_restored'],
     ...overrides,
   }
+}
+
+function summaryWithMediaFiles(overrides: Partial<BackupSummary> = {}): BackupSummary {
+  return summaryWith({
+    mediaFileCount: 3,
+    mediaFileBytes: 7 * 1024 * 1024,
+    hasMediaFiles: true,
+    warnings: ['reminders_not_restored', 'shares_not_restored'],
+    ...overrides,
+  })
 }
 
 const existing: ExistingCounts = {
@@ -147,6 +161,35 @@ describe('BackupPreview', () => {
     renderPreview({ mode: 'replace' })
 
     expect(screen.getByText(/apagados em definitivo/)).toBeInTheDocument()
+  })
+
+  it('lists the bundled photo and video files when the zip carries them', () => {
+    renderPreview({ summary: summaryWithMediaFiles() })
+
+    expect(
+      screen.getByText('3 ficheiros de fotos e vídeos (7 MB) — serão recuperados'),
+    ).toBeInTheDocument()
+  })
+
+  it('drops the metadata-only warning when the binaries are bundled', () => {
+    renderPreview({ summary: summaryWithMediaFiles() })
+
+    expect(screen.queryByText(/só os metadados/)).not.toBeInTheDocument()
+  })
+
+  it('does not warn about losing media in replace mode when the zip can restore it', () => {
+    renderPreview({ summary: summaryWithMediaFiles(), mode: 'replace' })
+
+    expect(screen.queryByText(/apagados em definitivo/)).not.toBeInTheDocument()
+    expect(screen.getByText(/as fotos e vídeos são recuperados/)).toBeInTheDocument()
+  })
+
+  it('omits the warnings panel entirely when there is nothing to warn about', () => {
+    renderPreview({
+      summary: summaryWithMediaFiles({ warnings: [] }),
+    })
+
+    expect(screen.queryByText('O que não é restaurado')).not.toBeInTheDocument()
   })
 
   it('labels the confirm button for the destructive mode', () => {

@@ -1,5 +1,6 @@
 import { Timestamp } from 'firebase/firestore'
 import { APP_VERSION } from '../appVersion'
+import { MAX_PHOTO_BYTES, MAX_VIDEO_BYTES } from '../constants/eventMedia'
 import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 import { RESULTS_PLATFORMS } from '../../shared/officialResults'
 import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
@@ -16,8 +17,23 @@ export const BACKUP_APP_ID = 'queima-asfalto'
 export const BACKUP_KIND = 'user-backup'
 export const BACKUP_SCHEMA_VERSION = 1
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
-export const MAX_BACKUP_BYTES = 64 * 1024 * 1024
-export const MAX_BACKUP_ENTRY_BYTES = 32 * 1024 * 1024
+export const BACKUP_MEDIA_DIR = 'media'
+
+/**
+ * Size ceilings.
+ *
+ * The whole zip is built and read in memory, so these are what keep a backup
+ * from killing the tab. MAX_BACKUP_MEDIA_TOTAL_BYTES is the one knob worth
+ * tuning: raising it raises peak memory on restore by roughly twice as much,
+ * because the file is held as an ArrayBuffer and again inflated.
+ */
+export const MAX_BACKUP_MEDIA_TOTAL_BYTES = 300 * 1024 * 1024
+export const MAX_BACKUP_BYTES = 512 * 1024 * 1024
+export const MAX_BACKUP_JSON_ENTRY_BYTES = 32 * 1024 * 1024
+export const MAX_BACKUP_MEDIA_ENTRY_BYTES = MAX_VIDEO_BYTES
+
+/** Mirrors the extension allow-list in firestore.rules and storage.rules. */
+const MEDIA_EXTENSIONS = 'jpg|png|webp|heic|heif|mp4|mov|webm|bin'
 
 export const BACKUP_SECTION_KEYS = [
   'events',
@@ -104,6 +120,11 @@ export type BackupSectionFile = {
   documents: BackupDocument[]
 }
 
+export type BackupMediaFilesManifest = {
+  count: number
+  sizeBytes: number
+}
+
 export type BackupManifest = {
   app: string
   kind: string
@@ -113,6 +134,8 @@ export type BackupManifest = {
   userId: string
   counts: Record<BackupSectionKey, number>
   files: Record<BackupSectionKey, string>
+  /** Photo and video binaries under `media/`. Absent in schema v1 backups. */
+  mediaFiles: BackupMediaFilesManifest
   restorable: string[]
   exportOnly: string[]
   omitted: string[]
@@ -127,11 +150,20 @@ export type BackupPayload = {
   sections: BackupSections
 }
 
+/** Photo and video binaries keyed by their zip entry name. */
+export type BackupMediaFiles = Map<string, Uint8Array>
+
+export function emptyBackupMediaFiles(): BackupMediaFiles {
+  return new Map()
+}
+
 export type ParsedBackup = {
   manifest: BackupManifest
   sections: BackupSections
-  /** Zip entries we recognised as JSON but do not know — kept for diagnostics. */
+  /** Zip entries we do not know — kept for diagnostics. */
   unknownFiles: string[]
+  /** Empty for a metadata-only backup. */
+  mediaFiles: BackupMediaFiles
 }
 
 export type BackupErrorCode =
@@ -344,8 +376,44 @@ const KNOWN_ENTRIES = new Set<string>([
   ...Object.values(BACKUP_SECTION_FILES),
 ])
 
+/** True for the manifest and the per-collection JSON files. */
 export function isKnownBackupEntry(name: string): boolean {
   return KNOWN_ENTRIES.has(name)
+}
+
+const MEDIA_ENTRY_PATTERN = new RegExp(
+  `^${BACKUP_MEDIA_DIR}/([^/]+)/([^/]+)\\.(${MEDIA_EXTENSIONS})$`,
+)
+
+export function isBackupMediaEntry(name: string): boolean {
+  return MEDIA_ENTRY_PATTERN.test(name)
+}
+
+export function parseBackupMediaEntryName(
+  name: string,
+): { eventId: string; mediaId: string; extension: string } | null {
+  const match = MEDIA_ENTRY_PATTERN.exec(name)
+  if (!match) return null
+  return { eventId: match[1], mediaId: match[2], extension: match[3] }
+}
+
+/** Reads the file extension a media document's storagePath ends in. */
+export function mediaExtensionFromStoragePath(storagePath: unknown): string | null {
+  if (typeof storagePath !== 'string') return null
+  const match = new RegExp(`\\.(${MEDIA_EXTENSIONS})$`).exec(storagePath)
+  return match ? match[1] : null
+}
+
+export function backupMediaEntryName(
+  eventId: string,
+  mediaId: string,
+  storagePath: unknown,
+): string | null {
+  const extension = mediaExtensionFromStoragePath(storagePath)
+  if (!extension) return null
+  // Ids are Firestore ids / UUIDs, so they cannot introduce path segments.
+  if (eventId.includes('/') || mediaId.includes('/')) return null
+  return `${BACKUP_MEDIA_DIR}/${eventId}/${mediaId}.${extension}`
 }
 
 function countsFrom(sections: BackupSections): Record<BackupSectionKey, number> {
@@ -356,7 +424,18 @@ function countsFrom(sections: BackupSections): Record<BackupSectionKey, number> 
   return counts
 }
 
-export function buildBackupManifest(payload: BackupPayload): BackupManifest {
+function mediaFilesManifest(mediaFiles?: BackupMediaFiles): BackupMediaFilesManifest {
+  if (!mediaFiles || mediaFiles.size === 0) return { count: 0, sizeBytes: 0 }
+  let sizeBytes = 0
+  for (const bytes of mediaFiles.values()) sizeBytes += bytes.byteLength
+  return { count: mediaFiles.size, sizeBytes }
+}
+
+export function buildBackupManifest(
+  payload: BackupPayload,
+  mediaFiles?: BackupMediaFiles,
+): BackupManifest {
+  const media = mediaFilesManifest(mediaFiles)
   return {
     app: BACKUP_APP_ID,
     kind: BACKUP_KIND,
@@ -366,15 +445,23 @@ export function buildBackupManifest(payload: BackupPayload): BackupManifest {
     userId: payload.userId,
     counts: countsFrom(payload.sections),
     files: { ...BACKUP_SECTION_FILES },
+    mediaFiles: media,
     restorable: [...RESTORABLE_SECTIONS],
     exportOnly: [...EXPORT_ONLY_SECTIONS],
-    omitted: [...OMITTED_FROM_BACKUP],
+    // Binaries are only omitted when they were not collected.
+    omitted:
+      media.count > 0
+        ? OMITTED_FROM_BACKUP.filter((entry) => entry !== 'storageBinaries')
+        : [...OMITTED_FROM_BACKUP],
   }
 }
 
-export function buildBackupTextFiles(payload: BackupPayload): Record<string, string> {
+export function buildBackupTextFiles(
+  payload: BackupPayload,
+  mediaFiles?: BackupMediaFiles,
+): Record<string, string> {
   const files: Record<string, string> = {
-    [BACKUP_MANIFEST_FILE]: `${JSON.stringify(buildBackupManifest(payload), null, 2)}\n`,
+    [BACKUP_MANIFEST_FILE]: `${JSON.stringify(buildBackupManifest(payload, mediaFiles), null, 2)}\n`,
   }
 
   for (const key of BACKUP_SECTION_KEYS) {
@@ -425,6 +512,16 @@ function parseManifest(text: string): BackupManifest {
     manifestCounts[key] = typeof value === 'number' && Number.isFinite(value) ? value : 0
   }
 
+  // Absent in backups written before media binaries were supported.
+  const rawMedia = isRecord(raw.mediaFiles) ? raw.mediaFiles : {}
+  const mediaFiles: BackupMediaFilesManifest = {
+    count: typeof rawMedia.count === 'number' && Number.isFinite(rawMedia.count) ? rawMedia.count : 0,
+    sizeBytes:
+      typeof rawMedia.sizeBytes === 'number' && Number.isFinite(rawMedia.sizeBytes)
+        ? rawMedia.sizeBytes
+        : 0,
+  }
+
   return {
     app: BACKUP_APP_ID,
     kind: BACKUP_KIND,
@@ -434,6 +531,7 @@ function parseManifest(text: string): BackupManifest {
     userId: typeof raw.userId === 'string' ? raw.userId : '',
     counts: manifestCounts,
     files: { ...BACKUP_SECTION_FILES },
+    mediaFiles,
     restorable: Array.isArray(raw.restorable) ? raw.restorable.map(String) : [...RESTORABLE_SECTIONS],
     exportOnly: Array.isArray(raw.exportOnly) ? raw.exportOnly.map(String) : [...EXPORT_ONLY_SECTIONS],
     omitted: Array.isArray(raw.omitted) ? raw.omitted.map(String) : [...OMITTED_FROM_BACKUP],
@@ -494,7 +592,10 @@ function parseSectionFile(key: BackupSectionKey, name: string, text: string): Ba
  * ignored, a missing section file reads as empty, and unknown document fields
  * are carried through verbatim.
  */
-export function parseBackupTextFiles(files: Record<string, string>): ParsedBackup {
+export function parseBackupTextFiles(
+  files: Record<string, string>,
+  mediaFiles: BackupMediaFiles = emptyBackupMediaFiles(),
+): ParsedBackup {
   const manifestText = files[BACKUP_MANIFEST_FILE]
   if (manifestText === undefined) {
     throw new BackupFormatError('missing_manifest')
@@ -507,7 +608,7 @@ export function parseBackupTextFiles(files: Record<string, string>): ParsedBacku
 
   for (const name of Object.keys(files)) {
     if (name === BACKUP_MANIFEST_FILE) continue
-    if (!isKnownBackupEntry(name)) {
+    if (!isKnownBackupEntry(name) && !isBackupMediaEntry(name)) {
       unknownFiles.push(name)
     }
   }
@@ -533,7 +634,80 @@ export function parseBackupTextFiles(files: Record<string, string>): ParsedBacku
     throw new BackupFormatError('empty_backup')
   }
 
-  return { manifest, sections, unknownFiles }
+  return { manifest, sections, unknownFiles, mediaFiles }
+}
+
+// ---------------------------------------------------------------------------
+// Media binary planning
+// ---------------------------------------------------------------------------
+
+export type PlannedMediaFile = {
+  eventId: string
+  mediaId: string
+  entryName: string
+  storagePath: string
+  mimeType: string
+  sizeBytes: number
+}
+
+export type SkippedMediaFile = {
+  eventId: string
+  mediaId: string
+  reason: 'unusable_metadata' | 'entry_too_large'
+}
+
+export type MediaExportPlan = {
+  files: PlannedMediaFile[]
+  skipped: SkippedMediaFile[]
+  totalBytes: number
+  /** True when the library is larger than the cap, in which case no file is included. */
+  capExceeded: boolean
+}
+
+/**
+ * Decides which binaries to download, from metadata already in hand.
+ *
+ * All or nothing against the cap: a partially populated `media/` directory
+ * would restore some photos and silently drop others, which is worse than a
+ * metadata-only backup plus a clear warning.
+ */
+export function planMediaExport(
+  mediaDocuments: readonly BackupDocument[],
+  capBytes: number = MAX_BACKUP_MEDIA_TOTAL_BYTES,
+): MediaExportPlan {
+  const files: PlannedMediaFile[] = []
+  const skipped: SkippedMediaFile[] = []
+
+  for (const document of mediaDocuments) {
+    const eventId = document.eventId
+    const { storagePath, mimeType, sizeBytes, type } = document.data
+    if (!eventId || typeof storagePath !== 'string' || typeof mimeType !== 'string') {
+      skipped.push({ eventId: eventId ?? '', mediaId: document.id, reason: 'unusable_metadata' })
+      continue
+    }
+
+    const entryName = backupMediaEntryName(eventId, document.id, storagePath)
+    if (!entryName) {
+      skipped.push({ eventId, mediaId: document.id, reason: 'unusable_metadata' })
+      continue
+    }
+
+    const size = typeof sizeBytes === 'number' && Number.isFinite(sizeBytes) ? sizeBytes : 0
+    const perFileCap = type === 'video' ? MAX_BACKUP_MEDIA_ENTRY_BYTES : MAX_PHOTO_BYTES
+    if (size > perFileCap) {
+      skipped.push({ eventId, mediaId: document.id, reason: 'entry_too_large' })
+      continue
+    }
+
+    files.push({ eventId, mediaId: document.id, entryName, storagePath, mimeType, sizeBytes: size })
+  }
+
+  const totalBytes = files.reduce((sum, file) => sum + file.sizeBytes, 0)
+  if (totalBytes > capBytes) {
+    return { files: [], skipped, totalBytes, capExceeded: true }
+  }
+
+  return { files, skipped, totalBytes, capExceeded: false }
 }
 
 // ---------------------------------------------------------------------------
@@ -564,9 +738,6 @@ const LEGACY_TYPE_VALUES = ['5Km', '10Km', '21.1Km', '42.2Km', 'Outra'] as const
 const ALLOWED_STATUS = new Set<string>([...EVENT_STATUSES, ...LEGACY_STATUS_VALUES])
 const ALLOWED_TYPE = new Set<string>([...EVENT_TYPES, ...LEGACY_TYPE_VALUES])
 const ALLOWED_PLATFORM = new Set<string>(RESULTS_PLATFORMS)
-const MEDIA_EXTENSIONS = 'jpg|png|webp|heic|heif|mp4|mov|webm|bin'
-const MAX_PHOTO_BYTES = 5 * 1024 * 1024
-const MAX_VIDEO_BYTES = 100 * 1024 * 1024
 
 export const RESTORE_REJECTION_CODES = [
   'missing_required_field',

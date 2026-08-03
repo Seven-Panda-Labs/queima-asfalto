@@ -6,12 +6,16 @@ import {
   BACKUP_SECTION_FILES,
   BackupFormatError,
   backupFileName,
+  backupMediaEntryName,
   buildBackupTextFiles,
   decodeDocumentData,
   emptyBackupSections,
   encodeDocumentData,
+  isBackupMediaEntry,
   isKnownBackupEntry,
+  parseBackupMediaEntryName,
   parseBackupTextFiles,
+  planMediaExport,
   sanitizeProfileForRestore,
   validateRestoreDocument,
   type BackupDocument,
@@ -555,6 +559,188 @@ describe('validateRestoreDocument', () => {
 
   it('skips validation for the user profile', () => {
     expect(check('userProfile', { appLanguage: 'pt' }, { id: 'user-ze', data: {} })).toBeNull()
+  })
+})
+
+describe('media entry naming', () => {
+  it('builds an entry name from the storage path extension', () => {
+    expect(
+      backupMediaEntryName('event-1', 'media-1', 'users/u/events/event-1/media/media-1.mp4'),
+    ).toBe('media/event-1/media-1.mp4')
+  })
+
+  it('refuses a storage path with no recognised extension', () => {
+    expect(backupMediaEntryName('event-1', 'media-1', 'users/u/.../media-1.exe')).toBeNull()
+    expect(backupMediaEntryName('event-1', 'media-1', 'no-extension')).toBeNull()
+    expect(backupMediaEntryName('event-1', 'media-1', 42)).toBeNull()
+  })
+
+  it('refuses ids that would introduce extra path segments', () => {
+    expect(backupMediaEntryName('../escape', 'media-1', 'a/b.jpg')).toBeNull()
+    expect(backupMediaEntryName('event-1', 'a/b', 'a/b.jpg')).toBeNull()
+  })
+
+  it('recognises and parses its own entry names', () => {
+    expect(isBackupMediaEntry('media/event-1/media-1.jpg')).toBe(true)
+    expect(parseBackupMediaEntryName('media/event-1/media-1.jpg')).toEqual({
+      eventId: 'event-1',
+      mediaId: 'media-1',
+      extension: 'jpg',
+    })
+  })
+
+  it('rejects entries outside the media directory or with a bad extension', () => {
+    expect(isBackupMediaEntry('events.json')).toBe(false)
+    expect(isBackupMediaEntry('media/event-1/media-1.exe')).toBe(false)
+    expect(isBackupMediaEntry('media/event-1/nested/media-1.jpg')).toBe(false)
+    expect(isBackupMediaEntry('../media/event-1/media-1.jpg')).toBe(false)
+    expect(parseBackupMediaEntryName('events.json')).toBeNull()
+  })
+})
+
+describe('planMediaExport', () => {
+  function mediaDoc(
+    id: string,
+    overrides: Record<string, JsonValue> = {},
+    eventId = 'event-1',
+  ): BackupDocument {
+    return {
+      id,
+      eventId,
+      data: {
+        userId: 'user-ze',
+        type: 'photo',
+        storagePath: `users/user-ze/events/${eventId}/media/${id}.jpg`,
+        mimeType: 'image/jpeg',
+        sizeBytes: 1024 * 1024,
+        ...overrides,
+      },
+    }
+  }
+
+  it('plans every usable file and totals their bytes', () => {
+    const plan = planMediaExport([mediaDoc('media-1'), mediaDoc('media-2')])
+
+    expect(plan.capExceeded).toBe(false)
+    expect(plan.skipped).toEqual([])
+    expect(plan.totalBytes).toBe(2 * 1024 * 1024)
+    expect(plan.files.map((file) => file.entryName)).toEqual([
+      'media/event-1/media-1.jpg',
+      'media/event-1/media-2.jpg',
+    ])
+  })
+
+  it('includes nothing at all once the library exceeds the cap', () => {
+    const plan = planMediaExport([mediaDoc('media-1'), mediaDoc('media-2')], 1024 * 1024)
+
+    // All or nothing: a half-populated media directory would restore some
+    // photos and silently drop others.
+    expect(plan.capExceeded).toBe(true)
+    expect(plan.files).toEqual([])
+    expect(plan.totalBytes).toBe(2 * 1024 * 1024)
+  })
+
+  it('keeps a library that lands exactly on the cap', () => {
+    const plan = planMediaExport([mediaDoc('media-1')], 1024 * 1024)
+
+    expect(plan.capExceeded).toBe(false)
+    expect(plan.files).toHaveLength(1)
+  })
+
+  it('skips documents whose metadata cannot name an entry', () => {
+    const plan = planMediaExport([
+      mediaDoc('media-1', { storagePath: 'users/u/events/e/media/media-1.exe' }),
+      mediaDoc('media-2', { mimeType: 42 }),
+      { id: 'media-3', data: { storagePath: 'a.jpg', mimeType: 'image/jpeg' } },
+    ])
+
+    expect(plan.files).toEqual([])
+    expect(plan.skipped.map((entry) => entry.reason)).toEqual([
+      'unusable_metadata',
+      'unusable_metadata',
+      'unusable_metadata',
+    ])
+  })
+
+  it('skips a file bigger than its per-type ceiling', () => {
+    const plan = planMediaExport([
+      mediaDoc('media-1', { sizeBytes: 6 * 1024 * 1024 }),
+      mediaDoc('media-2', {
+        type: 'video',
+        sizeBytes: 101 * 1024 * 1024,
+        storagePath: 'users/user-ze/events/event-1/media/media-2.mp4',
+      }),
+    ])
+
+    expect(plan.files).toEqual([])
+    expect(plan.skipped.map((entry) => entry.reason)).toEqual([
+      'entry_too_large',
+      'entry_too_large',
+    ])
+  })
+
+  it('allows a video up to the video ceiling that would be too large as a photo', () => {
+    const plan = planMediaExport([
+      mediaDoc('media-1', {
+        type: 'video',
+        sizeBytes: 90 * 1024 * 1024,
+        storagePath: 'users/user-ze/events/event-1/media/media-1.mp4',
+      }),
+    ])
+
+    expect(plan.skipped).toEqual([])
+    expect(plan.files).toHaveLength(1)
+  })
+})
+
+describe('manifest media accounting', () => {
+  it('records the bundled file count and size, and stops claiming binaries are omitted', () => {
+    const mediaFiles = new Map([
+      ['media/event-1/media-1.jpg', new Uint8Array(1000)],
+      ['media/event-1/media-2.jpg', new Uint8Array(2000)],
+    ])
+
+    const files = buildBackupTextFiles(payloadWith({}), mediaFiles)
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as {
+      mediaFiles: { count: number; sizeBytes: number }
+      omitted: string[]
+    }
+
+    expect(manifest.mediaFiles).toEqual({ count: 2, sizeBytes: 3000 })
+    expect(manifest.omitted).not.toContain('storageBinaries')
+  })
+
+  it('still reports binaries as omitted for a metadata-only backup', () => {
+    const files = buildBackupTextFiles(payloadWith({}))
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as {
+      mediaFiles: { count: number; sizeBytes: number }
+      omitted: string[]
+    }
+
+    expect(manifest.mediaFiles).toEqual({ count: 0, sizeBytes: 0 })
+    expect(manifest.omitted).toContain('storageBinaries')
+  })
+
+  it('reads a pre-media manifest as carrying no files', () => {
+    const files = buildBackupTextFiles(payloadWith({}))
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as Record<string, unknown>
+    delete manifest.mediaFiles
+    files[BACKUP_MANIFEST_FILE] = JSON.stringify(manifest)
+
+    const parsed = parseBackupTextFiles(files)
+
+    expect(parsed.manifest.mediaFiles).toEqual({ count: 0, sizeBytes: 0 })
+    expect(parsed.mediaFiles.size).toBe(0)
+  })
+
+  it('carries media entries through the parser and does not call them unknown', () => {
+    const files = buildBackupTextFiles(payloadWith({}))
+    const mediaFiles = new Map([['media/event-1/media-1.jpg', new Uint8Array([1, 2, 3])]])
+
+    const parsed = parseBackupTextFiles(files, mediaFiles)
+
+    expect(parsed.mediaFiles.get('media/event-1/media-1.jpg')).toEqual(new Uint8Array([1, 2, 3]))
+    expect(parsed.unknownFiles).toEqual([])
   })
 })
 

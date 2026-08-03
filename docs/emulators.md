@@ -120,6 +120,8 @@ Ficheiro: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Cobertura act
 | `users/.../rateLimits` | Leitura pelo dono; writes só servidor (lookup de resultados) |
 | `events/.../media` | `storagePath` e `downloadUrl` alinhados com Firebase Storage; sem updates |
 
+> **Limitação conhecida:** `firestore.rules` exige que o `downloadUrl` tenha a forma de produção (`firebasestorage.googleapis.com` ou `*.firebasestorage.app`), mas o emulador de Storage devolve URLs `127.0.0.1:9199`. Por isso, **criar documentos em `events/.../media` falha contra os emuladores** — tanto no upload normal de fotos como no restauro de backup com ficheiros. O upload para o Storage em si funciona; só a escrita do documento é recusada. Testa esta parte num projeto Firebase real.
+
 ### Persistir dados entre sessões (opcional)
 
 ```bash
@@ -257,6 +259,8 @@ File: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Current coverage:
 | `users/.../reminderDispatches` | Owner read; server-only writes |
 | `users/.../rateLimits` | Owner read; server-only writes (results lookup) |
 | `events/.../media` | `storagePath` and `downloadUrl` match Firebase Storage; no updates |
+
+> **Known limitation:** `firestore.rules` requires `downloadUrl` to have the production shape (`firebasestorage.googleapis.com` or `*.firebasestorage.app`), but the Storage emulator returns `127.0.0.1:9199` URLs. So **creating `events/.../media` documents fails against the emulators** — both for normal photo uploads and for restoring a backup that carries files. The Storage upload itself works; only the document write is denied. Test this part against a real Firebase project.
 
 ### Persist data between sessions (optional)
 

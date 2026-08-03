@@ -1,18 +1,25 @@
 import { collection, doc, getDocs, query, setDoc, where, writeBatch } from 'firebase/firestore'
-import { db } from './firebase'
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
+import { db, storage } from './firebase'
 import { clearAllUserData } from './clearUserData'
+import { buildEventMediaStoragePath } from './eventMediaStorage'
 import { loadFflate } from './zipLoader'
 import {
   BACKUP_SECTION_COLLECTIONS,
   BackupFormatError,
   MAX_BACKUP_BYTES,
-  MAX_BACKUP_ENTRY_BYTES,
+  MAX_BACKUP_JSON_ENTRY_BYTES,
+  MAX_BACKUP_MEDIA_ENTRY_BYTES,
+  backupMediaEntryName,
   decodeDocumentData,
+  emptyBackupMediaFiles,
+  isBackupMediaEntry,
   isKnownBackupEntry,
   parseBackupTextFiles,
   sanitizeProfileForRestore,
   validateRestoreDocument,
   type BackupDocument,
+  type BackupMediaFiles,
   type BackupSectionKey,
   type ParsedBackup,
   type RestorableSectionKey,
@@ -49,6 +56,7 @@ export type BackupRestoreWarning =
   | 'media_binaries_not_restored'
   | 'media_not_restored_replace_mode'
   | 'media_skipped_different_account'
+  | 'media_files_restored'
   | 'different_account'
   | 'profile_write_denied'
   | 'reminders_not_restored'
@@ -104,24 +112,36 @@ export async function readBackupFile(file: File | Blob): Promise<ParsedBackup> {
     entries = unzipSync(new Uint8Array(buffer), {
       // Runs against the central directory, so oversized or unknown entries are
       // never inflated: the guard happens before allocation, not after.
-      filter: (entry) =>
-        isKnownBackupEntry(entry.name) && entry.originalSize <= MAX_BACKUP_ENTRY_BYTES,
+      filter: (entry) => {
+        if (isKnownBackupEntry(entry.name)) {
+          return entry.originalSize <= MAX_BACKUP_JSON_ENTRY_BYTES
+        }
+        return isBackupMediaEntry(entry.name) && entry.originalSize <= MAX_BACKUP_MEDIA_ENTRY_BYTES
+      },
     })
   } catch {
     throw new BackupFormatError('corrupt_zip')
   }
 
-  const files = Object.fromEntries(
-    Object.entries(entries).map(([name, data]) => [name, strFromU8(data)]),
-  )
+  const files: Record<string, string> = {}
+  const mediaFiles = emptyBackupMediaFiles()
+  for (const [name, data] of Object.entries(entries)) {
+    if (isBackupMediaEntry(name)) mediaFiles.set(name, data)
+    else files[name] = strFromU8(data)
+  }
 
-  return parseBackupTextFiles(files)
+  return parseBackupTextFiles(files, mediaFiles)
 }
 
 export type BackupSummary = {
   counts: Record<BackupSectionKey, number>
   restorableTotal: number
   crossAccount: boolean
+  /** Photo and video binaries present in the zip. */
+  mediaFileCount: number
+  mediaFileBytes: number
+  /** True when the binaries are in the zip, which is what makes media fully restorable. */
+  hasMediaFiles: boolean
   warnings: BackupRestoreWarning[]
 }
 
@@ -132,14 +152,19 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
   }
 
   const crossAccount = parsed.manifest.userId !== '' && parsed.manifest.userId !== currentUserId
-  const warnings: BackupRestoreWarning[] = [
-    'media_binaries_not_restored',
-    'reminders_not_restored',
-  ]
+  const hasMediaFiles = parsed.mediaFiles.size > 0
+  let mediaFileBytes = 0
+  for (const bytes of parsed.mediaFiles.values()) mediaFileBytes += bytes.byteLength
+
+  const warnings: BackupRestoreWarning[] = ['reminders_not_restored']
   if (counts.shares > 0) warnings.push('shares_not_restored')
-  if (crossAccount) {
-    warnings.push('different_account')
-    if (counts.eventMedia > 0) warnings.push('media_skipped_different_account')
+  if (crossAccount) warnings.push('different_account')
+
+  // With the binaries in the zip, media restores in either mode and across
+  // accounts, because the files can be re-uploaded under the new path.
+  if (counts.eventMedia > 0 && !hasMediaFiles) {
+    warnings.push('media_binaries_not_restored')
+    if (crossAccount) warnings.push('media_skipped_different_account')
   }
 
   const restorableTotal =
@@ -150,7 +175,15 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
     counts.eventMedia +
     counts.userProfile
 
-  return { counts, restorableTotal, crossAccount, warnings }
+  return {
+    counts,
+    restorableTotal,
+    crossAccount,
+    mediaFileCount: parsed.mediaFiles.size,
+    mediaFileBytes,
+    hasMediaFiles,
+    warnings,
+  }
 }
 
 async function readExistingIds(collectionName: string, userId: string): Promise<Set<string>> {
@@ -367,6 +400,97 @@ async function writeEventMedia(
   }
 }
 
+/** Uploads binaries one at a time, so a single failure is attributable. */
+const MEDIA_UPLOAD_CONCURRENCY = 3
+
+/**
+ * Restores media whose binary is in the zip.
+ *
+ * The bytes are re-uploaded under the restoring account's own storagePath and a
+ * fresh `getDownloadURL()` token is minted, because the stored URL's token
+ * belongs to the object that was exported. This is what lets media come back in
+ * replace mode and across accounts, neither of which metadata alone can do.
+ *
+ * If the document write later fails, the uploaded object is left behind. That is
+ * deliberate: the storagePath is a pure function of (uid, eventId, mediaId), so
+ * re-running the same restore overwrites it rather than accumulating orphans.
+ */
+async function restoreMediaWithFiles(
+  userId: string,
+  prepared: readonly PreparedDocument[],
+  mediaFiles: BackupMediaFiles,
+  existingMediaKeys: ReadonlySet<string>,
+  result: BackupRestoreResult,
+  onProgress?: (progress: BackupRestoreProgress) => void,
+): Promise<PreparedDocument[]> {
+  const withoutFiles: PreparedDocument[] = []
+  const withFiles: Array<{ entry: PreparedDocument; bytes: Uint8Array; entryName: string }> = []
+
+  for (const entry of prepared) {
+    const eventId = entry.document.eventId as string
+    if (existingMediaKeys.has(`${eventId}/${entry.document.id}`)) {
+      result.sections.eventMedia.skipped += 1
+      continue
+    }
+
+    const entryName = backupMediaEntryName(eventId, entry.document.id, entry.data.storagePath)
+    const bytes = entryName ? mediaFiles.get(entryName) : undefined
+    if (!entryName || !bytes) {
+      withoutFiles.push(entry)
+      continue
+    }
+    withFiles.push({ entry, bytes, entryName })
+  }
+
+  let done = 0
+  const total = withFiles.length
+  if (total > 0) onProgress?.({ section: 'eventMedia', done, total })
+
+  const uploaded: PreparedDocument[] = []
+  await mapWithConcurrency(withFiles, MEDIA_UPLOAD_CONCURRENCY, async ({ entry, bytes }) => {
+    const eventId = entry.document.eventId as string
+    const extension = String(entry.data.storagePath).split('.').pop() ?? 'bin'
+    const storagePath = buildEventMediaStoragePath(userId, eventId, entry.document.id, extension)
+    const mimeType = String(entry.data.mimeType)
+
+    try {
+      const objectRef = ref(storage, storagePath)
+      await uploadBytes(objectRef, bytes as Uint8Array<ArrayBuffer>, { contentType: mimeType })
+      const downloadUrl = await getDownloadURL(objectRef)
+
+      uploaded.push({
+        document: entry.document,
+        data: { ...entry.data, storagePath, downloadUrl, sizeBytes: bytes.byteLength },
+      })
+    } catch (error) {
+      result.sections.eventMedia.skipped += 1
+      result.errors.push(`eventMedia/${entry.document.id}: ${String(error)}`)
+    } finally {
+      done += 1
+      onProgress?.({ section: 'eventMedia', done, total })
+    }
+  })
+
+  return [...uploaded, ...withoutFiles]
+}
+
+async function mapWithConcurrency<T>(
+  items: readonly T[],
+  limit: number,
+  run: (item: T) => Promise<void>,
+): Promise<void> {
+  let cursor = 0
+  async function worker(): Promise<void> {
+    for (;;) {
+      const index = cursor
+      cursor += 1
+      if (index >= items.length) return
+      await run(items[index])
+    }
+  }
+  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, () => worker()))
+}
+
 async function readExistingMediaKeys(eventIds: readonly string[]): Promise<Set<string>> {
   const keys = new Set<string>()
   for (const eventId of eventIds) {
@@ -378,6 +502,78 @@ async function readExistingMediaKeys(eventIds: readonly string[]): Promise<Set<s
     }
   }
   return keys
+}
+
+/**
+ * Restores the eventMedia section.
+ *
+ * Three cases, in order of how much the zip can actually deliver:
+ *
+ * - Binaries present: upload them under this account's paths, mint fresh
+ *   download URLs, and write the documents. Works in either mode and across
+ *   accounts.
+ * - Metadata only, merge into the same account: the Storage objects are still
+ *   there, so the preserved storagePath and token still resolve.
+ * - Metadata only, anything else: refuse. Replace mode deleted the binaries and
+ *   a different account cannot read them, so writing the documents would create
+ *   gallery entries pointing at 404s — and media is `allow update: if false`,
+ *   so they could never be repaired, only deleted.
+ */
+async function restoreEventMedia(
+  userId: string,
+  parsed: ParsedBackup,
+  summary: BackupSummary,
+  options: BackupRestoreOptions,
+  restoredEvents: readonly PreparedDocument[],
+  existingEventIds: ReadonlySet<string>,
+  result: BackupRestoreResult,
+  onProgress?: (progress: BackupRestoreProgress) => void,
+): Promise<void> {
+  const documents = parsed.sections.eventMedia
+  if (documents.length === 0) return
+
+  if (!summary.hasMediaFiles) {
+    if (options.mode === 'replace') {
+      result.warnings.push('media_not_restored_replace_mode')
+      result.sections.eventMedia.skipped += documents.length
+      return
+    }
+    if (summary.crossAccount) {
+      result.sections.eventMedia.skipped += documents.length
+      return
+    }
+  }
+
+  const knownEventIds = new Set<string>([
+    ...restoredEvents.map((entry) => entry.document.id),
+    ...existingEventIds,
+  ])
+  const prepared = absorb(
+    'eventMedia',
+    prepareSection('eventMedia', documents, userId, knownEventIds),
+    result,
+  )
+
+  const existingMediaKeys = await readExistingMediaKeys([
+    ...new Set(prepared.map((entry) => entry.document.eventId as string)),
+  ])
+
+  if (!summary.hasMediaFiles) {
+    await writeEventMedia(prepared, existingMediaKeys, result, onProgress)
+    return
+  }
+
+  const withUrls = await restoreMediaWithFiles(
+    userId,
+    prepared,
+    parsed.mediaFiles,
+    existingMediaKeys,
+    result,
+    onProgress,
+  )
+  // Already filtered against existing ids during the upload pass.
+  await writeEventMedia(withUrls, new Set(), result, onProgress)
+  result.warnings.push('media_files_restored')
 }
 
 /**
@@ -444,34 +640,7 @@ export async function restoreUserBackup(
     await writeFlatSection(section, prepared, existing[section], result, onProgress)
   }
 
-  // Replace mode deleted the Storage binaries, so restoring the metadata would
-  // only create gallery entries pointing at 404s — and media is
-  // `allow update: if false`, so they could never be repaired, only deleted.
-  const mediaRestorable =
-    options.mode === 'merge' && !summary.crossAccount && parsed.sections.eventMedia.length > 0
-
-  if (parsed.sections.eventMedia.length > 0 && options.mode === 'replace') {
-    result.warnings.push('media_not_restored_replace_mode')
-    result.sections.eventMedia.skipped += parsed.sections.eventMedia.length
-  } else if (parsed.sections.eventMedia.length > 0 && summary.crossAccount) {
-    result.sections.eventMedia.skipped += parsed.sections.eventMedia.length
-  }
-
-  if (mediaRestorable) {
-    const knownEventIds = new Set<string>([
-      ...events.map((entry) => entry.document.id),
-      ...existing.events,
-    ])
-    const media = absorb(
-      'eventMedia',
-      prepareSection('eventMedia', parsed.sections.eventMedia, userId, knownEventIds),
-      result,
-    )
-    const existingMediaKeys = await readExistingMediaKeys([
-      ...new Set(media.map((entry) => entry.document.eventId as string)),
-    ])
-    await writeEventMedia(media, existingMediaKeys, result, onProgress)
-  }
+  await restoreEventMedia(userId, parsed, summary, options, events, existing.events, result, onProgress)
 
   if (options.includeUserProfile !== false && parsed.sections.userProfile.length > 0) {
     const [profile] = parsed.sections.userProfile
