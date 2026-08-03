@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.0] — 2026-08-03
+
+### Añadido
+
+- **Copia de seguridad completa:** exporta todos tus datos en JSON dentro de un archivo `.zip` (eventos, objetivos, metas de rendimiento, bucket list, metadatos de fotos y vídeos, preferencias y compartidos).
+- **Restaurar copia:** vuelve a subir un `.zip` de copia para recuperar tus datos, conservando los IDs originales. Puedes combinarlos con los datos actuales o sustituirlo todo.
+
+---
+
 ## [1.14.2] — 2026-08-02
 
 ### Corregido

@@ -4,6 +4,15 @@
 
 ---
 
+## [1.15.0] — 2026-08-03
+
+### Hinzugefügt
+
+- **Vollständiges Backup:** exportiere alle deine Daten als JSON in einer `.zip`-Datei (Events, Ziele, Leistungsziele, Bucket List, Metadaten zu Fotos und Videos, Einstellungen und Freigaben).
+- **Backup wiederherstellen:** lade eine Backup-`.zip` hoch, um deine Daten zurückzuholen — mit den ursprünglichen Dokument-IDs. Du kannst sie mit deinen aktuellen Daten zusammenführen oder alles ersetzen.
+
+---
+
 ## [1.14.2] — 2026-08-02
 
 ### Behoben
