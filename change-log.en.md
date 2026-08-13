@@ -4,6 +4,14 @@
 
 ---
 
+## [1.17.0] — 2026-08-13
+
+### Added
+
+- **New emoji picker:** search and access every Unicode emoji, replacing the previous curated list.
+
+---
+
 ## [1.16.1] — 2026-08-13
 
 ### Added

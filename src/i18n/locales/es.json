@@ -690,6 +690,9 @@
     "prevMonth": "Mes anterior",
     "nextMonth": "Mes siguiente"
   },
+  "emojiPicker": {
+    "choose": "Elegir emoji"
+  },
   "confirmDialog": {
     "confirm": "Confirmar",
     "deleting": "Eliminando..."

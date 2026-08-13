@@ -397,7 +397,11 @@ export function BucketListForm() {
             {t('common.emoji')}
           </label>
           <div className="mt-1">
-            <EmojiPicker value={form.emoji} onChange={(emoji) => updateField('emoji', emoji)} />
+            <EmojiPicker
+              id="emoji"
+              value={form.emoji}
+              onChange={(emoji) => updateField('emoji', emoji)}
+            />
           </div>
         </div>
 

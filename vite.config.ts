@@ -69,7 +69,16 @@ export default defineConfig({
         importScripts: ['notification-sw.js'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/__/],
-        runtimeCaching: [],
+        runtimeCaching: [
+          {
+            urlPattern: /\/emoji-data\/.*\.json$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'emoji-data',
+              expiration: { maxEntries: 4 },
+            },
+          },
+        ],
       },
     }),
   ],
