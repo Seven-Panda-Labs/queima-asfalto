@@ -4,6 +4,14 @@
 
 ---
 
+## [1.16.1] — 2026-08-13
+
+### Corrigido
+
+- **Estado dos eventos:** um evento com resultado oficial já não pode ficar marcado como «Faltou». Havia uma condição de corrida entre a transição automática para «Faltou» e a gravação do resultado — se a transição automática ganhasse a corrida, o estado ficava errado apesar de o resultado estar guardado.
+
+---
+
 ## [1.16.0] — 2026-08-03
 
 ### Adicionado

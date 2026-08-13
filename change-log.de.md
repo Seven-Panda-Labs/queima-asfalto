@@ -4,6 +4,14 @@
 
 ---
 
+## [1.16.1] — 2026-08-13
+
+### Behoben
+
+- **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden. Es gab eine Race Condition zwischen dem automatischen Übergang zu „Verpasst“ und dem Speichern des Ergebnisses — gewann der automatische Übergang das Rennen, war der Status falsch, obwohl das Ergebnis gespeichert war.
+
+---
+
 ## [1.16.0] — 2026-08-03
 
 ### Hinzugefügt

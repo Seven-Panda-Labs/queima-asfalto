@@ -4,6 +4,14 @@
 
 ---
 
+## [1.16.1] — 2026-08-13
+
+### Fixed
+
+- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result — if the automatic transition won the race, the status ended up wrong even though the result was saved.
+
+---
+
 ## [1.16.0] — 2026-08-03
 
 ### Added

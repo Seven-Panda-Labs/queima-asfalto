@@ -7,6 +7,7 @@ import {
   getDocs,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   updateDoc,
   where,
@@ -136,6 +137,22 @@ export async function updateEvent(
   await updateDoc(ref, {
     ...withoutUndefined(data as Record<string, unknown>),
     updatedAt: serverTimestamp(),
+  })
+}
+
+export async function markEventAsMissed(eventId: string): Promise<boolean> {
+  const ref = doc(db, EVENTS_COLLECTION, eventId)
+  return runTransaction(db, async (transaction) => {
+    const snapshot = await transaction.get(ref)
+    if (!snapshot.exists()) return false
+
+    const data = snapshot.data()
+    const status = normalizeEventStatus(data.status as string)
+    if (status !== 'confirmed' && status !== 'planned') return false
+    if (data.time) return false
+
+    transaction.update(ref, { status: 'missed', updatedAt: serverTimestamp() })
+    return true
   })
 }
 
