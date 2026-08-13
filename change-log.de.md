@@ -6,6 +6,10 @@
 
 ## [1.16.1] — 2026-08-13
 
+### Hinzugefügt
+
+- **Mehr Emojis:** über 50 neue Optionen — Tiere, Blumen, Essen, Halloween-Motive und Flaggen aus Asien, Südamerika und Nordafrika — zur Emoji-Auswahl für Veranstaltungen und Ziele hinzugefügt.
+
 ### Behoben
 
 - **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden. Es gab eine Race Condition zwischen dem automatischen Übergang zu „Verpasst“ und dem Speichern des Ergebnisses — gewann der automatische Übergang das Rennen, war der Status falsch, obwohl das Ergebnis gespeichert war.
