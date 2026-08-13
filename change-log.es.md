@@ -4,6 +4,18 @@
 
 ---
 
+## [1.16.1] — 2026-08-13
+
+### Añadido
+
+- **Más emojis:** añadimos más de 50 opciones nuevas — animales, flores, comida, temática de Halloween y banderas de Asia, Sudamérica y el norte de África — al selector de emoji de eventos y objetivos.
+
+### Corregido
+
+- **Estado de los eventos:** un evento con resultado oficial ya no puede quedar marcado como «Perdido». Existía una condición de carrera entre la transición automática a «Perdido» y el guardado del resultado — si la transición automática ganaba la carrera, el estado quedaba mal aunque el resultado estuviera guardado.
+
+---
+
 ## [1.16.0] — 2026-08-03
 
 ### Añadido

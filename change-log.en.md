@@ -4,6 +4,18 @@
 
 ---
 
+## [1.16.1] — 2026-08-13
+
+### Added
+
+- **More emojis:** added over 50 new options — animals, flowers, food, Halloween-themed picks, and flags from Asia, South America, and North Africa — to the event and goal emoji picker.
+
+### Fixed
+
+- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result — if the automatic transition won the race, the status ended up wrong even though the result was saved.
+
+---
+
 ## [1.16.0] — 2026-08-03
 
 ### Added
