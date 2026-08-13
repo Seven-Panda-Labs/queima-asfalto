@@ -1,6 +1,5 @@
 import type { EventStatus, EventType } from '../domain/eventCodes'
 import type { GoalOutcome } from '../types/Goal'
-import { EMOJI_OPTIONS } from '../constants/emojis'
 import { normalizeImportSkipReason } from '../types/importSkipReasons'
 import i18n from './index'
 
@@ -26,16 +25,6 @@ export function formatGoalOutcomeLabel(outcome: GoalOutcome): string {
 
 export function isEnglishLocale(): boolean {
   return i18n.language === 'en'
-}
-
-export function formatEmojiLabel(labelKey: string): string {
-  return i18n.t(`emojis.${labelKey}`)
-}
-
-export function getEmojiLabel(emoji: string): string | undefined {
-  const option = EMOJI_OPTIONS.find((item) => item.emoji === emoji)
-  if (!option) return undefined
-  return formatEmojiLabel(option.labelKey)
 }
 
 export function formatImportSkipReason(reason: string): string {

@@ -690,6 +690,7 @@ export function EventForm() {
           <p className="mt-1 text-xs text-muted">{t('eventForm.emojiHint')}</p>
           <div className="mt-1">
             <EmojiPicker
+              id="emoji"
               value={form.emoji}
               onChange={(emoji) => {
                 emojiManualRef.current = true

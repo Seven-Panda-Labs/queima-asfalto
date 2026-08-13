@@ -1,5 +1,3 @@
-import { EMOJI_OPTIONS } from '../constants/emojis'
-
 export type EventEmojiInput = {
   name: string
   date: Date
@@ -49,6 +47,12 @@ const EMOJI_RULES: EmojiRule[] = [
   },
 ]
 
+const FALLBACK_EMOJIS = [
+  '🏃', '🏃‍♀️', '🏃‍♂️', '🏆', '🥇', '🥈', '🥉', '🏅', '🎖️',
+  '🌳', '🏞️', '🏔️', '🌊', '🏖️', '🏟️', '🏁', '🏝️', '🚀',
+  '🦅', '🐢', '🐇', '🦌', '🐕', '🦁', '🐨', '🐼', '🎉', '🎯',
+]
+
 function hashSeed(seed: string): number {
   let hash = 0
   for (let index = 0; index < seed.length; index += 1) {
@@ -59,8 +63,8 @@ function hashSeed(seed: string): number {
 
 export function pickRandomEventEmoji(seed: string): string {
   const normalized = seed.trim().toLowerCase() || 'default'
-  const index = hashSeed(normalized) % EMOJI_OPTIONS.length
-  return EMOJI_OPTIONS[index]!.emoji
+  const index = hashSeed(normalized) % FALLBACK_EMOJIS.length
+  return FALLBACK_EMOJIS[index]!
 }
 
 export function suggestEventEmoji(input: EventEmojiInput): string {

@@ -1,14 +1,11 @@
 import i18n from 'i18next'
 import { initReactI18next } from 'react-i18next'
-import { buildEmojiLocaleResources } from '../constants/emojis'
 import { guestStorageKey } from '../config/app'
 import { scopedStorageKey } from '../utils/userStorage'
 import { normalizeAppLanguage } from './locale'
 import { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
 
 export { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
-
-const emojiLocales = buildEmojiLocaleResources()
 
 const LOCALE_LOADERS: Record<
   AppLanguage,
@@ -54,13 +51,7 @@ export async function ensureLocaleLoaded(language: AppLanguage): Promise<void> {
   if (loadedLocales.has(language)) return
 
   const mod = await LOCALE_LOADERS[language]()
-  i18n.addResourceBundle(
-    language,
-    'translation',
-    { ...mod.default, emojis: emojiLocales[language] },
-    true,
-    true,
-  )
+  i18n.addResourceBundle(language, 'translation', mod.default, true, true)
   loadedLocales.add(language)
 }
 

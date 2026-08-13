@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.16.1",
+  "version": "1.17.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -8,8 +8,9 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run sync:parkrun-events && npm run generate:privacy && tsc -b && vite build",
+    "build": "npm run sync:parkrun-events && npm run sync:emoji-data && npm run generate:privacy && tsc -b && vite build",
     "sync:parkrun-events": "tsx scripts/sync-parkrun-events.ts",
+    "sync:emoji-data": "tsx scripts/sync-emoji-data.ts",
     "generate:privacy": "tsx scripts/generate-privacy-policy.ts",
     "lint": "oxlint",
     "licenses": "license-checker-rseidelsohn --production --summary && license-checker-rseidelsohn --start ./functions --production --summary",
@@ -28,6 +29,7 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",
     "chart.js": "^4.5.1",
+    "emoji-picker-element": "^1.29.1",
     "fflate": "^0.8.3",
     "firebase": "^12.15.0",
     "i18next": "^26.3.3",
@@ -54,6 +56,7 @@
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.2",
+    "emoji-picker-element-data": "^1.8.0",
     "firebase-tools": "^15.22.3",
     "jsdom": "^29.1.1",
     "license-checker-rseidelsohn": "^4.4.2",
