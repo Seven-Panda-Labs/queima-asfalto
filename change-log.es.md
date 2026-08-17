@@ -4,6 +4,14 @@
 
 ---
 
+## [1.18.0] — 2026-08-17
+
+### Cambiado
+
+- **Resultados oficiales:** búsqueda automática de resultados de Parkrun desactivada temporalmente — Parkrun bloquea las solicitudes automatizadas desde infraestructura en la nube conocida. El resultado se puede seguir registrando manualmente.
+
+---
+
 ## [1.17.0] — 2026-08-13
 
 ### Añadido

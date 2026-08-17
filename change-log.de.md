@@ -4,6 +4,14 @@
 
 ---
 
+## [1.18.0] — 2026-08-17
+
+### Geändert
+
+- **Offizielle Ergebnisse:** automatische Parkrun-Ergebnissuche vorübergehend deaktiviert — Parkrun blockiert automatisierte Anfragen aus bekannter Cloud-Infrastruktur. Das Ergebnis kann weiterhin manuell erfasst werden.
+
+---
+
 ## [1.17.0] — 2026-08-13
 
 ### Hinzugefügt
