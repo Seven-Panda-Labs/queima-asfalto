@@ -4,6 +4,14 @@
 
 ---
 
+## [1.18.0] — 2026-08-17
+
+### Changed
+
+- **Official results:** automatic Parkrun result search temporarily disabled — Parkrun blocks automated requests from known cloud infrastructure. Results can still be recorded manually.
+
+---
+
 ## [1.17.0] — 2026-08-13
 
 ### Added

@@ -32,6 +32,7 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
   const isPastOrToday = !isFutureDate(event.date)
   const canLookup =
     platform &&
+    platform !== 'parkrun' &&
     isPastOrToday &&
     (event.status === 'confirmed' || event.status === 'completed') &&
     canLookupPlatform(platform, profile, event.resultsUrl)
@@ -124,7 +125,7 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
       {!canLookup ? (
         <p className="mt-3 text-sm text-muted">
           {platform === 'parkrun'
-            ? t('officialResults.configureParkrun')
+            ? t('officialResults.parkrunUnavailable')
             : t('officialResults.configurePlatform')}
         </p>
       ) : (

@@ -107,13 +107,15 @@ export const lookupOfficialResults = onCall(
       )
     }
 
-    if (!canLookupPlatform(platform, profile, event.resultsUrl)) {
+    if (platform === 'parkrun') {
       throw new HttpsError(
         'failed-precondition',
-        platform === 'parkrun'
-          ? 'Configure your Parkrunner ID in settings.'
-          : 'Configure your name and results URL in settings.',
+        'Parkrun automatic lookup is temporarily unavailable. Record your result manually.',
       )
+    }
+
+    if (!canLookupPlatform(platform, profile, event.resultsUrl)) {
+      throw new HttpsError('failed-precondition', 'Configure your name and results URL in settings.')
     }
 
     const eventDate = event.date.toDate()
