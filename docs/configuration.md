@@ -17,7 +17,7 @@ Copia [`.env.example`](../.env.example) para `.env.local` na raiz do projeto.
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
 | `VITE_FIREBASE_API_KEY` | Sim | `apiKey` da Web App Firebase |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Sim | `authDomain` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Sim | `authDomain` — usa o domínio onde a app é servida (ex.: `your-project.web.app`), ver [nota abaixo](#authdomain-e-safariios) |
 | `VITE_FIREBASE_PROJECT_ID` | Sim | `projectId` |
 | `VITE_FIREBASE_STORAGE_BUCKET` | Sim | `storageBucket` |
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Sim | `messagingSenderId` |
@@ -34,6 +34,15 @@ Copia [`.env.example`](../.env.example) para `.env.local` na raiz do projeto.
 \* Recomendado em produção.
 
 Para desenvolvimento sem projeto cloud, usa [`.env.emulator.example`](../.env.emulator.example) em vez de `.env.example`.
+
+#### `authDomain` e Safari/iOS
+
+Define `VITE_FIREBASE_AUTH_DOMAIN` com o **domínio onde a app é servida** (ex.: `your-project.web.app`), não com o `your-project.firebaseapp.com` que a Firebase Console sugere. Com um `authDomain` noutra origem, o handler de login não consegue ler o `sessionStorage` em browsers com *storage partitioning* (Safari/iOS 16.1+, browsers embutidos), e o login falha com «Unable to process request due to missing initial state». Como a app é servida pelo Firebase Hosting, o handler `/__/auth/*` já existe no domínio de hosting. Depois de alterar:
+
+1. Google Cloud Console → **APIs & Services → Credentials** → OAuth 2.0 Client ID: adiciona `https://<domínio>/__/auth/handler` aos **Authorized redirect URIs** e `https://<domínio>` às **Authorized JavaScript origins**.
+2. Firebase Console → **Authentication → Settings → Authorized domains**: confirma que o domínio está listado.
+
+Ver [Firebase — redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (opção «update to use the same domain»).
 
 ### Política de privacidade (build)
 
@@ -134,7 +143,7 @@ Copy [`.env.example`](../.env.example) to `.env.local` at the project root.
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_FIREBASE_API_KEY` | Yes | Firebase Web App `apiKey` |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | `authDomain` |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | `authDomain` — use the domain the app is served from (e.g. `your-project.web.app`), see [note below](#authdomain-and-safariios) |
 | `VITE_FIREBASE_PROJECT_ID` | Yes | `projectId` |
 | `VITE_FIREBASE_STORAGE_BUCKET` | Yes | `storageBucket` |
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Yes | `messagingSenderId` |
@@ -151,6 +160,15 @@ Copy [`.env.example`](../.env.example) to `.env.local` at the project root.
 \* Recommended in production.
 
 For development without a cloud project, use [`.env.emulator.example`](../.env.emulator.example) instead of `.env.example`.
+
+#### `authDomain` and Safari/iOS
+
+Set `VITE_FIREBASE_AUTH_DOMAIN` to the **domain the app is served from** (e.g. `your-project.web.app`), not the `your-project.firebaseapp.com` value the Firebase Console suggests. With a cross-origin `authDomain`, the sign-in handler cannot read `sessionStorage` in storage-partitioned browsers (Safari/iOS 16.1+, in-app browsers), and sign-in fails with "Unable to process request due to missing initial state". Since the app is served by Firebase Hosting, the `/__/auth/*` handler already exists on the hosting domain. After changing it:
+
+1. Google Cloud Console → **APIs & Services → Credentials** → OAuth 2.0 Client ID: add `https://<domain>/__/auth/handler` to **Authorized redirect URIs** and `https://<domain>` to **Authorized JavaScript origins**.
+2. Firebase Console → **Authentication → Settings → Authorized domains**: confirm the domain is listed.
+
+See [Firebase — redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (the "update to use the same domain" option).
 
 ### Privacy policy (build)
 

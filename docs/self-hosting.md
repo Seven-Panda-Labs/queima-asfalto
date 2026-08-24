@@ -102,6 +102,8 @@ Substitui `TEU-PROJETO` e acrescenta `http://localhost:5173` se quiseres testar 
 | `appId` | `VITE_FIREBASE_APP_ID` |
 | `measurementId` | `VITE_FIREBASE_MEASUREMENT_ID` |
 
+> **Nota:** em `VITE_FIREBASE_AUTH_DOMAIN`, usa o **domínio de hosting** da app (ex.: `your-project.web.app`) em vez do `your-project.firebaseapp.com` sugerido pela consola — caso contrário o login falha no Safari/iOS. Ver [`configuration.md`](./configuration.md#authdomain-e-safariios).
+
 ### Passo 6 — FCM / Web Push (notificações)
 
 1. **Project settings → Cloud Messaging → Web Push certificates**.
@@ -372,6 +374,8 @@ Replace `YOUR-PROJECT`, and add `http://localhost:5173` if you want to test in d
 | `messagingSenderId` | `VITE_FIREBASE_MESSAGING_SENDER_ID` |
 | `appId` | `VITE_FIREBASE_APP_ID` |
 | `measurementId` | `VITE_FIREBASE_MEASUREMENT_ID` |
+
+> **Note:** for `VITE_FIREBASE_AUTH_DOMAIN`, use the app's **hosting domain** (e.g. `your-project.web.app`) instead of the `your-project.firebaseapp.com` value the console suggests — otherwise sign-in fails on Safari/iOS. See [`configuration.md`](./configuration.md#authdomain-and-safariios).
 
 ### Step 6 — FCM / Web Push (notifications)
 
