@@ -33,10 +33,11 @@ describe('parseRegistrationLocale', () => {
   it('maps BCP-47 tags to app languages', () => {
     expect(parseRegistrationLocale('pt-PT')).toBe('pt')
     expect(parseRegistrationLocale('en-US')).toBe('en')
+    expect(parseRegistrationLocale('fr-FR')).toBe('fr')
   })
 
   it('returns undefined for unsupported locales', () => {
-    expect(parseRegistrationLocale('fr-FR')).toBeUndefined()
+    expect(parseRegistrationLocale('it-IT')).toBeUndefined()
     expect(parseRegistrationLocale('')).toBeUndefined()
   })
 })

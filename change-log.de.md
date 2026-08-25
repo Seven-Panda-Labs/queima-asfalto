@@ -1,6 +1,14 @@
 # Changelog
 
-[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md)
+[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md) | [Français](change-log.fr.md)
+
+---
+
+## [1.19.0] — 2026-08-25
+
+### Hinzugefügt
+
+- **Neue Sprache — Französisch:** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Französisch verfügbar. Auswahl unter Einstellungen → Sprache.
 
 ---
 

@@ -22,7 +22,7 @@ export function LanguageToggle({
   labelKeyPrefix,
 }: LanguageToggleProps) {
   const { t } = useTranslation()
-  const locales: ContentLocale[] = ['pt', 'en', 'es', 'de']
+  const locales: ContentLocale[] = ['pt', 'en', 'es', 'de', 'fr']
 
   return (
     <div className="mt-6 flex flex-wrap justify-end gap-2" role="group" aria-label={t(ariaLabelKey)}>
@@ -34,7 +34,7 @@ export function LanguageToggle({
           aria-pressed={locale === value}
           onClick={() => onChange(value)}
         >
-          {t(`${labelKeyPrefix}.language${value === 'pt' ? 'Pt' : value === 'en' ? 'En' : value === 'es' ? 'Es' : 'De'}`)}
+          {t(`${labelKeyPrefix}.language${value === 'pt' ? 'Pt' : value === 'en' ? 'En' : value === 'es' ? 'Es' : value === 'de' ? 'De' : 'Fr'}`)}
         </button>
       ))}
     </div>

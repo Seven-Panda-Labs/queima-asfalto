@@ -10,6 +10,7 @@ const CHANGELOG_LOADERS: Record<
   en: () => import('../../change-log.en.md?raw'),
   es: () => import('../../change-log.es.md?raw'),
   de: () => import('../../change-log.de.md?raw'),
+  fr: () => import('../../change-log.fr.md?raw'),
 }
 
 const changelogCache = new Map<ChangelogLocale, string>()
@@ -20,7 +21,7 @@ export function resolveChangelogLocale(language: string): ChangelogLocale {
 
 const VERSION_HEADING = /^## \[[^\]]+\]/m
 const APPENDIX_HEADING =
-  /^## (Legenda|Referências|Legend|References|Leyenda|Referencias|Legende|Referenzen)\s*$/m
+  /^## (Legenda|Referências|Legend|References|Leyenda|Referencias|Legende|Referenzen|Légende|Références)\s*$/m
 
 /** User-facing body: version history only (drops header and repo appendix sections). */
 export function prepareChangelogForDisplay(markdown: string): string {

@@ -6,4 +6,5 @@ export const privacyPolicyContent = {
   en: '',
   es: '',
   de: '',
+  fr: '',
 } as const

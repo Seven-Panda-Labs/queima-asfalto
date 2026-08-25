@@ -1,10 +1,11 @@
-export type ReminderLocale = 'pt' | 'en' | 'es' | 'de'
+export type ReminderLocale = 'pt' | 'en' | 'es' | 'de' | 'fr'
 
 const TITLES: Record<ReminderLocale, string> = {
   pt: 'Queima Asfalto — Lembrete',
   en: 'Queima Asfalto — Reminder',
   es: 'Queima Asfalto — Recordatorio',
   de: 'Queima Asfalto — Erinnerung',
+  fr: 'Queima Asfalto — Rappel',
 }
 
 export function formatReminderTitle(locale: ReminderLocale): string {
@@ -20,22 +21,25 @@ export function formatReminderBody(
     if (locale === 'en') return `${eventName} — today`
     if (locale === 'es') return `${eventName} — hoy`
     if (locale === 'de') return `${eventName} — heute`
+    if (locale === 'fr') return `${eventName} — aujourd'hui`
     return `${eventName} — hoje`
   }
   if (daysBefore === 1) {
     if (locale === 'en') return `${eventName} — tomorrow`
     if (locale === 'es') return `${eventName} — mañana`
     if (locale === 'de') return `${eventName} — morgen`
+    if (locale === 'fr') return `${eventName} — demain`
     return `${eventName} — amanhã`
   }
   if (locale === 'en') return `${eventName} — in ${daysBefore} days`
   if (locale === 'es') return `${eventName} — en ${daysBefore} días`
   if (locale === 'de') return `${eventName} — in ${daysBefore} Tagen`
+  if (locale === 'fr') return `${eventName} — dans ${daysBefore} jours`
   return `${eventName} — daqui a ${daysBefore} dias`
 }
 
 export function parseReminderLocale(value: unknown): ReminderLocale {
-  if (value === 'en' || value === 'es' || value === 'de') return value
+  if (value === 'en' || value === 'es' || value === 'de' || value === 'fr') return value
   if (value === 'pt') return 'pt'
   return 'en'
 }

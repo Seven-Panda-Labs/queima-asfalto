@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-export type PrivacyPolicyLocale = 'pt' | 'en' | 'es' | 'de'
+export type PrivacyPolicyLocale = 'pt' | 'en' | 'es' | 'de' | 'fr'
 
 export type PrivacyPolicyValues = {
   INSTANCE_NAME: string
@@ -31,6 +31,8 @@ const DEFAULT_RETENTION_ES =
   'Solicitudes de supresión por email; respuesta en un plazo de 30 días.'
 const DEFAULT_RETENTION_DE =
   'Löschanfragen per E-Mail; Antwort innerhalb von 30 Tagen.'
+const DEFAULT_RETENTION_FR =
+  'Demandes de suppression par e-mail ; réponse sous 30 jours.'
 
 export function loadEnvFile(path: string, env: NodeJS.ProcessEnv = process.env): void {
   let content: string
@@ -77,6 +79,10 @@ function yesNoEs(enabled: boolean): string {
 
 function yesNoDe(enabled: boolean): string {
   return enabled ? 'ja' : 'nein'
+}
+
+function yesNoFr(enabled: boolean): string {
+  return enabled ? 'oui' : 'non'
 }
 
 export function missingPrivacyEnvKeys(env: NodeJS.ProcessEnv = process.env): string[] {
@@ -146,6 +152,16 @@ export function resolvePrivacyPolicyValuesForLocale(
     }
   }
 
+  if (locale === 'fr') {
+    return {
+      ...values,
+      USES_ANALYTICS: yesNoFr(usesAnalytics),
+      USES_GEOAPIFY: yesNoFr(usesGeoapify),
+      USES_PUSH: yesNoFr(usesPush),
+      RETENTION_POLICY: env.PRIVACY_RETENTION_POLICY_FR?.trim() || DEFAULT_RETENTION_FR,
+    }
+  }
+
   return {
     ...values,
     USES_ANALYTICS: yesNoEn(usesAnalytics),
@@ -166,7 +182,7 @@ export function substitutePlaceholders(
 
 export function parseLocaleSections(template: string): Map<PrivacyPolicyLocale, string> {
   const sections = new Map<PrivacyPolicyLocale, string>()
-  const pattern = /^---locale:(pt|en|es|de)---$/gm
+  const pattern = /^---locale:(pt|en|es|de|fr)---$/gm
   const matches = [...template.matchAll(pattern)]
 
   for (let i = 0; i < matches.length; i += 1) {

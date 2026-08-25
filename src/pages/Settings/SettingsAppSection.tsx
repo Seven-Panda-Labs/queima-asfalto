@@ -11,6 +11,7 @@ const LANGUAGE_BUTTONS: Array<{ code: AppLanguage; labelKey: string }> = [
   { code: 'en', labelKey: 'common.languageEn' },
   { code: 'es', labelKey: 'common.languageEs' },
   { code: 'de', labelKey: 'common.languageDe' },
+  { code: 'fr', labelKey: 'common.languageFr' },
 ]
 
 export function SettingsAppSection() {
