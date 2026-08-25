@@ -14,11 +14,17 @@ const UI_TEXT_LOADERS: Partial<Record<AppLanguage, () => Promise<{ default: I18n
   es: () => import('emoji-picker-element/i18n/es.js'),
   de: () => import('emoji-picker-element/i18n/de.js'),
   fr: () => import('emoji-picker-element/i18n/fr.js'),
+  ar: () => import('emoji-picker-element/i18n/ar.js'),
 }
 
 function resolveAppLanguage(language: string): AppLanguage {
-  return language === 'pt' || language === 'es' || language === 'de' || language === 'fr'
+  return language === 'pt' || language === 'es' || language === 'de' || language === 'fr' || language === 'ar'
     ? language : 'en'
+}
+
+/** emoji-picker-element-data ships no Arabic search index yet; keep the English one. */
+function resolveDataLocale(language: AppLanguage): string {
+  return language === 'ar' ? 'en' : language
 }
 
 export default function EmojiPickerPanel({ onSelect }: EmojiPickerPanelProps) {
@@ -60,8 +66,8 @@ export default function EmojiPickerPanel({ onSelect }: EmojiPickerPanelProps) {
     <emoji-picker
       ref={ref}
       className={effectiveTheme}
-      locale={language}
-      data-source={`/emoji-data/${language}.json`}
+      locale={resolveDataLocale(language)}
+      data-source={`/emoji-data/${resolveDataLocale(language)}.json`}
       style={{ width: '100%', height: '400px' }}
     />
   )

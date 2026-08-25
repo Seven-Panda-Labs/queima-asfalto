@@ -56,6 +56,14 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     approveLabel: 'Approuver le compte',
     rejectLabel: 'Refuser le compte',
   },
+  ar: {
+    subject: 'تسجيل جديد بانتظار الموافقة',
+    title: 'مستخدم جديد',
+    body: ({ name, email }) =>
+      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) طلب الوصول إلى هذه النسخة.</p><p>اقبل هذا التسجيل أو ارفضه:</p>`,
+    approveLabel: 'قبول الحساب',
+    rejectLabel: 'رفض الحساب',
+  },
 }
 
 const userApproved: Record<AppLanguage, UserDecisionCopy> = {
@@ -89,6 +97,12 @@ const userApproved: Record<AppLanguage, UserDecisionCopy> = {
     body: '<p>Un administrateur a approuvé ton inscription. Tu peux te connecter et commencer à utiliser l’application.</p>',
     ctaLabel: 'Ouvrir l’application',
   },
+  ar: {
+    subject: 'تمت الموافقة على حسابك',
+    title: 'تمت الموافقة على الحساب',
+    body: '<p>وافق المسؤول على تسجيلك. يمكنك الآن تسجيل الدخول والبدء في استخدام التطبيق.</p>',
+    ctaLabel: 'افتح التطبيق',
+  },
 }
 
 const userRejected: Record<AppLanguage, UserDecisionCopy> = {
@@ -121,6 +135,12 @@ const userRejected: Record<AppLanguage, UserDecisionCopy> = {
     title: 'Compte non approuvé',
     body: '<p>Un administrateur n’a pas approuvé ton inscription sur cette instance. Contacte l’administrateur du site si tu penses qu’il s’agit d’une erreur.</p>',
     ctaLabel: 'Retour à l’accueil',
+  },
+  ar: {
+    subject: 'لم تتم الموافقة على التسجيل',
+    title: 'لم تتم الموافقة على الحساب',
+    body: '<p>لم يوافق المسؤول على تسجيلك في هذه النسخة. إذا كنت تعتقد أن هذا خطأ، تواصل مع مسؤول الموقع.</p>',
+    ctaLabel: 'العودة إلى الصفحة الرئيسية',
   },
 }
 

@@ -192,7 +192,7 @@ export function BackupSection({ embedded = false }: BackupSectionProps) {
             type="file"
             accept=".zip,application/zip"
             aria-describedby="backup-drop-label"
-            className="mt-4 block w-full text-sm text-muted file:mr-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-hover"
+            className="mt-4 block w-full text-sm text-muted file:me-4 file:rounded-md file:border-0 file:bg-primary file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-primary-hover"
             onChange={(event) => void handleFileSelected(event.target.files?.[0] ?? null)}
           />
         </div>

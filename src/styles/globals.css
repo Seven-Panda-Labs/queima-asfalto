@@ -79,6 +79,18 @@
   }
 }
 
+/* RTL (Arabic): the display/body webfonts have no Arabic glyphs and joined script must not be letter-spaced. */
+[dir='rtl'] {
+  --font-display: system-ui, sans-serif;
+  --font-sans: system-ui, sans-serif;
+}
+
+[dir='rtl'] .tracking-wide,
+[dir='rtl'] .tracking-wider,
+[dir='rtl'] .tracking-widest {
+  letter-spacing: normal;
+}
+
 @layer components {
   .changelog {
     @apply text-sm leading-relaxed text-foreground;
@@ -97,7 +109,7 @@
   }
 
   .changelog ul {
-    @apply mt-2 list-disc space-y-1 pl-5 text-foreground;
+    @apply mt-2 list-disc space-y-1 ps-5 text-foreground;
   }
 
   .changelog li {
@@ -121,7 +133,7 @@
   }
 
   .changelog table {
-    @apply mt-4 w-full border-collapse text-left text-xs sm:text-sm;
+    @apply mt-4 w-full border-collapse text-start text-xs sm:text-sm;
   }
 
   .changelog th,

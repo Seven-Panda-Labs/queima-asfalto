@@ -80,7 +80,7 @@ export function BackupPreview({
               <li key={section}>
                 {t(COUNT_KEYS[section], { count })}
                 {showDiff ? (
-                  <span className="ml-2 text-muted">
+                  <span className="ms-2 text-muted">
                     {t('backup.previewDiff', {
                       created: Math.max(0, count - existing[section as keyof ExistingCounts]),
                       updated: Math.min(count, existing[section as keyof ExistingCounts]),
@@ -116,7 +116,7 @@ export function BackupPreview({
         return (
           <div className="rounded-lg border border-warning-border bg-warning-bg p-4">
             <h3 className="font-semibold text-warning-fg">{t('backup.warningsTitle')}</h3>
-            <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-warning-fg">
+            <ul className="mt-2 list-disc space-y-1 ps-5 text-sm text-warning-fg">
               {warnings.map((warning) => (
                 <li key={warning}>{formatBackupWarning(warning)}</li>
               ))}

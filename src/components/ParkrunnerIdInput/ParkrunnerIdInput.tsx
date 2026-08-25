@@ -32,7 +32,7 @@ export function ParkrunnerIdInput({
         ].join(' ')}
       >
         <span
-          className="flex items-center border-r border-border bg-surface px-3 text-sm font-semibold text-foreground"
+          className="flex items-center border-e border-border bg-surface px-3 text-sm font-semibold text-foreground"
           aria-hidden
         >
           A

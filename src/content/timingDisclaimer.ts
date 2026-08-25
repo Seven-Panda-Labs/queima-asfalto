@@ -3,7 +3,7 @@ import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
 
 export type TimingDisclaimerLocale = ContentLocale
 
-const LOCALE_MARKER = /^---locale:(pt|en|es|de|fr)---$/gm
+const LOCALE_MARKER = /^---locale:(pt|en|es|de|fr|ar)---$/gm
 
 function parseLocaleSections(template: string): Map<TimingDisclaimerLocale, string> {
   const sections = new Map<TimingDisclaimerLocale, string>()

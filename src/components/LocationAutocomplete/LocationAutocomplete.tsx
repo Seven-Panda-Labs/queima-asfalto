@@ -148,7 +148,7 @@ export function LocationAutocomplete({
                 onMouseDown={(event) => event.preventDefault()}
                 onClick={() => selectSuggestion(suggestion)}
                 className={[
-                  'block w-full px-3 py-2 text-left text-sm text-foreground hover:bg-background',
+                  'block w-full px-3 py-2 text-start text-sm text-foreground hover:bg-background',
                   index === activeIndex ? 'bg-background' : '',
                 ].join(' ')}
               >

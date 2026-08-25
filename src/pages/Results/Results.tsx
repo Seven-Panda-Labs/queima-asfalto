@@ -217,7 +217,7 @@ export function Results() {
           </div>
         ) : (
           <div className="overflow-x-auto rounded-lg border border-border bg-surface">
-            <table className="min-w-full text-left text-sm">
+            <table className="min-w-full text-start text-sm">
               <thead className="border-b border-border bg-background text-muted">
                 <tr>
                   <th className="px-4 py-3 font-semibold">{t('common.date')}</th>

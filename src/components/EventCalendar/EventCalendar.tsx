@@ -116,7 +116,7 @@ export function EventCalendar({
             onClick={() => setViewMonth((current) => addMonths(current, -1))}
             className="rounded-md px-2 py-1 text-lg text-muted hover:bg-background hover:text-foreground"
           >
-            ‹
+            <span className="inline-block rtl:-scale-x-100">‹</span>
           </button>
           <p className="text-sm font-semibold capitalize text-foreground">{monthLabel}</p>
           <button
@@ -125,7 +125,7 @@ export function EventCalendar({
             onClick={() => setViewMonth((current) => addMonths(current, 1))}
             className="rounded-md px-2 py-1 text-lg text-muted hover:bg-background hover:text-foreground"
           >
-            ›
+            <span className="inline-block rtl:-scale-x-100">›</span>
           </button>
         </div>
 

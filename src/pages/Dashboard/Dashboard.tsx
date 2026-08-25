@@ -68,7 +68,7 @@ export function Dashboard() {
             </h2>
           </div>
           <Link to="/objetivos" className="text-sm font-semibold text-primary hover:underline">
-            {t('dashboard.viewAllGoals')} →
+            {t('dashboard.viewAllGoals')} <span className="inline-block rtl:-scale-x-100">→</span>
           </Link>
         </div>
 
@@ -107,7 +107,7 @@ export function Dashboard() {
             </h2>
           </div>
           <Link to="/objetivos" className="text-sm font-semibold text-primary hover:underline">
-            {t('dashboard.viewAllGoals')} →
+            {t('dashboard.viewAllGoals')} <span className="inline-block rtl:-scale-x-100">→</span>
           </Link>
         </div>
 
