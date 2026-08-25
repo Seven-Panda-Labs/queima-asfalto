@@ -55,8 +55,9 @@ const ptSection = sections.get('pt')
 const enSection = sections.get('en')
 const esSection = sections.get('es')
 const deSection = sections.get('de')
-if (!ptSection || !enSection || !esSection || !deSection) {
-  console.error('Missing pt, en, es, or de section in privacy-policy.template.md')
+const frSection = sections.get('fr')
+if (!ptSection || !enSection || !esSection || !deSection || !frSection) {
+  console.error('Missing pt, en, es, de, or fr section in privacy-policy.template.md')
   process.exit(1)
 }
 
@@ -76,6 +77,10 @@ const deMarkdown = substitutePlaceholders(
   deSection,
   resolvePrivacyPolicyValuesForLocale(values, 'de'),
 )
+const frMarkdown = substitutePlaceholders(
+  frSection,
+  resolvePrivacyPolicyValuesForLocale(values, 'fr'),
+)
 
 mkdirSync(GENERATED_DIR, { recursive: true })
 
@@ -90,6 +95,7 @@ export const privacyPolicyContent = {
   en: ${JSON.stringify(enMarkdown)},
   es: ${JSON.stringify(esMarkdown)},
   de: ${JSON.stringify(deMarkdown)},
+  fr: ${JSON.stringify(frMarkdown)},
 } as const
 `,
   'utf8',

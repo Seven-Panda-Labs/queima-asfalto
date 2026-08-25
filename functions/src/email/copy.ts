@@ -48,6 +48,14 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     approveLabel: 'Konto freigeben',
     rejectLabel: 'Konto ablehnen',
   },
+  fr: {
+    subject: 'Nouvelle inscription en attente d’approbation',
+    title: 'Nouvel utilisateur',
+    body: ({ name, email }) =>
+      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) a demandé l’accès à cette instance.</p><p>Approuve ou refuse cette inscription :</p>`,
+    approveLabel: 'Approuver le compte',
+    rejectLabel: 'Refuser le compte',
+  },
 }
 
 const userApproved: Record<AppLanguage, UserDecisionCopy> = {
@@ -75,6 +83,12 @@ const userApproved: Record<AppLanguage, UserDecisionCopy> = {
     body: '<p>Ein Administrator hat deine Registrierung freigegeben. Du kannst dich anmelden und die App nutzen.</p>',
     ctaLabel: 'App öffnen',
   },
+  fr: {
+    subject: 'Ton compte a été approuvé',
+    title: 'Compte approuvé',
+    body: '<p>Un administrateur a approuvé ton inscription. Tu peux te connecter et commencer à utiliser l’application.</p>',
+    ctaLabel: 'Ouvrir l’application',
+  },
 }
 
 const userRejected: Record<AppLanguage, UserDecisionCopy> = {
@@ -101,6 +115,12 @@ const userRejected: Record<AppLanguage, UserDecisionCopy> = {
     title: 'Konto nicht freigegeben',
     body: '<p>Ein Administrator hat deine Registrierung auf dieser Instanz nicht freigegeben. Wende dich an den Administrator, wenn du glaubst, dass es ein Fehler ist.</p>',
     ctaLabel: 'Zur Startseite',
+  },
+  fr: {
+    subject: 'Inscription non approuvée',
+    title: 'Compte non approuvé',
+    body: '<p>Un administrateur n’a pas approuvé ton inscription sur cette instance. Contacte l’administrateur du site si tu penses qu’il s’agit d’une erreur.</p>',
+    ctaLabel: 'Retour à l’accueil',
   },
 }
 

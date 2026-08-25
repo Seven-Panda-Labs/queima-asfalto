@@ -381,3 +381,99 @@ Wir veröffentlichen das Aktualisierungsdatum oben auf dieser Seite. Wesentliche
 **{{CONTROLLER_NAME}}**  
 E-Mail: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
 Instanz: {{HOSTING_URL}}
+
+---locale:fr---
+#### Politique de confidentialité — {{INSTANCE_NAME}}
+
+**Dernière mise à jour :** {{EFFECTIVE_DATE}}
+
+#### 1. Qui nous sommes
+
+Le responsable du traitement pour cette instance est **{{CONTROLLER_NAME}}**, opérateur de **{{HOSTING_URL}}** (« nous » ou « l'opérateur »).
+
+Le logiciel [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) est open source (AGPL-3.0). Les auteurs du code ne sont **pas** responsables du traitement pour ton instance auto-hébergée.
+
+#### 2. Champ d'application
+
+Cette politique s'applique aux utilisateurs qui s'inscrivent et utilisent la PWA à l'adresse **{{HOSTING_URL}}**.
+
+#### 3. Données que nous pouvons traiter
+
+Selon les fonctionnalités activées, l'instance peut traiter :
+
+| Catégorie | Exemples | Où |
+|-----------|----------|----|
+| **Compte** | Nom, e-mail, identifiant Google (UID Firebase Auth) | Firebase Authentication, Firestore `users/{uid}` |
+| **Profil de résultats** | Nom pour les classements, alias, identifiant Parkrunner, Parkruns favoris | Firestore `users/{uid}` |
+| **Contenu de l'application** | Événements, objectifs, résultats, notes, lieux, coordonnées GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Médias** | Photos et vidéos d'événements | Firebase Storage |
+| **Partage** | E-mail de l'invité, permissions, données partagées expurgées | Firestore `shares`, Cloud Functions |
+| **Notifications** (si activées) | Jetons FCM, préférences de rappel, langue, décalage horaire | Firestore `users/{uid}` |
+| **Préférences locales** | Thème, langue, modes d'affichage | `localStorage` du navigateur (préfixe par utilisateur) |
+| **Analytique** (si activée) | Pages vues, métadonnées du navigateur | Google Analytics via Firebase (`measurementId`) |
+| **Géocodage** (si activé) | Texte de recherche de lieu, coordonnées | Requêtes du navigateur vers l'API Geoapify |
+| **Importation des résultats** | Nom/identifiant Parkrunner, URL publique de l'événement | Cloud Function `lookupOfficialResults` → requêtes HTTP vers des **sites de chronométrage tiers** |
+
+Nous ne collectons pas sciemment de données auprès d'enfants de moins de 16 ans. Contacte-nous si tu penses qu'un enfant a fourni des données.
+
+#### 4. Finalités et bases légales (RGPD)
+
+| Finalité | Base légale habituelle |
+|----------|------------------------|
+| Compte et synchronisation entre appareils | Contrat / mesures précontractuelles (art. 6(1)(b)) |
+| Partage entre utilisateurs | Contrat |
+| Rappels push (opt-in) | Consentement (art. 6(1)(a)) — l'utilisateur les active dans les Paramètres |
+| Analytique (si activée) | Consentement ou intérêt légitime, selon ta configuration et ta juridiction |
+| Sécurité et prévention des abus | Intérêt légitime (art. 6(1)(f)) |
+| Importation des résultats officiels | Contrat (fonctionnalité demandée par l'utilisateur) |
+
+#### 5. Sous-traitants et tiers
+
+| Service | Fournisseur | Données habituelles | Remarques |
+|---------|-------------|---------------------|-----------|
+| Auth, base de données, fichiers, fonctions, push | Google Firebase / Google Cloud | Selon la section 3 | Région configurée : **{{FIREBASE_REGION}}**. [Confidentialité Google](https://policies.google.com/privacy) |
+| Autocomplétion / carte | Geoapify ({{USES_GEOAPIFY}}) | Requêtes de lieux | [Confidentialité Geoapify](https://www.geoapify.com/privacy-policy) |
+| Connexion | Google (OAuth) | E-mail, nom, photo de profil Google | Politique de Google |
+| Sites de chronométrage | Divers (publics) | Nom ou identifiant sur des pages de résultats publiques | Extraction d'URL **publiques** uniquement ; soumise aux CGU de chaque site |
+
+Liste complète des dépendances open source : `npm run licenses` dans le dépôt.
+
+#### 6. Conservation
+
+- **Compte et contenu :** tant que le compte existe ou jusqu'à une demande d'effacement.
+- **Jetons FCM invalides :** supprimés automatiquement par `dispatchReminders` lorsqu'ils sont détectés.
+- **Journaux Firebase/Google Cloud :** selon la conservation configurée dans ton projet GCP (recommandé : la définir et la documenter).
+
+**Politique de cette instance :** {{RETENTION_POLICY}}
+
+#### 7. Transferts internationaux
+
+Firebase et Google peuvent traiter des données en dehors de l'EEE (par ex. aux États-Unis), en s'appuyant sur des clauses contractuelles types ou des mécanismes équivalents. Consulte la documentation de ton projet Firebase / Google Cloud.
+
+#### 8. Tes droits
+
+En vertu du RGPD, les utilisateurs peuvent demander :
+
+- L'accès, la rectification, l'effacement
+- La limitation du traitement ou l'opposition au traitement
+- La portabilité (données qu'ils ont fournies, dans un format structuré) — disponible directement dans l'application sous Paramètres → Données → « Exporter une sauvegarde (.zip) »
+- Le retrait du consentement (par ex. notifications push) sans affecter le traitement antérieur
+- L'introduction d'une réclamation auprès d'une autorité de contrôle (Portugal : [CNPD](https://www.cnpd.pt))
+
+**Demandes :** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Délai de réponse recommandé : 30 jours.
+
+**Suppression du compte :** l'opérateur doit supprimer `users/{uid}`, les événements, les médias Storage et les partages (console Firebase ou script). Le logiciel n'inclut pas encore de bouton automatique « supprimer le compte ».
+
+#### 9. Sécurité
+
+Les mesures logicielles incluent des règles Firestore/Storage par utilisateur, l'authentification obligatoire, l'expurgation côté serveur des partages et la limitation de fréquence des recherches. Voir [restrictions de la console](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) et [auto-hébergement](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
+
+#### 10. Modifications
+
+Nous publierons la date de mise à jour en haut de cette page. Les changements importants pourront être notifiés par e-mail ou par un avis dans l'application.
+
+#### 11. Contact
+
+**{{CONTROLLER_NAME}}**  
+E-mail : [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
+Instance : {{HOSTING_URL}}

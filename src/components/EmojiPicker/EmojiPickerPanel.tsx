@@ -13,10 +13,12 @@ const UI_TEXT_LOADERS: Partial<Record<AppLanguage, () => Promise<{ default: I18n
   pt: () => import('emoji-picker-element/i18n/pt_PT.js'),
   es: () => import('emoji-picker-element/i18n/es.js'),
   de: () => import('emoji-picker-element/i18n/de.js'),
+  fr: () => import('emoji-picker-element/i18n/fr.js'),
 }
 
 function resolveAppLanguage(language: string): AppLanguage {
-  return language === 'pt' || language === 'es' || language === 'de' ? language : 'en'
+  return language === 'pt' || language === 'es' || language === 'de' || language === 'fr'
+    ? language : 'en'
 }
 
 export default function EmojiPickerPanel({ onSelect }: EmojiPickerPanelProps) {

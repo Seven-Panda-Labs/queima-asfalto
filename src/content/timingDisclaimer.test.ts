@@ -10,10 +10,11 @@ describe('timingDisclaimer', () => {
     expect(resolveTimingDisclaimerLocale('en-GB')).toBe('en')
   })
 
-  it('includes pt, en, es and de disclaimer bodies', () => {
+  it('includes pt, en, es, de and fr disclaimer bodies', () => {
     expect(getTimingDisclaimerMarkdown('pt')).toMatch(/importação de resultados oficiais/i)
     expect(getTimingDisclaimerMarkdown('en')).toMatch(/official results import/i)
     expect(getTimingDisclaimerMarkdown('es')).toMatch(/resultados oficiales/i)
     expect(getTimingDisclaimerMarkdown('de')).toMatch(/Import offizieller Ergebnisse/i)
+    expect(getTimingDisclaimerMarkdown('fr')).toMatch(/importation des résultats officiels/i)
   })
 })
