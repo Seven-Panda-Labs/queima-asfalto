@@ -141,7 +141,7 @@ cp functions/.env.example functions/.env
 1. **`.env.local`** — preenche todas as variáveis `VITE_*` (passos 5–7).
 2. **`.firebaserc`** — substitui `your-firebase-project-id` pelo teu Project ID.
 3. **`functions/.env`** (opcional):
-   - `FUNCTIONS_REGION=europe-west1` (predefinição; deve coincidir com `VITE_FIREBASE_FUNCTIONS_REGION` se definida)
+   - `FUNCTIONS_REGION=europe-west1` (predefinição; deve coincidir com `VITE_FIREBASE_FUNCTIONS_REGION` se definida e com a `region` do rewrite `/api/account-approval` em `firebase.json`)
    - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — email em **Project settings → Service accounts**
    - `SCHEDULER_TIMEZONE=Europe/Lisbon` — fuso dos lembretes agendados
 
@@ -414,7 +414,7 @@ cp functions/.env.example functions/.env
 1. **`.env.local`** — fill all `VITE_*` variables (steps 5–7).
 2. **`.firebaserc`** — replace `your-firebase-project-id` with your Project ID.
 3. **`functions/.env`** (optional):
-   - `FUNCTIONS_REGION=europe-west1` (default; must match `VITE_FIREBASE_FUNCTIONS_REGION` if set)
+   - `FUNCTIONS_REGION=europe-west1` (default; must match `VITE_FIREBASE_FUNCTIONS_REGION` if set and the `region` of the `/api/account-approval` rewrite in `firebase.json`)
    - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — from **Project settings → Service accounts**
    - `SCHEDULER_TIMEZONE=Europe/Lisbon` — time zone for scheduled reminders
 

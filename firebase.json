@@ -5,7 +5,10 @@
     "rewrites": [
       {
         "source": "/api/account-approval",
-        "function": "accountApprovalAction"
+        "function": {
+          "functionId": "accountApprovalAction",
+          "region": "europe-west1"
+        }
       },
       {
         "source": "**",
