@@ -35,6 +35,7 @@
     "languageEs": "Español",
     "languageDe": "Deutsch",
     "languageFr": "Français",
+    "languageAr": "العربية",
     "remove": "Remover"
   },
   "nav": {
@@ -63,7 +64,8 @@
     "languageEn": "English",
     "languageEs": "Español",
     "languageDe": "Deutsch",
-    "languageFr": "Français"
+    "languageFr": "Français",
+    "languageAr": "العربية"
   },
   "privacy": {
     "title": "Política de privacidade",
@@ -73,7 +75,8 @@
     "languageEn": "English",
     "languageEs": "Español",
     "languageDe": "Deutsch",
-    "languageFr": "Français"
+    "languageFr": "Français",
+    "languageAr": "العربية"
   },
   "timingDisclaimer": {
     "title": "Aviso — resultados oficiais",
@@ -83,7 +86,8 @@
     "languageEn": "English",
     "languageEs": "Español",
     "languageDe": "Deutsch",
-    "languageFr": "Français"
+    "languageFr": "Français",
+    "languageAr": "العربية"
   },
   "eventStatus": {
     "planned": "Planeado",

@@ -34,7 +34,7 @@ export function ProgressBar({ current, target, label, showCounts = true }: Progr
       {showCounts ? (
         <p className="mt-1 text-sm font-bold text-foreground">
           {current}/{target}
-          {isComplete ? <span className="ml-2 text-success">✓</span> : null}
+          {isComplete ? <span className="ms-2 text-success">✓</span> : null}
         </p>
       ) : null}
     </div>

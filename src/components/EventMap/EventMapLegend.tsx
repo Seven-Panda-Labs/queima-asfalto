@@ -8,7 +8,7 @@ export function EventMapLegend() {
 
   return (
     <aside
-      className="border-t border-border bg-surface p-4 lg:w-44 lg:shrink-0 lg:border-t-0 lg:border-l"
+      className="border-t border-border bg-surface p-4 lg:w-44 lg:shrink-0 lg:border-t-0 lg:border-s"
       aria-label={t('eventMap.legendTitle')}
     >
       <h3 className="text-xs font-semibold uppercase tracking-wide text-muted">

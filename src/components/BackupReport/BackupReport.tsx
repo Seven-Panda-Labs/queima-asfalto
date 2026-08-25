@@ -49,7 +49,7 @@ export function BackupReport({ result, onRestoreAnother }: BackupReportProps) {
                   skipped: counts.skipped,
                 })}
                 {counts.rejected > 0 ? (
-                  <span className="ml-2 text-danger">
+                  <span className="ms-2 text-danger">
                     {t('backup.reportRejected', {
                       section: formatBackupSectionLabel(section),
                       count: counts.rejected,
@@ -69,7 +69,7 @@ export function BackupReport({ result, onRestoreAnother }: BackupReportProps) {
       {result.warnings.length > 0 ? (
         <div className="rounded-lg border border-warning-border bg-warning-bg p-4">
           <h3 className="font-semibold text-warning-fg">{t('backup.warningsTitle')}</h3>
-          <ul className="mt-2 list-disc space-y-1 pl-5 text-sm text-warning-fg">
+          <ul className="mt-2 list-disc space-y-1 ps-5 text-sm text-warning-fg">
             {[...new Set(result.warnings)].map((warning) => (
               <li key={warning}>{formatBackupWarning(warning)}</li>
             ))}

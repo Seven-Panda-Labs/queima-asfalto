@@ -81,7 +81,7 @@ export function resolveEmailLanguage(
   registrationLocale: unknown,
   fallback: AppLanguage = 'en',
 ): AppLanguage {
-  if (registrationLocale === 'pt' || registrationLocale === 'en' || registrationLocale === 'es' || registrationLocale === 'de' || registrationLocale === 'fr') {
+  if (registrationLocale === 'pt' || registrationLocale === 'en' || registrationLocale === 'es' || registrationLocale === 'de' || registrationLocale === 'fr' || registrationLocale === 'ar') {
     return registrationLocale
   }
   return fallback

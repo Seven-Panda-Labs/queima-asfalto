@@ -161,9 +161,9 @@ export function EventMediaLightbox({
               onClick={() => onActiveIndexChange(stepMediaIndex(activeIndex, -1, items.length))}
               disabled={!hasPrevious}
               aria-label={t('eventMedia.previousMemory')}
-              className={`${navButtonClassName} left-2 sm:left-4`}
+              className={`${navButtonClassName} start-2 sm:start-4`}
             >
-              ‹
+              <span className="inline-block rtl:-scale-x-100">‹</span>
             </button>
 
             <div className="flex h-full w-full items-center justify-center">
@@ -192,9 +192,9 @@ export function EventMediaLightbox({
               onClick={() => onActiveIndexChange(stepMediaIndex(activeIndex, 1, items.length))}
               disabled={!hasNext}
               aria-label={t('eventMedia.nextMemory')}
-              className={`${navButtonClassName} right-2 sm:right-4`}
+              className={`${navButtonClassName} end-2 sm:end-4`}
             >
-              ›
+              <span className="inline-block rtl:-scale-x-100">›</span>
             </button>
           </div>
         </div>

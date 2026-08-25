@@ -3,9 +3,14 @@ import { initReactI18next } from 'react-i18next'
 import { guestStorageKey } from '../config/app'
 import { scopedStorageKey } from '../utils/userStorage'
 import { normalizeAppLanguage } from './locale'
-import { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
+import { SUPPORTED_LANGUAGES, resolveTextDirection, type AppLanguage } from './languages'
 
-export { SUPPORTED_LANGUAGES, type AppLanguage } from './languages'
+export {
+  SUPPORTED_LANGUAGES,
+  isRtlLanguage,
+  resolveTextDirection,
+  type AppLanguage,
+} from './languages'
 
 const LOCALE_LOADERS: Record<
   AppLanguage,
@@ -16,6 +21,7 @@ const LOCALE_LOADERS: Record<
   es: () => import('./locales/es.json'),
   de: () => import('./locales/de.json'),
   fr: () => import('./locales/fr.json'),
+  ar: () => import('./locales/ar.json'),
 }
 
 const loadedLocales = new Set<AppLanguage>()
@@ -25,7 +31,7 @@ const GUEST_LANGUAGE_KEY = guestStorageKey('language-guest')
 let initPromise: Promise<typeof i18n> | null = null
 
 function isAppLanguage(value: string | null): value is AppLanguage {
-  return value === 'pt' || value === 'en' || value === 'es' || value === 'de' || value === 'fr'
+  return value === 'pt' || value === 'en' || value === 'es' || value === 'de' || value === 'fr' || value === 'ar'
 }
 
 export function resolveBrowserLanguage(): AppLanguage {
@@ -46,6 +52,13 @@ export function setStoredLanguage(language: AppLanguage, userId?: string | null)
 
 export function detectInitialLanguage(userId?: string | null): AppLanguage {
   return getStoredLanguage(userId) ?? resolveBrowserLanguage()
+}
+
+/** Keep <html lang/dir> in sync so RTL layout and fonts follow the active language. */
+export function applyDocumentLanguage(language: AppLanguage): void {
+  if (typeof document === 'undefined') return
+  document.documentElement.lang = language
+  document.documentElement.dir = resolveTextDirection(language)
 }
 
 export async function ensureLocaleLoaded(language: AppLanguage): Promise<void> {
@@ -77,6 +90,7 @@ export async function initI18n(userId?: string | null): Promise<typeof i18n> {
     })
 
     await loadLanguageBundles(initialLanguage)
+    applyDocumentLanguage(initialLanguage)
     return i18n
   })()
 
@@ -87,6 +101,7 @@ export async function applyLanguage(language: AppLanguage, userId?: string | nul
   await loadLanguageBundles(language)
   setStoredLanguage(language, userId)
   await i18n.changeLanguage(language)
+  applyDocumentLanguage(language)
 }
 
 export async function syncLanguageForUser(userId?: string | null): Promise<void> {

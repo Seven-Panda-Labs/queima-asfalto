@@ -177,7 +177,7 @@ export function ParkrunEventPicker({
                 onMouseDown={(mouseEvent) => mouseEvent.preventDefault()}
                 onClick={() => selectEvent(event)}
                 className={[
-                  'block w-full px-3 py-2 text-left hover:bg-background',
+                  'block w-full px-3 py-2 text-start hover:bg-background',
                   index === activeIndex ? 'bg-background' : '',
                 ].join(' ')}
               >

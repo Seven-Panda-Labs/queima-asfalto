@@ -102,7 +102,7 @@ export function EventMediaGallery({
                 onRequestDelete(item)
               }}
               disabled={deletingId === item.id}
-              className="absolute top-2 right-2 z-10 rounded-md bg-foreground/70 px-2 py-1 text-xs font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 disabled:opacity-60"
+              className="absolute top-2 end-2 z-10 rounded-md bg-foreground/70 px-2 py-1 text-xs font-semibold text-white opacity-0 transition-opacity group-hover:opacity-100 focus:opacity-100 disabled:opacity-60"
             >
               {deletingId === item.id ? t('confirmDialog.deleting') : t('common.delete')}
             </button>

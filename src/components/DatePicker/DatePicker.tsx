@@ -62,7 +62,7 @@ export function DatePicker({ id, value, onChange, hasError = false }: DatePicker
         aria-haspopup="dialog"
         onClick={() => setOpen((current) => !current)}
         className={[
-          'flex w-full items-center justify-between rounded-md border bg-surface px-3 py-2 text-left text-sm transition-colors hover:bg-background',
+          'flex w-full items-center justify-between rounded-md border bg-surface px-3 py-2 text-start text-sm transition-colors hover:bg-background',
           hasError ? 'border-danger' : 'border-border',
         ].join(' ')}
       >
@@ -85,7 +85,7 @@ export function DatePicker({ id, value, onChange, hasError = false }: DatePicker
               onClick={() => setViewMonth((current) => addMonths(current, -1))}
               className="rounded-md px-2 py-1 text-lg text-muted hover:bg-background hover:text-foreground"
             >
-              ‹
+              <span className="inline-block rtl:-scale-x-100">‹</span>
             </button>
             <p className="text-sm font-semibold capitalize text-foreground">{monthLabel}</p>
             <button
@@ -94,7 +94,7 @@ export function DatePicker({ id, value, onChange, hasError = false }: DatePicker
               onClick={() => setViewMonth((current) => addMonths(current, 1))}
               className="rounded-md px-2 py-1 text-lg text-muted hover:bg-background hover:text-foreground"
             >
-              ›
+              <span className="inline-block rtl:-scale-x-100">›</span>
             </button>
           </div>
 

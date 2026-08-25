@@ -1,7 +1,7 @@
 #!/usr/bin/env npx tsx
 /**
  * Verifica que a versão em package.json coincide com a entrada mais recente
- * em change-log.md, change-log.en.md, change-log.es.md, change-log.de.md e change-log.fr.md.
+ * em change-log.md, change-log.en.md, change-log.es.md, change-log.de.md, change-log.fr.md e change-log.ar.md.
  *
  * Uso: npm run check:changelog
  */
@@ -16,6 +16,7 @@ const CHANGELOG_FILES = [
   { path: resolve(ROOT, 'change-log.es.md'), label: 'change-log.es.md' },
   { path: resolve(ROOT, 'change-log.de.md'), label: 'change-log.de.md' },
   { path: resolve(ROOT, 'change-log.fr.md'), label: 'change-log.fr.md' },
+  { path: resolve(ROOT, 'change-log.ar.md'), label: 'change-log.ar.md' },
 ] as const
 
 const packageVersion = JSON.parse(readFileSync(PACKAGE_JSON, 'utf8')).version as string

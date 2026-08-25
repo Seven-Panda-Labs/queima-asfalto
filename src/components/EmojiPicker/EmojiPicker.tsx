@@ -45,7 +45,7 @@ export function EmojiPicker({ id, value, onChange }: EmojiPickerProps) {
         aria-haspopup="dialog"
         aria-label={t('emojiPicker.choose')}
         onClick={() => setOpen((current) => !current)}
-        className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-left text-sm transition-colors hover:bg-background"
+        className="flex items-center gap-2 rounded-md border border-border bg-surface px-3 py-2 text-start text-sm transition-colors hover:bg-background"
       >
         <span className="text-2xl" aria-hidden>
           {value || '🙂'}

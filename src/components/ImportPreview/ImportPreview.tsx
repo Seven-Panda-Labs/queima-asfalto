@@ -61,7 +61,7 @@ export function ImportPreview({
       <section>
         <h2 className="text-lg font-semibold text-foreground">{t('import.previewEventsTitle')}</h2>
         <div className="mt-3 overflow-x-auto rounded-lg border border-border">
-          <table className="min-w-full text-left text-sm">
+          <table className="min-w-full text-start text-sm">
             <thead className="border-b border-border bg-background text-muted">
               <tr>
                 <th className="px-3 py-2 font-semibold">{t('import.sheetColumn')}</th>

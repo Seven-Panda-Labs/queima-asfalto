@@ -19,6 +19,8 @@ describe('resolveChangelogLocale', () => {
     expect(resolveChangelogLocale('de')).toBe('de')
     expect(resolveChangelogLocale('fr')).toBe('fr')
     expect(resolveChangelogLocale('fr-CA')).toBe('fr')
+    expect(resolveChangelogLocale('ar')).toBe('ar')
+    expect(resolveChangelogLocale('ar-MA')).toBe('ar')
     expect(resolveChangelogLocale('it')).toBe('en')
   })
 })
@@ -110,6 +112,10 @@ describe('getChangelogMarkdown', () => {
 
   it('includes the current package version in fr changelog', async () => {
     await expect(getChangelogMarkdown('fr')).resolves.toMatch(versionPattern)
+  })
+
+  it('includes the current package version in ar changelog', async () => {
+    await expect(getChangelogMarkdown('ar')).resolves.toMatch(versionPattern)
   })
 
   it('omits legend and references appendix from displayed changelog', async () => {

@@ -1,6 +1,14 @@
 # Changelog
 
-[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md) | [Français](change-log.fr.md)
+[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md) | [Français](change-log.fr.md) | [العربية](change-log.ar.md)
+
+---
+
+## [1.20.0] — 2026-08-25
+
+### Adicionado
+
+- **Novo idioma — Árabe (primeira versão):** a aplicação, as notas de versão, o aviso de resultados oficiais, a política de privacidade, os emails de conta e os lembretes push estão agora disponíveis em árabe, com layout da direita para a esquerda (RTL). Selecciona-o em Definições → Idioma.
 
 ---
 
