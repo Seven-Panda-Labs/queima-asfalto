@@ -99,7 +99,7 @@ export const PROFILE_FIELDS_NEVER_RESTORED = [
   'rejectedAt',
 ] as const
 
-/** Device push credentials — stripped at export, never restored. */
+/** Device push credentials, stripped at export, never restored. */
 export const PROFILE_FIELDS_NEVER_EXPORTED = ['fcmTokens'] as const
 
 /** Identity fields that belong to the exporting account, not the restoring one. */
@@ -109,7 +109,7 @@ export type JsonValue = string | number | boolean | null | JsonValue[] | { [key:
 
 export type BackupDocument = {
   id: string
-  /** Present on `eventMedia` only — the parent event's id. */
+  /** Present on `eventMedia` only: the parent event's id. */
   eventId?: string
   data: Record<string, JsonValue>
 }
@@ -160,7 +160,7 @@ export function emptyBackupMediaFiles(): BackupMediaFiles {
 export type ParsedBackup = {
   manifest: BackupManifest
   sections: BackupSections
-  /** Zip entries we do not know — kept for diagnostics. */
+  /** Zip entries we do not know, kept for diagnostics. */
   unknownFiles: string[]
   /** Empty for a metadata-only backup. */
   mediaFiles: BackupMediaFiles

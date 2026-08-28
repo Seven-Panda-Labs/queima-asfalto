@@ -81,7 +81,7 @@
     "languageAr": "العربية"
   },
   "timingDisclaimer": {
-    "title": "Hinweis — offizielle Ergebnisse",
+    "title": "Hinweis: offizielle Ergebnisse",
     "subtitle": "Web-Scraping von Zeitnahme-Websites Dritter und Nutzungsbedingungen.",
     "languageToggle": "Sprache des Hinweises",
     "languagePt": "Português",
@@ -127,7 +127,7 @@
     "subtitle": "Jahreslaufplan. Events, Ziele und Ergebnisse im Blick.",
     "google": "Mit Google anmelden",
     "emulator": "Anmelden (Emulator)",
-    "emulatorHint": "Emulator-Modus — kein Google OAuth. Siehe docs/emulators.md."
+    "emulatorHint": "Emulator-Modus, kein Google OAuth. Siehe docs/emulators.md."
   },
   "accountApproval": {
     "pendingTitle": "Warten auf Freigabe",
@@ -151,7 +151,7 @@
     "personalBests": "Persönliche Bestzeiten",
     "viewResults": "Ergebnisse ansehen",
     "achievements": "Erfolge {{year}}",
-    "achievementsEmpty": "Noch keine Erfolge in {{year}}. Erreiche ein Ziel oder stelle einen Rekord auf – dann erscheint er hier.",
+    "achievementsEmpty": "Noch keine Erfolge in {{year}}. Erreiche ein Ziel oder stelle einen Rekord auf, dann erscheint er hier.",
     "inProgress": "Unterwegs",
     "moreTargets": "+{{count}} weitere",
     "allTargetsDone": "Alles erledigt. Zeit, die Latte höher zu legen.",
@@ -164,7 +164,7 @@
     "title": "Events",
     "subtitle": "Jahreslaufplan. Nach Status und Jahr filtern.",
     "empty": "Noch keine Events",
-    "emptyHint": "Na los — Zeit, ins Schwitzen zu kommen!",
+    "emptyHint": "Na los, Zeit zum Schwitzen!",
     "deleteTitle": "Event löschen",
     "deleteMessage": "Möchtest du {{name}} wirklich löschen?",
     "deleted": "„{{name}}“ wurde gelöscht.",
@@ -540,7 +540,7 @@
     "previewNothingToRestore": "In diesem Backup gibt es nichts wiederherzustellen.",
     "countEvents": "{{count}} Events",
     "countEventMedia": "{{count}} Einträge zu Fotos und Videos",
-    "countMediaFiles": "{{count}} Foto- und Videodateien ({{mb}} MB) — werden wiederhergestellt",
+    "countMediaFiles": "{{count}} Foto- und Videodateien ({{mb}} MB), werden wiederhergestellt",
     "countGoals": "{{count}} Ziele",
     "countPerformanceGoals": "{{count}} Leistungsziele",
     "countBucketListItems": "{{count}} Einträge auf der Bucket List",
@@ -549,7 +549,7 @@
     "existingLoading": "Deine aktuellen Daten werden gezählt...",
     "warningsTitle": "Was nicht wiederhergestellt wird",
     "warnings": {
-      "shares_not_restored": "Freigaben — du musst die Personen erneut einladen.",
+      "shares_not_restored": "Freigaben: du musst die Personen erneut einladen.",
       "media_binaries_not_restored": "Dieses Backup enthält keine Foto- oder Videodateien, nur deren Metadaten. Fotos und Videos kommen nur zurück, wenn sie noch in deinem Konto liegen.",
       "media_not_restored_replace_mode": "Beim Ersetzen aller Daten werden deine Fotos und Videos endgültig gelöscht und können nicht aus dem Backup wiederhergestellt werden.",
       "media_skipped_different_account": "Einträge zu Fotos und Videos werden übersprungen, weil das Backup aus einem anderen Konto stammt.",
@@ -562,7 +562,7 @@
     "modeMerge": "Zusammenführen",
     "modeMergeHint": "Erstellt oder überschreibt die Dokumente aus dem Backup und behält alles andere, was du schon hast. Für jedes Dokument in der Datei gewinnt die Version aus dem Backup.",
     "modeReplace": "Alles ersetzen",
-    "modeReplaceHint": "Löscht deine Events, Ziele, Leistungsziele, Bucket List und alle Fotos und Videos, bevor wiederhergestellt wird. Die Fotos und Videos kommen nicht zurück — sie liegen nicht in der .zip. Das lässt sich nicht rückgängig machen.",
+    "modeReplaceHint": "Löscht deine Events, Ziele, Leistungsziele, Bucket List und alle Fotos und Videos, bevor wiederhergestellt wird. Die Fotos und Videos kommen nicht zurück, sie liegen nicht in der .zip. Das lässt sich nicht rückgängig machen.",
     "modeReplaceHintWithMedia": "Löscht deine Events, Ziele, Leistungsziele, Bucket List sowie Fotos und Videos, bevor wiederhergestellt wird. Da dieses Backup die Dateien enthält, kommen die Fotos und Videos zurück. Das lässt sich nicht rückgängig machen.",
     "confirmRestore": "Daten wiederherstellen",
     "confirmReplaceTitle": "Alle Daten ersetzen?",
@@ -972,7 +972,7 @@
       "own": {
         "events": {
           "title": "Noch keine Events im Kalender.",
-          "hint": "Na los — heute ist ein guter Tag zum Schwitzen!"
+          "hint": "Na los, heute ist ein guter Tag zum Schwitzen!"
         },
         "results": {
           "title": "Noch keine Ergebnisse erfasst.",
@@ -980,7 +980,7 @@
         },
         "goals": {
           "title": "Noch keine Ziele für {{year}}.",
-          "hint": "Setz dir Saisonziele — der Asphalt verbrennt sich nicht von selbst."
+          "hint": "Setz dir Saisonziele, der Asphalt verbrennt sich nicht von selbst."
         },
         "performanceGoals": {
           "title": "Noch keine Leistungsziele für {{year}}.",

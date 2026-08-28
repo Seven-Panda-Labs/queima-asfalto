@@ -1,4 +1,4 @@
-# Configuração — Queima Asfalto
+# Configuração: Queima Asfalto
 
 **Português** · [English](#english)
 
@@ -17,7 +17,7 @@ Copia [`.env.example`](../.env.example) para `.env.local` na raiz do projeto.
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
 | `VITE_FIREBASE_API_KEY` | Sim | `apiKey` da Web App Firebase |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Sim | `authDomain` — usa o domínio onde a app é servida (ex.: `your-project.web.app`), ver [nota abaixo](#authdomain-e-safariios) |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Sim | `authDomain`, usa o domínio onde a app é servida (ex.: `your-project.web.app`). Ver [nota abaixo](#authdomain-e-safariios) |
 | `VITE_FIREBASE_PROJECT_ID` | Sim | `projectId` |
 | `VITE_FIREBASE_STORAGE_BUCKET` | Sim | `storageBucket` |
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Sim | `messagingSenderId` |
@@ -27,7 +27,7 @@ Copia [`.env.example`](../.env.example) para `.env.local` na raiz do projeto.
 | `VITE_GEOAPIFY_API_KEY` | Não* | Autocomplete e geocodificação de locais |
 | `VITE_FIREBASE_FUNCTIONS_REGION` | Não | Região das Cloud Functions (predefinição: `europe-west1`) |
 | `VITE_APP_STORAGE_PREFIX` | Não | Prefixo de `localStorage` (predefinição: `VITE_FIREBASE_PROJECT_ID`) |
-| `VITE_USE_FIREBASE_EMULATORS` | Não | `true` para Auth, Firestore, Storage e Functions emulados — ver [`emulators.md`](./emulators.md) |
+| `VITE_USE_FIREBASE_EMULATORS` | Não | `true` para Auth, Firestore, Storage e Functions emulados, ver [`emulators.md`](./emulators.md) |
 | `VITE_FUNCTIONS_EMULATOR` | Não | `true` para **só** Functions emuladas (modo híbrido com projeto real) |
 | `VITE_ACCOUNT_APPROVAL_REQUIRED` | Não | `true` para exigir aprovação de novas contas (deve coincidir com `ACCOUNT_APPROVAL_REQUIRED` nas Functions) |
 
@@ -42,7 +42,7 @@ Define `VITE_FIREBASE_AUTH_DOMAIN` com o **domínio onde a app é servida** (ex.
 1. Google Cloud Console → **APIs & Services → Credentials** → OAuth 2.0 Client ID: adiciona `https://<domínio>/__/auth/handler` aos **Authorized redirect URIs** e `https://<domínio>` às **Authorized JavaScript origins**.
 2. Firebase Console → **Authentication → Settings → Authorized domains**: confirma que o domínio está listado.
 
-Ver [Firebase — redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (opção «update to use the same domain»).
+Ver [Firebase: redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (opção «update to use the same domain»).
 
 ### Política de privacidade (build)
 
@@ -114,7 +114,7 @@ Copia [`.firebaserc.example`](../.firebaserc.example) para `.firebaserc` e defin
 firebase use --add your-firebase-project-id
 ```
 
-O ficheiro `.firebaserc` não é commitado — cada instalação aponta para o seu projeto Firebase.
+O ficheiro `.firebaserc` não é commitado, cada instalação aponta para o seu projeto Firebase.
 
 ### Checklist rápido (novo projeto)
 
@@ -123,8 +123,8 @@ Guia completo: [`self-hosting.md`](./self-hosting.md). Resumo:
 1. Criar projeto Firebase (Blaze) com Auth, Firestore, Storage, Functions, FCM.
 2. Configurar `.firebaserc`, `.env.local` e `functions/.env`.
 3. `npm run deploy`.
-4. Rever restrições no Console — [`console-restrictions.md`](./console-restrictions.md).
-5. Publicar política de privacidade — modelo em [`privacy-policy-template.md`](./privacy-policy-template.md).
+4. Rever restrições no Console, [`console-restrictions.md`](./console-restrictions.md).
+5. Publicar política de privacidade, modelo em [`privacy-policy-template.md`](./privacy-policy-template.md).
 
 ---
 
@@ -143,7 +143,7 @@ Copy [`.env.example`](../.env.example) to `.env.local` at the project root.
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `VITE_FIREBASE_API_KEY` | Yes | Firebase Web App `apiKey` |
-| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | `authDomain` — use the domain the app is served from (e.g. `your-project.web.app`), see [note below](#authdomain-and-safariios) |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Yes | `authDomain`, use the domain the app is served from (e.g. `your-project.web.app`). See [note below](#authdomain-and-safariios) |
 | `VITE_FIREBASE_PROJECT_ID` | Yes | `projectId` |
 | `VITE_FIREBASE_STORAGE_BUCKET` | Yes | `storageBucket` |
 | `VITE_FIREBASE_MESSAGING_SENDER_ID` | Yes | `messagingSenderId` |
@@ -153,7 +153,7 @@ Copy [`.env.example`](../.env.example) to `.env.local` at the project root.
 | `VITE_GEOAPIFY_API_KEY` | No* | Location autocomplete and geocoding |
 | `VITE_FIREBASE_FUNCTIONS_REGION` | No | Cloud Functions region (default: `europe-west1`) |
 | `VITE_APP_STORAGE_PREFIX` | No | `localStorage` key prefix (default: `VITE_FIREBASE_PROJECT_ID`) |
-| `VITE_USE_FIREBASE_EMULATORS` | No | `true` for emulated Auth, Firestore, Storage, and Functions — see [`emulators.md`](./emulators.md) |
+| `VITE_USE_FIREBASE_EMULATORS` | No | `true` for emulated Auth, Firestore, Storage, and Functions, see [`emulators.md`](./emulators.md) |
 | `VITE_FUNCTIONS_EMULATOR` | No | `true` for **Functions only** (hybrid mode with a real project) |
 | `VITE_ACCOUNT_APPROVAL_REQUIRED` | No | `true` to require admin approval for new accounts (must match `ACCOUNT_APPROVAL_REQUIRED` in Functions) |
 
@@ -168,7 +168,7 @@ Set `VITE_FIREBASE_AUTH_DOMAIN` to the **domain the app is served from** (e.g. `
 1. Google Cloud Console → **APIs & Services → Credentials** → OAuth 2.0 Client ID: add `https://<domain>/__/auth/handler` to **Authorized redirect URIs** and `https://<domain>` to **Authorized JavaScript origins**.
 2. Firebase Console → **Authentication → Settings → Authorized domains**: confirm the domain is listed.
 
-See [Firebase — redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (the "update to use the same domain" option).
+See [Firebase: redirect best practices](https://firebase.google.com/docs/auth/web/redirect-best-practices) (the "update to use the same domain" option).
 
 ### Privacy policy (build)
 
@@ -240,7 +240,7 @@ Copy [`.firebaserc.example`](../.firebaserc.example) to `.firebaserc` and set yo
 firebase use --add your-firebase-project-id
 ```
 
-`.firebaserc` is not committed — each installation points to its own Firebase project.
+`.firebaserc` is not committed, each installation points to its own Firebase project.
 
 ### Quick checklist (new project)
 
@@ -249,5 +249,5 @@ Full guide: [`self-hosting.md`](./self-hosting.md). Summary:
 1. Create a Firebase project (Blaze) with Auth, Firestore, Storage, Functions, FCM.
 2. Configure `.firebaserc`, `.env.local`, and `functions/.env`.
 3. `npm run deploy`.
-4. Review console restrictions — [`console-restrictions.md`](./console-restrictions.md).
-5. Publish a privacy policy — template at [`privacy-policy-template.md`](./privacy-policy-template.md).
+4. Review console restrictions, [`console-restrictions.md`](./console-restrictions.md).
+5. Publish a privacy policy, template at [`privacy-policy-template.md`](./privacy-policy-template.md).

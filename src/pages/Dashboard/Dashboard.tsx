@@ -46,10 +46,10 @@ export function Dashboard() {
   const goalsPending = goalsLoading || performanceLoading
   const goalsFailure = goalsError ?? performanceError
 
-  // O que a Firestore devolve é do motor de regras — «evaluation error at
+  // O que a Firestore devolve é do motor de regras, «evaluation error at
   // L323:22 for 'list'» e afins. Serve para depurar, não para ler no ecrã.
   useEffect(() => {
-    if (goalsFailure) console.error('Dashboard: goals query failed —', goalsFailure)
+    if (goalsFailure) console.error('Dashboard: goals query failed:', goalsFailure)
   }, [goalsFailure])
 
   const greeting = !user?.displayName

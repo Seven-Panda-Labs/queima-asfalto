@@ -5,9 +5,9 @@ import type { BestPerformance } from '../../utils/bestPerformances'
 import { formatDatePt } from '../../utils/date'
 
 /**
- * Recordes pessoais. Repete a gramática da faixa do ano — número grande com
- * rótulo pequeno — mas fecha a página, longe dos números de 2026, para não
- * misturar marcas de sempre com o que se fez este ano.
+ * Recordes pessoais. Usa a mesma gramática da faixa do ano: número grande,
+ * rótulo pequeno. Fecha a página, longe dos números de 2026, para que as
+ * marcas de sempre não se confundam com o que se fez este ano.
  */
 export function RecordStrip({ records }: { records: BestPerformance[] }) {
   const { t } = useTranslation()

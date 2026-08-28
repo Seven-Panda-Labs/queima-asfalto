@@ -47,7 +47,7 @@ export function formatClassification(position: number, total: number): string {
 }
 
 export function formatClassificationDisplay(stored?: string | null): string {
-  if (!stored?.trim()) return '—'
+  if (!stored?.trim()) return '-'
   const firstLine = stored.split('\n')[0]?.replace(/^\d+\.\s*/, '').trim() ?? ''
   const parsed = parseClassification(firstLine)
   if (!parsed) return stored

@@ -47,7 +47,7 @@ if (mismatched.length > 0) {
     )
   }
   console.error(
-    `Add a ## [${packageVersion}] — YYYY-MM-DD section at the top of all change-log*.md files.`,
+    `Add a ## [${packageVersion}] - YYYY-MM-DD section at the top of all change-log*.md files.`,
   )
   process.exit(1)
 }

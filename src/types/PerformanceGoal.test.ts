@@ -88,7 +88,7 @@ describe('formatPerformanceGoalLabel', () => {
         type: 'pr_target',
         eventType: 'km_10',
       }),
-    ).toBe('Novo PR — 10Km')
+    ).toBe('Novo PR (10Km)')
   })
 
   it('formats pace_target label', () => {
@@ -98,6 +98,6 @@ describe('formatPerformanceGoalLabel', () => {
         eventType: 'km_21_1',
         targetPace: '5:00',
       }),
-    ).toBe('Ritmo alvo ≤ 5:00 — Meia Maratona')
+    ).toBe('Ritmo alvo ≤ 5:00 (Meia Maratona)')
   })
 })

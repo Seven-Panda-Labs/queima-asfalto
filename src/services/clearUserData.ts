@@ -45,7 +45,7 @@ async function deleteCollectionDocs(userId: string, collectionName: string): Pro
  *
  * Must run *before* the events themselves: the media read rule resolves
  * `get(events/{eventId}).data.userId`, so once the parent event is gone the rule
- * errors and denies, leaving media documents that can never be listed again —
+ * errors and denies, leaving media documents that can never be listed again,
  * and therefore never enumerated to delete.
  */
 async function deleteEventMediaForUser(userId: string): Promise<number> {

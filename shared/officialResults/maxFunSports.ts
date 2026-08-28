@@ -43,7 +43,7 @@ export function buildMaxFunSportsSearchUrl(parts: MaxFunSportsUrlParts, term: st
   return buildMaxFunSportsCompetitionUrl(parts, params)
 }
 
-/** Iframe pages omit the entry summary — always load totals from the main site. */
+/** Iframe pages omit the entry summary, always load totals from the main site. */
 export function buildMaxFunSportsWwwSummaryUrl(competitionId: string): string {
   return buildMaxFunSportsCompetitionUrl({
     competitionId,

@@ -18,7 +18,7 @@ Um conector:
 2. Faz pedidos HTTP a partir da Cloud Function `lookupOfficialResults`.
 3. Devolve zero ou mais `OfficialResultCandidate` (tempo, posição, nome encontrado, URL fonte).
 
-O utilizador **confirma** na app antes de gravar — o conector não escreve no Firestore.
+O utilizador **confirma** na app antes de gravar, o conector não escreve no Firestore.
 
 ### Onde vive o código
 
@@ -26,7 +26,7 @@ O utilizador **confirma** na app antes de gravar — o conector não escreve no 
 |------------------|------|-------------------|
 | Detecção de plataforma, parsing de URLs, parsing de HTML/JSON/CSV | `shared/officialResults/` | Sim (Vitest + fixtures) |
 | `fetch`, headers, orquestração HTTP | `functions/src/connectors/` | Integração / emulador |
-| Router de plataformas | `functions/src/connectors/index.ts` | — |
+| Router de plataformas | `functions/src/connectors/index.ts` | - |
 | Callable + rate limit | `functions/src/lookupOfficialResults.ts` | `firestore.rules.test.ts` (rate limit) |
 
 No build das Functions, `shared/officialResults` é **copiado** para `functions/src/shared` (ver script `build` em `functions/package.json`). Mantém a lógica pura em `shared/` para a app e os testes usarem o mesmo código.
@@ -47,7 +47,7 @@ sequenceDiagram
   Dev->>Dev: npm run check
 ```
 
-### Checklist — ficheiros a tocar
+### Checklist: ficheiros a tocar
 
 Substitui `myplatform` pelo slug em camelCase (ex.: `eqtiming`, `mikatiming`).
 
@@ -63,7 +63,7 @@ Substitui `myplatform` pelo slug em camelCase (ex.: `eqtiming`, `mikatiming`).
 
 [`shared/officialResults/detectPlatform.ts`](../shared/officialResults/detectPlatform.ts):
 
-- Regra em `detectPlatformFromUrl()` — hostname, path, query params.
+- Regra em `detectPlatformFromUrl()`, hostname, path, query params.
 - Se o evento for só por nome (ex. Parkrun), `detectPlatform()` já trata `eventName` à parte.
 
 #### 3. Parsing e URLs (lógica pura)
@@ -73,7 +73,7 @@ Criar ou estender módulos em `shared/officialResults/`:
 | Ficheiro típico | Conteúdo |
 |-----------------|----------|
 | `myplatform.ts` | Tipos, `parseMyPlatformUrl`, builders de API, parsers de resposta |
-| `myplatformSearch.ts` | `buildMyPlatformSearchTerm(profile)` — opcional, se o termo de pesquisa tiver regras |
+| `myplatformSearch.ts` | `buildMyPlatformSearchTerm(profile)`, opcional, se o termo de pesquisa tiver regras |
 | `parseUrls.ts` | Re-export ou `parseMyPlatformUrl` se seguires o padrão centralizado |
 
 Exportar em [`shared/officialResults/index.ts`](../shared/officialResults/index.ts) se criares ficheiros novos.
@@ -82,9 +82,9 @@ Exportar em [`shared/officialResults/index.ts`](../shared/officialResults/index.
 
 Usa funções existentes em [`shared/officialResults/matchName.ts`](../shared/officialResults/matchName.ts):
 
-- `namesMatch(profile, first, last)` — campos separados.
-- `namesMatchFullName(profile, fullName)` — nome completo numa string.
-- `matchesResultsProfile(profile, fullName)` — inclui aliases do perfil.
+- `namesMatch(profile, first, last)`: campos separados.
+- `namesMatchFullName(profile, fullName)`: nome completo numa string.
+- `matchesResultsProfile(profile, fullName)`: inclui aliases do perfil.
 
 #### 5. Conector HTTP (servidor)
 
@@ -115,8 +115,8 @@ Hoje é preciso actualizar **manualmente** (duplicação conhecida):
 
 | Ficheiro | Motivo |
 |----------|--------|
-| [`functions/src/lookupOfficialResults.ts`](../functions/src/lookupOfficialResults.ts) | `normalizeResultsPlatform()` — valida `resultsPlatform` guardado no evento |
-| [`src/services/events.ts`](../src/services/events.ts) | `docToEvent()` — aceita o valor ao ler Firestore |
+| [`functions/src/lookupOfficialResults.ts`](../functions/src/lookupOfficialResults.ts) | `normalizeResultsPlatform()`, valida `resultsPlatform` guardado no evento |
+| [`src/services/events.ts`](../src/services/events.ts) | `docToEvent()`, aceita o valor ao ler Firestore |
 
 Se a detecção precisar de um fetch extra (como SCC Events ou Wiclax), pode ser necessário `resolve…UrlParts()` em `lookupOfficialResults` antes de `lookupPlatform`.
 
@@ -125,7 +125,7 @@ Se a detecção precisar de um fetch extra (como SCC Events ou Wiclax), pode ser
 Criar [`shared/officialResults/myplatform.test.ts`](../shared/officialResults/):
 
 - `detectPlatformFromUrl` com URLs reais de exemplo.
-- Parsers com fixtures em `shared/officialResults/fixtures/` (**sem PII real** — usar «Zé Ninguém» ou dados públicos redigidos).
+- Parsers com fixtures em `shared/officialResults/fixtures/` (**sem PII real**, usar «Zé Ninguém» ou dados públicos redigidos).
 - Correspondência de nomes com perfis de teste.
 
 Correr:
@@ -139,7 +139,7 @@ Testar lookup completo (HTTP real):
 
 ```bash
 npm run emulators   # terminal 1
-npm run dev         # terminal 2 — .env.local com emuladores
+npm run dev         # terminal 2, .env.local com emuladores
 ```
 
 Cria um evento com URL da plataforma, configura nome no perfil de resultados, usa **Procurar resultado**.
@@ -166,15 +166,15 @@ Conector relativamente simples (API JSON + CSV públicos):
 
 Conector mais complexo (HTML, formulários, domínios custom):
 
-- `shared/officialResults/mikaTiming.ts` — parsing de páginas e tabelas.
-- `functions/src/connectors/mikaTiming.ts` — POST de pesquisa e paginação.
+- `shared/officialResults/mikaTiming.ts`: parsing de páginas e tabelas.
+- `functions/src/connectors/mikaTiming.ts`: POST de pesquisa e paginação.
 
 Útil quando a plataforma não expõe API JSON estável.
 
 ### Caso especial: Parkrun
 
 - Plataforma `parkrun`; lookup por **Parkrunner ID**, não por nome no URL do evento.
-- `canLookupPlatform()` em `types.ts` — regra `parkrun` vs outras plataformas.
+- `canLookupPlatform()` em `types.ts`: regra `parkrun` vs outras plataformas.
 - Conector: `functions/src/connectors/parkrun.ts`.
 
 ### Tipo `OfficialResultCandidate`
@@ -192,9 +192,9 @@ Definido em [`shared/officialResults/types.ts`](../shared/officialResults/types.
 
 ### Limites e ética
 
-- Rate limit por utilizador (10 s) — [`shared/officialResults/lookupRateLimit.ts`](../shared/officialResults/lookupRateLimit.ts).
-- `maxInstances` / `concurrency` do lookup — [`cloud-functions-limits.md`](./cloud-functions-limits.md).
-- Respeita ToS dos sites — [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md).
+- Rate limit por utilizador (10 s), [`shared/officialResults/lookupRateLimit.ts`](../shared/officialResults/lookupRateLimit.ts).
+- `maxInstances` / `concurrency` do lookup, [`cloud-functions-limits.md`](./cloud-functions-limits.md).
+- Respeita ToS dos sites, [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md).
 
 ### Checklist rápido do PR
 
@@ -224,7 +224,7 @@ A connector:
 2. Performs HTTP requests from the `lookupOfficialResults` Cloud Function.
 3. Returns zero or more `OfficialResultCandidate` objects (time, position, matched name, source URL).
 
-The user **confirms** in the app before saving — the connector does not write to Firestore.
+The user **confirms** in the app before saving, the connector does not write to Firestore.
 
 ### Where code lives
 
@@ -232,7 +232,7 @@ The user **confirms** in the app before saving — the connector does not write 
 |----------------|----------|------------------|
 | Platform detection, URL parsing, HTML/JSON/CSV parsing | `shared/officialResults/` | Yes (Vitest + fixtures) |
 | `fetch`, headers, HTTP orchestration | `functions/src/connectors/` | Integration / emulator |
-| Platform router | `functions/src/connectors/index.ts` | — |
+| Platform router | `functions/src/connectors/index.ts` | - |
 | Callable + rate limit | `functions/src/lookupOfficialResults.ts` | `firestore.rules.test.ts` (rate limit) |
 
 On Functions build, `shared/officialResults` is **copied** into `functions/src/shared` (see `build` in `functions/package.json`). Keep pure logic in `shared/` so the app and tests share the same code.
@@ -241,7 +241,7 @@ On Functions build, `shared/officialResults` is **copied** into `functions/src/s
 
 Same diagram as Portuguese section above.
 
-### Checklist — files to touch
+### Checklist: files to touch
 
 Replace `myplatform` with your camelCase slug (e.g. `eqtiming`, `mikatiming`).
 
@@ -267,7 +267,7 @@ Create or extend modules under `shared/officialResults/`:
 | Typical file | Contents |
 |--------------|----------|
 | `myplatform.ts` | Types, `parseMyPlatformUrl`, API URL builders, response parsers |
-| `myplatformSearch.ts` | `buildMyPlatformSearchTerm(profile)` — optional |
+| `myplatformSearch.ts` | `buildMyPlatformSearchTerm(profile)`, optional |
 | `parseUrls.ts` | Centralized `parseMyPlatformUrl` if you follow that pattern |
 
 Export from [`shared/officialResults/index.ts`](../shared/officialResults/index.ts) when adding new modules.
@@ -309,7 +309,7 @@ npm run test -- shared/officialResults/myplatform.test.ts
 npm run check
 ```
 
-Full lookup (real HTTP): Firebase emulators + dev server — create an event, set results profile, use **Search for result**.
+Full lookup (real HTTP): Firebase emulators + dev server, create an event, set results profile, use **Search for result**.
 
 #### 8. Docs and PR
 
@@ -330,13 +330,13 @@ Uses **Parkrunner ID**, not name on the event URL. See `canLookupPlatform()` and
 
 ### `OfficialResultCandidate` fields
 
-See [`shared/officialResults/types.ts`](../shared/officialResults/types.ts) — `platform`, `matchedName`, `time`, optional `position` / `totalParticipants`, `sourceUrl`, `confidence`.
+See [`shared/officialResults/types.ts`](../shared/officialResults/types.ts), `platform`, `matchedName`, `time`, optional `position` / `totalParticipants`, `sourceUrl`, `confidence`.
 
 ### Limits and ethics
 
 - Per-user rate limit (10 s).
-- Lookup `maxInstances` / `concurrency` — [`cloud-functions-limits.md`](./cloud-functions-limits.md).
-- Third-party ToS — [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md).
+- Lookup `maxInstances` / `concurrency`, [`cloud-functions-limits.md`](./cloud-functions-limits.md).
+- Third-party ToS, [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md).
 
 ### Quick PR checklist
 

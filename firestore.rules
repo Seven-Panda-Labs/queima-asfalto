@@ -13,7 +13,7 @@ service cloud.firestore {
     // A missing accountStatus means "approved" so instances that never enabled
     // account approval keep working. That default is only safe because
     // clientPreservesAccountApprovalOnUpdate() makes the field immutable from
-    // the client — otherwise stripping it would be a privilege escalation.
+    // the client, otherwise stripping it would be a privilege escalation.
     function userAccountStatus(userId) {
       let userDoc = get(/databases/$(database)/documents/users/$(userId));
       return userDoc != null && userDoc.data != null && 'accountStatus' in userDoc.data

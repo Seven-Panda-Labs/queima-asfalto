@@ -1,4 +1,4 @@
-# Aviso — scraping de sites de timing e ToS de terceiros
+# Aviso: scraping de sites de timing e ToS de terceiros
 
 **Português** · [English](#english)
 
@@ -8,7 +8,7 @@
 
 ## Português
 
-Documento de referência para **utilizadores**, **operadores de instâncias self-hosted** e **contribuidores**. Não é aconselhamento jurídico — adapta com apoio legal se necessário.
+Documento de referência para **utilizadores**, **operadores de instâncias self-hosted** e **contribuidores**. Não é aconselhamento jurídico. Adapta com apoio legal se necessário.
 
 **Texto na app:** rota `/aviso-resultados` (gerado a partir de [`timing-disclaimer.md`](../timing-disclaimer.md)).
 
@@ -19,7 +19,7 @@ Documento de referência para **utilizadores**, **operadores de instâncias self
 | O que fazemos | Pedidos HTTP automatizados a URLs **públicas** de resultados, só quando o utilizador pede |
 | Afiliação | Nenhuma com organizadores ou fornecedores de timing |
 | ToS de terceiros | Responsabilidade do utilizador / operador da instância |
-| Dados | Podem estar errados ou incompletos — confirmação manual |
+| Dados | Podem estar errados ou incompletos, confirmação manual |
 | Código | AGPL-3.0, sem garantias sobre conectores |
 
 ### Como funciona tecnicamente
@@ -33,7 +33,7 @@ Não há sincronização em background nem crawling em massa: cada lookup é exp
 
 ### Plataformas suportadas (referência)
 
-A lista evolui com o código — ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Exemplos: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, entre outras.
+A lista evolui com o código, ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Exemplos: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, entre outras.
 
 Marcas citadas são propriedade dos respectivos titulares.
 
@@ -49,7 +49,7 @@ Marcas citadas são propriedade dos respectivos titulares.
 - [ ] Publicar aviso aos utilizadores (`/aviso-resultados` ou texto equivalente na política de privacidade)
 - [ ] Rever ToS dos sites de timing que a tua comunidade usa
 - [ ] Confirmar rate limits e `maxInstances` em [`cloud-functions-limits.md`](./cloud-functions-limits.md)
-- [ ] Incluir importação de resultados na política de privacidade ([`privacy-policy-template.md`](./privacy-policy-template.md) — subcontratantes «sites de timing»)
+- [ ] Incluir importação de resultados na política de privacidade ([`privacy-policy-template.md`](./privacy-policy-template.md), subcontratantes «sites de timing»)
 - [ ] Definir se desactivas a funcionalidade (não deploy de `lookupOfficialResults` ou UI) em jurisdições / contextos de risco
 - [ ] Responder a pedidos de bloqueio de fornecedores de timing de forma razoável (contacto na tua instância)
 
@@ -81,7 +81,7 @@ Ao adicionar ou alterar conectores, segue o guia [`adding-a-results-connector.md
 
 [Português](#portugues)
 
-Reference for **users**, **self-hosted instance operators**, and **contributors**. Not legal advice — adapt with counsel if needed.
+Reference for **users**, **self-hosted instance operators**, and **contributors**. Not legal advice. Adapt with counsel if needed.
 
 **In-app text:** `/aviso-resultados` route (built from [`timing-disclaimer.md`](../timing-disclaimer.md)).
 
@@ -92,7 +92,7 @@ Reference for **users**, **self-hosted instance operators**, and **contributors*
 | What we do | Automated HTTP to **public** results URLs, only when the user requests |
 | Affiliation | None with organisers or timing providers |
 | Third-party ToS | User / instance operator responsibility |
-| Data | May be wrong or incomplete — manual confirmation |
+| Data | May be wrong or incomplete, manual confirmation |
 | Code | AGPL-3.0, no warranty on connectors |
 
 ### How it works technically
@@ -106,7 +106,7 @@ There is no background sync or bulk crawling: each lookup is explicit and subjec
 
 ### Supported platforms (reference)
 
-The list evolves with the code — see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Examples: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, among others.
+The list evolves with the code, see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Examples: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, among others.
 
 Cited brands belong to their respective owners.
 
@@ -122,7 +122,7 @@ Cited brands belong to their respective owners.
 - [ ] Publish notice to users (`/aviso-resultados` or equivalent in your privacy policy)
 - [ ] Review ToS of timing sites your community uses
 - [ ] Confirm rate limits and `maxInstances` in [`cloud-functions-limits.md`](./cloud-functions-limits.md)
-- [ ] Include results import in privacy policy ([`privacy-policy-template.md`](./privacy-policy-template.md) — “timing sites” sub-processors)
+- [ ] Include results import in privacy policy ([`privacy-policy-template.md`](./privacy-policy-template.md), “timing sites” sub-processors)
 - [ ] Decide whether to disable the feature (skip `lookupOfficialResults` deploy or UI) in high-risk contexts
 - [ ] Respond reasonably to timing providers’ block requests (via your instance contact)
 

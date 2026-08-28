@@ -1,10 +1,10 @@
-# Agent instructions — Queima Asfalto
+# Agent instructions: Queima Asfalto
 
 **Public repository:** [github.com/Seven-Panda-Labs/queima-asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto)
 
 This file defines how AI agents (Claude Code, Cursor, Copilot, CI bots, etc.) should work in this repo. Humans: see [CONTRIBUTING.md](CONTRIBUTING.md) as well.
 
-It is the **single source of truth** — tool-specific files only point here, never restate rules:
+It is the **single source of truth**, tool-specific files only point here, never restate rules:
 
 | Tool | File |
 |------|------|
@@ -15,7 +15,7 @@ It is the **single source of truth** — tool-specific files only point here, ne
 
 **Nothing lands on `main` without a reviewed PR and green CI.** Do not push directly to `main`, except when the user explicitly requests an emergency hotfix **and** confirms they may bypass the normal flow.
 
-This is enforced, not just documented — see [Enforcement](#enforcement).
+This is enforced, not just documented. See [Enforcement](#enforcement).
 
 ## Mandatory Git workflow
 
@@ -30,7 +30,7 @@ This is enforced, not just documented — see [Enforcement](#enforcement).
    git checkout -b feat/short-description
    # or: fix/…, docs/…, chore/…, test/…
    ```
-3. Implement with a **minimal diff** — no unsolicited refactors.
+3. Implement with a **minimal diff**, no unsolicited refactors.
 4. Run checks **on the branch** (same as CI):
    ```bash
    npm run check
@@ -104,8 +104,8 @@ The pre-push hook covers every agent and human that shells out to `git`. Emergen
 
 Every PR and push to `main` runs:
 
-- **CI** — `npm run check`
+- **CI**: `npm run check`
 - **License check**
-- **Secret scan** — Gitleaks (org repos need `GITLEAKS_LICENSE`)
+- **Secret scan**: Gitleaks (org repos need `GITLEAKS_LICENSE`)
 
 The branch must pass CI before merge.

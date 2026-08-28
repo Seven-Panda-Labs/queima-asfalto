@@ -1,5 +1,5 @@
 ---locale:pt---
-#### Política de privacidade — {{INSTANCE_NAME}}
+#### Política de privacidade: {{INSTANCE_NAME}}
 
 **Última actualização:** {{EFFECTIVE_DATE}}
 
@@ -38,7 +38,7 @@ Não recolhemos intencionalmente dados de menores de 16 anos. Se tiveres conheci
 |------------|-------------------|
 | Criar conta e sincronizar dados entre dispositivos | Execução de contrato / passos pré-contratuais (art. 6.º(1)(b)) |
 | Partilhas entre utilizadores | Execução de contrato |
-| Lembretes push (opt-in) | Consentimento (art. 6.º(1)(a)) — o utilizador activa em Definições |
+| Lembretes push (opt-in) | Consentimento (art. 6.º(1)(a)), o utilizador activa em Definições |
 | Analytics (se activado) | Consentimento ou interesse legítimo, conforme a tua configuração e jurisdição |
 | Segurança e prevenção de abuso | Interesse legítimo (art. 6.º(1)(f)) |
 | Importação de resultados oficiais | Execução de contrato (funcionalidade solicitada pelo utilizador) |
@@ -72,7 +72,7 @@ Nos termos do RGPD, os utilizadores podem solicitar:
 
 - Acesso, rectificação, apagamento
 - Limitação ou oposição ao tratamento
-- Portabilidade (dados fornecidos por eles, em formato estruturado) — disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
+- Portabilidade (dados fornecidos por eles, em formato estruturado), disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
 - Retirar consentimento (ex.: notificações push) sem afectar tratamentos anteriores
 - Reclamação junto da autoridade de controlo (em Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -95,7 +95,7 @@ Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})
 Instância: {{HOSTING_URL}}
 
 ---locale:en---
-#### Privacy policy — {{INSTANCE_NAME}}
+#### Privacy policy: {{INSTANCE_NAME}}
 
 **Last updated:** {{EFFECTIVE_DATE}}
 
@@ -134,7 +134,7 @@ We do not knowingly collect data from children under 16. Contact us if you belie
 |---------|---------------------|
 | Account and sync across devices | Contract / pre-contract steps (Art. 6(1)(b)) |
 | Sharing between users | Contract |
-| Push reminders (opt-in) | Consent (Art. 6(1)(a)) — user enables in Settings |
+| Push reminders (opt-in) | Consent (Art. 6(1)(a)), user enables in Settings |
 | Analytics (if enabled) | Consent or legitimate interest, per your setup and jurisdiction |
 | Security and abuse prevention | Legitimate interest (Art. 6(1)(f)) |
 | Official results import | Contract (feature requested by the user) |
@@ -168,7 +168,7 @@ Under GDPR, users may request:
 
 - Access, rectification, erasure
 - Restriction or objection to processing
-- Portability (data they provided, in a structured format) — available directly in the app under Settings → Data → “Export backup (.zip)”
+- Portability (data they provided, in a structured format), available directly in the app under Settings → Data → “Export backup (.zip)”
 - Withdraw consent (e.g. push notifications) without affecting prior processing
 - Lodge a complaint with a supervisory authority (Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -191,7 +191,7 @@ Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})
 Instance: {{HOSTING_URL}}
 
 ---locale:es---
-#### Política de privacidad — {{INSTANCE_NAME}}
+#### Política de privacidad: {{INSTANCE_NAME}}
 
 **Última actualización:** {{EFFECTIVE_DATE}}
 
@@ -230,7 +230,7 @@ No recopilamos intencionadamente datos de menores de 16 años. Si crees que un m
 |-----------|-------------------|
 | Crear cuenta y sincronizar datos entre dispositivos | Ejecución de contrato / pasos precontractuales (art. 6.1(b)) |
 | Compartidos entre usuarios | Ejecución de contrato |
-| Recordatorios push (opt-in) | Consentimiento (art. 6.1(a)) — el usuario activa en Ajustes |
+| Recordatorios push (opt-in) | Consentimiento (art. 6.1(a)), el usuario activa en Ajustes |
 | Analytics (si está activado) | Consentimiento o interés legítimo, según tu configuración y jurisdicción |
 | Seguridad y prevención de abusos | Interés legítimo (art. 6.1(f)) |
 | Importación de resultados oficiales | Ejecución de contrato (funcionalidad solicitada por el usuario) |
@@ -264,7 +264,7 @@ En virtud del RGPD, los usuarios pueden solicitar:
 
 - Acceso, rectificación, supresión
 - Limitación u oposición al tratamiento
-- Portabilidad (datos que hayan facilitado, en formato estructurado) — disponible directamente en la app en Ajustes → Datos → «Exportar copia (.zip)»
+- Portabilidad (datos que hayan facilitado, en formato estructurado), disponible directamente en la app en Ajustes → Datos → «Exportar copia (.zip)»
 - Retirar el consentimiento (p. ej., notificaciones push) sin afectar tratamientos anteriores
 - Presentar una reclamación ante una autoridad de control (Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -287,7 +287,7 @@ Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})
 Instancia: {{HOSTING_URL}}
 
 ---locale:de---
-#### Datenschutzerklärung — {{INSTANCE_NAME}}
+#### Datenschutzerklärung: {{INSTANCE_NAME}}
 
 **Zuletzt aktualisiert:** {{EFFECTIVE_DATE}}
 
@@ -326,7 +326,7 @@ Wir erfassen wissentlich keine Daten von Kindern unter 16 Jahren. Kontaktiere un
 |-------|--------------------------|
 | Konto und Synchronisation zwischen Geräten | Vertrag / vorvertragliche Schritte (Art. 6 Abs. 1 lit. b) |
 | Freigaben zwischen Nutzern | Vertrag |
-| Push-Erinnerungen (Opt-in) | Einwilligung (Art. 6 Abs. 1 lit. a) — Nutzer aktiviert in Einstellungen |
+| Push-Erinnerungen (Opt-in) | Einwilligung (Art. 6 Abs. 1 lit. a), Nutzer aktiviert in Einstellungen |
 | Analytics (falls aktiviert) | Einwilligung oder berechtigtes Interesse, je nach Setup und Rechtsordnung |
 | Sicherheit und Missbrauchsprävention | Berechtigtes Interesse (Art. 6 Abs. 1 lit. f) |
 | Import offizieller Ergebnisse | Vertrag (vom Nutzer angeforderte Funktion) |
@@ -360,7 +360,7 @@ Nach DSGVO können Nutzer Folgendes beantragen:
 
 - Auskunft, Berichtigung, Löschung
 - Einschränkung oder Widerspruch gegen die Verarbeitung
-- Datenübertragbarkeit (von ihnen bereitgestellte Daten in strukturiertem Format) — direkt in der App unter Einstellungen → Daten → „Backup exportieren (.zip)“
+- Datenübertragbarkeit (von ihnen bereitgestellte Daten in strukturiertem Format), direkt in der App unter Einstellungen → Daten → „Backup exportieren (.zip)“
 - Widerruf der Einwilligung (z. B. Push-Benachrichtigungen) ohne Beeinträchtigung früherer Verarbeitung
 - Beschwerde bei einer Aufsichtsbehörde (Portugal: [CNPD](https://www.cnpd.pt))
 
@@ -383,7 +383,7 @@ E-Mail: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})
 Instanz: {{HOSTING_URL}}
 
 ---locale:fr---
-#### Politique de confidentialité — {{INSTANCE_NAME}}
+#### Politique de confidentialité: {{INSTANCE_NAME}}
 
 **Dernière mise à jour :** {{EFFECTIVE_DATE}}
 
@@ -422,7 +422,7 @@ Nous ne collectons pas sciemment de données auprès d'enfants de moins de 16 an
 |----------|------------------------|
 | Compte et synchronisation entre appareils | Contrat / mesures précontractuelles (art. 6(1)(b)) |
 | Partage entre utilisateurs | Contrat |
-| Rappels push (opt-in) | Consentement (art. 6(1)(a)) — l'utilisateur les active dans les Paramètres |
+| Rappels push (opt-in) | Consentement (art. 6(1)(a)), l'utilisateur les active dans les Paramètres |
 | Analytique (si activée) | Consentement ou intérêt légitime, selon ta configuration et ta juridiction |
 | Sécurité et prévention des abus | Intérêt légitime (art. 6(1)(f)) |
 | Importation des résultats officiels | Contrat (fonctionnalité demandée par l'utilisateur) |
@@ -456,7 +456,7 @@ En vertu du RGPD, les utilisateurs peuvent demander :
 
 - L'accès, la rectification, l'effacement
 - La limitation du traitement ou l'opposition au traitement
-- La portabilité (données qu'ils ont fournies, dans un format structuré) — disponible directement dans l'application sous Paramètres → Données → « Exporter une sauvegarde (.zip) »
+- La portabilité (données qu'ils ont fournies, dans un format structuré), disponible directement dans l'application sous Paramètres → Données → « Exporter une sauvegarde (.zip) »
 - Le retrait du consentement (par ex. notifications push) sans affecter le traitement antérieur
 - L'introduction d'une réclamation auprès d'une autorité de contrôle (Portugal : [CNPD](https://www.cnpd.pt))
 
@@ -478,7 +478,7 @@ Nous publierons la date de mise à jour en haut de cette page. Les changements i
 E-mail : [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
 Instance : {{HOSTING_URL}}
 ---locale:ar---
-#### سياسة الخصوصية — {{INSTANCE_NAME}}
+#### سياسة الخصوصية: {{INSTANCE_NAME}}
 
 **آخر تحديث:** {{EFFECTIVE_DATE}}
 
@@ -517,7 +517,7 @@ Instance : {{HOSTING_URL}}
 |---------|---------------------|
 | الحساب والمزامنة بين الأجهزة | العقد / الخطوات السابقة للتعاقد (المادة 6(1)(ب)) |
 | المشاركة بين المستخدمين | العقد |
-| تذكيرات الدفع (بالاشتراك الاختياري) | الموافقة (المادة 6(1)(أ)) — يفعّلها المستخدم في الإعدادات |
+| تذكيرات الدفع (بالاشتراك الاختياري) | الموافقة (المادة 6(1)(أ)), يفعّلها المستخدم في الإعدادات |
 | التحليلات (إذا كانت مفعّلة) | الموافقة أو المصلحة المشروعة، بحسب إعدادك واختصاصك القضائي |
 | الأمان ومنع إساءة الاستخدام | المصلحة المشروعة (المادة 6(1)(و)) |
 | استيراد النتائج الرسمية | العقد (ميزة يطلبها المستخدم) |
@@ -551,7 +551,7 @@ Instance : {{HOSTING_URL}}
 
 - الوصول، التصحيح، المحو
 - تقييد المعالجة أو الاعتراض عليها
-- قابلية النقل (البيانات التي قدّموها، بتنسيق منظم) — متاحة مباشرةً في التطبيق ضمن الإعدادات ← البيانات ← «تصدير نسخة احتياطية (.zip)»
+- قابلية النقل (البيانات التي قدّموها، بتنسيق منظم)، متاحة مباشرةً في التطبيق ضمن الإعدادات ← البيانات ← «تصدير نسخة احتياطية (.zip)»
 - سحب الموافقة (مثل إشعارات الدفع) دون التأثير على المعالجة السابقة
 - تقديم شكوى إلى سلطة الرقابة (البرتغال: [CNPD](https://www.cnpd.pt))
 

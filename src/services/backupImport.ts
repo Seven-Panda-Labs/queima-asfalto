@@ -516,7 +516,7 @@ async function readExistingMediaKeys(eventIds: readonly string[]): Promise<Set<s
  *   there, so the preserved storagePath and token still resolve.
  * - Metadata only, anything else: refuse. Replace mode deleted the binaries and
  *   a different account cannot read them, so writing the documents would create
- *   gallery entries pointing at 404s — and media is `allow update: if false`,
+ *   gallery entries pointing at 404s, and media is `allow update: if false`,
  *   so they could never be repaired, only deleted.
  */
 async function restoreEventMedia(
@@ -581,7 +581,7 @@ async function restoreEventMedia(
  *
  * `replace` clears the existing data (media documents and their Storage objects
  * included) before writing; `merge` upserts and deletes nothing. Original
- * timestamps are written verbatim — never `serverTimestamp()`, which is the
+ * timestamps are written verbatim, never `serverTimestamp()`, which is the
  * history a backup exists to preserve.
  */
 export async function restoreUserBackup(

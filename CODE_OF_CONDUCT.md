@@ -1,4 +1,4 @@
-# Código de conduta — Queima Asfalto
+# Código de conduta: Queima Asfalto
 
 **Português** · [English](#english)
 

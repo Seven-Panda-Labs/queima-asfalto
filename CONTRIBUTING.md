@@ -1,4 +1,4 @@
-# Contribuir — Queima Asfalto
+# Contribuir: Queima Asfalto
 
 **Português** · [English](#english)
 
@@ -19,7 +19,7 @@ Obrigado pelo interesse em contribuir. Este projeto é [AGPL-3.0](../LICENSE). P
 
 **Requisitos:** Node.js 24 (Java 21+ para emuladores ou `npm run test:rules`)
 
-**Opção A — emuladores (sem projeto Firebase)** — recomendado para a maioria das contribuições:
+**Opção A, emuladores (sem projeto Firebase)**, recomendado para a maioria das contribuições:
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -28,12 +28,12 @@ npm install
 npm --prefix functions install
 cp .env.emulator.example .env.local
 npm run emulators    # terminal 1
-npm run dev          # terminal 2 — login «Entrar (emulador)»
+npm run dev          # terminal 2, login «Entrar (emulador)»
 ```
 
 Ver [`docs/emulators.md`](docs/emulators.md).
 
-**Opção B — projeto Firebase teu** (Google Sign-In, dados na cloud):
+**Opção B, projeto Firebase teu** (Google Sign-In, dados na cloud):
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -85,14 +85,14 @@ Corre também `npm --prefix functions run build` se alterares código em `functi
 
 Formato [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/). Dois ficheiros, sempre em paralelo:
 
-- [`change-log.md`](../change-log.md) — português
-- [`change-log.en.md`](../change-log.en.md) — inglês
+- [`change-log.md`](../change-log.md): português
+- [`change-log.en.md`](../change-log.en.md): inglês
 
-As versões no changelog correspondem ao campo `version` em `package.json`. Os ficheiros são públicos e orientados ao utilizador — descreve o que mudou na app, sem detalhe de implementação (nomes de hooks, testes, issues, etc.).
+As versões no changelog correspondem ao campo `version` em `package.json`. Os ficheiros são públicos e orientados ao utilizador. Descreve o que mudou na app, sem detalhe de implementação (nomes de hooks, testes, issues, etc.).
 
 **Quando fazes bump de versão** em `package.json`:
 
-1. Adiciona no **topo** de ambos os ficheiros: `## [X.Y.Z] — AAAA-MM-DD`
+1. Adiciona no **topo** de ambos os ficheiros: `## [X.Y.Z] - AAAA-MM-DD`
 2. Usa secções `### Adicionado`, `### Corrigido`, `### Alterado`, `### Removido` (EN: Added, Fixed, Changed, Removed)
 3. Inclui os dois ficheiros no commit
 4. Confirma com `npm run check:changelog`
@@ -111,7 +111,7 @@ O pre-commit hook bloqueia commits que alterem `package.json` sem changelogs em 
 **Exemplo:**
 
 ```markdown
-## [1.11.0] — 2026-07-20
+## [1.11.0]: 2026-07-20
 
 ### Adicionado
 
@@ -124,11 +124,11 @@ O pre-commit hook bloqueia commits que alterem `package.json` sem changelogs em 
 
 ### Estilo de código
 
-- **Simplicidade primeiro** — diff mínimo; não refactors não pedidos.
-- **Segue o ficheiro** — naming, imports e padrões do módulo que editas.
-- **Lógica testável** — funções puras em `shared/` quando fizer sentido; evita lógica de negócio enterrada em lifecycle de UI.
-- **Sem secrets** — nunca commits `.env.local`, `functions/.env`, `.firebaserc`, service accounts.
-- **PII em testes** — usa dados fictícios (ex. «Zé Ninguém»); não dados pessoais reais em fixtures.
+- **Simplicidade primeiro**: diff mínimo; não refactors não pedidos.
+- **Segue o ficheiro**: naming, imports e padrões do módulo que editas.
+- **Lógica testável**: funções puras em `shared/` quando fizer sentido; evita lógica de negócio enterrada em lifecycle de UI.
+- **Sem secrets**: nunca commits `.env.local`, `functions/.env`, `.firebaserc`, service accounts.
+- **PII em testes**: usa dados fictícios (ex. «Zé Ninguém»); não dados pessoais reais em fixtures.
 
 ### Conectores de resultados oficiais
 
@@ -138,11 +138,11 @@ Para uma nova plataforma de timing, segue [`docs/adding-a-results-connector.md`]
 
 1. **Branch** a partir de `main` com nome descritivo (`feat/parkrun-picker`, `fix/share-timestamp`).
 2. **Título** em inglês, imperativo, ~50 caracteres: `Add Parkrun catalog search` / `Fix Firestore timestamp parsing`.
-3. **Descrição** — o GitHub pré-preenche [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md); mantém as secções Summary e Test plan:
+3. **Descrição**: o GitHub pré-preenche [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md); mantém as secções Summary e Test plan:
 
 ```markdown
 ## Summary
-- O que mudou e porquê (1–3 bullets)
+- O que mudou e porquê (1-3 bullets)
 
 ## Test plan
 - [ ] `npm run check`
@@ -150,15 +150,15 @@ Para uma nova plataforma de timing, segue [`docs/adding-a-results-connector.md`]
 - [ ] Changelog actualizado (se bump de versão)
 ```
 
-4. **Scope** — um tema por PR; evita mixes de feature + refactor + formatação.
-5. **Screenshots** — para mudanças de UI, quando relevante.
-6. **Issues** — referencia `Fixes #NNN` ou `Refs #NNN` na descrição.
+4. **Scope**: um tema por PR; evita mixes de feature + refactor + formatação.
+5. **Screenshots**: para mudanças de UI, quando relevante.
+6. **Issues**: referencia `Fixes #NNN` ou `Refs #NNN` na descrição.
 
 ### Commits
 
 - Mensagens em **inglês**, imperativo: `Fix share invite email normalization`.
 - Um commit por PR é aceitável; histórico limpo preferível a WIP commits.
-- Não forces push para `main` — **todo o código entra via PR**; push directo a `main` está proibido para contribuições normais.
+- Não forces push para `main`, **todo o código entra via PR**; push directo a `main` está proibido para contribuições normais.
 
 ### Licença
 
@@ -183,7 +183,7 @@ Thank you for contributing. This project is [AGPL-3.0](../LICENSE). Please follo
 
 **Requirements:** Node.js 24 (Java 21+ for emulators or `npm run test:rules`)
 
-**Option A — emulators (no Firebase project)** — recommended for most contributions:
+**Option A, emulators (no Firebase project)**, recommended for most contributions:
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -192,12 +192,12 @@ npm install
 npm --prefix functions install
 cp .env.emulator.example .env.local
 npm run emulators    # terminal 1
-npm run dev          # terminal 2 — “Sign in (emulator)”
+npm run dev          # terminal 2, “Sign in (emulator)”
 ```
 
 See [`docs/emulators.md`](docs/emulators.md).
 
-**Option B — your Firebase project** (Google Sign-In, cloud data):
+**Option B, your Firebase project** (Google Sign-In, cloud data):
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -249,14 +249,14 @@ Also run `npm --prefix functions run build` if you change `functions/src/`.
 
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) format. Two files, always in sync:
 
-- [`change-log.md`](../change-log.md) — Portuguese
-- [`change-log.en.md`](../change-log.en.md) — English
+- [`change-log.md`](../change-log.md): Portuguese
+- [`change-log.en.md`](../change-log.en.md): English
 
-Changelog versions match the `version` field in `package.json`. The files are public and user-facing — describe what changed in the app, not implementation details (hook names, tests, issues, etc.).
+Changelog versions match the `version` field in `package.json`. The files are public and user-facing. Describe what changed in the app, not implementation details (hook names, tests, issues, etc.).
 
 **When you bump** `package.json` version:
 
-1. Add at the **top** of both files: `## [X.Y.Z] — YYYY-MM-DD`
+1. Add at the **top** of both files: `## [X.Y.Z] - YYYY-MM-DD`
 2. Use `### Added`, `### Fixed`, `### Changed`, `### Removed` (PT: Adicionado, Corrigido, Alterado, Removido)
 3. Include both files in the commit
 4. Verify with `npm run check:changelog`
@@ -275,7 +275,7 @@ The pre-commit hook blocks commits that change `package.json` without staged cha
 **Example:**
 
 ```markdown
-## [1.11.0] — 2026-07-20
+## [1.11.0]: 2026-07-20
 
 ### Added
 
@@ -288,11 +288,11 @@ The pre-commit hook blocks commits that change `package.json` without staged cha
 
 ### Code style
 
-- **Simplicity first** — minimal diff; no drive-by refactors.
-- **Match the file** — naming, imports, and patterns of the module you edit.
-- **Testable logic** — pure functions in `shared/` when it makes sense; avoid business logic buried in UI lifecycle.
-- **No secrets** — never commit `.env.local`, `functions/.env`, `.firebaserc`, or service account JSON.
-- **PII in tests** — use fictional data (e.g. «Zé Ninguém»); no real personal data in fixtures.
+- **Simplicity first**: minimal diff; no drive-by refactors.
+- **Match the file**: naming, imports, and patterns of the module you edit.
+- **Testable logic**: pure functions in `shared/` when it makes sense; avoid business logic buried in UI lifecycle.
+- **No secrets**: never commit `.env.local`, `functions/.env`, `.firebaserc`, or service account JSON.
+- **PII in tests**: use fictional data (e.g. «Zé Ninguém»); no real personal data in fixtures.
 
 ### Official results connectors
 
@@ -302,11 +302,11 @@ For a new timing platform, follow [`docs/adding-a-results-connector.md`](docs/ad
 
 1. **Branch** from `main` with a descriptive name (`feat/parkrun-picker`, `fix/share-timestamp`).
 2. **Title** in English, imperative, ~50 chars: `Add Parkrun catalog search` / `Fix Firestore timestamp parsing`.
-3. **Description** — GitHub pre-fills [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md); keep the Summary and Test plan sections:
+3. **Description**: GitHub pre-fills [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md); keep the Summary and Test plan sections:
 
 ```markdown
 ## Summary
-- What changed and why (1–3 bullets)
+- What changed and why (1-3 bullets)
 
 ## Test plan
 - [ ] `npm run check`
@@ -314,15 +314,15 @@ For a new timing platform, follow [`docs/adding-a-results-connector.md`](docs/ad
 - [ ] Changelog updated (if version bump)
 ```
 
-4. **Scope** — one theme per PR; avoid feature + refactor + formatting mixes.
-5. **Screenshots** — for UI changes when relevant.
-6. **Issues** — reference `Fixes #NNN` or `Refs #NNN` in the description.
+4. **Scope**: one theme per PR; avoid feature + refactor + formatting mixes.
+5. **Screenshots**: for UI changes when relevant.
+6. **Issues**: reference `Fixes #NNN` or `Refs #NNN` in the description.
 
 ### Commits
 
 - Messages in **English**, imperative mood: `Fix share invite email normalization`.
 - One commit per PR is fine; clean history beats WIP commits.
-- Do not force-push to `main` — **all code enters via PR**; direct pushes to `main` are forbidden for normal contributions.
+- Do not force-push to `main`, **all code enters via PR**; direct pushes to `main` are forbidden for normal contributions.
 
 ### License
 

@@ -81,7 +81,7 @@
     "languageAr": "العربية"
   },
   "timingDisclaimer": {
-    "title": "Avis — résultats officiels",
+    "title": "Avis : résultats officiels",
     "subtitle": "Extraction de données de sites de chronométrage tiers et conditions d'utilisation.",
     "languageToggle": "Langue de l'avis",
     "languagePt": "Português",
@@ -127,7 +127,7 @@
     "subtitle": "Plan de course annuel. Suis tes événements, objectifs et résultats.",
     "google": "Se connecter avec Google",
     "emulator": "Se connecter (émulateur)",
-    "emulatorHint": "Mode émulateur — sans OAuth Google. Voir docs/emulators.md."
+    "emulatorHint": "Mode émulateur, sans OAuth Google. Voir docs/emulators.md."
   },
   "accountApproval": {
     "pendingTitle": "En attente d'approbation",
@@ -540,7 +540,7 @@
     "previewNothingToRestore": "Il n'y a rien à restaurer dans cette sauvegarde.",
     "countEvents": "{{count}} événements",
     "countEventMedia": "{{count}} fiches photo et vidéo",
-    "countMediaFiles": "{{count}} fichiers photo et vidéo ({{mb}} Mo) — ils seront restaurés",
+    "countMediaFiles": "{{count}} fichiers photo et vidéo ({{mb}} Mo), ils seront restaurés",
     "countGoals": "{{count}} objectifs",
     "countPerformanceGoals": "{{count}} objectifs de performance",
     "countBucketListItems": "{{count}} éléments de bucket list",
@@ -549,7 +549,7 @@
     "existingLoading": "Comptage de tes données actuelles...",
     "warningsTitle": "Ce qui n'est pas restauré",
     "warnings": {
-      "shares_not_restored": "Partages — tu devras réinviter les personnes.",
+      "shares_not_restored": "Partages : tu devras réinviter les personnes.",
       "media_binaries_not_restored": "Cette sauvegarde ne contient pas de fichiers photo ou vidéo, seulement leurs métadonnées. Les photos et vidéos ne reviennent que si elles sont encore dans ton compte.",
       "media_not_restored_replace_mode": "Tout remplacer supprime définitivement tes photos et vidéos, et elles ne peuvent pas être restaurées depuis la sauvegarde.",
       "media_skipped_different_account": "Les fiches photo et vidéo sont ignorées car la sauvegarde provient d'un autre compte.",
@@ -562,7 +562,7 @@
     "modeMerge": "Fusionner",
     "modeMergeHint": "Crée ou écrase les documents de la sauvegarde et conserve tout ce que tu as déjà. Pour chaque document du fichier, la version de la sauvegarde l'emporte.",
     "modeReplace": "Tout remplacer",
-    "modeReplaceHint": "Supprime tes événements, objectifs, objectifs de performance, bucket list et toutes les photos et vidéos avant de restaurer. Les photos et vidéos ne reviennent pas — elles ne sont pas dans le .zip. Cette action est irréversible.",
+    "modeReplaceHint": "Supprime tes événements, objectifs, objectifs de performance, bucket list et toutes les photos et vidéos avant de restaurer. Les photos et vidéos ne reviennent pas, elles ne sont pas dans le .zip. Cette action est irréversible.",
     "modeReplaceHintWithMedia": "Supprime tes événements, objectifs, objectifs de performance, bucket list et photos et vidéos avant de restaurer. Comme cette sauvegarde inclut les fichiers, les photos et vidéos reviennent. Cette action est irréversible.",
     "confirmRestore": "Restaurer les données",
     "confirmReplaceTitle": "Remplacer toutes les données ?",

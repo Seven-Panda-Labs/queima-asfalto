@@ -4,39 +4,39 @@
 
 ---
 
-## [1.21.0] — 2026-08-28
+## [1.21.0] - 2026-08-28
 
 ### Changed
 
-- **Home redesigned:** the next event up front with its countdown, the year's numbers in a single strip — now including kilometres covered — and a place of its own for achievements, goals still open, and personal bests.
+- **Home redesigned:** the next event up front with its countdown, the year's numbers in a single strip, now including kilometres covered, and a place of its own for achievements, goals still open, and personal bests.
 
 ---
 
-## [1.20.0] — 2026-08-25
+## [1.20.0] - 2026-08-25
 
 ### Added
 
-- **New language — Arabic (first version):** the app, release notes, official-results notice, privacy policy, account emails and push reminders are now available in Arabic, with a right-to-left (RTL) layout. Pick it in Settings → Language.
+- **New language, Arabic (first version):** the app, release notes, official-results notice, privacy policy, account emails and push reminders are now available in Arabic, with a right-to-left (RTL) layout. Pick it in Settings → Language.
 
 ---
 
-## [1.19.0] — 2026-08-25
+## [1.19.0] - 2026-08-25
 
 ### Added
 
-- **New language — French:** the app, release notes, official-results notice, privacy policy, account emails and push reminders are now available in French. Pick it in Settings → Language.
+- **New language, French:** the app, release notes, official-results notice, privacy policy, account emails and push reminders are now available in French. Pick it in Settings → Language.
 
 ---
 
-## [1.18.0] — 2026-08-17
+## [1.18.0] - 2026-08-17
 
 ### Changed
 
-- **Official results:** automatic Parkrun result search temporarily disabled — Parkrun blocks automated requests from known cloud infrastructure. Results can still be recorded manually.
+- **Official results:** automatic Parkrun result search temporarily disabled: Parkrun blocks automated requests from known cloud infrastructure. Results can still be recorded manually.
 
 ---
 
-## [1.17.0] — 2026-08-13
+## [1.17.0] - 2026-08-13
 
 ### Added
 
@@ -44,28 +44,28 @@
 
 ---
 
-## [1.16.1] — 2026-08-13
+## [1.16.1] - 2026-08-13
 
 ### Added
 
-- **More emojis:** added over 50 new options — animals, flowers, food, Halloween-themed picks, and flags from Asia, South America, and North Africa — to the event and goal emoji picker.
+- **More emojis:** added over 50 new options to the event and goal emoji picker: animals, flowers, food, Halloween-themed picks, and flags from Asia, South America, and North Africa.
 
 ### Fixed
 
-- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result — if the automatic transition won the race, the status ended up wrong even though the result was saved.
+- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result. If the automatic transition won the race, the status ended up wrong even though the result was saved.
 
 ---
 
-## [1.16.0] — 2026-08-03
+## [1.16.0] - 2026-08-03
 
 ### Added
 
 - **Backup with photos and videos:** the backup `.zip` now includes the photo and video files, not just their metadata. You can turn the option off before exporting; above 300 MB the backup keeps data only.
-- **Restoring photos and videos:** with the files in the `.zip`, photos and videos come back even in “replace everything” mode and when restoring into another account — previously they survived only if still in the account.
+- **Restoring photos and videos:** with the files in the `.zip`, photos and videos come back even in “replace everything” mode and when restoring into another account. Previously they survived only if still in the account.
 
 ---
 
-## [1.15.1] — 2026-08-03
+## [1.15.1] - 2026-08-03
 
 ### Fixed
 
@@ -74,7 +74,7 @@
 
 ---
 
-## [1.15.0] — 2026-08-03
+## [1.15.0] - 2026-08-03
 
 ### Added
 
@@ -83,7 +83,7 @@
 
 ---
 
-## [1.14.2] — 2026-08-02
+## [1.14.2] - 2026-08-02
 
 ### Fixed
 
@@ -92,7 +92,7 @@
 
 ---
 
-## [1.14.1] — 2026-08-01
+## [1.14.1] - 2026-08-01
 
 ### Fixed
 
@@ -100,15 +100,15 @@
 
 ---
 
-## [1.14.0] — 2026-07-30
+## [1.14.0] - 2026-07-30
 
 ### Added
 
-- **Self-hosting:** optional manual approval for new accounts — pending/rejected screens, admin email with approve/reject links (Resend), user notification, Firestore/Storage rules and blocking Auth functions; see `docs/configuration.md` and `docs/self-hosting.md`.
+- **Self-hosting:** optional manual approval for new accounts: pending/rejected screens, admin email with approve/reject links (Resend), user notification, Firestore/Storage rules and blocking Auth functions; see `docs/configuration.md` and `docs/self-hosting.md`.
 
 ---
 
-## [1.13.0] — 2026-07-23
+## [1.13.0] - 2026-07-23
 
 ### Added
 
@@ -116,7 +116,7 @@
 
 ---
 
-## [1.12.1] — 2026-07-23
+## [1.12.1] - 2026-07-23
 
 ### Changed
 
@@ -124,11 +124,11 @@
 
 ---
 
-## [1.12.0] — 2026-07-23
+## [1.12.0] - 2026-07-23
 
 ### Added
 
-- **Languages:** Spanish (es-ES) and German support — UI, emoji labels, push reminders, changelog, privacy policy, and official results notice.
+- **Languages:** Spanish (es-ES) and German support: UI, emoji labels, push reminders, changelog, privacy policy, and official results notice.
 - **Settings:** language selector with Português, English, Español, and Deutsch.
 
 ### Changed
@@ -137,7 +137,7 @@
 
 ---
 
-## [1.11.0] — 2026-07-20
+## [1.11.0] - 2026-07-20
 
 ### Added
 
@@ -153,7 +153,7 @@
 
 ---
 
-## [1.10.0] — 2026-07-19
+## [1.10.0] - 2026-07-19
 
 ### Added
 
@@ -170,7 +170,7 @@
 
 ---
 
-## [1.9.2] — 2026-07-19
+## [1.9.2] - 2026-07-19
 
 ### Added
 
@@ -186,7 +186,7 @@
 
 ---
 
-## [1.9.1] — 2026-07-19
+## [1.9.1] - 2026-07-19
 
 ### Fixed
 
@@ -198,7 +198,7 @@
 
 ---
 
-## [1.9.0] — 2026-07-09
+## [1.9.0] - 2026-07-09
 
 ### Added
 
@@ -210,7 +210,7 @@
 
 ---
 
-## [1.8.0] — 2026-07-09
+## [1.8.0] - 2026-07-09
 
 ### Added
 
@@ -218,7 +218,7 @@
 
 ---
 
-## [1.7.0] — 2026-07-09
+## [1.7.0] - 2026-07-09
 
 ### Added
 
@@ -230,7 +230,7 @@
 
 ---
 
-## [1.6.0] — 2026-07-08
+## [1.6.0] - 2026-07-08
 
 ### Added
 
@@ -238,7 +238,7 @@
 
 ---
 
-## [1.5.1] — 2026-07-08
+## [1.5.1] - 2026-07-08
 
 ### Added
 
@@ -247,7 +247,7 @@
 
 ---
 
-## [1.5.0] — 2026-07-08
+## [1.5.0] - 2026-07-08
 
 ### Added
 
@@ -256,7 +256,7 @@
 
 ---
 
-## [1.4.0] — 2026-07-08
+## [1.4.0] - 2026-07-08
 
 ### Added
 
@@ -264,7 +264,7 @@
 
 ---
 
-## [1.3.2] — 2026-07-07
+## [1.3.2] - 2026-07-07
 
 ### Added
 
@@ -272,7 +272,7 @@
 
 ---
 
-## [1.3.1] — 2026-07-07
+## [1.3.1] - 2026-07-07
 
 ### Added
 
@@ -285,7 +285,7 @@
 
 ---
 
-## [1.3.0] — 2026-07-06
+## [1.3.0] - 2026-07-06
 
 ### Changed
 
@@ -293,7 +293,7 @@
 
 ---
 
-## [1.2.0] — 2026-07-06
+## [1.2.0] - 2026-07-06
 
 ### Added
 
@@ -305,7 +305,7 @@
 
 ---
 
-## [1.1.0] — 2026-07-06
+## [1.1.0] - 2026-07-06
 
 ### Added
 
@@ -313,7 +313,7 @@
 
 ---
 
-## [1.0.2] — 2026-07-06
+## [1.0.2] - 2026-07-06
 
 ### Fixed
 
@@ -321,7 +321,7 @@
 
 ---
 
-## [1.0.1] — 2026-07-06
+## [1.0.1] - 2026-07-06
 
 ### Added
 
@@ -329,7 +329,7 @@
 
 ---
 
-## [1.0.0] — 2026-07-06
+## [1.0.0] - 2026-07-06
 
 Milestone: data sharing between friends.
 
@@ -340,7 +340,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.22.0] — 2026-07-06
+## [0.22.0] - 2026-07-06
 
 ### Added
 
@@ -348,7 +348,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.21.0] — 2026-07-06
+## [0.21.0] - 2026-07-06
 
 ### Added
 
@@ -356,7 +356,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.20.0] — 2026-07-05
+## [0.20.0] - 2026-07-05
 
 ### Added
 
@@ -364,7 +364,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.19.1] — 2026-07-05
+## [0.19.1] - 2026-07-05
 
 ### Fixed
 
@@ -372,7 +372,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.19.0] — 2026-07-05
+## [0.19.0] - 2026-07-05
 
 ### Added
 
@@ -380,7 +380,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.18.1] — 2026-07-05
+## [0.18.1] - 2026-07-05
 
 ### Fixed
 
@@ -388,7 +388,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.18.0] — 2026-07-05
+## [0.18.0] - 2026-07-05
 
 ### Added
 
@@ -396,7 +396,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.17.2] — 2026-07-05
+## [0.17.2] - 2026-07-05
 
 ### Fixed
 
@@ -404,7 +404,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.17.1] — 2026-07-05
+## [0.17.1] - 2026-07-05
 
 ### Fixed
 
@@ -412,7 +412,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.17.0] — 2026-07-05
+## [0.17.0] - 2026-07-05
 
 ### Added
 
@@ -420,7 +420,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.16.0] — 2026-07-05
+## [0.16.0] - 2026-07-05
 
 ### Added
 
@@ -428,7 +428,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.15.0] — 2026-07-05
+## [0.15.0] - 2026-07-05
 
 ### Added
 
@@ -436,7 +436,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.14.1] — 2026-07-05
+## [0.14.1] - 2026-07-05
 
 ### Fixed
 
@@ -444,7 +444,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.14.0] — 2026-07-05
+## [0.14.0] - 2026-07-05
 
 ### Added
 
@@ -452,7 +452,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.13.1] — 2026-07-05
+## [0.13.1] - 2026-07-05
 
 ### Fixed
 
@@ -460,7 +460,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.13.0] — 2026-07-05
+## [0.13.0] - 2026-07-05
 
 ### Added
 
@@ -468,7 +468,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.12.2] — 2026-07-05
+## [0.12.2] - 2026-07-05
 
 ### Fixed
 
@@ -476,7 +476,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.12.1] — 2026-07-05
+## [0.12.1] - 2026-07-05
 
 ### Fixed
 
@@ -484,7 +484,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.12.0] — 2026-07-05
+## [0.12.0] - 2026-07-05
 
 ### Added
 
@@ -492,7 +492,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.11.1] — 2026-07-05
+## [0.11.1] - 2026-07-05
 
 ### Fixed
 
@@ -500,7 +500,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.11.0] — 2026-07-05
+## [0.11.0] - 2026-07-05
 
 ### Added
 
@@ -512,7 +512,7 @@ Milestone: data sharing between friends.
 
 ---
 
-## [0.9.0] — 2026-07-04
+## [0.9.0] - 2026-07-04
 
 Milestone: automatic official results.
 
@@ -528,7 +528,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.8.0] — 2026-07-04
+## [0.8.0] - 2026-07-04
 
 ### Fixed
 
@@ -540,7 +540,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.7.0] — 2026-07-04
+## [0.7.0] - 2026-07-04
 
 ### Added
 
@@ -549,7 +549,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.6.2] — 2026-07-02
+## [0.6.2] - 2026-07-02
 
 ### Added
 
@@ -557,7 +557,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.6.1] — 2026-07-02
+## [0.6.1] - 2026-07-02
 
 ### Fixed
 
@@ -565,7 +565,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.6.0] — 2026-06-30
+## [0.6.0] - 2026-06-30
 
 ### Added
 
@@ -573,7 +573,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.5.4] — 2026-06-30
+## [0.5.4] - 2026-06-30
 
 ### Added
 
@@ -581,7 +581,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.5.3] — 2026-06-30
+## [0.5.3] - 2026-06-30
 
 ### Fixed
 
@@ -589,7 +589,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.5.2] — 2026-06-30
+## [0.5.2] - 2026-06-30
 
 ### Fixed
 
@@ -597,7 +597,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.5.1] — 2026-06-30
+## [0.5.1] - 2026-06-30
 
 ### Added
 
@@ -606,7 +606,7 @@ Milestone: automatic official results.
 
 ---
 
-## [0.5.0] — 2026-06-29
+## [0.5.0] - 2026-06-29
 
 Milestone: map mode.
 
@@ -617,7 +617,7 @@ Milestone: map mode.
 
 ---
 
-## [0.4.3] — 2026-06-29
+## [0.4.3] - 2026-06-29
 
 ### Fixed
 
@@ -625,7 +625,7 @@ Milestone: map mode.
 
 ---
 
-## [0.4.2] — 2026-06-29
+## [0.4.2] - 2026-06-29
 
 ### Fixed
 
@@ -633,7 +633,7 @@ Milestone: map mode.
 
 ---
 
-## [0.4.1] — 2026-06-29
+## [0.4.1] - 2026-06-29
 
 ### Fixed
 
@@ -641,7 +641,7 @@ Milestone: map mode.
 
 ---
 
-## [0.4.0] — 2026-06-29
+## [0.4.0] - 2026-06-29
 
 Milestone: event photos and videos.
 
@@ -656,7 +656,7 @@ Milestone: event photos and videos.
 
 ---
 
-## [0.2.0] — 2026-06-28
+## [0.2.0] - 2026-06-28
 
 Milestone: internationalisation.
 
@@ -681,9 +681,9 @@ Milestone: internationalisation.
 
 ---
 
-## [0.1.0] — 2026-06-26
+## [0.1.0] - 2026-06-26
 
-Milestone: **MVP** — Excel spreadsheet replacement as PWA.
+Milestone: **MVP**, Excel spreadsheet replacement as PWA.
 
 ### Added
 

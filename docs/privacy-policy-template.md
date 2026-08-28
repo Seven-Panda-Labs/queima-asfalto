@@ -1,4 +1,4 @@
-# Modelo de política de privacidade — self-hosting
+# Modelo de política de privacidade: self-hosting
 
 **Português** · [English](#english)
 
@@ -8,7 +8,7 @@
 
 ## Português
 
-Modelo para **quem faz deploy da sua própria instância** do Queima Asfalto. Não é aconselhamento jurídico — adapta com apoio legal se necessário.
+Modelo para **quem faz deploy da sua própria instância** do Queima Asfalto. Não é aconselhamento jurídico. Adapta com apoio legal se necessário.
 
 **Geração automática no build:** com as variáveis `PRIVACY_*` em `.env.local`, `npm run build` injecta o conteúdo na rota `/privacidade` (layout, tema e navegação da app). Ver secção [Geração automática](#geracao-automatica) e [`configuration.md`](./configuration.md).
 
@@ -47,7 +47,7 @@ Substitui os marcadores `{{...}}` antes de publicar (página web, README da inst
 
 ### Texto do modelo (copiar e adaptar)
 
-#### Política de privacidade — {{INSTANCE_NAME}}
+#### Política de privacidade: {{INSTANCE_NAME}}
 
 **Última actualização:** {{EFFECTIVE_DATE}}
 
@@ -86,7 +86,7 @@ Não recolhemos intencionalmente dados de menores de 16 anos. Se tiveres conheci
 |------------|-------------------|
 | Criar conta e sincronizar dados entre dispositivos | Execução de contrato / passos pré-contratuais (art. 6.º(1)(b)) |
 | Partilhas entre utilizadores | Execução de contrato |
-| Lembretes push (opt-in) | Consentimento (art. 6.º(1)(a)) — o utilizador activa em Definições |
+| Lembretes push (opt-in) | Consentimento (art. 6.º(1)(a)), o utilizador activa em Definições |
 | Analytics (se activado) | Consentimento ou interesse legítimo, conforme a tua configuração e jurisdição |
 | Segurança e prevenção de abuso | Interesse legítimo (art. 6.º(1)(f)) |
 | Importação de resultados oficiais | Execução de contrato (funcionalidade solicitada pelo utilizador) |
@@ -122,13 +122,13 @@ Nos termos do GDPR, os utilizadores podem solicitar:
 
 - Acesso, rectificação, apagamento
 - Limitação ou oposição ao tratamento
-- Portabilidade (dados fornecidos por eles, em formato estruturado) — disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
+- Portabilidade (dados fornecidos por eles, em formato estruturado), disponível directamente na app em Definições → Dados → «Exportar backup (.zip)»
 - Retirar consentimento (ex.: notificações push) sem afectar tratamentos anteriores
 - Reclamação junto da autoridade de controlo (em Portugal: [CNPD](https://www.cnpd.pt))
 
 **Pedidos:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Prazo de resposta recomendado: 30 dias.
 
-**Apagamento de conta:** documenta o teu processo (ex.: apagar documento `users/{uid}`, eventos, media em Storage, partilhas). O software não inclui ainda um botão «apagar conta» automático — o operador deve apagar manualmente no Firebase Console ou via script.
+**Apagamento de conta:** documenta o teu processo (ex.: apagar documento `users/{uid}`, eventos, media em Storage, partilhas). O software não inclui ainda um botão «apagar conta» automático. O operador deve apagar manualmente no Firebase Console ou via script.
 
 #### 9. Segurança
 
@@ -170,7 +170,7 @@ Instância: {{HOSTING_URL}}
 ### Geração automática (recomendado)
 
 1. Define em `.env.local` as variáveis `PRIVACY_*` (ver [`.env.example`](../.env.example)).
-2. `npm run build` corre `generate:privacy` antes do Vite — conteúdo disponível em `/privacidade` dentro da app.
+2. `npm run build` corre `generate:privacy` antes do Vite, conteúdo disponível em `/privacidade` dentro da app.
 3. O ficheiro `.env.privacy.generated` activa `VITE_PRIVACY_POLICY_ENABLED` no build (gitignored).
 4. Em deploy CI, define `PRIVACY_REQUIRED=true` para falhar se faltar configuração.
 
@@ -184,7 +184,7 @@ Texto fonte: [`scripts/privacy-policy.template.md`](../scripts/privacy-policy.te
 
 [Português](#portugues)
 
-Template for **operators who deploy their own instance** of Queima Asfalto. Not legal advice — adapt with counsel if needed.
+Template for **operators who deploy their own instance** of Queima Asfalto. Not legal advice. Adapt with counsel if needed.
 
 **Automatic build generation:** with `PRIVACY_*` in `.env.local`, `npm run build` injects content into the `/privacidade` route (app layout, theme, and navigation). See [Automatic generation](#automatic-generation) and [`configuration.md`](./configuration.md).
 
@@ -223,7 +223,7 @@ Replace `{{...}}` placeholders before publishing (web page, instance README, or 
 
 ### Template text (copy and adapt)
 
-#### Privacy policy — {{INSTANCE_NAME}}
+#### Privacy policy: {{INSTANCE_NAME}}
 
 **Last updated:** {{EFFECTIVE_DATE}}
 
@@ -262,7 +262,7 @@ We do not knowingly collect data from children under 16. Contact us if you belie
 |---------|---------------------|
 | Account and sync across devices | Contract / pre-contract steps (Art. 6(1)(b)) |
 | Sharing between users | Contract |
-| Push reminders (opt-in) | Consent (Art. 6(1)(a)) — user enables in Settings |
+| Push reminders (opt-in) | Consent (Art. 6(1)(a)), user enables in Settings |
 | Analytics (if enabled) | Consent or legitimate interest, per your setup and jurisdiction |
 | Security and abuse prevention | Legitimate interest (Art. 6(1)(f)) |
 | Official results import | Contract (feature requested by the user) |
@@ -298,13 +298,13 @@ Under GDPR, users may request:
 
 - Access, rectification, erasure
 - Restriction or objection to processing
-- Portability (data they provided, in a structured format) — available directly in the app under Settings → Data → “Export backup (.zip)”
+- Portability (data they provided, in a structured format), available directly in the app under Settings → Data → “Export backup (.zip)”
 - Withdraw consent (e.g. push notifications) without affecting prior processing
 - Lodge a complaint with a supervisory authority (Portugal: [CNPD](https://www.cnpd.pt))
 
 **Requests:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Recommended response time: 30 days.
 
-**Account deletion:** document your process (e.g. delete `users/{uid}`, events, Storage media, shares). The software does not yet include an automatic “delete account” button — the operator deletes via Firebase Console or script.
+**Account deletion:** document your process (e.g. delete `users/{uid}`, events, Storage media, shares). The software does not yet include an automatic “delete account” button. The operator deletes via Firebase Console or script.
 
 #### 9. Security
 
@@ -346,7 +346,7 @@ Instance: {{HOSTING_URL}}
 ### Automatic generation (recommended)
 
 1. Set `PRIVACY_*` in `.env.local` (see [`.env.example`](../.env.example)).
-2. `npm run build` runs `generate:privacy` before Vite — content is served at `/privacidade` inside the app.
+2. `npm run build` runs `generate:privacy` before Vite, content is served at `/privacidade` inside the app.
 3. `.env.privacy.generated` enables `VITE_PRIVACY_POLICY_ENABLED` at build time (gitignored).
 4. On deploy CI, set `PRIVACY_REQUIRED=true` to fail when configuration is incomplete.
 

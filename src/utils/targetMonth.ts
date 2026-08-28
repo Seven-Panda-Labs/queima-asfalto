@@ -34,9 +34,9 @@ const MONTH_INDEX: Record<TargetMonth, number> = {
 }
 
 export function formatTargetMonth(month?: string): string {
-  if (!month) return '—'
+  if (!month) return '-'
   const trimmed = month.trim()
-  if (!trimmed) return '—'
+  if (!trimmed) return '-'
   if (!isTargetMonth(trimmed)) return trimmed
   return i18n.t(`targetMonths.${trimmed}`)
 }

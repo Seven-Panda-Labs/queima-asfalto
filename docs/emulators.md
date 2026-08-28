@@ -1,4 +1,4 @@
-# Emuladores Firebase — desenvolvimento local
+# Emuladores Firebase: desenvolvimento local
 
 **Português** · [English](#english)
 
@@ -23,11 +23,11 @@ Guia para desenvolver **sem projeto Firebase na cloud** (ou com dados locais iso
 
 - Node.js 24
 - **Java JDK 21+** (exigido pelo `firebase-tools` para Firestore emulator)
-- `firebase-tools` (incluído em `devDependencies` — usa `npx firebase`)
+- `firebase-tools` (vem em `devDependencies`; chama-se com `npx firebase`)
 
 ### Início rápido (sem projeto cloud)
 
-**Terminal 1 — emuladores:**
+**Terminal 1, emuladores:**
 
 ```bash
 npm run emulators
@@ -35,7 +35,7 @@ npm run emulators
 
 Isto arranca Auth (`9099`), Firestore (`8080`), Functions (`5001`), Storage (`9199`) e a **Emulator UI** em [http://localhost:4000](http://localhost:4000). O project ID é `demo-queima-asfalto` (não precisa de `.firebaserc`).
 
-**Terminal 2 — frontend:**
+**Terminal 2, frontend:**
 
 ```bash
 cp .env.emulator.example .env.local
@@ -44,7 +44,7 @@ npm --prefix functions install
 npm run dev
 ```
 
-Abre [http://localhost:5173](http://localhost:5173) e usa **«Entrar (emulador)»** no ecrã de login (não uses Google — OAuth não funciona contra o Auth emulator).
+Abre [http://localhost:5173](http://localhost:5173) e usa **«Entrar (emulador)»** no ecrã de login (não uses Google; OAuth não funciona contra o Auth emulator).
 
 Conta de desenvolvimento criada automaticamente:
 
@@ -80,12 +80,12 @@ Configuração em [`firebase.json`](../firebase.json) → `emulators`.
 
 | Funcionalidade | Emuladores |
 |----------------|------------|
-| Auth (email dev) | Sim — botão «Entrar (emulador)» |
-| Google Sign-In | **Não** — OAuth não é suportado no Auth emulator |
+| Auth (email dev) | Sim, botão «Entrar (emulador)» |
+| Google Sign-In | **Não**, OAuth não é suportado no Auth emulator |
 | Firestore + rules | Sim |
 | Storage + rules | Sim |
 | Cloud Functions callable | Sim |
-| `dispatchReminders` (agendado) | Não automático — disparo manual na UI ou ignorar |
+| `dispatchReminders` (agendado) | Não automático, disparo manual na UI ou ignorar |
 | Web Push (FCM) | **Não** |
 | Google Analytics | **Não** (eventos ignorados em dev) |
 | Geoapify (mapas) | Precisa de `VITE_GEOAPIFY_API_KEY` real (API externa) |
@@ -106,7 +106,7 @@ Configuração em [`firebase.json`](../firebase.json) → `emulators`.
 npm run test:rules
 ```
 
-Corre Vitest contra o Firestore emulator (`firebase emulators:exec`). Incluído em `npm run check` e no CI — requer Java 21+.
+Corre Vitest contra o Firestore emulator (`firebase emulators:exec`). Incluído em `npm run check` e no CI. Requer Java 21+.
 
 Ficheiro: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Cobertura actual:
 
@@ -120,7 +120,7 @@ Ficheiro: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Cobertura act
 | `users/.../rateLimits` | Leitura pelo dono; writes só servidor (lookup de resultados) |
 | `events/.../media` | `storagePath` e `downloadUrl` alinhados com Firebase Storage; sem updates |
 
-> **Limitação conhecida:** `firestore.rules` exige que o `downloadUrl` tenha a forma de produção (`firebasestorage.googleapis.com` ou `*.firebasestorage.app`), mas o emulador de Storage devolve URLs `127.0.0.1:9199`. Por isso, **criar documentos em `events/.../media` falha contra os emuladores** — tanto no upload normal de fotos como no restauro de backup com ficheiros. O upload para o Storage em si funciona; só a escrita do documento é recusada. Testa esta parte num projeto Firebase real.
+> **Limitação conhecida:** `firestore.rules` exige que o `downloadUrl` tenha a forma de produção (`firebasestorage.googleapis.com` ou `*.firebasestorage.app`), mas o emulador de Storage devolve URLs `127.0.0.1:9199`. Por isso, **criar documentos em `events/.../media` falha contra os emuladores**, tanto no upload normal de fotos como no restauro de backup com ficheiros. O upload para o Storage em si funciona; só a escrita do documento é recusada. Testa esta parte num projeto Firebase real.
 
 ### Persistir dados entre sessões (opcional)
 
@@ -138,7 +138,7 @@ A pasta `emulator-data/` está no `.gitignore`.
 | Login Google falha em modo emulador | Usa «Entrar (emulador)», não o botão Google |
 | `connection refused` nas callables | Confirma `npm run emulators` a correr e `VITE_USE_FIREBASE_EMULATORS=true` |
 | Firestore persistence / offline estranho | Em modo emulador a app usa cache em memória (sem IndexedDB persistence) |
-| Callable `permission-denied` | Dados emulados vazios — cria eventos de novo após reiniciar emuladores |
+| Callable `permission-denied` | Dados emulados vazios. Cria eventos de novo após reiniciar emuladores |
 
 ---
 
@@ -163,11 +163,11 @@ Guide for developing **without a cloud Firebase project** (or with isolated loca
 
 - Node.js 24
 - **Java JDK 21+** (required by `firebase-tools` for the Firestore emulator)
-- `firebase-tools` (in `devDependencies` — use `npx firebase`)
+- `firebase-tools` (ships in `devDependencies`; call it with `npx firebase`)
 
 ### Quick start (no cloud project)
 
-**Terminal 1 — emulators:**
+**Terminal 1, emulators:**
 
 ```bash
 npm run emulators
@@ -175,7 +175,7 @@ npm run emulators
 
 Starts Auth (`9099`), Firestore (`8080`), Functions (`5001`), Storage (`9199`), and the **Emulator UI** at [http://localhost:4000](http://localhost:4000). Project ID is `demo-queima-asfalto` (no `.firebaserc` needed).
 
-**Terminal 2 — frontend:**
+**Terminal 2, frontend:**
 
 ```bash
 cp .env.emulator.example .env.local
@@ -184,7 +184,7 @@ npm --prefix functions install
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) and click **“Sign in (emulator)”** on the login screen (do not use Google — OAuth does not work against the Auth emulator).
+Open [http://localhost:5173](http://localhost:5173) and click **“Sign in (emulator)”** on the login screen (do not use Google; OAuth does not work against the Auth emulator).
 
 Dev account (auto-created on first sign-in):
 
@@ -220,12 +220,12 @@ Configured in [`firebase.json`](../firebase.json) → `emulators`.
 
 | Feature | Emulators |
 |---------|-----------|
-| Auth (dev email) | Yes — “Sign in (emulator)” button |
-| Google Sign-In | **No** — OAuth is not supported on the Auth emulator |
+| Auth (dev email) | Yes, “Sign in (emulator)” button |
+| Google Sign-In | **No**, OAuth is not supported on the Auth emulator |
 | Firestore + rules | Yes |
 | Storage + rules | Yes |
 | Callable Cloud Functions | Yes |
-| `dispatchReminders` (scheduled) | Not automatic — trigger manually in UI or skip |
+| `dispatchReminders` (scheduled) | Not automatic, trigger manually in UI or skip |
 | Web Push (FCM) | **No** |
 | Google Analytics | **No** (events ignored in dev) |
 | Geoapify (maps) | Requires real `VITE_GEOAPIFY_API_KEY` (external API) |
@@ -246,7 +246,7 @@ Useful to test callables without deploy:
 npm run test:rules
 ```
 
-Runs Vitest against the Firestore emulator (`firebase emulators:exec`). Included in `npm run check` and CI — requires Java 21+.
+Runs Vitest against the Firestore emulator (`firebase emulators:exec`). Included in `npm run check` and CI. Requires Java 21+.
 
 File: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Current coverage:
 
@@ -260,7 +260,7 @@ File: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Current coverage:
 | `users/.../rateLimits` | Owner read; server-only writes (results lookup) |
 | `events/.../media` | `storagePath` and `downloadUrl` match Firebase Storage; no updates |
 
-> **Known limitation:** `firestore.rules` requires `downloadUrl` to have the production shape (`firebasestorage.googleapis.com` or `*.firebasestorage.app`), but the Storage emulator returns `127.0.0.1:9199` URLs. So **creating `events/.../media` documents fails against the emulators** — both for normal photo uploads and for restoring a backup that carries files. The Storage upload itself works; only the document write is denied. Test this part against a real Firebase project.
+> **Known limitation:** `firestore.rules` requires `downloadUrl` to have the production shape (`firebasestorage.googleapis.com` or `*.firebasestorage.app`), but the Storage emulator returns `127.0.0.1:9199` URLs. So **creating `events/.../media` documents fails against the emulators**, both for normal photo uploads and for restoring a backup that carries files. The Storage upload itself works; only the document write is denied. Test this part against a real Firebase project.
 
 ### Persist data between sessions (optional)
 
@@ -278,4 +278,4 @@ The `emulator-data/` folder is gitignored.
 | Google login fails in emulator mode | Use “Sign in (emulator)”, not the Google button |
 | `connection refused` on callables | Ensure `npm run emulators` is running and `VITE_USE_FIREBASE_EMULATORS=true` |
 | Odd Firestore offline behaviour | Emulator mode uses in-memory cache (no IndexedDB persistence) |
-| Callable `permission-denied` | Empty emulator data — recreate events after restarting emulators |
+| Callable `permission-denied` | Empty emulator data. Recreate events after restarting emulators |

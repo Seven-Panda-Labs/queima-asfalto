@@ -167,7 +167,7 @@ describe('BackupPreview', () => {
     renderPreview({ summary: summaryWithMediaFiles() })
 
     expect(
-      screen.getByText('3 ficheiros de fotos e vídeos (7 MB) — serão recuperados'),
+      screen.getByText('3 ficheiros de fotos e vídeos (7 MB), serão recuperados'),
     ).toBeInTheDocument()
   })
 

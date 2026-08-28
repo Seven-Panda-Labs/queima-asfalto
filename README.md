@@ -45,7 +45,7 @@ React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Sto
 
 **Requisitos:** Node.js 24 (Java 21+ se usares emuladores Firebase)
 
-**Sem projeto Firebase na cloud** — emuladores locais (recomendado para contribuir):
+**Sem projeto Firebase na cloud**, emuladores locais (recomendado para contribuir):
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -153,7 +153,7 @@ React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Sto
 
 **Requirements:** Node.js 24 (Java 21+ if using Firebase emulators)
 
-**No cloud Firebase project** — local emulators (recommended for contributors):
+**No cloud Firebase project**, local emulators (recommended for contributors):
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git

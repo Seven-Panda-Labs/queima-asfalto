@@ -36,7 +36,7 @@ export default defineConfig({
       manifest: {
         name: 'Queima Asfalto',
         short_name: 'QueimaAsfalto',
-        description: 'Gestão de época de corrida — eventos, objetivos e resultados.',
+        description: 'Gestão de época de corrida: eventos, objetivos e resultados.',
         start_url: '/',
         scope: '/',
         display: 'standalone',

@@ -21,7 +21,7 @@ export type DashboardTarget = {
   id: string
   emoji: string
   title: string
-  /** 0–100. */
+  /** 0 a 100. */
   percent: number
   /** Progresso curto ao lado da barra: «2/3» ou «99%». */
   progressText: string

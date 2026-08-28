@@ -1,5 +1,5 @@
 ---locale:pt---
-#### Aviso — importação de resultados oficiais
+#### Aviso: importação de resultados oficiais
 
 **Última actualização:** 2026-07-20
 
@@ -41,7 +41,7 @@ Documentação completa para operadores: [`docs/timing-scraping-disclaimer.md`](
 O Queima Asfalto é software open source (AGPL-3.0), fornecido **«tal como está»**. Os autores do código não garantem disponibilidade contínua de conectores nem assumem responsabilidade por violações de termos de terceiros resultantes do uso desta funcionalidade.
 
 ---locale:en---
-#### Notice — official results import
+#### Notice: official results import
 
 **Last updated:** 2026-07-20
 
@@ -83,7 +83,7 @@ Full operator documentation: [`docs/timing-scraping-disclaimer.md`](https://gith
 Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The code authors do not guarantee ongoing availability of connectors and are not liable for third-party terms violations arising from use of this feature.
 
 ---locale:es---
-#### Aviso — importación de resultados oficiales
+#### Aviso: importación de resultados oficiales
 
 **Última actualización:** 2026-07-20
 
@@ -125,7 +125,7 @@ Documentación completa para operadores: [`docs/timing-scraping-disclaimer.md`](
 Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal cual»**. Los autores del código no garantizan la disponibilidad continua de los conectores y no se hacen responsables de violaciones de términos de terceros derivadas del uso de esta funcionalidad.
 
 ---locale:de---
-#### Hinweis — Import offizieller Ergebnisse
+#### Hinweis: Import offizieller Ergebnisse
 
 **Zuletzt aktualisiert:** 2026-07-20
 
@@ -167,7 +167,7 @@ Vollständige Dokumentation für Betreiber: [`docs/timing-scraping-disclaimer.md
 Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie besehen“**. Die Codeautoren garantieren keine dauerhafte Verfügbarkeit von Konnektoren und haften nicht für Verstöße gegen Drittanbieter-Bedingungen, die aus der Nutzung dieser Funktion entstehen.
 
 ---locale:fr---
-#### Avis — importation des résultats officiels
+#### Avis: importation des résultats officiels
 
 **Dernière mise à jour :** 2026-07-20
 
@@ -208,7 +208,7 @@ Documentation complète pour les opérateurs : [`docs/timing-scraping-disclaimer
 
 Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**. Les auteurs du code ne garantissent pas la disponibilité continue des connecteurs et ne sont pas responsables des violations de conditions de tiers découlant de l'utilisation de cette fonctionnalité.
 ---locale:ar---
-#### تنبيه — استيراد النتائج الرسمية
+#### تنبيه: استيراد النتائج الرسمية
 
 **آخر تحديث:** 2026-07-20
 

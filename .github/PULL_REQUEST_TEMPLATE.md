@@ -5,7 +5,7 @@ Obrigado por contribuir! Ver [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Summary
 
-<!-- What changed and why (1–3 bullets) / O que mudou e porquê -->
+<!-- What changed and why (1-3 bullets) / O que mudou e porquê -->
 
 -
 
@@ -22,4 +22,4 @@ Obrigado por contribuir! Ver [CONTRIBUTING.md](../CONTRIBUTING.md).
 
 ## Screenshots
 
-<!-- UI changes only — optional -->
+<!-- UI changes only, optional -->

@@ -1,4 +1,4 @@
-# Tom de voz — Queima Asfalto
+# Tom de voz: Queima Asfalto
 
 **Português** · [English](#english)
 

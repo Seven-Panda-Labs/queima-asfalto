@@ -81,7 +81,7 @@
     "languageAr": "العربية"
   },
   "timingDisclaimer": {
-    "title": "Notice — official results",
+    "title": "Notice: official results",
     "subtitle": "Third-party timing site scraping and terms of use.",
     "languageToggle": "Notice language",
     "languagePt": "Português",
@@ -127,7 +127,7 @@
     "subtitle": "Annual running plan. Track events, goals and results.",
     "google": "Sign in with Google",
     "emulator": "Sign in (emulator)",
-    "emulatorHint": "Emulator mode — no Google OAuth. See docs/emulators.md."
+    "emulatorHint": "Emulator mode, no Google OAuth. See docs/emulators.md."
   },
   "accountApproval": {
     "pendingTitle": "Awaiting approval",
@@ -540,7 +540,7 @@
     "previewNothingToRestore": "There is nothing to restore in this backup.",
     "countEvents": "{{count}} events",
     "countEventMedia": "{{count}} photo and video records",
-    "countMediaFiles": "{{count}} photo and video files ({{mb}} MB) — these will be restored",
+    "countMediaFiles": "{{count}} photo and video files ({{mb}} MB), these will be restored",
     "countGoals": "{{count}} goals",
     "countPerformanceGoals": "{{count}} performance goals",
     "countBucketListItems": "{{count}} bucket list items",
@@ -549,7 +549,7 @@
     "existingLoading": "Counting your current data...",
     "warningsTitle": "What is not restored",
     "warnings": {
-      "shares_not_restored": "Shares — you have to invite people again.",
+      "shares_not_restored": "Shares: you have to invite people again.",
       "media_binaries_not_restored": "This backup has no photo or video files, only their metadata. Photos and videos only come back if they are still in your account.",
       "media_not_restored_replace_mode": "Replacing everything deletes your photos and videos for good, and they cannot be restored from the backup.",
       "media_skipped_different_account": "Photo and video records are skipped because the backup comes from another account.",
@@ -562,7 +562,7 @@
     "modeMerge": "Merge",
     "modeMergeHint": "Creates or overwrites the documents in the backup and keeps everything else you already have. For every document in the file, the backup version wins.",
     "modeReplace": "Replace everything",
-    "modeReplaceHint": "Deletes your events, goals, performance goals, bucket list and all photos and videos before restoring. The photos and videos do not come back — they are not in the .zip. This cannot be undone.",
+    "modeReplaceHint": "Deletes your events, goals, performance goals, bucket list and all photos and videos before restoring. The photos and videos do not come back, they are not in the .zip. This cannot be undone.",
     "modeReplaceHintWithMedia": "Deletes your events, goals, performance goals, bucket list and photos and videos before restoring. Because this backup includes the files, the photos and videos come back. This cannot be undone.",
     "confirmRestore": "Restore data",
     "confirmReplaceTitle": "Replace all data?",

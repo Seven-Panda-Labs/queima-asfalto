@@ -328,7 +328,7 @@ async function updateUserProfile(db: Firestore, userId: string, dryRun: boolean)
   const snapshot = await userRef.get()
 
   if (!snapshot.exists) {
-    console.warn(`User document users/${userId} does not exist — creating profile shell.`)
+    console.warn(`User document users/${userId} does not exist, creating profile shell.`)
   }
 
   const update = {

@@ -13,8 +13,8 @@ describe('formatTargetMonth', () => {
   })
 
   it('returns dash for empty values', () => {
-    expect(formatTargetMonth()).toBe('—')
-    expect(formatTargetMonth('')).toBe('—')
+    expect(formatTargetMonth()).toBe('-')
+    expect(formatTargetMonth('')).toBe('-')
   })
 })
 
