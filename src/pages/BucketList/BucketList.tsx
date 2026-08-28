@@ -1,8 +1,16 @@
-import { lazy, Suspense, useMemo, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
+import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import {
+  CalendarPlusIcon,
+  ExternalLinkIcon,
+  PencilIcon,
+  TrashIcon,
+} from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDialog/ScheduleDisciplineDialog'
@@ -52,76 +60,12 @@ export type EventFormFromBucketListState = {
   }
 }
 
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
-        active ? 'bg-primary text-white' : 'bg-surface text-muted ring-1 ring-border hover:text-foreground',
-      ].join(' ')}
-    >
-      {children}
-    </button>
-  )
-}
-
 function BucketListSkeleton() {
   return (
     <div className="space-y-3" aria-hidden>
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="h-14 animate-pulse rounded-lg bg-border/60" />
       ))}
-    </div>
-  )
-}
-
-function ViewModeToggle({
-  mode,
-  onChange,
-}: {
-  mode: BucketListViewMode
-  onChange: (mode: BucketListViewMode) => void
-}) {
-  const { t } = useTranslation()
-
-  return (
-    <div
-      className="inline-flex w-full rounded-lg border border-border bg-background p-1 sm:w-auto"
-      role="group"
-      aria-label={t('viewMode.label')}
-    >
-      <button
-        type="button"
-        aria-pressed={mode === 'lista'}
-        onClick={() => onChange('lista')}
-        className={[
-          'flex-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:flex-none sm:py-1.5',
-          mode === 'lista' ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
-        ].join(' ')}
-      >
-        {t('viewMode.list')}
-      </button>
-      <button
-        type="button"
-        aria-pressed={mode === 'mapa'}
-        onClick={() => onChange('mapa')}
-        className={[
-          'flex-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:flex-none sm:py-1.5',
-          mode === 'mapa' ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
-        ].join(' ')}
-      >
-        {t('viewMode.map')}
-      </button>
     </div>
   )
 }
@@ -243,6 +187,8 @@ export function BucketList() {
 
   return (
     <PageShell title={t('bucketList.title')}>
+      <p className="mt-2 text-sm text-muted">{t('bucketList.subtitle')}</p>
+
       <div className="mt-6 flex flex-col gap-6">
         <SharedOwnerTabs
           tabs={ownerTabs}
@@ -264,64 +210,63 @@ export function BucketList() {
         ) : null}
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted">{t('bucketList.subtitle')}</p>
+          <ViewSwitcher
+            options={[
+              { value: 'lista', label: t('viewMode.list') },
+              { value: 'mapa', label: t('viewMode.map') },
+            ]}
+            value={viewMode}
+            onChange={handleViewModeChange}
+            label={t('viewMode.label')}
+          />
           {canWrite ? (
             <Link
               to={addItemPath}
               className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
             >
-              ➕ {t('common.add')}
+              {t('common.add')}
             </Link>
           ) : null}
         </div>
 
         {items.length > 0 ? (
           <>
-            <div className="space-y-3">
-              <p className="text-sm font-semibold text-foreground">{t('bucketList.discipline')}</p>
-              <div className="flex flex-wrap gap-2">
-                <FilterButton
+            <FilterBar>
+              <FilterGroup label={t('bucketList.discipline')}>
+                <FilterPill
                   active={eventTypeFilter === 'all'}
                   onClick={() => setEventTypeFilter('all')}
                 >
                   {t('bucketList.allDisciplines')}
-                </FilterButton>
+                </FilterPill>
                 {EVENT_TYPES.map((type) => (
-                  <FilterButton
+                  <FilterPill
                     key={type}
                     active={eventTypeFilter === type}
                     onClick={() => setEventTypeFilter(type)}
                   >
                     {formatEventTypeLabel(type)}
-                  </FilterButton>
+                  </FilterPill>
                 ))}
-              </div>
-            </div>
+              </FilterGroup>
 
-            {availableMonths.length > 0 ? (
-              <div className="space-y-3">
-                <p className="text-sm font-semibold text-foreground">{t('bucketList.targetMonthFilter')}</p>
-                <div className="flex flex-wrap gap-2">
-                  <FilterButton
-                    active={monthFilter === 'all'}
-                    onClick={() => setMonthFilter('all')}
-                  >
+              {availableMonths.length > 0 ? (
+                <FilterGroup label={t('bucketList.targetMonthFilter')}>
+                  <FilterPill active={monthFilter === 'all'} onClick={() => setMonthFilter('all')}>
                     {t('common.all')}
-                  </FilterButton>
+                  </FilterPill>
                   {availableMonths.map((month) => (
-                    <FilterButton
+                    <FilterPill
                       key={month}
                       active={monthFilter === month}
                       onClick={() => setMonthFilter(month)}
                     >
                       {formatTargetMonth(month)}
-                    </FilterButton>
+                    </FilterPill>
                   ))}
-                </div>
-              </div>
-            ) : null}
-
-            <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+                </FilterGroup>
+              ) : null}
+            </FilterBar>
           </>
         ) : null}
 
@@ -377,7 +322,6 @@ export function BucketList() {
                   <th className="px-4 py-3 font-semibold">{t('bucketList.disciplines')}</th>
                   <th className="px-4 py-3 font-semibold">{t('common.location')}</th>
                   <th className="px-4 py-3 font-semibold">{t('bucketList.targetMonth')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('common.link')}</th>
                   <th className="px-4 py-3 font-semibold">{t('common.actions')}</th>
                 </tr>
               </thead>
@@ -398,21 +342,19 @@ export function BucketList() {
                       {formatTargetMonth(item.targetMonth)}
                     </td>
                     <td className="px-4 py-3">
-                      {item.link ? (
-                        <a
-                          href={item.link}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="font-semibold text-primary hover:text-primary-hover"
-                        >
-                          {t('common.open')}
-                        </a>
-                      ) : (
-                        t('common.dash')
-                      )}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap gap-2">
+                      <div className="flex flex-nowrap gap-1">
+                        {item.link ? (
+                          <a
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={t('common.open')}
+                            title={t('common.open')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                          >
+                            <ExternalLinkIcon />
+                          </a>
+                        ) : null}
                         {canWrite ? (
                           <>
                             <Link
@@ -421,16 +363,20 @@ export function BucketList() {
                                   ? `/bucket-list/${item.id}/editar?owner=${activeOwnerId}`
                                   : `/bucket-list/${item.id}/editar`
                               }
-                              className="rounded-md px-2 py-1 text-sm font-semibold text-muted hover:bg-background hover:text-foreground"
+                              aria-label={t('common.edit')}
+                              title={t('common.edit')}
+                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                             >
-                              {t('common.edit')}
+                              <PencilIcon />
                             </Link>
                             <button
                               type="button"
                               onClick={() => setItemToDelete(item)}
-                              className="rounded-md px-2 py-1 text-sm font-semibold text-muted hover:bg-background hover:text-foreground"
+                              aria-label={t('common.delete')}
+                              title={t('common.delete')}
+                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
                             >
-                              {t('common.delete')}
+                              <TrashIcon />
                             </button>
                           </>
                         ) : null}
@@ -438,9 +384,11 @@ export function BucketList() {
                           <button
                             type="button"
                             onClick={() => handleSchedule(item)}
-                            className="rounded-md px-2 py-1 text-sm font-semibold text-primary hover:bg-background"
+                            aria-label={t('common.schedule')}
+                            title={t('common.schedule')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                           >
-                            {t('common.schedule')}
+                            <CalendarPlusIcon />
                           </button>
                         ) : null}
                       </div>

@@ -1,36 +1,6 @@
 import { useTranslation } from 'react-i18next'
+import { PencilIcon, TrashIcon } from '../icons/actionIcons'
 import type { GoalBoardEntry } from '../../utils/goalsBoard'
-
-const ICON_PROPS = {
-  viewBox: '0 0 24 24',
-  fill: 'none',
-  stroke: 'currentColor',
-  strokeWidth: 2,
-  strokeLinecap: 'round',
-  strokeLinejoin: 'round',
-  className: 'h-4 w-4',
-  'aria-hidden': true,
-} as const
-
-function PencilIcon() {
-  return (
-    <svg {...ICON_PROPS}>
-      <path d="M4 20h4L19 9a2.8 2.8 0 0 0-4-4L4 16v4Z" />
-      <path d="M14 6l4 4" />
-    </svg>
-  )
-}
-
-function TrashIcon() {
-  return (
-    <svg {...ICON_PROPS}>
-      <path d="M4 7h16" />
-      <path d="M10 4h4" />
-      <path d="M6 7l1 13h10l1-13" />
-      <path d="M10 11v6M14 11v6" />
-    </svg>
-  )
-}
 
 type GoalBoardCardProps = {
   entry: GoalBoardEntry

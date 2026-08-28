@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import medalha from '../../../assets/medalha.svg'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
+import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { GoalBoardCard } from '../../components/GoalBoardCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
@@ -18,43 +19,6 @@ function GoalsSkeleton() {
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden>
       {Array.from({ length: 3 }).map((_, index) => (
         <div key={index} className="h-32 animate-pulse rounded-xl bg-border/60" />
-      ))}
-    </div>
-  )
-}
-
-function YearPicker({
-  years,
-  active,
-  onChange,
-  label,
-}: {
-  years: number[]
-  active: number
-  onChange: (year: number) => void
-  label: string
-}) {
-  if (years.length < 2) return null
-
-  return (
-    <div
-      role="group"
-      aria-label={label}
-      className="inline-flex shrink-0 rounded-full border border-border bg-surface p-1"
-    >
-      {years.map((year) => (
-        <button
-          key={year}
-          type="button"
-          onClick={() => onChange(year)}
-          aria-pressed={active === year}
-          className={[
-            'rounded-full px-3 py-1 text-sm font-semibold transition-colors',
-            active === year ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
-          ].join(' ')}
-        >
-          {year}
-        </button>
       ))}
     </div>
   )
@@ -201,17 +165,22 @@ export function Goals() {
             ) : null}
 
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-              <div className="flex items-center gap-3">
-                <YearPicker
-                  years={availableYears}
-                  active={yearFilter}
-                  onChange={setYearFilter}
-                  label={t('common.year')}
-                />
+              <FilterBar>
+                <FilterGroup label={t('common.year')}>
+                  {availableYears.map((year) => (
+                    <FilterPill
+                      key={year}
+                      active={yearFilter === year}
+                      onClick={() => setYearFilter(year)}
+                    >
+                      {year}
+                    </FilterPill>
+                  ))}
+                </FilterGroup>
                 {!isSharedView && !canModifyYear ? (
                   <p className="text-sm text-muted">{t('goals.readOnlyYear', { year: yearFilter })}</p>
                 ) : null}
-              </div>
+              </FilterBar>
 
               {canModifyYear ? (
                 <Link

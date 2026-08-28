@@ -187,7 +187,8 @@
     "recovering": "Recuperando...",
     "recoverBucket": "🪣 Recuperar a la bucket list",
     "paceUnit": "min/km",
-    "locationMap": "Ubicación en el mapa"
+    "locationMap": "Ubicación en el mapa",
+    "noResultYet": "Sin resultado registrado"
   },
   "eventMedia": {
     "title": "Recuerdos",
@@ -298,7 +299,8 @@
     "platform": "Plataforma",
     "previewTime": "Tiempo a aplicar: {{time}}",
     "disclaimer": "La importación consulta sitios de cronometraje de terceros; el uso puede estar sujeto a los términos de cada plataforma.",
-    "disclaimerLink": "Leer aviso completo"
+    "disclaimerLink": "Leer aviso completo",
+    "refresh": "Volver a buscar"
   },
   "resultsForm": {
     "title": "Resultados",

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useState, type ReactNode } from 'react'
+import { lazy, Suspense, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
@@ -9,7 +9,17 @@ import {
 } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
+import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import {
+  BucketIcon,
+  ChartIcon,
+  EyeIcon,
+  PencilIcon,
+  StopwatchActionIcon,
+  TrashIcon,
+} from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { useAuth } from '../../contexts/AuthContext'
@@ -54,87 +64,6 @@ function EventsSkeleton() {
       {Array.from({ length: 4 }).map((_, index) => (
         <div key={index} className="h-14 animate-pulse rounded-lg bg-border/60" />
       ))}
-    </div>
-  )
-}
-
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
-        active ? 'bg-primary text-white' : 'bg-surface text-muted ring-1 ring-border hover:text-foreground',
-      ].join(' ')}
-    >
-      {children}
-    </button>
-  )
-}
-
-function ViewModeToggle({
-  mode,
-  onChange,
-}: {
-  mode: EventsViewMode
-  onChange: (mode: EventsViewMode) => void
-}) {
-  const { t } = useTranslation()
-
-  return (
-    <div
-      className="inline-flex w-full rounded-lg border border-border bg-background p-1 sm:w-auto"
-      role="group"
-      aria-label={t('viewMode.label')}
-    >
-      <button
-        type="button"
-        aria-pressed={mode === 'lista'}
-        onClick={() => onChange('lista')}
-        className={[
-          'flex-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:flex-none sm:py-1.5',
-          mode === 'lista'
-            ? 'bg-primary text-white'
-            : 'text-muted hover:text-foreground',
-        ].join(' ')}
-      >
-        {t('viewMode.list')}
-      </button>
-      <button
-        type="button"
-        aria-pressed={mode === 'calendario'}
-        onClick={() => onChange('calendario')}
-        className={[
-          'flex-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:flex-none sm:py-1.5',
-          mode === 'calendario'
-            ? 'bg-primary text-white'
-            : 'text-muted hover:text-foreground',
-        ].join(' ')}
-      >
-        {t('viewMode.calendar')}
-      </button>
-      <button
-        type="button"
-        aria-pressed={mode === 'mapa'}
-        onClick={() => onChange('mapa')}
-        className={[
-          'flex-1 rounded-md px-3 py-2 text-sm font-semibold transition-colors sm:flex-none sm:py-1.5',
-          mode === 'mapa'
-            ? 'bg-primary text-white'
-            : 'text-muted hover:text-foreground',
-        ].join(' ')}
-      >
-        {t('viewMode.map')}
-      </button>
     </div>
   )
 }
@@ -250,6 +179,8 @@ export function Events() {
 
   return (
     <PageShell title={t('events.title')}>
+      <p className="mt-2 text-sm text-muted">{t('events.subtitle')}</p>
+
       <div className="mt-6 flex flex-col gap-6">
         <SharedOwnerTabs
           tabs={ownerTabs}
@@ -271,51 +202,54 @@ export function Events() {
         ) : null}
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted">{t('events.subtitle')}</p>
+          <ViewSwitcher
+            options={[
+              { value: 'lista', label: t('viewMode.list') },
+              { value: 'calendario', label: t('viewMode.calendar') },
+              { value: 'mapa', label: t('viewMode.map') },
+            ]}
+            value={viewMode}
+            onChange={handleViewModeChange}
+            label={t('viewMode.label')}
+          />
           {!isSharedView ? (
             <Link
               to="/eventos/novo"
               className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
             >
-              ➕ {t('common.add')}
+              {t('common.add')}
             </Link>
           ) : null}
         </div>
 
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-foreground">{t('common.status')}</p>
-          <div className="flex flex-wrap gap-2">
+        <FilterBar>
+          <FilterGroup label={t('common.status')}>
             {STATUS_FILTER_OPTIONS.map((status) => (
-              <FilterButton
+              <FilterPill
                 key={status}
                 active={statusFilter === status}
                 onClick={() => updateFilters({ status })}
               >
                 {status === 'all' ? t('common.all') : formatEventStatusLabel(status)}
-              </FilterButton>
+              </FilterPill>
             ))}
-          </div>
-        </div>
+          </FilterGroup>
 
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-foreground">{t('common.year')}</p>
-          <div className="flex flex-wrap gap-2">
-            <FilterButton active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
+          <FilterGroup label={t('common.year')}>
+            <FilterPill active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
               {t('common.all')}
-            </FilterButton>
+            </FilterPill>
             {availableYears.map((year) => (
-              <FilterButton
+              <FilterPill
                 key={year}
                 active={yearFilter === year}
                 onClick={() => updateFilters({ year })}
               >
                 {year}
-              </FilterButton>
+              </FilterPill>
             ))}
-          </div>
-        </div>
-
-        <ViewModeToggle mode={viewMode} onChange={handleViewModeChange} />
+          </FilterGroup>
+        </FilterBar>
 
         {error ? <p className="text-sm text-danger">{error}</p> : null}
         {successMessage ? <p className="text-sm text-success">{successMessage}</p> : null}
@@ -445,26 +379,29 @@ export function Events() {
                           to={`/eventos/${event.id}`}
                           state={eventLinkState(returnTo).state}
                           title={t('events.viewEvent')}
-                          className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.viewEvent')}
+                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                         >
-                          👁️
+                          <EyeIcon />
                         </Link>
                         <Link
                           to={`/eventos/${event.id}/editar`}
                           state={eventLinkState(returnTo).state}
                           title={t('events.editEvent')}
-                          className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.editEvent')}
+                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                         >
-                          ✏️
+                          <PencilIcon />
                         </Link>
                         {event.status === 'confirmed' ? (
                           <Link
                             to={`/eventos/${event.id}/resultados`}
                             state={eventLinkState(returnTo).state}
                             title={t('events.registerResults')}
-                            className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.registerResults')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                           >
-                            ⏱️
+                            <StopwatchActionIcon />
                           </Link>
                         ) : null}
                         {event.status === 'completed' ? (
@@ -472,9 +409,10 @@ export function Events() {
                             to={`/eventos/${event.id}/resultados`}
                             state={eventLinkState(returnTo).state}
                             title={t('events.viewResults')}
-                            className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.viewResults')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                           >
-                            📊
+                            <ChartIcon />
                           </Link>
                         ) : null}
                         {canRecoverEventToBucketList(event.status) ? (
@@ -482,18 +420,20 @@ export function Events() {
                             type="button"
                             onClick={() => setEventToRecover(event)}
                             title={t('events.recoverBucket')}
-                            className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.recoverBucket')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                           >
-                            🪣
+                            <BucketIcon />
                           </button>
                         ) : null}
                         <button
                           type="button"
                           onClick={() => setEventToDelete(event)}
                           title={t('events.deleteEvent')}
-                          className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.deleteEvent')}
+                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
                         >
-                          🗑️
+                          <TrashIcon />
                         </button>
                       </div>
                     </td>
@@ -504,9 +444,10 @@ export function Events() {
                           to={buildEventDetailPath(event.id, { ownerId: activeOwnerId, returnTo })}
                           state={eventLinkState(returnTo).state}
                           title={t('events.viewEvent')}
-                          className="rounded-md px-2 py-1 text-base hover:bg-background"
+                          aria-label={t('events.viewEvent')}
+                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                         >
-                          👁️
+                          <EyeIcon />
                         </Link>
                       </td>
                     ) : null}

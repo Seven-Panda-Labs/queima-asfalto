@@ -1,4 +1,4 @@
-import { useMemo, type ReactNode } from 'react'
+import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { PaceChart } from '../../components/Charts/PaceChart'
@@ -7,6 +7,7 @@ import {
   personalRecordRowClass,
 } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
+import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
@@ -26,29 +27,6 @@ import {
   parseResultsListSearchParams,
   type ResultsListFilters,
 } from '../../utils/eventNavigation'
-
-function FilterButton({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
-        active ? 'bg-primary text-white' : 'bg-surface text-muted ring-1 ring-border hover:text-foreground',
-      ].join(' ')}
-    >
-      {children}
-    </button>
-  )
-}
 
 function ResultsSkeleton() {
   return (
@@ -132,6 +110,8 @@ export function Results() {
 
   return (
     <PageShell title={t('results.title')}>
+      <p className="mt-2 text-sm text-muted">{t('results.subtitle')}</p>
+
       <div className="mt-6 flex flex-col gap-6">
         <SharedOwnerTabs
           tabs={ownerTabs}
@@ -152,46 +132,40 @@ export function Results() {
           />
         ) : null}
 
-        <p className="text-muted">{t('results.subtitle')}</p>
-
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-foreground">{t('common.year')}</p>
-          <div className="flex flex-wrap gap-2">
-            <FilterButton active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
+        <FilterBar>
+          <FilterGroup label={t('common.year')}>
+            <FilterPill active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
               {t('common.all')}
-            </FilterButton>
+            </FilterPill>
             {availableYears.map((year) => (
-              <FilterButton
+              <FilterPill
                 key={year}
                 active={yearFilter === year}
                 onClick={() => updateFilters({ year })}
               >
                 {year}
-              </FilterButton>
+              </FilterPill>
             ))}
-          </div>
-        </div>
+          </FilterGroup>
 
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-foreground">{t('bucketList.discipline')}</p>
-          <div className="flex flex-wrap gap-2">
-            <FilterButton
+          <FilterGroup label={t('bucketList.discipline')}>
+            <FilterPill
               active={eventTypeFilter === 'all'}
               onClick={() => updateFilters({ type: 'all' })}
             >
               {t('bucketList.allDisciplines')}
-            </FilterButton>
+            </FilterPill>
             {EVENT_TYPES.map((type) => (
-              <FilterButton
+              <FilterPill
                 key={type}
                 active={eventTypeFilter === type}
                 onClick={() => updateFilters({ type })}
               >
                 {formatEventTypeLabel(type)}
-              </FilterButton>
+              </FilterPill>
             ))}
-          </div>
-        </div>
+          </FilterGroup>
+        </FilterBar>
 
         {error ? <p className="text-sm text-danger">{error}</p> : null}
 

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.22.0] - 2026-08-28
+
+### Alterado
+
+- **O resto da app com o visual do Início:** os objetivos passaram a agrupar-se por estado, com os cumpridos em destaque, os filtros e os seletores de vista ficaram iguais em todas as páginas, e a página de um evento passa a ter o nome da prova como título e o resultado em destaque.
+
+---
+
 ## [1.21.0] - 2026-08-28
 
 ### Alterado
