@@ -43,7 +43,9 @@ export function Settings() {
   return (
     <PageShell title={t('settings.title')}>
       <div className="mt-6 flex flex-col gap-6">
-        <SettingsTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+        <div className="self-start">
+          <SettingsTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
+        </div>
 
         <div className={activeTab === 'dados' ? 'max-w-4xl' : 'max-w-3xl'}>
           {activeTab === 'conta' ? <SettingsAccountSection /> : null}
