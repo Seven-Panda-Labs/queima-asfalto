@@ -187,7 +187,8 @@
     "recovering": "Wird zurückgeholt...",
     "recoverBucket": "🪣 Zur Bucket List zurückholen",
     "paceUnit": "min/km",
-    "locationMap": "Ort auf der Karte"
+    "locationMap": "Ort auf der Karte",
+    "noResultYet": "Noch kein Ergebnis erfasst"
   },
   "eventMedia": {
     "title": "Erinnerungen",
@@ -298,7 +299,8 @@
     "platform": "Plattform",
     "previewTime": "Zeit zum Übernehmen: {{time}}",
     "disclaimer": "Der Import fragt Zeitnahme-Websites Dritter ab; die Nutzung kann den jeweiligen Nutzungsbedingungen unterliegen.",
-    "disclaimerLink": "Vollständigen Hinweis lesen"
+    "disclaimerLink": "Vollständigen Hinweis lesen",
+    "refresh": "Erneut suchen"
   },
   "resultsForm": {
     "title": "Ergebnisse",
@@ -350,14 +352,7 @@
   "goals": {
     "title": "Ziele",
     "subtitle": "Jahresziele nach Eventtyp. Fortschritt aus abgeschlossenen Events.",
-    "empty": "Noch keine Ziele in {{year}}",
-    "emptyHint": "Setz dir Ziele für die Saison.",
-    "performanceTitle": "Leistungsziele",
-    "performanceSubtitle": "PR, Tempo und Zeit. Fortschritt aus deinen Ergebnissen.",
-    "performanceEmpty": "Noch keine Leistungsziele in {{year}}",
-    "performanceEmptyHint": "Setz dir ein PR-, Tempo- oder Zeitziel für die Saison.",
     "readOnlyYear": "Ziele für {{year}} sind schreibgeschützt.",
-    "newPerformance": "➕ Neues Ziel",
     "deleteGoalTitle": "Ziel löschen",
     "deleteGoalMessage": "Möchtest du {{name}} wirklich löschen?",
     "deletePerformanceTitle": "Leistungsziel löschen",
@@ -372,7 +367,15 @@
     "performanceNoData": "Keine Daten",
     "performanceFailed": "Nicht geschafft",
     "countHint": "Zählt abgeschlossene Events dieses Typs im Jahr",
-    "newGoal": "➕ Neues Ziel"
+    "newGoal": "Neues Ziel",
+    "pendingTitle": "Unterwegs",
+    "doneTitle": "Erreicht",
+    "typeAnnual": "Jährlich",
+    "typePerformance": "Leistung",
+    "allDone": "Alles erreicht in {{year}}. Zeit, die Latte höher zu legen.",
+    "chooseType": "Zielart",
+    "editTitle": "Ziel bearbeiten",
+    "failedTitle": "Nicht geschafft"
   },
   "results": {
     "title": "Ergebnisse",
@@ -993,10 +996,7 @@
       }
     },
     "success": {
-      "import": "Daten importiert! Deine Saison ist in der App. LOS GEHT'S!",
-      "goalAchieved": "Ziel zerlegt! Du wusstest, dass du das schaffst.",
-      "goalExceeded": "Übertroffen. Ich bin sprachlos.",
-      "goalCrushed": "Zerstört. Der Asphalt bittet um Gnade."
+      "import": "Daten importiert! Deine Saison ist in der App. LOS GEHT'S!"
     }
   }
 }

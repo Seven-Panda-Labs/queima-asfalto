@@ -187,7 +187,8 @@
     "recovering": "Recuperando...",
     "recoverBucket": "🪣 Recuperar a la bucket list",
     "paceUnit": "min/km",
-    "locationMap": "Ubicación en el mapa"
+    "locationMap": "Ubicación en el mapa",
+    "noResultYet": "Sin resultado registrado"
   },
   "eventMedia": {
     "title": "Recuerdos",
@@ -298,7 +299,8 @@
     "platform": "Plataforma",
     "previewTime": "Tiempo a aplicar: {{time}}",
     "disclaimer": "La importación consulta sitios de cronometraje de terceros; el uso puede estar sujeto a los términos de cada plataforma.",
-    "disclaimerLink": "Leer aviso completo"
+    "disclaimerLink": "Leer aviso completo",
+    "refresh": "Volver a buscar"
   },
   "resultsForm": {
     "title": "Resultados",
@@ -350,14 +352,7 @@
   "goals": {
     "title": "Objetivos",
     "subtitle": "Metas anuales por tipo de evento. El progreso viene de los eventos completados.",
-    "empty": "Aún no hay objetivos en {{year}}",
-    "emptyHint": "Marca metas para la temporada.",
-    "performanceTitle": "Objetivos de rendimiento",
-    "performanceSubtitle": "RP, ritmo y tiempo. Progreso según tus resultados.",
-    "performanceEmpty": "Aún no hay objetivos de rendimiento en {{year}}",
-    "performanceEmptyHint": "Marca un RP, ritmo o tiempo objetivo para la temporada.",
     "readOnlyYear": "Los objetivos de {{year}} son de solo lectura.",
-    "newPerformance": "➕ Nuevo objetivo",
     "deleteGoalTitle": "Eliminar objetivo",
     "deleteGoalMessage": "¿Seguro que quieres eliminar {{name}}?",
     "deletePerformanceTitle": "Eliminar objetivo de rendimiento",
@@ -372,7 +367,15 @@
     "performanceNoData": "Sin datos",
     "performanceFailed": "Fallido",
     "countHint": "Cuenta eventos completados de este tipo en el año",
-    "newGoal": "➕ Nuevo objetivo"
+    "newGoal": "Nuevo objetivo",
+    "pendingTitle": "En camino",
+    "doneTitle": "Cumplidos",
+    "typeAnnual": "Anual",
+    "typePerformance": "Rendimiento",
+    "allDone": "Todo cumplido en {{year}}. Toca subir el listón.",
+    "chooseType": "Tipo de objetivo",
+    "editTitle": "Editar objetivo",
+    "failedTitle": "Fallidos"
   },
   "results": {
     "title": "Resultados",
@@ -993,10 +996,7 @@
       }
     },
     "success": {
-      "import": "¡Datos importados! Tu temporada ya está en la app. ¡VAMOS!",
-      "goalAchieved": "¡Objetivo conseguido! Sabía que podías.",
-      "goalExceeded": "Superado. Sin palabras.",
-      "goalCrushed": "Machacado. El asfalto pide clemencia."
+      "import": "¡Datos importados! Tu temporada ya está en la app. ¡VAMOS!"
     }
   }
 }

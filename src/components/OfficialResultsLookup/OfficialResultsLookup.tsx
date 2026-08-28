@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
+import { RefreshIcon } from '../icons/actionIcons'
 import type { Event } from '../../types/Event'
 import type { OfficialResultCandidate } from '../../../shared/officialResults'
 import { detectPlatform, resultsPlatformLabel } from '../../../shared/officialResults'
@@ -17,9 +18,19 @@ import { splitTime } from '../../utils/time'
 type OfficialResultsLookupProps = {
   event: Event
   onApplied?: () => void
+  /**
+   * `section` traz título, explicação e aviso. `inline` traz só o botão, para
+   * quem o acolhe já dar o contexto. `icon` é um botão de ícone, para quando o
+   * resultado já existe e isto é apenas uma segunda tentativa.
+   */
+  layout?: 'section' | 'inline' | 'icon'
 }
 
-export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLookupProps) {
+export function OfficialResultsLookup({
+  event,
+  onApplied,
+  layout = 'section',
+}: OfficialResultsLookupProps) {
   const { t } = useTranslation()
   const { profile } = useUserResultsProfile()
   const { remainingSeconds, isCoolingDown, startCooldown } = useLookupCooldown()
@@ -107,42 +118,55 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
   }
 
   const timeParts = candidates?.[0] ? splitTime(candidates[0].time) : null
+  const unavailableMessage =
+    platform === 'parkrun'
+      ? t('officialResults.parkrunUnavailable')
+      : t('officialResults.configurePlatform')
 
-  return (
-    <div className="rounded-lg border border-border bg-surface p-4">
-      <h3 className="text-sm font-semibold text-foreground">{t('officialResults.lookupTitle')}</h3>
-      <p className="mt-1 text-xs text-muted">{t('officialResults.lookupHint')}</p>
-      <p className="mt-1 text-xs text-muted">
-        {t('officialResults.disclaimer')}{' '}
-        <Link
-          to={timingDisclaimerPath()}
-          className="font-semibold text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
-        >
-          {t('officialResults.disclaimerLink')}
-        </Link>
-      </p>
+  const busy = searching || applying
+  const hasOutput = Boolean(error) || Boolean(candidates?.length)
 
-      {!canLookup ? (
-        <p className="mt-3 text-sm text-muted">
-          {platform === 'parkrun'
-            ? t('officialResults.parkrunUnavailable')
-            : t('officialResults.configurePlatform')}
-        </p>
-      ) : (
-        <button
-          type="button"
-          onClick={() => void handleSearch()}
-          disabled={searching || applying || isCoolingDown}
-          className="mt-3 rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 disabled:opacity-60"
-        >
-          {searchButtonLabel}
-        </button>
-      )}
+  const trigger = !canLookup ? (
+    layout === 'icon' ? null : (
+      <p className="text-sm text-muted">{unavailableMessage}</p>
+    )
+  ) : layout === 'icon' ? (
+    <button
+      type="button"
+      onClick={() => void handleSearch()}
+      disabled={busy || isCoolingDown}
+      aria-label={searching ? t('officialResults.searching') : t('officialResults.refresh')}
+      title={searching ? t('officialResults.searching') : t('officialResults.refresh')}
+      aria-busy={searching}
+      className={[
+        'rounded-full p-1.5 transition-colors disabled:opacity-100',
+        searching ? 'text-primary' : 'text-muted hover:text-primary',
+      ].join(' ')}
+    >
+      <span className={searching ? 'block animate-spin' : 'block'}>
+        <RefreshIcon />
+      </span>
+    </button>
+  ) : (
+    <button
+      type="button"
+      onClick={() => void handleSearch()}
+      disabled={searching || applying || isCoolingDown}
+      className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 disabled:opacity-60"
+    >
+      {searchButtonLabel}
+    </button>
+  )
 
+  const output = (
+    // Fora do contentor que depende do hover: assim que há algo para ler, tem
+    // de ficar no ecrã mesmo que o ponteiro saia, e em fluxo normal, para não
+    // flutuar por cima do que vem a seguir.
+    <div aria-live="polite" className="w-full">
       {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}
 
       {candidates && candidates.length > 0 ? (
-        <div className="mt-4 space-y-3 rounded-md border border-border bg-background p-4">
+        <div className="mt-3 space-y-3 rounded-xl border border-border bg-background p-4">
           {candidates.map((candidate, index) => (
             <div key={`${candidate.platform}-${index}`} className="space-y-2">
               <p className="text-sm font-semibold text-foreground">{candidate.matchedName}</p>
@@ -183,8 +207,60 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
               })}
             </p>
           ) : null}
+          <p className="text-xs text-muted">
+            {t('officialResults.disclaimer')}{' '}
+            <Link
+              to={timingDisclaimerPath()}
+              className="font-semibold text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
+            >
+              {t('officialResults.disclaimerLink')}
+            </Link>
+          </p>
+          <button
+            type="button"
+            onClick={() => setCandidates(null)}
+            className="text-xs font-semibold text-muted underline-offset-2 hover:text-foreground hover:underline"
+          >
+            {t('common.cancel')}
+          </button>
         </div>
       ) : null}
+    </div>
+  )
+
+  if (layout === 'icon') {
+    return (
+      <>
+        <div
+          className={[
+            'absolute -end-3 -top-3 z-10 rounded-full border border-border bg-surface shadow-sm transition-opacity',
+            busy || hasOutput
+              ? 'opacity-100'
+              : 'opacity-0 focus-within:opacity-100 group-hover:opacity-100 max-sm:opacity-100',
+          ].join(' ')}
+        >
+          {trigger}
+        </div>
+        {output}
+      </>
+    )
+  }
+
+  if (layout === 'inline') {
+    return (
+      <>
+        {trigger}
+        {output}
+      </>
+    )
+  }
+
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4">
+      <h3 className="text-sm font-semibold text-foreground">{t('officialResults.lookupTitle')}</h3>
+      <p className="mt-1 mb-3 text-xs text-muted">{t('officialResults.lookupHint')}</p>
+      {trigger}
+      {output}
     </div>
   )
 }

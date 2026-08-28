@@ -1,7 +1,8 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { EmojiPicker } from '../../components/EmojiPicker'
+import { GoalTypeTabs } from '../../components/GoalTypeTabs'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useGoals } from '../../hooks/useGoals'
 import { DuplicateGoalError, getGoal } from '../../services/goals'
@@ -46,7 +47,16 @@ export function GoalForm() {
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
-  const yearOptions = Array.from({ length: 5 }, (_, index) => currentYear() - 1 + index)
+  // Só do ano corrente para a frente: um objetivo para um ano que já passou não
+  // tem como ser cumprido. O ano do próprio objetivo entra na lista ao editar,
+  // para que um registo antigo continue a abrir com o seu valor.
+  const yearOptions = useMemo(() => {
+    const upcoming = Array.from({ length: 5 }, (_, index) => currentYear() + index)
+    const selected = Number(form.year)
+    return Number.isInteger(selected) && selected < upcoming[0]
+      ? [selected, ...upcoming]
+      : upcoming
+  }, [form.year])
 
   useEffect(() => {
     if (!id) return
@@ -150,14 +160,16 @@ export function GoalForm() {
 
   if (loadingGoal) {
     return (
-      <PageShell title={isEditing ? t('goals.title') : t('goals.title')}>
+      <PageShell title={isEditing ? t('goals.editTitle') : t('goals.newGoal')}>
         <p className="mt-6 text-muted">{t('common.loading')}</p>
       </PageShell>
     )
   }
 
   return (
-    <PageShell title={isEditing ? t('goals.title') : t('goals.title')}>
+    <PageShell title={isEditing ? t('goals.editTitle') : t('goals.newGoal')}>
+      {isEditing ? null : <GoalTypeTabs active="annual" />}
+
       <form onSubmit={handleSubmit} className="mt-6 max-w-2xl space-y-5">
         <div className="grid gap-5 sm:grid-cols-2">
           <div>

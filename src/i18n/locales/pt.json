@@ -124,7 +124,7 @@
   },
   "login": {
     "title": "Entrar",
-    "subtitle": "Plano anual de corridas: regista eventos, metas e resultados.",
+    "subtitle": "Plano anual de corridas: regista eventos, objetivos e resultados.",
     "google": "Entrar com Google",
     "emulator": "Entrar (emulador)",
     "emulatorHint": "Modo emulador, sem Google OAuth. Ver docs/emulators.md."
@@ -187,7 +187,8 @@
     "recovering": "A recuperar...",
     "recoverBucket": "🪣 Recuperar para bucket list",
     "paceUnit": "min/Km",
-    "locationMap": "Localização no mapa"
+    "locationMap": "Localização no mapa",
+    "noResultYet": "Sem resultado registado"
   },
   "eventMedia": {
     "title": "Memórias",
@@ -298,7 +299,8 @@
     "platform": "Plataforma",
     "previewTime": "Tempo a aplicar: {{time}}",
     "disclaimer": "A importação consulta sites de timing de terceiros; o uso pode estar sujeito aos termos de cada plataforma.",
-    "disclaimerLink": "Ler aviso completo"
+    "disclaimerLink": "Ler aviso completo",
+    "refresh": "Voltar a procurar"
   },
   "resultsForm": {
     "title": "Resultados",
@@ -349,30 +351,31 @@
   },
   "goals": {
     "title": "Objetivos",
-    "subtitle": "Metas anuais por tipo de evento. O progresso vem dos eventos Concluídos.",
-    "empty": "Ainda sem objetivos em {{year}}",
-    "emptyHint": "Define metas para a época.",
-    "performanceTitle": "Metas de performance",
-    "performanceSubtitle": "PR, ritmo e tempo. Progresso derivado dos resultados.",
-    "performanceEmpty": "Ainda sem metas de performance em {{year}}",
-    "performanceEmptyHint": "Define um PR, ritmo ou tempo alvo para a época.",
-    "readOnlyYear": "Metas de {{year}} são só leitura.",
-    "newPerformance": "➕ Nova meta",
+    "subtitle": "Objetivos anuais por tipo de evento. O progresso vem dos eventos Concluídos.",
+    "readOnlyYear": "Objetivos de {{year}} são só leitura.",
     "deleteGoalTitle": "Apagar objetivo",
     "deleteGoalMessage": "Tens a certeza que queres apagar {{name}}?",
-    "deletePerformanceTitle": "Apagar meta de performance",
+    "deletePerformanceTitle": "Apagar objetivo de performance",
     "goalDeleted": "\"{{name}}\" foi apagado.",
-    "performanceDeleted": "\"{{name}}\" foi apagada.",
-    "outcomeAchieved": "Meta batida!",
-    "outcomeExceeded": "Ultrapassada",
-    "outcomeCrushed": "Destruída 👊",
-    "outcomeFailed": "Falhada",
-    "performanceAchieved": "Meta batida!",
+    "performanceDeleted": "\"{{name}}\" foi apagado.",
+    "outcomeAchieved": "Cumprido!",
+    "outcomeExceeded": "Ultrapassado",
+    "outcomeCrushed": "Destruído 👊",
+    "outcomeFailed": "Falhado",
+    "performanceAchieved": "Cumprido!",
     "performanceInProgress": "Em progresso",
     "performanceNoData": "Sem dados",
-    "performanceFailed": "Falhada",
+    "performanceFailed": "Falhado",
     "countHint": "Conta eventos Concluídos deste tipo no ano",
-    "newGoal": "➕ Novo objetivo"
+    "newGoal": "Novo objetivo",
+    "pendingTitle": "A caminho",
+    "doneTitle": "Cumpridos",
+    "typeAnnual": "Anual",
+    "typePerformance": "Performance",
+    "allDone": "Tudo cumprido em {{year}}. Falta pôr a fasquia mais alta.",
+    "chooseType": "Tipo de objetivo",
+    "editTitle": "Editar objetivo",
+    "failedTitle": "Falhados"
   },
   "results": {
     "title": "Resultados",
@@ -510,7 +513,7 @@
     "exportSuccess": "Backup exportado com sucesso!",
     "exportError": "Não foi possível criar o backup.",
     "exportUnavailable": "O backup fica disponível quando tiveres eventos ou itens na bucket list.",
-    "exportIncludes": "Inclui eventos, objetivos, metas de performance, bucket list, fotos e vídeos, preferências e partilhas.",
+    "exportIncludes": "Inclui eventos, objetivos, objetivos de performance, bucket list, fotos e vídeos, preferências e partilhas.",
     "includeMediaFiles": "Incluir os ficheiros de fotos e vídeos",
     "includeMediaFilesHint": "Torna o backup muito maior, mas é o que permite recuperar as fotos e vídeos. Acima de {{max}} MB o backup fica só com os metadados.",
     "exportMediaTooLarge": "As tuas fotos e vídeos passam dos {{max}} MB, por isso o backup ficou só com os dados e os metadados.",
@@ -542,7 +545,7 @@
     "countEventMedia": "{{count}} metadados de fotos e vídeos",
     "countMediaFiles": "{{count}} ficheiros de fotos e vídeos ({{mb}} MB), serão recuperados",
     "countGoals": "{{count}} objetivos",
-    "countPerformanceGoals": "{{count}} metas de performance",
+    "countPerformanceGoals": "{{count}} objetivos de performance",
     "countBucketListItems": "{{count}} itens da bucket list",
     "countUserProfile": "Perfil: idioma, preferências de notificações e perfil de resultados",
     "countShares": "{{count}} partilhas (não restauráveis)",
@@ -591,7 +594,7 @@
       "events": "Eventos",
       "eventMedia": "Fotos e vídeos",
       "goals": "Objetivos",
-      "performanceGoals": "Metas de performance",
+      "performanceGoals": "Objetivos de performance",
       "bucketListItems": "Bucket list",
       "userProfile": "Perfil",
       "shares": "Partilhas"
@@ -607,7 +610,7 @@
       "invalid_results_field": "Dados de resultados inválidos",
       "invalid_target_count": "Objetivo inválido",
       "invalid_year": "Ano inválido",
-      "invalid_performance_goal": "Meta de performance inválida",
+      "invalid_performance_goal": "Objetivo de performance inválido",
       "invalid_disciplines": "Disciplinas inválidas",
       "invalid_media": "Metadados de foto ou vídeo inválidos",
       "unknown_event": "O evento associado não existe",
@@ -631,13 +634,13 @@
     "invalidYear": "Indica um ano válido.",
     "targetCountRange": "Indica um número entre 1 e {{max}}.",
     "invalidLink": "O link deve começar por http:// ou https://",
-    "invalidPerformanceGoalType": "Seleciona um tipo de meta válido.",
+    "invalidPerformanceGoalType": "Seleciona um tipo de objetivo válido.",
     "targetPaceRequired": "Indica o ritmo alvo.",
-    "targetPaceOnlyForPaceGoal": "Ritmo alvo só se aplica a metas de ritmo.",
+    "targetPaceOnlyForPaceGoal": "Ritmo alvo só se aplica a objetivos de ritmo.",
     "targetTimeRequired": "Indica o tempo alvo.",
-    "targetTimeOnlyForTimeGoal": "Tempo alvo só se aplica a metas de tempo.",
-    "prGoalNoTargetPace": "Metas de PR não têm ritmo alvo.",
-    "prGoalNoTargetTime": "Metas de PR não têm tempo alvo.",
+    "targetTimeOnlyForTimeGoal": "Tempo alvo só se aplica a objetivos de tempo.",
+    "prGoalNoTargetPace": "Objetivos de PR não têm ritmo alvo.",
+    "prGoalNoTargetTime": "Objetivos de PR não têm tempo alvo.",
     "invalidPaceFormat": "Ritmo inválido. Usa o formato mm:ss",
     "invalidTimeFormat": "Tempo inválido. Usa o formato hh:mm:ss"
   },
@@ -649,11 +652,11 @@
     "goalSaveError": "Não foi possível guardar o objetivo.",
     "goalDuplicate": "Já existe um objetivo deste tipo para o ano selecionado.",
     "goalTargetCountRange": "A quantidade alvo deve ser entre 1 e {{max}}.",
-    "performanceGoalNotFound": "Meta de performance não encontrada.",
-    "performanceGoalLoadError": "Não foi possível carregar a meta.",
-    "performanceGoalSaveError": "Não foi possível guardar a meta de performance.",
-    "performanceGoalDuplicate": "Já existe uma meta de performance deste tipo para o ano selecionado.",
-    "performanceGoalInvalidData": "Dados da meta de performance inválidos.",
+    "performanceGoalNotFound": "Objetivo de performance não encontrado.",
+    "performanceGoalLoadError": "Não foi possível carregar o objetivo.",
+    "performanceGoalSaveError": "Não foi possível guardar o objetivo de performance.",
+    "performanceGoalDuplicate": "Já existe um objetivo de performance deste tipo para o ano selecionado.",
+    "performanceGoalInvalidData": "Dados do objetivo de performance inválidos.",
     "bucketItemNotFound": "Item não encontrado.",
     "bucketItemLoadError": "Não foi possível carregar o item.",
     "eventSaveError": "Não foi possível guardar o evento.",
@@ -672,12 +675,12 @@
     "notesPlaceholder": "Ex: Foco nas meias maratonas da primavera"
   },
   "performanceGoalForm": {
-    "goalType": "Tipo de meta",
-    "readOnlyPast": "Metas de anos passados são para leitura.",
+    "goalType": "Tipo de objetivo",
+    "readOnlyPast": "Objetivos de anos passados são só leitura.",
     "targetPaceLegend": "Ritmo alvo (min/Km)",
     "targetTimeLegend": "Tempo alvo",
-    "paceAchievedHint": "Meta batida se o melhor ritmo do ano for ≤ alvo",
-    "prTargetHint": "Meta batida quando bateres o teu recorde pessoal histórico numa prova concluída em {{year}}.",
+    "paceAchievedHint": "Cumprido se o melhor ritmo do ano for ≤ alvo",
+    "prTargetHint": "Cumprido quando bateres o teu recorde pessoal histórico numa prova concluída em {{year}}.",
     "notesPlaceholder": "Ex: Sub-45 na meia de Lisboa"
   },
   "offline": {
@@ -735,7 +738,7 @@
     "bestInYearPace": "Melhor em {{year}}: {{pace}} min/Km (alvo ≤ {{target}})",
     "bestTimeAchieved": "Melhor tempo: {{time}} ≤ {{target}}",
     "bestInYearTime": "Melhor em {{year}}: {{time}} (alvo ≤ {{target}})",
-    "goalFailed": "Meta falhada"
+    "goalFailed": "Objetivo falhado"
   },
   "targetMonths": {
     "January": "Janeiro",
@@ -786,7 +789,7 @@
     "goalsTabsLabel": "Objetivos",
     "sharedGoalsBanner": "A ver objetivos de {{name}}",
     "sharedGoalsEmpty": "Sem objetivos partilhados para este ano.",
-    "sharedPerformanceGoalsEmpty": "Sem metas de performance partilhadas para este ano.",
+    "sharedPerformanceGoalsEmpty": "Sem objetivos de performance partilhados para este ano.",
     "resultsTabMine": "Meus",
     "resultsTabsLabel": "Resultados",
     "sharedResultsBanner": "A ver resultados de {{name}}",
@@ -817,7 +820,7 @@
       "bucketList": "Bucket list",
       "events": "Eventos",
       "goals": "Objetivos",
-      "performanceGoals": "Metas de performance"
+      "performanceGoals": "Objetivos de performance"
     },
     "permission": {
       "none": "Sem acesso",
@@ -958,10 +961,10 @@
         },
         "goals": {
           "title": "Sem objetivos partilhados neste ano.",
-          "hint": "{{name}} não partilhou metas para {{year}}. Privacidade também é treino mental."
+          "hint": "{{name}} não partilhou objetivos para {{year}}. Privacidade também é treino mental."
         },
         "performanceGoals": {
-          "title": "Sem metas de performance partilhadas.",
+          "title": "Sem objetivos de performance partilhados.",
           "hint": "Nada de PRs do {{name}} por aqui. Por agora."
         },
         "bucketList": {
@@ -980,10 +983,10 @@
         },
         "goals": {
           "title": "Ainda sem objetivos em {{year}}.",
-          "hint": "Define metas para a época, o asfalto não se queima sozinho."
+          "hint": "Define objetivos para a época, o asfalto não se queima sozinho."
         },
         "performanceGoals": {
-          "title": "Ainda sem metas de performance em {{year}}.",
+          "title": "Ainda sem objetivos de performance em {{year}}.",
           "hint": "Um PR, um ritmo, um tempo alvo. Escolhe o teu combate."
         },
         "bucketList": {
@@ -993,10 +996,7 @@
       }
     },
     "success": {
-      "import": "Dados importados! A tua época está na app. VAMOS!",
-      "goalAchieved": "Meta batida! Eu sabia que conseguias.",
-      "goalExceeded": "Ultrapassada. Sem palavras.",
-      "goalCrushed": "Destruída. O asfalto pede tréguas."
+      "import": "Dados importados! A tua época está na app. VAMOS!"
     }
   }
 }

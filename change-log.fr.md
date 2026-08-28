@@ -4,6 +4,14 @@
 
 ---
 
+## [1.22.0] - 2026-08-28
+
+### Modifié
+
+- **Le reste de l'app rejoint l'Accueil :** les objectifs se regroupent par état, les atteints en tête, les filtres et les sélecteurs de vue sont identiques sur toutes les pages, et la page d'un événement s'ouvre sur le nom de la course et son résultat.
+
+---
+
 ## [1.21.0] - 2026-08-28
 
 ### Modifié

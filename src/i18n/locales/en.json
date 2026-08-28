@@ -187,7 +187,8 @@
     "recovering": "Recovering...",
     "recoverBucket": "🪣 Recover to bucket list",
     "paceUnit": "min/km",
-    "locationMap": "Location on map"
+    "locationMap": "Location on map",
+    "noResultYet": "No result recorded yet"
   },
   "eventMedia": {
     "title": "Memories",
@@ -298,7 +299,8 @@
     "platform": "Platform",
     "previewTime": "Time to apply: {{time}}",
     "disclaimer": "Import queries third-party timing sites; use may be subject to each platform’s terms.",
-    "disclaimerLink": "Read full notice"
+    "disclaimerLink": "Read full notice",
+    "refresh": "Search again"
   },
   "resultsForm": {
     "title": "Results",
@@ -350,14 +352,7 @@
   "goals": {
     "title": "Goals",
     "subtitle": "Annual targets by event type. Progress comes from completed events.",
-    "empty": "No goals yet in {{year}}",
-    "emptyHint": "Set targets for the season.",
-    "performanceTitle": "Performance goals",
-    "performanceSubtitle": "PR, pace and time. Progress from your results.",
-    "performanceEmpty": "No performance goals yet in {{year}}",
-    "performanceEmptyHint": "Set a PR, pace or time target for the season.",
     "readOnlyYear": "{{year}} goals are read-only.",
-    "newPerformance": "➕ New goal",
     "deleteGoalTitle": "Delete goal",
     "deleteGoalMessage": "Are you sure you want to delete {{name}}?",
     "deletePerformanceTitle": "Delete performance goal",
@@ -372,7 +367,15 @@
     "performanceNoData": "No data",
     "performanceFailed": "Failed",
     "countHint": "Counts completed events of this type in the year",
-    "newGoal": "➕ New goal"
+    "newGoal": "New goal",
+    "pendingTitle": "On the way",
+    "doneTitle": "Done",
+    "typeAnnual": "Annual",
+    "typePerformance": "Performance",
+    "allDone": "All done in {{year}}. Time to raise the bar.",
+    "chooseType": "Goal type",
+    "editTitle": "Edit goal",
+    "failedTitle": "Missed"
   },
   "results": {
     "title": "Results",
@@ -993,10 +996,7 @@
       }
     },
     "success": {
-      "import": "Data imported! Your season is in the app. LET'S GO!",
-      "goalAchieved": "Goal crushed! You knew you had it.",
-      "goalExceeded": "Exceeded. I am speechless.",
-      "goalCrushed": "Destroyed. The asphalt asks for mercy."
+      "import": "Data imported! Your season is in the app. LET'S GO!"
     }
   }
 }

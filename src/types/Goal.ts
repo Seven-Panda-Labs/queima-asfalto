@@ -62,8 +62,4 @@ export function formatGoalLabel(goal: Pick<Goal, 'targetCount' | 'eventType'>): 
   return `${goal.targetCount}x ${formatEventTypeLabel(goal.eventType)}`
 }
 
-export {
-  formatEventTypeLabel,
-  formatGoalOutcomeLabel,
-  formatGoalOutcomeShortLabel,
-} from '../i18n/formatters'
+export { formatEventTypeLabel, formatGoalOutcomeShortLabel } from '../i18n/formatters'

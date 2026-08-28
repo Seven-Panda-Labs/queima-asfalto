@@ -1,1 +1,0 @@
-export { PerformanceGoalCard } from './PerformanceGoalCard'
