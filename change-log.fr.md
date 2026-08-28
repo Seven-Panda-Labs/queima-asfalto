@@ -13,6 +13,7 @@
 ### Corrigé
 
 - **Repère de record personnel :** le libellé « Record personnel » était figé en portugais et s'affichait ainsi dans toutes les langues. Il est désormais traduit.
+- **Accueil :** un échec de chargement des objectifs affichait le message interne du moteur de règles Firestore. Un avis traduit s'affiche désormais, le détail technique partant dans la console.
 
 ---
 

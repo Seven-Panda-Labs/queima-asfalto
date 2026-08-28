@@ -13,6 +13,7 @@
 ### Fixed
 
 - **Personal-record marker:** the “Personal record” label was hardcoded in Portuguese and showed up that way in every language. It is now translated.
+- **Home:** a failure loading goals showed the raw Firestore rules-engine message. It now shows a translated notice, with the technical detail going to the console.
 
 ---
 

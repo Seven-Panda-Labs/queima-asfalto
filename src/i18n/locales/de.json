@@ -154,7 +154,8 @@
     "allTargetsDone": "Alles erledigt. Zeit, die Latte höher zu legen.",
     "viewAllGoals": "Alle anzeigen",
     "noGoals": "Noch keine Ziele in {{year}}",
-    "createGoal": "Ziel erstellen"
+    "createGoal": "Ziel erstellen",
+    "goalsLoadError": "Deine Ziele konnten nicht geladen werden."
   },
   "events": {
     "title": "Events",

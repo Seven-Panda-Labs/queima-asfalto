@@ -154,7 +154,8 @@
     "allTargetsDone": "Tout est fait. Il est temps de relever la barre.",
     "viewAllGoals": "Tout voir",
     "noGoals": "Aucun objectif pour l'instant en {{year}}",
-    "createGoal": "Créer un objectif"
+    "createGoal": "Créer un objectif",
+    "goalsLoadError": "Impossible de charger tes objectifs."
   },
   "events": {
     "title": "Événements",

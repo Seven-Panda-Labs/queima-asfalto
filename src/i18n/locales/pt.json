@@ -154,7 +154,8 @@
     "allTargetsDone": "Tudo cumprido. Falta pôr a fasquia mais alta.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Ainda sem objetivos em {{year}}",
-    "createGoal": "Criar objetivo"
+    "createGoal": "Criar objetivo",
+    "goalsLoadError": "Não foi possível carregar os teus objetivos."
   },
   "events": {
     "title": "Eventos",

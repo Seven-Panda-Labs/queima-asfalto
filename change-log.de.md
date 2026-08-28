@@ -13,6 +13,7 @@
 ### Behoben
 
 - **Kennzeichnung für persönliche Rekorde:** Die Beschriftung „Persönlicher Rekord“ war fest auf Portugiesisch gesetzt und erschien in allen Sprachen so. Sie wird jetzt übersetzt.
+- **Start:** Schlug das Laden der Ziele fehl, erschien die interne Meldung der Firestore-Regel-Engine. Jetzt erscheint ein übersetzter Hinweis, während das technische Detail in die Konsole geht.
 
 ---
 

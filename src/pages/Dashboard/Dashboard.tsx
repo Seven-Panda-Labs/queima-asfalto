@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AchievementShelf } from '../../components/AchievementShelf'
@@ -44,6 +45,12 @@ export function Dashboard() {
   const goalsPending = goalsLoading || performanceLoading
   const goalsFailure = goalsError ?? performanceError
 
+  // O que a Firestore devolve é do motor de regras — «evaluation error at
+  // L323:22 for 'list'» e afins. Serve para depurar, não para ler no ecrã.
+  useEffect(() => {
+    if (goalsFailure) console.error('Dashboard: goals query failed —', goalsFailure)
+  }, [goalsFailure])
+
   const greeting = !user?.displayName
     ? t('dashboard.greeting')
     : (() => {
@@ -83,7 +90,9 @@ export function Dashboard() {
         />
       </section>
 
-      {goalsFailure ? <p className="mt-6 text-sm text-danger">{goalsFailure}</p> : null}
+      {goalsFailure ? (
+        <p className="mt-6 text-sm text-danger">{t('dashboard.goalsLoadError')}</p>
+      ) : null}
 
       <section className="mt-8">
         {goalsPending ? (

@@ -154,7 +154,8 @@
     "allTargetsDone": "كل شيء مكتمل. حان وقت رفع السقف.",
     "viewAllGoals": "عرض الكل",
     "noGoals": "لا توجد أهداف بعد في {{year}}",
-    "createGoal": "إنشاء هدف"
+    "createGoal": "إنشاء هدف",
+    "goalsLoadError": "تعذّر تحميل أهدافك."
   },
   "events": {
     "title": "الفعاليات",

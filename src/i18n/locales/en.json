@@ -154,7 +154,8 @@
     "allTargetsDone": "All done. Time to raise the bar.",
     "viewAllGoals": "View all",
     "noGoals": "No goals yet in {{year}}",
-    "createGoal": "Create goal"
+    "createGoal": "Create goal",
+    "goalsLoadError": "Could not load your goals."
   },
   "events": {
     "title": "Events",

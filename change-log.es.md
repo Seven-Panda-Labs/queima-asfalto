@@ -13,6 +13,7 @@
 ### Corregido
 
 - **Marcador de récord personal:** la etiqueta «Récord personal» estaba fijada en portugués y aparecía así en todos los idiomas. Ahora se traduce.
+- **Inicio:** un fallo al cargar los objetivos mostraba el mensaje interno del motor de reglas de Firestore. Ahora muestra un aviso traducido, con el detalle técnico yendo a la consola.
 
 ---
 

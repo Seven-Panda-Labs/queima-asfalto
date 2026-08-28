@@ -154,7 +154,8 @@
     "allTargetsDone": "Todo cumplido. Toca subir el listón.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Aún no hay objetivos en {{year}}",
-    "createGoal": "Crear objetivo"
+    "createGoal": "Crear objetivo",
+    "goalsLoadError": "No se han podido cargar tus objetivos."
   },
   "events": {
     "title": "Eventos",
