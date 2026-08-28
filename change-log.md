@@ -4,6 +4,18 @@
 
 ---
 
+## [1.21.0] — 2026-08-28
+
+### Alterado
+
+- **Início repensado:** o painel deixou de ser uma pilha de blocos iguais. O próximo evento passou a herói ilustrado com a contagem decrescente em destaque, os números do ano juntaram-se numa faixa única (agora com os quilómetros percorridos), os objetivos cumpridos e os recordes pessoais ganharam uma banda de **Conquistas** própria que cresce sem limite, e em **A caminho** ficam só os objetivos mais perto da meta.
+
+### Corrigido
+
+- **Marcador de recorde pessoal:** o rótulo «Recorde pessoal» estava fixo em português e aparecia assim em todos os idiomas. Passou a ser traduzido.
+
+---
+
 ## [1.20.0] — 2026-08-25
 
 ### Adicionado

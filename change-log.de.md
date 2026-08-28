@@ -4,6 +4,18 @@
 
 ---
 
+## [1.21.0] — 2026-08-28
+
+### Geändert
+
+- **Start neu gedacht:** Das Dashboard ist keine Ansammlung gleicher Blöcke mehr. Das nächste Event ist jetzt ein illustrierter Hero mit dem Countdown im Vordergrund, die Zahlen des Jahres stehen in einer einzigen Leiste (neu: gelaufene Kilometer), erreichte Ziele und persönliche Rekorde bekommen ein eigenes **Erfolge**-Band, das beliebig viele aufnimmt, und unter **Unterwegs** stehen nur die Ziele, die dem Abschluss am nächsten sind.
+
+### Behoben
+
+- **Kennzeichnung für persönliche Rekorde:** Die Beschriftung „Persönlicher Rekord“ war fest auf Portugiesisch gesetzt und erschien in allen Sprachen so. Sie wird jetzt übersetzt.
+
+---
+
 ## [1.20.0] — 2026-08-25
 
 ### Hinzugefügt

@@ -4,6 +4,18 @@
 
 ---
 
+## [1.21.0] — 2026-08-28
+
+### Cambiado
+
+- **Inicio repensado:** el panel ha dejado de ser una pila de bloques iguales. El próximo evento es ahora un héroe ilustrado con la cuenta atrás en primer plano, las cifras del año se agrupan en una única franja (ahora con los kilómetros recorridos), los objetivos cumplidos y los récords personales tienen su propia banda de **Logros** que crece sin límite, y en **En camino** solo aparecen los objetivos más cerca de la meta.
+
+### Corregido
+
+- **Marcador de récord personal:** la etiqueta «Récord personal» estaba fijada en portugués y aparecía así en todos los idiomas. Ahora se traduce.
+
+---
+
 ## [1.20.0] — 2026-08-25
 
 ### Añadido

@@ -4,6 +4,18 @@
 
 ---
 
+## [1.21.0] — 2026-08-28
+
+### Changed
+
+- **Home rethought:** the dashboard is no longer a stack of identical blocks. The next event is now an illustrated hero with the countdown up front, the year's numbers sit in a single strip (with kilometres covered added), fulfilled goals and personal records get their own **Achievements** band that scales to any number, and **On the way** shows only the goals closest to done.
+
+### Fixed
+
+- **Personal-record marker:** the “Personal record” label was hardcoded in Portuguese and showed up that way in every language. It is now translated.
+
+---
+
 ## [1.20.0] — 2026-08-25
 
 ### Added

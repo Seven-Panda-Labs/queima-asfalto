@@ -5,6 +5,8 @@ export type DashboardStats = {
   completedCount: number
   missedCount: number
   averagePace: string | null
+  /** Soma da distância real das provas concluídas no ano, arredondada à décima. */
+  completedDistanceKm: number
 }
 
 const PACE_PATTERN = /^(\d{1,2}):(\d{2})$/
@@ -49,10 +51,16 @@ export function computeDashboardStats(events: Event[], year: number): DashboardS
     averagePace = formatPaceFromSeconds(averageSeconds)
   }
 
+  const distanceSum = completed.reduce(
+    (sum, event) => sum + (Number.isFinite(event.realDistance) ? event.realDistance : 0),
+    0,
+  )
+
   return {
     totalEvents: yearEvents.length,
     completedCount: completed.length,
     missedCount: missed.length,
     averagePace,
+    completedDistanceKm: Math.round(distanceSum * 10) / 10,
   }
 }

@@ -4,6 +4,18 @@
 
 ---
 
+## [1.21.0] — 2026-08-28
+
+### Modifié
+
+- **Accueil repensé :** le tableau de bord n'est plus une pile de blocs identiques. Le prochain événement devient un héros illustré avec le compte à rebours en avant, les chiffres de l'année tiennent dans une seule bande (avec les kilomètres parcourus en plus), les objectifs atteints et les records personnels ont leur propre bandeau **Réussites** qui accueille n'importe quel nombre, et **En route** n'affiche que les objectifs les plus proches du but.
+
+### Corrigé
+
+- **Repère de record personnel :** le libellé « Record personnel » était figé en portugais et s'affichait ainsi dans toutes les langues. Il est désormais traduit.
+
+---
+
 ## [1.20.0] — 2026-08-25
 
 ### Ajouté
