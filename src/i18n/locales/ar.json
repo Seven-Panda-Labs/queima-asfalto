@@ -137,6 +137,7 @@
   },
   "dashboard": {
     "nextEvent": "الفعالية التالية",
+    "noUpcomingTitle": "الأسفلت في انتظارك.",
     "noUpcoming": "لا توجد فعاليات قادمة مخطَّطة أو مؤكَّدة.",
     "daysUntilToday": "اليوم",
     "daysUntilTomorrow": "غدًا",

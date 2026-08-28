@@ -137,6 +137,7 @@
   },
   "dashboard": {
     "nextEvent": "Nächstes Event",
+    "noUpcomingTitle": "Der Asphalt wartet.",
     "noUpcoming": "Keine geplanten oder bestätigten Events in Sicht.",
     "daysUntilToday": "Heute",
     "daysUntilTomorrow": "Morgen",

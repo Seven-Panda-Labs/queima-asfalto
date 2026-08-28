@@ -137,6 +137,7 @@
   },
   "dashboard": {
     "nextEvent": "Prochain événement",
+    "noUpcomingTitle": "L'asphalte t'attend.",
     "noUpcoming": "Aucun événement prévu ou confirmé à venir.",
     "daysUntilToday": "Aujourd'hui",
     "daysUntilTomorrow": "Demain",

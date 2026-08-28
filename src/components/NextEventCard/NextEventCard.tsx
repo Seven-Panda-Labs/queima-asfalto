@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
+import corredorMontanha from '../../../assets/empty-hero.webp'
 import texturaAsfalto from '../../../assets/textura-asfalto.svg'
 import type { Event } from '../../types/Event'
 import { formatEventStatusLabel } from '../../i18n/formatters'
@@ -44,30 +45,61 @@ function Hero({ emoji, children }: { emoji: string; children: ReactNode }) {
   )
 }
 
+/**
+ * Sem próximo evento não há contagem decrescente para mostrar, por isso o
+ * espaço vai todo para a ilustração e para o convite a marcar o próximo.
+ * A ilustração fica numa coluna em vez de fundo inteiro: cortada à largura
+ * do herói, o corredor perderia sempre a cabeça.
+ */
+function EmptyHero() {
+  const { t } = useTranslation()
+
+  return (
+    <div className="overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-hover text-white shadow-lg">
+      <div className="flex flex-col sm:h-64 sm:flex-row">
+        <div className="order-2 flex flex-1 flex-col justify-center p-6 sm:order-1 sm:p-8">
+          <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
+            {t('dashboard.nextEvent')}
+          </p>
+          <p className="mt-0.5 font-display text-4xl leading-tight tracking-wide">
+            {t('dashboard.noUpcomingTitle')}
+          </p>
+          <p className="mt-2 text-sm text-white/75">{t('dashboard.noUpcoming')}</p>
+          <Link
+            to="/eventos/novo"
+            className="mt-5 self-start rounded-full bg-white px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-white/90"
+          >
+            {t('common.add')}
+          </Link>
+        </div>
+
+        <div className="relative order-1 h-44 sm:order-2 sm:h-auto sm:w-[46%]">
+          <img
+            src={corredorMontanha}
+            alt=""
+            aria-hidden
+            className="h-full w-full object-cover"
+          />
+          {/* Esbate a costura com o gradiente do cartão: em baixo no telemóvel, ao lado no ecrã largo. */}
+          <div
+            className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-primary to-transparent sm:hidden"
+            aria-hidden
+          />
+          <div
+            className="absolute inset-y-0 start-0 hidden w-1/2 bg-gradient-to-r from-primary to-transparent sm:block rtl:bg-gradient-to-l"
+            aria-hidden
+          />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export function NextEventCard({ event }: NextEventCardProps) {
   const { t } = useTranslation()
   const today = new Date()
 
-  if (!event) {
-    return (
-      <Hero emoji="👟">
-        <div className="min-w-0 flex-1">
-          <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
-            {t('dashboard.nextEvent')}
-          </p>
-          <p className="mt-1 font-display text-3xl tracking-wide sm:text-4xl">
-            {t('dashboard.noUpcoming')}
-          </p>
-        </div>
-        <Link
-          to="/eventos/novo"
-          className="shrink-0 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-primary transition hover:bg-white/90"
-        >
-          {t('common.add')}
-        </Link>
-      </Hero>
-    )
-  }
+  if (!event) return <EmptyHero />
 
   const countdown = formatDaysUntil(event.date, today, {
     today: t('dashboard.daysUntilToday'),
