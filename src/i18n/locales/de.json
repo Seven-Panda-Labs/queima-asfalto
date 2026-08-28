@@ -21,6 +21,7 @@
     "date": "Datum",
     "time": "Zeit",
     "pace": "Tempo",
+    "paceUnit": "min/Km",
     "classification": "Platzierung",
     "personalRecord": "Persönliche Bestzeit",
     "type": "Typ",

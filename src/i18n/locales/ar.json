@@ -21,6 +21,7 @@
     "date": "التاريخ",
     "time": "الوقت",
     "pace": "الإيقاع",
+    "paceUnit": "د/كم",
     "classification": "الترتيب",
     "personalRecord": "رقم شخصي قياسي",
     "type": "النوع",

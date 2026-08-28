@@ -5,9 +5,9 @@ import type { BestPerformance } from '../../utils/bestPerformances'
 import { formatDatePt } from '../../utils/date'
 
 /**
- * Recordes de sempre. Repete a gramática da faixa do ano de propósito — são
- * duas leituras dos mesmos treinos — mas leva título próprio, porque misturar
- * marcas absolutas com números do ano corrente confunde as duas escalas.
+ * Recordes pessoais. Repete a gramática da faixa do ano — número grande com
+ * rótulo pequeno — mas fecha a página, longe dos números de 2026, para não
+ * misturar marcas de sempre com o que se fez este ano.
  */
 export function RecordStrip({ records }: { records: BestPerformance[] }) {
   const { t } = useTranslation()
@@ -34,21 +34,40 @@ export function RecordStrip({ records }: { records: BestPerformance[] }) {
                 {record.label}
               </p>
             </div>
-            <p className="mt-1 font-display text-3xl leading-none tracking-wide text-foreground">
-              {record.time}
-            </p>
-            <p className="mt-1 truncate text-xs text-muted">
-              {record.pace} min/Km ·{' '}
-              <Link
-                to={`/eventos/${record.eventId}`}
-                className="underline-offset-2 hover:text-primary hover:underline"
-              >
-                {record.eventName}
-              </Link>
-            </p>
-            <p className="text-xs text-muted">
-              {formatDatePt(record.date)} · {record.recordAge}
-            </p>
+
+            {/* Tempo e ritmo valem o mesmo: mesmo tamanho, lado a lado. */}
+            <div className="mt-2 flex gap-5">
+              <div>
+                <p className="font-display text-2xl leading-none tracking-wide text-foreground">
+                  {record.time}
+                </p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-muted">
+                  {t('common.time')}
+                </p>
+              </div>
+              <div>
+                <p className="font-display text-2xl leading-none tracking-wide text-foreground">
+                  {record.pace}
+                </p>
+                <p className="mt-1 text-xs font-semibold uppercase tracking-wider text-muted">
+                  {t('common.paceUnit')}
+                </p>
+              </div>
+            </div>
+
+            <div className="mt-3">
+              <p className="truncate text-xs text-muted">
+                <Link
+                  to={`/eventos/${record.eventId}`}
+                  className="underline-offset-2 hover:text-primary hover:underline"
+                >
+                  {record.eventName}
+                </Link>
+              </p>
+              <p className="text-xs text-muted">
+                {formatDatePt(record.date)} · {record.recordAge}
+              </p>
+            </div>
           </div>
         ))}
       </div>

@@ -21,6 +21,7 @@
     "date": "Data",
     "time": "Tempo",
     "pace": "Ritmo",
+    "paceUnit": "min/Km",
     "classification": "Classificação",
     "personalRecord": "Recorde pessoal",
     "type": "Tipo",

@@ -21,6 +21,7 @@
     "date": "Date",
     "time": "Temps",
     "pace": "Allure",
+    "paceUnit": "min/Km",
     "classification": "Classement",
     "personalRecord": "Record personnel",
     "type": "Type",
