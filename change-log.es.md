@@ -8,12 +8,7 @@
 
 ### Cambiado
 
-- **Inicio repensado:** el panel ha dejado de ser una pila de bloques iguales. El próximo evento es ahora un héroe ilustrado con la cuenta atrás en primer plano, las cifras del año se agrupan en una única franja (ahora con los kilómetros recorridos), los objetivos cumplidos tienen su propia banda de **Logros** que crece sin límite, en **En camino** solo aparecen los objetivos más cerca de la meta, y las **Marcas personales** cierran la página con el ritmo, la carrera y la antigüedad de cada marca.
-
-### Corregido
-
-- **Marcador de récord personal:** la etiqueta «Récord personal» estaba fijada en portugués y aparecía así en todos los idiomas. Ahora se traduce.
-- **Inicio:** un fallo al cargar los objetivos mostraba el mensaje interno del motor de reglas de Firestore. Ahora muestra un aviso traducido, con el detalle técnico yendo a la consola.
+- **Inicio rediseñado:** el próximo evento destacado con su cuenta atrás, las cifras del año en una única franja —ahora con los kilómetros recorridos— y un lugar propio para logros, objetivos pendientes y marcas personales.
 
 ---
 

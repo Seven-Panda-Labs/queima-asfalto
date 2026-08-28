@@ -8,12 +8,7 @@
 
 ### Alterado
 
-- **Início repensado:** o painel deixou de ser uma pilha de blocos iguais. O próximo evento passou a herói ilustrado com a contagem decrescente em destaque, os números do ano juntaram-se numa faixa única (agora com os quilómetros percorridos), os objetivos cumpridos ganharam uma banda de **Conquistas** própria que cresce sem limite, em **A caminho** ficam só os objetivos mais perto da meta, e os **Recordes pessoais** fecham a página com o ritmo, a prova e a antiguidade de cada marca.
-
-### Corrigido
-
-- **Marcador de recorde pessoal:** o rótulo «Recorde pessoal» estava fixo em português e aparecia assim em todos os idiomas. Passou a ser traduzido.
-- **Início:** uma falha a carregar os objetivos mostrava a mensagem interna do motor de regras do Firestore. Passa a mostrar um aviso traduzido, com o detalhe técnico a ir para a consola.
+- **Início redesenhado:** o próximo evento em destaque com a contagem decrescente, os números do ano numa faixa única — agora com os quilómetros percorridos — e lugar próprio para conquistas, objetivos por cumprir e recordes pessoais.
 
 ---
 

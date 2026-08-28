@@ -8,12 +8,7 @@
 
 ### Geändert
 
-- **Start neu gedacht:** Das Dashboard ist keine Ansammlung gleicher Blöcke mehr. Das nächste Event ist jetzt ein illustrierter Hero mit dem Countdown im Vordergrund, die Zahlen des Jahres stehen in einer einzigen Leiste (neu: gelaufene Kilometer), erreichte Ziele bekommen ein eigenes **Erfolge**-Band, das beliebig viele aufnimmt, unter **Unterwegs** stehen nur die Ziele, die dem Abschluss am nächsten sind, und die **Persönlichen Bestzeiten** schließen die Seite mit Tempo, Rennen und Alter jeder Marke ab.
-
-### Behoben
-
-- **Kennzeichnung für persönliche Rekorde:** Die Beschriftung „Persönlicher Rekord“ war fest auf Portugiesisch gesetzt und erschien in allen Sprachen so. Sie wird jetzt übersetzt.
-- **Start:** Schlug das Laden der Ziele fehl, erschien die interne Meldung der Firestore-Regel-Engine. Jetzt erscheint ein übersetzter Hinweis, während das technische Detail in die Konsole geht.
+- **Start neu gestaltet:** das nächste Event mit Countdown im Vordergrund, die Zahlen des Jahres in einer einzigen Leiste – jetzt mit gelaufenen Kilometern – und ein eigener Platz für Erfolge, offene Ziele und persönliche Bestzeiten.
 
 ---
 

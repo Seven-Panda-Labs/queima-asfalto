@@ -8,12 +8,7 @@
 
 ### Modifié
 
-- **Accueil repensé :** le tableau de bord n'est plus une pile de blocs identiques. Le prochain événement devient un héros illustré avec le compte à rebours en avant, les chiffres de l'année tiennent dans une seule bande (avec les kilomètres parcourus en plus), les objectifs atteints ont leur propre bandeau **Réussites** qui accueille n'importe quel nombre, **En route** n'affiche que les objectifs les plus proches du but, et les **Records personnels** referment la page avec l'allure, la course et l'ancienneté de chaque marque.
-
-### Corrigé
-
-- **Repère de record personnel :** le libellé « Record personnel » était figé en portugais et s'affichait ainsi dans toutes les langues. Il est désormais traduit.
-- **Accueil :** un échec de chargement des objectifs affichait le message interne du moteur de règles Firestore. Un avis traduit s'affiche désormais, le détail technique partant dans la console.
+- **Accueil redessiné :** le prochain événement en avant avec son compte à rebours, les chiffres de l'année dans une seule bande — désormais avec les kilomètres parcourus — et une place à part pour les réussites, les objectifs en cours et les records personnels.
 
 ---
 

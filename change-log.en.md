@@ -8,12 +8,7 @@
 
 ### Changed
 
-- **Home rethought:** the dashboard is no longer a stack of identical blocks. The next event is now an illustrated hero with the countdown up front, the year's numbers sit in a single strip (with kilometres covered added), fulfilled goals get their own **Achievements** band that scales to any number, **On the way** shows only the goals closest to done, and **Personal bests** close the page with each mark's pace, race and age.
-
-### Fixed
-
-- **Personal-record marker:** the “Personal record” label was hardcoded in Portuguese and showed up that way in every language. It is now translated.
-- **Home:** a failure loading goals showed the raw Firestore rules-engine message. It now shows a translated notice, with the technical detail going to the console.
+- **Home redesigned:** the next event up front with its countdown, the year's numbers in a single strip — now including kilometres covered — and a place of its own for achievements, goals still open, and personal bests.
 
 ---
 
