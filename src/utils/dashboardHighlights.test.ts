@@ -72,7 +72,7 @@ describe('computeDashboardHighlights', () => {
     )
 
     expect(highlights.achievements.map((item) => item.id)).toEqual(['goal-done'])
-    expect(highlights.achievements[0].detail).toBe('8/5')
+    expect(highlights.achievements[0].detail).toBe(i18n.t('goals.outcomeCrushed'))
     expect(highlights.targets.map((item) => item.id)).toEqual(['goal-going'])
     expect(highlights.targets[0].progressText).toBe('2/3')
     expect(highlights.targets[0].percent).toBe(67)
@@ -123,23 +123,27 @@ describe('computeDashboardHighlights', () => {
     expect(highlights.targets).toEqual([])
   })
 
-  it('picks the voice line of the most impressive outcome', () => {
+  it('labels each fulfilled goal with its own outcome', () => {
     const highlights = computeDashboardHighlights(
       [
-        makeGoal({ id: 'a', outcome: 'achieved' }),
-        makeGoal({ id: 'b', eventType: 'km_10', outcome: 'crushed' }),
+        makeGoal({ id: 'a', outcome: 'achieved', currentCount: 5, targetCount: 5 }),
+        makeGoal({ id: 'b', eventType: 'km_10', outcome: 'crushed', currentCount: 8, targetCount: 5 }),
       ],
       [],
       [],
     )
 
-    expect(highlights.voiceLine).toBe(i18n.t('voice.success.goalCrushed'))
+    expect(highlights.achievements.map((item) => item.detail)).toEqual([
+      i18n.t('goals.outcomeAchieved'),
+      i18n.t('goals.outcomeCrushed'),
+    ])
   })
 
-  it('has no voice line when nothing was achieved', () => {
+  it('has no achievements while nothing is fulfilled', () => {
     const highlights = computeDashboardHighlights([makeGoal()], [], [])
 
-    expect(highlights.voiceLine).toBeNull()
     expect(highlights.achievements).toEqual([])
+    expect(highlights.targets).toHaveLength(1)
   })
+
 })

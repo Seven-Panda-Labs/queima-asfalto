@@ -1,5 +1,5 @@
 import type { GoalOutcome, GoalWithProgress } from '../types/Goal'
-import { formatGoalLabel, formatGoalOutcomeLabel } from '../types/Goal'
+import { formatGoalLabel, formatGoalOutcomeShortLabel } from '../types/Goal'
 import type { PerformanceGoalWithProgress } from '../types/PerformanceGoal'
 import { formatPerformanceGoalLabel } from '../types/PerformanceGoal'
 import type { BestPerformance } from './bestPerformances'
@@ -12,7 +12,7 @@ export type DashboardAchievement = {
   /** Ausente nos recordes, que usam a ilustração da medalha. */
   emoji?: string
   title: string
-  /** O número da conquista: contagem, tempo ou estado. */
+  /** O desfecho ou o tempo — o que se ganhou, não quanto. */
   detail: string
 }
 
@@ -32,35 +32,15 @@ export type DashboardTarget = {
 export type DashboardHighlights = {
   achievements: DashboardAchievement[]
   targets: DashboardTarget[]
-  /** Frase da marca para a conquista mais impressionante do ano, se houver. */
-  voiceLine: string | null
 }
 
 const ACHIEVED_OUTCOMES: GoalOutcome[] = ['achieved', 'exceeded', 'crushed']
-
-/** Do mais impressionante para o menos, para escolher a frase da marca. */
-const OUTCOME_RANK: Record<GoalOutcome, number> = {
-  crushed: 3,
-  exceeded: 2,
-  achieved: 1,
-  in_progress: 0,
-  failed: 0,
-}
 
 function byPercentDescending(a: DashboardTarget, b: DashboardTarget): number {
   if (b.percent !== a.percent) return b.percent - a.percent
   return a.title.localeCompare(b.title)
 }
 
-function pickVoiceLine(goals: GoalWithProgress[]): string | null {
-  const best = goals.reduce<GoalWithProgress | null>((current, goal) => {
-    if (OUTCOME_RANK[goal.outcome] === 0) return current
-    if (!current || OUTCOME_RANK[goal.outcome] > OUTCOME_RANK[current.outcome]) return goal
-    return current
-  }, null)
-
-  return best ? formatGoalOutcomeLabel(best.outcome) : null
-}
 
 export function computeDashboardHighlights(
   goals: GoalWithProgress[],
@@ -77,7 +57,7 @@ export function computeDashboardHighlights(
         tone: 'goal',
         emoji: goal.emoji ?? '🏅',
         title: formatGoalLabel(goal),
-        detail: `${goal.currentCount}/${goal.targetCount}`,
+        detail: formatGoalOutcomeShortLabel(goal.outcome),
       })
       continue
     }
@@ -124,5 +104,5 @@ export function computeDashboardHighlights(
 
   targets.sort(byPercentDescending)
 
-  return { achievements, targets, voiceLine: pickVoiceLine(goals) }
+  return { achievements, targets }
 }

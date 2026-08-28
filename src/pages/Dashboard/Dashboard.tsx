@@ -102,7 +102,6 @@ export function Dashboard() {
             title={t('dashboard.achievements', { year: currentYear })}
             emptyText={t('dashboard.achievementsEmpty', { year: currentYear })}
             achievements={highlights.achievements}
-            voiceLine={highlights.voiceLine}
           />
         )}
       </section>

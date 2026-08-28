@@ -38,19 +38,13 @@ type AchievementShelfProps = {
   title: string
   emptyText: string
   achievements: DashboardAchievement[]
-  voiceLine: string | null
 }
 
 /**
  * Banda das conquistas. Tem fundo e moldura próprios para não ser mais um
  * cartão branco, e usa chips para escalar para qualquer número de conquistas.
  */
-export function AchievementShelf({
-  title,
-  emptyText,
-  achievements,
-  voiceLine,
-}: AchievementShelfProps) {
+export function AchievementShelf({ title, emptyText, achievements }: AchievementShelfProps) {
   return (
     <section className="relative overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/15 via-surface to-primary/10 p-5 sm:p-6">
       <img
@@ -62,9 +56,6 @@ export function AchievementShelf({
 
       <div className="relative">
         <h2 className="font-display text-2xl tracking-wide text-foreground">{title}</h2>
-        {achievements.length > 0 && voiceLine ? (
-          <p className="mt-1 text-sm font-semibold text-accent">{voiceLine}</p>
-        ) : null}
 
         {achievements.length === 0 ? (
           <p className="mt-2 max-w-md text-sm text-muted">{emptyText}</p>
