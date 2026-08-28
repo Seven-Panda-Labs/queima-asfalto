@@ -147,6 +147,8 @@
     "kilometresInYear": "Km em {{year}}",
     "completedEvents": "Eventos concluídos",
     "averagePace": "Ritmo médio (min/Km)",
+    "personalBests": "Recordes pessoais",
+    "viewResults": "Ver resultados",
     "achievements": "Conquistas {{year}}",
     "achievementsEmpty": "Ainda sem conquistas em {{year}}. Cumpre um objetivo ou bate um recorde e aparece aqui.",
     "inProgress": "A caminho",

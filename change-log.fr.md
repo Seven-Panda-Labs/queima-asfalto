@@ -8,7 +8,7 @@
 
 ### Modifié
 
-- **Accueil repensé :** le tableau de bord n'est plus une pile de blocs identiques. Le prochain événement devient un héros illustré avec le compte à rebours en avant, les chiffres de l'année tiennent dans une seule bande (avec les kilomètres parcourus en plus), les objectifs atteints et les records personnels ont leur propre bandeau **Réussites** qui accueille n'importe quel nombre, et **En route** n'affiche que les objectifs les plus proches du but.
+- **Accueil repensé :** le tableau de bord n'est plus une pile de blocs identiques. Le prochain événement devient un héros illustré avec le compte à rebours en avant, les chiffres de l'année tiennent dans une seule bande (avec les kilomètres parcourus en plus), les objectifs atteints ont leur propre bandeau **Réussites** qui accueille n'importe quel nombre, **En route** n'affiche que les objectifs les plus proches du but, et les **Records personnels** referment la page avec l'allure, la course et l'ancienneté de chaque marque.
 
 ### Corrigé
 

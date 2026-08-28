@@ -8,7 +8,7 @@
 
 ### Alterado
 
-- **Início repensado:** o painel deixou de ser uma pilha de blocos iguais. O próximo evento passou a herói ilustrado com a contagem decrescente em destaque, os números do ano juntaram-se numa faixa única (agora com os quilómetros percorridos), os objetivos cumpridos e os recordes pessoais ganharam uma banda de **Conquistas** própria que cresce sem limite, e em **A caminho** ficam só os objetivos mais perto da meta.
+- **Início repensado:** o painel deixou de ser uma pilha de blocos iguais. O próximo evento passou a herói ilustrado com a contagem decrescente em destaque, os números do ano juntaram-se numa faixa única (agora com os quilómetros percorridos), os objetivos cumpridos ganharam uma banda de **Conquistas** própria que cresce sem limite, em **A caminho** ficam só os objetivos mais perto da meta, e os **Recordes pessoais** fecham a página com o ritmo, a prova e a antiguidade de cada marca.
 
 ### Corrigido
 

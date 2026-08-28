@@ -2,7 +2,6 @@ import { beforeAll, describe, expect, it } from 'vitest'
 import i18n from '../i18n'
 import type { GoalWithProgress } from '../types/Goal'
 import type { PerformanceGoalWithProgress } from '../types/PerformanceGoal'
-import type { BestPerformance } from './bestPerformances'
 import { computeDashboardHighlights } from './dashboardHighlights'
 
 beforeAll(async () => {
@@ -46,20 +45,6 @@ function makePerformanceGoal(
   }
 }
 
-function makeRecord(overrides: Partial<BestPerformance> = {}): BestPerformance {
-  return {
-    eventId: 'event-1',
-    eventType: 'km_10',
-    label: '10Km',
-    eventName: 'City Night',
-    date: now,
-    time: '00:54:27',
-    pace: '5:27',
-    recordAge: 'há 3 anos',
-    ...overrides,
-  }
-}
-
 describe('computeDashboardHighlights', () => {
   it('separates fulfilled goals from the ones still in progress', () => {
     const highlights = computeDashboardHighlights(
@@ -67,7 +52,6 @@ describe('computeDashboardHighlights', () => {
         makeGoal({ id: 'done', outcome: 'crushed', currentCount: 8, targetCount: 5, percent: 100 }),
         makeGoal({ id: 'going', outcome: 'in_progress', currentCount: 2, targetCount: 3, percent: 66.6 }),
       ],
-      [],
       [],
     )
 
@@ -86,7 +70,6 @@ describe('computeDashboardHighlights', () => {
         makeGoal({ id: 'middle', eventType: 'km_21_1', percent: 50 }),
       ],
       [makePerformanceGoal({ id: 'nearly', percent: 99 })],
-      [],
     )
 
     expect(highlights.targets.map((item) => item.id)).toEqual([
@@ -104,7 +87,6 @@ describe('computeDashboardHighlights', () => {
         makePerformanceGoal({ id: 'hit', status: 'achieved' }),
         makePerformanceGoal({ id: 'blank', status: 'no_data', percent: 0 }),
       ],
-      [],
     )
 
     expect(highlights.achievements.map((item) => item.id)).toEqual(['performance-hit'])
@@ -114,22 +96,12 @@ describe('computeDashboardHighlights', () => {
     expect(highlights.targets[0].hint).toBe('Melhor em 2026: 5:14 min/Km')
   })
 
-  it('adds personal records as achievements without an emoji so the medal is used', () => {
-    const highlights = computeDashboardHighlights([], [], [makeRecord()])
-
-    expect(highlights.achievements).toEqual([
-      { id: 'record-event-1', tone: 'record', title: '10Km', detail: '00:54:27' },
-    ])
-    expect(highlights.targets).toEqual([])
-  })
-
   it('labels each fulfilled goal with its own outcome', () => {
     const highlights = computeDashboardHighlights(
       [
         makeGoal({ id: 'a', outcome: 'achieved', currentCount: 5, targetCount: 5 }),
         makeGoal({ id: 'b', eventType: 'km_10', outcome: 'crushed', currentCount: 8, targetCount: 5 }),
       ],
-      [],
       [],
     )
 
@@ -140,7 +112,7 @@ describe('computeDashboardHighlights', () => {
   })
 
   it('has no achievements while nothing is fulfilled', () => {
-    const highlights = computeDashboardHighlights([makeGoal()], [], [])
+    const highlights = computeDashboardHighlights([makeGoal()], [])
 
     expect(highlights.achievements).toEqual([])
     expect(highlights.targets).toHaveLength(1)

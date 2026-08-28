@@ -147,6 +147,8 @@
     "kilometresInYear": "كم في {{year}}",
     "completedEvents": "الفعاليات المكتملة",
     "averagePace": "الإيقاع المتوسط (د/كم)",
+    "personalBests": "الأرقام الشخصية القياسية",
+    "viewResults": "عرض النتائج",
     "achievements": "إنجازات {{year}}",
     "achievementsEmpty": "لا توجد إنجازات في {{year}} بعد. حقّق هدفًا أو سجّل رقمًا قياسيًا وسيظهر هنا.",
     "inProgress": "في الطريق",

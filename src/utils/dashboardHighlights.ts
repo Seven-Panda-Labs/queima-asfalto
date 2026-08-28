@@ -2,17 +2,17 @@ import type { GoalOutcome, GoalWithProgress } from '../types/Goal'
 import { formatGoalLabel, formatGoalOutcomeShortLabel } from '../types/Goal'
 import type { PerformanceGoalWithProgress } from '../types/PerformanceGoal'
 import { formatPerformanceGoalLabel } from '../types/PerformanceGoal'
-import type { BestPerformance } from './bestPerformances'
 import i18n from '../i18n'
 
-/** Um objetivo cumprido ou um recorde pessoal — sempre algo já conquistado. */
+/**
+ * Um objetivo do ano já cumprido. Os recordes de sempre ficam de fora de
+ * propósito: têm bloco próprio, para não misturar escalas de tempo.
+ */
 export type DashboardAchievement = {
   id: string
-  tone: 'goal' | 'record'
-  /** Ausente nos recordes, que usam a ilustração da medalha. */
-  emoji?: string
+  emoji: string
   title: string
-  /** O desfecho ou o tempo — o que se ganhou, não quanto. */
+  /** O desfecho: «Destruída 👊», «Meta batida!». */
   detail: string
 }
 
@@ -45,7 +45,6 @@ function byPercentDescending(a: DashboardTarget, b: DashboardTarget): number {
 export function computeDashboardHighlights(
   goals: GoalWithProgress[],
   performanceGoals: PerformanceGoalWithProgress[],
-  bestPerformances: BestPerformance[],
 ): DashboardHighlights {
   const achievements: DashboardAchievement[] = []
   const targets: DashboardTarget[] = []
@@ -54,7 +53,6 @@ export function computeDashboardHighlights(
     if (ACHIEVED_OUTCOMES.includes(goal.outcome)) {
       achievements.push({
         id: `goal-${goal.id}`,
-        tone: 'goal',
         emoji: goal.emoji ?? '🏅',
         title: formatGoalLabel(goal),
         detail: formatGoalOutcomeShortLabel(goal.outcome),
@@ -75,7 +73,6 @@ export function computeDashboardHighlights(
     if (goal.status === 'achieved') {
       achievements.push({
         id: `performance-${goal.id}`,
-        tone: 'goal',
         emoji: goal.emoji ?? '⚡',
         title: formatPerformanceGoalLabel(goal),
         detail: i18n.t('goals.outcomeAchieved'),
@@ -90,15 +87,6 @@ export function computeDashboardHighlights(
       percent: Math.round(goal.percent),
       progressText: `${Math.round(goal.percent)}%`,
       hint: goal.progressLabel,
-    })
-  }
-
-  for (const performance of bestPerformances) {
-    achievements.push({
-      id: `record-${performance.eventId}`,
-      tone: 'record',
-      title: performance.label,
-      detail: performance.time,
     })
   }
 

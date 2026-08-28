@@ -8,7 +8,7 @@
 
 ### Changed
 
-- **Home rethought:** the dashboard is no longer a stack of identical blocks. The next event is now an illustrated hero with the countdown up front, the year's numbers sit in a single strip (with kilometres covered added), fulfilled goals and personal records get their own **Achievements** band that scales to any number, and **On the way** shows only the goals closest to done.
+- **Home rethought:** the dashboard is no longer a stack of identical blocks. The next event is now an illustrated hero with the countdown up front, the year's numbers sit in a single strip (with kilometres covered added), fulfilled goals get their own **Achievements** band that scales to any number, **On the way** shows only the goals closest to done, and **Personal bests** close the page with each mark's pace, race and age.
 
 ### Fixed
 

@@ -8,7 +8,7 @@
 
 ### Geändert
 
-- **Start neu gedacht:** Das Dashboard ist keine Ansammlung gleicher Blöcke mehr. Das nächste Event ist jetzt ein illustrierter Hero mit dem Countdown im Vordergrund, die Zahlen des Jahres stehen in einer einzigen Leiste (neu: gelaufene Kilometer), erreichte Ziele und persönliche Rekorde bekommen ein eigenes **Erfolge**-Band, das beliebig viele aufnimmt, und unter **Unterwegs** stehen nur die Ziele, die dem Abschluss am nächsten sind.
+- **Start neu gedacht:** Das Dashboard ist keine Ansammlung gleicher Blöcke mehr. Das nächste Event ist jetzt ein illustrierter Hero mit dem Countdown im Vordergrund, die Zahlen des Jahres stehen in einer einzigen Leiste (neu: gelaufene Kilometer), erreichte Ziele bekommen ein eigenes **Erfolge**-Band, das beliebig viele aufnimmt, unter **Unterwegs** stehen nur die Ziele, die dem Abschluss am nächsten sind, und die **Persönlichen Bestzeiten** schließen die Seite mit Tempo, Rennen und Alter jeder Marke ab.
 
 ### Behoben
 

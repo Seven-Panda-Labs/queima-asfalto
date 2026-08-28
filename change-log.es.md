@@ -8,7 +8,7 @@
 
 ### Cambiado
 
-- **Inicio repensado:** el panel ha dejado de ser una pila de bloques iguales. El próximo evento es ahora un héroe ilustrado con la cuenta atrás en primer plano, las cifras del año se agrupan en una única franja (ahora con los kilómetros recorridos), los objetivos cumplidos y los récords personales tienen su propia banda de **Logros** que crece sin límite, y en **En camino** solo aparecen los objetivos más cerca de la meta.
+- **Inicio repensado:** el panel ha dejado de ser una pila de bloques iguales. El próximo evento es ahora un héroe ilustrado con la cuenta atrás en primer plano, las cifras del año se agrupan en una única franja (ahora con los kilómetros recorridos), los objetivos cumplidos tienen su propia banda de **Logros** que crece sin límite, en **En camino** solo aparecen los objetivos más cerca de la meta, y las **Marcas personales** cierran la página con el ritmo, la carrera y la antigüedad de cada marca.
 
 ### Corregido
 

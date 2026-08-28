@@ -9,6 +9,7 @@ import {
   StatStrip,
   StopwatchIcon,
 } from '../../components/StatStrip'
+import { RecordStrip } from '../../components/RecordStrip'
 import { TargetCard } from '../../components/TargetCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
@@ -38,7 +39,7 @@ export function Dashboard() {
   const nextEvent = findNextEvent(allEvents)
   const stats = computeDashboardStats(allEvents, currentYear)
   const bestPerformances = computeBestPerformances(allEvents)
-  const highlights = computeDashboardHighlights(goals, performanceGoals, bestPerformances)
+  const highlights = computeDashboardHighlights(goals, performanceGoals)
 
   const featuredTargets = highlights.targets.slice(0, FEATURED_TARGETS)
   const hiddenTargets = highlights.targets.length - featuredTargets.length
@@ -142,6 +143,8 @@ export function Dashboard() {
           </div>
         )}
       </section>
+
+      <RecordStrip records={bestPerformances} />
     </PageShell>
   )
 }

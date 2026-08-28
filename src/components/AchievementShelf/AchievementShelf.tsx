@@ -1,33 +1,14 @@
 import medalha from '../../../assets/medalha.svg'
-import { PersonalRecordIndicator } from '../PersonalRecordIndicator/PersonalRecordIndicator'
 import type { DashboardAchievement } from '../../utils/dashboardHighlights'
 
-const TONE_STYLES: Record<DashboardAchievement['tone'], { chip: string; detail: string }> = {
-  goal: { chip: 'border-success/40', detail: 'bg-success/15 text-success' },
-  record: { chip: 'border-accent/40', detail: 'bg-accent/15 text-accent' },
-}
-
 function AchievementChip({ achievement }: { achievement: DashboardAchievement }) {
-  const styles = TONE_STYLES[achievement.tone]
-
   return (
-    <span
-      className={[
-        'inline-flex items-center gap-2 rounded-full border bg-surface py-1.5 pe-1.5 ps-2.5 text-sm shadow-sm',
-        styles.chip,
-      ].join(' ')}
-    >
-      {achievement.emoji ? (
-        <span className="text-base leading-none" aria-hidden>
-          {achievement.emoji}
-        </span>
-      ) : (
-        <PersonalRecordIndicator />
-      )}
+    <span className="inline-flex items-center gap-2 rounded-full border border-success/40 bg-surface py-1.5 pe-1.5 ps-2.5 text-sm shadow-sm">
+      <span className="text-base leading-none" aria-hidden>
+        {achievement.emoji}
+      </span>
       <span className="font-semibold text-foreground">{achievement.title}</span>
-      <span
-        className={['rounded-full px-2 py-0.5 text-xs font-bold', styles.detail].join(' ')}
-      >
+      <span className="rounded-full bg-success/15 px-2 py-0.5 text-xs font-bold text-success">
         {achievement.detail}
       </span>
     </span>
