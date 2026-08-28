@@ -9,11 +9,11 @@ const DEFAULT_SCHEDULER_TIMEZONE = 'Europe/Lisbon'
 const CALLABLE_MAX_INSTANCES = 20
 const CALLABLE_CONCURRENCY = 40
 
-/** External HTTP scraping — keep parallel load low (complements per-user rate limit). */
+/** External HTTP scraping: keep parallel load low (complements per-user rate limit). */
 export const LOOKUP_CALLABLE_MAX_INSTANCES = 5
 export const LOOKUP_CALLABLE_CONCURRENCY = 1
 
-/** Scheduled batch job — avoid overlapping cron invocations. */
+/** Scheduled batch job: avoid overlapping cron invocations. */
 export const SCHEDULER_MAX_INSTANCES = 1
 export const SCHEDULER_CONCURRENCY = 1
 export const SCHEDULER_TIMEOUT_SECONDS = 300

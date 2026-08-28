@@ -4,31 +4,39 @@
 
 ---
 
-## [1.20.0] — 2026-08-25
-
-### Añadido
-
-- **Nuevo idioma — Árabe (primera versión):** la aplicación, las notas de versión, el aviso de resultados oficiales, la política de privacidad, los correos de cuenta y los recordatorios push ya están disponibles en árabe, con diseño de derecha a izquierda (RTL). Selecciónalo en Ajustes → Idioma.
-
----
-
-## [1.19.0] — 2026-08-25
-
-### Añadido
-
-- **Nuevo idioma — Francés:** la aplicación, las notas de versión, el aviso de resultados oficiales, la política de privacidad, los correos de cuenta y los recordatorios push ya están disponibles en francés. Selecciónalo en Ajustes → Idioma.
-
----
-
-## [1.18.0] — 2026-08-17
+## [1.21.0] - 2026-08-28
 
 ### Cambiado
 
-- **Resultados oficiales:** búsqueda automática de resultados de Parkrun desactivada temporalmente — Parkrun bloquea las solicitudes automatizadas desde infraestructura en la nube conocida. El resultado se puede seguir registrando manualmente.
+- **Inicio rediseñado:** el próximo evento destacado con su cuenta atrás, las cifras del año en una única franja, ahora con los kilómetros recorridos, y un lugar propio para logros, objetivos pendientes y marcas personales.
 
 ---
 
-## [1.17.0] — 2026-08-13
+## [1.20.0] - 2026-08-25
+
+### Añadido
+
+- **Nuevo idioma, Árabe (primera versión):** la aplicación, las notas de versión, el aviso de resultados oficiales, la política de privacidad, los correos de cuenta y los recordatorios push ya están disponibles en árabe, con diseño de derecha a izquierda (RTL). Selecciónalo en Ajustes → Idioma.
+
+---
+
+## [1.19.0] - 2026-08-25
+
+### Añadido
+
+- **Nuevo idioma, Francés:** la aplicación, las notas de versión, el aviso de resultados oficiales, la política de privacidad, los correos de cuenta y los recordatorios push ya están disponibles en francés. Selecciónalo en Ajustes → Idioma.
+
+---
+
+## [1.18.0] - 2026-08-17
+
+### Cambiado
+
+- **Resultados oficiales:** búsqueda automática de resultados de Parkrun desactivada temporalmente: Parkrun bloquea las solicitudes automatizadas desde infraestructura en la nube conocida. El resultado se puede seguir registrando manualmente.
+
+---
+
+## [1.17.0] - 2026-08-13
 
 ### Añadido
 
@@ -36,28 +44,28 @@
 
 ---
 
-## [1.16.1] — 2026-08-13
+## [1.16.1] - 2026-08-13
 
 ### Añadido
 
-- **Más emojis:** añadimos más de 50 opciones nuevas — animales, flores, comida, temática de Halloween y banderas de Asia, Sudamérica y el norte de África — al selector de emoji de eventos y objetivos.
+- **Más emojis:** añadimos más de 50 opciones nuevas al selector de emoji de eventos y objetivos: animales, flores, comida, temática de Halloween y banderas de Asia, Sudamérica y el norte de África.
 
 ### Corregido
 
-- **Estado de los eventos:** un evento con resultado oficial ya no puede quedar marcado como «Perdido». Existía una condición de carrera entre la transición automática a «Perdido» y el guardado del resultado — si la transición automática ganaba la carrera, el estado quedaba mal aunque el resultado estuviera guardado.
+- **Estado de los eventos:** un evento con resultado oficial ya no puede quedar marcado como «Perdido». Existía una condición de carrera entre la transición automática a «Perdido» y el guardado del resultado. Si la transición automática ganaba la carrera, el estado quedaba mal aunque el resultado estuviera guardado.
 
 ---
 
-## [1.16.0] — 2026-08-03
+## [1.16.0] - 2026-08-03
 
 ### Añadido
 
 - **Copia con fotos y vídeos:** el `.zip` de la copia ahora incluye los archivos de fotos y vídeos, no solo sus metadatos. Puedes desactivar la opción antes de exportar; por encima de 300 MB la copia solo guarda los datos.
-- **Restauración de fotos y vídeos:** con los archivos en el `.zip`, las fotos y vídeos vuelven incluso en el modo «sustituir todo» y al restaurar en otra cuenta — antes solo se recuperaban si seguían en la cuenta.
+- **Restauración de fotos y vídeos:** con los archivos en el `.zip`, las fotos y vídeos vuelven incluso en el modo «sustituir todo» y al restaurar en otra cuenta. Antes solo se recuperaban si seguían en la cuenta.
 
 ---
 
-## [1.15.1] — 2026-08-03
+## [1.15.1] - 2026-08-03
 
 ### Corregido
 
@@ -66,7 +74,7 @@
 
 ---
 
-## [1.15.0] — 2026-08-03
+## [1.15.0] - 2026-08-03
 
 ### Añadido
 
@@ -75,7 +83,7 @@
 
 ---
 
-## [1.14.2] — 2026-08-02
+## [1.14.2] - 2026-08-02
 
 ### Corregido
 
@@ -84,7 +92,7 @@
 
 ---
 
-## [1.14.1] — 2026-08-01
+## [1.14.1] - 2026-08-01
 
 ### Corregido
 
@@ -92,15 +100,15 @@
 
 ---
 
-## [1.14.0] — 2026-07-30
+## [1.14.0] - 2026-07-30
 
 ### Añadido
 
-- **Self-hosting:** aprobación manual de cuentas nuevas (opcional) — pantallas pendiente/rechazado, email al administrador con enlaces aprobar/rechazar (Resend), notificación al usuario, reglas Firestore/Storage y funciones blocking Auth; ver `docs/configuration.md` y `docs/self-hosting.md`.
+- **Self-hosting:** aprobación manual de cuentas nuevas (opcional): pantallas pendiente/rechazado, email al administrador con enlaces aprobar/rechazar (Resend), notificación al usuario, reglas Firestore/Storage y funciones blocking Auth; ver `docs/configuration.md` y `docs/self-hosting.md`.
 
 ---
 
-## [1.13.0] — 2026-07-23
+## [1.13.0] - 2026-07-23
 
 ### Añadido
 
@@ -108,7 +116,7 @@
 
 ---
 
-## [1.12.1] — 2026-07-23
+## [1.12.1] - 2026-07-23
 
 ### Cambiado
 
@@ -116,11 +124,11 @@
 
 ---
 
-## [1.12.0] — 2026-07-23
+## [1.12.0] - 2026-07-23
 
 ### Añadido
 
-- **Idiomas:** soporte de español (es-ES) y alemán en la app — UI, emojis, recordatorios push, changelog, política de privacidad y aviso de resultados oficiales.
+- **Idiomas:** soporte de español (es-ES) y alemán en la app: UI, emojis, recordatorios push, changelog, política de privacidad y aviso de resultados oficiales.
 - **Ajustes:** selector de idioma con Português, English, Español y Deutsch.
 
 ### Cambiado
@@ -129,7 +137,7 @@
 
 ---
 
-## [1.11.0] — 2026-07-20
+## [1.11.0] - 2026-07-20
 
 ### Añadido
 
@@ -145,7 +153,7 @@
 
 ---
 
-## [1.10.0] — 2026-07-19
+## [1.10.0] - 2026-07-19
 
 ### Añadido
 
@@ -162,7 +170,7 @@
 
 ---
 
-## [1.9.2] — 2026-07-19
+## [1.9.2] - 2026-07-19
 
 ### Añadido
 
@@ -178,7 +186,7 @@
 
 ---
 
-## [1.9.1] — 2026-07-19
+## [1.9.1] - 2026-07-19
 
 ### Corregido
 
@@ -190,7 +198,7 @@
 
 ---
 
-## [1.9.0] — 2026-07-09
+## [1.9.0] - 2026-07-09
 
 ### Añadido
 
@@ -202,7 +210,7 @@
 
 ---
 
-## [1.8.0] — 2026-07-09
+## [1.8.0] - 2026-07-09
 
 ### Añadido
 
@@ -210,7 +218,7 @@
 
 ---
 
-## [1.7.0] — 2026-07-09
+## [1.7.0] - 2026-07-09
 
 ### Añadido
 
@@ -222,7 +230,7 @@
 
 ---
 
-## [1.6.0] — 2026-07-08
+## [1.6.0] - 2026-07-08
 
 ### Añadido
 
@@ -230,7 +238,7 @@
 
 ---
 
-## [1.5.1] — 2026-07-08
+## [1.5.1] - 2026-07-08
 
 ### Añadido
 
@@ -239,7 +247,7 @@
 
 ---
 
-## [1.5.0] — 2026-07-08
+## [1.5.0] - 2026-07-08
 
 ### Añadido
 
@@ -248,7 +256,7 @@
 
 ---
 
-## [1.4.0] — 2026-07-08
+## [1.4.0] - 2026-07-08
 
 ### Añadido
 
@@ -256,7 +264,7 @@
 
 ---
 
-## [1.3.2] — 2026-07-07
+## [1.3.2] - 2026-07-07
 
 ### Añadido
 
@@ -264,7 +272,7 @@
 
 ---
 
-## [1.3.1] — 2026-07-07
+## [1.3.1] - 2026-07-07
 
 ### Añadido
 
@@ -277,7 +285,7 @@
 
 ---
 
-## [1.3.0] — 2026-07-06
+## [1.3.0] - 2026-07-06
 
 ### Cambiado
 
@@ -285,7 +293,7 @@
 
 ---
 
-## [1.2.0] — 2026-07-06
+## [1.2.0] - 2026-07-06
 
 ### Añadido
 
@@ -297,7 +305,7 @@
 
 ---
 
-## [1.1.0] — 2026-07-06
+## [1.1.0] - 2026-07-06
 
 ### Añadido
 
@@ -305,7 +313,7 @@
 
 ---
 
-## [1.0.2] — 2026-07-06
+## [1.0.2] - 2026-07-06
 
 ### Corregido
 
@@ -313,7 +321,7 @@
 
 ---
 
-## [1.0.1] — 2026-07-06
+## [1.0.1] - 2026-07-06
 
 ### Añadido
 
@@ -321,7 +329,7 @@
 
 ---
 
-## [1.0.0] — 2026-07-06
+## [1.0.0] - 2026-07-06
 
 Hito: uso compartido de datos entre amigos.
 
@@ -332,7 +340,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.22.0] — 2026-07-06
+## [0.22.0] - 2026-07-06
 
 ### Añadido
 
@@ -340,7 +348,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.21.0] — 2026-07-06
+## [0.21.0] - 2026-07-06
 
 ### Añadido
 
@@ -348,7 +356,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.20.0] — 2026-07-05
+## [0.20.0] - 2026-07-05
 
 ### Añadido
 
@@ -356,7 +364,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.19.1] — 2026-07-05
+## [0.19.1] - 2026-07-05
 
 ### Corregido
 
@@ -364,7 +372,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.19.0] — 2026-07-05
+## [0.19.0] - 2026-07-05
 
 ### Añadido
 
@@ -372,7 +380,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.18.1] — 2026-07-05
+## [0.18.1] - 2026-07-05
 
 ### Corregido
 
@@ -380,7 +388,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.18.0] — 2026-07-05
+## [0.18.0] - 2026-07-05
 
 ### Añadido
 
@@ -388,7 +396,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.17.2] — 2026-07-05
+## [0.17.2] - 2026-07-05
 
 ### Corregido
 
@@ -396,7 +404,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.17.1] — 2026-07-05
+## [0.17.1] - 2026-07-05
 
 ### Corregido
 
@@ -404,7 +412,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.17.0] — 2026-07-05
+## [0.17.0] - 2026-07-05
 
 ### Añadido
 
@@ -412,7 +420,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.16.0] — 2026-07-05
+## [0.16.0] - 2026-07-05
 
 ### Añadido
 
@@ -420,7 +428,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.15.0] — 2026-07-05
+## [0.15.0] - 2026-07-05
 
 ### Añadido
 
@@ -428,7 +436,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.14.1] — 2026-07-05
+## [0.14.1] - 2026-07-05
 
 ### Corregido
 
@@ -436,7 +444,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.14.0] — 2026-07-05
+## [0.14.0] - 2026-07-05
 
 ### Añadido
 
@@ -444,7 +452,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.13.1] — 2026-07-05
+## [0.13.1] - 2026-07-05
 
 ### Corregido
 
@@ -452,7 +460,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.13.0] — 2026-07-05
+## [0.13.0] - 2026-07-05
 
 ### Añadido
 
@@ -460,7 +468,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.12.2] — 2026-07-05
+## [0.12.2] - 2026-07-05
 
 ### Corregido
 
@@ -468,7 +476,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.12.1] — 2026-07-05
+## [0.12.1] - 2026-07-05
 
 ### Corregido
 
@@ -476,7 +484,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.12.0] — 2026-07-05
+## [0.12.0] - 2026-07-05
 
 ### Añadido
 
@@ -484,7 +492,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.11.1] — 2026-07-05
+## [0.11.1] - 2026-07-05
 
 ### Corregido
 
@@ -492,7 +500,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.11.0] — 2026-07-05
+## [0.11.0] - 2026-07-05
 
 ### Añadido
 
@@ -504,7 +512,7 @@ Hito: uso compartido de datos entre amigos.
 
 ---
 
-## [0.9.0] — 2026-07-04
+## [0.9.0] - 2026-07-04
 
 Hito: resultados oficiales automáticos.
 
@@ -520,7 +528,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.8.0] — 2026-07-04
+## [0.8.0] - 2026-07-04
 
 ### Corregido
 
@@ -532,7 +540,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.7.0] — 2026-07-04
+## [0.7.0] - 2026-07-04
 
 ### Añadido
 
@@ -541,7 +549,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.6.2] — 2026-07-02
+## [0.6.2] - 2026-07-02
 
 ### Añadido
 
@@ -549,7 +557,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.6.1] — 2026-07-02
+## [0.6.1] - 2026-07-02
 
 ### Corregido
 
@@ -557,7 +565,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.6.0] — 2026-06-30
+## [0.6.0] - 2026-06-30
 
 ### Añadido
 
@@ -565,7 +573,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.5.4] — 2026-06-30
+## [0.5.4] - 2026-06-30
 
 ### Añadido
 
@@ -573,7 +581,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.5.3] — 2026-06-30
+## [0.5.3] - 2026-06-30
 
 ### Corregido
 
@@ -581,7 +589,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.5.2] — 2026-06-30
+## [0.5.2] - 2026-06-30
 
 ### Corregido
 
@@ -589,7 +597,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.5.1] — 2026-06-30
+## [0.5.1] - 2026-06-30
 
 ### Añadido
 
@@ -598,7 +606,7 @@ Hito: resultados oficiales automáticos.
 
 ---
 
-## [0.5.0] — 2026-06-29
+## [0.5.0] - 2026-06-29
 
 Hito: modo mapa.
 
@@ -609,7 +617,7 @@ Hito: modo mapa.
 
 ---
 
-## [0.4.3] — 2026-06-29
+## [0.4.3] - 2026-06-29
 
 ### Corregido
 
@@ -617,7 +625,7 @@ Hito: modo mapa.
 
 ---
 
-## [0.4.2] — 2026-06-29
+## [0.4.2] - 2026-06-29
 
 ### Corregido
 
@@ -625,7 +633,7 @@ Hito: modo mapa.
 
 ---
 
-## [0.4.1] — 2026-06-29
+## [0.4.1] - 2026-06-29
 
 ### Corregido
 
@@ -633,7 +641,7 @@ Hito: modo mapa.
 
 ---
 
-## [0.4.0] — 2026-06-29
+## [0.4.0] - 2026-06-29
 
 Hito: fotos y vídeos de eventos.
 
@@ -648,7 +656,7 @@ Hito: fotos y vídeos de eventos.
 
 ---
 
-## [0.2.0] — 2026-06-28
+## [0.2.0] - 2026-06-28
 
 Hito: internacionalización.
 
@@ -673,9 +681,9 @@ Hito: internacionalización.
 
 ---
 
-## [0.1.0] — 2026-06-26
+## [0.1.0] - 2026-06-26
 
-Hito: **MVP** — sustituto de hoja de cálculo Excel como PWA.
+Hito: **MVP**, sustituto de hoja de cálculo Excel como PWA.
 
 ### Añadido
 

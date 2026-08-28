@@ -1,4 +1,4 @@
-# Self-hosting — Queima Asfalto
+# Self-hosting: Queima Asfalto
 
 **Português** · [English](#english)
 
@@ -42,20 +42,20 @@ Browser (PWA) ──► Firebase Hosting (dist/)
 
 ---
 
-### Passo 1 — Criar projeto Firebase
+### Passo 1: Criar projeto Firebase
 
 1. Abre [Firebase Console](https://console.firebase.google.com/) → **Add project**.
-2. Escolhe um **Project ID** (ex.: `meu-queima-asfalto`) — guarda-o para `.firebaserc` e variáveis `VITE_*`.
-3. Google Analytics: opcional (a app suporta `measurementId`; podes activar ou usar um ID vazio se não usares Analytics — se o build exigir valor, activa Analytics no projeto).
+2. Escolhe um **Project ID** (ex.: `meu-queima-asfalto`). Guarda-o para `.firebaserc` e variáveis `VITE_*`.
+3. Google Analytics: opcional (a app suporta `measurementId`; podes activar ou usar um ID vazio se não usares Analytics; se o build exigir valor, activa Analytics no projeto).
 
-### Passo 2 — Plano Blaze
+### Passo 2: Plano Blaze
 
 1. Console → **Upgrade** → **Blaze**.
 2. Configura um orçamento/alerta de billing no Google Cloud (recomendado).
 
 Sem Blaze não consegues activar **Storage** nem fazer deploy de **Cloud Functions** Gen 2 com agendamento.
 
-### Passo 3 — Activar produtos
+### Passo 3: Activar produtos
 
 No projeto Firebase:
 
@@ -69,7 +69,7 @@ No projeto Firebase:
 
 #### CORS no bucket (necessário para o backup com fotos e vídeos)
 
-O backup lê os ficheiros com a API `getBytes` do Storage, que é sujeita a CORS. Sem isto, o backup ainda funciona — mas só com os metadados das fotos e vídeos.
+O backup lê os ficheiros com a API `getBytes` do Storage, que é sujeita a CORS. Sem isto, o backup ainda funciona, mas só com os metadados das fotos e vídeos.
 
 ```bash
 cat > cors.json <<'JSON'
@@ -80,17 +80,17 @@ gcloud storage buckets update gs://TEU-PROJETO.appspot.com --cors-file=cors.json
 
 Substitui `TEU-PROJETO` e acrescenta `http://localhost:5173` se quiseres testar em dev.
 
-### Passo 4 — Authentication (Google)
+### Passo 4: Authentication (Google)
 
 1. **Authentication → Sign-in method → Google → Enable**.
 2. Define um **support email** do projeto.
-3. **Authentication → Settings → Authorized domains** — por agora garante `localhost`; adicionas o domínio de produção após o deploy (passo 12).
+3. **Authentication → Settings → Authorized domains**: por agora garante `localhost`; adicionas o domínio de produção após o deploy (passo 12).
 
-### Passo 5 — Registar Web App
+### Passo 5: Registar Web App
 
 1. **Project settings** (ícone engrenagem) → **Your apps → Web** (`</>`).
 2. Regista a app (nickname à escolha).
-3. Copia o objeto `firebaseConfig` — vais mapeá-lo para `.env.local`:
+3. Copia o objeto `firebaseConfig`. Vais mapeá-lo para `.env.local`:
 
 | Campo `firebaseConfig` | Variável `.env.local` |
 |------------------------|------------------------|
@@ -102,9 +102,9 @@ Substitui `TEU-PROJETO` e acrescenta `http://localhost:5173` se quiseres testar 
 | `appId` | `VITE_FIREBASE_APP_ID` |
 | `measurementId` | `VITE_FIREBASE_MEASUREMENT_ID` |
 
-> **Nota:** em `VITE_FIREBASE_AUTH_DOMAIN`, usa o **domínio de hosting** da app (ex.: `your-project.web.app`) em vez do `your-project.firebaseapp.com` sugerido pela consola — caso contrário o login falha no Safari/iOS. Ver [`configuration.md`](./configuration.md#authdomain-e-safariios).
+> **Nota:** em `VITE_FIREBASE_AUTH_DOMAIN`, usa o **domínio de hosting** da app (ex.: `your-project.web.app`) em vez do `your-project.firebaseapp.com` sugerido pela consola; caso contrário, o login falha no Safari/iOS. Ver [`configuration.md`](./configuration.md#authdomain-e-safariios).
 
-### Passo 6 — FCM / Web Push (notificações)
+### Passo 6: FCM / Web Push (notificações)
 
 1. **Project settings → Cloud Messaging → Web Push certificates**.
 2. **Generate key pair** (se ainda não existir).
@@ -112,16 +112,16 @@ Substitui `TEU-PROJETO` e acrescenta `http://localhost:5173` se quiseres testar 
 
 Os utilizadores activam notificações em **Definições** na app. Sem VAPID, o registo de push falha.
 
-### Passo 7 — Geoapify (localizações)
+### Passo 7: Geoapify (localizações)
 
 1. Cria conta em [geoapify.com](https://www.geoapify.com/).
 2. **API Keys → Create key**.
 3. Copia para `VITE_GEOAPIFY_API_KEY`.
-4. Após deploy, restringe por HTTP Referer — ver [`console-restrictions.md`](./console-restrictions.md).
+4. Após deploy, restringe por HTTP Referer. Ver [`console-restrictions.md`](./console-restrictions.md).
 
 Sem Geoapify a app funciona; autocomplete de local e geocodificação no formulário de eventos ficam indisponíveis.
 
-### Passo 8 — Clonar e instalar
+### Passo 8: Clonar e instalar
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -130,7 +130,7 @@ npm install
 npm --prefix functions install
 ```
 
-### Passo 9 — Ficheiros de configuração local
+### Passo 9: Ficheiros de configuração local
 
 ```bash
 cp .env.example .env.local
@@ -138,16 +138,16 @@ cp .firebaserc.example .firebaserc
 cp functions/.env.example functions/.env
 ```
 
-1. **`.env.local`** — preenche todas as variáveis `VITE_*` (passos 5–7).
-2. **`.firebaserc`** — substitui `your-firebase-project-id` pelo teu Project ID.
+1. **`.env.local`**: preenche todas as variáveis `VITE_*` (passos 5-7).
+2. **`.firebaserc`**: substitui `your-firebase-project-id` pelo teu Project ID.
 3. **`functions/.env`** (opcional):
    - `FUNCTIONS_REGION=europe-west1` (predefinição; deve coincidir com `VITE_FIREBASE_FUNCTIONS_REGION` se definida e com a `region` do rewrite `/api/account-approval` em `firebase.json`)
-   - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — email em **Project settings → Service accounts**
-   - `SCHEDULER_TIMEZONE=Europe/Lisbon` — fuso dos lembretes agendados
+   - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com`: email em **Project settings → Service accounts**
+   - `SCHEDULER_TIMEZONE=Europe/Lisbon`: fuso dos lembretes agendados
 
 Detalhes de todas as variáveis: [`configuration.md`](./configuration.md).
 
-### Passo 9b — Aprovação de contas novas (opcional)
+### Passo 9b: Aprovação de contas novas (opcional)
 
 Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para exigir **aprovação manual** de novos registos (útil em self-hosting fechado), activa o fluxo da issue [#176](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/176).
 
@@ -163,11 +163,11 @@ Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para
 
 1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
 2. **`functions/.env`** (com `ACCOUNT_APPROVAL_REQUIRED=true`):
-   - `ADMIN_EMAIL` — email do administrador (conta auto-aprovada)
-   - `APP_PUBLIC_URL` — URL pública da PWA (ex. `https://YOUR_PROJECT.web.app`)
-   - `RESEND_API_KEY`, `EMAIL_FROM` — API e remetente Resend
-   - `APPROVAL_TOKEN_SECRET` — segredo aleatório (≥16 caracteres) para links nos emails
-   - `INSTANCE_NAME` (opcional) — nome nos emails
+   - `ADMIN_EMAIL`: email do administrador (conta auto-aprovada)
+   - `APP_PUBLIC_URL`: URL pública da PWA (ex. `https://YOUR_PROJECT.web.app`)
+   - `RESEND_API_KEY`, `EMAIL_FROM`: API e remetente Resend
+   - `APPROVAL_TOKEN_SECRET`: segredo aleatório (≥16 caracteres) para links nos emails
+   - `INSTANCE_NAME` (opcional): nome nos emails
 3. Volta a fazer **`npm run build`** e **`firebase deploy`** (ou `npm run deploy`) para aplicar env nas Functions e o rewrite no Hosting.
 
 **Fluxo**
@@ -176,9 +176,9 @@ Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para
 2. Admin recebe email com links **Aprovar** / **Rejeitar**.
 3. Utilizador aprovado recebe email e pode usar a app; rejeitado vê mensagem e não acede aos dados.
 
-Sem esta opção, ignora este passo — a instância mantém o comportamento anterior.
+Sem esta opção, ignora este passo, a instância mantém o comportamento anterior.
 
-### Passo 10 — Firebase CLI
+### Passo 10: Firebase CLI
 
 ```bash
 npm install -g firebase-tools   # ou: npx firebase ...
@@ -188,7 +188,7 @@ firebase use --add YOUR_PROJECT_ID
 
 Confirma que `firebase projects:list` mostra o projeto correcto.
 
-### Passo 11 — Testar localmente (opcional)
+### Passo 11: Testar localmente (opcional)
 
 ```bash
 npm run dev
@@ -196,9 +196,9 @@ npm run dev
 
 Abre [http://localhost:5173](http://localhost:5173), entra com Google. Se falhar o login, confirma `localhost` nos domínios autorizados.
 
-Para desenvolvimento local **sem este projeto Firebase** (ou sem tocar em produção), usa a Firebase Emulator Suite — guia em [`emulators.md`](./emulators.md). Modo híbrido (projeto real + Functions emuladas): `VITE_FUNCTIONS_EMULATOR=true`.
+Para desenvolvimento local **sem este projeto Firebase** (ou sem tocar em produção), usa a Firebase Emulator Suite. Guia em [`emulators.md`](./emulators.md). Modo híbrido (projeto real + Functions emuladas): `VITE_FUNCTIONS_EMULATOR=true`.
 
-### Passo 12 — Deploy
+### Passo 12: Deploy
 
 ```bash
 npm run deploy
@@ -232,7 +232,7 @@ Deploy parcial:
 
 Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `concurrency`): [`cloud-functions-limits.md`](./cloud-functions-limits.md).
 
-### Passo 13 — Pós-deploy
+### Passo 13: Pós-deploy
 
 1. **Hosting URL:** Console → Hosting → `https://YOUR_PROJECT.web.app`
 2. **Authentication → Authorized domains:** adiciona `YOUR_PROJECT.web.app` e `YOUR_PROJECT.firebaseapp.com`
@@ -240,7 +240,7 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 4. **OAuth (Google Cloud):** Credentials → Web client → origins com `https://YOUR_PROJECT.web.app` e `http://localhost:5173`
 5. **Privacidade:** preenche e publica o modelo em [`privacy-policy-template.md`](./privacy-policy-template.md) (RGPD; o self-hoster é responsável pelo tratamento)
 
-### Passo 14 — Verificar
+### Passo 14: Verificar
 
 - [ ] Login com Google em produção
 - [ ] Criar/editar evento com localização (Geoapify)
@@ -254,7 +254,7 @@ Região predefinida: **`europe-west1`**. Limites de escala (`maxInstances`, `con
 
 ### Domínio customizado (opcional)
 
-1. **Hosting → Add custom domain** — segue o assistente DNS.
+1. **Hosting → Add custom domain**: segue o assistente DNS.
 2. Adiciona o domínio em **Authentication → Authorized domains**.
 3. Actualiza referrers na chave API Firebase e na chave Geoapify.
 
@@ -315,20 +315,20 @@ Browser (PWA) ──► Firebase Hosting (dist/)
 
 ---
 
-### Step 1 — Create a Firebase project
+### Step 1: Create a Firebase project
 
 1. Open [Firebase Console](https://console.firebase.google.com/) → **Add project**.
-2. Choose a **Project ID** (e.g. `my-queima-asfalto`) — use it in `.firebaserc` and `VITE_*` variables.
+2. Choose a **Project ID** (e.g. `my-queima-asfalto`). use it in `.firebaserc` and `VITE_*` variables.
 3. Google Analytics: optional (the app supports `measurementId`; enable Analytics or provide a value if your build requires it).
 
-### Step 2 — Blaze plan
+### Step 2: Blaze plan
 
 1. Console → **Upgrade** → **Blaze**.
 2. Set a billing budget/alert in Google Cloud (recommended).
 
 Without Blaze you cannot enable **Storage** or deploy Gen 2 **Cloud Functions** with scheduling.
 
-### Step 3 — Enable products
+### Step 3: Enable products
 
 In your Firebase project:
 
@@ -342,7 +342,7 @@ In your Firebase project:
 
 #### Bucket CORS (required for backups with photos and videos)
 
-The backup reads the files with the Storage `getBytes` API, which is subject to CORS. Without it the backup still works — with photo and video metadata only.
+The backup reads the files with the Storage `getBytes` API, which is subject to CORS. Without it the backup still works, but only with photo and video metadata.
 
 ```bash
 cat > cors.json <<'JSON'
@@ -353,13 +353,13 @@ gcloud storage buckets update gs://YOUR-PROJECT.appspot.com --cors-file=cors.jso
 
 Replace `YOUR-PROJECT`, and add `http://localhost:5173` if you want to test in dev.
 
-### Step 4 — Authentication (Google)
+### Step 4: Authentication (Google)
 
 1. **Authentication → Sign-in method → Google → Enable**.
 2. Set a project **support email**.
-3. **Authentication → Settings → Authorized domains** — ensure `localhost` is present; add production domain after deploy (step 12).
+3. **Authentication → Settings → Authorized domains**: ensure `localhost` is present; add production domain after deploy (step 12).
 
-### Step 5 — Register Web App
+### Step 5: Register Web App
 
 1. **Project settings** (gear) → **Your apps → Web** (`</>`).
 2. Register the app (any nickname).
@@ -375,9 +375,9 @@ Replace `YOUR-PROJECT`, and add `http://localhost:5173` if you want to test in d
 | `appId` | `VITE_FIREBASE_APP_ID` |
 | `measurementId` | `VITE_FIREBASE_MEASUREMENT_ID` |
 
-> **Note:** for `VITE_FIREBASE_AUTH_DOMAIN`, use the app's **hosting domain** (e.g. `your-project.web.app`) instead of the `your-project.firebaseapp.com` value the console suggests — otherwise sign-in fails on Safari/iOS. See [`configuration.md`](./configuration.md#authdomain-and-safariios).
+> **Note:** for `VITE_FIREBASE_AUTH_DOMAIN`, use the app's **hosting domain** (e.g. `your-project.web.app`) instead of the `your-project.firebaseapp.com` value the console suggests; otherwise sign-in fails on Safari/iOS. See [`configuration.md`](./configuration.md#authdomain-and-safariios).
 
-### Step 6 — FCM / Web Push (notifications)
+### Step 6: FCM / Web Push (notifications)
 
 1. **Project settings → Cloud Messaging → Web Push certificates**.
 2. **Generate key pair** (if none exists).
@@ -385,16 +385,16 @@ Replace `YOUR-PROJECT`, and add `http://localhost:5173` if you want to test in d
 
 Users enable notifications in **Settings**. Without VAPID, push registration fails.
 
-### Step 7 — Geoapify (locations)
+### Step 7: Geoapify (locations)
 
 1. Create an account at [geoapify.com](https://www.geoapify.com/).
 2. **API Keys → Create key**.
 3. Copy to `VITE_GEOAPIFY_API_KEY`.
-4. After deploy, restrict HTTP Referer — see [`console-restrictions.md`](./console-restrictions.md).
+4. After deploy, restrict HTTP Referer. See [`console-restrictions.md`](./console-restrictions.md).
 
 Without Geoapify the app works; location autocomplete and geocoding on the event form are unavailable.
 
-### Step 8 — Clone and install
+### Step 8: Clone and install
 
 ```bash
 git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
@@ -403,7 +403,7 @@ npm install
 npm --prefix functions install
 ```
 
-### Step 9 — Local configuration files
+### Step 9: Local configuration files
 
 ```bash
 cp .env.example .env.local
@@ -411,16 +411,16 @@ cp .firebaserc.example .firebaserc
 cp functions/.env.example functions/.env
 ```
 
-1. **`.env.local`** — fill all `VITE_*` variables (steps 5–7).
-2. **`.firebaserc`** — replace `your-firebase-project-id` with your Project ID.
+1. **`.env.local`**: fill all `VITE_*` variables (steps 5-7).
+2. **`.firebaserc`**: replace `your-firebase-project-id` with your Project ID.
 3. **`functions/.env`** (optional):
    - `FUNCTIONS_REGION=europe-west1` (default; must match `VITE_FIREBASE_FUNCTIONS_REGION` if set and the `region` of the `/api/account-approval` rewrite in `firebase.json`)
-   - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com` — from **Project settings → Service accounts**
-   - `SCHEDULER_TIMEZONE=Europe/Lisbon` — time zone for scheduled reminders
+   - `FUNCTIONS_SERVICE_ACCOUNT=firebase-adminsdk-xxxxx@YOUR_PROJECT.iam.gserviceaccount.com`: from **Project settings → Service accounts**
+   - `SCHEDULER_TIMEZONE=Europe/Lisbon`: time zone for scheduled reminders
 
 All variables: [`configuration.md`](./configuration.md).
 
-### Step 9b — New account approval (optional)
+### Step 9b: New account approval (optional)
 
 By default, any Google Sign-In user can use the instance. To require **manual approval** for new sign-ups (useful for closed self-hosting), enable the flow from issue [#176](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/176).
 
@@ -436,11 +436,11 @@ By default, any Google Sign-In user can use the instance. To require **manual ap
 
 1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
 2. **`functions/.env`** (with `ACCOUNT_APPROVAL_REQUIRED=true`):
-   - `ADMIN_EMAIL` — administrator email (auto-approved account)
-   - `APP_PUBLIC_URL` — public PWA URL (e.g. `https://YOUR_PROJECT.web.app`)
-   - `RESEND_API_KEY`, `EMAIL_FROM` — Resend API and sender
-   - `APPROVAL_TOKEN_SECRET` — random secret (≥16 characters) for email links
-   - `INSTANCE_NAME` (optional) — name in emails
+   - `ADMIN_EMAIL`: administrator email (auto-approved account)
+   - `APP_PUBLIC_URL`: public PWA URL (e.g. `https://YOUR_PROJECT.web.app`)
+   - `RESEND_API_KEY`, `EMAIL_FROM`: Resend API and sender
+   - `APPROVAL_TOKEN_SECRET`: random secret (≥16 characters) for email links
+   - `INSTANCE_NAME` (optional): name in emails
 3. Run **`npm run build`** and **`firebase deploy`** (or `npm run deploy`) again so Functions env and the Hosting rewrite apply.
 
 **Flow**
@@ -449,9 +449,9 @@ By default, any Google Sign-In user can use the instance. To require **manual ap
 2. Admin receives email with **Approve** / **Reject** links.
 3. Approved user gets email and can use the app; rejected users see a message and cannot access data.
 
-If you do not need this, skip this step — the instance keeps the previous behavior.
+If you do not need this, skip this step, the instance keeps the previous behavior.
 
-### Step 10 — Firebase CLI
+### Step 10: Firebase CLI
 
 ```bash
 npm install -g firebase-tools   # or: npx firebase ...
@@ -461,7 +461,7 @@ firebase use --add YOUR_PROJECT_ID
 
 Confirm `firebase projects:list` shows the correct project.
 
-### Step 11 — Test locally (optional)
+### Step 11: Test locally (optional)
 
 ```bash
 npm run dev
@@ -469,9 +469,9 @@ npm run dev
 
 Open [http://localhost:5173](http://localhost:5173) and sign in with Google. If login fails, check `localhost` in authorized domains.
 
-For local development **without this Firebase project** (or without touching production), use the Firebase Emulator Suite — see [`emulators.md`](./emulators.md). Hybrid mode (real project + emulated Functions): `VITE_FUNCTIONS_EMULATOR=true`.
+For local development **without this Firebase project** (or without touching production), use the Firebase Emulator Suite. See [`emulators.md`](./emulators.md). Hybrid mode (real project + emulated Functions): `VITE_FUNCTIONS_EMULATOR=true`.
 
-### Step 12 — Deploy
+### Step 12: Deploy
 
 ```bash
 npm run deploy
@@ -505,7 +505,7 @@ Partial deploy:
 
 Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency`): [`cloud-functions-limits.md`](./cloud-functions-limits.md).
 
-### Step 13 — Post-deploy
+### Step 13: Post-deploy
 
 1. **Hosting URL:** Console → Hosting → `https://YOUR_PROJECT.web.app`
 2. **Authentication → Authorized domains:** add `YOUR_PROJECT.web.app` and `YOUR_PROJECT.firebaseapp.com`
@@ -513,7 +513,7 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 4. **OAuth (Google Cloud):** Credentials → Web client → origins with `https://YOUR_PROJECT.web.app` and `http://localhost:5173`
 5. **Privacy:** fill in and publish [`privacy-policy-template.md`](./privacy-policy-template.md) (GDPR; the self-hoster is the data controller)
 
-### Step 14 — Verify
+### Step 14: Verify
 
 - [ ] Google Sign-In in production
 - [ ] Create/edit event with location (Geoapify)
@@ -527,7 +527,7 @@ Default region: **`europe-west1`**. Scaling limits (`maxInstances`, `concurrency
 
 ### Custom domain (optional)
 
-1. **Hosting → Add custom domain** — follow the DNS wizard.
+1. **Hosting → Add custom domain**: follow the DNS wizard.
 2. Add the domain in **Authentication → Authorized domains**.
 3. Update referrers on the Firebase API key and Geoapify key.
 

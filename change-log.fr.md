@@ -4,31 +4,39 @@
 
 ---
 
-## [1.20.0] — 2026-08-25
-
-### Ajouté
-
-- **Nouvelle langue — arabe (première version) :** l'application, les notes de version, l'avis sur les résultats officiels, la politique de confidentialité, les e-mails de compte et les rappels push sont désormais disponibles en arabe, avec une mise en page de droite à gauche (RTL). Choisis-le dans Paramètres → Langue.
-
----
-
-## [1.19.0] — 2026-08-25
-
-### Ajouté
-
-- **Nouvelle langue — français :** l'application, les notes de version, l'avis sur les résultats officiels, la politique de confidentialité, les e-mails de compte et les rappels push sont désormais disponibles en français. Choisis-le dans Paramètres → Langue.
-
----
-
-## [1.18.0] — 2026-08-17
+## [1.21.0] - 2026-08-28
 
 ### Modifié
 
-- **Résultats officiels :** recherche automatique des résultats Parkrun temporairement désactivée — Parkrun bloque les requêtes automatisées provenant d'infrastructures cloud connues. Les résultats peuvent toujours être saisis manuellement.
+- **Accueil redessiné :** le prochain événement en avant avec son compte à rebours, les chiffres de l'année dans une seule bande, désormais avec les kilomètres parcourus, et une place à part pour les réussites, les objectifs en cours et les records personnels.
 
 ---
 
-## [1.17.0] — 2026-08-13
+## [1.20.0] - 2026-08-25
+
+### Ajouté
+
+- **Nouvelle langue, arabe (première version) :** l'application, les notes de version, l'avis sur les résultats officiels, la politique de confidentialité, les e-mails de compte et les rappels push sont désormais disponibles en arabe, avec une mise en page de droite à gauche (RTL). Choisis-le dans Paramètres → Langue.
+
+---
+
+## [1.19.0] - 2026-08-25
+
+### Ajouté
+
+- **Nouvelle langue, français :** l'application, les notes de version, l'avis sur les résultats officiels, la politique de confidentialité, les e-mails de compte et les rappels push sont désormais disponibles en français. Choisis-le dans Paramètres → Langue.
+
+---
+
+## [1.18.0] - 2026-08-17
+
+### Modifié
+
+- **Résultats officiels :** recherche automatique des résultats Parkrun temporairement désactivée : Parkrun bloque les requêtes automatisées provenant d'infrastructures cloud connues. Les résultats peuvent toujours être saisis manuellement.
+
+---
+
+## [1.17.0] - 2026-08-13
 
 ### Ajouté
 
@@ -36,28 +44,28 @@
 
 ---
 
-## [1.16.1] — 2026-08-13
+## [1.16.1] - 2026-08-13
 
 ### Ajouté
 
-- **Plus d'emojis :** plus de 50 nouvelles options — animaux, fleurs, nourriture, thèmes d'Halloween et drapeaux d'Asie, d'Amérique du Sud et d'Afrique du Nord — ajoutées au sélecteur d'emojis des événements et objectifs.
+- **Plus d'emojis :** plus de 50 nouvelles options ajoutées au sélecteur d'emojis des événements et objectifs : animaux, fleurs, nourriture, thèmes d'Halloween et drapeaux d'Asie, d'Amérique du Sud et d'Afrique du Nord.
 
 ### Corrigé
 
-- **Statut d'événement :** un événement avec un résultat officiel ne peut plus se retrouver marqué « Manqué ». Il y avait une condition de concurrence entre la transition automatique vers « Manqué » et l'enregistrement du résultat — si la transition automatique gagnait, le statut était faux alors que le résultat avait bien été enregistré.
+- **Statut d'événement :** un événement avec un résultat officiel ne peut plus se retrouver marqué « Manqué ». Il y avait une condition de concurrence entre la transition automatique vers « Manqué » et l'enregistrement du résultat. Si la transition automatique gagnait, le statut était faux alors que le résultat avait bien été enregistré.
 
 ---
 
-## [1.16.0] — 2026-08-03
+## [1.16.0] - 2026-08-03
 
 ### Ajouté
 
 - **Sauvegarde avec photos et vidéos :** le `.zip` de sauvegarde inclut désormais les fichiers photo et vidéo, pas seulement leurs métadonnées. Tu peux désactiver l'option avant l'export ; au-delà de 300 Mo, la sauvegarde ne conserve que les données.
-- **Restauration des photos et vidéos :** avec les fichiers dans le `.zip`, les photos et vidéos reviennent même en mode « tout remplacer » et lors d'une restauration dans un autre compte — auparavant elles ne survivaient que si elles étaient encore dans le compte.
+- **Restauration des photos et vidéos :** avec les fichiers dans le `.zip`, les photos et vidéos reviennent même en mode « tout remplacer » et lors d'une restauration dans un autre compte. Auparavant elles ne survivaient que si elles étaient encore dans le compte.
 
 ---
 
-## [1.15.1] — 2026-08-03
+## [1.15.1] - 2026-08-03
 
 ### Corrigé
 
@@ -66,7 +74,7 @@
 
 ---
 
-## [1.15.0] — 2026-08-03
+## [1.15.0] - 2026-08-03
 
 ### Ajouté
 
@@ -75,7 +83,7 @@
 
 ---
 
-## [1.14.2] — 2026-08-02
+## [1.14.2] - 2026-08-02
 
 ### Corrigé
 
@@ -84,7 +92,7 @@
 
 ---
 
-## [1.14.1] — 2026-08-01
+## [1.14.1] - 2026-08-01
 
 ### Corrigé
 
@@ -92,15 +100,15 @@
 
 ---
 
-## [1.14.0] — 2026-07-30
+## [1.14.0] - 2026-07-30
 
 ### Ajouté
 
-- **Auto-hébergement :** approbation manuelle optionnelle des nouveaux comptes — écrans en attente/refusé, e-mail admin avec liens approuver/refuser (Resend), notification de l'utilisateur, règles Firestore/Storage et fonctions Auth bloquantes ; voir `docs/configuration.md` et `docs/self-hosting.md`.
+- **Auto-hébergement :** approbation manuelle optionnelle des nouveaux comptes : écrans en attente/refusé, e-mail admin avec liens approuver/refuser (Resend), notification de l'utilisateur, règles Firestore/Storage et fonctions Auth bloquantes ; voir `docs/configuration.md` et `docs/self-hosting.md`.
 
 ---
 
-## [1.13.0] — 2026-07-23
+## [1.13.0] - 2026-07-23
 
 ### Ajouté
 
@@ -108,7 +116,7 @@
 
 ---
 
-## [1.12.1] — 2026-07-23
+## [1.12.1] - 2026-07-23
 
 ### Modifié
 
@@ -116,11 +124,11 @@
 
 ---
 
-## [1.12.0] — 2026-07-23
+## [1.12.0] - 2026-07-23
 
 ### Ajouté
 
-- **Langues :** prise en charge de l'espagnol (es-ES) et de l'allemand — interface, libellés d'emojis, rappels push, changelog, politique de confidentialité et avis sur les résultats officiels.
+- **Langues :** prise en charge de l'espagnol (es-ES) et de l'allemand : interface, libellés d'emojis, rappels push, changelog, politique de confidentialité et avis sur les résultats officiels.
 - **Paramètres :** sélecteur de langue avec Português, English, Español et Deutsch.
 
 ### Modifié
@@ -129,7 +137,7 @@
 
 ---
 
-## [1.11.0] — 2026-07-20
+## [1.11.0] - 2026-07-20
 
 ### Ajouté
 
@@ -145,7 +153,7 @@
 
 ---
 
-## [1.10.0] — 2026-07-19
+## [1.10.0] - 2026-07-19
 
 ### Ajouté
 
@@ -162,7 +170,7 @@
 
 ---
 
-## [1.9.2] — 2026-07-19
+## [1.9.2] - 2026-07-19
 
 ### Ajouté
 
@@ -178,7 +186,7 @@
 
 ---
 
-## [1.9.1] — 2026-07-19
+## [1.9.1] - 2026-07-19
 
 ### Corrigé
 
@@ -190,7 +198,7 @@
 
 ---
 
-## [1.9.0] — 2026-07-09
+## [1.9.0] - 2026-07-09
 
 ### Ajouté
 
@@ -202,7 +210,7 @@
 
 ---
 
-## [1.8.0] — 2026-07-09
+## [1.8.0] - 2026-07-09
 
 ### Ajouté
 
@@ -210,7 +218,7 @@
 
 ---
 
-## [1.7.0] — 2026-07-09
+## [1.7.0] - 2026-07-09
 
 ### Ajouté
 
@@ -222,7 +230,7 @@
 
 ---
 
-## [1.6.0] — 2026-07-08
+## [1.6.0] - 2026-07-08
 
 ### Ajouté
 
@@ -230,7 +238,7 @@
 
 ---
 
-## [1.5.1] — 2026-07-08
+## [1.5.1] - 2026-07-08
 
 ### Ajouté
 
@@ -239,7 +247,7 @@
 
 ---
 
-## [1.5.0] — 2026-07-08
+## [1.5.0] - 2026-07-08
 
 ### Ajouté
 
@@ -248,7 +256,7 @@
 
 ---
 
-## [1.4.0] — 2026-07-08
+## [1.4.0] - 2026-07-08
 
 ### Ajouté
 
@@ -256,7 +264,7 @@
 
 ---
 
-## [1.3.2] — 2026-07-07
+## [1.3.2] - 2026-07-07
 
 ### Ajouté
 
@@ -264,7 +272,7 @@
 
 ---
 
-## [1.3.1] — 2026-07-07
+## [1.3.1] - 2026-07-07
 
 ### Ajouté
 
@@ -277,7 +285,7 @@
 
 ---
 
-## [1.3.0] — 2026-07-06
+## [1.3.0] - 2026-07-06
 
 ### Modifié
 
@@ -285,7 +293,7 @@
 
 ---
 
-## [1.2.0] — 2026-07-06
+## [1.2.0] - 2026-07-06
 
 ### Ajouté
 
@@ -297,7 +305,7 @@
 
 ---
 
-## [1.1.0] — 2026-07-06
+## [1.1.0] - 2026-07-06
 
 ### Ajouté
 
@@ -305,7 +313,7 @@
 
 ---
 
-## [1.0.2] — 2026-07-06
+## [1.0.2] - 2026-07-06
 
 ### Corrigé
 
@@ -313,7 +321,7 @@
 
 ---
 
-## [1.0.1] — 2026-07-06
+## [1.0.1] - 2026-07-06
 
 ### Ajouté
 
@@ -321,7 +329,7 @@
 
 ---
 
-## [1.0.0] — 2026-07-06
+## [1.0.0] - 2026-07-06
 
 Jalon : partage de données entre amis.
 
@@ -332,7 +340,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.22.0] — 2026-07-06
+## [0.22.0] - 2026-07-06
 
 ### Ajouté
 
@@ -340,7 +348,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.21.0] — 2026-07-06
+## [0.21.0] - 2026-07-06
 
 ### Ajouté
 
@@ -348,7 +356,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.20.0] — 2026-07-05
+## [0.20.0] - 2026-07-05
 
 ### Ajouté
 
@@ -356,7 +364,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.19.1] — 2026-07-05
+## [0.19.1] - 2026-07-05
 
 ### Corrigé
 
@@ -364,7 +372,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.19.0] — 2026-07-05
+## [0.19.0] - 2026-07-05
 
 ### Ajouté
 
@@ -372,7 +380,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.18.1] — 2026-07-05
+## [0.18.1] - 2026-07-05
 
 ### Corrigé
 
@@ -380,7 +388,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.18.0] — 2026-07-05
+## [0.18.0] - 2026-07-05
 
 ### Ajouté
 
@@ -388,7 +396,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.17.2] — 2026-07-05
+## [0.17.2] - 2026-07-05
 
 ### Corrigé
 
@@ -396,7 +404,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.17.1] — 2026-07-05
+## [0.17.1] - 2026-07-05
 
 ### Corrigé
 
@@ -404,7 +412,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.17.0] — 2026-07-05
+## [0.17.0] - 2026-07-05
 
 ### Ajouté
 
@@ -412,7 +420,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.16.0] — 2026-07-05
+## [0.16.0] - 2026-07-05
 
 ### Ajouté
 
@@ -420,7 +428,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.15.0] — 2026-07-05
+## [0.15.0] - 2026-07-05
 
 ### Ajouté
 
@@ -428,7 +436,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.14.1] — 2026-07-05
+## [0.14.1] - 2026-07-05
 
 ### Corrigé
 
@@ -436,7 +444,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.14.0] — 2026-07-05
+## [0.14.0] - 2026-07-05
 
 ### Ajouté
 
@@ -444,7 +452,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.13.1] — 2026-07-05
+## [0.13.1] - 2026-07-05
 
 ### Corrigé
 
@@ -452,7 +460,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.13.0] — 2026-07-05
+## [0.13.0] - 2026-07-05
 
 ### Ajouté
 
@@ -460,7 +468,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.12.2] — 2026-07-05
+## [0.12.2] - 2026-07-05
 
 ### Corrigé
 
@@ -468,7 +476,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.12.1] — 2026-07-05
+## [0.12.1] - 2026-07-05
 
 ### Corrigé
 
@@ -476,7 +484,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.12.0] — 2026-07-05
+## [0.12.0] - 2026-07-05
 
 ### Ajouté
 
@@ -484,7 +492,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.11.1] — 2026-07-05
+## [0.11.1] - 2026-07-05
 
 ### Corrigé
 
@@ -492,7 +500,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.11.0] — 2026-07-05
+## [0.11.0] - 2026-07-05
 
 ### Ajouté
 
@@ -504,7 +512,7 @@ Jalon : partage de données entre amis.
 
 ---
 
-## [0.9.0] — 2026-07-04
+## [0.9.0] - 2026-07-04
 
 Jalon : résultats officiels automatiques.
 
@@ -520,7 +528,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.8.0] — 2026-07-04
+## [0.8.0] - 2026-07-04
 
 ### Corrigé
 
@@ -532,7 +540,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.7.0] — 2026-07-04
+## [0.7.0] - 2026-07-04
 
 ### Ajouté
 
@@ -541,7 +549,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.6.2] — 2026-07-02
+## [0.6.2] - 2026-07-02
 
 ### Ajouté
 
@@ -549,7 +557,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.6.1] — 2026-07-02
+## [0.6.1] - 2026-07-02
 
 ### Corrigé
 
@@ -557,7 +565,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.6.0] — 2026-06-30
+## [0.6.0] - 2026-06-30
 
 ### Ajouté
 
@@ -565,7 +573,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.5.4] — 2026-06-30
+## [0.5.4] - 2026-06-30
 
 ### Ajouté
 
@@ -573,7 +581,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.5.3] — 2026-06-30
+## [0.5.3] - 2026-06-30
 
 ### Corrigé
 
@@ -581,7 +589,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.5.2] — 2026-06-30
+## [0.5.2] - 2026-06-30
 
 ### Corrigé
 
@@ -589,7 +597,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.5.1] — 2026-06-30
+## [0.5.1] - 2026-06-30
 
 ### Ajouté
 
@@ -598,7 +606,7 @@ Jalon : résultats officiels automatiques.
 
 ---
 
-## [0.5.0] — 2026-06-29
+## [0.5.0] - 2026-06-29
 
 Jalon : mode carte.
 
@@ -609,7 +617,7 @@ Jalon : mode carte.
 
 ---
 
-## [0.4.3] — 2026-06-29
+## [0.4.3] - 2026-06-29
 
 ### Corrigé
 
@@ -617,7 +625,7 @@ Jalon : mode carte.
 
 ---
 
-## [0.4.2] — 2026-06-29
+## [0.4.2] - 2026-06-29
 
 ### Corrigé
 
@@ -625,7 +633,7 @@ Jalon : mode carte.
 
 ---
 
-## [0.4.1] — 2026-06-29
+## [0.4.1] - 2026-06-29
 
 ### Corrigé
 
@@ -633,7 +641,7 @@ Jalon : mode carte.
 
 ---
 
-## [0.4.0] — 2026-06-29
+## [0.4.0] - 2026-06-29
 
 Jalon : photos et vidéos d'événement.
 
@@ -648,7 +656,7 @@ Jalon : photos et vidéos d'événement.
 
 ---
 
-## [0.2.0] — 2026-06-28
+## [0.2.0] - 2026-06-28
 
 Jalon : internationalisation.
 
@@ -673,9 +681,9 @@ Jalon : internationalisation.
 
 ---
 
-## [0.1.0] — 2026-06-26
+## [0.1.0] - 2026-06-26
 
-Jalon : **MVP** — remplacement du tableur Excel par une PWA.
+Jalon : **MVP**, remplacement du tableur Excel par une PWA.
 
 ### Ajouté
 

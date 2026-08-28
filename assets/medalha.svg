@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 340 490" width="340" height="490">
+  <g id="ribbon">
+    <polygon points="110,0 170,0 140,220 70,200" fill="#10B981"/>
+    <polygon points="70,200 140,220 110,260 40,230" fill="#059669"/>
+    <polygon points="170,0 230,0 270,200 200,220" fill="#34D399"/>
+    <polygon points="200,220 270,200 300,230 230,260" fill="#10B981"/>
+  </g>
+  
+  <g id="medal-body">
+    <polygon points="140,210 200,210 185,245 155,245" fill="#D97706"/>
+    
+    <polygon points="170,240 250,270 290,340 270,420 170,460 70,420 50,340 90,270" fill="#F59E0B"/>
+    <polygon points="170,240 250,270 210,340 170,340" fill="#FBBF24"/>
+    <polygon points="250,270 290,340 210,340" fill="#D97706"/>
+    <polygon points="290,340 270,420 210,400 210,340" fill="#B45309"/>
+    <polygon points="270,420 170,460 170,400 210,400" fill="#92400E"/>
+    <polygon points="170,460 70,420 130,400 170,400" fill="#B45309"/>
+    <polygon points="70,420 50,340 130,340 130,400" fill="#D97706"/>
+    <polygon points="50,340 90,270 130,340" fill="#FBBF24"/>
+    <polygon points="90,270 170,240 170,340 130,340" fill="#FCD34D"/>
+    
+    <polygon points="170,290 220,310 235,350 210,390 170,410 130,390 105,350 120,310" fill="#FFF" fill-opacity="0.2"/>
+    <polygon points="170,305 182,335 215,335 188,355 198,385 170,365 142,385 152,355 125,335 158,335" fill="#FFFFFF"/>
+  </g>
+</svg>

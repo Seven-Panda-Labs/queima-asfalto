@@ -1,4 +1,4 @@
-# Identidade visual — Queima Asfalto
+# Identidade visual: Queima Asfalto
 
 **Português** · [English](#english)
 
@@ -21,8 +21,8 @@ A paleta e os tokens de UI vivem em `src/styles/globals.css`. A app suporta **mo
 
 ### Tipografia
 
-- **Display:** Bebas Neue — títulos de página (ex.: "EVENTOS").
-- **Sans:** Poppins — corpo, formulários e navegação.
+- **Display:** Bebas Neue, para títulos de página (ex.: "EVENTOS").
+- **Sans:** Poppins, para corpo, formulários e navegação.
 
 ### Temas (paleta semântica)
 
@@ -63,11 +63,11 @@ No escuro, os pills usam fundos mais escuros e texto mais claro para manter cont
 | `warning-border` | `#FDE68A` | `#92400E` |
 | `warning-fg` | `#78350F` | `#FDE68A` |
 
-### Modo escuro — princípios
+### Modo escuro: princípios
 
 - Fundos profundos (`#121212`) com superfícies elevadas (`#1E1E1E`) para cartões e tabelas.
 - Texto invertido para branco/cinza claro; títulos em Bebas Neue mantêm impacto visual.
-- Azul elétrico e laranja de acento **não mudam** entre temas — são a âncora da marca.
+- Azul elétrico e laranja de acento **não mudam** entre temas, são a âncora da marca.
 - Verde e vermelho semânticos são ligeiramente mais claros no escuro para legibilidade.
 - Preferir tokens Tailwind (`bg-surface`, `text-muted`, `text-danger`, etc.) em vez de cores hex fixas no código.
 
@@ -79,7 +79,7 @@ No escuro, os pills usam fundos mais escuros e texto mais claro para manter cont
 - **Ícones offline:** torre de sinal + cofre de dados.
 - **Padrões decorativos:** sapatilhas, relógios, mapas, chamas.
 - **Humor sarcástico:** corredor encostado à parede ("200º lugar").
-- **Tom de voz (copy):** ver [`voice.md`](./voice.md) — motivacional, exigente, sarcástico com moderação.
+- **Tom de voz (copy):** ver [`voice.md`](./voice.md), motivacional, exigente, sarcástico com moderação.
 - **Progresso:** arco a 75% concluído.
 
 ---
@@ -103,8 +103,8 @@ The palette and UI tokens live in `src/styles/globals.css`. The app supports **l
 
 ### Typography
 
-- **Display:** Bebas Neue — page titles (e.g. "EVENTOS").
-- **Sans:** Poppins — body text, forms, and navigation.
+- **Display:** Bebas Neue, for page titles (e.g. "EVENTOS").
+- **Sans:** Poppins, for body text, forms, and navigation.
 
 ### Themes (semantic palette)
 
@@ -145,11 +145,11 @@ In dark mode, pills use darker backgrounds and lighter text for readable contras
 | `warning-border` | `#FDE68A` | `#92400E` |
 | `warning-fg` | `#78350F` | `#FDE68A` |
 
-### Dark mode — principles
+### Dark mode: principles
 
 - Deep backgrounds (`#121212`) with elevated surfaces (`#1E1E1E`) for cards and tables.
 - Inverted text to white/light grey; Bebas Neue titles keep visual impact.
-- Electric blue and orange accent **do not change** between themes — they anchor the brand.
+- Electric blue and orange accent **do not change** between themes, they anchor the brand.
 - Semantic green and red are slightly lighter in dark mode for legibility.
 - Prefer Tailwind tokens (`bg-surface`, `text-muted`, `text-danger`, etc.) over hard-coded hex in code.
 
@@ -161,5 +161,5 @@ In dark mode, pills use darker backgrounds and lighter text for readable contras
 - **Offline icons:** signal tower + data vault.
 - **Decorative patterns:** shoes, watches, maps, flames.
 - **Sarcastic humour:** runner leaning against a wall ("200th place").
-- **Voice (copy):** see [`voice.md`](./voice.md) — motivational, demanding, sarcastic in moderation.
+- **Voice (copy):** see [`voice.md`](./voice.md), motivational, demanding, sarcastic in moderation.
 - **Progress:** arc at 75% complete.

@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for the report. For **security issues**, see [SECURITY.md](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/SECURITY.md) — do not use this form.
+        Thanks for the report. For **security issues**, see [SECURITY.md](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/SECURITY.md), not this form.
 
         Obrigado pelo report. Para **problemas de segurança**, vê [SECURITY.md](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/SECURITY.md).
 

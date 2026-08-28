@@ -88,9 +88,9 @@ function parkrun(
   }
 }
 
-/** Fictional runner history (2021–2026) with real Portuguese race names. */
+/** Fictional runner history (2021 a 2026) with real Portuguese race names. */
 export const DEMO_EVENTS: SeedEvent[] = [
-  // 2021 — getting started
+  // 2021: getting started
   {
     name: 'Corrida da Cidade de Almada',
     date: '2021-03-14',
@@ -105,7 +105,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     classification: '842/2100',
   },
   {
-    name: 'Corrida da Mulher — Lisboa',
+    name: 'Corrida da Mulher, Lisboa',
     date: '2021-05-09',
     realDistance: 5,
     eventType: 'km_5',
@@ -163,7 +163,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida Montepio — 10K',
+    name: 'Corrida Montepio 10K',
     date: '2022-05-15',
     realDistance: 10,
     eventType: 'km_10',
@@ -177,7 +177,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
   },
   parkrun('2022-07-02', '00:27:55', '92/198'),
   {
-    name: 'Trail da Arrábida — Curto',
+    name: 'Trail da Arrábida, Curto',
     date: '2022-09-18',
     realDistance: 10,
     eventType: 'km_10',
@@ -263,7 +263,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     classification: '890/5200',
   },
 
-  // 2024 — stronger year
+  // 2024: stronger year
   parkrun('2024-01-13', '00:25:48', '58/176'),
   {
     name: 'Meia Maratona de Lisboa',
@@ -281,7 +281,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida da Mulher — Porto',
+    name: 'Corrida da Mulher, Porto',
     date: '2024-05-12',
     realDistance: 5,
     eventType: 'km_5',
@@ -323,7 +323,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida de Natal — Belém',
+    name: 'Corrida de Natal, Belém',
     date: '2024-12-15',
     realDistance: 10,
     eventType: 'km_10',
@@ -336,7 +336,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     classification: '205/1400',
   },
 
-  // 2025 — marathon year
+  // 2025: marathon year
   parkrun('2025-01-11', '00:24:38', '42/168'),
   {
     name: 'Meia Maratona de Cascais',
@@ -352,7 +352,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     classification: '520/4100',
   },
   {
-    name: 'Corrida Montepio — 10K',
+    name: 'Corrida Montepio 10K',
     date: '2025-05-18',
     realDistance: 10,
     eventType: 'km_10',
@@ -395,7 +395,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     classification: '410/5800',
   },
 
-  // 2026 — current season
+  // 2026: current season
   parkrun('2026-01-10', '00:23:52', '31/162'),
   {
     name: 'Meia Maratona de Lisboa',
@@ -450,7 +450,7 @@ export const DEMO_EVENTS: SeedEvent[] = [
     notes: 'Objectivo sub-4h.',
   },
   {
-    name: 'Corrida de Natal — Belém',
+    name: 'Corrida de Natal, Belém',
     date: '2026-12-13',
     realDistance: 10,
     eventType: 'km_10',
@@ -542,12 +542,12 @@ export const DEMO_BUCKET_LIST: SeedBucketListItem[] = [
     disciplines: ['km_42_2'],
     targetMonth: 'June',
     emoji: '🌍',
-    notes: 'Ultra clássica — sonho de longo prazo.',
+    notes: 'Ultra clássica, sonho de longo prazo.',
     locationLat: -29.6,
     locationLng: 30.38,
   },
   {
-    name: 'UTMB — CCC',
+    name: 'UTMB CCC',
     location: 'Chamonix, França',
     realDistance: 101,
     disciplines: ['km_42_2'],

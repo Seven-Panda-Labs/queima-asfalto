@@ -1,4 +1,4 @@
-# Limites Cloud Functions — avaliação
+# Limites Cloud Functions: avaliação
 
 **Português** · [English](#english)
 
@@ -15,8 +15,8 @@ Avaliação de **quotas e limites de escala** (Gen 2) para o projeto Queima Asfa
 | Função | Tipo | Carga | Risco sem limites |
 |--------|------|-------|-------------------|
 | `inviteShare`, `acceptShare`, … (10 callables) | Callable | Leitura/escrita Firestore | Escala até quota do projeto; custo moderado |
-| `lookupOfficialResults` | Callable | HTTP a sites de timing (até 60 s) | Alto — scraping paralelo, abuso multi-conta |
-| `dispatchReminders` | Agendada (60 min) | Scan utilizadores + FCM | Médio — execuções sobrepostas do cron |
+| `lookupOfficialResults` | Callable | HTTP a sites de timing (até 60 s) | Alto, scraping paralelo, abuso multi-conta |
+| `dispatchReminders` | Agendada (60 min) | Scan utilizadores + FCM | Médio, execuções sobrepostas do cron |
 
 ### Predefinições Firebase Gen 2 (sem configurar)
 
@@ -24,13 +24,13 @@ Avaliação de **quotas e limites de escala** (Gen 2) para o projeto Queima Asfa
 |-------|-------------------|----------|
 | `maxInstances` | Escala até quota da conta (centenas) | Picos de custo em tráfego ou abuso |
 | `concurrency` | 80 por instância | Muitos scrapes HTTP em paralelo no lookup |
-| `minInstances` | 0 | OK — sem custo idle |
+| `minInstances` | 0 | OK, sem custo idle |
 
 ### Mitigações já existentes
 
 - **Auth obrigatório** em todas as callables (`request.auth`)
 - **Rate limit por utilizador** em `lookupOfficialResults` (10 s entre pedidos, Firestore transaction)
-- **Regras Firestore** — dados isolados por `userId`
+- **Regras Firestore**: dados isolados por `userId`
 
 Os limites de instância/concorrência **complementam** o rate limit: protegem o projeto contra muitos utilizadores distintos a fazer lookup em simultâneo e contra escala descontrolada das partilhas.
 
@@ -50,7 +50,7 @@ Definidos em [`functions/src/functionOptions.ts`](../functions/src/functionOptio
 
 | Cenário | Sugestão |
 |---------|----------|
-| Poucos utilizadores (&lt; 50) | Valores actuais — suficientes |
+| Poucos utilizadores (&lt; 50) | Valores actuais, suficientes |
 | Muitos utilizadores com notificações | Aumentar `SCHEDULER_TIMEOUT_SECONDS` ou processar utilizadores em lotes no código |
 | Lookup lento mas tráfego legítimo alto | Subir `LOOKUP_CALLABLE_MAX_INSTANCES` com cuidado (respeitar sites de timing) |
 | Fork com tráfego elevado | Rever quotas Firebase Console → Cloud Run; considerar alertas de billing |
@@ -65,8 +65,8 @@ Edita as constantes em `functionOptions.ts` ou passa `overrides` em `callableFun
 
 ### O que não foi limitado (deliberadamente)
 
-- **`minInstances`:** mantido em 0 — evita custo com instâncias idle
-- **CPU / memória:** 256 MiB para callables — suficiente para scraping e PDF parsing moderado
+- **`minInstances`:** mantido em 0, o que evita custo com instâncias idle
+- **CPU / memória:** 256 MiB para callables, suficiente para scraping e PDF parsing moderado
 - **Quotas GCP da conta:** continuam no tecto da Google; estes limites são por função, não substituem alertas de conta
 
 ---
@@ -84,8 +84,8 @@ Evaluation of **scaling quotas and limits** (Gen 2) for Queima Asfalto and self-
 | Function | Type | Workload | Risk without limits |
 |----------|------|----------|---------------------|
 | `inviteShare`, `acceptShare`, … (10 callables) | Callable | Firestore read/write | Scales to project quota; moderate cost |
-| `lookupOfficialResults` | Callable | HTTP to timing sites (up to 60 s) | High — parallel scraping, multi-account abuse |
-| `dispatchReminders` | Scheduled (60 min) | User scan + FCM | Medium — overlapping cron runs |
+| `lookupOfficialResults` | Callable | HTTP to timing sites (up to 60 s) | High, parallel scraping, multi-account abuse |
+| `dispatchReminders` | Scheduled (60 min) | User scan + FCM | Medium, overlapping cron runs |
 
 ### Firebase Gen 2 defaults (when unset)
 
@@ -93,13 +93,13 @@ Evaluation of **scaling quotas and limits** (Gen 2) for Queima Asfalto and self-
 |--------|---------|-------|
 | `maxInstances` | Scales to account quota (hundreds) | Cost spikes under traffic or abuse |
 | `concurrency` | 80 per instance | Many parallel HTTP scrapes on lookup |
-| `minInstances` | 0 | OK — no idle cost |
+| `minInstances` | 0 | OK, no idle cost |
 
 ### Existing mitigations
 
 - **Auth required** on all callables (`request.auth`)
 - **Per-user rate limit** on `lookupOfficialResults` (10 s between requests, Firestore transaction)
-- **Firestore rules** — data isolated by `userId`
+- **Firestore rules**: data isolated by `userId`
 
 Instance/concurrency limits **complement** the rate limit: they protect the project when many distinct users run lookups at once and cap uncontrolled scaling on shares.
 
@@ -134,6 +134,6 @@ Edit constants in `functionOptions.ts` or pass `overrides` to `callableFunctionO
 
 ### Intentionally not limited
 
-- **`minInstances`:** stays 0 — avoids idle instance cost
-- **CPU / memory:** 256 MiB for callables — enough for scraping and moderate PDF parsing
+- **`minInstances`:** stays 0, which avoids idle instance cost
+- **CPU / memory:** 256 MiB for callables, enough for scraping and moderate PDF parsing
 - **GCP account quotas:** still capped by Google; per-function limits do not replace account-level alerts

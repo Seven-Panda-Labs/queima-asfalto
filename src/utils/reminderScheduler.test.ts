@@ -115,7 +115,7 @@ describe('formatReminderBody', () => {
       isMissed: false,
     }
 
-    expect(formatReminderBody(reminder, 1)).toBe('Meia de Porto — amanhã')
-    expect(formatReminderBody(reminder, 3)).toBe('Meia de Porto — daqui a 3 dias')
+    expect(formatReminderBody(reminder, 1)).toBe('Meia de Porto, amanhã')
+    expect(formatReminderBody(reminder, 3)).toBe('Meia de Porto, daqui a 3 dias')
   })
 })

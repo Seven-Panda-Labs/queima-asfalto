@@ -1,8 +1,8 @@
 ---
-description: Public repo — feature branches and PRs only; never push main without explicit user request
+description: Public repo: feature branches and PRs only; never push main without explicit user request
 alwaysApply: true
 ---
 
-Follow [AGENTS.md](../../AGENTS.md) — the single source of truth for agent instructions in this repo.
+Follow [AGENTS.md](../../AGENTS.md), the single source of truth for agent instructions in this repo.
 
 **Never** `git push origin main` (or force-push `main`/`master`) unless the user explicitly requests an emergency hotfix. Commit, push, and deploy only when the user asks.

@@ -17,7 +17,7 @@ const rootPackage = JSON.parse(
   readFileSync(resolve(ROOT, 'package.json'), 'utf8'),
 ) as { name: string; version: string }
 
-/** Root app is AGPL (not a dependency); license-checker misreads LICENSE/README — exclude by current version. */
+/** Root app is AGPL (not a dependency); license-checker misreads LICENSE/README, so exclude by current version. */
 const EXCLUDE_PACKAGES = `${rootPackage.name}@${rootPackage.version};queima-asfalto-functions`
 
 const PRODUCTION_ALLOW = [

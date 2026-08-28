@@ -1,6 +1,6 @@
 import type { UserResultsProfile } from './types.js'
 
-/** Sporthive name search term — prefer full name, then last name (like the website). */
+/** Sporthive name search term, prefer full name, then last name (like the website). */
 export function buildSporthiveSearchTerm(profile: UserResultsProfile): string | null {
   const first = profile.resultFirstName?.trim()
   const last = profile.resultLastName?.trim()

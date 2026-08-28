@@ -20,7 +20,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'Novo registo pendente de aprovação',
     title: 'Novo utilizador',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) pediu acesso à instância.</p><p>Aprova ou rejeita este registo:</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) pediu acesso à instância.</p><p>Aprova ou rejeita este registo:</p>`,
     approveLabel: 'Aprovar conta',
     rejectLabel: 'Rejeitar conta',
   },
@@ -28,7 +28,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'New sign-up pending approval',
     title: 'New user',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) requested access to this instance.</p><p>Approve or reject this registration:</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) requested access to this instance.</p><p>Approve or reject this registration:</p>`,
     approveLabel: 'Approve account',
     rejectLabel: 'Reject account',
   },
@@ -36,7 +36,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'Nuevo registro pendiente de aprobación',
     title: 'Nuevo usuario',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) solicitó acceso a la instancia.</p><p>Aprueba o rechaza este registro:</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) solicitó acceso a la instancia.</p><p>Aprueba o rechaza este registro:</p>`,
     approveLabel: 'Aprobar cuenta',
     rejectLabel: 'Rechazar cuenta',
   },
@@ -44,7 +44,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'Neue Registrierung wartet auf Freigabe',
     title: 'Neuer Nutzer',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) hat Zugang zur Instanz angefordert.</p><p>Freigeben oder ablehnen:</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) hat Zugang zur Instanz angefordert.</p><p>Freigeben oder ablehnen:</p>`,
     approveLabel: 'Konto freigeben',
     rejectLabel: 'Konto ablehnen',
   },
@@ -52,7 +52,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'Nouvelle inscription en attente d’approbation',
     title: 'Nouvel utilisateur',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) a demandé l’accès à cette instance.</p><p>Approuve ou refuse cette inscription :</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) a demandé l’accès à cette instance.</p><p>Approuve ou refuse cette inscription :</p>`,
     approveLabel: 'Approuver le compte',
     rejectLabel: 'Refuser le compte',
   },
@@ -60,7 +60,7 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     subject: 'تسجيل جديد بانتظار الموافقة',
     title: 'مستخدم جديد',
     body: ({ name, email }) =>
-      `<p><strong>${escape(name || '—')}</strong> (${escape(email)}) طلب الوصول إلى هذه النسخة.</p><p>اقبل هذا التسجيل أو ارفضه:</p>`,
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) طلب الوصول إلى هذه النسخة.</p><p>اقبل هذا التسجيل أو ارفضه:</p>`,
     approveLabel: 'قبول الحساب',
     rejectLabel: 'رفض الحساب',
   },

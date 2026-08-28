@@ -80,4 +80,24 @@ describe('computeDashboardStats', () => {
     const stats = computeDashboardStats(events, 2026)
     expect(stats.averagePace).toBeNull()
   })
+
+  it('sums the real distance of completed events in the year only', () => {
+    const events: Event[] = [
+      makeEvent({ id: 'a', status: 'completed', date: new Date(2026, 0, 1), realDistance: 5.2 }),
+      makeEvent({ id: 'b', status: 'completed', date: new Date(2026, 1, 1), realDistance: 21.1 }),
+      makeEvent({ id: 'planned', status: 'planned', date: new Date(2026, 2, 1), realDistance: 42.2 }),
+      makeEvent({ id: 'past', status: 'completed', date: new Date(2025, 0, 1), realDistance: 10 }),
+    ]
+
+    const stats = computeDashboardStats(events, 2026)
+    expect(stats.completedDistanceKm).toBe(26.3)
+  })
+
+  it('reports zero distance when nothing was completed', () => {
+    const events: Event[] = [
+      makeEvent({ status: 'planned', date: new Date(2026, 0, 1), realDistance: 10 }),
+    ]
+
+    expect(computeDashboardStats(events, 2026).completedDistanceKm).toBe(0)
+  })
 })

@@ -80,10 +80,10 @@ export function ImportPreview({
                   <td className="px-3 py-2 whitespace-nowrap">{formatDatePt(row.event.date)}</td>
                   <td className="px-3 py-2">{row.event.name}</td>
                   <td className="px-3 py-2 whitespace-nowrap">{formatEventStatusLabel(row.event.status)}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">{row.event.time ?? '—'}</td>
-                  <td className="px-3 py-2 whitespace-nowrap">{row.event.pace ?? '—'}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{row.event.time ?? '-'}</td>
+                  <td className="px-3 py-2 whitespace-nowrap">{row.event.pace ?? '-'}</td>
                   <td className="px-3 py-2 whitespace-nowrap">
-                    {row.event.classification ?? '—'}
+                    {row.event.classification ?? '-'}
                   </td>
                 </tr>
               ))}
@@ -108,11 +108,11 @@ export function ImportPreview({
             {bucketListItems.map((row) => (
               <li key={`${row.sheet}-${row.row}`}>
                 {row.item.name}
-                {row.item.location ? ` — ${row.item.location}` : ''}
+                {row.item.location ? `, ${row.item.location}` : ''}
                 {row.item.disciplines.length > 0
                   ? ` (${row.item.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')})`
                   : ''}
-                {row.item.targetMonth ? ` — ${row.item.targetMonth}` : ''}
+                {row.item.targetMonth ? `, ${row.item.targetMonth}` : ''}
               </li>
             ))}
           </ul>
@@ -149,7 +149,7 @@ export function ImportPreview({
                     {t('import.skippedRow', { sheet: row.sheet, row: row.row })}
                   </span>{' '}
                   {formatImportSkipReason(row.reason)}
-                  {row.raw ? ` — ${row.raw}` : ''}
+                  {row.raw ? `: ${row.raw}` : ''}
                 </li>
               ))}
             </ul>

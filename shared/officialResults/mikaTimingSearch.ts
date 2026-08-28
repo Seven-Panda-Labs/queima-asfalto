@@ -1,6 +1,6 @@
 import type { UserResultsProfile } from './types.js'
 
-/** mika:timing search API — usually last name in `search[name]`. */
+/** mika:timing search API, usually last name in `search[name]`. */
 export function buildMikaTimingSearchTerm(profile: UserResultsProfile): string | null {
   const last = profile.resultLastName?.trim()
   if (last && last.length >= 2) return last

@@ -1,21 +1,31 @@
+import { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { GoalCard } from '../../components/GoalCard'
-import { PerformanceGoalCard } from '../../components/PerformanceGoalCard'
+import { AchievementShelf } from '../../components/AchievementShelf'
 import { NextEventCard } from '../../components/NextEventCard'
-import { StatCard } from '../../components/StatCard'
+import {
+  FinishFlagIcon,
+  RoadIcon,
+  StatStrip,
+  StopwatchIcon,
+} from '../../components/StatStrip'
+import { RecordStrip } from '../../components/RecordStrip'
+import { TargetCard } from '../../components/TargetCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
 import { useEvents } from '../../hooks/useEvents'
 import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { computeBestPerformances } from '../../utils/bestPerformances'
+import { computeDashboardHighlights } from '../../utils/dashboardHighlights'
 import { computeDashboardStats } from '../../utils/stats'
 import { findNextEvent } from '../../utils/nextEvent'
-import { formatDatePt } from '../../utils/date'
+
+/** Quantos objetivos por cumprir cabem antes de remeter para a página de objetivos. */
+const FEATURED_TARGETS = 3
 
 export function Dashboard() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { user } = useAuth()
   const currentYear = new Date().getFullYear()
   const { allEvents, loading: eventsLoading } = useEvents()
@@ -26,11 +36,21 @@ export function Dashboard() {
     error: performanceError,
   } = usePerformanceGoals({ year: currentYear })
 
-  const featuredPerformanceGoals = performanceGoals.slice(0, 3)
-
   const nextEvent = findNextEvent(allEvents)
   const stats = computeDashboardStats(allEvents, currentYear)
   const bestPerformances = computeBestPerformances(allEvents)
+  const highlights = computeDashboardHighlights(goals, performanceGoals)
+
+  const featuredTargets = highlights.targets.slice(0, FEATURED_TARGETS)
+  const hiddenTargets = highlights.targets.length - featuredTargets.length
+  const goalsPending = goalsLoading || performanceLoading
+  const goalsFailure = goalsError ?? performanceError
+
+  // O que a Firestore devolve é do motor de regras, «evaluation error at
+  // L323:22 for 'list'» e afins. Serve para depurar, não para ler no ecrã.
+  useEffect(() => {
+    if (goalsFailure) console.error('Dashboard: goals query failed:', goalsFailure)
+  }, [goalsFailure])
 
   const greeting = !user?.displayName
     ? t('dashboard.greeting')
@@ -43,136 +63,88 @@ export function Dashboard() {
     <PageShell greeting={greeting} title={t('nav.dashboard')}>
       <section className="mt-6">
         {eventsLoading ? (
-          <div className="h-24 animate-pulse rounded-lg bg-border/60" aria-hidden />
+          <div className="h-40 animate-pulse rounded-2xl bg-border/60" aria-hidden />
         ) : (
           <NextEventCard event={nextEvent} />
         )}
       </section>
 
+      <section className="mt-5">
+        <StatStrip
+          items={[
+            {
+              icon: <RoadIcon />,
+              value: stats.completedDistanceKm.toLocaleString(i18n.language),
+              label: t('dashboard.kilometresInYear', { year: currentYear }),
+            },
+            {
+              icon: <FinishFlagIcon />,
+              value: `${stats.completedCount}/${stats.totalEvents}`,
+              label: t('dashboard.completedEvents'),
+            },
+            {
+              icon: <StopwatchIcon />,
+              value: stats.averagePace ?? t('common.dash'),
+              label: t('dashboard.averagePace'),
+            },
+          ]}
+        />
+      </section>
+
+      {goalsFailure ? (
+        <p className="mt-6 text-sm text-danger">{t('dashboard.goalsLoadError')}</p>
+      ) : null}
+
       <section className="mt-8">
-        <h2 className="font-display text-2xl tracking-wide text-primary">
-          {t('dashboard.statsYear', { year: currentYear })}
-        </h2>
-        <div className="mt-4 grid gap-4 sm:grid-cols-3">
-          <StatCard value={stats.totalEvents} label={t('dashboard.eventsInYear', { year: currentYear })} />
-          <StatCard value={stats.averagePace ?? '—'} label={t('dashboard.averagePace')} />
-          <StatCard value={stats.completedCount} label={t('dashboard.completedEvents')} />
-        </div>
+        {goalsPending ? (
+          <div className="h-32 animate-pulse rounded-2xl bg-border/60" aria-hidden />
+        ) : (
+          <AchievementShelf
+            title={t('dashboard.achievements', { year: currentYear })}
+            emptyText={t('dashboard.achievementsEmpty', { year: currentYear })}
+            achievements={highlights.achievements}
+          />
+        )}
       </section>
 
       <section className="mt-8">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl tracking-wide text-primary">
-              {t('dashboard.annualGoals', { year: currentYear })}
-            </h2>
-          </div>
+        <div className="flex items-center justify-between gap-3">
+          <h2 className="font-display text-2xl tracking-wide text-foreground">
+            {t('dashboard.inProgress')}
+          </h2>
           <Link to="/objetivos" className="text-sm font-semibold text-primary hover:underline">
-            {t('dashboard.viewAllGoals')} <span className="inline-block rtl:-scale-x-100">→</span>
+            {hiddenTargets > 0
+              ? t('dashboard.moreTargets', { count: hiddenTargets })
+              : t('dashboard.viewAllGoals')}{' '}
+            <span className="inline-block rtl:-scale-x-100">→</span>
           </Link>
         </div>
 
-        {goalsError ? <p className="mt-4 text-sm text-danger">{goalsError}</p> : null}
-
-        {goalsLoading ? (
+        {goalsPending ? (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden>
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div key={index} className="h-32 animate-pulse rounded-lg bg-border/60" />
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="h-28 animate-pulse rounded-xl bg-border/60" />
             ))}
           </div>
-        ) : goals.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-border bg-surface p-6">
-            <p className="text-muted">{t('dashboard.noGoals', { year: currentYear })}</p>
-            <Link
-              to="/objetivos/novo"
-              className="mt-3 inline-block text-sm font-semibold text-primary hover:underline"
-            >
-              {t('dashboard.createFirstGoal')}
+        ) : featuredTargets.length === 0 ? (
+          <p className="mt-3 text-sm text-muted">
+            {highlights.achievements.length > 0
+              ? t('dashboard.allTargetsDone')
+              : t('dashboard.noGoals', { year: currentYear })}{' '}
+            <Link to="/objetivos/novo" className="font-semibold text-primary hover:underline">
+              {t('dashboard.createGoal')}
             </Link>
-          </div>
+          </p>
         ) : (
           <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {goals.map((goal) => (
-              <GoalCard key={goal.id} goal={goal} compact showActions={false} />
+            {featuredTargets.map((target) => (
+              <TargetCard key={target.id} target={target} />
             ))}
           </div>
         )}
       </section>
 
-      <section className="mt-8">
-        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h2 className="font-display text-2xl tracking-wide text-primary">
-              {t('dashboard.performanceGoals')}
-            </h2>
-          </div>
-          <Link to="/objetivos" className="text-sm font-semibold text-primary hover:underline">
-            {t('dashboard.viewAllGoals')} <span className="inline-block rtl:-scale-x-100">→</span>
-          </Link>
-        </div>
-
-        {performanceError ? <p className="mt-4 text-sm text-danger">{performanceError}</p> : null}
-
-        {performanceLoading ? (
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden>
-            {Array.from({ length: 2 }).map((_, index) => (
-              <div key={index} className="h-32 animate-pulse rounded-lg bg-border/60" />
-            ))}
-          </div>
-        ) : featuredPerformanceGoals.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-border bg-surface p-6">
-            <p className="text-muted">{t('dashboard.noPerformanceGoals', { year: currentYear })}</p>
-            <Link
-              to="/objetivos/performance/novo"
-              className="mt-3 inline-block text-sm font-semibold text-primary hover:underline"
-            >
-              {t('dashboard.createFirstPerformanceGoal')}
-            </Link>
-          </div>
-        ) : (
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {featuredPerformanceGoals.map((goal) => (
-              <PerformanceGoalCard key={goal.id} goal={goal} compact showActions={false} />
-            ))}
-          </div>
-        )}
-      </section>
-
-      <section className="mt-8">
-        <h2 className="font-display text-2xl tracking-wide text-primary">{t('dashboard.bestPerformances')}</h2>
-        <p className="text-sm text-muted">{t('dashboard.bestPerformancesSubtitle')}</p>
-
-        {bestPerformances.length === 0 ? (
-          <div className="mt-4 rounded-lg border border-border bg-surface p-6">
-            <p className="text-muted">{t('dashboard.noResultsYet')}</p>
-          </div>
-        ) : (
-          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {bestPerformances.map((performance) => (
-              <div
-                key={performance.eventType}
-                className="rounded-lg border border-border bg-surface p-4"
-              >
-                <p className="text-sm font-semibold text-primary">{performance.label}</p>
-                <p className="mt-2 font-bold text-foreground">{performance.eventName}</p>
-                <p className="mt-1 text-sm text-muted">
-                  {formatDatePt(performance.date)} · {performance.recordAge}
-                </p>
-                <div className="mt-3 flex gap-4 text-sm">
-                  <span>
-                    <span className="text-muted">{t('common.time')}: </span>
-                    <span className="font-semibold">{performance.time}</span>
-                  </span>
-                  <span>
-                    <span className="text-muted">{t('common.pace')}: </span>
-                    <span className="font-semibold">{performance.pace} min/Km</span>
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </section>
+      <RecordStrip records={bestPerformances} />
     </PageShell>
   )
 }

@@ -35,7 +35,7 @@ type GeoapifyJsonResponse = {
   results?: GeoapifyFeature[]
 }
 
-/** Geoapify `lang` — ISO 639-1 (pt, en, …). */
+/** Geoapify `lang`, ISO 639-1 (pt, en, …). */
 export function geocodingLanguage(i18nLanguage: string): string {
   return i18nLanguage.toLowerCase().startsWith('pt') ? 'pt' : 'en'
 }

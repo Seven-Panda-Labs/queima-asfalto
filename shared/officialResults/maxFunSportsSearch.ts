@@ -1,6 +1,6 @@
 import type { UserResultsProfile } from './types.js'
 
-/** MaxFunSports table filter — usually last name. */
+/** MaxFunSports table filter, usually last name. */
 export function buildMaxFunSportsSearchTerm(profile: UserResultsProfile): string | null {
   const last = profile.resultLastName?.trim()
   if (last && last.length >= 2) return last

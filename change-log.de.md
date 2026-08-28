@@ -4,31 +4,39 @@
 
 ---
 
-## [1.20.0] — 2026-08-25
-
-### Hinzugefügt
-
-- **Neue Sprache — Arabisch (erste Version):** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Arabisch verfügbar, mit Rechts-nach-links-Layout (RTL). Auswahl unter Einstellungen → Sprache.
-
----
-
-## [1.19.0] — 2026-08-25
-
-### Hinzugefügt
-
-- **Neue Sprache — Französisch:** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Französisch verfügbar. Auswahl unter Einstellungen → Sprache.
-
----
-
-## [1.18.0] — 2026-08-17
+## [1.21.0] - 2026-08-28
 
 ### Geändert
 
-- **Offizielle Ergebnisse:** automatische Parkrun-Ergebnissuche vorübergehend deaktiviert — Parkrun blockiert automatisierte Anfragen aus bekannter Cloud-Infrastruktur. Das Ergebnis kann weiterhin manuell erfasst werden.
+- **Start neu gestaltet:** das nächste Event mit Countdown im Vordergrund, die Zahlen des Jahres in einer einzigen Leiste, jetzt mit gelaufenen Kilometern, und ein eigener Platz für Erfolge, offene Ziele und persönliche Bestzeiten.
 
 ---
 
-## [1.17.0] — 2026-08-13
+## [1.20.0] - 2026-08-25
+
+### Hinzugefügt
+
+- **Neue Sprache: Arabisch (erste Version):** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Arabisch verfügbar, mit Rechts-nach-links-Layout (RTL). Auswahl unter Einstellungen → Sprache.
+
+---
+
+## [1.19.0] - 2026-08-25
+
+### Hinzugefügt
+
+- **Neue Sprache: Französisch:** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Französisch verfügbar. Auswahl unter Einstellungen → Sprache.
+
+---
+
+## [1.18.0] - 2026-08-17
+
+### Geändert
+
+- **Offizielle Ergebnisse:** automatische Parkrun-Ergebnissuche vorübergehend deaktiviert: Parkrun blockiert automatisierte Anfragen aus bekannter Cloud-Infrastruktur. Das Ergebnis kann weiterhin manuell erfasst werden.
+
+---
+
+## [1.17.0] - 2026-08-13
 
 ### Hinzugefügt
 
@@ -36,28 +44,28 @@
 
 ---
 
-## [1.16.1] — 2026-08-13
+## [1.16.1] - 2026-08-13
 
 ### Hinzugefügt
 
-- **Mehr Emojis:** über 50 neue Optionen — Tiere, Blumen, Essen, Halloween-Motive und Flaggen aus Asien, Südamerika und Nordafrika — zur Emoji-Auswahl für Veranstaltungen und Ziele hinzugefügt.
+- **Mehr Emojis:** über 50 neue Optionen zur Emoji-Auswahl für Veranstaltungen und Ziele hinzugefügt: Tiere, Blumen, Essen, Halloween-Motive und Flaggen aus Asien, Südamerika und Nordafrika.
 
 ### Behoben
 
-- **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden. Es gab eine Race Condition zwischen dem automatischen Übergang zu „Verpasst“ und dem Speichern des Ergebnisses — gewann der automatische Übergang das Rennen, war der Status falsch, obwohl das Ergebnis gespeichert war.
+- **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden. Es gab eine Race Condition zwischen dem automatischen Übergang zu „Verpasst“ und dem Speichern des Ergebnisses. Gewann der automatische Übergang das Rennen, war der Status falsch, obwohl das Ergebnis gespeichert war.
 
 ---
 
-## [1.16.0] — 2026-08-03
+## [1.16.0] - 2026-08-03
 
 ### Hinzugefügt
 
 - **Backup mit Fotos und Videos:** Die Backup-`.zip` enthält jetzt die Foto- und Videodateien, nicht mehr nur deren Metadaten. Du kannst die Option vor dem Export abwählen; über 300 MB enthält das Backup nur die Daten.
-- **Fotos und Videos wiederherstellen:** Liegen die Dateien in der `.zip`, kommen Fotos und Videos auch im Modus „Alles ersetzen“ und beim Wiederherstellen in einem anderen Konto zurück — vorher nur, wenn sie noch im Konto lagen.
+- **Fotos und Videos wiederherstellen:** Liegen die Dateien in der `.zip`, kommen Fotos und Videos auch im Modus „Alles ersetzen“ und beim Wiederherstellen in einem anderen Konto zurück, vorher nur, wenn sie noch im Konto lagen.
 
 ---
 
-## [1.15.1] — 2026-08-03
+## [1.15.1] - 2026-08-03
 
 ### Behoben
 
@@ -66,16 +74,16 @@
 
 ---
 
-## [1.15.0] — 2026-08-03
+## [1.15.0] - 2026-08-03
 
 ### Hinzugefügt
 
 - **Vollständiges Backup:** exportiere alle deine Daten als JSON in einer `.zip`-Datei (Events, Ziele, Leistungsziele, Bucket List, Metadaten zu Fotos und Videos, Einstellungen und Freigaben).
-- **Backup wiederherstellen:** lade eine Backup-`.zip` hoch, um deine Daten zurückzuholen — mit den ursprünglichen Dokument-IDs. Du kannst sie mit deinen aktuellen Daten zusammenführen oder alles ersetzen.
+- **Backup wiederherstellen:** lade eine Backup-`.zip` hoch, um deine Daten zurückzuholen, mit den ursprünglichen Dokument-IDs. Du kannst sie mit deinen aktuellen Daten zusammenführen oder alles ersetzen.
 
 ---
 
-## [1.14.2] — 2026-08-02
+## [1.14.2] - 2026-08-02
 
 ### Behoben
 
@@ -84,7 +92,7 @@
 
 ---
 
-## [1.14.1] — 2026-08-01
+## [1.14.1] - 2026-08-01
 
 ### Behoben
 
@@ -92,15 +100,15 @@
 
 ---
 
-## [1.14.0] — 2026-07-30
+## [1.14.0] - 2026-07-30
 
 ### Hinzugefügt
 
-- **Self-Hosting:** optionale manuelle Freigabe neuer Konten — Bildschirme „ausstehend“/„abgelehnt“, Admin-E-Mail mit Freigabe-/Ablehnungslinks (Resend), Benutzerbenachrichtigung, Firestore-/Storage-Regeln und Blocking-Auth-Funktionen; siehe `docs/configuration.md` und `docs/self-hosting.md`.
+- **Self-Hosting:** optionale manuelle Freigabe neuer Konten: Bildschirme „ausstehend“/„abgelehnt“, Admin-E-Mail mit Freigabe-/Ablehnungslinks (Resend), Benutzerbenachrichtigung, Firestore-/Storage-Regeln und Blocking-Auth-Funktionen; siehe `docs/configuration.md` und `docs/self-hosting.md`.
 
 ---
 
-## [1.13.0] — 2026-07-23
+## [1.13.0] - 2026-07-23
 
 ### Hinzugefügt
 
@@ -108,7 +116,7 @@
 
 ---
 
-## [1.12.1] — 2026-07-23
+## [1.12.1] - 2026-07-23
 
 ### Geändert
 
@@ -116,11 +124,11 @@
 
 ---
 
-## [1.12.0] — 2026-07-23
+## [1.12.0] - 2026-07-23
 
 ### Hinzugefügt
 
-- **Sprachen:** Spanisch (es-ES) und Deutsch in der App — UI, Emoji-Labels, Push-Erinnerungen, Changelog, Datenschutzerklärung und Hinweis zu offiziellen Ergebnissen.
+- **Sprachen:** Spanisch (es-ES) und Deutsch in der App: UI, Emoji-Labels, Push-Erinnerungen, Changelog, Datenschutzerklärung und Hinweis zu offiziellen Ergebnissen.
 - **Einstellungen:** Sprachauswahl mit Português, English, Español und Deutsch.
 
 ### Geändert
@@ -129,7 +137,7 @@
 
 ---
 
-## [1.11.0] — 2026-07-20
+## [1.11.0] - 2026-07-20
 
 ### Hinzugefügt
 
@@ -145,7 +153,7 @@
 
 ---
 
-## [1.10.0] — 2026-07-19
+## [1.10.0] - 2026-07-19
 
 ### Hinzugefügt
 
@@ -162,7 +170,7 @@
 
 ---
 
-## [1.9.2] — 2026-07-19
+## [1.9.2] - 2026-07-19
 
 ### Hinzugefügt
 
@@ -178,7 +186,7 @@
 
 ---
 
-## [1.9.1] — 2026-07-19
+## [1.9.1] - 2026-07-19
 
 ### Behoben
 
@@ -190,7 +198,7 @@
 
 ---
 
-## [1.9.0] — 2026-07-09
+## [1.9.0] - 2026-07-09
 
 ### Hinzugefügt
 
@@ -202,7 +210,7 @@
 
 ---
 
-## [1.8.0] — 2026-07-09
+## [1.8.0] - 2026-07-09
 
 ### Hinzugefügt
 
@@ -210,7 +218,7 @@
 
 ---
 
-## [1.7.0] — 2026-07-09
+## [1.7.0] - 2026-07-09
 
 ### Hinzugefügt
 
@@ -222,7 +230,7 @@
 
 ---
 
-## [1.6.0] — 2026-07-08
+## [1.6.0] - 2026-07-08
 
 ### Hinzugefügt
 
@@ -230,7 +238,7 @@
 
 ---
 
-## [1.5.1] — 2026-07-08
+## [1.5.1] - 2026-07-08
 
 ### Hinzugefügt
 
@@ -239,7 +247,7 @@
 
 ---
 
-## [1.5.0] — 2026-07-08
+## [1.5.0] - 2026-07-08
 
 ### Hinzugefügt
 
@@ -248,7 +256,7 @@
 
 ---
 
-## [1.4.0] — 2026-07-08
+## [1.4.0] - 2026-07-08
 
 ### Hinzugefügt
 
@@ -256,7 +264,7 @@
 
 ---
 
-## [1.3.2] — 2026-07-07
+## [1.3.2] - 2026-07-07
 
 ### Hinzugefügt
 
@@ -264,7 +272,7 @@
 
 ---
 
-## [1.3.1] — 2026-07-07
+## [1.3.1] - 2026-07-07
 
 ### Hinzugefügt
 
@@ -277,7 +285,7 @@
 
 ---
 
-## [1.3.0] — 2026-07-06
+## [1.3.0] - 2026-07-06
 
 ### Geändert
 
@@ -285,7 +293,7 @@
 
 ---
 
-## [1.2.0] — 2026-07-06
+## [1.2.0] - 2026-07-06
 
 ### Hinzugefügt
 
@@ -297,7 +305,7 @@
 
 ---
 
-## [1.1.0] — 2026-07-06
+## [1.1.0] - 2026-07-06
 
 ### Hinzugefügt
 
@@ -305,7 +313,7 @@
 
 ---
 
-## [1.0.2] — 2026-07-06
+## [1.0.2] - 2026-07-06
 
 ### Behoben
 
@@ -313,7 +321,7 @@
 
 ---
 
-## [1.0.1] — 2026-07-06
+## [1.0.1] - 2026-07-06
 
 ### Hinzugefügt
 
@@ -321,7 +329,7 @@
 
 ---
 
-## [1.0.0] — 2026-07-06
+## [1.0.0] - 2026-07-06
 
 Meilenstein: Datenaustausch zwischen Freunden.
 
@@ -332,7 +340,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.22.0] — 2026-07-06
+## [0.22.0] - 2026-07-06
 
 ### Hinzugefügt
 
@@ -340,7 +348,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.21.0] — 2026-07-06
+## [0.21.0] - 2026-07-06
 
 ### Hinzugefügt
 
@@ -348,7 +356,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.20.0] — 2026-07-05
+## [0.20.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -356,7 +364,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.19.1] — 2026-07-05
+## [0.19.1] - 2026-07-05
 
 ### Behoben
 
@@ -364,7 +372,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.19.0] — 2026-07-05
+## [0.19.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -372,7 +380,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.18.1] — 2026-07-05
+## [0.18.1] - 2026-07-05
 
 ### Behoben
 
@@ -380,7 +388,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.18.0] — 2026-07-05
+## [0.18.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -388,7 +396,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.17.2] — 2026-07-05
+## [0.17.2] - 2026-07-05
 
 ### Behoben
 
@@ -396,7 +404,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.17.1] — 2026-07-05
+## [0.17.1] - 2026-07-05
 
 ### Behoben
 
@@ -404,7 +412,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.17.0] — 2026-07-05
+## [0.17.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -412,7 +420,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.16.0] — 2026-07-05
+## [0.16.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -420,7 +428,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.15.0] — 2026-07-05
+## [0.15.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -428,7 +436,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.14.1] — 2026-07-05
+## [0.14.1] - 2026-07-05
 
 ### Behoben
 
@@ -436,7 +444,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.14.0] — 2026-07-05
+## [0.14.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -444,7 +452,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.13.1] — 2026-07-05
+## [0.13.1] - 2026-07-05
 
 ### Behoben
 
@@ -452,7 +460,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.13.0] — 2026-07-05
+## [0.13.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -460,7 +468,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.12.2] — 2026-07-05
+## [0.12.2] - 2026-07-05
 
 ### Behoben
 
@@ -468,7 +476,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.12.1] — 2026-07-05
+## [0.12.1] - 2026-07-05
 
 ### Behoben
 
@@ -476,7 +484,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.12.0] — 2026-07-05
+## [0.12.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -484,7 +492,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.11.1] — 2026-07-05
+## [0.11.1] - 2026-07-05
 
 ### Behoben
 
@@ -492,7 +500,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.11.0] — 2026-07-05
+## [0.11.0] - 2026-07-05
 
 ### Hinzugefügt
 
@@ -504,7 +512,7 @@ Meilenstein: Datenaustausch zwischen Freunden.
 
 ---
 
-## [0.9.0] — 2026-07-04
+## [0.9.0] - 2026-07-04
 
 Meilenstein: automatische offizielle Ergebnisse.
 
@@ -520,7 +528,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.8.0] — 2026-07-04
+## [0.8.0] - 2026-07-04
 
 ### Behoben
 
@@ -532,7 +540,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.7.0] — 2026-07-04
+## [0.7.0] - 2026-07-04
 
 ### Hinzugefügt
 
@@ -541,7 +549,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.6.2] — 2026-07-02
+## [0.6.2] - 2026-07-02
 
 ### Hinzugefügt
 
@@ -549,7 +557,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.6.1] — 2026-07-02
+## [0.6.1] - 2026-07-02
 
 ### Behoben
 
@@ -557,7 +565,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.6.0] — 2026-06-30
+## [0.6.0] - 2026-06-30
 
 ### Hinzugefügt
 
@@ -565,7 +573,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.5.4] — 2026-06-30
+## [0.5.4] - 2026-06-30
 
 ### Hinzugefügt
 
@@ -573,7 +581,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.5.3] — 2026-06-30
+## [0.5.3] - 2026-06-30
 
 ### Behoben
 
@@ -581,7 +589,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.5.2] — 2026-06-30
+## [0.5.2] - 2026-06-30
 
 ### Behoben
 
@@ -589,7 +597,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.5.1] — 2026-06-30
+## [0.5.1] - 2026-06-30
 
 ### Hinzugefügt
 
@@ -598,7 +606,7 @@ Meilenstein: automatische offizielle Ergebnisse.
 
 ---
 
-## [0.5.0] — 2026-06-29
+## [0.5.0] - 2026-06-29
 
 Meilenstein: Kartenmodus.
 
@@ -609,7 +617,7 @@ Meilenstein: Kartenmodus.
 
 ---
 
-## [0.4.3] — 2026-06-29
+## [0.4.3] - 2026-06-29
 
 ### Behoben
 
@@ -617,7 +625,7 @@ Meilenstein: Kartenmodus.
 
 ---
 
-## [0.4.2] — 2026-06-29
+## [0.4.2] - 2026-06-29
 
 ### Behoben
 
@@ -625,7 +633,7 @@ Meilenstein: Kartenmodus.
 
 ---
 
-## [0.4.1] — 2026-06-29
+## [0.4.1] - 2026-06-29
 
 ### Behoben
 
@@ -633,7 +641,7 @@ Meilenstein: Kartenmodus.
 
 ---
 
-## [0.4.0] — 2026-06-29
+## [0.4.0] - 2026-06-29
 
 Meilenstein: Event-Fotos und -Videos.
 
@@ -648,7 +656,7 @@ Meilenstein: Event-Fotos und -Videos.
 
 ---
 
-## [0.2.0] — 2026-06-28
+## [0.2.0] - 2026-06-28
 
 Meilenstein: Internationalisierung.
 
@@ -673,9 +681,9 @@ Meilenstein: Internationalisierung.
 
 ---
 
-## [0.1.0] — 2026-06-26
+## [0.1.0] - 2026-06-26
 
-Meilenstein: **MVP** — Excel-Tabellen-Ersatz als PWA.
+Meilenstein: **MVP**, Excel-Tabellen-Ersatz als PWA.
 
 ### Hinzugefügt
 

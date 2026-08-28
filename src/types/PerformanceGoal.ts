@@ -68,11 +68,11 @@ export function formatPerformanceGoalLabel(
 
   switch (goal.type) {
     case 'pr_target':
-      return `${typeLabel} — ${eventLabel}`
+      return `${typeLabel} (${eventLabel})`
     case 'pace_target':
-      return `${typeLabel} ≤ ${goal.targetPace} — ${eventLabel}`
+      return `${typeLabel} ≤ ${goal.targetPace} (${eventLabel})`
     case 'time_target':
-      return `${typeLabel} ≤ ${goal.targetTime} — ${eventLabel}`
+      return `${typeLabel} ≤ ${goal.targetTime} (${eventLabel})`
   }
 }
 

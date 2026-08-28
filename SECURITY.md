@@ -1,4 +1,4 @@
-# Segurança — Queima Asfalto
+# Segurança: Queima Asfalto
 
 **Português** · [English](#english)
 

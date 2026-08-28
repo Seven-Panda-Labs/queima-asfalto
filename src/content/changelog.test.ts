@@ -33,19 +33,19 @@ Maintenance notes.
 
 ---
 
-## [1.5.0] — 2026-07-08
+## [1.5.0] - 2026-07-08
 
 ### Adicionado
 - Item`
 
-    expect(prepareChangelogForDisplay(input)).toBe(`## [1.5.0] — 2026-07-08
+    expect(prepareChangelogForDisplay(input)).toBe(`## [1.5.0] - 2026-07-08
 
 ### Adicionado
 - Item`)
   })
 
   it('removes legend and references appendix sections', () => {
-    const input = `## [1.0.0] — 2026-01-01
+    const input = `## [1.0.0] - 2026-01-01
 
 ### Adicionado
 - Item
@@ -62,7 +62,7 @@ Maintenance notes.
 
 - [Issues GitHub](https://github.com/Seven-Panda-Labs/queima-asfalto/issues)`
 
-    expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] — 2026-01-01
+    expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] - 2026-01-01
 
 ### Adicionado
 - Item
@@ -71,7 +71,7 @@ Maintenance notes.
   })
 
   it('removes english legend and references appendix sections', () => {
-    const input = `## [1.0.0] — 2026-01-01
+    const input = `## [1.0.0] - 2026-01-01
 
 ### Added
 - Item
@@ -84,7 +84,7 @@ Maintenance notes.
 
 - [GitHub Issues](https://github.com/Seven-Panda-Labs/queima-asfalto/issues)`
 
-    expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] — 2026-01-01
+    expect(prepareChangelogForDisplay(input)).toBe(`## [1.0.0] - 2026-01-01
 
 ### Added
 - Item`)

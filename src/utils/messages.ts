@@ -38,7 +38,7 @@ export function getSarcasticClassification(position: number, total: number): str
   if (percentile <= 0.5) return null
 
   if (position % 20 !== 0) {
-    return `Classificação ${position}/${total} — continua a treinar! VAMOS!`
+    return `Classificação ${position}/${total}. Continua a treinar! VAMOS!`
   }
 
   return `${position}º lugar? Bem, pelo menos não foste o último... desta vez.`

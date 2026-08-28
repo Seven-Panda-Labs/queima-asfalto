@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 200" width="100%" height="200" preserveAspectRatio="none">
+  <defs>
+    <pattern id="asphalt-lowpoly" width="400" height="200" patternUnits="userSpaceOnUse">
+      <polygon points="0,0 80,0 40,60" fill="#FFF" fill-opacity="0.04"/>
+      <polygon points="80,0 180,0 120,50 40,60" fill="#FFF" fill-opacity="0.07"/>
+      <polygon points="180,0 260,0 210,70 120,50" fill="#FFF" fill-opacity="0.03"/>
+      <polygon points="260,0 340,0 380,45 290,65 210,70" fill="#FFF" fill-opacity="0.08"/>
+      <polygon points="340,0 400,0 400,50 380,45" fill="#FFF" fill-opacity="0.05"/>
+      
+      <polygon points="0,0 40,60 0,110" fill="#FFF" fill-opacity="0.06"/>
+      <polygon points="40,60 120,50 90,120 0,110" fill="#FFF" fill-opacity="0.09"/>
+      <polygon points="120,50 210,70 170,130 90,120" fill="#FFF" fill-opacity="0.04"/>
+      <polygon points="210,70 290,65 260,140 170,130" fill="#FFF" fill-opacity="0.07"/>
+      <polygon points="290,65 380,45 400,90 340,135 260,140" fill="#FFF" fill-opacity="0.03"/>
+      <polygon points="380,45 400,50 400,90" fill="#FFF" fill-opacity="0.08"/>
+
+      <polygon points="0,110 90,120 50,200 0,200" fill="#FFF" fill-opacity="0.05"/>
+      <polygon points="90,120 170,130 140,200 50,200" fill="#FFF" fill-opacity="0.08"/>
+      <polygon points="170,130 260,140 230,200 140,200" fill="#FFF" fill-opacity="0.04"/>
+      <polygon points="260,140 340,135 360,200 230,200" fill="#FFF" fill-opacity="0.09"/>
+      <polygon points="340,135 400,90 400,200 360,200" fill="#FFF" fill-opacity="0.06"/>
+      
+      <path d="M0,60 L80,50 L170,130 L230,200 M260,0 L210,70 L340,135" stroke="#FFF" stroke-opacity="0.12" stroke-width="1.5" fill="none"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="200" fill="url(#asphalt-lowpoly)" />
+</svg>

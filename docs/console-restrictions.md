@@ -1,4 +1,4 @@
-# Restrições no Console — Firebase e Geoapify
+# Restrições no Console: Firebase e Geoapify
 
 **Português** · [English](#english)
 
@@ -12,7 +12,7 @@ Checklist para rever no **Firebase Console**, **Google Cloud Console** e **Geoap
 
 Substitui `your-project-id` e `your-domain` pelos valores do teu projeto (ex.: `meu-clube` / `meu-clube.web.app`).
 
-### 1. Firebase Authentication — domínios autorizados
+### 1. Firebase Authentication: domínios autorizados
 
 **Console:** Firebase → Authentication → Settings → **Authorized domains**
 
@@ -36,7 +36,7 @@ Substitui `your-project-id` e `your-domain` pelos valores do teu projeto (ex.: `
 
 **Console:** Google Cloud → APIs & Services → Credentials → chave do tipo **Browser key** (a que corresponde a `VITE_FIREBASE_API_KEY`).
 
-#### Restrição de aplicação — HTTP referrers
+#### Restrição de aplicação: HTTP referrers
 
 ```
 http://localhost/*
@@ -64,7 +64,7 @@ Limita a chave às APIs que a app usa no cliente:
 | Cloud Storage for Firebase API | Fotos/vídeos de eventos |
 | Firebase Cloud Messaging API | Web Push |
 | Firebase Remote Config API | SDK Firebase (dependência) |
-| Firebase Management API | — **não** incluir (só admin) |
+| Firebase Management API |, **não** incluir (só admin) |
 
 Se Analytics estiver activo (`VITE_FIREBASE_MEASUREMENT_ID`):
 
@@ -72,7 +72,7 @@ Se Analytics estiver activo (`VITE_FIREBASE_MEASUREMENT_ID`):
 |-----|-----|
 | Google Analytics Data API | Eventos de página |
 
-> **Nota:** Cloud Functions callable (`lookupOfficialResults`, partilhas) chamam endpoints `cloudfunctions.net` com token Auth; não dependem desta chave browser para autorização — a segurança está no `request.auth` nas Functions.
+> **Nota:** Cloud Functions callable (`lookupOfficialResults`, partilhas) chamam endpoints `cloudfunctions.net` com token Auth; não dependem desta chave browser para autorização, a segurança está no `request.auth` nas Functions.
 
 ### 3. Outras definições Firebase
 
@@ -84,7 +84,7 @@ Se Analytics estiver activo (`VITE_FIREBASE_MEASUREMENT_ID`):
 | Hosting | Domínios | `web.app` + custom domain se aplicável |
 | Functions | IAM | Service account das callable com permissões mínimas (ver `FUNCTIONS_SERVICE_ACCOUNT`) |
 
-### 4. Geoapify — chave do browser
+### 4. Geoapify: chave do browser
 
 **Dashboard:** Geoapify → API keys → chave usada em `VITE_GEOAPIFY_API_KEY`
 
@@ -102,7 +102,7 @@ https://your-project-id.firebaseapp.com/*
 
 Restringe à **Geocoding API** (autocomplete + search). Não expor outras APIs Geoapify se não forem usadas.
 
-### 5. Checklist — exemplo (`your-project-id`)
+### 5. Checklist: exemplo (`your-project-id`)
 
 - [ ] Auth: `your-project-id.web.app` e `your-project-id.firebaseapp.com` autorizados
 - [ ] Browser key: referrers `localhost` + `your-project-id.web.app` + `your-project-id.firebaseapp.com`
@@ -113,7 +113,7 @@ Restringe à **Geocoding API** (autocomplete + search). Não expor outras APIs G
 
 ### 6. Self-hosting (novo projeto)
 
-Repete as secções 1–4 com o teu `projectId` e domínio. Vê também [`configuration.md`](./configuration.md).
+Repete as secções 1-4 com o teu `projectId` e domínio. Vê também [`configuration.md`](./configuration.md).
 
 ---
 
@@ -127,7 +127,7 @@ Checklist to review in **Firebase Console**, **Google Cloud Console**, and **Geo
 
 Replace `your-project-id` and `your-domain` with your project values (e.g. `my-club` / `my-club.web.app`).
 
-### 1. Firebase Authentication — authorized domains
+### 1. Firebase Authentication: authorized domains
 
 **Console:** Firebase → Authentication → Settings → **Authorized domains**
 
@@ -151,7 +151,7 @@ Replace `your-project-id` and `your-domain` with your project values (e.g. `my-c
 
 **Console:** Google Cloud → APIs & Services → Credentials → **Browser key** (matches `VITE_FIREBASE_API_KEY`).
 
-#### Application restriction — HTTP referrers
+#### Application restriction: HTTP referrers
 
 ```
 http://localhost/*
@@ -179,7 +179,7 @@ Limit the key to client-side APIs:
 | Cloud Storage for Firebase API | Event photos/videos |
 | Firebase Cloud Messaging API | Web Push |
 | Firebase Remote Config API | Firebase SDK (dependency) |
-| Firebase Management API | — **do not** include (admin only) |
+| Firebase Management API |, **do not** include (admin only) |
 
 If Analytics is enabled (`VITE_FIREBASE_MEASUREMENT_ID`):
 
@@ -199,7 +199,7 @@ If Analytics is enabled (`VITE_FIREBASE_MEASUREMENT_ID`):
 | Hosting | Domains | `web.app` + custom domain if applicable |
 | Functions | IAM | Minimal permissions for callable service account (`FUNCTIONS_SERVICE_ACCOUNT`) |
 
-### 4. Geoapify — browser key
+### 4. Geoapify: browser key
 
 **Dashboard:** Geoapify → API keys → key used in `VITE_GEOAPIFY_API_KEY`
 
@@ -217,7 +217,7 @@ https://your-project-id.firebaseapp.com/*
 
 Restrict to **Geocoding API** (autocomplete + search). Do not expose unused Geoapify APIs.
 
-### 5. Checklist — example (`your-project-id`)
+### 5. Checklist: example (`your-project-id`)
 
 - [ ] Auth: `your-project-id.web.app` and `your-project-id.firebaseapp.com` authorized
 - [ ] Browser key: referrers `localhost` + `your-project-id.web.app` + `your-project-id.firebaseapp.com`
@@ -228,4 +228,4 @@ Restrict to **Geocoding API** (autocomplete + search). Do not expose unused Geoa
 
 ### 6. Self-hosting (new project)
 
-Repeat sections 1–4 with your `projectId` and domain. See also [`configuration.md`](./configuration.md).
+Repeat sections 1-4 with your `projectId` and domain. See also [`configuration.md`](./configuration.md).

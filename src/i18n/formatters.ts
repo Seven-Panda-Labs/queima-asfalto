@@ -23,6 +23,19 @@ export function formatGoalOutcomeLabel(outcome: GoalOutcome): string {
   return i18n.t(GOAL_OUTCOME_KEYS[outcome])
 }
 
+const GOAL_OUTCOME_SHORT_KEYS: Record<Exclude<GoalOutcome, 'in_progress'>, string> = {
+  achieved: 'goals.outcomeAchieved',
+  exceeded: 'goals.outcomeExceeded',
+  crushed: 'goals.outcomeCrushed',
+  failed: 'goals.outcomeFailed',
+}
+
+/** Versão de duas palavras, para onde a frase de marca não cabe. */
+export function formatGoalOutcomeShortLabel(outcome: GoalOutcome): string {
+  if (outcome === 'in_progress') return ''
+  return i18n.t(GOAL_OUTCOME_SHORT_KEYS[outcome])
+}
+
 export function isEnglishLocale(): boolean {
   return i18n.language === 'en'
 }

@@ -1,0 +1,1 @@
+export { RecordStrip } from './RecordStrip'

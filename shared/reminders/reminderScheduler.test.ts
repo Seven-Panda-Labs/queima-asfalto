@@ -137,7 +137,7 @@ describe('isReminderSchedulable', () => {
 describe('reminderBody', () => {
   it('formats pt and en bodies', () => {
     expect(formatReminderTitle('pt')).toContain('Lembrete')
-    expect(formatReminderBody('Maratona', 2, 'pt')).toBe('Maratona — daqui a 2 dias')
-    expect(formatReminderBody('Marathon', 1, 'en')).toBe('Marathon — tomorrow')
+    expect(formatReminderBody('Maratona', 2, 'pt')).toBe('Maratona, daqui a 2 dias')
+    expect(formatReminderBody('Marathon', 1, 'en')).toBe('Marathon, tomorrow')
   })
 })

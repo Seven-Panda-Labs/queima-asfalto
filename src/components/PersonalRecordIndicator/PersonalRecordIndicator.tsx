@@ -1,16 +1,19 @@
-import medalha from '../../../assets/medalha.png'
+import { useTranslation } from 'react-i18next'
+import medalha from '../../../assets/medalha.svg'
 
 type PersonalRecordIndicatorProps = {
   className?: string
 }
 
 export function PersonalRecordIndicator({ className = 'h-4 w-4' }: PersonalRecordIndicatorProps) {
+  const { t } = useTranslation()
+  const label = t('common.personalRecord')
+
   return (
     <img
       src={medalha}
-      alt=""
-      title="Recorde pessoal"
-      aria-label="Recorde pessoal"
+      alt={label}
+      title={label}
       className={['inline-block shrink-0 object-contain', className].join(' ')}
     />
   )
