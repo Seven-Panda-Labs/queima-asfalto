@@ -4,6 +4,14 @@
 
 ---
 
+## [1.22.0] - 2026-08-28
+
+### Cambiado
+
+- **El resto de la app con el aspecto de Inicio:** los objetivos se agrupan por estado, con los cumplidos destacados, los filtros y los selectores de vista son iguales en todas las páginas, y la página de un evento encabeza con el nombre de la carrera y su resultado.
+
+---
+
 ## [1.21.0] - 2026-08-28
 
 ### Cambiado

@@ -321,11 +321,6 @@ export function EventDetail() {
           // O ícone de voltar a procurar vive sobre os números, e só aparece
           // ao passar o rato: já há resultado, é uma segunda tentativa.
           <div className="group relative mt-6">
-            {canLookupAgain ? (
-              <div className="absolute end-2 top-2 z-10 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100 max-sm:opacity-100">
-                <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="icon" />
-              </div>
-            ) : null}
             <StatStrip
               items={[
                 {
@@ -348,6 +343,9 @@ export function EventDetail() {
                 },
               ]}
             />
+            {canLookupAgain ? (
+              <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="icon" />
+            ) : null}
           </div>
         ) : showResults ? (
           <div className="mt-6 rounded-xl border border-border bg-surface p-5">

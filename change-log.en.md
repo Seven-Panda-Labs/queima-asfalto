@@ -4,6 +4,14 @@
 
 ---
 
+## [1.22.0] - 2026-08-28
+
+### Changed
+
+- **The rest of the app catches up with Home:** goals group by state with the fulfilled ones up front, filters and view switches look the same on every page, and an event's page leads with the race name and its result.
+
+---
+
 ## [1.21.0] - 2026-08-28
 
 ### Changed

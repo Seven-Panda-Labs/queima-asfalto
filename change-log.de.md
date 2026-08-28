@@ -4,6 +4,14 @@
 
 ---
 
+## [1.22.0] - 2026-08-28
+
+### Geändert
+
+- **Der Rest der App zieht mit dem Start nach:** Ziele gruppieren sich nach Status, die erreichten zuerst, Filter und Ansichtsumschalter sehen auf jeder Seite gleich aus, und die Seite einer Veranstaltung beginnt mit dem Namen des Rennens und seinem Ergebnis.
+
+---
+
 ## [1.21.0] - 2026-08-28
 
 ### Geändert
