@@ -187,7 +187,8 @@
     "recovering": "Wird zurückgeholt...",
     "recoverBucket": "🪣 Zur Bucket List zurückholen",
     "paceUnit": "min/km",
-    "locationMap": "Ort auf der Karte"
+    "locationMap": "Ort auf der Karte",
+    "noResultYet": "Noch kein Ergebnis erfasst"
   },
   "eventMedia": {
     "title": "Erinnerungen",
@@ -298,7 +299,8 @@
     "platform": "Plattform",
     "previewTime": "Zeit zum Übernehmen: {{time}}",
     "disclaimer": "Der Import fragt Zeitnahme-Websites Dritter ab; die Nutzung kann den jeweiligen Nutzungsbedingungen unterliegen.",
-    "disclaimerLink": "Vollständigen Hinweis lesen"
+    "disclaimerLink": "Vollständigen Hinweis lesen",
+    "refresh": "Erneut suchen"
   },
   "resultsForm": {
     "title": "Ergebnisse",

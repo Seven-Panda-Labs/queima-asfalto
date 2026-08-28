@@ -187,7 +187,8 @@
     "recovering": "جارٍ الاسترجاع...",
     "recoverBucket": "🪣 استرجاع إلى قائمة الأحلام",
     "paceUnit": "د/كم",
-    "locationMap": "الموقع على الخريطة"
+    "locationMap": "الموقع على الخريطة",
+    "noResultYet": "لم تُسجَّل نتيجة بعد"
   },
   "eventMedia": {
     "title": "الذكريات",
@@ -298,7 +299,8 @@
     "platform": "المنصة",
     "previewTime": "الوقت المراد تطبيقه: {{time}}",
     "disclaimer": "يستعلم الاستيراد من مواقع توقيت خارجية؛ وقد يخضع الاستخدام لشروط كل منصة.",
-    "disclaimerLink": "اقرأ التنويه الكامل"
+    "disclaimerLink": "اقرأ التنويه الكامل",
+    "refresh": "البحث مرة أخرى"
   },
   "resultsForm": {
     "title": "النتائج",

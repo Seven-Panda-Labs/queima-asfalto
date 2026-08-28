@@ -94,3 +94,14 @@ export function ExternalLinkIcon() {
     </svg>
   )
 }
+
+/** Voltar a procurar o resultado oficial de uma prova. */
+export function RefreshIcon() {
+  return (
+    <svg {...ICON_PROPS}>
+      <path d="M20 11a8 8 0 0 0-14-4.5L3 9" />
+      <path d="M4 13a8 8 0 0 0 14 4.5l3-2.5" />
+      <path d="M3 4v5h5M21 20v-5h-5" />
+    </svg>
+  )
+}

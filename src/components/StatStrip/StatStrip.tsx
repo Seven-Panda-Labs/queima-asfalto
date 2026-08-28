@@ -4,6 +4,8 @@ export type StatStripItem = {
   icon: ReactNode
   value: string
   label: string
+  /** Marca opcional ao lado do número, como o selo de resultado verificado. */
+  note?: ReactNode
 }
 
 /**
@@ -17,8 +19,9 @@ export function StatStrip({ items }: { items: StatStripItem[] }) {
         <div key={item.label} className="flex items-center gap-3 bg-surface px-4 py-4">
           <span className="text-accent">{item.icon}</span>
           <div className="min-w-0">
-            <p className="font-display text-3xl leading-none tracking-wide text-foreground">
+            <p className="flex items-center gap-1.5 font-display text-3xl leading-none tracking-wide text-foreground">
               {item.value}
+              {item.note}
             </p>
             <p className="mt-1 truncate text-xs font-semibold uppercase tracking-wider text-muted">
               {item.label}

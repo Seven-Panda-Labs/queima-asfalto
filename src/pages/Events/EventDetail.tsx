@@ -11,6 +11,7 @@ import { EventMediaGallery } from '../../components/EventMediaGallery/EventMedia
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { FinishFlagIcon, RoadIcon, StatStrip, StopwatchIcon } from '../../components/StatStrip'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { useAuth } from '../../contexts/AuthContext'
@@ -261,9 +262,18 @@ export function EventDetail() {
     )
   }
 
+  const showResults = !hideResults && (event.status === 'completed' || Boolean(event.time))
+  const canLookupAgain = !isSharedView && !hideResults
+
+  function reloadEvent() {
+    void getEvent(event!.id).then((loaded) => {
+      if (loaded) setEvent(loaded)
+    })
+  }
+
   return (
-    <PageShell title={t('eventDetail.title')}>
-      <div className="mt-6 max-w-2xl">
+    <PageShell greeting={t('eventDetail.title')} title={event.name}>
+      <div className="mt-6 max-w-3xl">
         <Link to={returnTo} className="text-sm font-semibold text-primary hover:text-primary-hover">
           {t('eventDetail.back')}
         </Link>
@@ -280,58 +290,88 @@ export function EventDetail() {
 
         <header
           className={[
-            'mt-4 rounded-lg border bg-surface p-5',
+            'mt-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border bg-surface p-5',
             personalRecordRowClass(isRecord),
             isRecord ? 'border-accent' : 'border-border',
           ].join(' ')}
         >
-          <div className="flex flex-wrap items-start justify-between gap-3">
-            <div className="flex items-start gap-3">
-              {event.emoji ? (
-                <span className="text-3xl" aria-hidden>
-                  {event.emoji}
-                </span>
-              ) : null}
-              <div>
-                <h1 className="font-display text-2xl tracking-wide text-primary">
-                  {event.name}
-                </h1>
-                <p className="mt-1 text-muted">{formatDatePt(event.date)}</p>
-              </div>
+          <div className="flex items-center gap-3">
+            {event.emoji ? (
+              <span className="text-4xl leading-none" aria-hidden>
+                {event.emoji}
+              </span>
+            ) : null}
+            <div>
+              <p className="font-display text-2xl leading-none tracking-wide text-foreground">
+                {formatDatePt(event.date)}
+              </p>
+              <p className="mt-1 text-sm text-muted">
+                {formatEventTypeLabel(event.eventType)} · {event.realDistance} Km ·{' '}
+                {event.location || t('common.dash')}
+              </p>
             </div>
-            <div className="flex flex-wrap items-center gap-2">
-              {isRecord ? <PersonalRecordIndicator /> : null}
-              <StatusBadge status={event.status} />
-            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2">
+            {isRecord ? <PersonalRecordIndicator /> : null}
+            <StatusBadge status={event.status} />
           </div>
         </header>
 
-        <dl className="mt-6 rounded-lg border border-border bg-surface px-5">
-          <DetailRow label={t('common.location')}>{event.location || t('common.dash')}</DetailRow>
-          <DetailRow label={t('common.distance')}>{event.realDistance} Km</DetailRow>
-          <DetailRow label={t('common.type')}>{formatEventTypeLabel(event.eventType)}</DetailRow>
-          {!hideResults && (event.status === 'completed' || event.time) ? (
-            <>
-              <DetailRow label={t('common.time')}>
-                <span className="inline-flex items-center gap-1.5">
-                  {event.time ?? t('common.dash')}
-                  {event.resultsVerified ? <VerifiedResultIndicator /> : null}
-                </span>
-              </DetailRow>
-              <DetailRow label={t('common.pace')}>
-                {event.pace ? `${event.pace} ${t('eventDetail.paceUnit')}` : t('common.dash')}
-              </DetailRow>
-              <DetailRow label={t('common.classification')}>
-                {event.classification
-                  ? formatClassificationDisplay(event.classification)
-                  : t('common.dash')}
-              </DetailRow>
-            </>
-          ) : null}
-          {!isSharedView && event.notes ? (
+        {showResults && event.time ? (
+          // O ícone de voltar a procurar vive sobre os números, e só aparece
+          // ao passar o rato: já há resultado, é uma segunda tentativa.
+          <div className="group relative mt-6">
+            {canLookupAgain ? (
+              <div className="absolute end-2 top-2 z-10 opacity-0 transition-opacity focus-within:opacity-100 group-hover:opacity-100 max-sm:opacity-100">
+                <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="icon" />
+              </div>
+            ) : null}
+            <StatStrip
+              items={[
+                {
+                  icon: <StopwatchIcon />,
+                  value: event.time ?? t('common.dash'),
+                  label: t('common.time'),
+                  note: event.resultsVerified ? <VerifiedResultIndicator /> : undefined,
+                },
+                {
+                  icon: <RoadIcon />,
+                  value: event.pace ?? t('common.dash'),
+                  label: t('common.paceUnit'),
+                },
+                {
+                  icon: <FinishFlagIcon />,
+                  value: event.classification
+                    ? formatClassificationDisplay(event.classification)
+                    : t('common.dash'),
+                  label: t('common.classification'),
+                },
+              ]}
+            />
+          </div>
+        ) : showResults ? (
+          <div className="mt-6 rounded-xl border border-border bg-surface p-5">
+            <p className="font-semibold text-foreground">{t('eventDetail.noResultYet')}</p>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <Link
+                to={`/eventos/${event.id}/resultados`}
+                state={detailLinkState}
+                className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+              >
+                {t('events.registerResults')}
+              </Link>
+              {!isSharedView ? (
+                <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="inline" />
+              ) : null}
+            </div>
+          </div>
+        ) : null}
+
+        {!isSharedView && event.notes ? (
+          <dl className="mt-6 rounded-xl border border-border bg-surface px-5">
             <DetailRow label={t('common.notes')}>{event.notes}</DetailRow>
-          ) : null}
-        </dl>
+          </dl>
+        ) : null}
 
         {eventHasCoordinates(event) ? (
           <section className="mt-6" aria-label={t('eventDetail.locationMap')}>
@@ -345,19 +385,6 @@ export function EventDetail() {
             >
               <EventLocationMap event={event} />
             </Suspense>
-          </section>
-        ) : null}
-
-        {!isSharedView && (event.status === 'confirmed' || event.status === 'completed') ? (
-          <section className="mt-6">
-            <OfficialResultsLookup
-              event={event}
-              onApplied={() => {
-                void getEvent(event.id).then((loaded) => {
-                  if (loaded) setEvent(loaded)
-                })
-              }}
-            />
           </section>
         ) : null}
 
@@ -399,19 +426,17 @@ export function EventDetail() {
           <Link
             to={`/eventos/${event.id}/editar`}
             state={detailLinkState}
-            className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white hover:bg-primary-hover"
+            className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
           >
-            ✏️ {t('common.edit')}
+            {t('common.edit')}
           </Link>
-          {event.status === 'confirmed' || event.status === 'completed' ? (
+          {event.time ? (
             <Link
               to={`/eventos/${event.id}/resultados`}
               state={detailLinkState}
-              className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5"
+              className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
             >
-              {event.status === 'completed'
-                ? `📊 ${t('events.viewResults')}`
-                : `⏱️ ${t('events.registerResults')}`}
+              {t('events.viewResults')}
             </Link>
           ) : null}
           {canRecoverEventToBucketList(event.status) ? (

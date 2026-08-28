@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
+import { RefreshIcon } from '../icons/actionIcons'
 import type { Event } from '../../types/Event'
 import type { OfficialResultCandidate } from '../../../shared/officialResults'
 import { detectPlatform, resultsPlatformLabel } from '../../../shared/officialResults'
@@ -17,9 +18,19 @@ import { splitTime } from '../../utils/time'
 type OfficialResultsLookupProps = {
   event: Event
   onApplied?: () => void
+  /**
+   * `section` traz título, explicação e aviso. `inline` traz só o botão, para
+   * quem o acolhe já dar o contexto. `icon` é um botão de ícone, para quando o
+   * resultado já existe e isto é apenas uma segunda tentativa.
+   */
+  layout?: 'section' | 'inline' | 'icon'
 }
 
-export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLookupProps) {
+export function OfficialResultsLookup({
+  event,
+  onApplied,
+  layout = 'section',
+}: OfficialResultsLookupProps) {
   const { t } = useTranslation()
   const { profile } = useUserResultsProfile()
   const { remainingSeconds, isCoolingDown, startCooldown } = useLookupCooldown()
@@ -107,37 +118,40 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
   }
 
   const timeParts = candidates?.[0] ? splitTime(candidates[0].time) : null
+  const unavailableMessage =
+    platform === 'parkrun'
+      ? t('officialResults.parkrunUnavailable')
+      : t('officialResults.configurePlatform')
 
-  return (
-    <div className="rounded-lg border border-border bg-surface p-4">
-      <h3 className="text-sm font-semibold text-foreground">{t('officialResults.lookupTitle')}</h3>
-      <p className="mt-1 text-xs text-muted">{t('officialResults.lookupHint')}</p>
-      <p className="mt-1 text-xs text-muted">
-        {t('officialResults.disclaimer')}{' '}
-        <Link
-          to={timingDisclaimerPath()}
-          className="font-semibold text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
-        >
-          {t('officialResults.disclaimerLink')}
-        </Link>
-      </p>
+  const trigger = !canLookup ? (
+    layout === 'icon' ? null : (
+      <p className="text-sm text-muted">{unavailableMessage}</p>
+    )
+  ) : layout === 'icon' ? (
+    <button
+      type="button"
+      onClick={() => void handleSearch()}
+      disabled={searching || applying || isCoolingDown}
+      aria-label={t('officialResults.refresh')}
+      title={t('officialResults.refresh')}
+      className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-60"
+    >
+      <RefreshIcon />
+    </button>
+  ) : (
+    <button
+      type="button"
+      onClick={() => void handleSearch()}
+      disabled={searching || applying || isCoolingDown}
+      className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 disabled:opacity-60"
+    >
+      {searchButtonLabel}
+    </button>
+  )
 
-      {!canLookup ? (
-        <p className="mt-3 text-sm text-muted">
-          {platform === 'parkrun'
-            ? t('officialResults.parkrunUnavailable')
-            : t('officialResults.configurePlatform')}
-        </p>
-      ) : (
-        <button
-          type="button"
-          onClick={() => void handleSearch()}
-          disabled={searching || applying || isCoolingDown}
-          className="mt-3 rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 disabled:opacity-60"
-        >
-          {searchButtonLabel}
-        </button>
-      )}
+  const body = (
+    <>
+      {trigger}
 
       {error ? <p className="mt-3 text-sm text-danger">{error}</p> : null}
 
@@ -183,8 +197,27 @@ export function OfficialResultsLookup({ event, onApplied }: OfficialResultsLooku
               })}
             </p>
           ) : null}
+          <p className="text-xs text-muted">
+            {t('officialResults.disclaimer')}{' '}
+            <Link
+              to={timingDisclaimerPath()}
+              className="font-semibold text-foreground/80 underline-offset-2 hover:text-foreground hover:underline"
+            >
+              {t('officialResults.disclaimerLink')}
+            </Link>
+          </p>
         </div>
       ) : null}
+    </>
+  )
+
+  if (layout !== 'section') return body
+
+  return (
+    <div className="rounded-xl border border-border bg-surface p-4">
+      <h3 className="text-sm font-semibold text-foreground">{t('officialResults.lookupTitle')}</h3>
+      <p className="mt-1 mb-3 text-xs text-muted">{t('officialResults.lookupHint')}</p>
+      {body}
     </div>
   )
 }
