@@ -1,9 +1,9 @@
-import { useMemo, useState, type ReactNode } from 'react'
+import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
+import medalha from '../../../assets/medalha.svg'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
-import { GoalCard } from '../../components/GoalCard'
-import { PerformanceGoalCard } from '../../components/PerformanceGoalCard'
+import { GoalBoardCard } from '../../components/GoalBoardCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
@@ -11,41 +11,96 @@ import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { useSharedGoals } from '../../hooks/useSharedGoals'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
-import type { GoalWithProgress } from '../../types/Goal'
-import { formatGoalLabel } from '../../types/Goal'
-import type { PerformanceGoalWithProgress } from '../../types/PerformanceGoal'
-import { formatPerformanceGoalLabel } from '../../types/PerformanceGoal'
+import { computeGoalsBoard, type GoalBoardEntry } from '../../utils/goalsBoard'
 
 function GoalsSkeleton() {
   return (
     <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" aria-hidden>
       {Array.from({ length: 3 }).map((_, index) => (
-        <div key={index} className="h-48 animate-pulse rounded-lg bg-border/60" />
+        <div key={index} className="h-32 animate-pulse rounded-xl bg-border/60" />
       ))}
     </div>
   )
 }
 
-function FilterButton({
+function YearPicker({
+  years,
   active,
-  onClick,
-  children,
+  onChange,
+  label,
 }: {
-  active: boolean
-  onClick: () => void
-  children: ReactNode
+  years: number[]
+  active: number
+  onChange: (year: number) => void
+  label: string
 }) {
+  if (years.length < 2) return null
+
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={[
-        'rounded-full px-3 py-1.5 text-sm font-semibold transition-colors',
-        active ? 'bg-primary text-white' : 'bg-surface text-muted ring-1 ring-border hover:text-foreground',
-      ].join(' ')}
+    <div
+      role="group"
+      aria-label={label}
+      className="inline-flex shrink-0 rounded-full border border-border bg-surface p-1"
     >
-      {children}
-    </button>
+      {years.map((year) => (
+        <button
+          key={year}
+          type="button"
+          onClick={() => onChange(year)}
+          aria-pressed={active === year}
+          className={[
+            'rounded-full px-3 py-1 text-sm font-semibold transition-colors',
+            active === year ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
+          ].join(' ')}
+        >
+          {year}
+        </button>
+      ))}
+    </div>
+  )
+}
+
+function BoardSection({
+  title,
+  entries,
+  celebrate = false,
+  onEdit,
+  onDelete,
+}: {
+  title: string
+  entries: GoalBoardEntry[]
+  /** Cumpridos ganham a mesma banda das conquistas no Início. */
+  celebrate?: boolean
+  onEdit?: (entry: GoalBoardEntry) => void
+  onDelete?: (entry: GoalBoardEntry) => void
+}) {
+  if (entries.length === 0) return null
+
+  const grid = (
+    <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {entries.map((entry) => (
+        <GoalBoardCard key={entry.id} entry={entry} onEdit={onEdit} onDelete={onDelete} />
+      ))}
+    </div>
+  )
+
+  if (!celebrate) {
+    return (
+      <section>
+        <h2 className="font-display text-2xl tracking-wide text-foreground">{title}</h2>
+        {grid}
+      </section>
+    )
+  }
+
+  return (
+    <section className="overflow-hidden rounded-2xl border border-accent/30 bg-gradient-to-br from-accent/15 via-surface to-primary/10 p-5 sm:p-6">
+      <div className="flex items-center gap-2">
+        <img src={medalha} alt="" aria-hidden className="h-6 w-auto object-contain" />
+        <h2 className="font-display text-2xl tracking-wide text-foreground">{title}</h2>
+      </div>
+      {grid}
+    </section>
   )
 }
 
@@ -54,9 +109,7 @@ export function Goals() {
   const navigate = useNavigate()
   const currentYear = new Date().getFullYear()
   const [yearFilter, setYearFilter] = useState(currentYear)
-  const [goalToDelete, setGoalToDelete] = useState<GoalWithProgress | null>(null)
-  const [performanceGoalToDelete, setPerformanceGoalToDelete] =
-    useState<PerformanceGoalWithProgress | null>(null)
+  const [entryToDelete, setEntryToDelete] = useState<GoalBoardEntry | null>(null)
   const [deleting, setDeleting] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
@@ -78,12 +131,8 @@ export function Goals() {
   const allPerformanceGoals = isSharedView
     ? sharedGoals.allPerformanceGoals
     : ownPerformanceGoals.allGoals
-  const loading = isSharedView ? sharedGoals.loading : ownGoals.loading
-  const performanceLoading = isSharedView ? sharedGoals.loading : ownPerformanceGoals.loading
-  const error = isSharedView ? sharedGoals.error : ownGoals.error
-  const performanceError = isSharedView ? sharedGoals.error : ownPerformanceGoals.error
-  const removeGoal = ownGoals.removeGoal
-  const removePerformanceGoal = ownPerformanceGoals.removePerformanceGoal
+  const loading = isSharedView ? sharedGoals.loading : ownGoals.loading || ownPerformanceGoals.loading
+  const error = isSharedView ? sharedGoals.error : (ownGoals.error ?? ownPerformanceGoals.error)
   const showGoals = isSharedView ? sharedGoals.showGoals : true
   const showPerformanceGoals = isSharedView ? sharedGoals.showPerformanceGoals : true
 
@@ -98,31 +147,30 @@ export function Goals() {
     return Array.from(years).sort((a, b) => b - a)
   }, [allGoals, allPerformanceGoals, currentYear])
 
+  const board = useMemo(
+    () =>
+      computeGoalsBoard(showGoals ? goals : [], showPerformanceGoals ? performanceGoals : []),
+    [goals, performanceGoals, showGoals, showPerformanceGoals],
+  )
+
+  const isEmpty =
+    board.pending.length === 0 && board.done.length === 0 && board.failed.length === 0
+  const editHandler = canModifyYear ? (entry: GoalBoardEntry) => navigate(entry.editPath) : undefined
+  const deleteHandler = canModifyYear ? setEntryToDelete : undefined
+
   async function handleConfirmDelete() {
-    if (!goalToDelete) return
+    if (!entryToDelete) return
 
     setDeleting(true)
     try {
-      await removeGoal(goalToDelete.id)
-      setSuccessMessage(t('goals.goalDeleted', { name: formatGoalLabel(goalToDelete) }))
-      setGoalToDelete(null)
-    } catch {
-      setSuccessMessage(null)
-    } finally {
-      setDeleting(false)
-    }
-  }
-
-  async function handleConfirmDeletePerformance() {
-    if (!performanceGoalToDelete) return
-
-    setDeleting(true)
-    try {
-      await removePerformanceGoal(performanceGoalToDelete.id)
-      setSuccessMessage(
-        t('goals.performanceDeleted', { name: formatPerformanceGoalLabel(performanceGoalToDelete) }),
-      )
-      setPerformanceGoalToDelete(null)
+      if (entryToDelete.kind === 'annual') {
+        await ownGoals.removeGoal(entryToDelete.sourceId)
+        setSuccessMessage(t('goals.goalDeleted', { name: entryToDelete.title }))
+      } else {
+        await ownPerformanceGoals.removePerformanceGoal(entryToDelete.sourceId)
+        setSuccessMessage(t('goals.performanceDeleted', { name: entryToDelete.title }))
+      }
+      setEntryToDelete(null)
     } catch {
       setSuccessMessage(null)
     } finally {
@@ -132,6 +180,8 @@ export function Goals() {
 
   return (
     <PageShell title={t('goals.title')}>
+      <p className="mt-2 text-sm text-muted">{t('goals.subtitle')}</p>
+
       <div className="mt-6 flex flex-col gap-6">
         <SharedOwnerTabs
           tabs={ownerTabs}
@@ -144,168 +194,103 @@ export function Goals() {
           <SharedDataLoading section="goals" ownerName={activeOwner?.label ?? ''} />
         ) : (
           <>
-        {isSharedView ? (
-          <SharedContextBanner
-            message={t('shares.sharedGoalsBanner', {
-              name: activeOwner?.label ?? '',
-            })}
-          />
-        ) : null}
-
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted">{t('goals.subtitle')}</p>
-          {canModifyYear ? (
-            <Link
-              to="/objetivos/novo"
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-            >
-              ➕ {t('common.add')}
-            </Link>
-          ) : null}
-        </div>
-
-        <div className="space-y-3">
-          <p className="text-sm font-semibold text-foreground">{t('common.year')}</p>
-          <div className="flex flex-wrap gap-2">
-            {availableYears.map((year) => (
-              <FilterButton
-                key={year}
-                active={yearFilter === year}
-                onClick={() => setYearFilter(year)}
-              >
-                {year}
-              </FilterButton>
-            ))}
-          </div>
-        </div>
-
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
-        {performanceError ? <p className="text-sm text-danger">{performanceError}</p> : null}
-        {successMessage ? <p className="text-sm text-success">{successMessage}</p> : null}
-
-        {showGoals ? (
-          !isSharedView && loading ? (
-            <GoalsSkeleton />
-          ) : goals.length === 0 ? (
-            <div className="rounded-lg border border-border bg-surface p-8 text-center">
-              <p className="text-lg font-semibold text-foreground">
-                {isSharedView
-                  ? t('voice.empty.shared.goals.title')
-                  : t('voice.empty.own.goals.title', { year: yearFilter })}
-              </p>
-              {isSharedView ? (
-                <p className="mt-2 text-muted">
-                  {t('voice.empty.shared.goals.hint', {
-                    name: activeOwner?.label ?? '',
-                    year: yearFilter,
-                  })}
-                </p>
-              ) : (
-                <p className="mt-2 text-muted">
-                  {t('voice.empty.own.goals.hint')}{' '}
-                  <span className="font-semibold text-accent">{t('common.letsGo')}</span>
-                </p>
-              )}
-            </div>
-          ) : (
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {goals.map((goal) => (
-                <GoalCard
-                  key={goal.id}
-                  goal={goal}
-                  onEdit={isSharedView ? undefined : (goalId) => navigate(`/objetivos/${goalId}/editar`)}
-                  onDelete={isSharedView ? undefined : setGoalToDelete}
-                  showActions={!isSharedView && goal.year >= currentYear}
-                />
-              ))}
-            </div>
-          )
-        ) : null}
-
-        {showPerformanceGoals ? (
-        <section className="border-t border-border pt-8">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="font-display text-2xl tracking-wide text-primary">{t('goals.performanceTitle')}</h2>
-              <p className="text-sm text-muted">{t('goals.performanceSubtitle')}</p>
-            </div>
-            {!isSharedView && !canModifyYear ? (
-              <p className="text-sm text-muted">{t('goals.readOnlyYear', { year: yearFilter })}</p>
-            ) : !isSharedView && canModifyYear ? (
-              <Link
-                to="/objetivos/performance/novo"
-                className="inline-flex items-center justify-center rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
-              >
-                {t('goals.newPerformance')}
-              </Link>
+            {isSharedView ? (
+              <SharedContextBanner
+                message={t('shares.sharedGoalsBanner', { name: activeOwner?.label ?? '' })}
+              />
             ) : null}
-          </div>
 
-          {isSharedView ? null : performanceLoading ? (
-            <div className="mt-4">
-              <GoalsSkeleton />
-            </div>
-          ) : performanceGoals.length === 0 ? (
-            <div className="mt-4 rounded-lg border border-border bg-surface p-8 text-center">
-              <p className="text-lg font-semibold text-foreground">
-                {isSharedView
-                  ? t('voice.empty.shared.performanceGoals.title')
-                  : t('voice.empty.own.performanceGoals.title', { year: yearFilter })}
-              </p>
-              {isSharedView ? (
-                <p className="mt-2 text-muted">
-                  {t('voice.empty.shared.performanceGoals.hint', { name: activeOwner?.label ?? '' })}
-                </p>
-              ) : (
-                <p className="mt-2 text-muted">{t('voice.empty.own.performanceGoals.hint')}</p>
-              )}
-            </div>
-          ) : (
-            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {performanceGoals.map((goal) => (
-                <PerformanceGoalCard
-                  key={goal.id}
-                  goal={goal}
-                  onEdit={
-                    isSharedView
-                      ? undefined
-                      : (goalId) => navigate(`/objetivos/performance/${goalId}/editar`)
-                  }
-                  onDelete={isSharedView ? undefined : setPerformanceGoalToDelete}
-                  showActions={!isSharedView && goal.year >= currentYear}
+            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex items-center gap-3">
+                <YearPicker
+                  years={availableYears}
+                  active={yearFilter}
+                  onChange={setYearFilter}
+                  label={t('common.year')}
                 />
-              ))}
+                {!isSharedView && !canModifyYear ? (
+                  <p className="text-sm text-muted">{t('goals.readOnlyYear', { year: yearFilter })}</p>
+                ) : null}
+              </div>
+
+              {canModifyYear ? (
+                <Link
+                  to="/objetivos/novo"
+                  className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+                >
+                  {t('goals.newGoal')}
+                </Link>
+              ) : null}
             </div>
-          )}
-        </section>
-        ) : null}
+
+            {error ? <p className="text-sm text-danger">{error}</p> : null}
+            {successMessage ? <p className="text-sm text-success">{successMessage}</p> : null}
+
+            {loading ? (
+              <GoalsSkeleton />
+            ) : isEmpty ? (
+              <div className="rounded-xl border border-border bg-surface p-8 text-center">
+                <p className="text-lg font-semibold text-foreground">
+                  {isSharedView
+                    ? t('voice.empty.shared.goals.title')
+                    : t('voice.empty.own.goals.title', { year: yearFilter })}
+                </p>
+                <p className="mt-2 text-muted">
+                  {isSharedView
+                    ? t('voice.empty.shared.goals.hint', {
+                        name: activeOwner?.label ?? '',
+                        year: yearFilter,
+                      })
+                    : t('voice.empty.own.goals.hint')}{' '}
+                  {isSharedView ? null : (
+                    <span className="font-semibold text-accent">{t('common.letsGo')}</span>
+                  )}
+                </p>
+              </div>
+            ) : (
+              <>
+                <BoardSection
+                  title={t('goals.doneTitle')}
+                  entries={board.done}
+                  celebrate
+                  onEdit={editHandler}
+                  onDelete={deleteHandler}
+                />
+
+                <BoardSection
+                  title={t('goals.pendingTitle')}
+                  entries={board.pending}
+                  onEdit={editHandler}
+                  onDelete={deleteHandler}
+                />
+
+                {board.pending.length === 0 && board.failed.length === 0 ? (
+                  <p className="text-sm text-muted">{t('goals.allDone', { year: yearFilter })}</p>
+                ) : null}
+
+                <BoardSection
+                  title={t('goals.failedTitle')}
+                  entries={board.failed}
+                  onEdit={editHandler}
+                  onDelete={deleteHandler}
+                />
+              </>
+            )}
           </>
         )}
       </div>
 
       <ConfirmDialog
-        open={goalToDelete !== null}
-        title={t('goals.deleteGoalTitle')}
-        message={
-          goalToDelete ? t('goals.deleteGoalMessage', { name: formatGoalLabel(goalToDelete) }) : ''
+        open={entryToDelete !== null}
+        title={
+          entryToDelete?.kind === 'performance'
+            ? t('goals.deletePerformanceTitle')
+            : t('goals.deleteGoalTitle')
         }
+        message={entryToDelete ? t('goals.deleteGoalMessage', { name: entryToDelete.title }) : ''}
         confirmLabel={t('common.delete')}
         onConfirm={() => void handleConfirmDelete()}
-        onCancel={() => setGoalToDelete(null)}
-        loading={deleting}
-      />
-
-      <ConfirmDialog
-        open={performanceGoalToDelete !== null}
-        title={t('goals.deletePerformanceTitle')}
-        message={
-          performanceGoalToDelete
-            ? t('goals.deleteGoalMessage', { name: formatPerformanceGoalLabel(performanceGoalToDelete) })
-            : ''
-        }
-        confirmLabel={t('common.delete')}
-        onConfirm={() => void handleConfirmDeletePerformance()}
-        onCancel={() => setPerformanceGoalToDelete(null)}
+        onCancel={() => setEntryToDelete(null)}
         loading={deleting}
       />
     </PageShell>

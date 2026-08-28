@@ -350,14 +350,7 @@
   "goals": {
     "title": "الأهداف",
     "subtitle": "أهداف سنوية حسب نوع الفعالية. يُحسب التقدم من الفعاليات المكتملة.",
-    "empty": "لا توجد أهداف بعد في {{year}}",
-    "emptyHint": "حدّد أهدافًا للموسم.",
-    "performanceTitle": "أهداف الأداء",
-    "performanceSubtitle": "رقم شخصي، إيقاع ووقت. التقدم من نتائجك.",
-    "performanceEmpty": "لا توجد أهداف أداء بعد في {{year}}",
-    "performanceEmptyHint": "حدّد هدفًا للرقم الشخصي أو الإيقاع أو الوقت للموسم.",
     "readOnlyYear": "أهداف {{year}} للقراءة فقط.",
-    "newPerformance": "➕ هدف جديد",
     "deleteGoalTitle": "حذف الهدف",
     "deleteGoalMessage": "هل أنت متأكد من أنك تريد حذف {{name}}؟",
     "deletePerformanceTitle": "حذف هدف الأداء",
@@ -372,7 +365,15 @@
     "performanceNoData": "لا توجد بيانات",
     "performanceFailed": "لم يتحقق",
     "countHint": "يحسب الفعاليات المكتملة من هذا النوع في السنة",
-    "newGoal": "➕ هدف جديد"
+    "newGoal": "هدف جديد",
+    "pendingTitle": "في الطريق",
+    "doneTitle": "محقَّقة",
+    "typeAnnual": "سنوي",
+    "typePerformance": "أداء",
+    "allDone": "تحقّق كل شيء في {{year}}. حان وقت رفع السقف.",
+    "chooseType": "نوع الهدف",
+    "editTitle": "تعديل الهدف",
+    "failedTitle": "لم تتحقق"
   },
   "results": {
     "title": "النتائج",
@@ -993,10 +994,7 @@
       }
     },
     "success": {
-      "import": "تم استيراد البيانات! موسمك الآن في التطبيق. انطلق!",
-      "goalAchieved": "تم سحق الهدف! كنت تعلم أنك قادر.",
-      "goalExceeded": "تم التجاوز. لا كلام لديّ.",
-      "goalCrushed": "تدمير كامل. الأسفلت يطلب الرحمة."
+      "import": "تم استيراد البيانات! موسمك الآن في التطبيق. انطلق!"
     }
   }
 }

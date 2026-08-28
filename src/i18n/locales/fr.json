@@ -350,14 +350,7 @@
   "goals": {
     "title": "Objectifs",
     "subtitle": "Cibles annuelles par type d'événement. La progression vient des événements terminés.",
-    "empty": "Aucun objectif pour l'instant en {{year}}",
-    "emptyHint": "Fixe des cibles pour la saison.",
-    "performanceTitle": "Objectifs de performance",
-    "performanceSubtitle": "Record, allure et temps. Progression basée sur tes résultats.",
-    "performanceEmpty": "Aucun objectif de performance pour l'instant en {{year}}",
-    "performanceEmptyHint": "Fixe une cible de record, d'allure ou de temps pour la saison.",
     "readOnlyYear": "Les objectifs {{year}} sont en lecture seule.",
-    "newPerformance": "➕ Nouvel objectif",
     "deleteGoalTitle": "Supprimer l'objectif",
     "deleteGoalMessage": "Es-tu sûr de vouloir supprimer {{name}} ?",
     "deletePerformanceTitle": "Supprimer l'objectif de performance",
@@ -372,7 +365,15 @@
     "performanceNoData": "Aucune donnée",
     "performanceFailed": "Raté",
     "countHint": "Compte les événements terminés de ce type dans l'année",
-    "newGoal": "➕ Nouvel objectif"
+    "newGoal": "Nouvel objectif",
+    "pendingTitle": "En route",
+    "doneTitle": "Atteints",
+    "typeAnnual": "Annuel",
+    "typePerformance": "Performance",
+    "allDone": "Tout est atteint en {{year}}. Il est temps de relever la barre.",
+    "chooseType": "Type d'objectif",
+    "editTitle": "Modifier l'objectif",
+    "failedTitle": "Manqués"
   },
   "results": {
     "title": "Résultats",
@@ -993,10 +994,7 @@
       }
     },
     "success": {
-      "import": "Données importées ! Ta saison est dans l'app. C'EST PARTI !",
-      "goalAchieved": "Objectif pulvérisé ! Tu savais que tu l'avais.",
-      "goalExceeded": "Dépassé. Je n'ai plus de mots.",
-      "goalCrushed": "Écrasé. L'asphalte demande grâce."
+      "import": "Données importées ! Ta saison est dans l'app. C'EST PARTI !"
     }
   }
 }

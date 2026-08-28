@@ -11,18 +11,6 @@ export function formatEventTypeLabel(eventType: EventType): string {
   return i18n.t(`eventType.${eventType}`)
 }
 
-const GOAL_OUTCOME_KEYS: Record<Exclude<GoalOutcome, 'in_progress'>, string> = {
-  achieved: 'voice.success.goalAchieved',
-  exceeded: 'voice.success.goalExceeded',
-  crushed: 'voice.success.goalCrushed',
-  failed: 'goals.outcomeFailed',
-}
-
-export function formatGoalOutcomeLabel(outcome: GoalOutcome): string {
-  if (outcome === 'in_progress') return ''
-  return i18n.t(GOAL_OUTCOME_KEYS[outcome])
-}
-
 const GOAL_OUTCOME_SHORT_KEYS: Record<Exclude<GoalOutcome, 'in_progress'>, string> = {
   achieved: 'goals.outcomeAchieved',
   exceeded: 'goals.outcomeExceeded',
@@ -30,7 +18,7 @@ const GOAL_OUTCOME_SHORT_KEYS: Record<Exclude<GoalOutcome, 'in_progress'>, strin
   failed: 'goals.outcomeFailed',
 }
 
-/** Versão de duas palavras, para onde a frase de marca não cabe. */
+/** Desfecho em duas palavras, para caber num chip ou num cartão. */
 export function formatGoalOutcomeShortLabel(outcome: GoalOutcome): string {
   if (outcome === 'in_progress') return ''
   return i18n.t(GOAL_OUTCOME_SHORT_KEYS[outcome])

@@ -1,0 +1,1 @@
+export { GoalTypeTabs } from './GoalTypeTabs'

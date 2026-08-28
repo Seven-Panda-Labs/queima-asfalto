@@ -26,7 +26,7 @@ export function ProgressBar({ current, target, label, showCounts = true }: Progr
         <div
           className={[
             'h-full rounded-lg transition-all',
-            isComplete ? 'bg-success' : 'bg-success',
+            isComplete ? 'bg-success' : 'bg-accent',
           ].join(' ')}
           style={{ width: `${percent}%` }}
         />

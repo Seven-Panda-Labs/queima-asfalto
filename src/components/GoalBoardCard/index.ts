@@ -1,0 +1,1 @@
+export { GoalBoardCard } from './GoalBoardCard'
