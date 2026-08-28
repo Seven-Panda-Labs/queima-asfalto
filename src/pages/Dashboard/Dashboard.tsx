@@ -2,7 +2,12 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AchievementShelf } from '../../components/AchievementShelf'
 import { NextEventCard } from '../../components/NextEventCard'
-import { StatStrip } from '../../components/StatStrip'
+import {
+  FinishFlagIcon,
+  RoadIcon,
+  StatStrip,
+  StopwatchIcon,
+} from '../../components/StatStrip'
 import { TargetCard } from '../../components/TargetCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
@@ -60,17 +65,17 @@ export function Dashboard() {
         <StatStrip
           items={[
             {
-              emoji: '🛣️',
+              icon: <RoadIcon />,
               value: stats.completedDistanceKm.toLocaleString(i18n.language),
               label: t('dashboard.kilometresInYear', { year: currentYear }),
             },
             {
-              emoji: '🏁',
+              icon: <FinishFlagIcon />,
               value: `${stats.completedCount}/${stats.totalEvents}`,
               label: t('dashboard.completedEvents'),
             },
             {
-              emoji: '⏱️',
+              icon: <StopwatchIcon />,
               value: stats.averagePace ?? t('common.dash'),
               label: t('dashboard.averagePace'),
             },

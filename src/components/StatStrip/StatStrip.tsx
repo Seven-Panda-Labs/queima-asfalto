@@ -1,5 +1,7 @@
+import type { ReactNode } from 'react'
+
 export type StatStripItem = {
-  emoji: string
+  icon: ReactNode
   value: string
   label: string
 }
@@ -13,9 +15,7 @@ export function StatStrip({ items }: { items: StatStripItem[] }) {
     <div className="grid gap-px overflow-hidden rounded-xl border border-border bg-border sm:grid-cols-3">
       {items.map((item) => (
         <div key={item.label} className="flex items-center gap-3 bg-surface px-4 py-4">
-          <span className="text-2xl leading-none" aria-hidden>
-            {item.emoji}
-          </span>
+          <span className="text-accent">{item.icon}</span>
           <div className="min-w-0">
             <p className="font-display text-3xl leading-none tracking-wide text-foreground">
               {item.value}
