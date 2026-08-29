@@ -21,11 +21,11 @@
 PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resultados, ritmo e metas de performance. Funciona offline e sincroniza via Firebase.
 
 <p align="center">
-  <img src="assets/screenshots/dashboard.png" alt="Painel" width="49%" />
-  <img src="assets/screenshots/events.png" alt="Calendário de eventos" width="49%" />
+  <img src="assets/screenshots/dashboard.webp" alt="Painel: próximo evento, números do ano, conquistas e recordes pessoais" width="49%" />
+  <img src="assets/screenshots/goals.webp" alt="Objetivos agrupados por estado, com os cumpridos em destaque" width="49%" />
   <br />
-  <img src="assets/screenshots/goals.png" alt="Objetivos e metas" width="49%" />
-  <img src="assets/screenshots/results.png" alt="Resultados" width="49%" />
+  <img src="assets/screenshots/events-map.webp" alt="Eventos no mapa, com filtros por estado e ano" width="49%" />
+  <img src="assets/screenshots/event-detail.webp" alt="Detalhe de um evento com tempo, ritmo e classificação" width="49%" />
 </p>
 
 ### Funcionalidades
