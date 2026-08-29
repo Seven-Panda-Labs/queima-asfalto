@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import i18n from '../i18n'
 import {
   DEFAULT_NOTIFICATION_PREFS,
   type NotificationPrefs,
 } from '../types/NotificationPrefs'
 import { getNotificationPrefs, updateNotificationPrefs } from '../services/users'
+import { reportLoadError } from '../utils/loadError'
 
 export function useNotificationPrefs() {
   const { user } = useAuth()
@@ -27,7 +27,7 @@ export function useNotificationPrefs() {
     void getNotificationPrefs(user.uid)
       .then(setPrefs)
       .catch((loadError) => {
-        setError(loadError instanceof Error ? loadError.message : i18n.t('errors.loadPrefs'))
+        setError(reportLoadError(loadError, 'errors.loadPrefs', 'useNotificationPrefs'))
       })
       .finally(() => setLoading(false))
   }, [user])
@@ -44,7 +44,7 @@ export function useNotificationPrefs() {
         await updateNotificationPrefs(user.uid, nextPrefs)
         setPrefs(merged)
       } catch (saveError) {
-        setError(saveError instanceof Error ? saveError.message : i18n.t('errors.savePrefsHook'))
+        setError(reportLoadError(saveError, 'errors.savePrefsHook', 'useNotificationPrefs'))
         throw saveError
       } finally {
         setSaving(false)

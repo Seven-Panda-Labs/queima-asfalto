@@ -1,22 +1,23 @@
-import { describe, expect, it } from 'vitest'
-import {
-  getFaltouMessage,
-  getResultsSavedMessage,
-  getSarcasticClassification,
-} from './messages'
+import { beforeAll, describe, expect, it } from 'vitest'
+import i18n from '../i18n'
+import { getFaltouMessage } from './messages'
 
-describe('messages', () => {
-  it('returns non-empty results saved message', () => {
-    expect(getResultsSavedMessage('Zé Ninguém', '5:06')).toContain('VAMOS')
+beforeAll(async () => {
+  await i18n.changeLanguage('pt')
+})
+
+describe('getFaltouMessage', () => {
+  it('names the event, and the runner when there is a name', () => {
+    const message = getFaltouMessage('Meia de Lisboa', 'Zé Ninguém')
+
+    expect(message).toContain('Meia de Lisboa')
+    expect(message).toContain('Zé')
   })
 
-  it('returns faltou message with name', () => {
-    expect(getFaltouMessage('ParkRun', 'Zé Ninguém')).toContain('Zé')
-    expect(getFaltouMessage('ParkRun', 'Zé Ninguém')).toContain('ParkRun')
-  })
+  it('reads without a name when there is none', () => {
+    const message = getFaltouMessage('Meia de Lisboa')
 
-  it('uses sarcasm only for poor classification', () => {
-    expect(getSarcasticClassification(10, 100)).toBeNull()
-    expect(getSarcasticClassification(80, 100)).not.toBeNull()
+    expect(message).toContain('Meia de Lisboa')
+    expect(message.trim()).not.toBe('')
   })
 })

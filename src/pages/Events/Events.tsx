@@ -364,7 +364,7 @@ export function Events() {
                             isRecord ? 'font-semibold text-accent' : '',
                           ].join(' ')}
                         >
-                          {event.pace ? `${event.pace} min/Km` : t('common.dash')}
+                          {event.pace ? `${event.pace} ${t('common.paceUnit')}` : t('common.dash')}
                         </td>
                       </>
                     ) : null}

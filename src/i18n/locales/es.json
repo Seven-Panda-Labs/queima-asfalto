@@ -157,8 +157,7 @@
     "allTargetsDone": "Todo cumplido. Toca subir el listón.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Aún no hay objetivos en {{year}}",
-    "createGoal": "Crear objetivo",
-    "goalsLoadError": "No se han podido cargar tus objetivos."
+    "createGoal": "Crear objetivo"
   },
   "events": {
     "title": "Eventos",
@@ -614,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó. Marcado como Perdido automáticamente.",
-    "resultsSaved": "¡Resultados de «{{name}}» guardados!",
-    "classificationSaved": "¡Clasificación registrada!"
+    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó. Marcado como Perdido automáticamente."
   },
   "validation": {
     "futureNoCompleted": "Los eventos futuros no pueden estar Completados ni marcados como Perdidos.",
@@ -664,7 +661,11 @@
     "loadPrefs": "Error al cargar las preferencias.",
     "savePrefsHook": "Error al guardar las preferencias.",
     "offlineUnsupported": "Este navegador no admite el modo sin conexión completo (IndexedDB no disponible).",
-    "resultsSaveFailed": "No se pudieron guardar los resultados. {{message}}"
+    "resultsSaveFailed": "No se pudieron guardar los resultados. {{message}}",
+    "eventsLoadError": "No se han podido cargar tus eventos.",
+    "goalsLoadError": "No se han podido cargar tus objetivos.",
+    "performanceGoalsLoadError": "No se han podido cargar tus objetivos de rendimiento.",
+    "bucketListLoadError": "No se ha podido cargar tu bucket list."
   },
   "goalForm": {
     "targetCount": "Cantidad objetivo",

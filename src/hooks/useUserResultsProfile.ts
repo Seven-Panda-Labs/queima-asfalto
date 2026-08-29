@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import i18n from '../i18n'
 import type { UserResultsProfile } from '../types/UserResultsProfile'
 import { getUserResultsProfile, updateUserResultsProfile } from '../services/users'
+import { reportLoadError } from '../utils/loadError'
 
 export function useUserResultsProfile() {
   const { user } = useAuth()
@@ -24,7 +24,7 @@ export function useUserResultsProfile() {
     void getUserResultsProfile(user.uid)
       .then(setProfile)
       .catch((loadError) => {
-        setError(loadError instanceof Error ? loadError.message : i18n.t('errors.loadPrefs'))
+        setError(reportLoadError(loadError, 'errors.loadPrefs', 'useUserResultsProfile'))
       })
       .finally(() => setLoading(false))
   }, [user])
@@ -41,7 +41,7 @@ export function useUserResultsProfile() {
         await updateUserResultsProfile(user.uid, nextProfile)
         setProfile(merged)
       } catch (saveError) {
-        setError(saveError instanceof Error ? saveError.message : i18n.t('errors.savePrefsHook'))
+        setError(reportLoadError(saveError, 'errors.savePrefsHook', 'useUserResultsProfile'))
         throw saveError
       } finally {
         setSaving(false)

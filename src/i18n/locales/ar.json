@@ -157,8 +157,7 @@
     "allTargetsDone": "كل شيء مكتمل. حان وقت رفع السقف.",
     "viewAllGoals": "عرض الكل",
     "noGoals": "لا توجد أهداف بعد في {{year}}",
-    "createGoal": "إنشاء هدف",
-    "goalsLoadError": "تعذّر تحميل أهدافك."
+    "createGoal": "إنشاء هدف"
   },
   "events": {
     "title": "الفعاليات",
@@ -614,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}، انتهى موعد الفعالية «{{event}}». تم تعليمها تلقائيًا على أنها لم تُحضَر.",
-    "resultsSaved": "تم حفظ نتائج «{{name}}»!",
-    "classificationSaved": "تم تسجيل الترتيب!"
+    "faltouAuto": "{{name}}، انتهى موعد الفعالية «{{event}}». تم تعليمها تلقائيًا على أنها لم تُحضَر."
   },
   "validation": {
     "futureNoCompleted": "لا يمكن تعليم الفعاليات المستقبلية كمكتملة أو لم تُحضَر.",
@@ -664,7 +661,11 @@
     "loadPrefs": "خطأ في تحميل التفضيلات.",
     "savePrefsHook": "خطأ في حفظ التفضيلات.",
     "offlineUnsupported": "هذا المتصفح لا يدعم وضع عدم الاتصال الكامل (IndexedDB غير متاح).",
-    "resultsSaveFailed": "تعذّر حفظ النتائج. {{message}}"
+    "resultsSaveFailed": "تعذّر حفظ النتائج. {{message}}",
+    "eventsLoadError": "تعذّر تحميل فعالياتك.",
+    "goalsLoadError": "تعذّر تحميل أهدافك.",
+    "performanceGoalsLoadError": "تعذّر تحميل أهداف الأداء.",
+    "bucketListLoadError": "تعذّر تحميل قائمة أحلامك."
   },
   "goalForm": {
     "targetCount": "العدد المستهدف",

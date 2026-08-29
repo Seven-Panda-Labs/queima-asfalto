@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import i18n from '../i18n'
 import type { Event } from '../types/Event'
 import type { Goal, GoalWithProgress } from '../types/Goal'
 import type { PerformanceGoal, PerformanceGoalWithProgress } from '../types/PerformanceGoal'
@@ -9,6 +8,7 @@ import { computeAllGoalsProgress } from '../utils/goalProgress'
 import { computeAllPerformanceGoalsProgress } from '../utils/performanceGoalProgress'
 import { getSharedGoalsCache, setSharedGoalsCache } from '../utils/sharedDataCache'
 import { hasSectionReadAccess, hasEventsAccess } from '../../shared/shares/permissions'
+import { reportLoadError } from '../utils/loadError'
 
 function buildGoalsSections(sharePermissions: SharePermissions | null): SharedDataSection[] {
   if (!sharePermissions) return []
@@ -85,7 +85,7 @@ export function useSharedGoals(
       setOwnerDisplayName(entry.ownerDisplayName)
       setPermissions(entry.permissions)
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : i18n.t('shares.loadError'))
+      setError(reportLoadError(loadError, 'shares.loadError', 'useSharedGoals'))
       if (!hasCache) {
         setGoals([])
         setPerformanceGoals([])

@@ -157,8 +157,7 @@
     "allTargetsDone": "All done. Time to raise the bar.",
     "viewAllGoals": "View all",
     "noGoals": "No goals yet in {{year}}",
-    "createGoal": "Create goal",
-    "goalsLoadError": "Could not load your goals."
+    "createGoal": "Create goal"
   },
   "events": {
     "title": "Events",
@@ -614,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, event «{{event}}» has passed. Marked as Missed automatically.",
-    "resultsSaved": "Results for «{{name}}» saved!",
-    "classificationSaved": "Classification recorded!"
+    "faltouAuto": "{{name}}, event «{{event}}» has passed. Marked as Missed automatically."
   },
   "validation": {
     "futureNoCompleted": "Future events cannot be Completed or marked as Missed.",
@@ -664,7 +661,11 @@
     "loadPrefs": "Error loading preferences.",
     "savePrefsHook": "Error saving preferences.",
     "offlineUnsupported": "This browser does not support full offline mode (IndexedDB unavailable).",
-    "resultsSaveFailed": "Could not save results. {{message}}"
+    "resultsSaveFailed": "Could not save results. {{message}}",
+    "eventsLoadError": "Could not load your events.",
+    "goalsLoadError": "Could not load your goals.",
+    "performanceGoalsLoadError": "Could not load your performance goals.",
+    "bucketListLoadError": "Could not load your bucket list."
   },
   "goalForm": {
     "targetCount": "Target count",

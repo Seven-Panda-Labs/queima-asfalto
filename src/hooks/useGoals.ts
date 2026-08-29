@@ -12,6 +12,7 @@ import {
   updateGoal,
 } from '../services/goals'
 import { computeAllGoalsProgress } from '../utils/goalProgress'
+import { reportLoadError } from '../utils/loadError'
 
 type UseGoalsOptions = {
   year?: number
@@ -46,7 +47,7 @@ export function useGoals(options: UseGoalsOptions = {}) {
         setLoading(false)
       },
       (snapshotError) => {
-        setError(snapshotError.message)
+        setError(reportLoadError(snapshotError, 'errors.goalsLoadError', 'useGoals'))
         setLoading(false)
       },
     )

@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useState } from 'react'
-import i18n from '../i18n'
 import type { Event } from '../types/Event'
 import type { SharePermissions } from '../types/Share'
 import { fetchSharedSnapshot } from '../services/shares'
 import { getSharedEventsCache, setSharedEventsCache } from '../utils/sharedDataCache'
+import { reportLoadError } from '../utils/loadError'
 
 export function useSharedEvents(ownerId: string | null) {
   const [events, setEvents] = useState<Event[]>([])
@@ -46,7 +46,7 @@ export function useSharedEvents(ownerId: string | null) {
       setOwnerDisplayName(entry.ownerDisplayName)
       setPermissions(entry.permissions)
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : i18n.t('shares.loadError'))
+      setError(reportLoadError(loadError, 'shares.loadError', 'useSharedEvents'))
       if (!hasCache) setEvents([])
     } finally {
       setLoading(false)

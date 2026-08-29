@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../contexts/AuthContext'
-import i18n from '../i18n'
 import type { ShareList, SharePermissions } from '../types/Share'
 import {
   acceptShare,
@@ -10,6 +9,7 @@ import {
   revokeShare,
   updateSharePermissions,
 } from '../services/shares'
+import { reportLoadError } from '../utils/loadError'
 
 export function useShares() {
   const { user } = useAuth()
@@ -30,7 +30,7 @@ export function useShares() {
       const next = await listShares()
       setShares(next)
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : i18n.t('shares.loadError'))
+      setError(reportLoadError(loadError, 'shares.loadError', 'useShares'))
     } finally {
       setLoading(false)
     }
