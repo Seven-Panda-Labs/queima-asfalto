@@ -27,7 +27,7 @@ export function Dashboard() {
   const { t, i18n } = useTranslation()
   const { user } = useAuth()
   const currentYear = new Date().getFullYear()
-  const { allEvents, loading: eventsLoading } = useEvents()
+  const { allEvents, loading: eventsLoading, error: eventsError } = useEvents()
   const { goals, loading: goalsLoading, error: goalsError } = useGoals({ year: currentYear })
   const {
     goals: performanceGoals,
@@ -58,6 +58,12 @@ export function Dashboard() {
       <section className="mt-6">
         {eventsLoading ? (
           <div className="h-40 animate-pulse rounded-2xl bg-border/60" aria-hidden />
+        ) : eventsError ? (
+          // Sem os eventos não se sabe o que vem a seguir. Dizê-lo é melhor do
+          // que mostrar «sem eventos futuros», que seria uma afirmação falsa.
+          <p className="rounded-2xl border border-danger/40 bg-surface p-5 text-sm text-danger">
+            {eventsError}
+          </p>
         ) : (
           <NextEventCard event={nextEvent} />
         )}
@@ -68,17 +74,19 @@ export function Dashboard() {
           items={[
             {
               icon: <RoadIcon />,
-              value: stats.completedDistanceKm.toLocaleString(i18n.language),
+              value: eventsError
+                ? t('common.dash')
+                : stats.completedDistanceKm.toLocaleString(i18n.language),
               label: t('dashboard.kilometresInYear', { year: currentYear }),
             },
             {
               icon: <FinishFlagIcon />,
-              value: `${stats.completedCount}/${stats.totalEvents}`,
+              value: eventsError ? t('common.dash') : `${stats.completedCount}/${stats.totalEvents}`,
               label: t('dashboard.completedEvents'),
             },
             {
               icon: <StopwatchIcon />,
-              value: stats.averagePace ?? t('common.dash'),
+              value: eventsError ? t('common.dash') : (stats.averagePace ?? t('common.dash')),
               label: t('dashboard.averagePace'),
             },
           ]}
