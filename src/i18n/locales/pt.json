@@ -613,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, o evento «{{event}}» passou. Marcado como Faltou automaticamente.",
-    "resultsSaved": "Resultados de «{{name}}» guardados!",
-    "classificationSaved": "Classificação registada!"
+    "faltouAuto": "{{name}}, o evento «{{event}}» passou. Marcado como Faltou automaticamente."
   },
   "validation": {
     "futureNoCompleted": "Eventos futuros não podem estar Concluídos ou marcados como Faltou.",

@@ -613,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, l'événement « {{event}} » est passé. Marqué automatiquement comme Manqué.",
-    "resultsSaved": "Résultats de « {{name}} » enregistrés !",
-    "classificationSaved": "Classement enregistré !"
+    "faltouAuto": "{{name}}, l'événement « {{event}} » est passé. Marqué automatiquement comme Manqué."
   },
   "validation": {
     "futureNoCompleted": "Les événements futurs ne peuvent pas être Terminés ni marqués comme Manqués.",

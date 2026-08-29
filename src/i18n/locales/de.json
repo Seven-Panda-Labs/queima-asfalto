@@ -613,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, Event «{{event}}» ist vorbei. Automatisch als Verpasst markiert.",
-    "resultsSaved": "Ergebnisse für «{{name}}» gespeichert!",
-    "classificationSaved": "Platzierung erfasst!"
+    "faltouAuto": "{{name}}, Event «{{event}}» ist vorbei. Automatisch als Verpasst markiert."
   },
   "validation": {
     "futureNoCompleted": "Zukünftige Events können nicht Abgeschlossen oder als Verpasst markiert werden.",

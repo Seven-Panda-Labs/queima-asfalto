@@ -613,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, event «{{event}}» has passed. Marked as Missed automatically.",
-    "resultsSaved": "Results for «{{name}}» saved!",
-    "classificationSaved": "Classification recorded!"
+    "faltouAuto": "{{name}}, event «{{event}}» has passed. Marked as Missed automatically."
   },
   "validation": {
     "futureNoCompleted": "Future events cannot be Completed or marked as Missed.",

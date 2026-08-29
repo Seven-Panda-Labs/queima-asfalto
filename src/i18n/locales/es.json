@@ -613,9 +613,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó. Marcado como Perdido automáticamente.",
-    "resultsSaved": "¡Resultados de «{{name}}» guardados!",
-    "classificationSaved": "¡Clasificación registrada!"
+    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó. Marcado como Perdido automáticamente."
   },
   "validation": {
     "futureNoCompleted": "Los eventos futuros no pueden estar Completados ni marcados como Perdidos.",
