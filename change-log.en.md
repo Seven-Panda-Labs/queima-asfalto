@@ -4,6 +4,14 @@
 
 ---
 
+## [1.23.0] - 2026-08-29
+
+### Changed
+
+- **The parkrun catalog now updates itself:** new parkrun events show up within days of opening, without waiting for an app release. The list is also no longer downloaded when it is already current, which makes startup lighter.
+
+---
+
 ## [1.22.0] - 2026-08-28
 
 ### Changed

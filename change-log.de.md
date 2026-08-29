@@ -4,6 +4,14 @@
 
 ---
 
+## [1.23.0] - 2026-08-29
+
+### Geändert
+
+- **Der parkrun-Katalog aktualisiert sich selbst:** neue parkrun-Veranstaltungen erscheinen wenige Tage nach ihrer Eröffnung, ohne auf ein App-Update zu warten. Die Liste wird zudem nicht mehr heruntergeladen, wenn sie bereits aktuell ist, was den Start leichter macht.
+
+---
+
 ## [1.22.0] - 2026-08-28
 
 ### Geändert

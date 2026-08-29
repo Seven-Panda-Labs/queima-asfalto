@@ -4,6 +4,14 @@
 
 ---
 
+## [1.23.0] - 2026-08-29
+
+### Modifié
+
+- **Le catalogue parkrun se met à jour tout seul :** les nouvelles courses parkrun apparaissent quelques jours après leur ouverture, sans attendre une mise à jour de l'application. La liste n'est plus non plus téléchargée lorsqu'elle est déjà à jour, ce qui allège le démarrage.
+
+---
+
 ## [1.22.0] - 2026-08-28
 
 ### Modifié
