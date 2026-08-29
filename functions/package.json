@@ -6,7 +6,7 @@
     "node": "24"
   },
   "scripts": {
-    "build": "rm -rf src/shared && cp -r ../shared/officialResults src/shared && rm -f src/shared/*.test.ts && mkdir -p src/shared/shares && cp ../shared/shares/*.ts src/shared/shares && rm -f src/shared/shares/*.test.ts && mkdir -p src/shared/reminders && cp ../shared/reminders/*.ts src/shared/reminders && rm -f src/shared/reminders/*.test.ts && mkdir -p src/shared/account && cp ../shared/account/*.ts src/shared/account && rm -f src/shared/account/*.test.ts && tsc",
+    "build": "rm -rf src/shared && cp -r ../shared/officialResults src/shared && rm -f src/shared/*.test.ts && mkdir -p src/shared/shares && cp ../shared/shares/*.ts src/shared/shares && rm -f src/shared/shares/*.test.ts && mkdir -p src/shared/reminders && cp ../shared/reminders/*.ts src/shared/reminders && rm -f src/shared/reminders/*.test.ts && mkdir -p src/shared/parkrun && cp ../shared/parkrun/catalog.ts ../shared/parkrun/catalogSource.ts src/shared/parkrun && mkdir -p src/shared/account && cp ../shared/account/*.ts src/shared/account && rm -f src/shared/account/*.test.ts && tsc",
     "watch": "npm run build && tsc --watch"
   },
   "dependencies": {

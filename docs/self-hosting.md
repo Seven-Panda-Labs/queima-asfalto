@@ -205,9 +205,15 @@ npm run deploy
 ```
 
 Este comando:
-1. Sincroniza catálogo Parkrun (`sync:parkrun-events`)
-2. Compila TypeScript e faz build Vite → `dist/`
-3. Faz deploy de **Hosting**, **Firestore rules**, **índices**, **Storage rules** e **Cloud Functions**
+1. Compila TypeScript e faz build Vite → `dist/`
+2. Faz deploy de **Hosting**, **Firestore rules**, **índices**, **Storage rules** e **Cloud Functions**
+
+O catálogo Parkrun já não é sincronizado no build: a função agendada
+`syncParkrunCatalog` refresca-o semanalmente para `parkrunCatalog/global` no
+Firestore. A app só recorre à cópia em `src/data/parkrun-events.json` quando
+esse documento não existe ou está parado há mais de 45 dias — instâncias sem
+Cloud Functions continuam a funcionar com essa cópia, que podes actualizar
+com `npm run sync:parkrun-events`.
 
 Deploy parcial:
 
@@ -478,9 +484,15 @@ npm run deploy
 ```
 
 This command:
-1. Syncs the Parkrun catalog (`sync:parkrun-events`)
-2. Compiles TypeScript and Vite build → `dist/`
-3. Deploys **Hosting**, **Firestore rules**, **indexes**, **Storage rules**, and **Cloud Functions**
+1. Compiles TypeScript and Vite build → `dist/`
+2. Deploys **Hosting**, **Firestore rules**, **indexes**, **Storage rules**, and **Cloud Functions**
+
+The Parkrun catalog is no longer synced at build time: the `syncParkrunCatalog`
+scheduled function refreshes `parkrunCatalog/global` in Firestore every week.
+The app falls back to the committed `src/data/parkrun-events.json` only when
+that document is missing or has been stalled for over 45 days, so instances
+without Cloud Functions keep working from that copy — refresh it with
+`npm run sync:parkrun-events`.
 
 Partial deploy:
 

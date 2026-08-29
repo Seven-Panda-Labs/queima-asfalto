@@ -358,6 +358,14 @@ service cloud.firestore {
       );
     }
 
+    // Public reference data, written only by the syncParkrunCatalog scheduled
+    // function. Readable by any signed-in user, including one still pending
+    // approval, so the event picker works while an account is being reviewed.
+    match /parkrunCatalog/{documentId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
     match /shares/{shareId} {
       allow read: if isShareParticipant();
       allow create, update, delete: if false;

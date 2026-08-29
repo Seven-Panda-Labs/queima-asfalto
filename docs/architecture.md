@@ -166,7 +166,7 @@ Plataformas actuais (ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.t
 
 - Firestore **persistent cache** (multi-tab) quando IndexedDB está disponível, ver `src/services/firebase.ts`.
 - Service worker (Vite PWA) faz precache do shell da app; dados vivem no Firestore local.
-- Catálogo Parkrun estático em `src/data/parkrun-events.json` (gerado por `npm run sync:parkrun-events`).
+- Catálogo Parkrun em `parkrunCatalog/global` no Firestore, refrescado semanalmente pela função agendada `syncParkrunCatalog`; `src/data/parkrun-events.json` (gerado por `npm run sync:parkrun-events`) é a cópia de recurso quando esse documento falta ou está parado.
 
 ### Desenvolvimento local
 
@@ -350,7 +350,7 @@ Current platforms (see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`
 
 - Firestore **persistent cache** (multi-tab) when IndexedDB is available, see `src/services/firebase.ts`.
 - Service worker (Vite PWA) precaches the app shell; data lives in local Firestore.
-- Static Parkrun catalog in `src/data/parkrun-events.json` (built via `npm run sync:parkrun-events`).
+- Parkrun catalog in Firestore at `parkrunCatalog/global`, refreshed weekly by the `syncParkrunCatalog` scheduled function; `src/data/parkrun-events.json` (built via `npm run sync:parkrun-events`) is the fallback when that document is missing or stalled.
 
 ### Local development
 

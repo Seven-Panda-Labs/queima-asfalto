@@ -1,3 +1,11 @@
+/**
+ * Firestore location of the catalog kept fresh by the `syncParkrunCatalog`
+ * scheduled function. The client falls back to the bundled seed when this
+ * document is missing or older than the seed.
+ */
+export const PARKRUN_CATALOG_COLLECTION = 'parkrunCatalog'
+export const PARKRUN_CATALOG_DOC_ID = 'global'
+
 export type ParkrunCatalogEvent = {
   id: number
   slug: string

@@ -5,6 +5,7 @@ export {
 export { accountApprovalAction } from './accountApproval/approveAccountAction.js'
 export { lookupOfficialResults } from './lookupOfficialResults.js'
 export { dispatchReminders } from './reminders.js'
+export { syncParkrunCatalog } from './parkrunCatalog.js'
 export {
   acceptShare,
   createSharedBucketListItem,

@@ -526,6 +526,43 @@ describe('firestore.rules', () => {
     })
   })
 
+  describe('parkrunCatalog', () => {
+    const catalogPayload = {
+      syncedAt: '2026-08-29',
+      eventCount: 1,
+      events: [{ id: 1, slug: 'bushy', longName: 'Bushy Park parkrun' }],
+    }
+
+    it('allows any signed-in user to read the catalog', async () => {
+      await seedDocument('parkrunCatalog/global', catalogPayload)
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+      await assertSucceeds(db.collection('parkrunCatalog').doc('global').get())
+    })
+
+    it('allows a pending user to read the catalog, so the picker still works', async () => {
+      await seedDocument('users/user-pending', { name: 'Pending', accountStatus: 'pending' })
+      await seedDocument('parkrunCatalog/global', catalogPayload)
+      const db = testEnv.authenticatedContext('user-pending').firestore()
+      await assertSucceeds(db.collection('parkrunCatalog').doc('global').get())
+    })
+
+    it('denies anonymous reads', async () => {
+      await seedDocument('parkrunCatalog/global', catalogPayload)
+      const db = testEnv.unauthenticatedContext().firestore()
+      await assertFails(db.collection('parkrunCatalog').doc('global').get())
+    })
+
+    it('denies every client write, including from an approved user', async () => {
+      await seedDocument('users/user-alice', { name: 'Alice', accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+      await assertFails(db.collection('parkrunCatalog').doc('global').set(catalogPayload))
+
+      await seedDocument('parkrunCatalog/global', catalogPayload)
+      await assertFails(db.collection('parkrunCatalog').doc('global').update({ eventCount: 0 }))
+      await assertFails(db.collection('parkrunCatalog').doc('global').delete())
+    })
+  })
+
   describe('reminderDispatches', () => {
     it('allows users to read their own reminder dispatch documents', async () => {
       const userId = 'user-alice'
