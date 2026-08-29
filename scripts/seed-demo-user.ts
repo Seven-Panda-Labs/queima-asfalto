@@ -1,12 +1,14 @@
 /**
  * Seed fictional demo data for README screenshots and marketing.
  *
- * Usage:
+ * Usage against production (needs Application Default Credentials or
+ * GOOGLE_APPLICATION_CREDENTIALS with access to the queima-asfalto project):
  *   npm run seed:demo-user -- --dry-run
  *   npm run seed:demo-user -- --confirm
  *
- * Requires Application Default Credentials or GOOGLE_APPLICATION_CREDENTIALS
- * with access to the queima-asfalto Firestore project.
+ * Usage against the emulator, which needs no credentials:
+ *   FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+ *     npm run seed:demo-user -- --confirm --user-id <uid>
  */
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
@@ -347,9 +349,15 @@ async function updateUserProfile(db: Firestore, userId: string, dryRun: boolean)
 async function main(): Promise<void> {
   const options = parseArgs(process.argv.slice(2))
 
-  if (process.env.FIRESTORE_EMULATOR_HOST) {
+  // Seeding the emulator is the safe case and the useful one, for screenshots
+  // and for looking at a full season locally. Seeding production is the one
+  // worth guarding, so the emulator is allowed only for a demo project id,
+  // which is the convention Firebase itself uses for emulator-only projects.
+  if (process.env.FIRESTORE_EMULATOR_HOST && !PROJECT_ID.startsWith('demo-')) {
     throw new Error(
-      'FIRESTORE_EMULATOR_HOST is set. Unset it to seed production demo data, or use the emulator project explicitly.',
+      `FIRESTORE_EMULATOR_HOST is set but the project is "${PROJECT_ID}". ` +
+        'Set GCLOUD_PROJECT to your demo- project to seed the emulator, or unset ' +
+        'FIRESTORE_EMULATOR_HOST to seed production.',
     )
   }
 
