@@ -4,6 +4,14 @@
 
 ---
 
+## [1.24.0] - 2026-08-29
+
+### Modifié
+
+- **Le résultat d'une course se modifie sur la page de l'événement :** la page séparée disparaît. Le temps, la position et le lien vers les résultats officiels sont désormais au même endroit, à côté des chiffres.
+
+---
+
 ## [1.23.0] - 2026-08-29
 
 ### Modifié

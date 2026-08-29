@@ -4,6 +4,14 @@
 
 ---
 
+## [1.24.0] - 2026-08-29
+
+### Changed
+
+- **A race result is edited on the event page:** the separate page is gone. Time, position and the official results link now sit together, next to the numbers.
+
+---
+
 ## [1.23.0] - 2026-08-29
 
 ### Changed

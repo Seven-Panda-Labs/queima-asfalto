@@ -4,6 +4,14 @@
 
 ---
 
+## [1.24.0] - 2026-08-29
+
+### Alterado
+
+- **O resultado de uma prova edita-se na página do evento:** acabou a página à parte. O tempo, a posição e o link dos resultados oficiais ficam todos no mesmo sítio, ao lado dos números.
+
+---
+
 ## [1.23.0] - 2026-08-29
 
 ### Alterado

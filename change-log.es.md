@@ -4,6 +4,14 @@
 
 ---
 
+## [1.24.0] - 2026-08-29
+
+### Cambiado
+
+- **El resultado de una carrera se edita en la página del evento:** se acabó la página aparte. El tiempo, la posición y el enlace a los resultados oficiales están juntos, al lado de las cifras.
+
+---
+
 ## [1.23.0] - 2026-08-29
 
 ### Cambiado
