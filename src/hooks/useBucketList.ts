@@ -10,6 +10,7 @@ import {
   docToBucketListItem,
   updateBucketListItem,
 } from '../services/bucketList'
+import { reportLoadError } from '../utils/loadError'
 
 export function useBucketList() {
   const { user } = useAuth()
@@ -37,7 +38,7 @@ export function useBucketList() {
         setLoading(false)
       },
       (snapshotError) => {
-        setError(snapshotError.message)
+        setError(reportLoadError(snapshotError, 'errors.bucketListLoadError', 'useBucketList'))
         setLoading(false)
       },
     )

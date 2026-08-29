@@ -157,8 +157,7 @@
     "allTargetsDone": "Tout est fait. Il est temps de relever la barre.",
     "viewAllGoals": "Tout voir",
     "noGoals": "Aucun objectif pour l'instant en {{year}}",
-    "createGoal": "Créer un objectif",
-    "goalsLoadError": "Impossible de charger tes objectifs."
+    "createGoal": "Créer un objectif"
   },
   "events": {
     "title": "Événements",
@@ -664,7 +663,11 @@
     "loadPrefs": "Erreur lors du chargement des préférences.",
     "savePrefsHook": "Erreur lors de l'enregistrement des préférences.",
     "offlineUnsupported": "Ce navigateur ne prend pas en charge le mode hors ligne complet (IndexedDB indisponible).",
-    "resultsSaveFailed": "Impossible d'enregistrer les résultats. {{message}}"
+    "resultsSaveFailed": "Impossible d'enregistrer les résultats. {{message}}",
+    "eventsLoadError": "Impossible de charger tes événements.",
+    "goalsLoadError": "Impossible de charger tes objectifs.",
+    "performanceGoalsLoadError": "Impossible de charger tes objectifs de performance.",
+    "bucketListLoadError": "Impossible de charger ta bucket list."
   },
   "goalForm": {
     "targetCount": "Nombre cible",

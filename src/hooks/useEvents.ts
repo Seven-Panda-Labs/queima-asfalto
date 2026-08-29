@@ -11,6 +11,7 @@ import {
   updateEvent,
 } from '../services/events'
 import { useAutoTransitions } from './useAutoTransitions'
+import { reportLoadError } from '../utils/loadError'
 
 type UseEventsOptions = EventFilters
 
@@ -43,7 +44,7 @@ export function useEvents(options: UseEventsOptions = {}) {
         setLoading(false)
       },
       (snapshotError) => {
-        setError(snapshotError.message)
+        setError(reportLoadError(snapshotError, 'errors.eventsLoadError', 'useEvents'))
         setLoading(false)
       },
     )

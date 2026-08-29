@@ -157,8 +157,7 @@
     "allTargetsDone": "Alles erledigt. Zeit, die Latte höher zu legen.",
     "viewAllGoals": "Alle anzeigen",
     "noGoals": "Noch keine Ziele in {{year}}",
-    "createGoal": "Ziel erstellen",
-    "goalsLoadError": "Deine Ziele konnten nicht geladen werden."
+    "createGoal": "Ziel erstellen"
   },
   "events": {
     "title": "Events",
@@ -664,7 +663,11 @@
     "loadPrefs": "Fehler beim Laden der Einstellungen.",
     "savePrefsHook": "Fehler beim Speichern der Einstellungen.",
     "offlineUnsupported": "Dieser Browser unterstützt keinen vollständigen Offline-Modus (IndexedDB nicht verfügbar).",
-    "resultsSaveFailed": "Ergebnisse konnten nicht gespeichert werden. {{message}}"
+    "resultsSaveFailed": "Ergebnisse konnten nicht gespeichert werden. {{message}}",
+    "eventsLoadError": "Deine Events konnten nicht geladen werden.",
+    "goalsLoadError": "Deine Ziele konnten nicht geladen werden.",
+    "performanceGoalsLoadError": "Deine Leistungsziele konnten nicht geladen werden.",
+    "bucketListLoadError": "Deine Bucket List konnte nicht geladen werden."
   },
   "goalForm": {
     "targetCount": "Zielanzahl",

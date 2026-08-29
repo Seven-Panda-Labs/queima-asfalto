@@ -157,8 +157,7 @@
     "allTargetsDone": "Tudo cumprido. Falta pôr a fasquia mais alta.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Ainda sem objetivos em {{year}}",
-    "createGoal": "Criar objetivo",
-    "goalsLoadError": "Não foi possível carregar os teus objetivos."
+    "createGoal": "Criar objetivo"
   },
   "events": {
     "title": "Eventos",
@@ -664,7 +663,11 @@
     "loadPrefs": "Erro ao carregar preferências.",
     "savePrefsHook": "Erro ao guardar preferências.",
     "offlineUnsupported": "Este browser não suporta modo offline completo (IndexedDB indisponível).",
-    "resultsSaveFailed": "Não foi possível guardar os resultados. {{message}}"
+    "resultsSaveFailed": "Não foi possível guardar os resultados. {{message}}",
+    "eventsLoadError": "Não foi possível carregar os teus eventos.",
+    "goalsLoadError": "Não foi possível carregar os teus objetivos.",
+    "performanceGoalsLoadError": "Não foi possível carregar os teus objetivos de performance.",
+    "bucketListLoadError": "Não foi possível carregar a tua bucket list."
   },
   "goalForm": {
     "targetCount": "Quantidade alvo",

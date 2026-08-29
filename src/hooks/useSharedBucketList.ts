@@ -8,6 +8,7 @@ import {
   updateSharedBucketListItem,
 } from '../services/shares'
 import { getSharedBucketListCache, setSharedBucketListCache } from '../utils/sharedDataCache'
+import { reportLoadError } from '../utils/loadError'
 
 export function useSharedBucketList(ownerId: string | null) {
   const [items, setItems] = useState<BucketListItem[]>([])
@@ -50,7 +51,7 @@ export function useSharedBucketList(ownerId: string | null) {
       setOwnerDisplayName(entry.ownerDisplayName)
       setCanWrite(entry.canWrite)
     } catch (loadError) {
-      setError(loadError instanceof Error ? loadError.message : i18n.t('shares.loadError'))
+      setError(reportLoadError(loadError, 'shares.loadError', 'useSharedBucketList'))
       if (!hasCache) setItems([])
     } finally {
       setLoading(false)

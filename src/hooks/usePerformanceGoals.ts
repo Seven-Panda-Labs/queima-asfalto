@@ -16,6 +16,7 @@ import {
 } from '../services/performanceGoals'
 import { useEvents } from './useEvents'
 import { computeAllPerformanceGoalsProgress } from '../utils/performanceGoalProgress'
+import { reportLoadError } from '../utils/loadError'
 
 type UsePerformanceGoalsOptions = {
   year?: number
@@ -50,7 +51,7 @@ export function usePerformanceGoals(options: UsePerformanceGoalsOptions = {}) {
         setLoading(false)
       },
       (snapshotError) => {
-        setError(snapshotError.message)
+        setError(reportLoadError(snapshotError, 'errors.performanceGoalsLoadError', 'usePerformanceGoals'))
         setLoading(false)
       },
     )
