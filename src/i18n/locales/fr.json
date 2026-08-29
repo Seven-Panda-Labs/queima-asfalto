@@ -174,7 +174,6 @@
     "editEvent": "Modifier l'événement",
     "viewEvent": "Voir l'événement",
     "registerResults": "Enregistrer les résultats",
-    "viewResults": "Voir les résultats",
     "deleteEvent": "Supprimer l'événement",
     "recoverBucket": "Récupérer dans la bucket list"
   },
@@ -188,7 +187,9 @@
     "recoverBucket": "🪣 Récupérer dans la bucket list",
     "paceUnit": "min/km",
     "locationMap": "Lieu sur la carte",
-    "noResultYet": "Aucun résultat enregistré"
+    "noResultYet": "Aucun résultat enregistré",
+    "editResult": "Modifier le résultat",
+    "pasteResultsUrl": "Ou colle le lien des résultats officiels"
   },
   "eventMedia": {
     "title": "Souvenirs",
@@ -303,9 +304,6 @@
     "refresh": "Rechercher à nouveau"
   },
   "resultsForm": {
-    "title": "Résultats",
-    "notAllowed": "Cet événement ne permet pas d'enregistrer des résultats.",
-    "loadError": "Impossible de charger l'événement.",
     "saved": "Résultats enregistrés !",
     "hours": "Heures",
     "minutes": "Minutes",
@@ -314,9 +312,7 @@
     "estimatedPace": "Allure estimée : {{pace}} min/km",
     "position": "Position",
     "totalParticipants": "Nombre total de participants",
-    "classificationHint": "Facultatif. Ex. : 47e sur 106 participants",
-    "notesPlaceholder": "Ex. : Bonne allure, mais je peux faire mieux !",
-    "saveError": "Impossible d'enregistrer les résultats."
+    "classificationHint": "Facultatif. Ex. : 47e sur 106 participants"
   },
   "bucketList": {
     "title": "Bucket list",

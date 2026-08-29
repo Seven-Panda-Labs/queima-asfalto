@@ -10,7 +10,6 @@ import { Dashboard } from './pages/Dashboard/Dashboard'
 import { Events } from './pages/Events/Events'
 import { EventDetail } from './pages/Events/EventDetail'
 import { EventForm } from './pages/Events/EventForm'
-import { ResultsForm } from './pages/Events/ResultsForm'
 import { GoalForm } from './pages/Goals/GoalForm'
 import { Goals } from './pages/Goals/Goals'
 import { PerformanceGoalForm } from './pages/Goals/PerformanceGoalForm'
@@ -51,7 +50,6 @@ export default function App() {
             <Route path="eventos" element={<Events />} />
             <Route path="eventos/novo" element={<EventForm />} />
             <Route path="eventos/:id/editar" element={<EventForm />} />
-            <Route path="eventos/:id/resultados" element={<ResultsForm />} />
             <Route path="eventos/:id" element={<EventDetail />} />
             <Route path="bucket-list" element={<BucketList />} />
             <Route path="bucket-list/novo" element={<BucketListForm />} />
