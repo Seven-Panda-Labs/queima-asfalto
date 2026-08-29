@@ -4,6 +4,14 @@
 
 ---
 
+## [1.23.0] - 2026-08-29
+
+### Alterado
+
+- **O catálogo parkrun actualiza-se sozinho:** as provas parkrun novas passam a aparecer poucos dias depois de abrirem, sem esperar por uma actualização da aplicação. A lista também deixou de ser descarregada quando já está em dia, o que torna o arranque mais leve.
+
+---
+
 ## [1.22.0] - 2026-08-28
 
 ### Alterado

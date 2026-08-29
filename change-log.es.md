@@ -4,6 +4,14 @@
 
 ---
 
+## [1.23.0] - 2026-08-29
+
+### Cambiado
+
+- **El catálogo de parkrun se actualiza solo:** las pruebas parkrun nuevas aparecen a los pocos días de abrir, sin esperar a una actualización de la aplicación. La lista tampoco se descarga cuando ya está al día, lo que aligera el arranque.
+
+---
+
 ## [1.22.0] - 2026-08-28
 
 ### Cambiado

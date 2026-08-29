@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.22.0",
+  "version": "1.23.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run sync:parkrun-events && npm run sync:emoji-data && npm run generate:privacy && tsc -b && vite build",
+    "build": "npm run sync:emoji-data && npm run generate:privacy && tsc -b && vite build",
     "sync:parkrun-events": "tsx scripts/sync-parkrun-events.ts",
     "sync:emoji-data": "tsx scripts/sync-emoji-data.ts",
     "generate:privacy": "tsx scripts/generate-privacy-policy.ts",
