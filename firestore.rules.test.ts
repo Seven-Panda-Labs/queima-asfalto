@@ -526,6 +526,61 @@ describe('firestore.rules', () => {
     })
   })
 
+  // Cada página da app lê estas coleções com uma query por userId. Só as
+  // regras de `shares` tinham cobertura de `list`; as restantes eram testadas
+  // apenas com `.doc().get()`, que percorre um caminho diferente das regras.
+  describe('list queries the app actually issues', () => {
+    const owner = 'user-alice'
+    const stranger = 'user-bob'
+
+    const COLLECTIONS: Array<{
+      name: string
+      payload: (userId: string) => Record<string, unknown>
+    }> = [
+      { name: 'events', payload: validEventPayload },
+      { name: 'goals', payload: validGoalPayload },
+      { name: 'performanceGoals', payload: validPerformanceGoalPayload },
+      { name: 'bucketListItems', payload: validBucketListPayload },
+    ]
+
+    for (const { name, payload } of COLLECTIONS) {
+      describe(name, () => {
+        it('allows the owner to list their own documents', async () => {
+          await seedDocument(`${name}/doc-1`, payload(owner))
+          const db = testEnv.authenticatedContext(owner).firestore()
+
+          await assertSucceeds(db.collection(name).where('userId', '==', owner).get())
+        })
+
+        it('allows the same query when the collection is empty', async () => {
+          const db = testEnv.authenticatedContext(owner).firestore()
+
+          await assertSucceeds(db.collection(name).where('userId', '==', owner).get())
+        })
+
+        it('denies an unfiltered listing', async () => {
+          await seedDocument(`${name}/doc-1`, payload(owner))
+          const db = testEnv.authenticatedContext(owner).firestore()
+
+          await assertFails(db.collection(name).get())
+        })
+
+        it('denies listing another user documents', async () => {
+          await seedDocument(`${name}/doc-1`, payload(owner))
+          const db = testEnv.authenticatedContext(stranger).firestore()
+
+          await assertFails(db.collection(name).where('userId', '==', owner).get())
+        })
+
+        it('denies an anonymous listing', async () => {
+          const db = testEnv.unauthenticatedContext().firestore()
+
+          await assertFails(db.collection(name).where('userId', '==', owner).get())
+        })
+      })
+    }
+  })
+
   describe('parkrunCatalog', () => {
     const catalogPayload = {
       syncedAt: '2026-08-29',
