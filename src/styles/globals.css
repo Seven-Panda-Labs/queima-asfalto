@@ -70,6 +70,21 @@
 }
 
 @layer base {
+  /*
+   * O Preflight do Tailwind v4 deixou de pôr o cursor de mão nos botões, ao
+   * contrário do v3. Os <a> mantinham-no por defeito do browser, portanto
+   * metade dos controlos indicava que era clicável e a outra metade não:
+   * filtros, separadores e botões de ação ficavam com a seta.
+   */
+  button:not(:disabled),
+  [role='button']:not([aria-disabled='true']) {
+    @apply cursor-pointer;
+  }
+
+  button:disabled {
+    @apply cursor-not-allowed;
+  }
+
   body {
     @apply min-h-screen bg-background font-sans text-foreground antialiased;
   }
