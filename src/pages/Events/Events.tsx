@@ -12,7 +12,6 @@ import { StatusBadge } from '../../components/StatusBadge'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import {
   BucketIcon,
-  ChartIcon,
   EyeIcon,
   PencilIcon,
   StopwatchActionIcon,
@@ -402,17 +401,6 @@ export function Events() {
                             className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                           >
                             <StopwatchActionIcon />
-                          </Link>
-                        ) : null}
-                        {event.status === 'completed' ? (
-                          <Link
-                            to={`/eventos/${event.id}/resultados`}
-                            state={eventLinkState(returnTo).state}
-                            title={t('events.viewResults')}
-                          aria-label={t('events.viewResults')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <ChartIcon />
                           </Link>
                         ) : null}
                         {canRecoverEventToBucketList(event.status) ? (

@@ -10,6 +10,8 @@ import { StatusBadge } from '../../components/StatusBadge'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
+import { EventResultEditor } from '../../components/EventResultEditor'
+import { PencilIcon } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { FinishFlagIcon, RoadIcon, StatStrip, StopwatchIcon } from '../../components/StatStrip'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
@@ -64,6 +66,9 @@ export function EventDetail() {
   const [searchParams] = useSearchParams()
   const { user } = useAuth()
   const toast = useToast()
+  const [editingResult, setEditingResult] = useState(
+    () => searchParams.get('resultado') === 'editar',
+  )
   const { shares } = useShares()
   const { allEvents, removeEvent } = useEvents()
   const { addItem } = useBucketList()
@@ -263,6 +268,8 @@ export function EventDetail() {
   }
 
   const showResults = !hideResults && (event.status === 'completed' || Boolean(event.time))
+  const canEditResult =
+    !isSharedView && (event.status === 'confirmed' || event.status === 'completed')
   const canLookupAgain = !isSharedView && !hideResults
 
   function reloadEvent() {
@@ -317,7 +324,21 @@ export function EventDetail() {
           </div>
         </header>
 
-        {showResults && event.time ? (
+        {editingResult && canEditResult ? (
+          <div className="mt-6">
+            <EventResultEditor
+              event={event}
+              canLookup={canEditResult}
+              onEventChanged={reloadEvent}
+              onSaved={() => {
+                setEditingResult(false)
+                toast.success(t('resultsForm.saved'))
+                reloadEvent()
+              }}
+              onCancel={() => setEditingResult(false)}
+            />
+          </div>
+        ) : showResults && event.time ? (
           // O ícone de voltar a procurar vive sobre os números, e só aparece
           // ao passar o rato: já há resultado, é uma segunda tentativa.
           <div className="group relative mt-6">
@@ -343,6 +364,19 @@ export function EventDetail() {
                 },
               ]}
             />
+            <div className="absolute -end-3 -top-3 z-10 flex gap-1">
+              {canEditResult ? (
+                <button
+                  type="button"
+                  onClick={() => setEditingResult(true)}
+                  aria-label={t('eventDetail.editResult')}
+                  title={t('eventDetail.editResult')}
+                  className="rounded-full border border-border bg-surface p-1.5 text-muted opacity-0 shadow-sm transition-opacity hover:text-primary focus-visible:opacity-100 group-hover:opacity-100 max-sm:opacity-100"
+                >
+                  <PencilIcon />
+                </button>
+              ) : null}
+            </div>
             {canLookupAgain ? (
               <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="icon" />
             ) : null}
@@ -351,16 +385,14 @@ export function EventDetail() {
           <div className="mt-6 rounded-xl border border-border bg-surface p-5">
             <p className="font-semibold text-foreground">{t('eventDetail.noResultYet')}</p>
             <div className="mt-3 flex flex-wrap items-center gap-3">
-              <Link
-                to={`/eventos/${event.id}/resultados`}
-                state={detailLinkState}
+              <button
+                type="button"
+                onClick={() => setEditingResult(true)}
                 className="rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
               >
                 {t('events.registerResults')}
-              </Link>
-              {!isSharedView ? (
-                <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="inline" />
-              ) : null}
+              </button>
+
             </div>
           </div>
         ) : null}
@@ -428,15 +460,7 @@ export function EventDetail() {
           >
             {t('common.edit')}
           </Link>
-          {event.time ? (
-            <Link
-              to={`/eventos/${event.id}/resultados`}
-              state={detailLinkState}
-              className="rounded-md border border-primary px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary/5"
-            >
-              {t('events.viewResults')}
-            </Link>
-          ) : null}
+
           {canRecoverEventToBucketList(event.status) ? (
             <button
               type="button"

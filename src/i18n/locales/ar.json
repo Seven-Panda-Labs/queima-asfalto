@@ -174,7 +174,6 @@
     "editEvent": "تعديل الفعالية",
     "viewEvent": "عرض الفعالية",
     "registerResults": "تسجيل النتائج",
-    "viewResults": "عرض النتائج",
     "deleteEvent": "حذف الفعالية",
     "recoverBucket": "استرجاع إلى قائمة الأحلام"
   },
@@ -188,7 +187,9 @@
     "recoverBucket": "🪣 استرجاع إلى قائمة الأحلام",
     "paceUnit": "د/كم",
     "locationMap": "الموقع على الخريطة",
-    "noResultYet": "لم تُسجَّل نتيجة بعد"
+    "noResultYet": "لم تُسجَّل نتيجة بعد",
+    "editResult": "تعديل النتيجة",
+    "pasteResultsUrl": "أو الصق رابط النتائج الرسمية"
   },
   "eventMedia": {
     "title": "الذكريات",
@@ -303,9 +304,6 @@
     "refresh": "البحث مرة أخرى"
   },
   "resultsForm": {
-    "title": "النتائج",
-    "notAllowed": "لا تسمح هذه الفعالية بتسجيل النتائج.",
-    "loadError": "تعذّر تحميل الفعالية.",
     "saved": "تم حفظ النتائج!",
     "hours": "ساعات",
     "minutes": "دقائق",
@@ -314,9 +312,7 @@
     "estimatedPace": "الإيقاع التقديري: {{pace}} د/كم",
     "position": "المركز",
     "totalParticipants": "مجموع المشاركين",
-    "classificationHint": "اختياري. مثلًا: المركز 47 من 106 مشاركين",
-    "notesPlaceholder": "مثلًا: إيقاع ممتاز، لكن يمكن التحسين!",
-    "saveError": "تعذّر حفظ النتائج."
+    "classificationHint": "اختياري. مثلًا: المركز 47 من 106 مشاركين"
   },
   "bucketList": {
     "title": "قائمة الأحلام",

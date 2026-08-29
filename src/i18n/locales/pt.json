@@ -174,7 +174,6 @@
     "editEvent": "Editar evento",
     "viewEvent": "Ver evento",
     "registerResults": "Registar resultados",
-    "viewResults": "Ver resultados",
     "deleteEvent": "Apagar evento",
     "recoverBucket": "Recuperar para bucket list"
   },
@@ -188,7 +187,9 @@
     "recoverBucket": "🪣 Recuperar para bucket list",
     "paceUnit": "min/Km",
     "locationMap": "Localização no mapa",
-    "noResultYet": "Sem resultado registado"
+    "noResultYet": "Sem resultado registado",
+    "editResult": "Editar resultado",
+    "pasteResultsUrl": "Ou cola o link dos resultados oficiais"
   },
   "eventMedia": {
     "title": "Memórias",
@@ -303,9 +304,6 @@
     "refresh": "Voltar a procurar"
   },
   "resultsForm": {
-    "title": "Resultados",
-    "notAllowed": "Este evento não permite registar resultados.",
-    "loadError": "Não foi possível carregar o evento.",
     "saved": "Resultados guardados!",
     "hours": "Horas",
     "minutes": "Minutos",
@@ -314,9 +312,7 @@
     "estimatedPace": "Ritmo estimado: {{pace}} min/Km",
     "position": "Posição",
     "totalParticipants": "Total de participantes",
-    "classificationHint": "Opcional. ex: 47.º de 106 participantes",
-    "notesPlaceholder": "Ex: Ritmo ótimo, mas pode melhorar!",
-    "saveError": "Não foi possível guardar os resultados."
+    "classificationHint": "Opcional. ex: 47.º de 106 participantes"
   },
   "bucketList": {
     "title": "Bucket list",

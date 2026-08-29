@@ -174,7 +174,6 @@
     "editEvent": "Event bearbeiten",
     "viewEvent": "Event anzeigen",
     "registerResults": "Ergebnisse erfassen",
-    "viewResults": "Ergebnisse anzeigen",
     "deleteEvent": "Event löschen",
     "recoverBucket": "Zur Bucket List zurückholen"
   },
@@ -188,7 +187,9 @@
     "recoverBucket": "🪣 Zur Bucket List zurückholen",
     "paceUnit": "min/km",
     "locationMap": "Ort auf der Karte",
-    "noResultYet": "Noch kein Ergebnis erfasst"
+    "noResultYet": "Noch kein Ergebnis erfasst",
+    "editResult": "Ergebnis bearbeiten",
+    "pasteResultsUrl": "Oder füge den Link zu den offiziellen Ergebnissen ein"
   },
   "eventMedia": {
     "title": "Erinnerungen",
@@ -303,9 +304,6 @@
     "refresh": "Erneut suchen"
   },
   "resultsForm": {
-    "title": "Ergebnisse",
-    "notAllowed": "Für dieses Event können keine Ergebnisse erfasst werden.",
-    "loadError": "Event konnte nicht geladen werden.",
     "saved": "Ergebnisse gespeichert!",
     "hours": "Stunden",
     "minutes": "Minuten",
@@ -314,9 +312,7 @@
     "estimatedPace": "Geschätztes Tempo: {{pace}} min/km",
     "position": "Platzierung",
     "totalParticipants": "Teilnehmer gesamt",
-    "classificationHint": "Optional. Z. B.: 47. von 106 Teilnehmern",
-    "notesPlaceholder": "Z. B.: Gutes Tempo, aber da geht noch was!",
-    "saveError": "Ergebnisse konnten nicht gespeichert werden."
+    "classificationHint": "Optional. Z. B.: 47. von 106 Teilnehmern"
   },
   "bucketList": {
     "title": "Bucket List",

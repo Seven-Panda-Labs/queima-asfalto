@@ -42,14 +42,6 @@ export function EyeIcon() {
   )
 }
 
-export function ChartIcon() {
-  return (
-    <svg {...ICON_PROPS}>
-      <path d="M4 20V10M10 20V4M16 20v-7M22 20H2" />
-    </svg>
-  )
-}
-
 /** Registar o resultado de uma prova já corrida. */
 export function StopwatchActionIcon() {
   return (

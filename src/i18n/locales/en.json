@@ -174,7 +174,6 @@
     "editEvent": "Edit event",
     "viewEvent": "View event",
     "registerResults": "Record results",
-    "viewResults": "View results",
     "deleteEvent": "Delete event",
     "recoverBucket": "Recover to bucket list"
   },
@@ -188,7 +187,9 @@
     "recoverBucket": "🪣 Recover to bucket list",
     "paceUnit": "min/km",
     "locationMap": "Location on map",
-    "noResultYet": "No result recorded yet"
+    "noResultYet": "No result recorded yet",
+    "editResult": "Edit result",
+    "pasteResultsUrl": "Or paste the official results link"
   },
   "eventMedia": {
     "title": "Memories",
@@ -303,9 +304,6 @@
     "refresh": "Search again"
   },
   "resultsForm": {
-    "title": "Results",
-    "notAllowed": "This event does not allow recording results.",
-    "loadError": "Could not load the event.",
     "saved": "Results saved!",
     "hours": "Hours",
     "minutes": "Minutes",
@@ -314,9 +312,7 @@
     "estimatedPace": "Estimated pace: {{pace}} min/km",
     "position": "Position",
     "totalParticipants": "Total participants",
-    "classificationHint": "Optional. e.g.: 47th of 106 participants",
-    "notesPlaceholder": "E.g.: Great pace, but can improve!",
-    "saveError": "Could not save results."
+    "classificationHint": "Optional. e.g.: 47th of 106 participants"
   },
   "bucketList": {
     "title": "Bucket list",
