@@ -4,6 +4,14 @@
 
 ---
 
+## [1.24.0] - 2026-08-29
+
+### Geändert
+
+- **Das Ergebnis eines Rennens wird auf der Event-Seite bearbeitet:** Die separate Seite entfällt. Zeit, Platzierung und der Link zu den offiziellen Ergebnissen stehen jetzt zusammen, neben den Zahlen.
+
+---
+
 ## [1.23.0] - 2026-08-29
 
 ### Geändert
