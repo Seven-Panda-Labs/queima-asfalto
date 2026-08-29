@@ -51,6 +51,21 @@ Conta de desenvolvimento criada automaticamente:
 - Email: `dev@queima-asfalto.local`
 - Password: `devpassword`
 
+### Dados de demonstração
+
+Os emuladores começam vazios. Para uma época completa, com provas portuguesas reais e uma corredora fictícia, semeia o conjunto que também serve os screenshots do README:
+
+```bash
+# 1. entra uma vez com «Entrar (emulador)» para a conta ser criada
+# 2. descobre o uid dessa conta (aparece em users/ na UI dos emuladores)
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+  npm run seed:demo-user -- --confirm --user-id <uid>
+```
+
+São 36 eventos, 8 objetivos, 6 objetivos de performance e 5 itens de bucket list. Junta `--dry-run` em vez de `--confirm` para ver o que faria sem escrever nada.
+
+O script recusa-se a correr contra o emulador se o projeto não começar por `demo-`, para não haver forma de semear produção por engano.
+
 ### Variáveis de ambiente
 
 Copia [`.env.emulator.example`](../.env.emulator.example) para `.env.local`.
@@ -190,6 +205,21 @@ Dev account (auto-created on first sign-in):
 
 - Email: `dev@queima-asfalto.local`
 - Password: `devpassword`
+
+### Demo data
+
+The emulators start empty. For a full season, with real Portuguese races and a fictional runner, seed the same set the README screenshots use:
+
+```bash
+# 1. sign in once with "Sign in (emulator)" so the account exists
+# 2. find that account's uid (listed under users/ in the emulator UI)
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+  npm run seed:demo-user -- --confirm --user-id <uid>
+```
+
+That is 36 events, 8 goals, 6 performance goals and 5 bucket list items. Pass `--dry-run` instead of `--confirm` to see what it would do without writing anything.
+
+The script refuses to run against the emulator unless the project id starts with `demo-`, so there is no way to seed production by accident.
 
 ### Environment variables
 
