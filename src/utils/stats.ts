@@ -1,31 +1,18 @@
 import type { Event } from '../types/Event'
+import {
+  formatPaceSeconds,
+  toAnalysableResults,
+  weightedAveragePaceSeconds,
+} from './analytics/results'
 
 export type DashboardStats = {
   totalEvents: number
   completedCount: number
   missedCount: number
+  /** Ritmo médio do ano, ponderado pela distância. */
   averagePace: string | null
   /** Soma da distância real das provas concluídas no ano, arredondada à décima. */
   completedDistanceKm: number
-}
-
-const PACE_PATTERN = /^(\d{1,2}):(\d{2})$/
-
-function parsePaceToSeconds(pace: string): number | null {
-  const match = PACE_PATTERN.exec(pace.trim())
-  if (!match) return null
-
-  const minutes = Number(match[1])
-  const seconds = Number(match[2])
-  if (seconds > 59) return null
-
-  return minutes * 60 + seconds
-}
-
-function formatPaceFromSeconds(totalSeconds: number): string {
-  const minutes = Math.floor(totalSeconds / 60)
-  const seconds = totalSeconds % 60
-  return `${minutes}:${String(seconds).padStart(2, '0')}`
 }
 
 function eventsInYear(events: Event[], year: number): Event[] {
@@ -39,17 +26,11 @@ export function computeDashboardStats(events: Event[], year: number): DashboardS
   const completed = yearEvents.filter((event) => event.status === 'completed')
   const missed = yearEvents.filter((event) => event.status === 'missed')
 
-  const paceValues = completed
-    .map((event) => (event.pace ? parsePaceToSeconds(event.pace) : null))
-    .filter((value): value is number => value !== null)
-
-  let averagePace: string | null = null
-  if (paceValues.length > 0) {
-    const averageSeconds = Math.round(
-      paceValues.reduce((sum, value) => sum + value, 0) / paceValues.length,
-    )
-    averagePace = formatPaceFromSeconds(averageSeconds)
-  }
+  // Tempo total a dividir pela distância total. A média dos ritmos individuais
+  // daria o mesmo peso a um 5K e a uma maratona, e a página de análise mostraria
+  // um número diferente para o mesmo ano.
+  const averageSeconds = weightedAveragePaceSeconds(toAnalysableResults(completed))
+  const averagePace = averageSeconds === null ? null : formatPaceSeconds(averageSeconds)
 
   const distanceSum = completed.reduce(
     (sum, event) => sum + (Number.isFinite(event.realDistance) ? event.realDistance : 0),
