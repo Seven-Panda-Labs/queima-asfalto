@@ -4,6 +4,14 @@
 
 ---
 
+## [1.27.0] - 2026-08-30
+
+### Ajouté
+
+- **Fichiers d'activité sur les événements :** importe le GPX ou TCX de ta montre et la course gagne des splits au kilomètre, son parcours tracé sur la carte, un graphique d'allure et de dénivelé et, si le fichier les porte, la fréquence cardiaque. Le temps mesuré est proposé pour remplir le résultat, et ne remplace jamais ce qui existe sans ta confirmation : c'est le chronométrage officiel qui compte. Les fichiers voyagent dans les sauvegardes.
+
+---
+
 ## [1.26.1] - 2026-08-30
 
 ### Modifié

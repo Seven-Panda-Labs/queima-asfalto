@@ -4,6 +4,14 @@
 
 ---
 
+## [1.27.0] - 2026-08-30
+
+### Añadido
+
+- **Archivos de actividad en los eventos:** sube el GPX o TCX de tu reloj y la carrera gana parciales por kilómetro, el recorrido dibujado en el mapa, un gráfico de ritmo y altitud y, si el archivo los trae, la frecuencia cardiaca. El tiempo medido se ofrece para rellenar el resultado, y nunca sustituye lo que ya está sin tu confirmación: el cronometraje oficial es el que cuenta. Los archivos entran y salen en las copias de seguridad.
+
+---
+
 ## [1.26.1] - 2026-08-30
 
 ### Cambiado

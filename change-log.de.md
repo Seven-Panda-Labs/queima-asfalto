@@ -4,6 +4,14 @@
 
 ---
 
+## [1.27.0] - 2026-08-30
+
+### Hinzugefügt
+
+- **Aktivitätsdateien bei Events:** Lade die GPX oder TCX deiner Uhr hoch, und ein Rennen bekommt Splits pro Kilometer, die Strecke auf der Karte, ein Pace und Höhendiagramm und, sofern die Datei sie enthält, Herzfrequenzwerte. Die gemessene Zeit wird zum Ausfüllen des Ergebnisses angeboten und ersetzt Vorhandenes nie ohne deine Bestätigung: es zählt die offizielle Zeitmessung. Die Dateien wandern in Backups mit.
+
+---
+
 ## [1.26.1] - 2026-08-30
 
 ### Geändert

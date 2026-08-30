@@ -4,6 +4,14 @@
 
 ---
 
+## [1.27.0] - 2026-08-30
+
+### Added
+
+- **Activity files on events:** upload the GPX or TCX from your watch and a race gains per kilometre splits, its route drawn on the map, a pace and elevation chart and, when the file carries them, heart rate figures. The measured time is offered to fill in the result, and never replaces what is already there without your confirmation: the official timing is the one that counts. The files travel in and out of backups.
+
+---
+
 ## [1.26.1] - 2026-08-30
 
 ### Changed
