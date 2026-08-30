@@ -23,7 +23,7 @@ export function ActivityHeatmap({ calendar }: { calendar: ActivityCalendar }) {
 
   return (
     <div className="overflow-x-auto rounded-xl border border-border bg-surface p-4">
-      <table className="w-full min-w-[22rem] border-separate border-spacing-1">
+      <table className="w-auto border-separate border-spacing-1">
         <thead>
           <tr>
             <th className="w-10">
@@ -65,7 +65,7 @@ export function ActivityHeatmap({ calendar }: { calendar: ActivityCalendar }) {
                             })
                       }
                       className={[
-                        'aspect-square w-full rounded-[3px] ring-1 ring-inset ring-border',
+                        'h-7 w-7 rounded-[3px] ring-1 ring-inset ring-border',
                         cellClass(cell.races, calendar.maxRaces),
                       ].join(' ')}
                     />

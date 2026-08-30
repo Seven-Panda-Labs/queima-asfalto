@@ -23,7 +23,7 @@ export function RecordProgression({ progressions, returnTo, ownerId }: RecordPro
   const { t } = useTranslation()
 
   return (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-px overflow-hidden rounded-xl border border-border bg-border">
+    <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,1fr))] gap-px overflow-hidden rounded-xl border border-border bg-border">
       {progressions.map((progression) => (
         <div key={progression.eventType} className="bg-surface px-4 py-4">
           <div className="flex items-center gap-2">

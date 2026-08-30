@@ -4,8 +4,21 @@ import './chartConfig'
 import { useTheme } from '../../contexts/ThemeContext'
 import type { CumulativeSeason } from '../../utils/analytics/season'
 
-/** A época mais recente fica a cheio; as anteriores esbatem-se para trás. */
-const SEASON_COLORS = ['#2563EB', '#10B981', '#F97316', '#8B5CF6', '#94A3B8']
+/**
+ * A época mais recente fica a cheio; as anteriores esbatem-se para trás. São
+ * oito cores porque com menos as épocas voltam ao princípio da lista, e a
+ * repetição que sai é sempre entre a mais recente e a mais antiga.
+ */
+const SEASON_COLORS = [
+  '#2563EB',
+  '#10B981',
+  '#F97316',
+  '#8B5CF6',
+  '#EC4899',
+  '#EAB308',
+  '#06B6D4',
+  '#94A3B8',
+]
 
 const MONTH_STARTS = [1, 32, 60, 91, 121, 152, 182, 213, 244, 274, 305, 335]
 
