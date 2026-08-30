@@ -91,6 +91,27 @@ describe('with a track already attached', () => {
     expect(screen.getByText('93 m')).toBeInTheDocument()
   })
 
+  it('stays quiet about heart rate for a file that has none', () => {
+    render(<EventTrackSection event={event} track={track} loading={false} userId="user-1" />)
+    expect(screen.queryByText('FC média')).not.toBeInTheDocument()
+  })
+
+  it('summarises heart rate when the file carries it', () => {
+    const withHeartRate = {
+      ...track,
+      heartRate: { average: 180, minimum: 72, maximum: 198 },
+    } as EventTrack
+
+    render(
+      <EventTrackSection event={event} track={withHeartRate} loading={false} userId="user-1" />,
+    )
+
+    expect(screen.getByText('FC média')).toBeInTheDocument()
+    expect(screen.getByText('180 bpm')).toBeInTheDocument()
+    expect(screen.getByText('198 bpm')).toBeInTheDocument()
+    expect(screen.getByText('72 bpm')).toBeInTheDocument()
+  })
+
   it('never replaces a file without confirmation', async () => {
     render(<EventTrackSection event={event} track={track} loading={false} userId="user-1" />)
 

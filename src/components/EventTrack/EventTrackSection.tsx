@@ -116,6 +116,24 @@ export function EventTrackSection({ event, track, loading, userId }: EventTrackS
 
           <p className="mt-2 text-xs text-muted">{t('eventTrack.elevationApproximate')}</p>
 
+          {/* TCX carries heart rate, GPX does not, so this block comes and goes. */}
+          {track.heartRate ? (
+            <dl className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
+              <Stat
+                label={t('eventTrack.heartRateAverage')}
+                value={t('eventTrack.bpm', { value: track.heartRate.average })}
+              />
+              <Stat
+                label={t('eventTrack.heartRateMax')}
+                value={t('eventTrack.bpm', { value: track.heartRate.maximum })}
+              />
+              <Stat
+                label={t('eventTrack.heartRateMin')}
+                value={t('eventTrack.bpm', { value: track.heartRate.minimum })}
+              />
+            </dl>
+          ) : null}
+
           <div className="mt-5">
             <TrackProfileChart profile={track.profile} />
           </div>
