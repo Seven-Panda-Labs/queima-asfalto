@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.1] - 2026-08-30
+
+### Changed
+
+- **Documents follow the app language:** the changelog, results notice and privacy policy lost their own language picker, and Arabic now reads right to left.
+
+---
+
 ## [1.26.0] - 2026-08-30
 
 ### Added

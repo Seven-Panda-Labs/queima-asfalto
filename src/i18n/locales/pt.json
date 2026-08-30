@@ -56,40 +56,20 @@
     "viewChangelog": "Ver novidades da versão {{version}}",
     "timingDisclaimer": "Aviso resultados",
     "privacy": "Privacidade",
-    "studioCredit": "por Seven Panda Labs"
+    "studioCreditPrefix": "por",
+    "studioName": "Seven Panda Labs"
   },
   "changelog": {
     "title": "Novidades",
-    "subtitle": "Histórico de versões e melhorias da app.",
-    "languageToggle": "Idioma do changelog",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Histórico de versões e melhorias da app."
   },
   "privacy": {
     "title": "Política de privacidade",
-    "subtitle": "Como tratamos os teus dados nesta instância da app.",
-    "languageToggle": "Idioma da política",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Como tratamos os teus dados nesta instância da app."
   },
   "timingDisclaimer": {
     "title": "Aviso: resultados oficiais",
-    "subtitle": "Scraping de sites de timing de terceiros e termos de uso.",
-    "languageToggle": "Idioma do aviso",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Scraping de sites de timing de terceiros e termos de uso."
   },
   "eventStatus": {
     "planned": "Planeado",

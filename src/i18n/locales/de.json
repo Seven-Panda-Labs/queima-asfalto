@@ -56,40 +56,20 @@
     "viewChangelog": "Versionshinweise für Version {{version}} anzeigen",
     "timingDisclaimer": "Hinweis zu Ergebnissen",
     "privacy": "Datenschutz",
-    "studioCredit": "von Seven Panda Labs"
+    "studioCreditPrefix": "von",
+    "studioName": "Seven Panda Labs"
   },
   "changelog": {
     "title": "Versionshinweise",
-    "subtitle": "Versionsverlauf und App-Verbesserungen.",
-    "languageToggle": "Sprache der Versionshinweise",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Versionsverlauf und App-Verbesserungen."
   },
   "privacy": {
     "title": "Datenschutzerklärung",
-    "subtitle": "Wie wir deine Daten in dieser App-Instanz verarbeiten.",
-    "languageToggle": "Sprache der Datenschutzerklärung",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Wie wir deine Daten in dieser App-Instanz verarbeiten."
   },
   "timingDisclaimer": {
     "title": "Hinweis: offizielle Ergebnisse",
-    "subtitle": "Web-Scraping von Zeitnahme-Websites Dritter und Nutzungsbedingungen.",
-    "languageToggle": "Sprache des Hinweises",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Web-Scraping von Zeitnahme-Websites Dritter und Nutzungsbedingungen."
   },
   "eventStatus": {
     "planned": "Geplant",

@@ -56,40 +56,20 @@
     "viewChangelog": "View release notes for version {{version}}",
     "timingDisclaimer": "Results notice",
     "privacy": "Privacy",
-    "studioCredit": "by Seven Panda Labs"
+    "studioCreditPrefix": "by",
+    "studioName": "Seven Panda Labs"
   },
   "changelog": {
     "title": "Release notes",
-    "subtitle": "Version history and app improvements.",
-    "languageToggle": "Changelog language",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Version history and app improvements."
   },
   "privacy": {
     "title": "Privacy policy",
-    "subtitle": "How we process your data on this app instance.",
-    "languageToggle": "Policy language",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "How we process your data on this app instance."
   },
   "timingDisclaimer": {
     "title": "Notice: official results",
-    "subtitle": "Third-party timing site scraping and terms of use.",
-    "languageToggle": "Notice language",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Third-party timing site scraping and terms of use."
   },
   "eventStatus": {
     "planned": "Planned",

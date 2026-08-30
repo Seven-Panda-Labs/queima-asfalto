@@ -1,17 +1,11 @@
 import { privacyPolicyContent } from '#privacy-policy-content'
-import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
-
-export type PrivacyPolicyLocale = ContentLocale
-
-export function resolvePrivacyPolicyLocale(language: string): PrivacyPolicyLocale {
-  return resolveContentLocale(language)
-}
+import type { AppLanguage } from '../i18n/languages'
 
 export function isPrivacyPolicyAvailable(): boolean {
   return privacyPolicyContent.enabled
 }
 
-export function getPrivacyPolicyMarkdown(locale: PrivacyPolicyLocale): string {
+export function getPrivacyPolicyMarkdown(locale: AppLanguage): string {
   return privacyPolicyContent[locale]
 }
 
