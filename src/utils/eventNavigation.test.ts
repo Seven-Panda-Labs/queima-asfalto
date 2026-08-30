@@ -66,12 +66,28 @@ describe('eventNavigation', () => {
     expect(getEventDetailReturnTo(null, legacyParams)).toBe('/resultados?year=2020&owner=owner-1')
   })
 
-  it('parses and builds results list URLs', () => {
+  it('parses and builds analysis URLs', () => {
     const filters = parseResultsListSearchParams(new URLSearchParams('year=2021&type=km_21_1'), 2026)
-    expect(filters).toEqual({ year: 2021, type: 'km_21_1' })
+    expect(filters).toEqual({ horizon: 'epoca', year: 2021, type: 'km_21_1' })
     expect(buildResultsListPath(filters, 2026)).toBe('/analise?year=2021&type=km_21_1')
     expect(buildResultsListPath(filters, 2026, 'owner-1')).toBe(
       '/analise?year=2021&type=km_21_1&owner=owner-1',
     )
+  })
+
+  it('defaults to the season horizon and rejects unknown ones', () => {
+    expect(parseResultsListSearchParams(new URLSearchParams(''), 2026).horizon).toBe('epoca')
+    expect(parseResultsListSearchParams(new URLSearchParams('view=mapa'), 2026).horizon).toBe('epoca')
+    expect(parseResultsListSearchParams(new URLSearchParams('view=sempre'), 2026).horizon).toBe(
+      'sempre',
+    )
+  })
+
+  it('drops the year outside the season horizon, where it means nothing', () => {
+    const allTime = { horizon: 'sempre' as const, year: 2021, type: 'all' as const }
+    expect(buildResultsListPath(allTime, 2026)).toBe('/analise?view=sempre')
+
+    const seasons = { horizon: 'epocas' as const, year: 'all' as const, type: 'km_5' as const }
+    expect(buildResultsListPath(seasons, 2026)).toBe('/analise?view=epocas&type=km_5')
   })
 })

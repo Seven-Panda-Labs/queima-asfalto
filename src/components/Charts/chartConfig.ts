@@ -1,4 +1,6 @@
 import {
+  BarController,
+  BarElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
@@ -15,6 +17,8 @@ ChartJS.register(
   PointElement,
   LineElement,
   LineController,
+  BarController,
+  BarElement,
   Tooltip,
   Legend,
 )

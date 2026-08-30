@@ -14,7 +14,17 @@ export type EventsListFilters = {
   view: EventsViewMode
 }
 
+/**
+ * Os três horizontes da análise. Substituem o filtro de ano como controlo
+ * principal: a pergunta muda com o horizonte, não só o recorte dos dados.
+ */
+export type AnalysisHorizon = 'epoca' | 'epocas' | 'sempre'
+
+export const ANALYSIS_HORIZONS: AnalysisHorizon[] = ['epoca', 'epocas', 'sempre']
+
 export type ResultsListFilters = {
+  horizon: AnalysisHorizon
+  /** Só conta no horizonte «epoca»; nos outros a página lê o histórico todo. */
   year: number | 'all'
   type: EventType | 'all'
 }
@@ -142,7 +152,13 @@ export function parseResultsListSearchParams(
       ? (typeParam as ResultsListFilters['type'])
       : 'all'
 
+  const horizonParam = searchParams.get('view')
+  const horizon = ANALYSIS_HORIZONS.includes(horizonParam as AnalysisHorizon)
+    ? (horizonParam as AnalysisHorizon)
+    : 'epoca'
+
   return {
+    horizon,
     year: parseYearParam(searchParams.get('year'), currentYear),
     type,
   }
@@ -150,8 +166,14 @@ export function parseResultsListSearchParams(
 
 export function buildResultsListSearchParams(filters: ResultsListFilters, currentYear: number): URLSearchParams {
   const params = new URLSearchParams()
-  if (filters.year !== 'all' && filters.year !== currentYear) params.set('year', String(filters.year))
-  if (filters.year === 'all') params.set('year', 'all')
+  if (filters.horizon !== 'epoca') params.set('view', filters.horizon)
+  // O ano só recorta o horizonte de uma época; nos outros seria ruído no URL.
+  if (filters.horizon === 'epoca') {
+    if (filters.year !== 'all' && filters.year !== currentYear) {
+      params.set('year', String(filters.year))
+    }
+    if (filters.year === 'all') params.set('year', 'all')
+  }
   if (filters.type !== 'all') params.set('type', filters.type)
   return params
 }
