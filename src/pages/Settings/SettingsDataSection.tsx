@@ -25,7 +25,7 @@ export function SettingsDataSection() {
   const [importOpen, setImportOpen] = useState(() => searchParams.get('import') === '1')
   const [backupExporting, setBackupExporting] = useState(false)
   const [backupProgress, setBackupProgress] = useState<BackupExportProgress | null>(null)
-  const [includeMediaFiles, setIncludeMediaFiles] = useState(true)
+  const [includeStorageFiles, setIncludeStorageFiles] = useState(true)
   const [restoreOpen, setRestoreOpen] = useState(() => searchParams.get('restore') === '1')
 
   const noData = allEvents.length === 0 && bucketListItems.length === 0
@@ -50,7 +50,11 @@ export function SettingsDataSection() {
     setBackupExporting(true)
     setBackupProgress(null)
     try {
-      const result = await exportUserBackup(user.uid, { includeMediaFiles }, setBackupProgress)
+      const result = await exportUserBackup(
+        user.uid,
+        { includeStorageFiles },
+        setBackupProgress,
+      )
       if (result.warnings.includes('media_files_too_large')) {
         toast.error(t('backup.exportMediaTooLarge', { max: mediaCapMegabytes }))
       } else {
@@ -75,6 +79,14 @@ export function SettingsDataSection() {
         mb: Math.round(backupProgress.bytes / (1024 * 1024)),
         totalMb: Math.round(backupProgress.totalBytes / (1024 * 1024)),
       })
+    }
+    if (backupProgress.phase === 'tracks' || backupProgress.phase === 'trackFiles') {
+      return t(
+        backupProgress.phase === 'tracks'
+          ? 'backup.exportProgressTracks'
+          : 'backup.exportProgressTrackFiles',
+        { done: backupProgress.done, total: backupProgress.total },
+      )
     }
     return t('backup.exportProgressMedia', {
       done: backupProgress.done,
@@ -139,8 +151,8 @@ export function SettingsDataSection() {
         <label className="mt-4 flex items-start gap-2 text-sm text-foreground">
           <input
             type="checkbox"
-            checked={includeMediaFiles}
-            onChange={(event) => setIncludeMediaFiles(event.target.checked)}
+            checked={includeStorageFiles}
+            onChange={(event) => setIncludeStorageFiles(event.target.checked)}
             disabled={backupExporting}
             aria-describedby="backup-media-hint"
             className="mt-1 border-border"
