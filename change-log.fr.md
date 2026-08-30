@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.0] - 2026-08-30
+
+### Ajouté
+
+- **Choisis les disciplines que tu veux voir :** dans Réglages > App, tu peux désactiver les distances que tu ne cours pas. Elles disparaissent des filtres et des sélecteurs. Rien n'est perdu : les courses, objectifs et records déjà enregistrés dans une discipline désactivée restent visibles.
+
+---
+
 ## [1.25.0] - 2026-08-30
 
 ### Modifié

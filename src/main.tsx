@@ -4,6 +4,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { registerSW } from 'virtual:pwa-register'
 import App from './App.tsx'
 import { AuthProvider } from './contexts/AuthContext.tsx'
+import { DisciplinesProvider } from './contexts/DisciplinesContext.tsx'
 import { ThemeProvider } from './contexts/ThemeContext.tsx'
 import { ToastProvider } from './contexts/ToastContext.tsx'
 import { initI18n } from './i18n/index.ts'
@@ -18,9 +19,11 @@ void initI18n().then(() => {
       <BrowserRouter>
         <AuthProvider>
           <ThemeProvider>
-            <ToastProvider>
-              <App />
-            </ToastProvider>
+            <DisciplinesProvider>
+              <ToastProvider>
+                <App />
+              </ToastProvider>
+            </DisciplinesProvider>
           </ThemeProvider>
         </AuthProvider>
       </BrowserRouter>

@@ -4,6 +4,7 @@ import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { applyLanguage, type AppLanguage } from '../../i18n'
 import { normalizeAppLanguage } from '../../i18n/locale'
 import { updateUserAppLanguage } from '../../services/users'
+import { DisciplinesSection } from './DisciplinesSection'
 import { NotificationPrefsSection } from './NotificationPrefsSection'
 import { ThemePreferenceButtons } from './ThemePreferenceButtons'
 
@@ -51,6 +52,8 @@ export function SettingsAppSection() {
         <p className="mt-2 text-sm text-muted">{t('settings.themeSubtitle')}</p>
         <ThemePreferenceButtons />
       </section>
+
+      <DisciplinesSection />
 
       <NotificationPrefsSection />
     </div>

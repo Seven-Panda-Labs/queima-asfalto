@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.0] - 2026-08-30
+
+### Hinzugefügt
+
+- **Wähle die Disziplinen, die du sehen willst:** unter Einstellungen > App kannst du Distanzen abschalten, die du nicht läufst. Sie verschwinden aus Filtern und Auswahllisten. Nichts geht verloren: Rennen, Ziele und Rekorde in einer abgeschalteten Disziplin bleiben sichtbar.
+
+---
+
 ## [1.25.0] - 2026-08-30
 
 ### Geändert
