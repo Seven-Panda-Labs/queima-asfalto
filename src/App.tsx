@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react'
-import { Route, Routes, Navigate } from 'react-router-dom'
+import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { AnalyticsTracker } from './components/AnalyticsTracker/AnalyticsTracker'
 import { Layout } from './components/Layout/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
@@ -17,6 +17,7 @@ import { Login } from './pages/Login/Login'
 import { NotFound } from './pages/NotFound/NotFound'
 import { Results } from './pages/Results/Results'
 import { Settings } from './pages/Settings/Settings'
+import { ANALYSIS_PATH } from './utils/eventNavigation'
 
 const Changelog = lazy(() =>
   import('./pages/Changelog/Changelog').then((module) => ({
@@ -35,6 +36,12 @@ const TimingDisclaimer = lazy(() =>
     default: module.TimingDisclaimer,
   })),
 )
+
+/** Keeps old bookmarks and `returnTo` links working, filters intact. */
+function AnalysisRouteRedirect() {
+  const { search } = useLocation()
+  return <Navigate to={`${ANALYSIS_PATH}${search}`} replace />
+}
 
 export default function App() {
   return (
@@ -59,7 +66,8 @@ export default function App() {
             <Route path="objetivos/performance/novo" element={<PerformanceGoalForm />} />
             <Route path="objetivos/performance/:id/editar" element={<PerformanceGoalForm />} />
             <Route path="objetivos/:id/editar" element={<GoalForm />} />
-            <Route path="resultados" element={<Results />} />
+            <Route path="analise" element={<Results />} />
+            <Route path="resultados" element={<AnalysisRouteRedirect />} />
             <Route path="definicoes" element={<Settings />} />
             <Route path="novidades" element={
               <Suspense fallback={null}>

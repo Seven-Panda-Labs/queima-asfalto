@@ -14,17 +14,33 @@ export type EventsListFilters = {
   view: EventsViewMode
 }
 
+/** The question changes with the horizon, not just the slice of data. */
+export type AnalysisHorizon = 'epoca' | 'epocas' | 'sempre'
+
+export const ANALYSIS_HORIZONS: AnalysisHorizon[] = ['epoca', 'epocas', 'sempre']
+
 export type ResultsListFilters = {
+  horizon: AnalysisHorizon
+  /** Only used by the `epoca` horizon; the others read the whole history. */
   year: number | 'all'
   type: EventType | 'all'
 }
 
 const EVENTS_VIEW_MODES: EventsListFilters['view'][] = ['lista', 'calendario', 'mapa']
 
+export const ANALYSIS_PATH = '/analise'
+
+/** Still accepted: shared links and `returnTo` values predate the rename. */
+export const LEGACY_ANALYSIS_PATH = '/resultados'
+
 export function isSafeReturnPath(path: string): boolean {
   try {
     const { pathname } = new URL(path, 'http://local')
-    return pathname === '/eventos' || pathname === '/resultados'
+    return (
+      pathname === '/eventos' ||
+      pathname === ANALYSIS_PATH ||
+      pathname === LEGACY_ANALYSIS_PATH
+    )
   } catch {
     return false
   }
@@ -132,7 +148,13 @@ export function parseResultsListSearchParams(
       ? (typeParam as ResultsListFilters['type'])
       : 'all'
 
+  const horizonParam = searchParams.get('view')
+  const horizon = ANALYSIS_HORIZONS.includes(horizonParam as AnalysisHorizon)
+    ? (horizonParam as AnalysisHorizon)
+    : 'epoca'
+
   return {
+    horizon,
     year: parseYearParam(searchParams.get('year'), currentYear),
     type,
   }
@@ -140,8 +162,14 @@ export function parseResultsListSearchParams(
 
 export function buildResultsListSearchParams(filters: ResultsListFilters, currentYear: number): URLSearchParams {
   const params = new URLSearchParams()
-  if (filters.year !== 'all' && filters.year !== currentYear) params.set('year', String(filters.year))
-  if (filters.year === 'all') params.set('year', 'all')
+  if (filters.horizon !== 'epoca') params.set('view', filters.horizon)
+  // The year only slices one season; elsewhere it would be URL noise.
+  if (filters.horizon === 'epoca') {
+    if (filters.year !== 'all' && filters.year !== currentYear) {
+      params.set('year', String(filters.year))
+    }
+    if (filters.year === 'all') params.set('year', 'all')
+  }
   if (filters.type !== 'all') params.set('type', filters.type)
   return params
 }
@@ -154,5 +182,5 @@ export function buildResultsListPath(
   const qs = buildResultsListSearchParams(filters, currentYear)
   if (ownerId) qs.set('owner', ownerId)
   const query = qs.toString()
-  return query ? `/resultados?${query}` : '/resultados'
+  return query ? `${ANALYSIS_PATH}?${query}` : ANALYSIS_PATH
 }

@@ -68,6 +68,20 @@ This is enforced, not just documented. See [Enforcement](#enforcement).
 - `--no-verify` / skip hooks without request
 - Secrets, real PII, or credentials in code, commits, or PRs
 - Large PRs mixing feature + refactor + formatting
+- Em-dashes anywhere, and comments in any language but English (see [Writing](#writing-ui-text-and-code-comments))
+
+## Writing: UI text and code comments
+
+Applies to everything an agent writes: UI strings, i18n locales, code comments, commit messages, PR bodies.
+
+| Rule | Why |
+|------|-----|
+| **No em-dashes** (`—`). Use a comma, a colon, brackets or a full stop | House style |
+| **Concise and clear.** No wall of text. Cut the sentence that repeats the previous one | Long copy stops being read, in a doc comment as much as in the UI |
+| **Comments only where the code is not self-evident.** Explain *why*, not *what* | A comment restating the line below it is noise that rots |
+| **Comments in English**, like commits | Public repo, mixed-language contributors |
+
+UI strings are user-facing and stay in the six locales (`src/i18n/locales/`); the rules above apply to each translation, not only the English one.
 
 ## Enforcement
 

@@ -18,7 +18,7 @@ let catalogCache: ParkrunCatalog | null = null
 
 /**
  * The catalog committed to the repo, used when nothing has synced the
- * Firestore document yet — a fresh project, a self-hosted instance without
+ * Firestore document yet: a fresh project, a self-hosted instance without
  * functions, or an unreadable document.
  */
 async function loadBundledSeed(): Promise<ParkrunCatalog> {

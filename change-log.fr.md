@@ -4,6 +4,17 @@
 
 ---
 
+## [1.25.0] - 2026-08-30
+
+### Modifié
+
+- **La page Résultats devient la page Analyse :** elle ne répète plus la liste des événements. Elle répond à trois questions, choisies en haut : comment va cette saison, comment elle se compare aux précédentes, et ce qui a changé depuis toujours. La route est passée à `/analise`, et les anciens liens fonctionnent toujours.
+- **Courbe de forme :** chaque course est convertie en son équivalent sur ta distance la plus courue, si bien qu'un 5K et un marathon se comparent sur une même ligne. Elle estime aussi tes temps sur les autres distances, d'après ta meilleure marque des 12 derniers mois.
+- **Nouvelles lectures :** place dans le peloton au fil du temps, progression de chaque record, km cumulés face aux saisons précédentes, mois forts et faibles de l'année, et une grille de régularité par courses ou par kilomètres.
+- **Allure moyenne de l'année corrigée :** elle est désormais pondérée par la distance. Auparavant un 5K pesait autant qu'un marathon.
+
+---
+
 ## [1.24.0] - 2026-08-29
 
 ### Modifié

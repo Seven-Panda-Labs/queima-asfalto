@@ -4,6 +4,17 @@
 
 ---
 
+## [1.25.0] - 2026-08-30
+
+### Changed
+
+- **The Results page is now the Analysis page:** it no longer repeats the Events list. It answers three questions, chosen at the top: how this season is going, how it compares with the ones before, and what has changed over the whole history. The route moved to `/analise`, and old links still work.
+- **Form curve:** every race is converted to its equivalent at your most-raced distance, so a 5K and a marathon compare on one line. It also predicts times at the other distances from your best result of the last 12 months.
+- **New readings:** placing in the field over time, how each record fell, cumulative km against previous seasons, the strong and weak months of the year, and a consistency grid by races or by kilometres.
+- **Average pace for the year fixed:** it is now weighted by distance. A 5K used to count as much as a marathon.
+
+---
+
 ## [1.24.0] - 2026-08-29
 
 ### Changed
