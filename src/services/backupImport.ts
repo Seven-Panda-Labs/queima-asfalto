@@ -603,7 +603,7 @@ export async function restoreUserBackup(
 
   if (options.mode === 'replace') {
     try {
-      const deleted = await clearAllUserData(userId, { includeEventMedia: true })
+      const deleted = await clearAllUserData(userId, { includeEventSubcollections: true })
       result.deleted = {
         events: deleted.eventsDeleted,
         goals: deleted.goalsDeleted,

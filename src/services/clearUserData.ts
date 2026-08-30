@@ -1,17 +1,19 @@
-import { collection, getDocs, query, where, writeBatch, doc } from 'firebase/firestore'
+import { collection, deleteDoc, getDocs, query, where, writeBatch, doc } from 'firebase/firestore'
 import { db } from './firebase'
 import { deleteEventMediaFile } from './eventMediaStorage'
+import { deleteEventTrackFile } from './eventTrackStorage'
 
 const BATCH_SIZE = 500
 
 export type ClearUserDataOptions = {
   /**
-   * Also delete `events/{id}/media` documents and their Storage objects.
+   * Also delete everything stored under an event, `media` and `track`, together
+   * with their Storage objects.
    *
    * Defaults to false so the Excel import's "replace everything" path keeps its
    * existing behaviour untouched.
    */
-  includeEventMedia?: boolean
+  includeEventSubcollections?: boolean
 }
 
 export type ClearUserDataResult = {
@@ -20,6 +22,7 @@ export type ClearUserDataResult = {
   bucketListDeleted: number
   performanceGoalsDeleted: number
   eventMediaDeleted: number
+  eventTracksDeleted: number
 }
 
 async function deleteCollectionDocs(userId: string, collectionName: string): Promise<number> {
@@ -83,12 +86,47 @@ async function deleteEventMediaForUser(userId: string): Promise<number> {
   return deleted
 }
 
+/**
+ * Deletes the track document and Storage object under each of the user's events.
+ *
+ * Runs before the events for the same reason as the media above: the track read
+ * rule resolves the parent event, so once the event is gone the document can no
+ * longer be listed, and therefore never deleted.
+ */
+async function deleteEventTracksForUser(userId: string): Promise<number> {
+  const events = await getDocs(query(collection(db, 'events'), where('userId', '==', userId)))
+
+  let deleted = 0
+  for (const event of events.docs) {
+    const tracks = await getDocs(collection(db, 'events', event.id, 'track'))
+    if (tracks.empty) continue
+
+    for (const document of tracks.docs) {
+      const storagePath = document.data().storagePath
+      if (typeof storagePath === 'string') {
+        try {
+          await deleteEventTrackFile(storagePath)
+        } catch {
+          // An already-missing object must not block the metadata delete.
+        }
+      }
+      await deleteDoc(doc(db, 'events', event.id, 'track', document.id))
+      deleted += 1
+    }
+  }
+
+  return deleted
+}
+
 export async function clearAllUserData(
   userId: string,
   options: ClearUserDataOptions = {},
 ): Promise<ClearUserDataResult> {
-  const eventMediaDeleted = options.includeEventMedia
+  const eventMediaDeleted = options.includeEventSubcollections
     ? await deleteEventMediaForUser(userId)
+    : 0
+  const eventTracksDeleted = options.includeEventSubcollections
+    ? await deleteEventTracksForUser(userId)
     : 0
 
   const [eventsDeleted, goalsDeleted, bucketListDeleted, performanceGoalsDeleted] =
@@ -105,5 +143,6 @@ export async function clearAllUserData(
     bucketListDeleted,
     performanceGoalsDeleted,
     eventMediaDeleted,
+    eventTracksDeleted,
   }
 }
