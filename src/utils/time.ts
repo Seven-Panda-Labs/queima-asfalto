@@ -38,6 +38,16 @@ export function joinTime(hours: string, minutes: string, seconds: string): strin
   return `${h}:${m.padStart(2, '0')}:${s.padStart(2, '0')}`
 }
 
+/**
+ * Whether the three inputs hold anything at all.
+ *
+ * `joinTime` turns blank fields into a valid `0:00:00`, which reads downstream as
+ * a recorded time of zero rather than as an empty form.
+ */
+export function hasTimeInput(hours: string, minutes: string, seconds: string): boolean {
+  return [hours, minutes, seconds].some((part) => part.trim() !== '')
+}
+
 export function splitTime(input: string): { hours: string; minutes: string; seconds: string } {
   const normalized = normalizeTime(input)
   if (!normalized) return { hours: '', minutes: '', seconds: '' }

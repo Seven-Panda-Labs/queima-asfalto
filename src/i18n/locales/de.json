@@ -293,6 +293,18 @@
     "totalParticipants": "Teilnehmer gesamt",
     "classificationHint": "Optional. Z. B.: 47. von 106 Teilnehmern"
   },
+  "trackResult": {
+    "title": "Aus deiner Aktivitätsdatei",
+    "measured": "Gemessene Zeit {{time}} auf {{distance}} km",
+    "distanceMismatch": "Die Datei weicht um {{percent}}% von der offiziellen Distanz ab. Prüfe, ob sie zu diesem Rennen gehört.",
+    "useTime": "Diese Zeit übernehmen",
+    "matches": "Stimmt mit der erfassten Zeit überein.",
+    "differs": "Für das Event ist {{current}} erfasst. Die Datei weicht um {{delta}} ab.",
+    "replaceTime": "Durch die gemessene Zeit ersetzen",
+    "officialWins": "GPS stimmt selten genau mit der offiziellen Zeitmessung überein. Es zählt das offizielle Ergebnis.",
+    "confirmTitle": "Erfasste Zeit ersetzen?",
+    "confirmMessage": "Das ersetzt {{current}} durch {{suggested}}, per GPS gemessen. Offizielle Ergebnisse sind verlässlicher."
+  },
   "bucketList": {
     "title": "Bucket List",
     "subtitle": "Traumrennen. Wenn du bereit bist, plane sie im Kalender ein.",

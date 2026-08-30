@@ -2,6 +2,8 @@ import { useMemo, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { EventResultsUrlField } from '../EventResultsUrlField'
 import { OfficialResultsLookup } from '../OfficialResultsLookup/OfficialResultsLookup'
+import { TrackResultSuggestion } from '../TrackResultSuggestion'
+import { useEventTrack } from '../../hooks/useEventTrack'
 import type { Event } from '../../types/Event'
 import { saveResults } from '../../services/events'
 import {
@@ -10,7 +12,14 @@ import {
   parseClassification,
 } from '../../utils/classification'
 import { calculatePace } from '../../utils/pace'
-import { getInvalidTimeMessage, joinTime, normalizeTime, splitTime, validateTime } from '../../utils/time'
+import {
+  getInvalidTimeMessage,
+  hasTimeInput,
+  joinTime,
+  normalizeTime,
+  splitTime,
+  validateTime,
+} from '../../utils/time'
 
 type EventResultEditorProps = {
   event: Event
@@ -36,6 +45,7 @@ export function EventResultEditor({
   canLookup,
 }: EventResultEditorProps) {
   const { t } = useTranslation()
+  const { track } = useEventTrack(event.id)
   const initialTime = event.time ? splitTime(event.time) : null
   const initialPlaces = event.classification ? parseClassification(event.classification) : null
 
@@ -52,11 +62,21 @@ export function EventResultEditor({
 
   const timeValue = joinTime(hours, minutes, seconds)
 
+  const enteredTime = hasTimeInput(hours, minutes, seconds) ? timeValue : ''
+
   const pacePreview = useMemo(() => {
     if (!validateTime(timeValue)) return null
     const normalized = normalizeTime(timeValue)
     return normalized ? calculatePace(normalized, event.realDistance) : null
   }, [event.realDistance, timeValue])
+
+  function applyTrackTime(time: string) {
+    const parts = splitTime(time)
+    setHours(parts.hours)
+    setMinutes(parts.minutes)
+    setSeconds(parts.seconds)
+    clearFieldError('time')
+  }
 
   function clearFieldError(key: string) {
     setFieldErrors((current) => {
@@ -147,6 +167,15 @@ export function EventResultEditor({
         ) : null}
         {fieldErrors.time ? <p className="mt-1 text-sm text-danger">{fieldErrors.time}</p> : null}
       </fieldset>
+
+      {track ? (
+        <TrackResultSuggestion
+          track={track}
+          event={event}
+          currentTime={enteredTime}
+          onApplyTime={applyTrackTime}
+        />
+      ) : null}
 
       <fieldset className="mt-5 border-0 p-0">
         <legend className="text-sm font-semibold text-foreground">
