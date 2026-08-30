@@ -242,6 +242,16 @@
       "no_track_points": "O ficheiro não tem pontos com data e hora."
     }
   },
+  "courseHistory": {
+    "title": "Este percurso",
+    "subtitle": "Já o correste {{count}} vezes.",
+    "thisRun": "Esta vez",
+    "best": "Melhor",
+    "previous": "Anterior",
+    "bestEver": "a tua melhor aqui",
+    "rank": "{{rank}}ª de {{total}}",
+    "paceNote": "Comparado por ritmo, porque o mesmo percurso nem sempre é medido com a mesma distância."
+  },
   "eventForm": {
     "new": "Novo evento",
     "edit": "Editar evento",

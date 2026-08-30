@@ -242,6 +242,16 @@
       "no_track_points": "Die Datei enthält keine Punkte mit Zeitstempel."
     }
   },
+  "courseHistory": {
+    "title": "Diese Strecke",
+    "subtitle": "Du bist sie {{count}} Mal gelaufen.",
+    "thisRun": "Dieses Mal",
+    "best": "Bestzeit",
+    "previous": "Vorheriges Mal",
+    "bestEver": "deine beste hier",
+    "rank": "{{rank}}. von {{total}}",
+    "paceNote": "Nach Pace verglichen, denn dieselbe Strecke wird nicht immer gleich lang gemessen."
+  },
   "eventForm": {
     "new": "Neues Event",
     "edit": "Event bearbeiten",

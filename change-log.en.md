@@ -4,6 +4,15 @@
 
 ---
 
+## [1.28.0] - 2026-08-30
+
+### Added
+
+- **Pacing:** the analysis page shows, race by race, how much you slowed in the second half, and how often it happens.
+- **Same course comparison:** open a race you have run before and see where it sits among all your runnings of it, with the best and the previous one.
+
+---
+
 ## [1.27.0] - 2026-08-30
 
 ### Added

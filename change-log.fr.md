@@ -4,6 +4,15 @@
 
 ---
 
+## [1.28.0] - 2026-08-30
+
+### Ajouté
+
+- **Gestion de l'effort :** la page d'analyse montre, course par course, de combien tu as ralenti sur la seconde moitié, et à quelle fréquence cela arrive.
+- **Comparaison du même parcours :** ouvre une course déjà faite et vois où elle se situe parmi toutes tes participations, avec la meilleure et la précédente.
+
+---
+
 ## [1.27.0] - 2026-08-30
 
 ### Ajouté
