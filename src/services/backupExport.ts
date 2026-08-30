@@ -50,10 +50,15 @@ export type BackupExportWarning =
   | 'no_data'
 
 export type BackupExportOptions = {
-  /** Download photo and video binaries into the zip. Defaults to true. */
-  includeMediaFiles?: boolean
-  /** Download raw GPX and TCX into the zip. Defaults to true. */
-  includeTrackFiles?: boolean
+  /**
+   * Download the Storage binaries into the zip: photos, videos and the raw GPX
+   * and TCX. Defaults to true.
+   *
+   * One flag for all of them on purpose. Two flags shipped in 1.27.0 and the UI
+   * only ever set the media one, so a metadata-only backup still went and
+   * fetched every track file.
+   */
+  includeStorageFiles?: boolean
 }
 
 export type BackupExportResult = {
@@ -346,7 +351,7 @@ export async function collectUserBackup(
   const warnings: BackupExportWarning[] = []
   let mediaFiles = emptyBackupMediaFiles()
 
-  if (options.includeMediaFiles !== false && media.documents.length > 0) {
+  if (options.includeStorageFiles !== false && media.documents.length > 0) {
     const downloaded = await downloadMediaFiles(media.documents, onProgress)
     mediaFiles = downloaded.mediaFiles
     warnings.push(...downloaded.warnings)
@@ -354,7 +359,7 @@ export async function collectUserBackup(
   if (mediaFiles.size === 0) warnings.push('media_binaries_excluded')
 
   let trackFiles = emptyBackupTrackFiles()
-  if (options.includeTrackFiles !== false && tracks.documents.length > 0) {
+  if (options.includeStorageFiles !== false && tracks.documents.length > 0) {
     const downloaded = await downloadTrackFiles(tracks.documents, onProgress)
     trackFiles = downloaded.trackFiles
     if (downloaded.failed > 0) warnings.push('track_files_partially_downloaded')
