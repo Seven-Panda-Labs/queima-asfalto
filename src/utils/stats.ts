@@ -9,7 +9,7 @@ export type DashboardStats = {
   totalEvents: number
   completedCount: number
   missedCount: number
-  /** Ritmo médio do ano, ponderado pela distância. */
+  /** Distance-weighted average pace for the year. */
   averagePace: string | null
   /** Soma da distância real das provas concluídas no ano, arredondada à décima. */
   completedDistanceKm: number
@@ -26,9 +26,8 @@ export function computeDashboardStats(events: Event[], year: number): DashboardS
   const completed = yearEvents.filter((event) => event.status === 'completed')
   const missed = yearEvents.filter((event) => event.status === 'missed')
 
-  // Tempo total a dividir pela distância total. A média dos ritmos individuais
-  // daria o mesmo peso a um 5K e a uma maratona, e a página de análise mostraria
-  // um número diferente para o mesmo ano.
+  // Averaging per-race paces would weigh a 5K like a marathon, and the
+  // analysis page would show a different number for the same year.
   const averageSeconds = weightedAveragePaceSeconds(toAnalysableResults(completed))
   const averagePace = averageSeconds === null ? null : formatPaceSeconds(averageSeconds)
 

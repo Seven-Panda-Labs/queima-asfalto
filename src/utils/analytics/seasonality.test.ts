@@ -5,7 +5,7 @@ import { computeSeasonality } from './seasonality'
 
 describe('computeSeasonality', () => {
   const results = toAnalysableResults([
-    // Duas provas em Julho, ambas lentas; duas em Outubro, ambas rápidas.
+    // Two slow races in July, two fast ones in October.
     makeEvent({ id: '1', date: new Date(2025, 6, 5), eventType: 'km_10', time: '01:00:00' }),
     makeEvent({ id: '2', date: new Date(2026, 6, 5), eventType: 'km_10', time: '00:58:00' }),
     makeEvent({ id: '3', date: new Date(2025, 9, 5), eventType: 'km_10', time: '00:50:00' }),

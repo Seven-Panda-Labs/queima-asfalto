@@ -2,11 +2,7 @@ import type { Event, EventType } from '../../types/Event'
 import { parsePaceSeconds } from '../pace'
 import { parseTime } from '../time'
 
-/**
- * Distâncias oficiais das disciplinas. Servem de referência para converter
- * resultados entre distâncias; a distância que conta para o ritmo de uma prova
- * é sempre a `realDistance` medida, não esta.
- */
+/** Official distances, used only to convert between disciplines. A race's own pace always uses its measured `realDistance`. */
 export const NOMINAL_DISTANCE_KM: Record<EventType, number> = {
   km_5: 5,
   km_10: 10,
@@ -15,12 +11,11 @@ export const NOMINAL_DISTANCE_KM: Record<EventType, number> = {
 }
 
 /**
- * Uma prova concluída com dados suficientes para entrar na análise.
+ * A completed race with enough data to analyse.
  *
- * Havendo tempo, o ritmo é **derivado** de `time / realDistance` e não lido de
- * `event.pace`: o campo guardado é preenchido em separado do tempo (à mão ou por
- * importação) e arredondado ao segundo, por isso as duas fontes divergem. Para
- * agregar, a única que se pode somar sem enviesar é o tempo.
+ * Pace is derived from `time / realDistance`, not read from `event.pace`: the
+ * stored field is filled in separately and rounded to the second, so the two
+ * disagree. Only time can be summed without bias.
  */
 export type AnalysableResult = {
   event: Event
@@ -30,18 +25,13 @@ export type AnalysableResult = {
   distanceKm: number
   timeSeconds: number
   paceSeconds: number
-  /** O tempo foi reconstruído do ritmo por não haver tempo guardado. */
+  /** Time was rebuilt from pace because none was stored. */
   timeFromPace: boolean
 }
 
 type Timing = { timeSeconds: number; paceSeconds: number; timeFromPace: boolean }
 
-/**
- * A importação de Excel aceita uma coluna de ritmo sem coluna de tempo, por isso
- * há provas reais só com ritmo. Reconstruir o tempo a partir dele é melhor do
- * que deitar a prova fora — fica marcado, e o painel de dados continua a pedir
- * o tempo.
- */
+/** The Excel import accepts a pace column with no time column, so pace-only races exist. Rebuilding the time beats dropping the race. */
 function resolveTiming(event: Event, distanceKm: number): Timing | null {
   const storedTime = event.time ? parseTime(event.time) : null
   if (storedTime !== null && storedTime > 0) {
@@ -87,7 +77,7 @@ function toAnalysableResult(event: Event): AnalysableResult | null {
   }
 }
 
-/** Provas analisáveis, da mais antiga para a mais recente. */
+/** Analysable races, oldest first. */
 export function toAnalysableResults(events: Event[]): AnalysableResult[] {
   return events
     .map(toAnalysableResult)
@@ -102,7 +92,7 @@ export function formatPaceSeconds(paceSeconds: number): string {
   return `${minutes}:${String(seconds).padStart(2, '0')}`
 }
 
-/** Assinado, para deltas: «-0:06» lê-se como seis segundos mais rápido. */
+/** Signed, for deltas: "-0:06" reads as six seconds faster. */
 export function formatPaceDelta(deltaSeconds: number): string {
   const rounded = Math.round(deltaSeconds)
   if (rounded === 0) return `0:00`
@@ -118,16 +108,12 @@ export function formatDurationSeconds(totalSeconds: number): string {
   return `${hours}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`
 }
 
-/** Horas arredondadas à décima, para «14.5h em prova». */
+/** Hours to one decimal, for "14.5h racing". */
 export function formatHours(totalSeconds: number): string {
   return (Math.round((totalSeconds / 3600) * 10) / 10).toString()
 }
 
-/**
- * Ritmo médio de um conjunto de provas: tempo total a dividir pela distância
- * total. Fazer a média dos ritmos individuais daria o mesmo peso a um 5K e a
- * uma maratona, o que sobrevaloriza as provas curtas.
- */
+/** Total time over total distance. Averaging per-race paces would weigh a 5K like a marathon. */
 export function weightedAveragePaceSeconds(results: AnalysableResult[]): number | null {
   if (results.length === 0) return null
 

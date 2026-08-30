@@ -1,19 +1,17 @@
 import { useTranslation } from 'react-i18next'
-import type { RacePrediction } from '../../utils/analytics/equivalence'
+import type { RaceForecast } from '../../utils/analytics/equivalence'
 import { formatDurationSeconds, formatPaceSeconds } from '../../utils/analytics/results'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { formatDatePt } from '../../utils/date'
 
 /**
- * Equivalências a partir da marca mais forte. São estimativas, e para as
- * distâncias longas são estimativas optimistas: Riegel assume uma base de
- * resistência que quem só corre 5K não tem. Daí o aviso a fechar o bloco.
+ * Equivalences from current form. The source race is named at the foot: without
+ * it the numbers arrive from nowhere and nobody recognises them as theirs.
  */
-export function RacePredictor({ predictions }: { predictions: RacePrediction[] }) {
+export function RacePredictor({ forecast }: { forecast: RaceForecast }) {
   const { t } = useTranslation()
+  const { predictions, basedOn, fromRecentForm } = forecast
   if (predictions.length === 0) return null
-
-  const base = predictions[0]!.basedOn
 
   return (
     <div className="rounded-xl border border-border bg-surface">
@@ -34,9 +32,9 @@ export function RacePredictor({ predictions }: { predictions: RacePrediction[] }
         ))}
       </div>
       <p className="border-t border-border px-4 py-3 text-xs text-muted">
-        {t('analysis.predictorBasis', {
-          name: base.event.name,
-          date: formatDatePt(base.date),
+        {t(fromRecentForm ? 'analysis.predictorBasis' : 'analysis.predictorBasisStale', {
+          name: basedOn.event.name,
+          date: formatDatePt(basedOn.date),
         })}{' '}
         {t('analysis.predictorCaveat')}
       </p>

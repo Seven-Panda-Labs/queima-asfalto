@@ -2,20 +2,15 @@ import type { ReactNode } from 'react'
 
 type AnalysisSectionProps = {
   title: string
-  /** O que a secção responde, numa linha. */
+  /** What the section answers, in one line. */
   hint?: string
-  /** Quando não há dados que cheguem, o que fazer para os haver. */
+  /** Shown instead of the content when there is not enough data. */
   empty?: string
   aside?: ReactNode
   children?: ReactNode
 }
 
-/**
- * Cada bloco da análise tem um mínimo de provas abaixo do qual não diz nada de
- * útil. Em vez de desenhar uma linha entre dois pontos e chamar-lhe tendência,
- * a secção diz o que falta — a maioria das pessoas tem menos de dez provas
- * registadas, por isso este é o estado normal, não a excepção.
- */
+/** Below its minimum a block says what is missing rather than drawing a trend through two points. */
 export function AnalysisSection({ title, hint, empty, aside, children }: AnalysisSectionProps) {
   return (
     <section>
@@ -40,7 +35,7 @@ export type StatItem = {
   key: string
   value: string
   label: string
-  /** Variação face à época anterior; a cor sai de `deltaTone`. */
+  /** Change against the previous season. */
   delta?: string
   deltaTone?: 'good' | 'bad' | 'neutral'
 }
@@ -51,11 +46,7 @@ const DELTA_CLASS: Record<NonNullable<StatItem['deltaTone']>, string> = {
   neutral: 'text-muted',
 }
 
-/**
- * A mesma gramática da faixa do Dashboard — número grande, rótulo pequeno — mas
- * com colunas automáticas, porque a análise mostra mais números do que os três
- * que lá cabem.
- */
+/** The Dashboard strip's grammar, with auto columns: the analysis shows more than three numbers. */
 export function StatGrid({ items }: { items: StatItem[] }) {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-px overflow-hidden rounded-xl border border-border bg-border">

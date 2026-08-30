@@ -13,7 +13,7 @@ export type CareerTotals = {
   locations: number
 }
 
-/** Espera `results` já ordenado cronologicamente. */
+/** Expects `results` in chronological order. */
 export function computeCareerTotals(results: AnalysableResult[]): CareerTotals | null {
   if (results.length === 0) return null
 
@@ -36,7 +36,7 @@ export function computeCareerTotals(results: AnalysableResult[]): CareerTotals |
 
 export type ActivityCell = {
   year: number
-  /** 0 = Janeiro. */
+  /** 0 is January. */
   month: number
   races: number
   distanceKm: number
@@ -46,14 +46,12 @@ export type ActivityCalendar = {
   years: number[]
   cells: ActivityCell[]
   maxRaces: number
+  maxDistanceKm: number
 }
 
-/**
- * Grelha ano × mês. Mostra o que nenhuma média mostra: as épocas mortas, os
- * meses em que nunca se corre, e se o hábito está a ficar mais regular.
- */
+/** Year by month. Shows what no average shows: dead seasons and whether the habit is steadying. */
 export function buildActivityCalendar(results: AnalysableResult[]): ActivityCalendar {
-  if (results.length === 0) return { years: [], cells: [], maxRaces: 0 }
+  if (results.length === 0) return { years: [], cells: [], maxRaces: 0, maxDistanceKm: 0 }
 
   const firstYear = results[0]!.year
   const lastYear = results[results.length - 1]!.year
@@ -89,15 +87,16 @@ export function buildActivityCalendar(results: AnalysableResult[]): ActivityCale
     years,
     cells,
     maxRaces: Math.max(...cells.map((cell) => cell.races)),
+    maxDistanceKm: Math.max(...cells.map((cell) => cell.distanceKm)),
   }
 }
 
 export type ActivityRhythm = {
-  /** Maior intervalo entre duas provas, em dias. `null` com menos de duas provas. */
+  /** Longest gap between races, in days. `null` below two races. */
   longestGapDays: number | null
   daysSinceLastRace: number
   activeMonths: number
-  /** Meses seguidos com prova, a contar da última para trás. */
+  /** Consecutive months with a race, counting back from the last. */
   currentMonthStreak: number
 }
 

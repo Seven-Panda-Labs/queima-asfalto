@@ -9,34 +9,16 @@ import { formatDurationSeconds } from '../../utils/analytics/results'
 import { formatDatePt } from '../../utils/date'
 import { PACE_CHART_COLORS } from '../../utils/chartData'
 
-export type GoalLine = {
-  id: string
-  label: string
-  index: number
-}
-
 type FormCurveChartProps = {
   points: EquivalentPoint[]
   referenceLabel: string
-  goalLines?: GoalLine[]
   trend?: IndexTrend | null
 }
 
 const TREND_COLOR = '#94A3B8'
-const GOAL_COLOR = '#F97316'
 
-/**
- * Curva de forma: todas as disciplinas na mesma linha. O eixo é o índice —
- * 100 é a melhor marca de sempre — e não o ritmo, porque ritmos de distâncias
- * diferentes não se comparam. Os pontos mantêm a cor da disciplina para se ver
- * de onde veio cada marca.
- */
-export function FormCurveChart({
-  points,
-  referenceLabel,
-  goalLines = [],
-  trend,
-}: FormCurveChartProps) {
+/** The axis is the index, not pace: paces from different distances do not compare. Points keep their discipline's colour. */
+export function FormCurveChart({ points, referenceLabel, trend }: FormCurveChartProps) {
   const { t } = useTranslation()
   const { effectiveTheme } = useTheme()
 
@@ -71,23 +53,6 @@ export function FormCurveChart({
       pointRadius: 0,
       tension: 0,
       order: 2,
-    })
-  }
-
-  for (const goal of goalLines) {
-    datasets.push({
-      label: goal.label,
-      data: [
-        { x: firstMs, y: goal.index },
-        { x: lastMs, y: goal.index },
-      ],
-      borderColor: GOAL_COLOR,
-      backgroundColor: GOAL_COLOR,
-      borderDash: [2, 3],
-      borderWidth: 2,
-      pointRadius: 0,
-      tension: 0,
-      order: 3,
     })
   }
 

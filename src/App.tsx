@@ -37,10 +37,7 @@ const TimingDisclaimer = lazy(() =>
   })),
 )
 
-/**
- * `/resultados` passou a `/analise`. Links partilhados, bookmarks e `returnTo`
- * antigos continuam a funcionar, com os filtros na query string intactos.
- */
+/** Keeps old bookmarks and `returnTo` links working, filters intact. */
 function AnalysisRouteRedirect() {
   const { search } = useLocation()
   return <Navigate to={`${ANALYSIS_PATH}${search}`} replace />

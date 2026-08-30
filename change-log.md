@@ -4,6 +4,17 @@
 
 ---
 
+## [1.25.0] - 2026-08-30
+
+### Alterado
+
+- **A página de Resultados passou a ser a de Análise:** deixou de repetir a lista de Eventos. Passa a responder a três perguntas, com um selector no topo: como vai esta época, como está face às anteriores, e o que mudou desde sempre. A rota mudou para `/analise`, e os links antigos continuam a funcionar.
+- **Curva de forma:** cada prova é convertida para o equivalente na tua distância mais corrida, por isso um 5K e uma maratona passam a comparar-se na mesma linha. Traz também previsão de tempos para as outras distâncias, a partir da tua melhor marca dos últimos 12 meses.
+- **Novas leituras:** posição no pelotão ao longo do tempo, progressão de cada recorde, km acumulados contra as épocas anteriores, meses fortes e fracos do ano, e uma grelha de consistência por provas ou por quilómetros.
+- **Ritmo médio do ano corrigido:** passa a ser ponderado pela distância. Antes um 5K pesava o mesmo que uma maratona.
+
+---
+
 ## [1.24.0] - 2026-08-29
 
 ### Alterado

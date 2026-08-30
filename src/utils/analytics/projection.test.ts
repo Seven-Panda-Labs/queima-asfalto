@@ -73,7 +73,7 @@ describe('goalTargetIndex', () => {
 
   it('scores a time target against the standing best', () => {
     const index = goalTargetIndex(goal({ type: 'time_target', targetTime: '00:45:00' }), 10, best)
-    // Um alvo mais rápido do que a melhor marca vale mais de 100.
+    // A target faster than the standing best scores above 100.
     expect(index).toBeGreaterThan(100)
   })
 

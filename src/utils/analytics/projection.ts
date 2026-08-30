@@ -4,22 +4,22 @@ import { parseTime } from '../time'
 import { equivalentTimeSeconds, type EquivalentPoint } from './equivalence'
 import { NOMINAL_DISTANCE_KM } from './results'
 
-/** Abaixo disto uma recta é ruído com ar de tendência. */
+/** Below this a line is noise dressed as a trend. */
 export const MIN_TREND_POINTS = 4
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 export type IndexTrend = {
-  /** Pontos de índice por dia (variação do índice por dia). */
+  /** Index points gained per day. */
   slopePerDay: number
   interceptAtEpoch: number
   epochMs: number
   points: number
-  /** Ganho de índice em 12 meses ao ritmo actual. */
+  /** Index gained over 12 months at the current rate. */
   yearlyChange: number
 }
 
-/** Regressão linear simples do índice de forma contra o tempo. */
+/** Least-squares fit of the form index against time. */
 export function computeIndexTrend(series: EquivalentPoint[]): IndexTrend | null {
   if (series.length < MIN_TREND_POINTS) return null
 
@@ -38,7 +38,7 @@ export function computeIndexTrend(series: EquivalentPoint[]): IndexTrend | null 
     denominator += dx * dx
   }
 
-  // Todas as provas no mesmo dia: sem eixo x não há recta.
+  // Every race on the same day leaves no x axis to fit.
   if (denominator === 0) return null
 
   const slopePerDay = numerator / denominator
@@ -57,10 +57,7 @@ export function projectIndexAt(trend: IndexTrend, date: Date): number {
   return trend.interceptAtEpoch + trend.slopePerDay * days
 }
 
-/**
- * O índice que um objectivo de ritmo ou de tempo representa. Um `pr_target` não
- * tem número fixo — o alvo é a própria marca actual — por isso fica de fora.
- */
+/** The index a pace or time goal represents. A `pr_target` has no fixed number, so it is left out. */
 export function goalTargetIndex(
   goal: PerformanceGoal,
   referenceKm: number,
@@ -87,18 +84,14 @@ export function goalTargetIndex(
 export type GoalProjection = {
   goal: PerformanceGoal
   targetIndex: number
-  /** Índice projectado para hoje pela tendência. */
+  /** Index the trend projects for today. */
   currentIndex: number
-  /** `null` quando já se está lá, ou quando a tendência não lá chega. */
+  /** `null` when already there, or when the trend never gets there. */
   reachedOn: Date | null
   alreadyThere: boolean
 }
 
-/**
- * Quando é que a tendência actual cruza o objectivo. Sem tendência a subir não
- * se devolve data nenhuma: extrapolar uma recta plana ou a descer daria uma
- * data no passado ou daqui a trinta anos, e ambas seriam ridículas.
- */
+/** When the trend crosses the goal. A flat or falling trend returns no date, since extrapolating one is absurd either way. */
 export function projectGoal(
   goal: PerformanceGoal,
   trend: IndexTrend,

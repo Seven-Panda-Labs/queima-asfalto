@@ -13,12 +13,7 @@ type RecordProgressionProps = {
   ownerId: string | null
 }
 
-/**
- * Quando cada recorde caiu e quanto tirou ao anterior. Uma lista e não um
- * gráfico: com duas ou três marcas por disciplina, um gráfico de degraus seria
- * uma linha quase recta a ocupar meio ecrã, e o que interessa aqui são as
- * datas e os saltos.
- */
+/** A list, not a chart: with two or three marks per discipline a step chart would be a near-straight line, and the dates are the point. */
 export function RecordProgression({ progressions, returnTo, ownerId }: RecordProgressionProps) {
   const { t } = useTranslation()
 

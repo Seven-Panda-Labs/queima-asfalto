@@ -4,22 +4,18 @@ import { isAnalysableResult } from './results'
 
 export type DataQuality = {
   completed: number
-  /** Provas concluídas que a análise consegue usar. */
+  /** Completed races the analysis can use. */
   analysable: number
   missingTime: number
   missingDistance: number
   missingClassification: number
   verified: number
   verifiedPercent: number
-  /** Provas que a análise deixou de fora, para a página poder pedir os dados. */
+  /** Races left out, so the page can ask for the missing fields. */
   excluded: Event[]
 }
 
-/**
- * A análise vale o que valem os dados. Este painel existe para a página não
- * fingir que 12 provas contam quando só 8 têm tempo — e para dizer quais
- * faltam preencher.
- */
+/** Keeps the page from claiming 12 races count when only 8 have a time. */
 export function computeDataQuality(events: Event[]): DataQuality {
   const completed = events.filter((event) => event.status === 'completed')
   const analysable = completed.filter(isAnalysableResult)

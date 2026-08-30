@@ -6,11 +6,7 @@ import {
   formatPaceSeconds,
 } from '../../utils/analytics/results'
 
-/**
- * As épocas lado a lado. A coluna de variação compara com a época de baixo, que
- * é a anterior — as épocas estão da mais recente para a mais antiga, como em
- * todo o resto da app.
- */
+/** The change column compares with the row below, which is the previous season. */
 export function SeasonTable({ seasons }: { seasons: SeasonSummary[] }) {
   const { t, i18n } = useTranslation()
 

@@ -4,6 +4,17 @@
 
 ---
 
+## [1.25.0] - 2026-08-30
+
+### Geändert
+
+- **Aus der Ergebnisseite wird die Analyseseite:** Sie wiederholt die Eventliste nicht mehr. Sie beantwortet drei Fragen, oben auswählbar: wie diese Saison läuft, wie sie gegen die früheren steht und was sich seit jeher verändert hat. Die Route heißt jetzt `/analise`, alte Links funktionieren weiter.
+- **Formkurve:** Jedes Rennen wird auf seinen Wert bei deiner meistgelaufenen Distanz umgerechnet, sodass 5K und Marathon auf einer Linie vergleichbar werden. Dazu kommen Zeitprognosen für die anderen Distanzen, aus deiner besten Leistung der letzten 12 Monate.
+- **Neue Auswertungen:** Platzierung im Feld über die Zeit, Entwicklung jedes Rekords, kumulierte Kilometer gegen frühere Saisons, starke und schwache Monate im Jahr und ein Beständigkeitsraster nach Rennen oder Kilometern.
+- **Durchschnittstempo des Jahres korrigiert:** Es ist jetzt nach Distanz gewichtet. Bisher zählte ein 5K so viel wie ein Marathon.
+
+---
+
 ## [1.24.0] - 2026-08-29
 
 ### Geändert

@@ -14,7 +14,7 @@ describe('parseFieldPlacing', () => {
   })
 
   it('takes the first line as the overall placing', () => {
-    // Linhas seguintes são escalão ou género; nada no modelo diz qual é qual.
+    // Later lines are age group or gender; nothing says which is which.
     expect(parseFieldPlacing('12/340\n3/45')!.position).toBe(12)
     expect(parseFieldPlacing('1. 12/340\n2. 3/45')!.total).toBe(340)
   })

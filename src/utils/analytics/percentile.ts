@@ -2,17 +2,16 @@ import { parseClassification } from '../classification'
 import type { AnalysableResult } from './results'
 
 /**
- * Posição no pelotão. A classificação é guardada como texto e pode trazer
- * várias linhas (geral, escalão, …); nada no modelo diz qual é qual, por isso
- * assume-se a primeira como geral — a mesma leitura que
- * `formatClassificationDisplay` já faz na tabela.
+ * Placing in the field. Classification is free text and may hold several lines
+ * (overall, age group). Nothing says which is which, so line 1 is taken as
+ * overall, the same reading `formatClassificationDisplay` already makes.
  */
 export type FieldPlacing = {
   position: number
   total: number
-  /** 0 = vencedor, 1 = último. Menor é melhor. */
+  /** 0 is the winner, 1 is last. Lower is better. */
   fraction: number
-  /** Percentagem do pelotão que ficou atrás, arredondada. */
+  /** Rounded percentage of the field finished ahead of. */
   topPercent: number
 }
 
@@ -38,11 +37,7 @@ export type PercentilePoint = {
   placing: FieldPlacing
 }
 
-/**
- * Complemento ao ritmo: o percentil é quase imune ao percurso e ao tempo que
- * fez nesse dia. Uma prova lenta num percurso duro continua a mostrar-se boa
- * aqui, e é por isso que vale a pena ter os dois gráficos.
- */
+/** Almost immune to the course, unlike pace: a slow race on a hard course still shows well here. */
 export function buildPercentileSeries(results: AnalysableResult[]): PercentilePoint[] {
   return results
     .map((result) => {

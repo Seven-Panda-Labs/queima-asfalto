@@ -3,6 +3,7 @@ import {
   BarElement,
   CategoryScale,
   Chart as ChartJS,
+  Filler,
   Legend,
   LinearScale,
   LineController,
@@ -19,6 +20,7 @@ ChartJS.register(
   LineController,
   BarController,
   BarElement,
+  Filler,
   Tooltip,
   Legend,
 )

@@ -23,10 +23,10 @@ describe('computeDataQuality', () => {
   it('names what is missing so the page can ask for it', () => {
     const quality = computeDataQuality(events)
 
-    // `paceOnly` entra na análise com o tempo reconstruído, mas continua a faltar.
+    // `paceOnly` is analysable on a rebuilt time, but still missing one.
     expect(quality.missingTime).toBe(2)
     expect(quality.missingDistance).toBe(1)
-    // Só conta entre as provas que a análise usa.
+    // Counted only among the races the analysis uses.
     expect(quality.missingClassification).toBe(2)
   })
 

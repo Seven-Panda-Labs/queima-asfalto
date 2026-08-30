@@ -26,6 +26,9 @@ PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resulta
   <br />
   <img src="assets/screenshots/events-map.webp" alt="Eventos no mapa, com filtros por estado e ano" width="49%" />
   <img src="assets/screenshots/event-detail.webp" alt="Detalhe de um evento com tempo, ritmo e classificação" width="49%" />
+  <br />
+  <img src="assets/screenshots/analysis-season.webp" alt="Análise da época: números do ano contra a anterior, curva de forma e posição no pelotão" width="49%" />
+  <img src="assets/screenshots/analysis-season-by-season.webp" alt="Análise época a época: km acumulados, épocas lado a lado e sazonalidade" width="49%" />
 </p>
 
 ### Funcionalidades
@@ -33,6 +36,7 @@ PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resulta
 - Calendário de eventos com estados, localização e mapa
 - Objetivos anuais e metas de performance
 - Registo de resultados com importação de classificações oficiais (vários conectores de timing)
+- Análise de performance: curva de forma comparável entre distâncias, época a época e desde sempre
 - Partilha de eventos, objetivos e resultados entre utilizadores
 - PWA instalável com suporte offline (Firestore persistence)
 - Modo claro / escuro; interface em português (pt-PT) e inglês (en-GB)
@@ -141,6 +145,7 @@ PWA to plan and track a running season: events, goals, results, pacing, and perf
 - Event calendar with statuses, location, and map
 - Annual goals and performance targets
 - Results logging with official race import (multiple timing connectors)
+- Performance analysis: a form curve comparable across distances, season by season, and all time
 - Sharing events, goals, and results between users
 - Installable PWA with offline support (Firestore persistence)
 - Light / dark mode; UI in Portuguese (pt-PT) and English (en-GB)

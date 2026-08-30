@@ -33,6 +33,7 @@ describe('buildActivityCalendar', () => {
     expect(calendar.years).toEqual([2026, 2025])
     expect(calendar.cells).toHaveLength(24)
     expect(calendar.maxRaces).toBe(1)
+    expect(calendar.maxDistanceKm).toBe(10)
     expect(calendar.cells.filter((cell) => cell.races > 0)).toHaveLength(3)
   })
 
@@ -48,10 +49,16 @@ describe('buildActivityCalendar', () => {
     expect(april.races).toBe(2)
     expect(april.distanceKm).toBe(20)
     expect(calendar.maxRaces).toBe(2)
+    expect(calendar.maxDistanceKm).toBe(20)
   })
 
   it('handles an empty history', () => {
-    expect(buildActivityCalendar([])).toEqual({ years: [], cells: [], maxRaces: 0 })
+    expect(buildActivityCalendar([])).toEqual({
+      years: [],
+      cells: [],
+      maxRaces: 0,
+      maxDistanceKm: 0,
+    })
   })
 })
 
@@ -59,11 +66,11 @@ describe('computeActivityRhythm', () => {
   it('measures the longest gap, the drought and the run of active months', () => {
     const rhythm = computeActivityRhythm(results, new Date(2026, 2, 20))!
 
-    // Fevereiro de 2025 → Março de 2026 é o maior intervalo.
+    // February 2025 to March 2026 is the longest gap.
     expect(rhythm.longestGapDays).toBe(393)
     expect(rhythm.daysSinceLastRace).toBe(10)
     expect(rhythm.activeMonths).toBe(3)
-    // Só Março de 2026: Fevereiro de 2026 ficou vazio.
+    // March 2026 only: February 2026 was empty.
     expect(rhythm.currentMonthStreak).toBe(1)
   })
 

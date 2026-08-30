@@ -6,7 +6,7 @@ import {
   type AnalysableResult,
 } from './results'
 
-/** Época = ano civil, em toda a app (`Goal.year`, `PerformanceGoal.year`, filtros). */
+/** Season is the calendar year, as in `Goal.year` and every filter. */
 export type SeasonSummary = {
   year: number
   races: number
@@ -20,17 +20,17 @@ export type SeasonDelta = {
   races: number
   distanceKm: number
   timeSeconds: number
-  /** Negativo = mais rápido. `null` quando falta ritmo de um dos lados. */
+  /** Negative is faster. `null` when either side has no pace. */
   averagePaceSeconds: number | null
   recordsSet: number
 }
 
 export type SeasonComparison = {
   current: SeasonSummary
-  /** Época anterior truncada ao mesmo ponto do ano, ou `null` se não houver. */
+  /** Previous season cut to the same point of the year, or `null`. */
   previous: SeasonSummary | null
   delta: SeasonDelta | null
-  /** Dia do ano até onde a época anterior foi cortada; `null` em épocas fechadas. */
+  /** Where the cut falls; `null` for a closed season. */
   throughDayOfYear: number | null
 }
 
@@ -67,8 +67,8 @@ export function computeSeasonSummary(
     distanceKm: totalDistanceKm(seasonResults),
     timeSeconds: totalTimeSeconds(seasonResults),
     averagePaceSeconds: weightedAveragePaceSeconds(seasonResults),
-    // Um recorde conta no ano em que caiu, e para isso é preciso o histórico
-    // todo: o mesmo tempo pode ser recorde em 2024 e banal em 2026.
+    // A record counts in the year it fell, which needs the whole history:
+    // the same time can be a record in 2024 and ordinary in 2026.
     recordsSet: recordsSetIn(
       throughDayOfYear == null
         ? results
@@ -80,11 +80,7 @@ export function computeSeasonSummary(
   }
 }
 
-/**
- * Compara uma época com a anterior. Numa época a decorrer, a anterior é cortada
- * no mesmo dia do ano — senão Março estaria sempre a perder contra doze meses
- * inteiros e o delta só ficaria justo em Dezembro.
- */
+/** In a running season the previous one is cut to the same day, or March would always lose to twelve full months. */
 export function compareSeasons(
   results: AnalysableResult[],
   year: number,
@@ -121,12 +117,18 @@ export type CumulativeSeason = {
   totalKm: number
 }
 
+const LAST_DAY_OF_YEAR = 366
+
 /**
- * Km acumulados ao longo do ano, uma linha por época. É a leitura mais directa
- * de «estou à frente do ano passado»: as linhas separam-se no dia em que
- * passaste à frente.
+ * Cumulative km per season. Each line runs past the last race: to 31 December
+ * for a closed season, to today for the running one. A total never falls, so
+ * the flat stretch is true rather than invented, and the running season stops
+ * at today because December would claim races that have not happened.
  */
-export function buildCumulativeSeasons(results: AnalysableResult[]): CumulativeSeason[] {
+export function buildCumulativeSeasons(
+  results: AnalysableResult[],
+  today: Date = new Date(),
+): CumulativeSeason[] {
   const byYear = new Map<number, AnalysableResult[]>()
   for (const result of results) {
     const bucket = byYear.get(result.year)
@@ -145,10 +147,55 @@ export function buildCumulativeSeasons(results: AnalysableResult[]): CumulativeS
         points.push({ dayOfYear: dayOfYear(result.date), distanceKm: running })
       }
 
+      const endsAt =
+        year === today.getFullYear() ? dayOfYear(today) : year < today.getFullYear()
+          ? LAST_DAY_OF_YEAR
+          : points[points.length - 1]!.dayOfYear
+
+      if (endsAt > points[points.length - 1]!.dayOfYear) {
+        points.push({ dayOfYear: endsAt, distanceKm: running })
+      }
+
       return { year, points, totalKm: running }
     })
 }
 
 export function availableSeasons(results: AnalysableResult[]): number[] {
   return [...new Set(results.map((result) => result.year))].sort((left, right) => right - left)
+}
+
+export type SeasonEnvelopePoint = {
+  dayOfYear: number
+  minKm: number
+  maxKm: number
+}
+
+/** Cumulative km on any day: the last mark up to that day. */
+export function cumulativeKmAt(season: CumulativeSeason, day: number): number {
+  let value = 0
+  for (const point of season.points) {
+    if (point.dayOfYear > day) break
+    value = point.distanceKm
+  }
+  return value
+}
+
+/** The range the older seasons ran in. Past the third line, crossing step curves are noise; a band keeps the information as context. */
+export function buildSeasonEnvelope(
+  seasons: CumulativeSeason[],
+  stepDays = 7,
+): SeasonEnvelopePoint[] {
+  if (seasons.length === 0) return []
+
+  const points: SeasonEnvelopePoint[] = []
+  for (let day = 0; day <= 366; day += stepDays) {
+    const values = seasons.map((season) => cumulativeKmAt(season, day))
+    points.push({
+      dayOfYear: day,
+      minKm: Math.min(...values),
+      maxKm: Math.max(...values),
+    })
+  }
+
+  return points
 }

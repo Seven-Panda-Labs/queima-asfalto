@@ -138,7 +138,7 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000
 /**
  * Whether a synced catalog can be used without consulting the bundled seed.
  *
- * A `false` here is not "the catalog is bad", only "check the seed too" — the
+ * A `false` here is not "the catalog is bad", only "check the seed too". The
  * caller compares `syncedAt` and takes the newer one.
  */
 export function isSyncedCatalogFresh(

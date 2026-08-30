@@ -4,12 +4,7 @@ import './chartConfig'
 import { useTheme } from '../../contexts/ThemeContext'
 import type { Seasonality } from '../../utils/analytics/seasonality'
 
-/**
- * Índice médio por mês, agregado em todos os anos. Revela o que a linha
- * cronológica esconde: o Verão, as semanas a seguir a uma maratona, o pico de
- * Outono. Meses sem provas ficam vazios em vez de ficarem a zero — zero seria
- * uma afirmação sobre a forma, e não há dados para a fazer.
- */
+/** Months with no races stay empty rather than zero: zero would be a claim about form there is no data for. */
 export function SeasonalityChart({ seasonality }: { seasonality: Seasonality }) {
   const { t, i18n } = useTranslation()
   const { effectiveTheme } = useTheme()
@@ -57,8 +52,8 @@ export function SeasonalityChart({ seasonality }: { seasonality: Seasonality }) 
     },
     scales: {
       y: {
-        // Começar em zero espremia todas as barras contra o topo: entre 88 e 100
-        // vai a diferença toda que interessa.
+        // Starting at zero squashes every bar against the top; the whole
+        // difference that matters lives between 88 and 100.
         min: floor,
         title: { display: true, text: t('analysis.formAxis') },
       },

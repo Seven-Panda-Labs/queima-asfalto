@@ -1,6 +1,6 @@
 import type { Event } from '../../types/Event'
 
-/** Fábrica partilhada pelos testes de análise. Nomes fictícios, sem PII. */
+/** Shared by the analysis tests. Fictional names, no PII. */
 export function makeEvent(
   overrides: Partial<Event> & Pick<Event, 'id' | 'date' | 'eventType'>,
 ): Event {

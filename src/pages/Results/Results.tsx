@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { AnalysisSection } from '../../components/Analysis/AnalysisSection'
 import { CareerTotals } from '../../components/Analysis/CareerTotals'
-import { DataQualityPanel } from '../../components/Analysis/DataQualityPanel'
+import { DataQualityNote } from '../../components/Analysis/DataQualityNote'
 import { RacePredictor } from '../../components/Analysis/RacePredictor'
 import { RecordProgression } from '../../components/Analysis/RecordProgression'
 import { SeasonHeader } from '../../components/Analysis/SeasonHeader'
@@ -85,11 +85,7 @@ const ActivityHeatmap = lazy(() =>
   })),
 )
 
-/**
- * Mínimos por bloco. A maioria das pessoas tem menos de dez provas registadas,
- * por isso um bloco que se desenhe com dois pontos não é um bloco útil — é uma
- * afirmação sem prova. Abaixo destes números cada secção diz o que falta.
- */
+/** Most people have well under ten results, so a block that draws itself from two points is a claim without evidence. */
 const MIN_CURVE_POINTS = 3
 const MIN_PERCENTILE_POINTS = 3
 const MIN_SEASONS = 2
@@ -127,8 +123,7 @@ export function Results() {
 
   const ownEvents = useEvents()
   const sharedEvents = useSharedEvents(activeOwnerId)
-  // Objectivos do próprio: a partilha não os traz, por isso as linhas de alvo
-  // só aparecem na vista pessoal.
+  // The user's own goals; a shared snapshot does not carry them.
   const { goals: performanceGoals } = usePerformanceGoals()
 
   const allEvents = isSharedView ? sharedEvents.events : ownEvents.allEvents
@@ -159,11 +154,8 @@ export function Results() {
   const referenceEventType = useMemo(() => pickReferenceEventType(results), [results])
   const referenceKm = referenceEventType ? NOMINAL_DISTANCE_KM[referenceEventType] : 10
 
-  /**
-   * O índice mede-se sempre contra a melhor marca de sempre, mesmo quando o
-   * ecrã mostra uma época só. Normalizar dentro da época poria um 100 em cada
-   * ano e as épocas deixariam de se comparar.
-   */
+  /** Always measured against the all-time best: normalising within a season
+   *  would put a 100 in every year and stop seasons comparing. */
   const series = useMemo(
     () => buildEquivalentSeries(results, referenceKm),
     [results, referenceKm],
@@ -199,13 +191,13 @@ export function Results() {
   const careerTotals = useMemo(() => computeCareerTotals(results), [results])
   const rhythm = useMemo(() => computeActivityRhythm(results), [results])
   const calendar = useMemo(() => buildActivityCalendar(results), [results])
-  const predictions = useMemo(
+  const forecast = useMemo(
     () => predictRaceTimes(results, referenceKm),
     [results, referenceKm],
   )
   const quality = useMemo(() => computeDataQuality(allEvents), [allEvents])
 
-  /** O gráfico de ritmo trabalha sobre eventos, não sobre resultados analisados. */
+  /** The pace chart works on events, not on analysed results. */
   const seasonEvents = useMemo(
     () => allEvents.filter((event) => event.date.getFullYear() === season),
     [allEvents, season],
@@ -214,8 +206,9 @@ export function Results() {
   const trend = useMemo(() => computeIndexTrend(series), [series])
   const seasonTrend = useMemo(() => computeIndexTrend(seasonSeries), [seasonSeries])
 
-  /** Objectivos de ritmo e de tempo viram uma linha horizontal na curva. */
-  const goalLines = useMemo(() => {
+  /** These were lines on the curve. Three indistinguishable orange dashes said
+   *  less than the sentence now sitting below the chart. */
+  const goalTargets = useMemo(() => {
     if (isSharedView || bestEquivalent === null) return []
 
     return performanceGoals
@@ -239,10 +232,10 @@ export function Results() {
 
   const projections = useMemo(() => {
     if (!trend) return []
-    return goalLines
-      .map((line) => projectGoal(line.goal, trend, line.index))
+    return goalTargets
+      .map((target) => projectGoal(target.goal, trend, target.index))
       .filter((projection) => projection.reachedOn !== null)
-  }, [goalLines, trend])
+  }, [goalTargets, trend])
 
   const referenceLabel = referenceEventType
     ? formatEventTypeLabel(referenceEventType)
@@ -377,7 +370,6 @@ export function Results() {
                           <FormCurveChart
                             points={seasonSeries}
                             referenceLabel={referenceLabel}
-                            goalLines={goalLines}
                             trend={seasonTrend}
                           />
                         </Suspense>
@@ -586,9 +578,9 @@ export function Results() {
                     <AnalysisSection
                       title={t('analysis.predictorTitle')}
                       hint={t('analysis.predictorHint')}
-                      empty={predictions.length === 0 ? t('analysis.predictorEmpty') : undefined}
+                      empty={forecast === null ? t('analysis.predictorEmpty') : undefined}
                     >
-                      <RacePredictor predictions={predictions} />
+                      {forecast ? <RacePredictor forecast={forecast} /> : null}
                     </AnalysisSection>
 
                     <AnalysisSection
@@ -607,14 +599,12 @@ export function Results() {
                   </>
                 ) : null}
 
-                <AnalysisSection title={t('analysis.qualityTitle')} hint={t('analysis.qualityHint')}>
-                  <DataQualityPanel
-                    quality={quality}
-                    returnTo={returnTo}
-                    ownerId={activeOwnerId}
-                    readOnly={isSharedView}
-                  />
-                </AnalysisSection>
+                <DataQualityNote
+                  quality={quality}
+                  returnTo={returnTo}
+                  ownerId={activeOwnerId}
+                  readOnly={isSharedView}
+                />
               </>
             )}
           </>

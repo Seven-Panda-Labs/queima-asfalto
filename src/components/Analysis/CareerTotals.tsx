@@ -9,7 +9,7 @@ type CareerTotalsProps = {
   rhythm: ActivityRhythm | null
 }
 
-/** Fecha a página: o que já se fez, todo junto. */
+/** Closes the page: everything run, all together. */
 export function CareerTotals({ totals, rhythm }: CareerTotalsProps) {
   const { t, i18n } = useTranslation()
 

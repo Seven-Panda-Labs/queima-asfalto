@@ -6,11 +6,7 @@ import type { PercentilePoint } from '../../utils/analytics/percentile'
 import { PACE_CHART_COLORS } from '../../utils/chartData'
 import { formatDatePt } from '../../utils/date'
 
-/**
- * Posição no pelotão ao longo do tempo. Ao contrário do ritmo, quase não sofre
- * com o percurso nem com o dia: uma prova lenta num percurso duro continua a
- * mostrar-se bem aqui, e é por isso que vale a pena ao lado da curva de forma.
- */
+/** Unlike pace, barely affected by the course: a slow race on a hard course still shows well. */
 export function PercentileChart({ points }: { points: PercentilePoint[] }) {
   const { t } = useTranslation()
   const { effectiveTheme } = useTheme()
@@ -62,7 +58,7 @@ export function PercentileChart({ points }: { points: PercentilePoint[] }) {
     },
     scales: {
       y: {
-        // Invertido: o vencedor fica em cima, como num pódio.
+        // Reversed so the winner sits at the top.
         reverse: true,
         min: 0,
         max: 100,

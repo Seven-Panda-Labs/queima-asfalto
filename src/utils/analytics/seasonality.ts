@@ -2,10 +2,10 @@ import { buildEquivalentSeries } from './equivalence'
 import type { AnalysableResult } from './results'
 
 export type SeasonalityMonth = {
-  /** 0 = Janeiro. */
+  /** 0 is January. */
   month: number
   races: number
-  /** Média do índice de forma das provas desse mês, em todos os anos. */
+  /** Mean form index for that month across every year. */
   averageIndex: number | null
 }
 
@@ -13,16 +13,11 @@ export type Seasonality = {
   months: SeasonalityMonth[]
   bestMonth: SeasonalityMonth | null
   worstMonth: SeasonalityMonth | null
-  /** Meses distintos com provas: abaixo de 8 a leitura não vale nada. */
+  /** Distinct months with races. Below 8 the reading is worthless. */
   coveredMonths: number
 }
 
-/**
- * Índice médio por mês, agregado em todos os anos. Serve para ver padrões que
- * uma linha cronológica esconde — o Verão, as semanas a seguir a uma maratona,
- * o pico de Outono. Usa o índice e não o ritmo porque os meses têm misturas de
- * distâncias diferentes.
- */
+/** Patterns a chronological line hides: summer, the weeks after a marathon, the autumn peak. Uses the index because months mix distances. */
 export function computeSeasonality(
   results: AnalysableResult[],
   referenceKm: number,

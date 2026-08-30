@@ -22,11 +22,7 @@ function moreIsBetter(value: number): StatItem['deltaTone'] {
   return 'neutral'
 }
 
-/**
- * Os números da época, cada um com o que mudou face à anterior. A época
- * anterior vem cortada no mesmo dia do ano (ver `compareSeasons`), senão em
- * Março estaria sempre a perder contra doze meses inteiros.
- */
+/** The previous season arrives cut to the same day of the year, see `compareSeasons`. */
 export function SeasonHeader({ comparison }: { comparison: SeasonComparison }) {
   const { t, i18n } = useTranslation()
   const { current, delta } = comparison
@@ -51,7 +47,7 @@ export function SeasonHeader({ comparison }: { comparison: SeasonComparison }) {
       value: `${formatHours(current.timeSeconds)}h`,
       label: t('analysis.statTimeRacing'),
       delta: delta ? signed(delta.timeSeconds / 3600, 1) : undefined,
-      // Mais tempo em prova é mais corrida, não é melhor nem pior.
+      // More time racing is more racing, neither better nor worse.
       deltaTone: 'neutral',
     },
     {
@@ -65,7 +61,7 @@ export function SeasonHeader({ comparison }: { comparison: SeasonComparison }) {
         delta?.averagePaceSeconds != null && Math.round(delta.averagePaceSeconds) !== 0
           ? formatPaceDelta(delta.averagePaceSeconds)
           : undefined,
-      // Menos segundos por km é mais rápido.
+      // Fewer seconds per km is faster.
       deltaTone: delta?.averagePaceSeconds != null && delta.averagePaceSeconds < 0 ? 'good' : 'bad',
     },
     {

@@ -3,27 +3,26 @@ import { EVENT_TYPES } from '../../types/Event'
 import type { AnalysableResult } from './results'
 
 /**
- * Um recorde por disciplina, medido pelo ritmo — a mesma definição que
- * `bestPerformances` usa no Dashboard. A equivalência de Riegel serve para
- * comparar disciplinas **entre si**; dentro da mesma disciplina traria uma
- * segunda definição de «recorde pessoal» que contradiria o resto da app.
+ * Measured by pace, matching `bestPerformances` on the Dashboard. Riegel
+ * compares disciplines against each other; using it within one would give the
+ * app a second, contradictory definition of "personal record".
  */
 export type RecordMark = {
   result: AnalysableResult
-  /** Segundos por km ganhos ao recorde anterior; `null` no primeiro da disciplina. */
+  /** Seconds per km taken off the previous record; `null` for the first. */
   improvementSeconds: number | null
-  /** Ordem do recorde dentro da disciplina, a começar em 1. */
+  /** Position within the discipline, starting at 1. */
   ordinal: number
 }
 
 export type RecordProgression = {
   eventType: EventType
-  /** Só as provas que bateram o recorde, por ordem cronológica. */
+  /** Only the races that beat the standing record, oldest first. */
   marks: RecordMark[]
   current: RecordMark
 }
 
-/** As provas que, no momento em que aconteceram, bateram o recorde da disciplina. */
+/** Races that beat the discipline record at the time they happened. */
 export function recordMarksFor(
   results: AnalysableResult[],
   eventType: EventType,
@@ -46,7 +45,7 @@ export function recordMarksFor(
   return marks
 }
 
-/** Espera `results` já ordenado cronologicamente (`toAnalysableResults`). */
+/** Expects `results` in chronological order. */
 export function buildRecordProgressions(results: AnalysableResult[]): RecordProgression[] {
   return EVENT_TYPES.map((eventType) => {
     const marks = recordMarksFor(results, eventType)
@@ -55,7 +54,7 @@ export function buildRecordProgressions(results: AnalysableResult[]): RecordProg
   }).filter((progression): progression is RecordProgression => progression !== null)
 }
 
-/** Ids das provas que bateram um recorde, para destacar pontos nos gráficos. */
+/** Ids of races that ever held a record. */
 export function recordResultIds(results: AnalysableResult[]): Set<string> {
   return new Set(
     buildRecordProgressions(results).flatMap((progression) =>
@@ -64,7 +63,7 @@ export function recordResultIds(results: AnalysableResult[]): Set<string> {
   )
 }
 
-/** Quantos recordes caíram num ano — inclui o primeiro de cada disciplina. */
+/** Records that fell in a year, counting each discipline's first. */
 export function recordsSetIn(results: AnalysableResult[], year: number): number {
   return buildRecordProgressions(results).reduce(
     (count, progression) =>

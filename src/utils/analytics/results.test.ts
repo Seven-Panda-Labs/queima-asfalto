@@ -22,7 +22,7 @@ describe('isAnalysableResult', () => {
   })
 
   it('rebuilds the time from a stored pace when there is no time', () => {
-    // A importação de Excel aceita uma coluna de ritmo sem coluna de tempo.
+    // The Excel import accepts a pace column with no time column.
     const event = makeEvent({
       id: '1',
       date: new Date(2026, 0, 1),
@@ -52,7 +52,7 @@ describe('isAnalysableResult', () => {
   })
 
   it('derives pace from time and distance rather than trusting the stored string', () => {
-    // Campos independentes: o `pace` guardado pode estar desalinhado do tempo.
+    // Independent fields: the stored `pace` can drift from the time.
     const [result] = toAnalysableResults([
       makeEvent({
         id: '1',
@@ -99,7 +99,7 @@ describe('weightedAveragePaceSeconds', () => {
       }),
     ])
 
-    // A média simples dos ritmos daria 5:00/km; ponderada são 290s = 4:50/km.
+    // A flat mean of the paces would give 5:00/km; weighted it is 4:50/km.
     expect(weightedAveragePaceSeconds(results)).toBe((1200 + 16200) / 50)
     expect(totalDistanceKm(results)).toBe(50)
   })

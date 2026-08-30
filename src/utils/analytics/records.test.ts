@@ -25,7 +25,7 @@ describe('buildRecordProgressions', () => {
 
     expect(tenK!.marks[0]!.improvementSeconds).toBeNull()
     expect(tenK!.marks[0]!.ordinal).toBe(1)
-    // 60:00 → 55:00 aos 10 km são 30 s/km.
+    // 60:00 to 55:00 over 10 km is 30 s/km.
     expect(tenK!.marks[1]!.improvementSeconds).toBeCloseTo(30, 6)
     expect(tenK!.marks[2]!.improvementSeconds).toBeCloseTo(30, 6)
   })
@@ -42,7 +42,7 @@ describe('recordsSetIn', () => {
   it('counts the first race of a discipline as a record', () => {
     expect(recordsSetIn(results, 2024)).toBe(1)
     expect(recordsSetIn(results, 2025)).toBe(1)
-    // 2026: o 10K a 50:00 e o primeiro 5K de sempre.
+    // 2026: the 50:00 10K and the first 5K ever.
     expect(recordsSetIn(results, 2026)).toBe(2)
   })
 

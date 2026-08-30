@@ -14,17 +14,14 @@ export type EventsListFilters = {
   view: EventsViewMode
 }
 
-/**
- * Os três horizontes da análise. Substituem o filtro de ano como controlo
- * principal: a pergunta muda com o horizonte, não só o recorte dos dados.
- */
+/** The question changes with the horizon, not just the slice of data. */
 export type AnalysisHorizon = 'epoca' | 'epocas' | 'sempre'
 
 export const ANALYSIS_HORIZONS: AnalysisHorizon[] = ['epoca', 'epocas', 'sempre']
 
 export type ResultsListFilters = {
   horizon: AnalysisHorizon
-  /** Só conta no horizonte «epoca»; nos outros a página lê o histórico todo. */
+  /** Only used by the `epoca` horizon; the others read the whole history. */
   year: number | 'all'
   type: EventType | 'all'
 }
@@ -33,8 +30,7 @@ const EVENTS_VIEW_MODES: EventsListFilters['view'][] = ['lista', 'calendario', '
 
 export const ANALYSIS_PATH = '/analise'
 
-/** Rota antiga da análise. Continua aceite: links partilhados e `returnTo`
- *  guardados antes do rename ainda a trazem, e `/resultados` redirecciona. */
+/** Still accepted: shared links and `returnTo` values predate the rename. */
 export const LEGACY_ANALYSIS_PATH = '/resultados'
 
 export function isSafeReturnPath(path: string): boolean {
@@ -167,7 +163,7 @@ export function parseResultsListSearchParams(
 export function buildResultsListSearchParams(filters: ResultsListFilters, currentYear: number): URLSearchParams {
   const params = new URLSearchParams()
   if (filters.horizon !== 'epoca') params.set('view', filters.horizon)
-  // O ano só recorta o horizonte de uma época; nos outros seria ruído no URL.
+  // The year only slices one season; elsewhere it would be URL noise.
   if (filters.horizon === 'epoca') {
     if (filters.year !== 'all' && filters.year !== currentYear) {
       params.set('year', String(filters.year))
