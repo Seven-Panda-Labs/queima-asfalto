@@ -37,7 +37,13 @@ export function ViewSwitcher<T extends string>({
     <div
       role={isTablist ? 'tablist' : 'group'}
       aria-label={label}
-      className="inline-flex flex-wrap rounded-full border border-border bg-surface p-1"
+      /*
+       * O raio é o da altura de uma linha (42px de caixa, logo 21px), e não
+       * `rounded-full`: em ecrã estreito os separadores passam a duas ou três
+       * linhas, e aí o `rounded-full` desenhava um oval gigante à volta do
+       * bloco todo. Numa linha só o resultado é igual ao de antes.
+       */
+      className="inline-flex flex-wrap gap-y-1 rounded-[1.3125rem] border border-border bg-surface p-1"
     >
       {options.map((option) => {
         const active = value === option.value
