@@ -3,6 +3,8 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { db, storage } from './firebase'
 import { clearAllUserData } from './clearUserData'
 import { buildEventMediaStoragePath } from './eventMediaStorage'
+import { buildEventTrackStoragePath } from '../utils/eventTrackPaths'
+import { EVENT_TRACK_DOC_ID } from '../types/EventTrack'
 import { loadFflate } from './zipLoader'
 import {
   BACKUP_SECTION_COLLECTIONS,
@@ -11,6 +13,10 @@ import {
   MAX_BACKUP_JSON_ENTRY_BYTES,
   MAX_BACKUP_MEDIA_ENTRY_BYTES,
   backupMediaEntryName,
+  backupTrackEntryName,
+  emptyBackupTrackFiles,
+  isBackupTrackEntry,
+  MAX_BACKUP_TRACK_ENTRY_BYTES,
   decodeDocumentData,
   emptyBackupMediaFiles,
   isBackupMediaEntry,
@@ -57,6 +63,8 @@ export type BackupRestoreWarning =
   | 'media_not_restored_replace_mode'
   | 'media_skipped_different_account'
   | 'media_files_restored'
+  | 'track_binaries_not_restored'
+  | 'track_files_restored'
   | 'different_account'
   | 'profile_write_denied'
   | 'reminders_not_restored'
@@ -91,6 +99,7 @@ function emptySectionResults(): Record<RestorableSectionKey, BackupSectionResult
   return {
     events: emptySectionResult(),
     eventMedia: emptySectionResult(),
+    eventTracks: emptySectionResult(),
     goals: emptySectionResult(),
     performanceGoals: emptySectionResult(),
     bucketListItems: emptySectionResult(),
@@ -116,6 +125,9 @@ export async function readBackupFile(file: File | Blob): Promise<ParsedBackup> {
         if (isKnownBackupEntry(entry.name)) {
           return entry.originalSize <= MAX_BACKUP_JSON_ENTRY_BYTES
         }
+        if (isBackupTrackEntry(entry.name)) {
+          return entry.originalSize <= MAX_BACKUP_TRACK_ENTRY_BYTES
+        }
         return isBackupMediaEntry(entry.name) && entry.originalSize <= MAX_BACKUP_MEDIA_ENTRY_BYTES
       },
     })
@@ -125,12 +137,14 @@ export async function readBackupFile(file: File | Blob): Promise<ParsedBackup> {
 
   const files: Record<string, string> = {}
   const mediaFiles = emptyBackupMediaFiles()
+  const trackFiles = emptyBackupTrackFiles()
   for (const [name, data] of Object.entries(entries)) {
     if (isBackupMediaEntry(name)) mediaFiles.set(name, data)
+    else if (isBackupTrackEntry(name)) trackFiles.set(name, data)
     else files[name] = strFromU8(data)
   }
 
-  return parseBackupTextFiles(files, mediaFiles)
+  return parseBackupTextFiles(files, mediaFiles, trackFiles)
 }
 
 export type BackupSummary = {
@@ -142,6 +156,9 @@ export type BackupSummary = {
   mediaFileBytes: number
   /** True when the binaries are in the zip, which is what makes media fully restorable. */
   hasMediaFiles: boolean
+  /** Raw GPX and TCX present in the zip. */
+  trackFileCount: number
+  hasTrackFiles: boolean
   warnings: BackupRestoreWarning[]
 }
 
@@ -153,6 +170,7 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
 
   const crossAccount = parsed.manifest.userId !== '' && parsed.manifest.userId !== currentUserId
   const hasMediaFiles = parsed.mediaFiles.size > 0
+  const hasTrackFiles = parsed.trackFiles.size > 0
   let mediaFileBytes = 0
   for (const bytes of parsed.mediaFiles.values()) mediaFileBytes += bytes.byteLength
 
@@ -167,12 +185,20 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
     if (crossAccount) warnings.push('media_skipped_different_account')
   }
 
+  // A track document is only ever written alongside its file: the stored
+  // downloadUrl carries the exporting account's uid and object token, so without
+  // the bytes there is nothing valid to write.
+  if (counts.eventTracks > 0 && !hasTrackFiles) {
+    warnings.push('track_binaries_not_restored')
+  }
+
   const restorableTotal =
     counts.events +
     counts.goals +
     counts.performanceGoals +
     counts.bucketListItems +
     counts.eventMedia +
+    counts.eventTracks +
     counts.userProfile
 
   return {
@@ -182,6 +208,8 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
     mediaFileCount: parsed.mediaFiles.size,
     mediaFileBytes,
     hasMediaFiles,
+    trackFileCount: parsed.trackFiles.size,
+    hasTrackFiles,
     warnings,
   }
 }
@@ -310,7 +338,7 @@ export function planBackupRestore(
 }
 
 async function writeFlatSection(
-  section: Exclude<RestorableSectionKey, 'userProfile' | 'eventMedia'>,
+  section: Exclude<RestorableSectionKey, 'userProfile' | 'eventMedia' | 'eventTracks'>,
   prepared: readonly PreparedDocument[],
   existingIds: ReadonlySet<string>,
   result: BackupRestoreResult,
@@ -519,6 +547,88 @@ async function readExistingMediaKeys(eventIds: readonly string[]): Promise<Set<s
  *   gallery entries pointing at 404s, and media is `allow update: if false`,
  *   so they could never be repaired, only deleted.
  */
+/**
+ * Restores the track document for each event whose raw file is in the zip.
+ *
+ * Unlike media there is no metadata-only path. A track's `downloadUrl` embeds the
+ * exporting account's uid and an object token, so a document written without
+ * re-uploading the bytes would point at something the restoring account cannot
+ * read, and `firestore.rules` rejects it outright on a cross-account restore.
+ *
+ * The document id is fixed, so a restore overwrites rather than duplicating, and
+ * the track subcollection allows updates, unlike media.
+ */
+async function restoreEventTracks(
+  userId: string,
+  parsed: ParsedBackup,
+  summary: BackupSummary,
+  restoredEvents: readonly PreparedDocument[],
+  existingEventIds: ReadonlySet<string>,
+  result: BackupRestoreResult,
+  onProgress?: (progress: BackupRestoreProgress) => void,
+): Promise<void> {
+  const documents = parsed.sections.eventTracks
+  if (documents.length === 0) return
+
+  if (!summary.hasTrackFiles) {
+    result.sections.eventTracks.skipped += documents.length
+    return
+  }
+
+  const knownEventIds = new Set<string>([
+    ...restoredEvents.map((entry) => entry.document.id),
+    ...existingEventIds,
+  ])
+  const prepared = absorb(
+    'eventTracks',
+    prepareSection('eventTracks', documents, userId, knownEventIds),
+    result,
+  )
+
+  let done = 0
+  const total = prepared.length
+  if (total > 0) onProgress?.({ section: 'eventTracks', done, total })
+
+  await mapWithConcurrency(prepared, MEDIA_UPLOAD_CONCURRENCY, async (entry) => {
+    const eventId = entry.document.eventId as string
+    const format = entry.data.format
+    const entryName = backupTrackEntryName(eventId, entry.document.id, format)
+    const bytes = entryName ? parsed.trackFiles.get(entryName) : undefined
+
+    if (!bytes || (format !== 'gpx' && format !== 'tcx')) {
+      result.sections.eventTracks.skipped += 1
+      done += 1
+      onProgress?.({ section: 'eventTracks', done, total })
+      return
+    }
+
+    const storagePath = buildEventTrackStoragePath(userId, eventId, EVENT_TRACK_DOC_ID, format)
+    try {
+      const objectRef = ref(storage, storagePath)
+      await uploadBytes(objectRef, bytes as Uint8Array<ArrayBuffer>, {
+        contentType: 'application/xml',
+      })
+      const downloadUrl = await getDownloadURL(objectRef)
+
+      await setDoc(doc(db, 'events', eventId, 'track', EVENT_TRACK_DOC_ID), {
+        ...entry.data,
+        storagePath,
+        downloadUrl,
+        sizeBytes: bytes.byteLength,
+      })
+      result.sections.eventTracks.created += 1
+    } catch (error) {
+      result.sections.eventTracks.skipped += 1
+      result.errors.push(`eventTracks/${eventId}: ${String(error)}`)
+    } finally {
+      done += 1
+      onProgress?.({ section: 'eventTracks', done, total })
+    }
+  })
+
+  if (result.sections.eventTracks.created > 0) result.warnings.push('track_files_restored')
+}
+
 async function restoreEventMedia(
   userId: string,
   parsed: ParsedBackup,
@@ -641,6 +751,7 @@ export async function restoreUserBackup(
   }
 
   await restoreEventMedia(userId, parsed, summary, options, events, existing.events, result, onProgress)
+  await restoreEventTracks(userId, parsed, summary, events, existing.events, result, onProgress)
 
   if (options.includeUserProfile !== false && parsed.sections.userProfile.length > 0) {
     const [profile] = parsed.sections.userProfile

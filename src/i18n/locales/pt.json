@@ -660,6 +660,7 @@
     "previewNothingToRestore": "Não há nada para restaurar neste backup.",
     "countEvents": "{{count}} eventos",
     "countEventMedia": "{{count}} metadados de fotos e vídeos",
+    "countEventTracks": "{{count}} ficheiros de atividade",
     "countMediaFiles": "{{count}} ficheiros de fotos e vídeos ({{mb}} MB), serão recuperados",
     "countGoals": "{{count}} objetivos",
     "countPerformanceGoals": "{{count}} objetivos de performance",
@@ -676,7 +677,9 @@
       "different_account": "Este backup foi criado por outra conta. Os dados passam a pertencer à tua conta.",
       "reminders_not_restored": "Histórico de lembretes enviados e registos de notificações push.",
       "profile_write_denied": "Não foi possível restaurar as preferências do perfil.",
-      "media_files_restored": "Fotos e vídeos recuperados a partir dos ficheiros do backup."
+      "media_files_restored": "Fotos e vídeos recuperados a partir dos ficheiros do backup.",
+      "track_binaries_not_restored": "Este backup não tem ficheiros GPX ou TCX, só os resumos. Os ficheiros de atividade só voltam quando os próprios ficheiros estão no backup.",
+      "track_files_restored": "Ficheiros de atividade restaurados a partir dos ficheiros no backup."
     },
     "modeTitle": "Como queres restaurar?",
     "modeMerge": "Juntar",
@@ -714,7 +717,8 @@
       "performanceGoals": "Objetivos de performance",
       "bucketListItems": "Bucket list",
       "userProfile": "Perfil",
-      "shares": "Partilhas"
+      "shares": "Partilhas",
+      "eventTracks": "Ficheiros de atividade"
     },
     "rejectReasons": {
       "missing_required_field": "Campo obrigatório em falta",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "Disciplinas inválidas",
       "invalid_media": "Metadados de foto ou vídeo inválidos",
       "unknown_event": "O evento associado não existe",
-      "foreign_user": "Pertence a outra conta"
+      "foreign_user": "Pertence a outra conta",
+      "invalid_track": "Ficheiro de atividade inválido"
     }
   },
   "messages": {

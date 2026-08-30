@@ -11,6 +11,7 @@ import type { BackupManifest, BackupSectionKey, RestoreRejection } from '../../s
 const COUNT_KEYS: Record<Exclude<BackupSectionKey, 'userProfile'>, string> = {
   events: 'backup.countEvents',
   eventMedia: 'backup.countEventMedia',
+  eventTracks: 'backup.countEventTracks',
   goals: 'backup.countGoals',
   performanceGoals: 'backup.countPerformanceGoals',
   bucketListItems: 'backup.countBucketListItems',

@@ -1,5 +1,6 @@
 import { Timestamp } from 'firebase/firestore'
 import { APP_VERSION } from '../appVersion'
+import { MAX_TRACK_BYTES } from '../constants/activityTrack'
 import { MAX_PHOTO_BYTES, MAX_VIDEO_BYTES } from '../constants/eventMedia'
 import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 import { RESULTS_PLATFORMS } from '../../shared/officialResults'
@@ -15,9 +16,11 @@ import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
 
 export const BACKUP_APP_ID = 'queima-asfalto'
 export const BACKUP_KIND = 'user-backup'
-export const BACKUP_SCHEMA_VERSION = 1
+/** 2 added the `tracks/` directory and the `eventTracks` section. */
+export const BACKUP_SCHEMA_VERSION = 2
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
 export const BACKUP_MEDIA_DIR = 'media'
+export const BACKUP_TRACKS_DIR = 'tracks'
 
 /**
  * Size ceilings.
@@ -31,13 +34,16 @@ export const MAX_BACKUP_MEDIA_TOTAL_BYTES = 300 * 1024 * 1024
 export const MAX_BACKUP_BYTES = 512 * 1024 * 1024
 export const MAX_BACKUP_JSON_ENTRY_BYTES = 32 * 1024 * 1024
 export const MAX_BACKUP_MEDIA_ENTRY_BYTES = MAX_VIDEO_BYTES
+export const MAX_BACKUP_TRACK_ENTRY_BYTES = MAX_TRACK_BYTES
 
 /** Mirrors the extension allow-list in firestore.rules and storage.rules. */
 const MEDIA_EXTENSIONS = 'jpg|png|webp|heic|heif|mp4|mov|webm|bin'
+const TRACK_EXTENSIONS = 'gpx|tcx'
 
 export const BACKUP_SECTION_KEYS = [
   'events',
   'eventMedia',
+  'eventTracks',
   'goals',
   'performanceGoals',
   'bucketListItems',
@@ -51,6 +57,7 @@ export type BackupSectionKey = (typeof BACKUP_SECTION_KEYS)[number]
 export const RESTORABLE_SECTIONS = [
   'events',
   'eventMedia',
+  'eventTracks',
   'goals',
   'performanceGoals',
   'bucketListItems',
@@ -72,6 +79,7 @@ export const OMITTED_FROM_BACKUP = [
 export const BACKUP_SECTION_FILES: Record<BackupSectionKey, string> = {
   events: 'events.json',
   eventMedia: 'eventMedia.json',
+  eventTracks: 'eventTracks.json',
   goals: 'goals.json',
   performanceGoals: 'performanceGoals.json',
   bucketListItems: 'bucketListItems.json',
@@ -81,7 +89,7 @@ export const BACKUP_SECTION_FILES: Record<BackupSectionKey, string> = {
 
 /** Firestore collection name per section. `userProfile` is a single `users/{uid}` doc. */
 export const BACKUP_SECTION_COLLECTIONS: Record<
-  Exclude<BackupSectionKey, 'eventMedia' | 'userProfile'>,
+  Exclude<BackupSectionKey, 'eventMedia' | 'eventTracks' | 'userProfile'>,
   string
 > = {
   events: 'events',
@@ -109,7 +117,7 @@ export type JsonValue = string | number | boolean | null | JsonValue[] | { [key:
 
 export type BackupDocument = {
   id: string
-  /** Present on `eventMedia` only: the parent event's id. */
+  /** Present on `eventMedia` and `eventTracks`: the parent event's id. */
   eventId?: string
   data: Record<string, JsonValue>
 }
@@ -125,6 +133,12 @@ export type BackupMediaFilesManifest = {
   sizeBytes: number
 }
 
+/** Raw GPX and TCX under `tracks/`. Absent in schema v1 backups. */
+export type BackupTrackFilesManifest = {
+  count: number
+  sizeBytes: number
+}
+
 export type BackupManifest = {
   app: string
   kind: string
@@ -136,6 +150,7 @@ export type BackupManifest = {
   files: Record<BackupSectionKey, string>
   /** Photo and video binaries under `media/`. Absent in schema v1 backups. */
   mediaFiles: BackupMediaFilesManifest
+  trackFiles: BackupTrackFilesManifest
   restorable: string[]
   exportOnly: string[]
   omitted: string[]
@@ -157,6 +172,13 @@ export function emptyBackupMediaFiles(): BackupMediaFiles {
   return new Map()
 }
 
+/** Raw activity files keyed by their zip entry name. */
+export type BackupTrackFiles = Map<string, Uint8Array>
+
+export function emptyBackupTrackFiles(): BackupTrackFiles {
+  return new Map()
+}
+
 export type ParsedBackup = {
   manifest: BackupManifest
   sections: BackupSections
@@ -164,6 +186,7 @@ export type ParsedBackup = {
   unknownFiles: string[]
   /** Empty for a metadata-only backup. */
   mediaFiles: BackupMediaFiles
+  trackFiles: BackupTrackFiles
 }
 
 export type BackupErrorCode =
@@ -195,6 +218,7 @@ export function emptyBackupSections(): BackupSections {
   return {
     events: [],
     eventMedia: [],
+    eventTracks: [],
     goals: [],
     performanceGoals: [],
     bucketListItems: [],
@@ -397,6 +421,32 @@ export function parseBackupMediaEntryName(
   return { eventId: match[1], mediaId: match[2], extension: match[3] }
 }
 
+const TRACK_ENTRY_PATTERN = new RegExp(
+  `^${BACKUP_TRACKS_DIR}/([^/]+)/([^/]+)\\.(${TRACK_EXTENSIONS})$`,
+)
+
+export function isBackupTrackEntry(name: string): boolean {
+  return TRACK_ENTRY_PATTERN.test(name)
+}
+
+export function parseBackupTrackEntryName(
+  name: string,
+): { eventId: string; trackId: string; extension: string } | null {
+  const match = TRACK_ENTRY_PATTERN.exec(name)
+  if (!match) return null
+  return { eventId: match[1], trackId: match[2], extension: match[3] }
+}
+
+/** The stored `format` is the extension, so it needs no parsing from the path. */
+export function backupTrackEntryName(
+  eventId: string,
+  trackId: string,
+  format: unknown,
+): string | null {
+  if (format !== 'gpx' && format !== 'tcx') return null
+  return `${BACKUP_TRACKS_DIR}/${eventId}/${trackId}.${format}`
+}
+
 /** Reads the file extension a media document's storagePath ends in. */
 export function mediaExtensionFromStoragePath(storagePath: unknown): string | null {
   if (typeof storagePath !== 'string') return null
@@ -424,6 +474,13 @@ function countsFrom(sections: BackupSections): Record<BackupSectionKey, number> 
   return counts
 }
 
+function trackFilesManifest(trackFiles?: BackupTrackFiles): BackupTrackFilesManifest {
+  if (!trackFiles || trackFiles.size === 0) return { count: 0, sizeBytes: 0 }
+  let sizeBytes = 0
+  for (const bytes of trackFiles.values()) sizeBytes += bytes.byteLength
+  return { count: trackFiles.size, sizeBytes }
+}
+
 function mediaFilesManifest(mediaFiles?: BackupMediaFiles): BackupMediaFilesManifest {
   if (!mediaFiles || mediaFiles.size === 0) return { count: 0, sizeBytes: 0 }
   let sizeBytes = 0
@@ -434,8 +491,10 @@ function mediaFilesManifest(mediaFiles?: BackupMediaFiles): BackupMediaFilesMani
 export function buildBackupManifest(
   payload: BackupPayload,
   mediaFiles?: BackupMediaFiles,
+  trackFiles?: BackupTrackFiles,
 ): BackupManifest {
   const media = mediaFilesManifest(mediaFiles)
+  const tracks = trackFilesManifest(trackFiles)
   return {
     app: BACKUP_APP_ID,
     kind: BACKUP_KIND,
@@ -446,11 +505,12 @@ export function buildBackupManifest(
     counts: countsFrom(payload.sections),
     files: { ...BACKUP_SECTION_FILES },
     mediaFiles: media,
+    trackFiles: tracks,
     restorable: [...RESTORABLE_SECTIONS],
     exportOnly: [...EXPORT_ONLY_SECTIONS],
-    // Binaries are only omitted when they were not collected.
+    // Binaries are only omitted when none of either kind were collected.
     omitted:
-      media.count > 0
+      media.count > 0 || tracks.count > 0
         ? OMITTED_FROM_BACKUP.filter((entry) => entry !== 'storageBinaries')
         : [...OMITTED_FROM_BACKUP],
   }
@@ -459,9 +519,10 @@ export function buildBackupManifest(
 export function buildBackupTextFiles(
   payload: BackupPayload,
   mediaFiles?: BackupMediaFiles,
+  trackFiles?: BackupTrackFiles,
 ): Record<string, string> {
   const files: Record<string, string> = {
-    [BACKUP_MANIFEST_FILE]: `${JSON.stringify(buildBackupManifest(payload, mediaFiles), null, 2)}\n`,
+    [BACKUP_MANIFEST_FILE]: `${JSON.stringify(buildBackupManifest(payload, mediaFiles, trackFiles), null, 2)}\n`,
   }
 
   for (const key of BACKUP_SECTION_KEYS) {
@@ -522,6 +583,17 @@ function parseManifest(text: string): BackupManifest {
         : 0,
   }
 
+  // Absent in schema v1 backups, so a missing block reads as zero rather than invalid.
+  const rawTracks = isRecord(raw.trackFiles) ? raw.trackFiles : {}
+  const trackFiles: BackupTrackFilesManifest = {
+    count:
+      typeof rawTracks.count === 'number' && Number.isFinite(rawTracks.count) ? rawTracks.count : 0,
+    sizeBytes:
+      typeof rawTracks.sizeBytes === 'number' && Number.isFinite(rawTracks.sizeBytes)
+        ? rawTracks.sizeBytes
+        : 0,
+  }
+
   return {
     app: BACKUP_APP_ID,
     kind: BACKUP_KIND,
@@ -532,6 +604,7 @@ function parseManifest(text: string): BackupManifest {
     counts: manifestCounts,
     files: { ...BACKUP_SECTION_FILES },
     mediaFiles,
+    trackFiles,
     restorable: Array.isArray(raw.restorable) ? raw.restorable.map(String) : [...RESTORABLE_SECTIONS],
     exportOnly: Array.isArray(raw.exportOnly) ? raw.exportOnly.map(String) : [...EXPORT_ONLY_SECTIONS],
     omitted: Array.isArray(raw.omitted) ? raw.omitted.map(String) : [...OMITTED_FROM_BACKUP],
@@ -565,7 +638,7 @@ function parseSectionFile(key: BackupSectionKey, name: string, text: string): Ba
     }
     seen.add(dedupeKey)
 
-    if (key !== 'eventMedia') {
+    if (key !== 'eventMedia' && key !== 'eventTracks') {
       return { id, data: data as Record<string, JsonValue> }
     }
 
@@ -595,6 +668,7 @@ function parseSectionFile(key: BackupSectionKey, name: string, text: string): Ba
 export function parseBackupTextFiles(
   files: Record<string, string>,
   mediaFiles: BackupMediaFiles = emptyBackupMediaFiles(),
+  trackFiles: BackupTrackFiles = emptyBackupTrackFiles(),
 ): ParsedBackup {
   const manifestText = files[BACKUP_MANIFEST_FILE]
   if (manifestText === undefined) {
@@ -608,7 +682,7 @@ export function parseBackupTextFiles(
 
   for (const name of Object.keys(files)) {
     if (name === BACKUP_MANIFEST_FILE) continue
-    if (!isKnownBackupEntry(name) && !isBackupMediaEntry(name)) {
+    if (!isKnownBackupEntry(name) && !isBackupMediaEntry(name) && !isBackupTrackEntry(name)) {
       unknownFiles.push(name)
     }
   }
@@ -634,7 +708,7 @@ export function parseBackupTextFiles(
     throw new BackupFormatError('empty_backup')
   }
 
-  return { manifest, sections, unknownFiles, mediaFiles }
+  return { manifest, sections, unknownFiles, mediaFiles, trackFiles }
 }
 
 // ---------------------------------------------------------------------------
@@ -752,6 +826,7 @@ export const RESTORE_REJECTION_CODES = [
   'invalid_year',
   'invalid_performance_goal',
   'invalid_disciplines',
+  'invalid_track',
   'invalid_media',
   'unknown_event',
   'foreign_user',
@@ -942,6 +1017,65 @@ function validateEventMedia(
   return null
 }
 
+function validateEventTrack(
+  document: BackupDocument,
+  data: Record<string, unknown>,
+  context: RestoreValidationContext,
+): RestoreRejectionCode | null {
+  const eventId = document.eventId
+  if (!eventId) return 'unknown_event'
+  if (context.knownEventIds && !context.knownEventIds.has(eventId)) return 'unknown_event'
+
+  if (
+    !hasAll(data, [
+      'userId',
+      'format',
+      'storagePath',
+      'downloadUrl',
+      'sizeBytes',
+      'fileName',
+      'startedAt',
+      'elapsedSeconds',
+      'distanceMeters',
+      'splits',
+      'route',
+      'profile',
+    ])
+  ) {
+    return 'missing_required_field'
+  }
+
+  const { format, storagePath, downloadUrl, sizeBytes, splits, route, profile } = data
+  if (format !== 'gpx' && format !== 'tcx') return 'invalid_track'
+  if (typeof storagePath !== 'string' || typeof downloadUrl !== 'string') return 'invalid_track'
+  if (!isPositiveNumber(sizeBytes) || (sizeBytes as number) > MAX_TRACK_BYTES) return 'invalid_track'
+  // The rules cap all three lists, so a backup that exceeds them would be rejected on write.
+  if (!Array.isArray(splits) || splits.length > 200) return 'invalid_track'
+  if (!Array.isArray(route) || route.length > 200) return 'invalid_track'
+  if (!Array.isArray(profile) || profile.length > 200) return 'invalid_track'
+
+  const uid = escapeRegExp(context.userId)
+  const eid = escapeRegExp(eventId)
+  const tid = escapeRegExp(document.id)
+
+  const pathPattern = new RegExp(
+    `^users/${uid}/events/${eid}/track/${tid}\\.(${TRACK_EXTENSIONS})$`,
+  )
+  if (!pathPattern.test(storagePath)) return 'invalid_track'
+
+  const encodedObject = `users%2F${uid}%2Fevents%2F${eid}%2Ftrack%2F${tid}`
+  const extension = `\\.(${TRACK_EXTENSIONS})`
+  const googleApis = new RegExp(
+    `^https://firebasestorage\\.googleapis\\.com/v0/b/[^/]+/o/${encodedObject}${extension}\\?.*$`,
+  )
+  const appDomain = new RegExp(
+    `^https://[a-z0-9.-]+\\.firebasestorage\\.app/o/${encodedObject}${extension}\\?.*$`,
+  )
+  if (!googleApis.test(downloadUrl) && !appDomain.test(downloadUrl)) return 'invalid_track'
+
+  return null
+}
+
 /**
  * Returns the reason a document cannot be restored, or `null` when it is writable.
  *
@@ -969,6 +1103,8 @@ export function validateRestoreDocument(
       return validateBucketListItem(data)
     case 'eventMedia':
       return validateEventMedia(document, data, context)
+    case 'eventTracks':
+      return validateEventTrack(document, data, context)
   }
 }
 
