@@ -293,6 +293,18 @@
     "totalParticipants": "Total de participantes",
     "classificationHint": "Opcional. ex: 47.º de 106 participantes"
   },
+  "trackResult": {
+    "title": "Do teu ficheiro de atividade",
+    "measured": "Tempo medido {{time}} em {{distance}} km",
+    "distanceMismatch": "O ficheiro mede {{percent}}% de diferença face à distância oficial. Confirma que pertence a esta prova.",
+    "useTime": "Usar este tempo",
+    "matches": "Coincide com o tempo já registado.",
+    "differs": "O evento tem {{current}} registado. O ficheiro difere {{delta}}.",
+    "replaceTime": "Substituir pelo tempo medido",
+    "officialWins": "O GPS raramente coincide com a cronometragem oficial. O resultado oficial é o que conta.",
+    "confirmTitle": "Substituir o tempo registado?",
+    "confirmMessage": "Isto troca {{current}} por {{suggested}}, medido por GPS. Os resultados oficiais são mais fiáveis."
+  },
   "bucketList": {
     "title": "Bucket list",
     "subtitle": "Provas sonho. Quando estiveres pronto, agenda como evento no calendário.",
