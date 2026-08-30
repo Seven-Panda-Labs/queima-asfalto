@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.1] - 2026-08-30
+
+### Geändert
+
+- **Dokumente folgen der App-Sprache:** Changelog, Ergebnishinweis und Datenschutzerklärung haben keine eigene Sprachauswahl mehr, und Arabisch wird von rechts nach links gelesen.
+
+---
+
 ## [1.26.0] - 2026-08-30
 
 ### Hinzugefügt

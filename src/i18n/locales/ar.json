@@ -56,40 +56,20 @@
     "viewChangelog": "عرض ملاحظات الإصدار {{version}}",
     "timingDisclaimer": "تنويه حول النتائج",
     "privacy": "الخصوصية",
-    "studioCredit": "من Seven Panda Labs"
+    "studioCreditPrefix": "من",
+    "studioName": "Seven Panda Labs"
   },
   "changelog": {
     "title": "ملاحظات الإصدار",
-    "subtitle": "سجلّ الإصدارات وتحسينات التطبيق.",
-    "languageToggle": "لغة سجلّ التغييرات",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "سجلّ الإصدارات وتحسينات التطبيق."
   },
   "privacy": {
     "title": "سياسة الخصوصية",
-    "subtitle": "كيف نعالج بياناتك في هذه النسخة من التطبيق.",
-    "languageToggle": "لغة السياسة",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "كيف نعالج بياناتك في هذه النسخة من التطبيق."
   },
   "timingDisclaimer": {
     "title": "تنويه: النتائج الرسمية",
-    "subtitle": "جلب البيانات من مواقع التوقيت الخارجية وشروط الاستخدام.",
-    "languageToggle": "لغة التنويه",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "جلب البيانات من مواقع التوقيت الخارجية وشروط الاستخدام."
   },
   "eventStatus": {
     "planned": "مخطَّط",

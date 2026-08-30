@@ -1,29 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import packageJson from '../../package.json'
-import {
-  getChangelogMarkdown,
-  prepareChangelogForDisplay,
-  resolveChangelogLocale,
-} from './changelog'
-
-describe('resolveChangelogLocale', () => {
-  it('maps english variants to en', () => {
-    expect(resolveChangelogLocale('en')).toBe('en')
-    expect(resolveChangelogLocale('en-GB')).toBe('en')
-  })
-
-  it('defaults other languages to en', () => {
-    expect(resolveChangelogLocale('pt')).toBe('pt')
-    expect(resolveChangelogLocale('pt-PT')).toBe('pt')
-    expect(resolveChangelogLocale('es')).toBe('es')
-    expect(resolveChangelogLocale('de')).toBe('de')
-    expect(resolveChangelogLocale('fr')).toBe('fr')
-    expect(resolveChangelogLocale('fr-CA')).toBe('fr')
-    expect(resolveChangelogLocale('ar')).toBe('ar')
-    expect(resolveChangelogLocale('ar-MA')).toBe('ar')
-    expect(resolveChangelogLocale('it')).toBe('en')
-  })
-})
+import { getChangelogMarkdown, prepareChangelogForDisplay } from './changelog'
 
 describe('prepareChangelogForDisplay', () => {
   it('keeps content from the first version heading', () => {

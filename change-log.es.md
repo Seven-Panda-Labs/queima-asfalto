@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.1] - 2026-08-30
+
+### Cambiado
+
+- **Los documentos siguen el idioma de la app:** el changelog, el aviso de resultados y la política de privacidad pierden su selector propio, y en árabe se leen de derecha a izquierda.
+
+---
+
 ## [1.26.0] - 2026-08-30
 
 ### Añadido

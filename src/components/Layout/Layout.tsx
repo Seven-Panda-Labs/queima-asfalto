@@ -13,6 +13,8 @@ import { APP_VERSION } from '../../appVersion'
 import { isPrivacyPolicyEnabled, privacyPolicyPath } from '../../config/privacyPolicy'
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
 
+const REPO_URL = 'https://github.com/Seven-Panda-Labs/queima-asfalto'
+
 const navItems = [
   { to: '/', key: 'nav.dashboard', end: true, badge: false },
   { to: '/eventos', key: 'nav.events', end: false, badge: false },
@@ -107,7 +109,17 @@ export function Layout() {
             </>
           ) : null}
         </p>
-        <p className="mt-1 text-xs">{t('footer.studioCredit')}</p>
+        <p className="mt-1 text-xs">
+          {t('footer.studioCreditPrefix')}{' '}
+          <a
+            href={REPO_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline-offset-2 hover:underline"
+          >
+            {t('footer.studioName')}
+          </a>
+        </p>
       </footer>
     </div>
   )

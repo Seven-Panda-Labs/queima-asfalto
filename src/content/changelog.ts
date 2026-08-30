@@ -1,11 +1,6 @@
-import { resolveContentLocale, type ContentLocale } from '../i18n/locale'
+import type { AppLanguage } from '../i18n/languages'
 
-export type ChangelogLocale = ContentLocale
-
-const CHANGELOG_LOADERS: Record<
-  ChangelogLocale,
-  () => Promise<{ default: string }>
-> = {
+const CHANGELOG_LOADERS: Record<AppLanguage, () => Promise<{ default: string }>> = {
   pt: () => import('../../change-log.md?raw'),
   en: () => import('../../change-log.en.md?raw'),
   es: () => import('../../change-log.es.md?raw'),
@@ -14,11 +9,7 @@ const CHANGELOG_LOADERS: Record<
   ar: () => import('../../change-log.ar.md?raw'),
 }
 
-const changelogCache = new Map<ChangelogLocale, string>()
-
-export function resolveChangelogLocale(language: string): ChangelogLocale {
-  return resolveContentLocale(language)
-}
+const changelogCache = new Map<AppLanguage, string>()
 
 const VERSION_HEADING = /^## \[[^\]]+\]/m
 const APPENDIX_HEADING =
@@ -38,7 +29,7 @@ export function prepareChangelogForDisplay(markdown: string): string {
   return body.trim()
 }
 
-export async function getChangelogMarkdown(locale: ChangelogLocale): Promise<string> {
+export async function getChangelogMarkdown(locale: AppLanguage): Promise<string> {
   const cached = changelogCache.get(locale)
   if (cached) return cached
 

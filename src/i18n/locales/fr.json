@@ -56,40 +56,20 @@
     "viewChangelog": "Voir les notes de version de la version {{version}}",
     "timingDisclaimer": "Avis sur les résultats",
     "privacy": "Confidentialité",
-    "studioCredit": "par Seven Panda Labs"
+    "studioCreditPrefix": "par",
+    "studioName": "Seven Panda Labs"
   },
   "changelog": {
     "title": "Notes de version",
-    "subtitle": "Historique des versions et améliorations de l'app.",
-    "languageToggle": "Langue des notes de version",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Historique des versions et améliorations de l'app."
   },
   "privacy": {
     "title": "Politique de confidentialité",
-    "subtitle": "Comment nous traitons tes données sur cette instance de l'app.",
-    "languageToggle": "Langue de la politique",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Comment nous traitons tes données sur cette instance de l'app."
   },
   "timingDisclaimer": {
     "title": "Avis : résultats officiels",
-    "subtitle": "Extraction de données de sites de chronométrage tiers et conditions d'utilisation.",
-    "languageToggle": "Langue de l'avis",
-    "languagePt": "Português",
-    "languageEn": "English",
-    "languageEs": "Español",
-    "languageDe": "Deutsch",
-    "languageFr": "Français",
-    "languageAr": "العربية"
+    "subtitle": "Extraction de données de sites de chronométrage tiers et conditions d'utilisation."
   },
   "eventStatus": {
     "planned": "Prévu",
