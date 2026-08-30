@@ -4,6 +4,15 @@
 
 ---
 
+## [1.28.0] - 2026-08-30
+
+### Hinzugefügt
+
+- **Renneinteilung:** Die Analyseseite zeigt Rennen für Rennen, wie viel langsamer die zweite Hälfte war, und wie oft das passiert.
+- **Streckenvergleich:** Öffnest du ein Rennen, das du schon gelaufen bist, siehst du, wo es unter allen deinen Läufen dort steht, mit der besten und der vorherigen.
+
+---
+
 ## [1.27.0] - 2026-08-30
 
 ### Hinzugefügt

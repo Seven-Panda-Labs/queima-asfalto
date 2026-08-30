@@ -4,6 +4,15 @@
 
 ---
 
+## [1.28.0] - 2026-08-30
+
+### Adicionado
+
+- **Distribuição de esforço:** a página de análise mostra, prova a prova, quanto abrandaste na segunda metade, e diz-te em quantas provas isso aconteceu.
+- **Comparação do mesmo percurso:** ao abrires uma prova que já correste antes, vês onde ela fica entre todas as vezes que a fizeste, com a melhor e a anterior.
+
+---
+
 ## [1.27.0] - 2026-08-30
 
 ### Adicionado

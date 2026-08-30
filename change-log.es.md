@@ -4,6 +4,15 @@
 
 ---
 
+## [1.28.0] - 2026-08-30
+
+### Añadido
+
+- **Distribución del esfuerzo:** la página de análisis muestra, carrera a carrera, cuánto bajaste el ritmo en la segunda mitad, y en cuántas carreras ocurre.
+- **Comparación del mismo recorrido:** al abrir una carrera que ya has hecho antes, ves dónde queda entre todas tus veces, con la mejor y la anterior.
+
+---
+
 ## [1.27.0] - 2026-08-30
 
 ### Añadido

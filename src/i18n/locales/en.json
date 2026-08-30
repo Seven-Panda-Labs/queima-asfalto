@@ -242,6 +242,16 @@
       "no_track_points": "The file has no track points with a timestamp."
     }
   },
+  "courseHistory": {
+    "title": "This course",
+    "subtitle": "You have run it {{count}} times.",
+    "thisRun": "This run",
+    "best": "Best",
+    "previous": "Previous",
+    "bestEver": "your best here",
+    "rank": "{{rank}} of {{total}}",
+    "paceNote": "Compared by pace, because the same course is not always measured at the same distance."
+  },
   "eventForm": {
     "new": "New event",
     "edit": "Edit event",

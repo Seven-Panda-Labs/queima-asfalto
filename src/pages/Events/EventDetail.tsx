@@ -10,6 +10,7 @@ import { StatusBadge } from '../../components/StatusBadge'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { EventTrackSection } from '../../components/EventTrack'
+import { CourseHistory } from '../../components/CourseHistory'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
 import { EventResultEditor } from '../../components/EventResultEditor'
 import { PencilIcon } from '../../components/icons/actionIcons'
@@ -34,6 +35,7 @@ import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
 import { formatDatePt } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
+import { buildCourseHistory } from '../../utils/analytics/course'
 import { canRecoverEventToBucketList, eventToBucketListItem } from '../../utils/eventToBucketList'
 import { eventHasCoordinates } from '../../services/eventGeocoding'
 import {
@@ -122,6 +124,13 @@ export function EventDetail() {
   // A shared view reads through a callable, not Firestore, so subscribing there
   // would only produce permission errors.
   const { track, loading: trackLoading } = useEventTrack(isSharedView ? undefined : event?.id)
+
+  // Built from events already in memory, so a repeated course costs no reads and
+  // needs no activity file: the official time is what ranks the runnings.
+  const courseHistory = useMemo(
+    () => (event && !isSharedView ? buildCourseHistory(event, allEvents) : null),
+    [event, isSharedView, allEvents],
+  )
 
   const personalRecordIds = isSharedView
     ? new Set<string>()
@@ -423,6 +432,8 @@ export function EventDetail() {
             </Suspense>
           </section>
         ) : null}
+
+        {courseHistory ? <CourseHistory history={courseHistory} /> : null}
 
         {canEditResult && user ? (
           <EventTrackSection
