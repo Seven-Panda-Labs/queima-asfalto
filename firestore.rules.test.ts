@@ -45,6 +45,53 @@ function mediaDownloadUrl(
   return `https://firebasestorage.googleapis.com/v0/b/demo-test.appspot.com/o/${encoded}?alt=media&token=test-token`
 }
 
+function trackStoragePath(
+  userId: string,
+  eventId: string,
+  trackId: string,
+  extension = 'gpx',
+): string {
+  return `users/${userId}/events/${eventId}/track/${trackId}.${extension}`
+}
+
+function trackDownloadUrl(
+  userId: string,
+  eventId: string,
+  trackId: string,
+  extension = 'gpx',
+): string {
+  const encoded = `users%2F${userId}%2Fevents%2F${eventId}%2Ftrack%2F${trackId}.${extension}`
+  return `https://firebasestorage.googleapis.com/v0/b/demo-test.appspot.com/o/${encoded}?alt=media&token=test-token`
+}
+
+function validTrackPayload(
+  userId: string,
+  eventId: string,
+  trackId: string,
+  overrides: Record<string, unknown> = {},
+) {
+  return {
+    userId,
+    format: 'gpx',
+    storagePath: trackStoragePath(userId, eventId, trackId),
+    downloadUrl: trackDownloadUrl(userId, eventId, trackId),
+    sizeBytes: 160734,
+    fileName: 'sample-parkrun.GPX',
+    startedAt: Timestamp.fromDate(new Date('2026-08-29T07:03:42.086Z')),
+    elapsedSeconds: 1580,
+    movingSeconds: 1579,
+    distanceMeters: 4954,
+    distanceSource: 'computed',
+    averagePaceSecondsPerKm: 318.9,
+    elevationGainMeters: 93,
+    elevationLossMeters: 93,
+    splits: [{ index: 1, distanceMeters: 1000, durationSeconds: 307, paceSecondsPerKm: 307, partial: false }],
+    heartRate: null,
+    route: [{ lat: 52.34235667, lon: 12.99992 }],
+    ...overrides,
+  }
+}
+
 function validMediaPayload(
   userId: string,
   eventId: string,
@@ -779,6 +826,189 @@ describe('firestore.rules', () => {
         db.collection('events').doc(eventId).collection('media').doc(mediaId).update({
           sizeBytes: 2048,
         }),
+      )
+    })
+  })
+
+  describe('event track', () => {
+    const trackId = 'current'
+
+    it('allows create when storagePath and downloadUrl match the owner and event', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId),
+        ),
+      )
+    })
+
+    it('allows replacing the track in place, since there is only ever one', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId),
+        ),
+      )
+      await assertSucceeds(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, {
+            format: 'tcx',
+            storagePath: trackStoragePath(userId, eventId, trackId, 'tcx'),
+            downloadUrl: trackDownloadUrl(userId, eventId, trackId, 'tcx'),
+            distanceSource: 'device',
+          }),
+        ),
+      )
+    })
+
+    it('rejects a second track document under another id', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc('second').set(
+          validTrackPayload(userId, eventId, 'second'),
+        ),
+      )
+    })
+
+    it('rejects create when downloadUrl points outside Firebase Storage', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, {
+            downloadUrl: 'https://evil.example/run.gpx',
+          }),
+        ),
+      )
+    })
+
+    it('rejects create when storagePath belongs to another user', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, {
+            storagePath: trackStoragePath('other-user', eventId, trackId),
+            downloadUrl: trackDownloadUrl('other-user', eventId, trackId),
+          }),
+        ),
+      )
+    })
+
+    it('rejects a format the parser does not support', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, {
+            format: 'fit',
+            storagePath: `users/${userId}/events/${eventId}/track/${trackId}.fit`,
+          }),
+        ),
+      )
+    })
+
+    it('rejects a file larger than the upload limit', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, { sizeBytes: 20 * 1024 * 1024 + 1 }),
+        ),
+      )
+    })
+
+    it('rejects an unbounded route, which is the only field that can grow without limit', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const route = Array.from({ length: 201 }, () => ({ lat: 52.3, lon: 13 }))
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, { route }),
+        ),
+      )
+    })
+
+    it('rejects create for an event owned by another user', async () => {
+      const ownerId = 'user-alice'
+      const attackerId = 'user-bob'
+      const eventId = 'event-1'
+      await seedEvent(ownerId, eventId)
+
+      const db = testEnv.authenticatedContext(attackerId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(attackerId, eventId, trackId),
+        ),
+      )
+    })
+
+    it('denies another user from reading the track', async () => {
+      const ownerId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(ownerId, eventId)
+
+      await testEnv.withSecurityRulesDisabled(async (context) => {
+        await context
+          .firestore()
+          .collection('events')
+          .doc(eventId)
+          .collection('track')
+          .doc(trackId)
+          .set(validTrackPayload(ownerId, eventId, trackId))
+      })
+
+      const db = testEnv.authenticatedContext('user-bob').firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).get(),
+      )
+    })
+
+    it('lets the owner delete the track', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      await testEnv.withSecurityRulesDisabled(async (context) => {
+        await context
+          .firestore()
+          .collection('events')
+          .doc(eventId)
+          .collection('track')
+          .doc(trackId)
+          .set(validTrackPayload(userId, eventId, trackId))
+      })
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).delete(),
       )
     })
   })

@@ -259,6 +259,61 @@ service cloud.firestore {
         && (!('durationSeconds' in data) || data.durationSeconds == null || data.durationSeconds is number);
     }
 
+    function validEventTrackStoragePath(storagePath, userId, eventId, trackId) {
+      return storagePath.matches(
+        '^users/' + userId + '/events/' + eventId + '/track/' + trackId + '\\.(gpx|tcx)$'
+      );
+    }
+
+    function validEventTrackDownloadUrl(downloadUrl, userId, eventId, trackId) {
+      let encodedObject = 'users%2F' + userId + '%2Fevents%2F' + eventId + '%2Ftrack%2F' + trackId;
+      let extension = '\\.(gpx|tcx)';
+      return downloadUrl.matches(
+          '^https://firebasestorage\\.googleapis\\.com/v0/b/[^/]+/o/' + encodedObject + extension + '\\?.*$'
+        )
+        || downloadUrl.matches(
+          '^https://[a-z0-9.-]+\\.firebasestorage\\.app/o/' + encodedObject + extension + '\\?.*$'
+        );
+    }
+
+    // Caps the two lists rather than checking their contents: rules cannot walk a
+    // list, and an unbounded route is the only way this document grows without limit.
+    function validEventTrackSummary(data) {
+      return data.startedAt is timestamp
+        && data.elapsedSeconds is number
+        && data.movingSeconds is number
+        && data.distanceMeters is number
+        && data.distanceSource in ['device', 'computed']
+        && data.averagePaceSecondsPerKm is number
+        && data.elevationGainMeters is number
+        && data.elevationLossMeters is number
+        && data.splits is list
+        && data.splits.size() <= 200
+        && data.route is list
+        && data.route.size() <= 200
+        && (!('heartRate' in data) || data.heartRate == null || data.heartRate is map);
+    }
+
+    function validEventTrackWrite(data, eventId, trackId) {
+      return data.keys().hasAll([
+          'userId', 'format', 'storagePath', 'downloadUrl', 'sizeBytes', 'fileName',
+          'startedAt', 'elapsedSeconds', 'movingSeconds', 'distanceMeters', 'distanceSource',
+          'averagePaceSecondsPerKm', 'elevationGainMeters', 'elevationLossMeters', 'splits', 'route'
+        ])
+        && isOwner(data.userId)
+        && isApprovedUser(data.userId)
+        && data.format in ['gpx', 'tcx']
+        && data.storagePath is string
+        && data.downloadUrl is string
+        && validEventTrackStoragePath(data.storagePath, data.userId, eventId, trackId)
+        && validEventTrackDownloadUrl(data.downloadUrl, data.userId, eventId, trackId)
+        && data.fileName is string
+        && data.sizeBytes is number
+        && data.sizeBytes > 0
+        && data.sizeBytes <= 20 * 1024 * 1024
+        && validEventTrackSummary(data);
+    }
+
     match /users/{userId} {
       allow read: if isOwner(userId);
       allow create: if isOwner(userId) && clientPreservesAccountApprovalFields();
@@ -301,6 +356,22 @@ service cloud.firestore {
           && resource.data.userId == request.auth.uid
           && isApprovedUser(request.auth.uid);
         allow update: if false;
+      }
+
+      // One track per event, so the id is fixed and replacing a file rewrites the
+      // same document instead of leaving a second one behind.
+      match /track/{trackId} {
+        allow read: if isSignedIn()
+          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid);
+        allow create, update: if isSignedIn()
+          && get(/databases/$(database)/documents/events/$(eventId)).data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid)
+          && trackId == 'current'
+          && validEventTrackWrite(request.resource.data, eventId, trackId);
+        allow delete: if isSignedIn()
+          && resource.data.userId == request.auth.uid
+          && isApprovedUser(request.auth.uid);
       }
     }
 

@@ -9,6 +9,22 @@ service firebase.storage {
         && (!('accountStatus' in userDoc.data) || userDoc.data.accountStatus == 'approved');
     }
 
+    // The extension is what is checked, not the content type: browsers report GPX
+    // and TCX as anything from application/gpx+xml to application/octet-stream.
+    match /users/{userId}/events/{eventId}/track/{fileName} {
+      allow read: if request.auth != null
+        && request.auth.uid == userId
+        && isApprovedUser(userId);
+      allow write: if request.auth != null
+        && request.auth.uid == userId
+        && isApprovedUser(userId)
+        && fileName.matches('^current\\.(gpx|tcx)$')
+        && request.resource.size <= 20 * 1024 * 1024;
+      allow delete: if request.auth != null
+        && request.auth.uid == userId
+        && isApprovedUser(userId);
+    }
+
     match /users/{userId}/events/{eventId}/media/{fileName} {
       allow read: if request.auth != null
         && request.auth.uid == userId
