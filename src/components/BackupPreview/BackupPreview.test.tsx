@@ -19,6 +19,7 @@ const manifest: BackupManifest = {
   counts: {
     events: 12,
     eventMedia: 3,
+    eventTracks: 2,
     goals: 2,
     performanceGoals: 1,
     bucketListItems: 4,
@@ -28,6 +29,7 @@ const manifest: BackupManifest = {
   files: {
     events: 'events.json',
     eventMedia: 'eventMedia.json',
+    eventTracks: 'eventTracks.json',
     goals: 'goals.json',
     performanceGoals: 'performanceGoals.json',
     bucketListItems: 'bucketListItems.json',
@@ -35,6 +37,7 @@ const manifest: BackupManifest = {
     shares: 'shares.json',
   },
   mediaFiles: { count: 0, sizeBytes: 0 },
+  trackFiles: { count: 2, sizeBytes: 320000 },
   restorable: [],
   exportOnly: ['shares'],
   omitted: ['storageBinaries'],
@@ -47,6 +50,8 @@ function summaryWith(overrides: Partial<BackupSummary> = {}): BackupSummary {
     crossAccount: false,
     mediaFileCount: 0,
     mediaFileBytes: 0,
+    trackFileCount: 0,
+    hasTrackFiles: false,
     hasMediaFiles: false,
     warnings: ['media_binaries_not_restored', 'reminders_not_restored', 'shares_not_restored'],
     ...overrides,

@@ -660,6 +660,7 @@
     "previewNothingToRestore": "There is nothing to restore in this backup.",
     "countEvents": "{{count}} events",
     "countEventMedia": "{{count}} photo and video records",
+    "countEventTracks": "{{count}} activity files",
     "countMediaFiles": "{{count}} photo and video files ({{mb}} MB), these will be restored",
     "countGoals": "{{count}} goals",
     "countPerformanceGoals": "{{count}} performance goals",
@@ -676,7 +677,9 @@
       "different_account": "This backup was created by another account. The data will become yours.",
       "reminders_not_restored": "History of sent reminders and push notification records.",
       "profile_write_denied": "Profile preferences could not be restored.",
-      "media_files_restored": "Photos and videos restored from the files in the backup."
+      "media_files_restored": "Photos and videos restored from the files in the backup.",
+      "track_binaries_not_restored": "This backup has no GPX or TCX files, only the summaries. Activity files only come back when the files themselves are in the backup.",
+      "track_files_restored": "Activity files restored from the files in the backup."
     },
     "modeTitle": "How do you want to restore?",
     "modeMerge": "Merge",
@@ -714,7 +717,8 @@
       "performanceGoals": "Performance goals",
       "bucketListItems": "Bucket list",
       "userProfile": "Profile",
-      "shares": "Shares"
+      "shares": "Shares",
+      "eventTracks": "Activity files"
     },
     "rejectReasons": {
       "missing_required_field": "Required field missing",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "Invalid disciplines",
       "invalid_media": "Invalid photo or video metadata",
       "unknown_event": "The linked event does not exist",
-      "foreign_user": "Belongs to another account"
+      "foreign_user": "Belongs to another account",
+      "invalid_track": "Invalid activity file"
     }
   },
   "messages": {

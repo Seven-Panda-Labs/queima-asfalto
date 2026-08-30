@@ -660,6 +660,7 @@
     "previewNothingToRestore": "In diesem Backup gibt es nichts wiederherzustellen.",
     "countEvents": "{{count}} Events",
     "countEventMedia": "{{count}} Einträge zu Fotos und Videos",
+    "countEventTracks": "{{count}} Aktivitätsdateien",
     "countMediaFiles": "{{count}} Foto- und Videodateien ({{mb}} MB), werden wiederhergestellt",
     "countGoals": "{{count}} Ziele",
     "countPerformanceGoals": "{{count}} Leistungsziele",
@@ -676,7 +677,9 @@
       "different_account": "Dieses Backup wurde von einem anderen Konto erstellt. Die Daten gehören danach zu deinem Konto.",
       "reminders_not_restored": "Verlauf gesendeter Erinnerungen und Push-Benachrichtigungen.",
       "profile_write_denied": "Die Profileinstellungen konnten nicht wiederhergestellt werden.",
-      "media_files_restored": "Fotos und Videos aus den Dateien im Backup wiederhergestellt."
+      "media_files_restored": "Fotos und Videos aus den Dateien im Backup wiederhergestellt.",
+      "track_binaries_not_restored": "Dieses Backup enthält keine GPX oder TCX Dateien, nur die Zusammenfassungen. Aktivitätsdateien kehren nur zurück, wenn die Dateien selbst im Backup liegen.",
+      "track_files_restored": "Aktivitätsdateien aus den Dateien im Backup wiederhergestellt."
     },
     "modeTitle": "Wie möchtest du wiederherstellen?",
     "modeMerge": "Zusammenführen",
@@ -714,7 +717,8 @@
       "performanceGoals": "Leistungsziele",
       "bucketListItems": "Bucket List",
       "userProfile": "Profil",
-      "shares": "Freigaben"
+      "shares": "Freigaben",
+      "eventTracks": "Aktivitätsdateien"
     },
     "rejectReasons": {
       "missing_required_field": "Pflichtfeld fehlt",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "Ungültige Disziplinen",
       "invalid_media": "Ungültige Foto- oder Video-Metadaten",
       "unknown_event": "Das verknüpfte Event existiert nicht",
-      "foreign_user": "Gehört zu einem anderen Konto"
+      "foreign_user": "Gehört zu einem anderen Konto",
+      "invalid_track": "Ungültige Aktivitätsdatei"
     }
   },
   "messages": {

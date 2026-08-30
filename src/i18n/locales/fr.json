@@ -660,6 +660,7 @@
     "previewNothingToRestore": "Il n'y a rien à restaurer dans cette sauvegarde.",
     "countEvents": "{{count}} événements",
     "countEventMedia": "{{count}} fiches photo et vidéo",
+    "countEventTracks": "{{count}} fichiers d'activité",
     "countMediaFiles": "{{count}} fichiers photo et vidéo ({{mb}} Mo), ils seront restaurés",
     "countGoals": "{{count}} objectifs",
     "countPerformanceGoals": "{{count}} objectifs de performance",
@@ -676,7 +677,9 @@
       "different_account": "Cette sauvegarde a été créée par un autre compte. Les données deviendront les tiennes.",
       "reminders_not_restored": "Historique des rappels envoyés et enregistrements des notifications push.",
       "profile_write_denied": "Les préférences du profil n'ont pas pu être restaurées.",
-      "media_files_restored": "Photos et vidéos restaurées à partir des fichiers de la sauvegarde."
+      "media_files_restored": "Photos et vidéos restaurées à partir des fichiers de la sauvegarde.",
+      "track_binaries_not_restored": "Cette sauvegarde ne contient aucun fichier GPX ou TCX, seulement les résumés. Les fichiers d'activité ne reviennent que si les fichiers eux-mêmes sont dans la sauvegarde.",
+      "track_files_restored": "Fichiers d'activité restaurés depuis les fichiers de la sauvegarde."
     },
     "modeTitle": "Comment veux-tu restaurer ?",
     "modeMerge": "Fusionner",
@@ -714,7 +717,8 @@
       "performanceGoals": "Objectifs de performance",
       "bucketListItems": "Bucket list",
       "userProfile": "Profil",
-      "shares": "Partages"
+      "shares": "Partages",
+      "eventTracks": "Fichiers d'activité"
     },
     "rejectReasons": {
       "missing_required_field": "Champ obligatoire manquant",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "Disciplines invalides",
       "invalid_media": "Métadonnées photo ou vidéo invalides",
       "unknown_event": "L'événement lié n'existe pas",
-      "foreign_user": "Appartient à un autre compte"
+      "foreign_user": "Appartient à un autre compte",
+      "invalid_track": "Fichier d'activité invalide"
     }
   },
   "messages": {

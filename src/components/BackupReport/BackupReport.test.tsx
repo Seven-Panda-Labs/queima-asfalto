@@ -16,6 +16,7 @@ function resultWith(overrides: Partial<BackupRestoreResult> = {}): BackupRestore
     sections: {
       events: { created: 10, updated: 2, skipped: 0, rejected: 0 },
       eventMedia: { created: 0, updated: 0, skipped: 0, rejected: 0 },
+      eventTracks: { created: 0, updated: 0, skipped: 0, rejected: 0 },
       goals: { created: 1, updated: 0, skipped: 0, rejected: 0 },
       performanceGoals: { created: 0, updated: 0, skipped: 0, rejected: 0 },
       bucketListItems: { created: 0, updated: 0, skipped: 0, rejected: 0 },

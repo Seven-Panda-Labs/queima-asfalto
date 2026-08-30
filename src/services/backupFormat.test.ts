@@ -7,13 +7,16 @@ import {
   BackupFormatError,
   backupFileName,
   backupMediaEntryName,
+  backupTrackEntryName,
   buildBackupTextFiles,
   decodeDocumentData,
   emptyBackupSections,
   encodeDocumentData,
   isBackupMediaEntry,
+  isBackupTrackEntry,
   isKnownBackupEntry,
   parseBackupMediaEntryName,
+  parseBackupTrackEntryName,
   parseBackupTextFiles,
   planMediaExport,
   sanitizeProfileForRestore,
@@ -386,6 +389,29 @@ describe('parseBackupTextFiles', () => {
   })
 })
 
+describe('track zip entries', () => {
+  it('recognises a track entry and reads it back', () => {
+    expect(isBackupTrackEntry('tracks/event-1/current.gpx')).toBe(true)
+    expect(parseBackupTrackEntryName('tracks/event-1/current.tcx')).toEqual({
+      eventId: 'event-1',
+      trackId: 'current',
+      extension: 'tcx',
+    })
+  })
+
+  it('rejects anything that is not a track file', () => {
+    expect(isBackupTrackEntry('tracks/event-1/current.fit')).toBe(false)
+    expect(isBackupTrackEntry('media/event-1/photo.jpg')).toBe(false)
+    expect(isBackupTrackEntry('tracks/event-1/nested/current.gpx')).toBe(false)
+  })
+
+  it('names an entry from the stored format, refusing anything else', () => {
+    expect(backupTrackEntryName('event-1', 'current', 'gpx')).toBe('tracks/event-1/current.gpx')
+    expect(backupTrackEntryName('event-1', 'current', 'fit')).toBeNull()
+    expect(backupTrackEntryName('event-1', 'current', undefined)).toBeNull()
+  })
+})
+
 describe('validateRestoreDocument', () => {
   const context = { userId: 'user-ze', knownEventIds: new Set(['event-1']) }
 
@@ -416,6 +442,61 @@ describe('validateRestoreDocument', () => {
 
   it('accepts an event using the legacy portuguese encodings', () => {
     expect(check('events', validEvent({ status: 'Concluído', eventType: '21.1Km' }))).toBeNull()
+  })
+
+  const trackDocument: BackupDocument = { id: 'current', eventId: 'event-1', data: {} }
+
+  function validTrack(overrides: Record<string, unknown> = {}): Record<string, unknown> {
+    const encoded = 'users%2Fuser-ze%2Fevents%2Fevent-1%2Ftrack%2Fcurrent'
+    return {
+      userId: 'user-ze',
+      format: 'gpx',
+      storagePath: 'users/user-ze/events/event-1/track/current.gpx',
+      downloadUrl: `https://firebasestorage.googleapis.com/v0/b/demo.appspot.com/o/${encoded}.gpx?alt=media&token=t`,
+      sizeBytes: 160734,
+      fileName: 'sample-parkrun.GPX',
+      startedAt: Timestamp.fromDate(new Date('2026-08-29T07:03:42.086Z')),
+      elapsedSeconds: 1580,
+      distanceMeters: 4954,
+      splits: [],
+      route: [],
+      profile: [],
+      ...overrides,
+    }
+  }
+
+  it('accepts a canonical track', () => {
+    expect(check('eventTracks', validTrack(), trackDocument)).toBeNull()
+  })
+
+  it('rejects a format the parser cannot read', () => {
+    expect(check('eventTracks', validTrack({ format: 'fit' }), trackDocument)).toBe('invalid_track')
+  })
+
+  it('rejects a storagePath belonging to another account', () => {
+    const data = validTrack({ storagePath: 'users/user-other/events/event-1/track/current.gpx' })
+    expect(check('eventTracks', data, trackDocument)).toBe('invalid_track')
+  })
+
+  it('rejects a downloadUrl outside Firebase Storage', () => {
+    const data = validTrack({ downloadUrl: 'https://evil.example/run.gpx' })
+    expect(check('eventTracks', data, trackDocument)).toBe('invalid_track')
+  })
+
+  it('rejects lists longer than the rules allow', () => {
+    const route = Array.from({ length: 201 }, () => ({ lat: 52.3, lon: 13 }))
+    expect(check('eventTracks', validTrack({ route }), trackDocument)).toBe('invalid_track')
+  })
+
+  it('rejects a track for an event the backup does not carry', () => {
+    const unknown: BackupDocument = { id: 'current', eventId: 'event-9', data: {} }
+    expect(check('eventTracks', validTrack(), unknown)).toBe('unknown_event')
+  })
+
+  it('rejects a track missing a field the rules require', () => {
+    const data = validTrack()
+    delete data.profile
+    expect(check('eventTracks', data, trackDocument)).toBe('missing_required_field')
   })
 
   it('accepts an event with full geocode and results fields', () => {
@@ -690,6 +771,59 @@ describe('planMediaExport', () => {
 
     expect(plan.skipped).toEqual([])
     expect(plan.files).toHaveLength(1)
+  })
+})
+
+describe('manifest track accounting', () => {
+  const trackFiles = new Map([['tracks/event-1/current.gpx', new Uint8Array(160734)]])
+
+  it('records the bundled track count and size', () => {
+    const files = buildBackupTextFiles(payloadWith({}), undefined, trackFiles)
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as {
+      trackFiles: { count: number; sizeBytes: number }
+      omitted: string[]
+    }
+
+    expect(manifest.trackFiles).toEqual({ count: 1, sizeBytes: 160734 })
+    // Track files are Storage binaries too, so the claim has to drop.
+    expect(manifest.omitted).not.toContain('storageBinaries')
+  })
+
+  it('reads a schema v1 manifest as carrying no track files', () => {
+    const files = buildBackupTextFiles(payloadWith({}))
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as Record<string, unknown>
+    delete manifest.trackFiles
+    manifest.schemaVersion = 1
+    files[BACKUP_MANIFEST_FILE] = JSON.stringify(manifest)
+
+    const parsed = parseBackupTextFiles(files)
+
+    expect(parsed.manifest.trackFiles).toEqual({ count: 0, sizeBytes: 0 })
+    expect(parsed.trackFiles.size).toBe(0)
+  })
+
+  it('carries a track document and its file through a round trip', () => {
+    const track: BackupDocument = {
+      id: 'current',
+      eventId: 'event-1',
+      data: { userId: 'user-ze', format: 'gpx', elapsedSeconds: 1580 },
+    }
+
+    const files = buildBackupTextFiles(payloadWith({ eventTracks: [track] }), undefined, trackFiles)
+    const parsed = parseBackupTextFiles(files, undefined, trackFiles)
+
+    expect(parsed.sections.eventTracks).toEqual([track])
+    expect(parsed.trackFiles.get('tracks/event-1/current.gpx')?.byteLength).toBe(160734)
+    expect(parsed.manifest.counts.eventTracks).toBe(1)
+  })
+
+  it('refuses a track document with no parent event id', () => {
+    const orphan: BackupDocument = { id: 'current', data: { userId: 'user-ze' } }
+    const files = buildBackupTextFiles(payloadWith({ eventTracks: [orphan] }))
+
+    expect(() => parseBackupTextFiles(files)).toThrow(
+      expect.objectContaining({ code: 'invalid_collection_file' }),
+    )
   })
 })
 

@@ -263,6 +263,7 @@ describe('backup zip round trip', () => {
     expect(parsed.manifest.counts).toEqual({
       events: raw.events.length,
       eventMedia: raw.eventMedia.length,
+      eventTracks: 0,
       goals: raw.goals.length,
       performanceGoals: raw.performanceGoals.length,
       bucketListItems: raw.bucketListItems.length,

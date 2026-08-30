@@ -660,6 +660,7 @@
     "previewNothingToRestore": "No hay nada que restaurar en esta copia.",
     "countEvents": "{{count}} eventos",
     "countEventMedia": "{{count}} registros de fotos y vídeos",
+    "countEventTracks": "{{count}} archivos de actividad",
     "countMediaFiles": "{{count}} archivos de fotos y vídeos ({{mb}} MB), se recuperarán",
     "countGoals": "{{count}} objetivos",
     "countPerformanceGoals": "{{count}} metas de rendimiento",
@@ -676,7 +677,9 @@
       "different_account": "Esta copia fue creada por otra cuenta. Los datos pasarán a ser tuyos.",
       "reminders_not_restored": "El historial de recordatorios enviados y los registros de notificaciones push.",
       "profile_write_denied": "No se pudieron restaurar las preferencias del perfil.",
-      "media_files_restored": "Fotos y vídeos recuperados a partir de los archivos de la copia."
+      "media_files_restored": "Fotos y vídeos recuperados a partir de los archivos de la copia.",
+      "track_binaries_not_restored": "Esta copia no tiene archivos GPX ni TCX, solo los resúmenes. Los archivos de actividad solo vuelven cuando los propios archivos están en la copia.",
+      "track_files_restored": "Archivos de actividad restaurados desde los archivos de la copia."
     },
     "modeTitle": "¿Cómo quieres restaurar?",
     "modeMerge": "Combinar",
@@ -714,7 +717,8 @@
       "performanceGoals": "Metas de rendimiento",
       "bucketListItems": "Bucket list",
       "userProfile": "Perfil",
-      "shares": "Compartidos"
+      "shares": "Compartidos",
+      "eventTracks": "Archivos de actividad"
     },
     "rejectReasons": {
       "missing_required_field": "Falta un campo obligatorio",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "Disciplinas no válidas",
       "invalid_media": "Metadatos de foto o vídeo no válidos",
       "unknown_event": "El evento vinculado no existe",
-      "foreign_user": "Pertenece a otra cuenta"
+      "foreign_user": "Pertenece a otra cuenta",
+      "invalid_track": "Archivo de actividad no válido"
     }
   },
   "messages": {

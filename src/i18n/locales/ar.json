@@ -660,6 +660,7 @@
     "previewNothingToRestore": "لا يوجد ما يمكن استعادته في هذه النسخة الاحتياطية.",
     "countEvents": "{{count}} فعالية",
     "countEventMedia": "{{count}} سجل صور ومقاطع فيديو",
+    "countEventTracks": "{{count}} ملفات نشاط",
     "countMediaFiles": "{{count}} ملف صور ومقاطع فيديو ({{mb}} م.ب.)، سيتم استعادتها",
     "countGoals": "{{count}} هدف",
     "countPerformanceGoals": "{{count}} هدف أداء",
@@ -676,7 +677,9 @@
       "different_account": "تم إنشاء هذه النسخة الاحتياطية بواسطة حساب آخر. ستصبح البيانات ملكك.",
       "reminders_not_restored": "سجلّ التذكيرات المرسلة وسجلات الإشعارات الفورية.",
       "profile_write_denied": "تعذّر استعادة تفضيلات الملف الشخصي.",
-      "media_files_restored": "تم استعادة الصور ومقاطع الفيديو من الملفات الموجودة في النسخة الاحتياطية."
+      "media_files_restored": "تم استعادة الصور ومقاطع الفيديو من الملفات الموجودة في النسخة الاحتياطية.",
+      "track_binaries_not_restored": "لا تحتوي هذه النسخة على ملفات GPX أو TCX، بل الملخصات فقط. لا تعود ملفات النشاط إلا إذا كانت الملفات نفسها داخل النسخة.",
+      "track_files_restored": "تمت استعادة ملفات النشاط من الملفات الموجودة في النسخة."
     },
     "modeTitle": "كيف تريد الاستعادة؟",
     "modeMerge": "دمج",
@@ -714,7 +717,8 @@
       "performanceGoals": "أهداف الأداء",
       "bucketListItems": "قائمة الأحلام",
       "userProfile": "الملف الشخصي",
-      "shares": "المشاركات"
+      "shares": "المشاركات",
+      "eventTracks": "ملفات النشاط"
     },
     "rejectReasons": {
       "missing_required_field": "حقل مطلوب مفقود",
@@ -731,7 +735,8 @@
       "invalid_disciplines": "مسافات غير صالحة",
       "invalid_media": "بيانات وصفية غير صالحة للصورة أو الفيديو",
       "unknown_event": "الفعالية المرتبطة غير موجودة",
-      "foreign_user": "ينتمي إلى حساب آخر"
+      "foreign_user": "ينتمي إلى حساب آخر",
+      "invalid_track": "ملف نشاط غير صالح"
     }
   },
   "messages": {
