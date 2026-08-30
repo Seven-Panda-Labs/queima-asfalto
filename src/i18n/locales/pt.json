@@ -201,6 +201,37 @@
       "limit_reached": "limite de 10 ficheiros por evento atingido"
     }
   },
+  "eventTrack": {
+    "title": "Ficheiro de atividade",
+    "empty": "Ainda não há ficheiro. Carrega o GPX ou TCX do relógio para veres os splits e o percurso.",
+    "upload": "Carregar ficheiro",
+    "replace": "Substituir ficheiro",
+    "uploading": "A carregar...",
+    "uploaded": "Ficheiro carregado",
+    "replaced": "Ficheiro substituído",
+    "removed": "Ficheiro removido",
+    "offline": "Estás offline. Tenta outra vez quando voltares.",
+    "formatsHint": "GPX ou TCX, até 20 MB. Um ficheiro por evento.",
+    "measuredDistance": "Medido",
+    "elevationGain": "Subida acumulada",
+    "elevationApproximate": "A altimetria é aproximada. Relógios e formatos de ficheiro não coincidem nela.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "Km",
+    "heartRateColumn": "FC",
+    "partialSplit": "{{distance}} km",
+    "fastest": "mais rápido",
+    "slowest": "mais lento",
+    "confirmReplaceTitle": "Substituir o ficheiro?",
+    "confirmReplaceMessage": "{{fileName}} substitui o ficheiro atual e tudo o que dele deriva. Não dá para desfazer.",
+    "confirmDeleteTitle": "Remover o ficheiro?",
+    "confirmDeleteMessage": "O ficheiro e os seus splits são apagados. O resultado que registaste mantém-se.",
+    "errors": {
+      "unsupported_type": "Só são aceites ficheiros GPX e TCX.",
+      "file_too_large": "O ficheiro tem mais de 20 MB.",
+      "malformed_xml": "Não foi possível ler o ficheiro. Pode estar incompleto.",
+      "no_track_points": "O ficheiro não tem pontos com data e hora."
+    }
+  },
   "eventForm": {
     "new": "Novo evento",
     "edit": "Editar evento",

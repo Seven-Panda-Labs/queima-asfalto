@@ -201,6 +201,37 @@
       "limit_reached": "limite de 10 fichiers par événement atteinte"
     }
   },
+  "eventTrack": {
+    "title": "Fichier d'activité",
+    "empty": "Pas encore de fichier. Importe le GPX ou TCX de ta montre pour voir les splits et le parcours.",
+    "upload": "Importer un fichier",
+    "replace": "Remplacer le fichier",
+    "uploading": "Import en cours...",
+    "uploaded": "Fichier importé",
+    "replaced": "Fichier remplacé",
+    "removed": "Fichier supprimé",
+    "offline": "Tu es hors ligne. Réessaie une fois de retour.",
+    "formatsHint": "GPX ou TCX, jusqu'à 20 Mo. Un fichier par événement.",
+    "measuredDistance": "Mesuré",
+    "elevationGain": "Dénivelé positif",
+    "elevationApproximate": "Le dénivelé est approximatif. Montres et formats de fichier ne s'accordent pas dessus.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "Km",
+    "heartRateColumn": "FC",
+    "partialSplit": "{{distance}} km",
+    "fastest": "le plus rapide",
+    "slowest": "le plus lent",
+    "confirmReplaceTitle": "Remplacer le fichier ?",
+    "confirmReplaceMessage": "{{fileName}} remplace le fichier actuel et tout ce qui en découle. C'est irréversible.",
+    "confirmDeleteTitle": "Supprimer le fichier ?",
+    "confirmDeleteMessage": "Le fichier et ses splits sont supprimés. Ton résultat enregistré reste.",
+    "errors": {
+      "unsupported_type": "Seuls les fichiers GPX et TCX sont acceptés.",
+      "file_too_large": "Le fichier dépasse 20 Mo.",
+      "malformed_xml": "Le fichier n'a pas pu être lu. Il est peut-être incomplet.",
+      "no_track_points": "Le fichier ne contient aucun point horodaté."
+    }
+  },
   "eventForm": {
     "new": "Nouvel événement",
     "edit": "Modifier l'événement",

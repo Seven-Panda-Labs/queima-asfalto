@@ -201,6 +201,37 @@
       "limit_reached": "Limit von 10 Dateien pro Event erreicht"
     }
   },
+  "eventTrack": {
+    "title": "Aktivitätsdatei",
+    "empty": "Noch keine Datei. Lade die GPX oder TCX von deiner Uhr hoch, um Splits und Strecke zu sehen.",
+    "upload": "Datei hochladen",
+    "replace": "Datei ersetzen",
+    "uploading": "Wird hochgeladen...",
+    "uploaded": "Datei hochgeladen",
+    "replaced": "Datei ersetzt",
+    "removed": "Datei entfernt",
+    "offline": "Du bist offline. Versuche es erneut, sobald du zurück bist.",
+    "formatsHint": "GPX oder TCX, bis 20 MB. Eine Datei pro Event.",
+    "measuredDistance": "Gemessen",
+    "elevationGain": "Höhenmeter",
+    "elevationApproximate": "Die Höhenangabe ist ungefähr. Uhren und Dateiformate weichen darin ab.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "Km",
+    "heartRateColumn": "HF",
+    "partialSplit": "{{distance}} km",
+    "fastest": "schnellste",
+    "slowest": "langsamste",
+    "confirmReplaceTitle": "Datei ersetzen?",
+    "confirmReplaceMessage": "{{fileName}} ersetzt die aktuelle Datei und alles daraus Abgeleitete. Das lässt sich nicht rückgängig machen.",
+    "confirmDeleteTitle": "Datei entfernen?",
+    "confirmDeleteMessage": "Die Datei und ihre Splits werden gelöscht. Dein erfasstes Ergebnis bleibt.",
+    "errors": {
+      "unsupported_type": "Es werden nur GPX und TCX Dateien akzeptiert.",
+      "file_too_large": "Die Datei ist größer als 20 MB.",
+      "malformed_xml": "Die Datei konnte nicht gelesen werden. Sie ist womöglich unvollständig.",
+      "no_track_points": "Die Datei enthält keine Punkte mit Zeitstempel."
+    }
+  },
   "eventForm": {
     "new": "Neues Event",
     "edit": "Event bearbeiten",

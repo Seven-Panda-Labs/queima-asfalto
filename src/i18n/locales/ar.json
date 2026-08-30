@@ -201,6 +201,37 @@
       "limit_reached": "تم الوصول إلى حد 10 ملفات لكل فعالية"
     }
   },
+  "eventTrack": {
+    "title": "ملف النشاط",
+    "empty": "لا يوجد ملف بعد. ارفع ملف GPX أو TCX من ساعتك لعرض التقسيمات والمسار.",
+    "upload": "رفع ملف",
+    "replace": "استبدال الملف",
+    "uploading": "جار الرفع...",
+    "uploaded": "تم رفع الملف",
+    "replaced": "تم استبدال الملف",
+    "removed": "تم حذف الملف",
+    "offline": "أنت غير متصل. حاول مرة أخرى عند عودتك.",
+    "formatsHint": "GPX أو TCX، حتى 20 ميجابايت. ملف واحد لكل حدث.",
+    "measuredDistance": "المقاس",
+    "elevationGain": "الصعود التراكمي",
+    "elevationApproximate": "قياس الارتفاع تقريبي. الساعات وصيغ الملفات لا تتفق عليه.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "كم",
+    "heartRateColumn": "نبض",
+    "partialSplit": "{{distance}} كم",
+    "fastest": "الأسرع",
+    "slowest": "الأبطأ",
+    "confirmReplaceTitle": "استبدال الملف؟",
+    "confirmReplaceMessage": "سيحل {{fileName}} محل الملف الحالي وكل ما يشتق منه. لا يمكن التراجع.",
+    "confirmDeleteTitle": "حذف الملف؟",
+    "confirmDeleteMessage": "سيحذف الملف وتقسيماته. تبقى نتيجتك المسجلة كما هي.",
+    "errors": {
+      "unsupported_type": "تقبل ملفات GPX و TCX فقط.",
+      "file_too_large": "حجم الملف يتجاوز 20 ميجابايت.",
+      "malformed_xml": "تعذرت قراءة الملف. قد يكون غير مكتمل.",
+      "no_track_points": "الملف لا يحتوي على نقاط بطابع زمني."
+    }
+  },
   "eventForm": {
     "new": "فعالية جديدة",
     "edit": "تعديل الفعالية",
