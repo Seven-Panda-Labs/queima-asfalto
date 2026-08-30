@@ -2,6 +2,7 @@ import type {
   ActivityFileFormat,
   HeartRateSummary,
   RoutePoint,
+  TrackProfilePoint,
   TrackSplit,
 } from '../domain/activityTrack'
 
@@ -37,6 +38,8 @@ export type EventTrack = {
   splits: TrackSplit[]
   heartRate?: HeartRateSummary
   route: RoutePoint[]
+  /** Evenly spaced samples for the pace and elevation chart. */
+  profile: TrackProfilePoint[]
   createdAt: Date
 }
 

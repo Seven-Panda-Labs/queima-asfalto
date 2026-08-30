@@ -18,6 +18,11 @@ vi.mock('../../contexts/ToastContext', () => ({
   useToast: () => toast,
 }))
 
+// The chart has its own tests and needs a canvas; this suite is about the actions.
+vi.mock('./TrackProfileChart', () => ({
+  TrackProfileChart: () => null,
+}))
+
 const { EventTrackSection } = await import('./EventTrackSection')
 
 const event = { id: 'event-1', realDistance: 5 } as Event
@@ -36,6 +41,7 @@ const track = {
     { index: 2, distanceMeters: 1000, durationSeconds: 313, paceSecondsPerKm: 313, partial: false },
   ],
   route: [],
+  profile: [],
 } as unknown as EventTrack
 
 function pickFile(name = 'run.gpx') {

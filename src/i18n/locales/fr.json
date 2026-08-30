@@ -225,6 +225,12 @@
     "confirmReplaceMessage": "{{fileName}} remplace le fichier actuel et tout ce qui en découle. C'est irréversible.",
     "confirmDeleteTitle": "Supprimer le fichier ?",
     "confirmDeleteMessage": "Le fichier et ses splits sont supprimés. Ton résultat enregistré reste.",
+    "chartPace": "Allure",
+    "chartElevation": "Altitude",
+    "chartPaceAxis": "Allure (min/km)",
+    "chartElevationAxis": "Altitude (m)",
+    "chartDistanceAxis": "Distance (km)",
+    "chartDistanceTooltip": "{{distance}} km",
     "errors": {
       "unsupported_type": "Seuls les fichiers GPX et TCX sont acceptés.",
       "file_too_large": "Le fichier dépasse 20 Mo.",

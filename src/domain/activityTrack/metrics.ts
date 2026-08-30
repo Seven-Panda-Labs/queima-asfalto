@@ -17,6 +17,18 @@ const ELEVATION_NOISE_THRESHOLD_METERS = 3
 /** Keeps a stored route under a few kilobytes whatever the race distance. */
 const ROUTE_POINT_BUDGET = 150
 
+/** Upper bound on chart samples, which is what a marathon hits. */
+const PROFILE_POINT_BUDGET = 120
+
+/**
+ * Never sample finer than this.
+ *
+ * Bucketing by distance is the smoothing, and a bucket has to be long enough to
+ * outweigh a GPS jump. At the budget alone a 5 km would use 41 m buckets, where a
+ * single bad fix reads as a 2:46/km kilometre.
+ */
+const MIN_PROFILE_BUCKET_METERS = 100
+
 export type TrackSplit = {
   /** 1 for the first kilometre. */
   index: number
@@ -26,6 +38,13 @@ export type TrackSplit = {
   averageHeartRate?: number
   /** A trailing split short of a full kilometre, so its pace is extrapolated. */
   partial: boolean
+}
+
+/** One sample of the chart series, at a fixed distance from the start. */
+export type TrackProfilePoint = {
+  distanceMeters: number
+  elevationMeters?: number
+  paceSecondsPerKm: number
 }
 
 export type HeartRateSummary = {
@@ -47,6 +66,7 @@ export type ActivityTrackSummary = {
   splits: TrackSplit[]
   heartRate?: HeartRateSummary
   route: RoutePoint[]
+  profile: TrackProfilePoint[]
 }
 
 function toRadians(degrees: number): number {
@@ -205,6 +225,73 @@ function buildSplits(points: TrackPoint[], cumulative: number[]): TrackSplit[] {
   return splits
 }
 
+/**
+ * Resamples the track onto evenly spaced distances.
+ *
+ * Even spacing is what makes the chart readable: a time based series bunches up
+ * wherever the runner slowed down, which is exactly where the detail matters.
+ */
+function buildProfile(points: TrackPoint[], cumulative: number[]): TrackProfilePoint[] {
+  const total = cumulative[cumulative.length - 1]
+  if (total <= 0 || points.length < 2) return []
+
+  const bucketCount = Math.max(
+    1,
+    Math.min(PROFILE_POINT_BUDGET, Math.floor(total / MIN_PROFILE_BUCKET_METERS)),
+  )
+  const profile: TrackProfilePoint[] = []
+  const step = total / bucketCount
+  let index = 1
+  let previousTime = points[0].time
+  let previousTarget = 0
+  let elevationSum = 0
+  let elevationCount = 0
+  let lastPace = 0
+
+  if (points[0].elevation !== undefined) {
+    elevationSum += points[0].elevation
+    elevationCount += 1
+  }
+
+  for (let bucket = 1; bucket <= bucketCount; bucket++) {
+    // The last bucket lands on the exact total, so rounding never drops the finish.
+    const target = bucket === bucketCount ? total : step * bucket
+
+    while (index < points.length && cumulative[index] < target) {
+      const elevation = points[index].elevation
+      if (elevation !== undefined) {
+        elevationSum += elevation
+        elevationCount += 1
+      }
+      index += 1
+    }
+
+    const crossedAt =
+      index < points.length
+        ? timeAtDistance(points, cumulative, index, target)
+        : points[points.length - 1].time
+    const seconds = (crossedAt - previousTime) / 1000
+    const metres = target - previousTarget
+    if (seconds > 0 && metres > 0) lastPace = (seconds / metres) * SPLIT_DISTANCE_METERS
+
+    const point: TrackProfilePoint = {
+      distanceMeters: Math.round(target),
+      paceSecondsPerKm: Math.round(lastPace * 10) / 10,
+    }
+    if (elevationCount > 0) {
+      point.elevationMeters = Math.round((elevationSum / elevationCount) * 10) / 10
+    }
+    profile.push(point)
+
+    previousTime = crossedAt
+    previousTarget = target
+    elevationSum = 0
+    elevationCount = 0
+  }
+
+  return profile
+}
+
 function heartRateSummary(points: TrackPoint[]): HeartRateSummary | undefined {
   const readings = points
     .map((point) => point.heartRate)
@@ -243,5 +330,6 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
       points.filter(hasPosition).map((point) => ({ lat: point.lat, lon: point.lon })),
       ROUTE_POINT_BUDGET,
     ),
+    profile: buildProfile(points, cumulative),
   }
 }

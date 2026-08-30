@@ -88,6 +88,7 @@ function validTrackPayload(
     splits: [{ index: 1, distanceMeters: 1000, durationSeconds: 307, paceSecondsPerKm: 307, partial: false }],
     heartRate: null,
     route: [{ lat: 52.34235667, lon: 12.99992 }],
+    profile: [{ distanceMeters: 101, elevationMeters: 40.2, paceSecondsPerKm: 307 }],
     ...overrides,
   }
 }
@@ -952,6 +953,23 @@ describe('firestore.rules', () => {
       await assertFails(
         db.collection('events').doc(eventId).collection('track').doc(trackId).set(
           validTrackPayload(userId, eventId, trackId, { route }),
+        ),
+      )
+    })
+
+    it('rejects an unbounded chart profile', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const profile = Array.from({ length: 201 }, (_unused, index) => ({
+        distanceMeters: index * 100,
+        paceSecondsPerKm: 307,
+      }))
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertFails(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, { profile }),
         ),
       )
     })
