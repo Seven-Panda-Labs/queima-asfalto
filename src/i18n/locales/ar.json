@@ -225,6 +225,12 @@
     "confirmReplaceMessage": "سيحل {{fileName}} محل الملف الحالي وكل ما يشتق منه. لا يمكن التراجع.",
     "confirmDeleteTitle": "حذف الملف؟",
     "confirmDeleteMessage": "سيحذف الملف وتقسيماته. تبقى نتيجتك المسجلة كما هي.",
+    "chartPace": "الإيقاع",
+    "chartElevation": "الارتفاع",
+    "chartPaceAxis": "الإيقاع (دقيقة/كم)",
+    "chartElevationAxis": "الارتفاع (م)",
+    "chartDistanceAxis": "المسافة (كم)",
+    "chartDistanceTooltip": "{{distance}} كم",
     "errors": {
       "unsupported_type": "تقبل ملفات GPX و TCX فقط.",
       "file_too_large": "حجم الملف يتجاوز 20 ميجابايت.",

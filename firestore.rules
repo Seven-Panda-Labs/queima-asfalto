@@ -291,6 +291,8 @@ service cloud.firestore {
         && data.splits.size() <= 200
         && data.route is list
         && data.route.size() <= 200
+        && data.profile is list
+        && data.profile.size() <= 200
         && (!('heartRate' in data) || data.heartRate == null || data.heartRate is map);
     }
 
@@ -298,7 +300,8 @@ service cloud.firestore {
       return data.keys().hasAll([
           'userId', 'format', 'storagePath', 'downloadUrl', 'sizeBytes', 'fileName',
           'startedAt', 'elapsedSeconds', 'movingSeconds', 'distanceMeters', 'distanceSource',
-          'averagePaceSecondsPerKm', 'elevationGainMeters', 'elevationLossMeters', 'splits', 'route'
+          'averagePaceSecondsPerKm', 'elevationGainMeters', 'elevationLossMeters', 'splits',
+          'route', 'profile'
         ])
         && isOwner(data.userId)
         && isApprovedUser(data.userId)

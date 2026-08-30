@@ -96,6 +96,49 @@ describe('heart rate', () => {
   })
 })
 
+describe('profile', () => {
+  it('never samples finer than the minimum bucket, whatever the budget', () => {
+    // A 5 km at the budget alone would use 41 m buckets, where one bad GPS fix
+    // reads as a 2:46/km kilometre.
+    expect(gpx.profile).toHaveLength(49)
+    expect(tcx.profile).toHaveLength(49)
+    expect(gpx.distanceMeters / gpx.profile.length).toBeGreaterThanOrEqual(100)
+  })
+
+  it('advances monotonically and finishes on the measured distance', () => {
+    const distances = gpx.profile.map((point) => point.distanceMeters)
+    expect(distances.every((value, index) => index === 0 || value > distances[index - 1])).toBe(
+      true,
+    )
+    expect(distances.at(-1)).toBe(Math.round(gpx.distanceMeters))
+  })
+
+  it('smooths pace into a plausible band instead of raw GPS noise', () => {
+    // The run averaged 5:19/km, and the smoothed series spans 3:37 to 6:25.
+    const paces = gpx.profile.map((point) => point.paceSecondsPerKm)
+    expect(Math.min(...paces)).toBeGreaterThan(200)
+    expect(Math.max(...paces)).toBeLessThan(420)
+  })
+
+  it('produces the same shape from either export of the same run', () => {
+    const gpxPaces = gpx.profile.map((point) => point.paceSecondsPerKm)
+    const tcxPaces = tcx.profile.map((point) => point.paceSecondsPerKm)
+    expect(Math.abs(Math.min(...gpxPaces) - Math.min(...tcxPaces))).toBeLessThan(15)
+    expect(Math.abs(Math.max(...gpxPaces) - Math.max(...tcxPaces))).toBeLessThan(15)
+  })
+
+  it('carries elevation when the file has it', () => {
+    expect(gpx.profile.every((point) => point.elevationMeters !== undefined)).toBe(true)
+    expect(tcx.profile.every((point) => point.elevationMeters !== undefined)).toBe(true)
+  })
+
+  it('averages to about the same pace as the summary', () => {
+    const mean =
+      gpx.profile.reduce((sum, point) => sum + point.paceSecondsPerKm, 0) / gpx.profile.length
+    expect(Math.abs(mean - gpx.averagePaceSecondsPerKm)).toBeLessThan(5)
+  })
+})
+
 describe('route', () => {
   it('simplifies to a storable point budget', () => {
     expect(gpx.route.length).toBeLessThanOrEqual(150)

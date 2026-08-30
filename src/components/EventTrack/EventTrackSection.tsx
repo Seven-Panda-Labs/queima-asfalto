@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog'
+import { TrackProfileChart } from './TrackProfileChart'
 import { TrackSplitsTable } from './TrackSplitsTable'
 import { useToast } from '../../contexts/ToastContext'
 import { TRACK_FILE_ACCEPT } from '../../constants/activityTrack'
@@ -114,6 +115,10 @@ export function EventTrackSection({ event, track, loading, userId }: EventTrackS
           </dl>
 
           <p className="mt-2 text-xs text-muted">{t('eventTrack.elevationApproximate')}</p>
+
+          <div className="mt-5">
+            <TrackProfileChart profile={track.profile} />
+          </div>
 
           <div className="mt-5">
             <TrackSplitsTable splits={track.splits} showHeartRate={Boolean(track.heartRate)} />

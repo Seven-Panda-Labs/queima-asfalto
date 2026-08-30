@@ -56,6 +56,7 @@ export function docToEventTrack(
     splits: (data.splits as EventTrack['splits'] | undefined) ?? [],
     heartRate: (data.heartRate as EventTrack['heartRate'] | null) ?? undefined,
     route: (data.route as EventTrack['route'] | undefined) ?? [],
+    profile: (data.profile as EventTrack['profile'] | undefined) ?? [],
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
   }
 }
@@ -88,6 +89,7 @@ export async function saveEventTrackRecord(
     splits: data.splits,
     heartRate: data.heartRate ?? null,
     route: data.route,
+    profile: data.profile,
     createdAt: serverTimestamp(),
   })
 }
@@ -149,6 +151,7 @@ export async function uploadEventTrack(
     splits: summary.splits,
     heartRate: summary.heartRate,
     route: summary.route,
+    profile: summary.profile,
   }
 
   await saveEventTrackRecord(eventId, payload)
