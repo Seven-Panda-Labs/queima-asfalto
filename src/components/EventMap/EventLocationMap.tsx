@@ -53,11 +53,18 @@ export function LocationMap({ point, route, className = '' }: LocationMapProps) 
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker
-          position={position}
-          icon={markerIcon(statusDotColor(point.status ?? 'planned'))}
-          title={point.location}
-        />
+        {/*
+          A geocoded place name lands on the middle of a park or a town, so with a
+          route drawn the pin sits visibly beside it, or outside the fitted frame
+          entirely. The route already says where the race was.
+        */}
+        {line.length > 1 ? null : (
+          <Marker
+            position={position}
+            icon={markerIcon(statusDotColor(point.status ?? 'planned'))}
+            title={point.location}
+          />
+        )}
         {line.length > 1 ? (
           <>
             <Polyline positions={line} pathOptions={{ color: PRIMARY_COLOR, weight: 4 }} />

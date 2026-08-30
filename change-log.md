@@ -4,6 +4,14 @@
 
 ---
 
+## [1.27.0] - 2026-08-30
+
+### Adicionado
+
+- **Ficheiros de atividade nos eventos:** carrega o GPX ou TCX do teu relógio e a prova ganha splits por quilómetro, o percurso desenhado no mapa, um gráfico de ritmo e altitude e, se o ficheiro os trouxer, os batimentos cardíacos. O tempo medido é oferecido para preencher o resultado, e nunca substitui o que já lá está sem confirmares: a cronometragem oficial é a que conta. Os ficheiros entram e saem nos backups.
+
+---
+
 ## [1.26.1] - 2026-08-30
 
 ### Alterado
