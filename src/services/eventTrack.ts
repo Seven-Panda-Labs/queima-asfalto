@@ -4,12 +4,14 @@ import {
   getDoc,
   serverTimestamp,
   setDoc,
+  updateDoc,
   type Timestamp,
 } from 'firebase/firestore'
 import { db } from './firebase'
 import { deleteEventTrackFile, uploadEventTrackFile } from './eventTrackStorage'
 import { buildEventTrackStoragePath } from '../utils/eventTrackPaths'
 import {
+  computePacingDrift,
   parseActivityFile,
   summarizeActivity,
   type ActivityFileErrorCode,
@@ -94,6 +96,23 @@ export async function saveEventTrackRecord(
   })
 }
 
+/**
+ * Mirrors the drift onto the parent event, or clears it.
+ *
+ * A failure here must not fail the upload: the track is already saved, and the
+ * only cost is one race missing from the pacing chart until it is next written.
+ */
+async function writePacingDrift(eventId: string, drift: number | null): Promise<void> {
+  try {
+    await updateDoc(doc(db, 'events', eventId), {
+      trackPacingDriftSeconds: drift,
+      updatedAt: serverTimestamp(),
+    })
+  } catch {
+    // Deliberately swallowed, see above.
+  }
+}
+
 export async function deleteEventTrack(eventId: string): Promise<void> {
   const existing = await getEventTrack(eventId)
   if (!existing) return
@@ -104,6 +123,7 @@ export async function deleteEventTrack(eventId: string): Promise<void> {
     // A missing object must not block removing the metadata that points at it.
   }
   await deleteDoc(eventTrackDocRef(eventId))
+  await writePacingDrift(eventId, null)
 }
 
 /**
@@ -155,6 +175,7 @@ export async function uploadEventTrack(
   }
 
   await saveEventTrackRecord(eventId, payload)
+  await writePacingDrift(eventId, computePacingDrift(summary.splits))
 
   if (existing && existing.storagePath !== storagePath) {
     try {

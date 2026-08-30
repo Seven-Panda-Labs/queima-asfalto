@@ -30,6 +30,13 @@ export type Event = {
   parkrunEventSlug?: string
   parkrunCountryUrl?: string
   resultsVerified?: boolean
+  /**
+   * Seconds per kilometre the second half of the race was slower than the first,
+   * from the uploaded track. Denormalised from `events/{id}/track` on purpose:
+   * the analysis page reads events with one query, and fanning out to a
+   * subcollection per event would grow with every race ever run.
+   */
+  trackPacingDriftSeconds?: number
   createdAt: Date
   updatedAt: Date
 }

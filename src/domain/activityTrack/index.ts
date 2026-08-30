@@ -1,5 +1,6 @@
 export { parseActivityFile, parseActivityXml, trackExtensionOf } from './parseActivityFile'
 export { haversineMeters, summarizeActivity } from './metrics'
+export { computePacingDrift } from './pacing'
 export { simplifyRoute } from './simplify'
 export type {
   ActivityTrackSummary,

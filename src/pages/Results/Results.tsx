@@ -28,6 +28,7 @@ import {
   computeCareerTotals,
 } from '../../utils/analytics/activity'
 import { computeDataQuality } from '../../utils/analytics/dataQuality'
+import { buildPacingSummary, MIN_PACING_RACES } from '../../utils/analytics/pacing'
 import {
   buildEquivalentSeries,
   pickReferenceEventType,
@@ -75,6 +76,11 @@ const CumulativeSeasonChart = lazy(() =>
 const SeasonalityChart = lazy(() =>
   import('../../components/Charts/SeasonalityChart').then((module) => ({
     default: module.SeasonalityChart,
+  })),
+)
+const PacingChart = lazy(() =>
+  import('../../components/Charts/PacingChart').then((module) => ({
+    default: module.PacingChart,
   })),
 )
 const PaceChart = lazy(() =>
@@ -187,6 +193,7 @@ export function Results() {
     [results, seasons],
   )
   const cumulative = useMemo(() => buildCumulativeSeasons(results), [results])
+  const pacing = useMemo(() => buildPacingSummary(allEvents), [allEvents])
   const seasonality = useMemo(
     () => computeSeasonality(results, referenceKm),
     [results, referenceKm],
@@ -373,6 +380,29 @@ export function Results() {
                       }
                     >
                       <SeasonHeader comparison={comparison} />
+                    </AnalysisSection>
+
+                    <AnalysisSection
+                      title={t('analysis.pacingTitle')}
+                      hint={t('analysis.pacingHint')}
+                      empty={
+                        pacing.points.length < MIN_PACING_RACES
+                          ? t('analysis.pacingEmpty', { count: MIN_PACING_RACES })
+                          : undefined
+                      }
+                    >
+                      <div className="rounded-xl border border-border bg-surface p-4">
+                        <Suspense fallback={<ChartSkeleton />}>
+                          <PacingChart points={pacing.points} />
+                        </Suspense>
+                        <p className="mt-4 border-t border-border pt-4 text-sm text-muted">
+                          {t('analysis.pacingSummary', {
+                            faded: pacing.faded,
+                            total: pacing.points.length,
+                            seconds: Math.round(pacing.medianDriftSeconds),
+                          })}
+                        </p>
+                      </div>
                     </AnalysisSection>
 
                     <AnalysisSection
