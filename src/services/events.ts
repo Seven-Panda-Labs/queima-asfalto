@@ -81,6 +81,8 @@ function docToEvent(id: string, data: Record<string, unknown>): Event {
       typeof data.parkrunEventSlug === 'string' ? data.parkrunEventSlug : undefined,
     parkrunCountryUrl:
       typeof data.parkrunCountryUrl === 'string' ? data.parkrunCountryUrl : undefined,
+    trackPacingDriftSeconds:
+      typeof data.trackPacingDriftSeconds === 'number' ? data.trackPacingDriftSeconds : undefined,
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
     updatedAt: timestampToDate(data.updatedAt as Timestamp | undefined),
   }

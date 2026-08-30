@@ -122,7 +122,8 @@ service cloud.firestore {
         && (!('pace' in data) || data.pace == null || data.pace is string)
         && (!('classification' in data) || data.classification == null || data.classification is string)
         && (!('notes' in data) || data.notes == null || data.notes is string)
-        && (!('resultsVerified' in data) || data.resultsVerified == null || data.resultsVerified is bool);
+        && (!('resultsVerified' in data) || data.resultsVerified == null || data.resultsVerified is bool)
+        && (!('trackPacingDriftSeconds' in data) || data.trackPacingDriftSeconds == null || data.trackPacingDriftSeconds is number);
     }
 
     function validGoalWrite(data) {
