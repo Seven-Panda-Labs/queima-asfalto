@@ -9,6 +9,7 @@ import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicato
 import { StatusBadge } from '../../components/StatusBadge'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
+import { EventTrackSection } from '../../components/EventTrack'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
 import { EventResultEditor } from '../../components/EventResultEditor'
 import { PencilIcon } from '../../components/icons/actionIcons'
@@ -20,6 +21,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEventMedia } from '../../hooks/useEventMedia'
+import { useEventTrack } from '../../hooks/useEventTrack'
 import { useEvents } from '../../hooks/useEvents'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
 import { useShares } from '../../hooks/useShares'
@@ -116,6 +118,10 @@ export function EventDetail() {
   >([])
   const [itemToDelete, setItemToDelete] = useState<EventMedia | null>(null)
   const [deletingId, setDeletingId] = useState<string | null>(null)
+
+  // A shared view reads through a callable, not Firestore, so subscribing there
+  // would only produce permission errors.
+  const { track, loading: trackLoading } = useEventTrack(isSharedView ? undefined : event?.id)
 
   const personalRecordIds = isSharedView
     ? new Set<string>()
@@ -413,9 +419,18 @@ export function EventDetail() {
                 </p>
               }
             >
-              <EventLocationMap event={event} />
+              <EventLocationMap event={event} route={track?.route} />
             </Suspense>
           </section>
+        ) : null}
+
+        {canEditResult && user ? (
+          <EventTrackSection
+            event={event}
+            track={track}
+            loading={trackLoading}
+            userId={user.uid}
+          />
         ) : null}
 
         {!isSharedView && event.status === 'completed' ? (

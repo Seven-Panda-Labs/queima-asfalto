@@ -201,6 +201,37 @@
       "limit_reached": "10 files per event limit reached"
     }
   },
+  "eventTrack": {
+    "title": "Activity file",
+    "empty": "No file yet. Upload the GPX or TCX from your watch to see splits and the route.",
+    "upload": "Upload file",
+    "replace": "Replace file",
+    "uploading": "Uploading...",
+    "uploaded": "File uploaded",
+    "replaced": "File replaced",
+    "removed": "File removed",
+    "offline": "You are offline. Try again once you are back.",
+    "formatsHint": "GPX or TCX, up to 20 MB. One file per event.",
+    "measuredDistance": "Measured",
+    "elevationGain": "Elevation gain",
+    "elevationApproximate": "Elevation is approximate. Watches and file formats disagree on it.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "Km",
+    "heartRateColumn": "HR",
+    "partialSplit": "{{distance}} km",
+    "fastest": "fastest",
+    "slowest": "slowest",
+    "confirmReplaceTitle": "Replace the file?",
+    "confirmReplaceMessage": "{{fileName}} replaces the current file and everything derived from it. This cannot be undone.",
+    "confirmDeleteTitle": "Remove the file?",
+    "confirmDeleteMessage": "The file and its splits are deleted. Your recorded result stays.",
+    "errors": {
+      "unsupported_type": "Only GPX and TCX files are accepted.",
+      "file_too_large": "The file is larger than 20 MB.",
+      "malformed_xml": "The file could not be read. It may be incomplete.",
+      "no_track_points": "The file has no track points with a timestamp."
+    }
+  },
   "eventForm": {
     "new": "New event",
     "edit": "Edit event",

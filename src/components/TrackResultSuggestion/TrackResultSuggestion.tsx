@@ -3,11 +3,8 @@ import { useTranslation } from 'react-i18next'
 import { ConfirmDialog } from '../ConfirmDialog/ConfirmDialog'
 import type { Event } from '../../types/Event'
 import type { EventTrack } from '../../types/EventTrack'
-import {
-  buildTrackTimeSuggestion,
-  distanceDeviationPercent,
-  formatSignedDuration,
-} from '../../utils/trackSuggestion'
+import { buildTrackTimeSuggestion, distanceDeviationPercent } from '../../utils/trackSuggestion'
+import { formatPaceDelta } from '../../utils/analytics/results'
 
 type TrackResultSuggestionProps = {
   track: EventTrack
@@ -73,7 +70,7 @@ export function TrackResultSuggestion({
           <p className="mt-2 text-sm text-muted">
             {t('trackResult.differs', {
               current: suggestion.currentTime,
-              delta: formatSignedDuration(suggestion.deltaSeconds),
+              delta: formatPaceDelta(suggestion.deltaSeconds),
             })}
           </p>
           <button

@@ -201,6 +201,37 @@
       "limit_reached": "límite de 10 archivos por evento alcanzado"
     }
   },
+  "eventTrack": {
+    "title": "Archivo de actividad",
+    "empty": "Aún no hay archivo. Sube el GPX o TCX de tu reloj para ver los parciales y el recorrido.",
+    "upload": "Subir archivo",
+    "replace": "Sustituir archivo",
+    "uploading": "Subiendo...",
+    "uploaded": "Archivo subido",
+    "replaced": "Archivo sustituido",
+    "removed": "Archivo eliminado",
+    "offline": "Estás sin conexión. Inténtalo de nuevo al volver.",
+    "formatsHint": "GPX o TCX, hasta 20 MB. Un archivo por evento.",
+    "measuredDistance": "Medido",
+    "elevationGain": "Desnivel positivo",
+    "elevationApproximate": "El desnivel es aproximado. Relojes y formatos no coinciden en él.",
+    "fileMeta": "{{fileName}} ({{format}})",
+    "splitColumn": "Km",
+    "heartRateColumn": "FC",
+    "partialSplit": "{{distance}} km",
+    "fastest": "más rápido",
+    "slowest": "más lento",
+    "confirmReplaceTitle": "¿Sustituir el archivo?",
+    "confirmReplaceMessage": "{{fileName}} sustituye el archivo actual y todo lo derivado de él. No se puede deshacer.",
+    "confirmDeleteTitle": "¿Eliminar el archivo?",
+    "confirmDeleteMessage": "Se borran el archivo y sus parciales. Tu resultado registrado se mantiene.",
+    "errors": {
+      "unsupported_type": "Solo se aceptan archivos GPX y TCX.",
+      "file_too_large": "El archivo supera los 20 MB.",
+      "malformed_xml": "No se pudo leer el archivo. Puede estar incompleto.",
+      "no_track_points": "El archivo no tiene puntos con fecha y hora."
+    }
+  },
   "eventForm": {
     "new": "Nuevo evento",
     "edit": "Editar evento",

@@ -27,19 +27,6 @@ export function formatSecondsAsTime(totalSeconds: number): string {
   return [hours, minutes, seconds].map((part) => String(part).padStart(2, '0')).join(':')
 }
 
-export function formatPaceSeconds(secondsPerKm: number): string {
-  const rounded = Math.max(0, Math.round(secondsPerKm))
-  return `${Math.floor(rounded / 60)}:${String(rounded % 60).padStart(2, '0')}`
-}
-
-/** Reads as a difference, so it always carries a sign: `+0:07`, `-1:05`. */
-export function formatSignedDuration(deltaSeconds: number): string {
-  const rounded = Math.round(deltaSeconds)
-  const sign = rounded < 0 ? '-' : '+'
-  const absolute = Math.abs(rounded)
-  return `${sign}${Math.floor(absolute / 60)}:${String(absolute % 60).padStart(2, '0')}`
-}
-
 export function buildTrackTimeSuggestion(
   track: Pick<EventTrack, 'elapsedSeconds'>,
   currentTime: string | undefined,
