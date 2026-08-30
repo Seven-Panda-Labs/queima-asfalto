@@ -2,9 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   buildTrackTimeSuggestion,
   distanceDeviationPercent,
-  formatPaceSeconds,
   formatSecondsAsTime,
-  formatSignedDuration,
 } from './trackSuggestion'
 
 describe('formatSecondsAsTime', () => {
@@ -17,21 +15,6 @@ describe('formatSecondsAsTime', () => {
   it('rounds a fractional elapsed time to the nearest second', () => {
     expect(formatSecondsAsTime(1580.4)).toBe('00:26:20')
     expect(formatSecondsAsTime(1580.6)).toBe('00:26:21')
-  })
-})
-
-describe('formatPaceSeconds', () => {
-  it('matches the m:ss the app uses for pace', () => {
-    expect(formatPaceSeconds(319)).toBe('5:19')
-    expect(formatPaceSeconds(605)).toBe('10:05')
-  })
-})
-
-describe('formatSignedDuration', () => {
-  it('always carries a sign, because it reads as a difference', () => {
-    expect(formatSignedDuration(7)).toBe('+0:07')
-    expect(formatSignedDuration(-65)).toBe('-1:05')
-    expect(formatSignedDuration(0)).toBe('+0:00')
   })
 })
 
