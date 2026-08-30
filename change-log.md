@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.0] - 2026-08-30
+
+### Adicionado
+
+- **Escolhe as disciplinas que queres ver:** em Definições > App podes desligar as distâncias que não corres. Deixam de aparecer nos filtros e nas listas de escolha. Nada se perde: as provas, objetivos e recordes que já tens numa disciplina desligada continuam à vista.
+
+---
+
 ## [1.25.0] - 2026-08-30
 
 ### Alterado

@@ -7,8 +7,9 @@ import { PageShell } from '../../components/PageShell/PageShell'
 import { useGoals } from '../../hooks/useGoals'
 import { DuplicateGoalError, getGoal } from '../../services/goals'
 import type { EventType, GoalCreate } from '../../types'
-import { EVENT_TYPES } from '../../types'
 import { formatEventTypeLabel } from '../../types/Goal'
+import { useDisciplines } from '../../contexts/DisciplinesContext'
+import { visibleDisciplines } from '../../domain/disciplinePreferences'
 
 const MAX_TARGET_COUNT = 99
 
@@ -46,6 +47,26 @@ export function GoalForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+
+  const { enabledDisciplines, loading: loadingDisciplines } = useDisciplines()
+
+  /** The value in the field is always offered, so editing a goal in a disabled
+   *  discipline does not silently move it to another one. */
+  const disciplineOptions = useMemo(
+    () => visibleDisciplines(enabledDisciplines, [form.eventType]),
+    [enabledDisciplines, form.eventType],
+  )
+
+  /** A new goal opens on the first enabled discipline. */
+  useEffect(() => {
+    if (isEditing || loadingDisciplines) return
+
+    setForm((current) =>
+      enabledDisciplines.includes(current.eventType)
+        ? current
+        : { ...current, eventType: enabledDisciplines[0]! },
+    )
+  }, [isEditing, loadingDisciplines, enabledDisciplines])
 
   // Só do ano corrente para a frente: um objetivo para um ano que já passou não
   // tem como ser cumprido. O ano do próprio objetivo entra na lista ao editar,
@@ -182,7 +203,7 @@ export function GoalForm() {
               onChange={(e) => updateField('eventType', e.target.value as EventType)}
               className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2"
             >
-              {EVENT_TYPES.map((type) => (
+              {disciplineOptions.map((type) => (
                 <option key={type} value={type}>
                   {formatEventTypeLabel(type)}
                 </option>

@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect, useState, type FormEvent } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { EmojiPicker } from '../../components/EmojiPicker'
@@ -9,8 +9,9 @@ import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { getBucketListItem } from '../../services/bucketList'
 import type { BucketListItemCreate } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
-import { EVENT_TYPES } from '../../types/Event'
 import { formatEventTypeLabel } from '../../i18n/formatters'
+import { useDisciplines } from '../../contexts/DisciplinesContext'
+import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import { validateBucketListItem } from '../../utils/bucketListValidation'
 import { deriveEventTypeFromName } from '../../utils/deriveEventTypeFromName'
 import { formatTargetMonth, TARGET_MONTHS } from '../../utils/targetMonth'
@@ -18,8 +19,6 @@ import { formatTargetMonth, TARGET_MONTHS } from '../../utils/targetMonth'
 const LocationMap = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.LocationMap })),
 )
-
-const BUCKET_LIST_EVENT_TYPES: EventType[] = [...EVENT_TYPES]
 
 type FormState = {
   name: string
@@ -76,6 +75,29 @@ export function BucketListForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
+
+  const { enabledDisciplines, loading: loadingDisciplines } = useDisciplines()
+  const disciplineDefaultRef = useRef(false)
+
+  /** Whatever the item already picked stays offered, so editing cannot drop a
+   *  discipline the user turned off after creating the item. */
+  const disciplineOptions = useMemo(
+    () => visibleDisciplines(enabledDisciplines, form.disciplines),
+    [enabledDisciplines, form.disciplines],
+  )
+
+  /** `emptyForm` derives a discipline from an empty name, so a new item can
+   *  open on one the user turned off. Corrected once, as soon as we know. */
+  useEffect(() => {
+    if (isEditing || loadingDisciplines || disciplineDefaultRef.current) return
+    disciplineDefaultRef.current = true
+
+    setForm((current) =>
+      current.disciplines.some((discipline) => enabledDisciplines.includes(discipline))
+        ? current
+        : { ...current, disciplines: [enabledDisciplines[0]!] },
+    )
+  }, [isEditing, loadingDisciplines, enabledDisciplines])
 
   useEffect(() => {
     if (!id) return
@@ -328,7 +350,7 @@ export function BucketListForm() {
           <div>
             <p className="text-sm font-semibold text-foreground">{t('bucketList.disciplines')}</p>
             <div className="mt-2 flex flex-wrap gap-2">
-              {BUCKET_LIST_EVENT_TYPES.map((type) => {
+              {disciplineOptions.map((type) => {
                 const selected = form.disciplines.includes(type)
                 return (
                   <button

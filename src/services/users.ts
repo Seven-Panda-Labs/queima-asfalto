@@ -5,6 +5,11 @@ import {
   parseNotificationPrefs,
   type NotificationPrefs,
 } from '../types/NotificationPrefs'
+import {
+  DEFAULT_ENABLED_DISCIPLINES,
+  parseEnabledDisciplines,
+} from '../domain/disciplinePreferences'
+import type { EventType } from '../domain/eventCodes'
 import type { UserResultsProfile } from '../types/UserResultsProfile'
 import { formatParkrunnerId } from '../../shared/officialResults/parkrunnerId'
 import { isAppLanguage } from '../../shared/account/types'
@@ -110,6 +115,28 @@ export async function updateNotificationPrefs(
     doc(db, 'users', userId),
     {
       ...prefs,
+      updatedAt: serverTimestamp(),
+    },
+    { merge: true },
+  )
+}
+
+export async function getEnabledDisciplines(userId: string): Promise<EventType[]> {
+  const snapshot = await getDoc(doc(db, 'users', userId))
+  if (!snapshot.exists()) {
+    return [...DEFAULT_ENABLED_DISCIPLINES]
+  }
+  return parseEnabledDisciplines(snapshot.data())
+}
+
+export async function updateEnabledDisciplines(
+  userId: string,
+  disciplines: EventType[],
+): Promise<void> {
+  await setDoc(
+    doc(db, 'users', userId),
+    {
+      enabledDisciplines: disciplines,
       updatedAt: serverTimestamp(),
     },
     { merge: true },

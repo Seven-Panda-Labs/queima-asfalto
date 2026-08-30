@@ -17,8 +17,9 @@ import { useEvents } from '../../hooks/useEvents'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
-import { EVENT_TYPES } from '../../types/Event'
 import { formatEventTypeLabel } from '../../i18n/formatters'
+import { useDisciplines } from '../../contexts/DisciplinesContext'
+import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import { formatPerformanceGoalLabel } from '../../types/PerformanceGoal'
 import { formatDatePt } from '../../utils/date'
 import {
@@ -148,6 +149,17 @@ export function Results() {
     [allResults, eventTypeFilter],
   )
 
+  const { enabledDisciplines } = useDisciplines()
+
+  /** Only the enabled disciplines, plus whichever one is filtering right now:
+   *  a bookmark into a disabled discipline would otherwise narrow the page with
+   *  no pill on screen to say so, and no way to clear it. */
+  const disciplineOptions = useMemo(
+    () =>
+      visibleDisciplines(enabledDisciplines, eventTypeFilter === 'all' ? [] : [eventTypeFilter]),
+    [enabledDisciplines, eventTypeFilter],
+  )
+
   const seasons = useMemo(() => availableSeasons(allResults), [allResults])
   const season = typeof yearFilter === 'number' ? yearFilter : currentYear
 
@@ -191,10 +203,17 @@ export function Results() {
   const careerTotals = useMemo(() => computeCareerTotals(results), [results])
   const rhythm = useMemo(() => computeActivityRhythm(results), [results])
   const calendar = useMemo(() => buildActivityCalendar(results), [results])
-  const forecast = useMemo(
-    () => predictRaceTimes(results, referenceKm),
-    [results, referenceKm],
-  )
+  /** An estimate for a discipline the user does not race is noise, so the
+   *  predictor follows the same visible set as the filters. */
+  const forecast = useMemo(() => {
+    const forecasted = predictRaceTimes(results, referenceKm)
+    if (!forecasted) return null
+
+    const predictions = forecasted.predictions.filter((prediction) =>
+      enabledDisciplines.includes(prediction.eventType),
+    )
+    return predictions.length > 0 ? { ...forecasted, predictions } : null
+  }, [results, referenceKm, enabledDisciplines])
   const quality = useMemo(() => computeDataQuality(allEvents), [allEvents])
 
   /** The pace chart works on events, not on analysed results. */
@@ -301,7 +320,7 @@ export function Results() {
                   >
                     {t('bucketList.allDisciplines')}
                   </FilterPill>
-                  {EVENT_TYPES.map((type) => (
+                  {disciplineOptions.map((type) => (
                     <FilterPill
                       key={type}
                       active={eventTypeFilter === type}

@@ -14,6 +14,8 @@ import { geocodeAndUpdateEvent } from '../../services/eventGeocoding'
 import { getEvent } from '../../services/events'
 import type { EventCreate, EventStatus, EventType } from '../../types/Event'
 import { EVENT_TYPES } from '../../types/Event'
+import { useDisciplines } from '../../contexts/DisciplinesContext'
+import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import { suggestEventEmoji } from '../../utils/eventEmojiRules'
 import { formatEventStatusLabel, formatEventTypeLabel } from '../../i18n/formatters'
 import { allowedStatusesForDate, normalizeStatusForDate, validateEventDateStatus } from '../../utils/eventValidation'
@@ -112,6 +114,28 @@ export function EventForm() {
   const [parkrunCountryUrl, setParkrunCountryUrl] = useState<string | undefined>()
 
   const isParkrunEvent = eventKind === 'parkrun'
+
+  const { enabledDisciplines, loading: loadingDisciplines } = useDisciplines()
+
+  /** The value in the field is always offered, so editing a race in a disabled
+   *  discipline does not silently move it to another one. */
+  const disciplineOptions = useMemo(
+    () => visibleDisciplines(enabledDisciplines, [form.eventType]),
+    [enabledDisciplines, form.eventType],
+  )
+
+  /** A blank race opens on the first enabled discipline. A parkrun is a 5K and
+   *  a bucket list item brings its own, so neither is overridden here. */
+  useEffect(() => {
+    if (isEditing || loadingDisciplines) return
+    if (eventKind === 'parkrun' || bucketListItemId !== null) return
+
+    setForm((current) =>
+      enabledDisciplines.includes(current.eventType)
+        ? current
+        : { ...current, eventType: enabledDisciplines[0]! },
+    )
+  }, [isEditing, loadingDisciplines, eventKind, bucketListItemId, enabledDisciplines])
 
   useEffect(() => {
     if (id) return
@@ -637,7 +661,7 @@ export function EventForm() {
               onChange={(e) => updateField('eventType', e.target.value as EventType)}
               className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2"
             >
-              {EVENT_TYPES.map((type) => (
+              {disciplineOptions.map((type) => (
                 <option key={type} value={type}>
                   {formatEventTypeLabel(type)}
                 </option>

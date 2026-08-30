@@ -20,8 +20,9 @@ import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
-import { EVENT_TYPES } from '../../types/Event'
 import { formatEventTypeLabel } from '../../i18n/formatters'
+import { useDisciplines } from '../../contexts/DisciplinesContext'
+import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import { bucketListItemHasDiscipline } from '../../utils/bucketListDisciplines'
 import {
   bucketListItemsWithCoordinates,
@@ -101,6 +102,17 @@ export function BucketList() {
   const addItemPath = activeOwnerId
     ? `/bucket-list/novo?owner=${activeOwnerId}`
     : '/bucket-list/novo'
+
+  const { enabledDisciplines } = useDisciplines()
+
+  /** Only the enabled disciplines, plus whichever one is filtering right now:
+   *  a link into a disabled discipline would otherwise narrow the list with no
+   *  pill on screen to say so, and no way to clear it. */
+  const disciplineOptions = useMemo(
+    () =>
+      visibleDisciplines(enabledDisciplines, eventTypeFilter === 'all' ? [] : [eventTypeFilter]),
+    [enabledDisciplines, eventTypeFilter],
+  )
 
   const availableMonths = useMemo(() => {
     const months = new Set<TargetMonth>()
@@ -239,7 +251,7 @@ export function BucketList() {
                 >
                   {t('bucketList.allDisciplines')}
                 </FilterPill>
-                {EVENT_TYPES.map((type) => (
+                {disciplineOptions.map((type) => (
                   <FilterPill
                     key={type}
                     active={eventTypeFilter === type}

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.26.0] - 2026-08-30
+
+### Added
+
+- **Pick the disciplines you want to see:** in Settings > App you can turn off the distances you do not race. They stop showing in filters and pickers. Nothing is lost: the races, goals and records you already have in a disabled discipline stay in view.
+
+---
+
 ## [1.25.0] - 2026-08-30
 
 ### Changed
