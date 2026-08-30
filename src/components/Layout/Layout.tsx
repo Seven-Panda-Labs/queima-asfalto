@@ -16,7 +16,7 @@ import { timingDisclaimerPath } from '../../config/timingDisclaimer'
 const navItems = [
   { to: '/', key: 'nav.dashboard', end: true, badge: false },
   { to: '/eventos', key: 'nav.events', end: false, badge: false },
-  { to: '/resultados', key: 'nav.results', end: false, badge: false },
+  { to: '/analise', key: 'nav.results', end: false, badge: false },
   { to: '/objetivos', key: 'nav.goals', end: false, badge: false },
   { to: '/bucket-list', key: 'nav.bucketList', end: false, badge: false },
   { to: '/definicoes', key: 'nav.settings', end: false, badge: true },

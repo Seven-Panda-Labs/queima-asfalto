@@ -20,7 +20,7 @@ export function RecordStrip({ records }: { records: BestPerformance[] }) {
         <h2 className="font-display text-2xl tracking-wide text-foreground">
           {t('dashboard.personalBests')}
         </h2>
-        <Link to="/resultados" className="text-sm font-semibold text-primary hover:underline">
+        <Link to="/analise" className="text-sm font-semibold text-primary hover:underline">
           {t('dashboard.viewResults')} <span className="inline-block rtl:-scale-x-100">→</span>
         </Link>
       </div>

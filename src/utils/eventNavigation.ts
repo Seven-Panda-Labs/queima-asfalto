@@ -21,10 +21,20 @@ export type ResultsListFilters = {
 
 const EVENTS_VIEW_MODES: EventsListFilters['view'][] = ['lista', 'calendario', 'mapa']
 
+export const ANALYSIS_PATH = '/analise'
+
+/** Rota antiga da análise. Continua aceite: links partilhados e `returnTo`
+ *  guardados antes do rename ainda a trazem, e `/resultados` redirecciona. */
+export const LEGACY_ANALYSIS_PATH = '/resultados'
+
 export function isSafeReturnPath(path: string): boolean {
   try {
     const { pathname } = new URL(path, 'http://local')
-    return pathname === '/eventos' || pathname === '/resultados'
+    return (
+      pathname === '/eventos' ||
+      pathname === ANALYSIS_PATH ||
+      pathname === LEGACY_ANALYSIS_PATH
+    )
   } catch {
     return false
   }
@@ -154,5 +164,5 @@ export function buildResultsListPath(
   const qs = buildResultsListSearchParams(filters, currentYear)
   if (ownerId) qs.set('owner', ownerId)
   const query = qs.toString()
-  return query ? `/resultados?${query}` : '/resultados'
+  return query ? `${ANALYSIS_PATH}?${query}` : ANALYSIS_PATH
 }
