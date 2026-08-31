@@ -4,6 +4,14 @@
 
 ---
 
+## [1.29.1] - 2026-08-31
+
+### Modifié
+
+- **Gestion de l'effort plus lisible :** perdre jusqu'à 10 s/km sur la seconde moitié compte désormais comme une allure tenue, et le rouge est réservé aux chutes au-delà de 25 s/km. Le graphique apparaît dès une course, au lieu d'en exiger cinq.
+
+---
+
 ## [1.29.0] - 2026-08-31
 
 ### Ajouté

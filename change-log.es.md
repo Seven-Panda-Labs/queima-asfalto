@@ -4,6 +4,14 @@
 
 ---
 
+## [1.29.1] - 2026-08-31
+
+### Cambiado
+
+- **Distribución del esfuerzo más legible:** perder hasta 10 s/km en la segunda mitad ahora cuenta como ritmo constante, y el rojo queda para bajones por encima de 25 s/km. El gráfico aparece desde una carrera, en vez de exigir cinco.
+
+---
+
 ## [1.29.0] - 2026-08-31
 
 ### Añadido

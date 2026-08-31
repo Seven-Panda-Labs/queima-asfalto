@@ -1,14 +1,36 @@
 import type { AnalysableResult } from './results'
 
 /**
- * Inside this band a race counts as evenly run. Watches and timing mats disagree
- * by a few seconds a kilometre anyway, so a tighter line would report noise as
- * a pacing decision.
+ * Inside this a race counts as evenly run. Watches and timing mats disagree by a
+ * few seconds a kilometre anyway, and losing a little in the second half is what
+ * almost everyone does: a tighter line paints normal racing as a failure.
  */
-export const EVEN_PACING_BAND_SECONDS = 5
+export const EVEN_PACING_BAND_SECONDS = 10
 
-/** Below this the chart is drawing a habit through too few races to have one. */
-export const MIN_PACING_RACES = 5
+/**
+ * Past this the second half was not a fade but a collapse.
+ *
+ * The point of a second line is that one colour for everything above 10 s/km
+ * says nothing: it puts a race that drifted 13 s/km next to one that lost 67.
+ */
+export const HEAVY_PACING_FADE_SECONDS = 25
+
+/**
+ * The bars stand alone, so one race is worth drawing.
+ *
+ * The sentence underneath is the part that claims a habit, and that needs more
+ * than one race to be a claim at all.
+ */
+export const MIN_PACING_RACES = 1
+export const MIN_PACING_SUMMARY_RACES = 3
+
+export type PacingBand = 'negative' | 'even' | 'fade' | 'heavy'
+
+export function pacingBand(driftSeconds: number): PacingBand {
+  if (driftSeconds < -EVEN_PACING_BAND_SECONDS) return 'negative'
+  if (driftSeconds <= EVEN_PACING_BAND_SECONDS) return 'even'
+  return driftSeconds > HEAVY_PACING_FADE_SECONDS ? 'heavy' : 'fade'
+}
 
 export type PacingPoint = {
   result: AnalysableResult
@@ -19,9 +41,11 @@ export type PacingPoint = {
 
 export type PacingSummary = {
   points: PacingPoint[]
+  /** Every race past the even band, whether it faded or collapsed. */
   faded: number
   even: number
   negative: number
+  heavy: number
   medianDriftSeconds: number
 }
 
@@ -60,16 +84,16 @@ export function buildPacingSummary(
     .sort((left, right) => left.date.getTime() - right.date.getTime())
 
   if (points.length === 0) {
-    return { points, faded: 0, even: 0, negative: 0, medianDriftSeconds: 0 }
+    return { points, faded: 0, even: 0, negative: 0, heavy: 0, medianDriftSeconds: 0 }
   }
 
   return {
     points,
-    faded: points.filter((point) => point.driftSeconds > EVEN_PACING_BAND_SECONDS).length,
-    even: points.filter(
-      (point) => Math.abs(point.driftSeconds) <= EVEN_PACING_BAND_SECONDS,
-    ).length,
-    negative: points.filter((point) => point.driftSeconds < -EVEN_PACING_BAND_SECONDS).length,
+    faded: points.filter((point) => pacingBand(point.driftSeconds) !== 'even'
+      && pacingBand(point.driftSeconds) !== 'negative').length,
+    even: points.filter((point) => pacingBand(point.driftSeconds) === 'even').length,
+    negative: points.filter((point) => pacingBand(point.driftSeconds) === 'negative').length,
+    heavy: points.filter((point) => pacingBand(point.driftSeconds) === 'heavy').length,
     medianDriftSeconds: median(points.map((point) => point.driftSeconds)),
   }
 }

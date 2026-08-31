@@ -4,6 +4,14 @@
 
 ---
 
+## [1.29.1] - 2026-08-31
+
+### Alterado
+
+- **Distribuição de esforço mais legível:** perder até 10 s/km na segunda metade passa a contar como ritmo constante, e o vermelho fica reservado para quebras acima de 25 s/km. O gráfico aparece a partir de uma prova, em vez de exigir cinco.
+
+---
+
 ## [1.29.0] - 2026-08-31
 
 ### Adicionado
