@@ -4,6 +4,18 @@
 
 ---
 
+## [1.29.0] - 2026-08-31
+
+### Añadido
+
+- **Marca a batir en las carreras que vienen:** al abrir una carrera futura en un recorrido que ya has hecho, ves tu mejor ritmo allí y el tiempo que da en esta distancia.
+
+### Cambiado
+
+- **Subir archivo solo después de la carrera:** la subida de GPX o TCX ya no aparece en carreras futuras, para que un entrenamiento en el recorrido no acabe archivado como la carrera.
+
+---
+
 ## [1.28.0] - 2026-08-30
 
 ### Añadido

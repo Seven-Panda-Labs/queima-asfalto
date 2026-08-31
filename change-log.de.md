@@ -4,6 +4,18 @@
 
 ---
 
+## [1.29.0] - 2026-08-31
+
+### Hinzugefügt
+
+- **Eine Zeit zum Schlagen bei kommenden Rennen:** Öffnest du ein anstehendes Rennen auf einer Strecke, die du schon gelaufen bist, siehst du dein bestes Tempo dort und was es auf dieser Distanz ergibt.
+
+### Geändert
+
+- **Datei erst nach dem Rennen hochladen:** Der GPX und TCX Upload erscheint nicht mehr bei künftigen Rennen, damit kein Trainingslauf auf der Strecke als das Rennen abgelegt wird.
+
+---
+
 ## [1.28.0] - 2026-08-30
 
 ### Hinzugefügt
