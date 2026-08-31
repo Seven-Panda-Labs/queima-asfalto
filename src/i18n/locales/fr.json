@@ -245,6 +245,11 @@
   "courseHistory": {
     "title": "Ce parcours",
     "subtitle": "Tu l'as couru {{count}} fois.",
+    "subtitleUpcoming": "Tu l'as couru {{count}} fois.",
+    "toBeat": "À battre",
+    "lastTime": "La dernière fois",
+    "target": "Ta meilleure allure sur cette distance donne {{time}}. On la bat ?",
+    "targetNote": "Un objectif, pas un temps réalisé : le même parcours n'est pas toujours mesuré à la même distance.",
     "thisRun": "Cette fois",
     "best": "Meilleure",
     "previous": "Précédente",

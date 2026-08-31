@@ -4,6 +4,18 @@
 
 ---
 
+## [1.29.0] - 2026-08-31
+
+### Ajouté
+
+- **Un temps à battre sur les courses à venir :** ouvre une course à venir sur un parcours déjà couru et vois ta meilleure allure là-bas, et ce qu'elle donne sur cette distance.
+
+### Modifié
+
+- **Importer un fichier seulement après la course :** l'import GPX et TCX n'apparaît plus sur les courses à venir, pour qu'un entraînement sur le parcours ne finisse pas classé comme la course.
+
+---
+
 ## [1.28.0] - 2026-08-30
 
 ### Ajouté

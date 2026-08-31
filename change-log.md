@@ -4,6 +4,18 @@
 
 ---
 
+## [1.29.0] - 2026-08-31
+
+### Adicionado
+
+- **Marca a bater nas provas que aí vêm:** ao abrires uma prova futura num percurso que já correste, vês o teu melhor ritmo ali e o tempo que ele dá nesta distância.
+
+### Alterado
+
+- **Carregar ficheiro só depois da prova:** o carregamento de GPX ou TCX deixa de aparecer em provas futuras, para não acabar lá um treino no percurso arquivado como se fosse a prova.
+
+---
+
 ## [1.28.0] - 2026-08-30
 
 ### Adicionado

@@ -33,9 +33,9 @@ import type { EventMedia } from '../../types/EventMedia'
 import type { MediaValidationErrorCode } from '../../utils/mediaValidation'
 import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
-import { formatDatePt } from '../../utils/date'
+import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
-import { buildCourseHistory } from '../../utils/analytics/course'
+import { buildCourseComparison } from '../../utils/analytics/course'
 import { canRecoverEventToBucketList, eventToBucketListItem } from '../../utils/eventToBucketList'
 import { eventHasCoordinates } from '../../services/eventGeocoding'
 import {
@@ -127,8 +127,8 @@ export function EventDetail() {
 
   // Built from events already in memory, so a repeated course costs no reads and
   // needs no activity file: the official time is what ranks the runnings.
-  const courseHistory = useMemo(
-    () => (event && !isSharedView ? buildCourseHistory(event, allEvents) : null),
+  const courseComparison = useMemo(
+    () => (event && !isSharedView ? buildCourseComparison(event, allEvents) : null),
     [event, isSharedView, allEvents],
   )
 
@@ -433,9 +433,11 @@ export function EventDetail() {
           </section>
         ) : null}
 
-        {courseHistory ? <CourseHistory history={courseHistory} /> : null}
+        {courseComparison ? <CourseHistory comparison={courseComparison} /> : null}
 
-        {canEditResult && user ? (
+        {/* A race still ahead has no file to upload, and offering one invites a
+            training run to be filed as the race itself. */}
+        {canEditResult && user && !isFutureDate(event.date) ? (
           <EventTrackSection
             event={event}
             track={track}

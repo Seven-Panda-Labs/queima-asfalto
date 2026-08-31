@@ -2,7 +2,7 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { Event } from '../../types/Event'
-import { buildCourseHistory } from '../../utils/analytics/course'
+import { buildCourseComparison } from '../../utils/analytics/course'
 import { CourseHistory } from './CourseHistory'
 
 afterEach(() => {
@@ -21,6 +21,17 @@ function race(id: string, date: string, time: string): Event {
   } as Event
 }
 
+function upcoming(id: string, date: string): Event {
+  return {
+    id,
+    name: 'Parkrun Hasenheide',
+    date: new Date(date),
+    realDistance: 5,
+    status: 'confirmed',
+    eventType: 'km_5',
+  } as Event
+}
+
 // 5:20, then 4:57, then 5:27 a kilometre.
 const runs = [
   race('a', '2021-10-01', '00:26:40'),
@@ -30,7 +41,7 @@ const runs = [
 
 function renderFor(id: string) {
   const event = runs.find((run) => run.id === id)!
-  render(<CourseHistory history={buildCourseHistory(event, runs)!} />)
+  render(<CourseHistory comparison={buildCourseComparison(event, runs)!} />)
 }
 
 describe('CourseHistory', () => {
@@ -57,6 +68,16 @@ describe('CourseHistory', () => {
   it('has no previous row for the first running', () => {
     renderFor('a')
     expect(screen.queryByText('Anterior')).not.toBeInTheDocument()
+  })
+
+  it('offers a target instead of a ranking for a race still ahead', () => {
+    const ahead = upcoming('next', '2027-01-01')
+    render(<CourseHistory comparison={buildCourseComparison(ahead, [...runs, ahead])!} />)
+
+    // Best pace here is 4:57, so five kilometres of it is 24:45.
+    expect(screen.getByText(/24:45/)).toBeInTheDocument()
+    expect(screen.getByText('A bater')).toBeInTheDocument()
+    expect(screen.queryByText('Esta vez')).not.toBeInTheDocument()
   })
 
   it('compares against the run immediately before, not only the best', () => {

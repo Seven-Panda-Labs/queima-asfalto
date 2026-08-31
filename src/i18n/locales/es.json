@@ -245,6 +245,11 @@
   "courseHistory": {
     "title": "Este recorrido",
     "subtitle": "Lo has corrido {{count}} veces.",
+    "subtitleUpcoming": "Lo has corrido {{count}} veces.",
+    "toBeat": "A batir",
+    "lastTime": "La última vez",
+    "target": "Tu mejor ritmo en esta distancia da {{time}}. ¿Lo batimos?",
+    "targetNote": "Es un objetivo, no un tiempo que alguien haya hecho: el mismo recorrido no siempre se mide con la misma distancia.",
     "thisRun": "Esta vez",
     "best": "Mejor",
     "previous": "Anterior",

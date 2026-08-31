@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Event } from '../../types/Event'
-import { buildCourseHistory, courseKey } from './course'
+import { buildCourseComparison, courseKey } from './course'
 
 function race(
   id: string,
@@ -59,26 +59,26 @@ describe('courseKey', () => {
   })
 })
 
-describe('buildCourseHistory', () => {
+describe('buildCourseComparison', () => {
   it('has nothing to say about a course run once', () => {
-    expect(buildCourseHistory(hasenheide[0], [hasenheide[0]])).toBeNull()
+    expect(buildCourseComparison(hasenheide[0], [hasenheide[0]])).toBeNull()
   })
 
   it('ranks every running by pace, fastest first', () => {
-    const history = buildCourseHistory(hasenheide[2], hasenheide)!
+    const history = buildCourseComparison(hasenheide[2], hasenheide)!
     expect(history.runs).toHaveLength(3)
     expect(history.best.result.event.id).toBe('b')
     expect(history.current.rank).toBe(3)
   })
 
   it('keeps the runs in chronological order', () => {
-    const history = buildCourseHistory(hasenheide[2], [...hasenheide].reverse())!
+    const history = buildCourseComparison(hasenheide[2], [...hasenheide].reverse())!
     expect(history.runs.map((run) => run.result.event.id)).toEqual(['a', 'b', 'c'])
   })
 
   it('points at the running immediately before this one', () => {
-    expect(buildCourseHistory(hasenheide[2], hasenheide)!.previous?.result.event.id).toBe('b')
-    expect(buildCourseHistory(hasenheide[0], hasenheide)!.previous).toBeNull()
+    expect(buildCourseComparison(hasenheide[2], hasenheide)!.previous?.result.event.id).toBe('b')
+    expect(buildCourseComparison(hasenheide[0], hasenheide)!.previous).toBeNull()
   })
 
   it('treats a course remeasured slightly as the same course', () => {
@@ -87,7 +87,7 @@ describe('buildCourseHistory', () => {
       race('x', 'B2Run Berlin', '2019-09-04', '00:33:05', 5.8),
       race('y', 'B2Run Berlin', '2024-09-17', '00:31:00', 5.7),
     ]
-    expect(buildCourseHistory(runs[1], runs)!.runs).toHaveLength(2)
+    expect(buildCourseComparison(runs[1], runs)!.runs).toHaveLength(2)
   })
 
   it('groups runnings whose names were typed in a different order', () => {
@@ -95,7 +95,7 @@ describe('buildCourseHistory', () => {
       race('x', 'Parkrun Hasenheide', '2025-01-01', '00:26:00'),
       race('y', 'Hasenheide Parkrun', '2026-01-01', '00:25:00'),
     ]
-    expect(buildCourseHistory(runs[1], runs)!.runs).toHaveLength(2)
+    expect(buildCourseComparison(runs[1], runs)!.runs).toHaveLength(2)
   })
 
   it('refuses a race that only shares a name', () => {
@@ -103,12 +103,51 @@ describe('buildCourseHistory', () => {
       race('x', 'Grande Prova', '2024-01-01', '00:25:00', 5),
       race('y', 'Grande Prova', '2025-01-01', '01:40:00', 21.1),
     ]
-    expect(buildCourseHistory(runs[1], runs)).toBeNull()
+    expect(buildCourseComparison(runs[1], runs)).toBeNull()
+  })
+
+  it('turns into a target for a race that has not been run yet', () => {
+    const ahead = {
+      id: 'next',
+      name: 'Parkrun Hasenheide',
+      date: new Date('2027-01-01'),
+      realDistance: 5,
+      status: 'confirmed',
+      eventType: 'km_5',
+    } as Event
+
+    const comparison = buildCourseComparison(ahead, [...hasenheide, ahead])!
+    expect(comparison.kind).toBe('upcoming')
+    if (comparison.kind !== 'upcoming') throw new Error('expected an outlook')
+
+    // The best of the three is 4:57 a kilometre, so five kilometres is 1485s.
+    expect(comparison.runs).toHaveLength(3)
+    expect(comparison.best.result.event.id).toBe('b')
+    expect(comparison.latest.result.event.id).toBe('c')
+    expect(Math.round(comparison.targetSeconds)).toBe(1485)
+  })
+
+  it('needs only one past running to have something to beat', () => {
+    const ahead = {
+      id: 'next',
+      name: 'Parkrun Hasenheide',
+      date: new Date('2027-01-01'),
+      realDistance: 5,
+      status: 'planned',
+      eventType: 'km_5',
+    } as Event
+
+    expect(buildCourseComparison(ahead, [hasenheide[0], ahead])).not.toBeNull()
+    expect(buildCourseComparison(ahead, [ahead])).toBeNull()
+  })
+
+  it('ranks rather than targets once a time is recorded', () => {
+    expect(buildCourseComparison(hasenheide[2], hasenheide)!.kind).toBe('ran')
   })
 
   it('leaves out races with no usable result', () => {
     const planned = { ...race('z', 'Parkrun Hasenheide', '2027-01-01', ''), status: 'planned' } as Event
-    const history = buildCourseHistory(hasenheide[2], [...hasenheide, planned])!
+    const history = buildCourseComparison(hasenheide[2], [...hasenheide, planned])!
     expect(history.runs).toHaveLength(3)
   })
 })

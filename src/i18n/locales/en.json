@@ -245,6 +245,11 @@
   "courseHistory": {
     "title": "This course",
     "subtitle": "You have run it {{count}} times.",
+    "subtitleUpcoming": "You have run it {{count}} times.",
+    "toBeat": "To beat",
+    "lastTime": "Last time",
+    "target": "Your best pace over this distance is {{time}}. Beat it?",
+    "targetNote": "A target, not a time anyone has run: the same course is not always measured at the same distance.",
     "thisRun": "This run",
     "best": "Best",
     "previous": "Previous",

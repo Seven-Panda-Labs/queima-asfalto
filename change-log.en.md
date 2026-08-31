@@ -4,6 +4,18 @@
 
 ---
 
+## [1.29.0] - 2026-08-31
+
+### Added
+
+- **A time to beat on races ahead:** open an upcoming race on a course you have run before and see your best pace there, and what it gives over this distance.
+
+### Changed
+
+- **Upload only once the race has happened:** the GPX and TCX upload no longer appears on future races, so a training run on the course does not end up filed as the race.
+
+---
+
 ## [1.28.0] - 2026-08-30
 
 ### Added
