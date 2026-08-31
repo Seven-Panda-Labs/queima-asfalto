@@ -9,6 +9,7 @@
 ### Ajouté
 
 - **Un temps à battre sur les courses à venir :** ouvre une course à venir sur un parcours déjà couru et vois ta meilleure allure là-bas, et ce qu'elle donne sur cette distance.
+- **Le temps à battre aussi sur l'accueil :** la carte de la prochaine course affiche le temps et l'allure à battre quand tu as déjà couru ce parcours.
 
 ### Modifié
 

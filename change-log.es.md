@@ -9,6 +9,7 @@
 ### Añadido
 
 - **Marca a batir en las carreras que vienen:** al abrir una carrera futura en un recorrido que ya has hecho, ves tu mejor ritmo allí y el tiempo que da en esta distancia.
+- **La marca a batir también en el inicio:** la tarjeta de la próxima carrera muestra el tiempo y el ritmo a batir cuando ya has hecho ese recorrido.
 
 ### Cambiado
 

@@ -9,6 +9,7 @@
 ### Added
 
 - **A time to beat on races ahead:** open an upcoming race on a course you have run before and see your best pace there, and what it gives over this distance.
+- **The time to beat on the home page too:** the next race card shows the time and pace to beat when you have run that course before.
 
 ### Changed
 

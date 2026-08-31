@@ -9,6 +9,7 @@
 ### Hinzugefügt
 
 - **Eine Zeit zum Schlagen bei kommenden Rennen:** Öffnest du ein anstehendes Rennen auf einer Strecke, die du schon gelaufen bist, siehst du dein bestes Tempo dort und was es auf dieser Distanz ergibt.
+- **Die Zielzeit auch auf der Startseite:** Die Karte des nächsten Rennens zeigt Zeit und Pace zum Schlagen, wenn du die Strecke schon gelaufen bist.
 
 ### Geändert
 
