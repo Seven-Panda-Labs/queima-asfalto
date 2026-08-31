@@ -50,6 +50,12 @@ describe('CourseHistory', () => {
     expect(screen.getByText('Já o correste 3 vezes.')).toBeInTheDocument()
   })
 
+  it('says it in the singular when the course was run once before', () => {
+    const ahead = upcoming('next', '2027-01-01')
+    render(<CourseHistory comparison={buildCourseComparison(ahead, [runs[0], ahead])!} />)
+    expect(screen.getByText('Já o correste uma vez.')).toBeInTheDocument()
+  })
+
   it('ranks this run and shows the gap to the best', () => {
     renderFor('c')
     expect(screen.getByText('3ª de 3')).toBeInTheDocument()

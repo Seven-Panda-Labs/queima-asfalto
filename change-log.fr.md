@@ -9,6 +9,7 @@
 ### Modifié
 
 - **Gestion de l'effort plus lisible :** perdre jusqu'à 10 s/km sur la seconde moitié compte désormais comme une allure tenue, et le rouge est réservé aux chutes au-delà de 25 s/km. Le graphique apparaît dès une course, au lieu d'en exiger cinq.
+- **Décomptes au singulier :** "1 fois ici" correctement accordé, partout où le nombre de passages sur un parcours est affiché.
 
 ---
 

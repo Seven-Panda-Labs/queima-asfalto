@@ -9,6 +9,7 @@
 ### Alterado
 
 - **Distribuição de esforço mais legível:** perder até 10 s/km na segunda metade passa a contar como ritmo constante, e o vermelho fica reservado para quebras acima de 25 s/km. O gráfico aparece a partir de uma prova, em vez de exigir cinco.
+- **Contagens no singular:** "1 vez aqui" em vez de "1 vezes aqui", nas frases que contam quantas vezes já correste um percurso.
 
 ---
 

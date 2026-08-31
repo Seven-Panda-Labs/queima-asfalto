@@ -45,6 +45,11 @@ describe('NextEventCard', () => {
     expect(screen.getByText('15 vezes aqui')).toBeInTheDocument()
   })
 
+  it('says it in the singular for a course run once', () => {
+    renderCard({ targetSeconds: 1540, paceSeconds: 308, runs: 1 })
+    expect(screen.getByText('1 vez aqui')).toBeInTheDocument()
+  })
+
   it('still renders the empty hero with no event at all', () => {
     render(
       <MemoryRouter>

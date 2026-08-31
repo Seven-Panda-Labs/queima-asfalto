@@ -9,6 +9,7 @@
 ### Geändert
 
 - **Lesbarere Renneinteilung:** Bis zu 10 s/km Verlust in der zweiten Hälfte gilt jetzt als gehaltenes Tempo, und Rot bleibt Einbrüchen über 25 s/km vorbehalten. Das Diagramm erscheint ab einem Rennen statt erst ab fünf.
+- **Zählungen im Singular:** "1 Mal hier" statt einer Pluralform, überall wo gezählt wird, wie oft du eine Strecke gelaufen bist.
 
 ---
 

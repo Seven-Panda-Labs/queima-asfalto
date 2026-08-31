@@ -9,6 +9,7 @@
 ### Changed
 
 - **A more readable pacing chart:** losing up to 10 s/km in the second half now counts as holding pace, and red is kept for fades past 25 s/km. The chart appears from a single race instead of requiring five.
+- **Counts read properly in the singular:** "1 time here" instead of "1 times here", wherever a course's run count is shown.
 
 ---
 

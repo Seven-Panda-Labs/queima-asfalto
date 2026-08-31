@@ -119,7 +119,8 @@
   "dashboard": {
     "nextEvent": "Próximo evento",
     "courseTarget": "A batir: {{time}} · {{pace}}/km",
-    "courseTargetRuns": "{{count}} veces aquí",
+    "courseTargetRuns_one": "{{count}} vez aquí",
+    "courseTargetRuns_other": "{{count}} veces aquí",
     "noUpcomingTitle": "El asfalto está esperando.",
     "noUpcoming": "No hay eventos planificados o confirmados próximos.",
     "daysUntilToday": "Hoy",
@@ -246,8 +247,10 @@
   },
   "courseHistory": {
     "title": "Este recorrido",
-    "subtitle": "Lo has corrido {{count}} veces.",
-    "subtitleUpcoming": "Lo has corrido {{count}} veces.",
+    "subtitle_one": "Lo has corrido una vez.",
+    "subtitle_other": "Lo has corrido {{count}} veces.",
+    "subtitleUpcoming_one": "Lo has corrido una vez.",
+    "subtitleUpcoming_other": "Lo has corrido {{count}} veces.",
     "toBeat": "A batir",
     "lastTime": "La última vez",
     "target": "Tu mejor ritmo en esta distancia da {{time}}. ¿Lo batimos?",
