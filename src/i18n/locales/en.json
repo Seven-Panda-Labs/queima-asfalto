@@ -119,7 +119,8 @@
   "dashboard": {
     "nextEvent": "Next event",
     "courseTarget": "To beat: {{time}} · {{pace}}/km",
-    "courseTargetRuns": "{{count}} times here",
+    "courseTargetRuns_one": "{{count}} time here",
+    "courseTargetRuns_other": "{{count}} times here",
     "noUpcomingTitle": "The asphalt is waiting.",
     "noUpcoming": "No upcoming planned or confirmed events.",
     "daysUntilToday": "Today",
@@ -246,8 +247,10 @@
   },
   "courseHistory": {
     "title": "This course",
-    "subtitle": "You have run it {{count}} times.",
-    "subtitleUpcoming": "You have run it {{count}} times.",
+    "subtitle_one": "You have run it once.",
+    "subtitle_other": "You have run it {{count}} times.",
+    "subtitleUpcoming_one": "You have run it once.",
+    "subtitleUpcoming_other": "You have run it {{count}} times.",
     "toBeat": "To beat",
     "lastTime": "Last time",
     "target": "Your best pace over this distance is {{time}}. Beat it?",

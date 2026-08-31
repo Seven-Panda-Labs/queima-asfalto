@@ -9,6 +9,7 @@
 ### Cambiado
 
 - **Distribución del esfuerzo más legible:** perder hasta 10 s/km en la segunda mitad ahora cuenta como ritmo constante, y el rojo queda para bajones por encima de 25 s/km. El gráfico aparece desde una carrera, en vez de exigir cinco.
+- **Conteos en singular:** "1 vez aquí" en lugar de "1 veces aquí", en las frases que cuentan cuántas veces has corrido un recorrido.
 
 ---
 
