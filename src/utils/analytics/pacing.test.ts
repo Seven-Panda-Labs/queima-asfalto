@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { Event } from '../../types/Event'
 import { toAnalysableResults } from './results'
-import { buildPacingSummary } from './pacing'
+import { buildPacingSummary, pacingBand } from './pacing'
 
 function race(date: string, drift?: number, eventType = 'km_5'): Event {
   return {
@@ -19,6 +19,25 @@ function race(date: string, drift?: number, eventType = 'km_5'): Event {
 function summaryOf(events: Event[], season = 2026) {
   return buildPacingSummary(toAnalysableResults(events), season)
 }
+
+describe('pacingBand', () => {
+  it('treats a small loss as evenly run, because almost everyone loses a little', () => {
+    expect(pacingBand(0)).toBe('even')
+    expect(pacingBand(10)).toBe('even')
+    expect(pacingBand(-10)).toBe('even')
+  })
+
+  it('separates a normal fade from a collapse', () => {
+    // One colour for everything above the band put 13 s/km next to 67.
+    expect(pacingBand(11)).toBe('fade')
+    expect(pacingBand(25)).toBe('fade')
+    expect(pacingBand(26)).toBe('heavy')
+  })
+
+  it('marks a race that finished faster than it started', () => {
+    expect(pacingBand(-11)).toBe('negative')
+  })
+})
 
 describe('buildPacingSummary', () => {
   it('keeps only races that carry a drift', () => {
@@ -41,16 +60,18 @@ describe('buildPacingSummary', () => {
     ])
   })
 
-  it('counts fading, even and negative splits around the band', () => {
+  it('counts each band', () => {
     const summary = summaryOf([
-      race('2026-01-01', 20),
-      race('2026-01-02', 6),
-      race('2026-01-03', 5),
-      race('2026-01-04', -5),
-      race('2026-01-05', -20),
+      race('2026-01-01', 40),
+      race('2026-01-02', 20),
+      race('2026-01-03', 10),
+      race('2026-01-04', -10),
+      race('2026-01-05', -30),
     ])
 
+    // faded counts everything past the even band, collapses included.
     expect(summary.faded).toBe(2)
+    expect(summary.heavy).toBe(1)
     expect(summary.even).toBe(2)
     expect(summary.negative).toBe(1)
   })
@@ -71,6 +92,13 @@ describe('buildPacingSummary', () => {
 
   it('has nothing to say without any track', () => {
     const summary = summaryOf([race('2026-01-01'), race('2026-02-01')])
-    expect(summary).toEqual({ points: [], faded: 0, even: 0, negative: 0, medianDriftSeconds: 0 })
+    expect(summary).toEqual({
+      points: [],
+      faded: 0,
+      even: 0,
+      negative: 0,
+      heavy: 0,
+      medianDriftSeconds: 0,
+    })
   })
 })

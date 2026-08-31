@@ -4,6 +4,14 @@
 
 ---
 
+## [1.29.1] - 2026-08-31
+
+### Changed
+
+- **A more readable pacing chart:** losing up to 10 s/km in the second half now counts as holding pace, and red is kept for fades past 25 s/km. The chart appears from a single race instead of requiring five.
+
+---
+
 ## [1.29.0] - 2026-08-31
 
 ### Added

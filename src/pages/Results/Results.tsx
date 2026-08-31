@@ -28,7 +28,11 @@ import {
   computeCareerTotals,
 } from '../../utils/analytics/activity'
 import { computeDataQuality } from '../../utils/analytics/dataQuality'
-import { buildPacingSummary, MIN_PACING_RACES } from '../../utils/analytics/pacing'
+import {
+  buildPacingSummary,
+  MIN_PACING_RACES,
+  MIN_PACING_SUMMARY_RACES,
+} from '../../utils/analytics/pacing'
 import {
   buildEquivalentSeries,
   pickReferenceEventType,
@@ -395,13 +399,16 @@ export function Results() {
                         <Suspense fallback={<ChartSkeleton />}>
                           <PacingChart points={pacing.points} />
                         </Suspense>
-                        <p className="mt-4 border-t border-border pt-4 text-sm text-muted">
-                          {t('analysis.pacingSummary', {
-                            faded: pacing.faded,
-                            total: pacing.points.length,
-                            seconds: Math.round(pacing.medianDriftSeconds),
-                          })}
-                        </p>
+                        {/* The bars stand alone; only this sentence claims a habit. */}
+                        {pacing.points.length >= MIN_PACING_SUMMARY_RACES ? (
+                          <p className="mt-4 border-t border-border pt-4 text-sm text-muted">
+                            {t('analysis.pacingSummary', {
+                              faded: pacing.faded,
+                              total: pacing.points.length,
+                              seconds: Math.round(pacing.medianDriftSeconds),
+                            })}
+                          </p>
+                        ) : null}
                       </div>
                     </AnalysisSection>
 

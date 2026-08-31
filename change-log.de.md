@@ -4,6 +4,14 @@
 
 ---
 
+## [1.29.1] - 2026-08-31
+
+### Geändert
+
+- **Lesbarere Renneinteilung:** Bis zu 10 s/km Verlust in der zweiten Hälfte gilt jetzt als gehaltenes Tempo, und Rot bleibt Einbrüchen über 25 s/km vorbehalten. Das Diagramm erscheint ab einem Rennen statt erst ab fünf.
+
+---
+
 ## [1.29.0] - 2026-08-31
 
 ### Hinzugefügt

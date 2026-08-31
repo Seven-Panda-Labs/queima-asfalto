@@ -2,22 +2,20 @@ import { useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Bar } from 'react-chartjs-2'
 import './chartConfig'
-import { EVEN_PACING_BAND_SECONDS, type PacingPoint } from '../../utils/analytics/pacing'
+import { pacingBand, type PacingPoint } from '../../utils/analytics/pacing'
 import { formatDatePt } from '../../utils/date'
 
 type PacingChartProps = {
   points: PacingPoint[]
 }
 
-const FADED_COLOR = '#EF4444'
-const NEGATIVE_COLOR = '#10B981'
-const EVEN_COLOR = '#94A3B8'
-
-function barColor(drift: number): string {
-  if (drift > EVEN_PACING_BAND_SECONDS) return FADED_COLOR
-  if (drift < -EVEN_PACING_BAND_SECONDS) return NEGATIVE_COLOR
-  return EVEN_COLOR
-}
+/** Red is kept for a collapse, so it means something when it appears. */
+const BAND_COLOR = {
+  negative: '#10B981',
+  even: '#94A3B8',
+  fade: '#F59E0B',
+  heavy: '#EF4444',
+} as const
 
 /** Bars, not a line: each race is its own decision, not a point on a curve. */
 export function PacingChart({ points }: PacingChartProps) {
@@ -30,7 +28,7 @@ export function PacingChart({ points }: PacingChartProps) {
         {
           label: t('analysis.pacingDataset'),
           data: points.map((point) => point.driftSeconds),
-          backgroundColor: points.map((point) => barColor(point.driftSeconds)),
+          backgroundColor: points.map((point) => BAND_COLOR[pacingBand(point.driftSeconds)]),
           borderWidth: 0,
         },
       ],
@@ -52,10 +50,15 @@ export function PacingChart({ points }: PacingChartProps) {
           label: (context: { parsed: { y: number | null } }) => {
             const drift = context.parsed.y
             if (drift === null) return ''
-            if (Math.abs(drift) <= EVEN_PACING_BAND_SECONDS) return t('analysis.pacingEvenTooltip')
-            return drift > 0
-              ? t('analysis.pacingFadedTooltip', { seconds: Math.round(drift) })
-              : t('analysis.pacingNegativeTooltip', { seconds: Math.round(Math.abs(drift)) })
+            const band = pacingBand(drift)
+            if (band === 'even') return t('analysis.pacingEvenTooltip')
+            if (band === 'negative') {
+              return t('analysis.pacingNegativeTooltip', { seconds: Math.round(Math.abs(drift)) })
+            }
+            return t(
+              band === 'heavy' ? 'analysis.pacingHeavyTooltip' : 'analysis.pacingFadedTooltip',
+              { seconds: Math.round(drift) },
+            )
           },
         },
       },
