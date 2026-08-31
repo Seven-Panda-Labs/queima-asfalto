@@ -5,13 +5,17 @@
  * The drift is computed from the splits already stored on the track document, so
  * this reads nothing from Storage and re-parses no files.
  *
+ * Scoped to one account. Pass --all-users to sweep every account on the
+ * instance, which is a deliberate choice rather than the default: an admin
+ * script reaching other people's documents should have to say so.
+ *
  * Against the emulator:
  *   FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
- *     npm run backfill:track-pacing -- --confirm
+ *     npm run backfill:track-pacing -- --confirm --user-id <uid>
  *
  * Against production, with Application Default Credentials:
- *   npm run backfill:track-pacing -- --dry-run
- *   npm run backfill:track-pacing -- --confirm
+ *   npm run backfill:track-pacing -- --dry-run --user-id <uid>
+ *   npm run backfill:track-pacing -- --confirm --user-id <uid>
  */
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
@@ -26,9 +30,17 @@ const PROJECT_ID =
 
 const dryRun = process.argv.includes('--dry-run')
 const confirm = process.argv.includes('--confirm')
+const allUsers = process.argv.includes('--all-users')
+const userIdIndex = process.argv.indexOf('--user-id')
+const userId = userIdIndex === -1 ? null : process.argv[userIdIndex + 1]
 
 if (!dryRun && !confirm) {
   console.error('Refusing to run. Pass --dry-run to preview, or --confirm to write.')
+  process.exit(1)
+}
+
+if (!userId && !allUsers) {
+  console.error('Refusing to run. Pass --user-id <uid>, or --all-users to sweep the instance.')
   process.exit(1)
 }
 
@@ -36,9 +48,13 @@ initializeApp({ projectId: PROJECT_ID })
 const db = getFirestore()
 
 console.log(`Target project: ${PROJECT_ID}`)
+console.log(`Target user: ${userId ?? 'every account on this instance'}`)
 console.log(`Mode: ${dryRun ? 'dry run' : 'write'}`)
 
-const events = await db.collection('events').get()
+const query = userId
+  ? db.collection('events').where('userId', '==', userId)
+  : db.collection('events')
+const events = await query.get()
 let examined = 0
 let written = 0
 let alreadySet = 0
