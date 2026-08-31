@@ -193,7 +193,7 @@ export function Results() {
     [results, seasons],
   )
   const cumulative = useMemo(() => buildCumulativeSeasons(results), [results])
-  const pacing = useMemo(() => buildPacingSummary(allEvents), [allEvents])
+  const pacing = useMemo(() => buildPacingSummary(results, season), [results, season])
   const seasonality = useMemo(
     () => computeSeasonality(results, referenceKm),
     [results, referenceKm],

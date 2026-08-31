@@ -47,7 +47,7 @@ export function PacingChart({ points }: PacingChartProps) {
         callbacks: {
           title: (items: { dataIndex: number }[]) => {
             const point = points[items[0]?.dataIndex ?? 0]
-            return point ? `${point.event.name} · ${formatDatePt(point.date)}` : ''
+            return point ? `${point.result.event.name} · ${formatDatePt(point.date)}` : ''
           },
           label: (context: { parsed: { y: number | null } }) => {
             const drift = context.parsed.y
