@@ -1,3 +1,4 @@
+import { useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AchievementShelf } from '../../components/AchievementShelf'
@@ -13,6 +14,7 @@ import { TargetCard } from '../../components/TargetCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
 import { useEvents } from '../../hooks/useEvents'
+import { buildCourseComparison } from '../../utils/analytics/course'
 import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { computeBestPerformances } from '../../utils/bestPerformances'
@@ -36,6 +38,19 @@ export function Dashboard() {
   } = usePerformanceGoals({ year: currentYear })
 
   const nextEvent = findNextEvent(allEvents)
+
+  // Only for a course already run. buildCourseComparison returns the upcoming
+  // shape exactly when the race has no result of its own yet.
+  const nextEventTarget = useMemo(() => {
+    if (!nextEvent) return null
+    const comparison = buildCourseComparison(nextEvent, allEvents)
+    if (comparison?.kind !== 'upcoming') return null
+    return {
+      targetSeconds: comparison.targetSeconds,
+      paceSeconds: comparison.best.result.paceSeconds,
+      runs: comparison.runs.length,
+    }
+  }, [nextEvent, allEvents])
   const stats = computeDashboardStats(allEvents, currentYear)
   const bestPerformances = computeBestPerformances(allEvents)
   const highlights = computeDashboardHighlights(goals, performanceGoals)
@@ -65,7 +80,7 @@ export function Dashboard() {
             {eventsError}
           </p>
         ) : (
-          <NextEventCard event={nextEvent} />
+          <NextEventCard event={nextEvent} target={nextEventTarget} />
         )}
       </section>
 

@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Marca a bater nas provas que aí vêm:** ao abrires uma prova futura num percurso que já correste, vês o teu melhor ritmo ali e o tempo que ele dá nesta distância.
+- **A marca a bater também no início:** o cartão da próxima prova mostra o tempo e o ritmo a bater, quando já correste esse percurso.
 
 ### Alterado
 

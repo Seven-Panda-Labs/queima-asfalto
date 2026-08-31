@@ -7,10 +7,21 @@ import type { Event } from '../../types/Event'
 import { formatEventStatusLabel } from '../../i18n/formatters'
 import { formatEventTypeLabel } from '../../types/Goal'
 import { formatDatePt } from '../../utils/date'
+import { formatDurationSeconds, formatPaceSeconds } from '../../utils/analytics/results'
 import { formatDaysUntil } from '../../utils/nextEvent'
+
+export type NextEventTarget = {
+  /** The best pace on this course, carried over the distance ahead. */
+  targetSeconds: number
+  paceSeconds: number
+  /** How many times the course has been run before. */
+  runs: number
+}
 
 type NextEventCardProps = {
   event?: Event | null
+  /** Only for a course already run: there is nothing to beat otherwise. */
+  target?: NextEventTarget | null
 }
 
 /** Asfalto low poly sobre o gradiente, mais o brilho que lhe dá profundidade. */
@@ -95,7 +106,7 @@ function EmptyHero() {
   )
 }
 
-export function NextEventCard({ event }: NextEventCardProps) {
+export function NextEventCard({ event, target }: NextEventCardProps) {
   const { t } = useTranslation()
   const today = new Date()
 
@@ -121,6 +132,19 @@ export function NextEventCard({ event }: NextEventCardProps) {
           {formatDatePt(event.date)} • {formatEventTypeLabel(event.eventType)} •{' '}
           {event.location || t('common.dash')}
         </p>
+        {target ? (
+          <p className="mt-3 inline-flex flex-wrap items-baseline gap-x-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+            <span>
+              {t('dashboard.courseTarget', {
+                time: formatDurationSeconds(target.targetSeconds),
+                pace: formatPaceSeconds(target.paceSeconds),
+              })}
+            </span>
+            <span className="font-normal text-white/75">
+              {t('dashboard.courseTargetRuns', { count: target.runs })}
+            </span>
+          </p>
+        ) : null}
       </div>
       <div className="flex shrink-0 items-center gap-3 sm:flex-col sm:items-end">
         <span className="rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">

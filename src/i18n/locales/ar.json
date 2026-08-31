@@ -118,6 +118,8 @@
   },
   "dashboard": {
     "nextEvent": "الفعالية التالية",
+    "courseTarget": "الرقم المطلوب: {{time}} · {{pace}}/كم",
+    "courseTargetRuns": "{{count}} مرات هنا",
     "noUpcomingTitle": "الأسفلت في انتظارك.",
     "noUpcoming": "لا توجد فعاليات قادمة مخطَّطة أو مؤكَّدة.",
     "daysUntilToday": "اليوم",

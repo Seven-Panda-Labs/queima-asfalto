@@ -118,6 +118,8 @@
   },
   "dashboard": {
     "nextEvent": "Next event",
+    "courseTarget": "To beat: {{time}} · {{pace}}/km",
+    "courseTargetRuns": "{{count}} times here",
     "noUpcomingTitle": "The asphalt is waiting.",
     "noUpcoming": "No upcoming planned or confirmed events.",
     "daysUntilToday": "Today",
