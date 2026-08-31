@@ -16,7 +16,7 @@
     "licenses": "license-checker-rseidelsohn --production --summary && license-checker-rseidelsohn --start ./functions --production --summary",
     "check:changelog": "tsx scripts/verify-changelog.ts",
     "check:licenses": "tsx scripts/verify-licenses.ts",
-    "check": "npm --prefix functions run build && npm run lint && npm run test && npm run test:rules && npm run check:changelog",
+    "check": "npm --prefix functions run build && npm run typecheck && npm run lint && npm run test && npm run test:rules && npm run check:changelog",
     "seed:demo-user": "tsx scripts/seed-demo-user.ts",
     "backfill:track-pacing": "tsx scripts/backfill-track-pacing.ts",
     "setup:githooks": "git config core.hooksPath .githooks",
@@ -25,7 +25,8 @@
     "preview": "vite preview",
     "emulators": "firebase emulators:start --project demo-queima-asfalto",
     "deploy": "npm run build && firebase deploy --only hosting,firestore:rules,firestore:indexes,storage,functions",
-    "deploy:hosting": "npm run build && firebase deploy --only hosting"
+    "deploy:hosting": "npm run build && firebase deploy --only hosting",
+    "typecheck": "tsc -b"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.1",

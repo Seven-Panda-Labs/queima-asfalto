@@ -60,25 +60,32 @@ describe('courseKey', () => {
 })
 
 describe('buildCourseComparison', () => {
+  /** Narrows to the ranking shape, so a regression fails the type check too. */
+  function ranked(event: Event, all: Event[]) {
+    const comparison = buildCourseComparison(event, all)
+    if (comparison?.kind !== 'ran') throw new Error('expected a ranking')
+    return comparison
+  }
+
   it('has nothing to say about a course run once', () => {
     expect(buildCourseComparison(hasenheide[0], [hasenheide[0]])).toBeNull()
   })
 
   it('ranks every running by pace, fastest first', () => {
-    const history = buildCourseComparison(hasenheide[2], hasenheide)!
+    const history = ranked(hasenheide[2], hasenheide)
     expect(history.runs).toHaveLength(3)
     expect(history.best.result.event.id).toBe('b')
     expect(history.current.rank).toBe(3)
   })
 
   it('keeps the runs in chronological order', () => {
-    const history = buildCourseComparison(hasenheide[2], [...hasenheide].reverse())!
+    const history = ranked(hasenheide[2], [...hasenheide].reverse())
     expect(history.runs.map((run) => run.result.event.id)).toEqual(['a', 'b', 'c'])
   })
 
   it('points at the running immediately before this one', () => {
-    expect(buildCourseComparison(hasenheide[2], hasenheide)!.previous?.result.event.id).toBe('b')
-    expect(buildCourseComparison(hasenheide[0], hasenheide)!.previous).toBeNull()
+    expect(ranked(hasenheide[2], hasenheide).previous?.result.event.id).toBe('b')
+    expect(ranked(hasenheide[0], hasenheide).previous).toBeNull()
   })
 
   it('treats a course remeasured slightly as the same course', () => {
