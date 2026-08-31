@@ -245,6 +245,11 @@
   "courseHistory": {
     "title": "Diese Strecke",
     "subtitle": "Du bist sie {{count}} Mal gelaufen.",
+    "subtitleUpcoming": "Du bist sie {{count}} Mal gelaufen.",
+    "toBeat": "Zu schlagen",
+    "lastTime": "Beim letzten Mal",
+    "target": "Dein bestes Tempo ergibt auf dieser Distanz {{time}}. Schlagen wir das?",
+    "targetNote": "Ein Ziel, keine gelaufene Zeit: dieselbe Strecke wird nicht immer gleich lang gemessen.",
     "thisRun": "Dieses Mal",
     "best": "Bestzeit",
     "previous": "Vorheriges Mal",

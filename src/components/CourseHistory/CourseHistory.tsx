@@ -1,10 +1,14 @@
 import { useTranslation } from 'react-i18next'
-import type { CourseHistory as CourseHistoryData } from '../../utils/analytics/course'
+import type { CourseComparison } from '../../utils/analytics/course'
 import { formatDatePt } from '../../utils/date'
-import { formatPaceDelta, formatPaceSeconds } from '../../utils/analytics/results'
+import {
+  formatDurationSeconds,
+  formatPaceDelta,
+  formatPaceSeconds,
+} from '../../utils/analytics/results'
 
 type CourseHistoryProps = {
-  history: CourseHistoryData
+  comparison: CourseComparison
 }
 
 function Row({
@@ -36,10 +40,44 @@ function Row({
  * Pace, not time: the same course is not always measured at the same distance,
  * and a time comparison would reward the year it came up short.
  */
-export function CourseHistory({ history }: CourseHistoryProps) {
+export function CourseHistory({ comparison }: CourseHistoryProps) {
   const { t } = useTranslation()
-  const { current, best, previous, runs } = history
+  const { best, runs } = comparison
 
+  if (comparison.kind === 'upcoming') {
+    return (
+      <section className="mt-6 rounded-lg border border-border bg-surface p-5">
+        <h2 className="text-lg font-semibold text-foreground">{t('courseHistory.title')}</h2>
+        <p className="mt-1 text-sm text-muted">
+          {t('courseHistory.subtitleUpcoming', { count: runs.length })}
+        </p>
+
+        <div className="mt-4">
+          <Row
+            label={t('courseHistory.toBeat')}
+            pace={formatPaceSeconds(best.result.paceSeconds)}
+            date={formatDatePt(best.result.date)}
+          />
+          {comparison.latest.result.event.id === best.result.event.id ? null : (
+            <Row
+              label={t('courseHistory.lastTime')}
+              pace={formatPaceSeconds(comparison.latest.result.paceSeconds)}
+              date={formatDatePt(comparison.latest.result.date)}
+            />
+          )}
+        </div>
+
+        <p className="mt-4 rounded-md bg-background px-3 py-2 text-sm text-foreground">
+          {t('courseHistory.target', {
+            time: formatDurationSeconds(comparison.targetSeconds),
+          })}
+        </p>
+        <p className="mt-3 text-xs text-muted">{t('courseHistory.targetNote')}</p>
+      </section>
+    )
+  }
+
+  const { current, previous } = comparison
   const isBest = current.rank === 1
 
   return (
