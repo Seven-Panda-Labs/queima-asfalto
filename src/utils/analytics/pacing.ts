@@ -1,4 +1,4 @@
-import type { Event } from '../../types/Event'
+import type { AnalysableResult } from './results'
 
 /**
  * Inside this band a race counts as evenly run. Watches and timing mats disagree
@@ -11,7 +11,7 @@ export const EVEN_PACING_BAND_SECONDS = 5
 export const MIN_PACING_RACES = 5
 
 export type PacingPoint = {
-  event: Event
+  result: AnalysableResult
   date: Date
   /** Seconds per kilometre the second half was slower. Negative finished faster. */
   driftSeconds: number
@@ -33,18 +33,29 @@ function median(values: number[]): number {
     : sorted[middle]
 }
 
-/** Races carrying a drift, oldest first, so the chart reads left to right in time. */
-export function buildPacingSummary(events: readonly Event[]): PacingSummary {
-  const points: PacingPoint[] = events
+/**
+ * The season's races carrying a drift, oldest first.
+ *
+ * Takes analysable results rather than raw events so it inherits the page's
+ * discipline filter, and is scoped to one season because it sits among the
+ * season blocks: a career-long chart under a heading that says 2026 reads as a
+ * mistake, whichever way round it is.
+ */
+export function buildPacingSummary(
+  results: readonly AnalysableResult[],
+  season: number,
+): PacingSummary {
+  const points: PacingPoint[] = results
+    .filter((result) => result.year === season)
     .filter(
-      (event): event is Event & { trackPacingDriftSeconds: number } =>
-        typeof event.trackPacingDriftSeconds === 'number' &&
-        Number.isFinite(event.trackPacingDriftSeconds),
+      (result) =>
+        typeof result.event.trackPacingDriftSeconds === 'number' &&
+        Number.isFinite(result.event.trackPacingDriftSeconds),
     )
-    .map((event) => ({
-      event,
-      date: event.date,
-      driftSeconds: event.trackPacingDriftSeconds,
+    .map((result) => ({
+      result,
+      date: result.date,
+      driftSeconds: result.event.trackPacingDriftSeconds as number,
     }))
     .sort((left, right) => left.date.getTime() - right.date.getTime())
 
