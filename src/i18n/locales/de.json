@@ -641,6 +641,7 @@
     "countGoals": "{{count}} Ziele",
     "countPerformanceGoals": "{{count}} Leistungsziele",
     "countBucketListItems": "{{count}} Einträge auf der Bucket List",
+    "countRaces": "{{count}} Rennen",
     "countUserProfile": "Profil: Sprache, Benachrichtigungseinstellungen und Ergebnisprofil",
     "countShares": "{{count}} Freigaben (nicht wiederherstellbar)",
     "existingLoading": "Deine aktuellen Daten werden gezählt...",
@@ -692,6 +693,7 @@
       "goals": "Ziele",
       "performanceGoals": "Leistungsziele",
       "bucketListItems": "Bucket List",
+      "races": "Rennen",
       "userProfile": "Profil",
       "shares": "Freigaben",
       "eventTracks": "Aktivitätsdateien"
@@ -768,7 +770,8 @@
     "eventsLoadError": "Deine Events konnten nicht geladen werden.",
     "goalsLoadError": "Deine Ziele konnten nicht geladen werden.",
     "performanceGoalsLoadError": "Deine Leistungsziele konnten nicht geladen werden.",
-    "bucketListLoadError": "Deine Bucket List konnte nicht geladen werden."
+    "bucketListLoadError": "Deine Bucket List konnte nicht geladen werden.",
+    "racesLoadError": "Die Rennen konnten nicht geladen werden."
   },
   "goalForm": {
     "targetCount": "Zielanzahl",

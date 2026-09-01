@@ -150,6 +150,24 @@ function rawFixture() {
         },
       },
     ],
+    races: [
+      {
+        id: 'race-berlim',
+        data: {
+          userId: USER_ID,
+          name: 'Maratona de Berlim',
+          location: 'Berlim, Alemanha',
+          locationLat: 52.5163,
+          locationLng: 13.3777,
+          locationGeocodeQuery: 'Berlim, Alemanha',
+          locationGeocodedAt: ts('2026-01-04T18:22:31Z', 415000000),
+          catalogRaceId: 'berlin-marathon',
+          officialUrl: 'https://example.test/berlin',
+          createdAt: ts('2026-01-04T18:22:31Z'),
+          updatedAt: ts('2026-01-04T18:22:31Z'),
+        },
+      },
+    ],
     userProfile: [
       {
         id: USER_ID,
@@ -267,6 +285,7 @@ describe('backup zip round trip', () => {
       goals: raw.goals.length,
       performanceGoals: raw.performanceGoals.length,
       bucketListItems: raw.bucketListItems.length,
+      races: raw.races.length,
       userProfile: 1,
       shares: 1,
     })

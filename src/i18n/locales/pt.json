@@ -641,6 +641,7 @@
     "countGoals": "{{count}} objetivos",
     "countPerformanceGoals": "{{count}} objetivos de performance",
     "countBucketListItems": "{{count}} itens da bucket list",
+    "countRaces": "{{count}} corridas",
     "countUserProfile": "Perfil: idioma, preferências de notificações e perfil de resultados",
     "countShares": "{{count}} partilhas (não restauráveis)",
     "existingLoading": "A contar os dados actuais...",
@@ -692,6 +693,7 @@
       "goals": "Objetivos",
       "performanceGoals": "Objetivos de performance",
       "bucketListItems": "Bucket list",
+      "races": "Corridas",
       "userProfile": "Perfil",
       "shares": "Partilhas",
       "eventTracks": "Ficheiros de atividade"
@@ -768,7 +770,8 @@
     "eventsLoadError": "Não foi possível carregar os teus eventos.",
     "goalsLoadError": "Não foi possível carregar os teus objetivos.",
     "performanceGoalsLoadError": "Não foi possível carregar os teus objetivos de performance.",
-    "bucketListLoadError": "Não foi possível carregar a tua bucket list."
+    "bucketListLoadError": "Não foi possível carregar a tua bucket list.",
+    "racesLoadError": "Não foi possível carregar as corridas."
   },
   "goalForm": {
     "targetCount": "Quantidade alvo",

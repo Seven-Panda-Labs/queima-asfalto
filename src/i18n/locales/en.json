@@ -641,6 +641,7 @@
     "countGoals": "{{count}} goals",
     "countPerformanceGoals": "{{count}} performance goals",
     "countBucketListItems": "{{count}} bucket list items",
+    "countRaces": "{{count}} races",
     "countUserProfile": "Profile: language, notification preferences and results profile",
     "countShares": "{{count}} shares (not restorable)",
     "existingLoading": "Counting your current data...",
@@ -692,6 +693,7 @@
       "goals": "Goals",
       "performanceGoals": "Performance goals",
       "bucketListItems": "Bucket list",
+      "races": "Races",
       "userProfile": "Profile",
       "shares": "Shares",
       "eventTracks": "Activity files"
@@ -768,7 +770,8 @@
     "eventsLoadError": "Could not load your events.",
     "goalsLoadError": "Could not load your goals.",
     "performanceGoalsLoadError": "Could not load your performance goals.",
-    "bucketListLoadError": "Could not load your bucket list."
+    "bucketListLoadError": "Could not load your bucket list.",
+    "racesLoadError": "Could not load the races."
   },
   "goalForm": {
     "targetCount": "Target count",

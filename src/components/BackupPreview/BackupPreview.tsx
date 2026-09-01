@@ -15,6 +15,7 @@ const COUNT_KEYS: Record<Exclude<BackupSectionKey, 'userProfile'>, string> = {
   goals: 'backup.countGoals',
   performanceGoals: 'backup.countPerformanceGoals',
   bucketListItems: 'backup.countBucketListItems',
+  races: 'backup.countRaces',
   shares: 'backup.countShares',
 }
 

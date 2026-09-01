@@ -653,6 +653,7 @@
     "countGoals": "{{count}} هدف",
     "countPerformanceGoals": "{{count}} هدف أداء",
     "countBucketListItems": "{{count}} عنصر في قائمة الأحلام",
+    "countRaces": "{{count}} سباقات",
     "countUserProfile": "الملف الشخصي: اللغة وتفضيلات الإشعارات وملف النتائج",
     "countShares": "{{count}} مشاركة (غير قابلة للاستعادة)",
     "existingLoading": "جارٍ إحصاء بياناتك الحالية...",
@@ -704,6 +705,7 @@
       "goals": "الأهداف",
       "performanceGoals": "أهداف الأداء",
       "bucketListItems": "قائمة الأحلام",
+      "races": "السباقات",
       "userProfile": "الملف الشخصي",
       "shares": "المشاركات",
       "eventTracks": "ملفات النشاط"
@@ -780,7 +782,8 @@
     "eventsLoadError": "تعذّر تحميل فعالياتك.",
     "goalsLoadError": "تعذّر تحميل أهدافك.",
     "performanceGoalsLoadError": "تعذّر تحميل أهداف الأداء.",
-    "bucketListLoadError": "تعذّر تحميل قائمة أحلامك."
+    "bucketListLoadError": "تعذّر تحميل قائمة أحلامك.",
+    "racesLoadError": "تعذّر تحميل السباقات."
   },
   "goalForm": {
     "targetCount": "العدد المستهدف",

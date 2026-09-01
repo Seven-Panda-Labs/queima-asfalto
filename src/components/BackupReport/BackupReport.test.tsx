@@ -20,6 +20,7 @@ function resultWith(overrides: Partial<BackupRestoreResult> = {}): BackupRestore
       goals: { created: 1, updated: 0, skipped: 0, rejected: 0 },
       performanceGoals: { created: 0, updated: 0, skipped: 0, rejected: 0 },
       bucketListItems: { created: 0, updated: 0, skipped: 0, rejected: 0 },
+      races: { created: 0, updated: 0, skipped: 0, rejected: 0 },
       userProfile: { created: 0, updated: 1, skipped: 0, rejected: 0 },
     },
     sharesIgnored: 0,

@@ -802,6 +802,21 @@ describe('manifest track accounting', () => {
     expect(parsed.trackFiles.size).toBe(0)
   })
 
+  it('reads a backup written before the races section as carrying no races', () => {
+    const files = buildBackupTextFiles(payloadWith({}))
+    const manifest = JSON.parse(files[BACKUP_MANIFEST_FILE]) as Record<string, unknown>
+    delete (manifest.counts as Record<string, unknown>).races
+    delete (manifest.files as Record<string, unknown>).races
+    manifest.schemaVersion = 2
+    files[BACKUP_MANIFEST_FILE] = JSON.stringify(manifest)
+    delete files['races.json']
+
+    const parsed = parseBackupTextFiles(files)
+
+    expect(parsed.manifest.counts.races).toBe(0)
+    expect(parsed.sections.races).toEqual([])
+  })
+
   it('carries a track document and its file through a round trip', () => {
     const track: BackupDocument = {
       id: 'current',
