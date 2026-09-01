@@ -12,6 +12,7 @@
 
 ### Geändert
 
+- **Disziplinen wählen wurde kompakt:** die 13 Distanzen sind jetzt Chips, gruppiert in Bahn, Straße und Ultra, statt einer Liste mit 13 Kontrollkästchen.
 - **Die Punktdiagramme tragen eine Form pro Distanzfamilie:** Kreis, Dreieck, Quadrat, Raute und Stern, damit eine Disziplin nicht allein an der Farbe hängt.
 
 ### Behoben
