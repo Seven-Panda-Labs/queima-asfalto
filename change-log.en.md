@@ -12,6 +12,7 @@
 
 ### Changed
 
+- **Picking disciplines got compact:** the 13 distances are now pills grouped into track, road and ultra, instead of a 13 row checkbox list.
 - **The point charts carry a shape per distance family:** circle, triangle, square, diamond and star, so a discipline is never identified by colour alone.
 
 ### Fixed

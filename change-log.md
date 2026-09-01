@@ -12,6 +12,7 @@
 
 ### Alterado
 
+- **Escolher disciplinas ficou compacto:** as 13 distâncias passam a pastilhas agrupadas em pista, estrada e ultra, em vez de uma lista de 13 linhas com caixas.
 - **Os gráficos de pontos ganham uma forma por família de distância:** círculo, triângulo, quadrado, losango e estrela, para a disciplina não depender só da cor.
 
 ### Corrigido

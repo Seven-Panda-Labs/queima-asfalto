@@ -12,6 +12,7 @@
 
 ### Modifié
 
+- **Choisir les disciplines devient compact :** les 13 distances sont désormais des pastilles groupées en piste, route et ultra, au lieu d'une liste de 13 cases à cocher.
 - **Les graphiques en points portent une forme par famille de distance :** cercle, triangle, carré, losange et étoile, pour que la discipline ne repose pas sur la seule couleur.
 
 ### Corrigé
