@@ -733,6 +733,7 @@
     "resultsNotAllowed": "Ergebnisse können nur für Bestätigte oder Abgeschlossene Events erfasst werden.",
     "invalidEventType": "Ungültiger Eventtyp.",
     "disciplinesRequired": "Wähle mindestens eine Disziplin.",
+    "disciplinesMax": "Höchstens {{max}} Disziplinen pro Rennen.",
     "nameRequired": "Name ist erforderlich.",
     "locationRequired": "Ort ist erforderlich.",
     "distancePositive": "Distanz muss größer als null sein.",

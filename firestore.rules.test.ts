@@ -522,6 +522,33 @@ describe('firestore.rules', () => {
   })
 
   describe('bucketListItems', () => {
+    it('accepts a bucket list item with six disciplines and rejects seven', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('bucketListItems')
+          .doc('item-six')
+          .set(
+            validBucketListPayload(userId, {
+              disciplines: ['m_1500', 'm_3000', 'km_5', 'km_10', 'km_15', 'mi_10'],
+            }),
+          ),
+      )
+
+      await assertFails(
+        db
+          .collection('bucketListItems')
+          .doc('item-seven')
+          .set(
+            validBucketListPayload(userId, {
+              disciplines: ['m_1500', 'm_3000', 'km_5', 'km_10', 'km_15', 'mi_10', 'km_21_1'],
+            }),
+          ),
+      )
+    })
+
     it('allows owners to create bucket list items', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()

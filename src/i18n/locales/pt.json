@@ -733,6 +733,7 @@
     "resultsNotAllowed": "Só é possível registar resultados em eventos Confirmados ou Concluídos.",
     "invalidEventType": "Tipo de evento inválido.",
     "disciplinesRequired": "Seleciona pelo menos uma disciplina.",
+    "disciplinesMax": "No máximo {{max}} disciplinas por prova.",
     "nameRequired": "O nome é obrigatório.",
     "locationRequired": "O local é obrigatório.",
     "distancePositive": "A distância deve ser maior que zero.",

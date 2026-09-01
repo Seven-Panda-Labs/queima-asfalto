@@ -810,6 +810,9 @@ const LEGACY_STATUS_VALUES = [
 const LEGACY_TYPE_VALUES = ['5Km', '10Km', '21.1Km', '42.2Km', 'Outra'] as const
 
 const ALLOWED_STATUS = new Set<string>([...EVENT_STATUSES, ...LEGACY_STATUS_VALUES])
+/** Mirrors `validDisciplineList` in firestore.rules, which enumerates the entries. */
+const MAX_BUCKET_LIST_DISCIPLINES = 6
+
 const ALLOWED_TYPE = new Set<string>([...EVENT_TYPES, ...LEGACY_TYPE_VALUES])
 const ALLOWED_PLATFORM = new Set<string>(RESULTS_PLATFORMS)
 
@@ -962,7 +965,7 @@ function validateBucketListItem(data: Record<string, unknown>): RestoreRejection
   const validDisciplines =
     Array.isArray(disciplines) &&
     disciplines.length > 0 &&
-    disciplines.length <= 4 &&
+    disciplines.length <= MAX_BUCKET_LIST_DISCIPLINES &&
     disciplines.every((entry) => typeof entry === 'string' && ALLOWED_TYPE.has(entry))
   const validLegacy = typeof data.eventType === 'string' && ALLOWED_TYPE.has(data.eventType)
   if (!validDisciplines && !validLegacy) return 'invalid_disciplines'

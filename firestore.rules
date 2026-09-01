@@ -173,11 +173,13 @@ service cloud.firestore {
     function validDisciplineList(list) {
       return list is list
         && list.size() > 0
-        && list.size() <= 4
+        && list.size() <= 6
         && validEventType(list[0])
         && (list.size() < 2 || validEventType(list[1]))
         && (list.size() < 3 || validEventType(list[2]))
-        && (list.size() < 4 || validEventType(list[3]));
+        && (list.size() < 4 || validEventType(list[3]))
+        && (list.size() < 5 || validEventType(list[4]))
+        && (list.size() < 6 || validEventType(list[5]));
     }
 
     function validBucketListDisciplines(data) {

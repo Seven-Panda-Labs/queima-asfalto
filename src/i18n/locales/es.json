@@ -733,6 +733,7 @@
     "resultsNotAllowed": "Solo se pueden registrar resultados en eventos Confirmados o Completados.",
     "invalidEventType": "Tipo de evento no válido.",
     "disciplinesRequired": "Selecciona al menos una disciplina.",
+    "disciplinesMax": "Como máximo {{max}} disciplinas por carrera.",
     "nameRequired": "El nombre es obligatorio.",
     "locationRequired": "La ubicación es obligatoria.",
     "distancePositive": "La distancia debe ser mayor que cero.",

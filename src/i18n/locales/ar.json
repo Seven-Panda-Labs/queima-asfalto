@@ -745,6 +745,7 @@
     "resultsNotAllowed": "يمكن تسجيل النتائج فقط للفعاليات المؤكَّدة أو المكتملة.",
     "invalidEventType": "نوع فعالية غير صالح.",
     "disciplinesRequired": "اختر مسافة واحدة على الأقل.",
+    "disciplinesMax": "{{max}} تخصصات كحد أقصى لكل سباق.",
     "nameRequired": "الاسم مطلوب.",
     "locationRequired": "الموقع مطلوب.",
     "distancePositive": "يجب أن تكون المسافة أكبر من صفر.",

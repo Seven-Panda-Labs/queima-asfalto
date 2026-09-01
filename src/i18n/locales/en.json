@@ -733,6 +733,7 @@
     "resultsNotAllowed": "Results can only be recorded for Confirmed or Completed events.",
     "invalidEventType": "Invalid event type.",
     "disciplinesRequired": "Select at least one discipline.",
+    "disciplinesMax": "At most {{max}} disciplines per race.",
     "nameRequired": "Name is required.",
     "locationRequired": "Location is required.",
     "distancePositive": "Distance must be greater than zero.",
