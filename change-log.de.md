@@ -9,15 +9,13 @@
 ### Hinzugefügt
 
 - **Mehr Distanzen:** 1500 m, 3000 m, 15K, 10 Meilen, 30K, 50K, 50 Meilen, 100K und 100 Meilen kommen zu den vier ursprünglichen dazu. Die neuen sind zunächst aus: schalte unter Einstellungen, Disziplinen die ein, die du läufst.
+- **Rennkatalog:** die Instanz kennt Rennen jetzt mit Namen, samt Zugang zum Start und den Fristen und Ziehungen jeder Ausgabe. Daraus kommen später die Hinweise, bevor die Anmeldung schließt.
+- **Verwaltungsbereich:** Konten freigeben, sperren und löschen und den Katalog pflegen, in der App statt in der Konsole.
 
 ### Geändert
 
-- **Disziplinen wählen wurde kompakt:** die 13 Distanzen sind jetzt Chips, gruppiert in Bahn, Straße und Ultra, statt einer Liste mit 13 Kontrollkästchen.
-- **Die Punktdiagramme tragen eine Form pro Distanzfamilie:** Kreis, Dreieck, Quadrat, Raute und Stern, damit eine Disziplin nicht allein an der Farbe hängt.
-
-### Behoben
-
-- **Ein Marathon wird nicht mehr als Halbmarathon eingeordnet:** aus 42,195 km wird der Marathon, aus 16 km werden 10 Meilen.
+- **Disziplinen wählen wurde kompakt:** die 13 Distanzen sind jetzt Chips, gruppiert in Bahn, Straße und Ultra.
+- **Self-Hosting:** der Administrator ist nicht mehr die Variable `ADMIN_EMAIL`, sondern ein Benutzer mit `admin: true`, einmal in der Konsole gesetzt. Siehe [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

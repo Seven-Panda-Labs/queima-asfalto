@@ -9,15 +9,13 @@
 ### Ajouté
 
 - **Plus de distances :** 1500 m, 3000 m, 15 km, 10 miles, 30 km, 50 km, 50 miles, 100 km et 100 miles rejoignent les quatre d'origine. Les nouvelles arrivent désactivées : active celles que tu cours dans Réglages, Disciplines.
+- **Catalogue de courses :** l'instance connaît désormais des courses par leur nom, avec le mode d'inscription et les échéances et tirages de chaque édition. C'est de là que viendront les alertes avant la fermeture des inscriptions.
+- **Espace d'administration :** approuver, bloquer et supprimer des comptes, et tenir le catalogue, dans l'app plutôt que dans la console.
 
 ### Modifié
 
-- **Choisir les disciplines devient compact :** les 13 distances sont désormais des pastilles groupées en piste, route et ultra, au lieu d'une liste de 13 cases à cocher.
-- **Les graphiques en points portent une forme par famille de distance :** cercle, triangle, carré, losange et étoile, pour que la discipline ne repose pas sur la seule couleur.
-
-### Corrigé
-
-- **Un marathon n'est plus classé comme semi :** 42,195 km donne désormais le marathon, et 16 km donne 10 miles.
+- **Choisir les disciplines devient compact :** les 13 distances sont désormais des pastilles groupées en piste, route et ultra.
+- **Self-hosting :** l'administrateur n'est plus la variable `ADMIN_EMAIL` mais un utilisateur avec `admin: true`, défini une fois dans la console. Voir [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
