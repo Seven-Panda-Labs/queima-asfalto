@@ -25,11 +25,24 @@ service cloud.firestore {
       return userAccountStatus(userId) == 'approved';
     }
 
+    /**
+     * The instance operator. One flag on the user document, set once through the
+     * console, and never writable from a browser: see the two functions below.
+     */
+    function isAdmin(userId) {
+      let userDoc = get(/databases/$(database)/documents/users/$(userId));
+      return userDoc != null && userDoc.data != null
+        && userDoc.data.get('admin', false) == true;
+    }
+
     function clientPreservesAccountApprovalFields() {
       return !('accountStatus' in request.resource.data)
         && !('approvedAt' in request.resource.data)
         && !('approvedBy' in request.resource.data)
-        && !('rejectedAt' in request.resource.data);
+        && !('rejectedAt' in request.resource.data)
+        // Without this line, any signed-in user grants themselves the operator
+        // role by writing their own profile.
+        && !('admin' in request.resource.data);
     }
 
     // The approval fields must come out of an update byte-identical: absent
@@ -47,7 +60,8 @@ service cloud.firestore {
       return incoming.get('accountStatus', null) == current.get('accountStatus', null)
         && incoming.get('approvedAt', null) == current.get('approvedAt', null)
         && incoming.get('approvedBy', null) == current.get('approvedBy', null)
-        && incoming.get('rejectedAt', null) == current.get('rejectedAt', null);
+        && incoming.get('rejectedAt', null) == current.get('rejectedAt', null)
+        && incoming.get('admin', null) == current.get('admin', null);
     }
 
     function validEventStatus(status) {

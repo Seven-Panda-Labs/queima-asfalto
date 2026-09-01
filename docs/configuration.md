@@ -79,10 +79,11 @@ Copia [`functions/.env.example`](../functions/.env.example) para `functions/.env
 | `FUNCTIONS_SERVICE_ACCOUNT` | Não | Email da service account para funções callable (partilhas, lookup de resultados). Se omitida, usa a conta predefinida do projeto. Ver Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | Não | Fuso horário de `dispatchReminders` (predefinição: `Europe/Lisbon`) |
 | `ACCOUNT_APPROVAL_REQUIRED` | Não | `true` para activar aprovação de contas novas (blocking functions). Requer [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) no projeto. |
-| `ADMIN_EMAIL` | Sim* | Email do administrador (auto-aprovado; destinatário futuro de notificações) |
-| `APP_PUBLIC_URL` | Sim* | URL pública da PWA (links futuros nos emails) |
+| `APP_PUBLIC_URL` | Sim* | URL pública da PWA (links nos emails) |
 
 \* Obrigatórias quando `ACCOUNT_APPROVAL_REQUIRED=true`.
+
+O administrador **não** é uma variável: é um utilizador com `admin: true` no documento `users/{uid}`, e é para ele que vão os emails de aprovação. Ver «Primeiro arranque» em [`self-hosting.md`](./self-hosting.md).
 
 | Variável | Obrigatória | Descrição |
 |----------|-------------|-----------|
@@ -205,10 +206,11 @@ Copy [`functions/.env.example`](../functions/.env.example) to `functions/.env` (
 | `FUNCTIONS_SERVICE_ACCOUNT` | No | Service account email for callable functions (shares, results lookup). If omitted, uses the project default runtime account. See Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | No | Time zone for `dispatchReminders` (default: `Europe/Lisbon`) |
 | `ACCOUNT_APPROVAL_REQUIRED` | No | `true` to enable new-account approval (blocking functions). Requires [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) on the project. |
-| `ADMIN_EMAIL` | Yes* | Site administrator email (auto-approved; future notification recipient) |
-| `APP_PUBLIC_URL` | Yes* | Public PWA URL (future email links) |
+| `APP_PUBLIC_URL` | Yes* | Public PWA URL (email links) |
 
 \* Required when `ACCOUNT_APPROVAL_REQUIRED=true`.
+
+The administrator is **not** a variable: it is a user with `admin: true` on their `users/{uid}` document, and that is where approval emails go. See "First run" in [`self-hosting.md`](./self-hosting.md).
 
 | Variable | Required | Description |
 |----------|----------|-------------|

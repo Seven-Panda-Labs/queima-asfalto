@@ -163,12 +163,21 @@ Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para
 
 1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
 2. **`functions/.env`** (com `ACCOUNT_APPROVAL_REQUIRED=true`):
-   - `ADMIN_EMAIL`: email do administrador (conta auto-aprovada)
    - `APP_PUBLIC_URL`: URL pública da PWA (ex. `https://YOUR_PROJECT.web.app`)
    - `RESEND_API_KEY`, `EMAIL_FROM`: API e remetente Resend
    - `APPROVAL_TOKEN_SECRET`: segredo aleatório (≥16 caracteres) para links nos emails
    - `INSTANCE_NAME` (opcional): nome nos emails
 3. Volta a fazer **`npm run build`** e **`firebase deploy`** (ou `npm run deploy`) para aplicar env nas Functions e o rewrite no Hosting.
+
+**Primeiro arranque: promover o administrador**
+
+Não há variável de administrador. O administrador é um utilizador com `admin: true`, e é ele que recebe os emails de aprovação. Numa instância nova ainda não existe nenhum, logo a primeira conta tem de ser promovida à mão, uma vez:
+
+1. Entra na app com a tua conta. Ficas em «pendente», o que é esperado.
+2. No Firebase Console → Firestore → `users/{o teu uid}`, acrescenta `admin: true` (boolean) e muda `accountStatus` para `approved`.
+3. A partir daí, cada registo novo envia-te email, e nenhum cliente consegue escrever estes dois campos: as regras tornam-nos imutáveis do browser.
+
+Se removeres o `admin` de todos os utilizadores, ninguém recebe os emails de aprovação e voltas a precisar da consola. Não é um estado que a app impeça.
 
 **Fluxo**
 
@@ -442,12 +451,21 @@ By default, any Google Sign-In user can use the instance. To require **manual ap
 
 1. **`.env.local`:** `VITE_ACCOUNT_APPROVAL_REQUIRED=true`
 2. **`functions/.env`** (with `ACCOUNT_APPROVAL_REQUIRED=true`):
-   - `ADMIN_EMAIL`: administrator email (auto-approved account)
    - `APP_PUBLIC_URL`: public PWA URL (e.g. `https://YOUR_PROJECT.web.app`)
    - `RESEND_API_KEY`, `EMAIL_FROM`: Resend API and sender
    - `APPROVAL_TOKEN_SECRET`: random secret (≥16 characters) for email links
    - `INSTANCE_NAME` (optional): name in emails
 3. Run **`npm run build`** and **`firebase deploy`** (or `npm run deploy`) again so Functions env and the Hosting rewrite apply.
+
+**First run: promoting the administrator**
+
+There is no administrator variable. The administrator is a user with `admin: true`, and that is who the approval emails go to. A fresh instance has none, so the first account is promoted by hand, once:
+
+1. Sign in with your account. You land on "pending", which is expected.
+2. In Firebase Console → Firestore → `users/{your uid}`, add `admin: true` (boolean) and set `accountStatus` to `approved`.
+3. From then on every new sign-up emails you, and no client can write either field: the rules make them immutable from the browser.
+
+If you remove `admin` from every user, nobody receives the approval emails and you are back to needing the console. The app does not prevent that state.
 
 **Flow**
 

@@ -7,7 +7,6 @@ import { verifyApprovalToken } from '../email/approvalToken.js'
 import { buildActionResultPage } from '../email/templates.js'
 import { httpFunctionOptions } from '../functionOptions.js'
 import {
-  getAdminEmail,
   getAppPublicUrl,
   getApprovalTokenSecret,
   getInstanceName,
@@ -125,13 +124,15 @@ export const accountApprovalAction = onRequest(httpFunctionOptions(), async (req
 
   const userEmail = typeof data.email === 'string' ? data.email : ''
   const appLanguage = data.appLanguage as AppLanguage | undefined
-  const adminEmail = getAdminEmail() ?? 'admin'
+  // The signed link carries the account and the action, never who clicked it, so
+  // naming an admin here would be a guess. Record the mechanism instead.
+  const decidedBy = 'approval-link'
 
   if (action === 'approve') {
     await userRef.update({
       accountStatus: 'approved',
       approvedAt: FieldValue.serverTimestamp(),
-      approvedBy: adminEmail,
+      approvedBy: decidedBy,
       updatedAt: FieldValue.serverTimestamp(),
     })
 
@@ -158,7 +159,7 @@ export const accountApprovalAction = onRequest(httpFunctionOptions(), async (req
   await userRef.update({
     accountStatus: 'rejected',
     rejectedAt: FieldValue.serverTimestamp(),
-    approvedBy: adminEmail,
+    approvedBy: decidedBy,
     updatedAt: FieldValue.serverTimestamp(),
   })
 
