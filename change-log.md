@@ -4,6 +4,14 @@
 
 ---
 
+## [1.30.0] - 2026-09-01
+
+### Removido
+
+- **Import e export de Excel saíram:** o backup completo em `.zip` cobre o mesmo com mais precisão, incluindo fotos, vídeos, ficheiros de actividade e objectivos, e restaura tudo com os mesmos identificadores. A folha de cálculo deixa de ser caminho de entrada: as provas passam a entrar na app, ou por restauro de um backup.
+
+---
+
 ## [1.29.1] - 2026-08-31
 
 ### Alterado

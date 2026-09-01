@@ -10,8 +10,7 @@ export type ClearUserDataOptions = {
    * Also delete everything stored under an event, `media` and `track`, together
    * with their Storage objects.
    *
-   * Defaults to false so the Excel import's "replace everything" path keeps its
-   * existing behaviour untouched.
+   * Defaults to false. The backup restore, the only caller today, passes true.
    */
   includeEventSubcollections?: boolean
 }

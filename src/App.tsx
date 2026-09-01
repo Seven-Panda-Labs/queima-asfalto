@@ -88,7 +88,6 @@ export default function App() {
               }
             />
             <Route path="partilhas" element={<Navigate to="/definicoes?tab=partilhas" replace />} />
-            <Route path="definicoes/importar" element={<Navigate to="/definicoes?tab=dados&import=1" replace />} />
           </Route>
           </Route>
         </Route>

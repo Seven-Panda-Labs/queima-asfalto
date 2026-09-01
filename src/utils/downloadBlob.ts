@@ -1,7 +1,7 @@
 /**
  * Triggers a browser download for an in-memory blob.
  *
- * The Excel export delegates this to `XLSX.writeFile`, so the backup zip is the
+ * The backup zip is the
  * first download the app builds itself.
  */
 export function downloadBlob(blob: Blob, filename: string): void {

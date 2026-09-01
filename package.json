@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.29.1",
+  "version": "1.30.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -45,8 +45,7 @@
     "react-markdown": "^10.1.0",
     "react-router-dom": "^7.18.2",
     "remark-gfm": "^4.0.1",
-    "tailwindcss": "^4.3.1",
-    "xlsx": "npm:@stackline/xlsx@^1.0.3"
+    "tailwindcss": "^4.3.1"
   },
   "devDependencies": {
     "@firebase/rules-unit-testing": "^5.0.1",

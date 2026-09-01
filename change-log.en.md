@@ -4,6 +4,14 @@
 
 ---
 
+## [1.30.0] - 2026-09-01
+
+### Removed
+
+- **Excel import and export are gone:** the full `.zip` backup covers the same ground more precisely, photos, videos, activity files and goals included, and restores everything under the same identifiers. A spreadsheet is no longer a way in: races are added in the app, or restored from a backup.
+
+---
+
 ## [1.29.1] - 2026-08-31
 
 ### Changed

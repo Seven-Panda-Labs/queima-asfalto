@@ -1,6 +1,6 @@
 import i18n from '../i18n'
 
-/** Valores armazenados (compatível com import Excel). */
+/** Stored values. English month names, because existing documents already hold them. */
 export const TARGET_MONTHS = [
   'January',
   'February',

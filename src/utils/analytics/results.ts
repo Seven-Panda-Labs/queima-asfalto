@@ -31,7 +31,7 @@ export type AnalysableResult = {
 
 type Timing = { timeSeconds: number; paceSeconds: number; timeFromPace: boolean }
 
-/** The Excel import accepts a pace column with no time column, so pace-only races exist. Rebuilding the time beats dropping the race. */
+/** Races imported from a spreadsheet can carry a pace and no time. Rebuilding the time beats dropping the race. */
 function resolveTiming(event: Event, distanceKm: number): Timing | null {
   const storedTime = event.time ? parseTime(event.time) : null
   if (storedTime !== null && storedTime > 0) {
