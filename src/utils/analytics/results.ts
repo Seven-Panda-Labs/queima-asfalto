@@ -2,13 +2,7 @@ import type { Event, EventType } from '../../types/Event'
 import { parsePaceSeconds } from '../pace'
 import { parseTime } from '../time'
 
-/** Official distances, used only to convert between disciplines. A race's own pace always uses its measured `realDistance`. */
-export const NOMINAL_DISTANCE_KM: Record<EventType, number> = {
-  km_5: 5,
-  km_10: 10,
-  km_21_1: 21.0975,
-  km_42_2: 42.195,
-}
+export { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 
 /**
  * A completed race with enough data to analyse.

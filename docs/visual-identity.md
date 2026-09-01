@@ -41,6 +41,20 @@ A paleta e os tokens de UI vivem em `src/styles/globals.css`. A app suporta **mo
 
 **`theme-color` (PWA / browser):** `#2563EB` no claro, `#121212` no escuro.
 
+### Cores dos gráficos (disciplinas)
+
+Uma família de matiz por classe de distância, e um degrau de luminosidade por disciplina dentro dela: dentro da família, mais escuro é mais longo. As quatro disciplinas originais mantêm as cores de sempre.
+
+| Família | Disciplinas | Cores |
+|---------|-------------|-------|
+| Pista e abaixo de 5K | 1500 m, 3000 m, 5K | `#0091ff`, `#007afd`, `#2563EB` |
+| Estrada curta | 10K, 15K, 10 milhas | `#10B981`, `#1e9f5a`, `#298631` |
+| Estrada longa | Meia, 30K | `#F97316`, `#d15d00` |
+| Maratona e ultra | Maratona, 50K, 50 milhas | `#8B5CF6`, `#9a46db`, `#a42fba` |
+| Ultra longa | 100K, 100 milhas | `#d63d99`, `#c61f75` |
+
+Não é uma paleta categórica de 13 posições e não deve ser lida como tal: entre famílias é o matiz que identifica, dentro da família os degraus são ordinais e dois vizinhos são propositadamente próximos. A identidade exacta vem da legenda e do tooltip, e nos gráficos de pontos a forma do ponto acompanha a família (`PACE_CHART_POINT_STYLES`), porque `#2563EB` e `#8B5CF6` colapsam em protanopia.
+
 ### Status pills (eventos)
 
 Cores definidas por variáveis `--color-status-*` em `globals.css`:
@@ -122,6 +136,20 @@ The palette and UI tokens live in `src/styles/globals.css`. The app supports **l
 | `border` | `#E5E7EB` | `#333333` | Dividers and outlines |
 
 **`theme-color` (PWA / browser):** `#2563EB` in light mode, `#121212` in dark mode.
+
+### Chart colours (disciplines)
+
+One hue family per distance class, and a lightness step per discipline inside it: within a family, darker is longer. The four original disciplines keep the colours they always had.
+
+| Family | Disciplines | Colours |
+|--------|-------------|---------|
+| Track and under 5K | 1500 m, 3000 m, 5K | `#0091ff`, `#007afd`, `#2563EB` |
+| Short road | 10K, 15K, 10 miles | `#10B981`, `#1e9f5a`, `#298631` |
+| Long road | Half, 30K | `#F97316`, `#d15d00` |
+| Marathon and ultra | Marathon, 50K, 50 miles | `#8B5CF6`, `#9a46db`, `#a42fba` |
+| Long ultra | 100K, 100 miles | `#d63d99`, `#c61f75` |
+
+This is not a 13 slot categorical palette and must not be read as one: across families the hue identifies, inside a family the steps are ordinal and two neighbours are deliberately close. Exact identity comes from the legend and the tooltip, and in the point charts the marker shape follows the family (`PACE_CHART_POINT_STYLES`), because `#2563EB` and `#8B5CF6` collapse under protanopia.
 
 ### Status pills (events)
 

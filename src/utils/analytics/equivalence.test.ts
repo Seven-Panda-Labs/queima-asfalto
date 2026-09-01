@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { EVENT_TYPES } from '../../domain/eventCodes'
 import { toAnalysableResults } from './results'
 import { makeEvent } from './testFixtures'
 import {
@@ -94,12 +95,9 @@ describe('predictRaceTimes', () => {
     expect(forecast.basedOn.event.id).toBe('strong')
     expect(forecast.fromRecentForm).toBe(true)
     expect(tenK.predictedSeconds).toBeCloseTo(2400, 6)
-    expect(forecast.predictions.map((prediction) => prediction.eventType)).toEqual([
-      'km_5',
-      'km_10',
-      'km_21_1',
-      'km_42_2',
-    ])
+    // Every discipline in the catalogue, shortest first. The page narrows this
+    // to the ones the runner enabled; the forecast itself does not choose.
+    expect(forecast.predictions.map((prediction) => prediction.eventType)).toEqual(EVENT_TYPES)
   })
 
   it('ignores an old personal best that no longer describes current form', () => {

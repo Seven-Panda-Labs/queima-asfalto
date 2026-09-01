@@ -79,10 +79,19 @@
     "cancelled": "Abgesagt"
   },
   "eventType": {
+    "m_1500": "1500 m",
+    "m_3000": "3000 m",
     "km_5": "5K",
     "km_10": "10K",
+    "km_15": "15K",
+    "mi_10": "10 Meilen",
     "km_21_1": "Halbmarathon",
-    "km_42_2": "Marathon"
+    "km_30": "30K",
+    "km_42_2": "Marathon",
+    "km_50": "50K",
+    "mi_50": "50 Meilen",
+    "km_100": "100K",
+    "mi_100": "100 Meilen"
   },
   "viewMode": {
     "list": "Liste",
@@ -724,6 +733,7 @@
     "resultsNotAllowed": "Ergebnisse können nur für Bestätigte oder Abgeschlossene Events erfasst werden.",
     "invalidEventType": "Ungültiger Eventtyp.",
     "disciplinesRequired": "Wähle mindestens eine Disziplin.",
+    "disciplinesMax": "Höchstens {{max}} Disziplinen pro Rennen.",
     "nameRequired": "Name ist erforderlich.",
     "locationRequired": "Ort ist erforderlich.",
     "distancePositive": "Distanz muss größer als null sein.",

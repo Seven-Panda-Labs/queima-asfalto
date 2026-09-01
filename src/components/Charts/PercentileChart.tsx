@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2'
 import './chartConfig'
 import { useTheme } from '../../contexts/ThemeContext'
 import type { PercentilePoint } from '../../utils/analytics/percentile'
-import { PACE_CHART_COLORS } from '../../utils/chartData'
+import { PACE_CHART_COLORS, PACE_CHART_POINT_STYLES } from '../../utils/chartData'
 import { formatDatePt } from '../../utils/date'
 
 /** Unlike pace, barely affected by the course: a slow race on a hard course still shows well. */
@@ -23,6 +23,8 @@ export function PercentileChart({ points }: { points: PercentilePoint[] }) {
         backgroundColor: '#8B5CF6',
         pointBackgroundColor: points.map((point) => PACE_CHART_COLORS[point.result.eventType]),
         pointBorderColor: points.map((point) => PACE_CHART_COLORS[point.result.eventType]),
+        // Shape carries the distance family, as in the form curve.
+        pointStyle: points.map((point) => PACE_CHART_POINT_STYLES[point.result.eventType]),
         pointRadius: 5,
         tension: 0.2,
       },

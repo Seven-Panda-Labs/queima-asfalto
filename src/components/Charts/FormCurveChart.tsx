@@ -7,7 +7,7 @@ import type { IndexTrend } from '../../utils/analytics/projection'
 import { projectIndexAt } from '../../utils/analytics/projection'
 import { formatDurationSeconds } from '../../utils/analytics/results'
 import { formatDatePt } from '../../utils/date'
-import { PACE_CHART_COLORS } from '../../utils/chartData'
+import { PACE_CHART_COLORS, PACE_CHART_POINT_STYLES } from '../../utils/chartData'
 
 type FormCurveChartProps = {
   points: EquivalentPoint[]
@@ -34,6 +34,9 @@ export function FormCurveChart({ points, referenceLabel, trend }: FormCurveChart
       backgroundColor: '#2563EB',
       pointBackgroundColor: points.map((point) => PACE_CHART_COLORS[point.result.eventType]),
       pointBorderColor: points.map((point) => PACE_CHART_COLORS[point.result.eventType]),
+      // Shape carries the distance family, so identity does not rest on colour:
+      // a 5K and a marathon point are the same colour under protanopia.
+      pointStyle: points.map((point) => PACE_CHART_POINT_STYLES[point.result.eventType]),
       pointRadius: 5,
       tension: 0.2,
       order: 1,

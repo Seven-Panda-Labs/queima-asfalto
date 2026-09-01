@@ -4,6 +4,22 @@
 
 ---
 
+## [1.31.0] - 2026-09-01
+
+### Added
+
+- **More distances:** 1500 m, 3000 m, 15K, 10 miles, 30K, 50K, 50 miles, 100K and 100 miles join the original four. The new ones arrive switched off: turn on the ones you race in Settings, Disciplines.
+
+### Changed
+
+- **The point charts carry a shape per distance family:** circle, triangle, square, diamond and star, so a discipline is never identified by colour alone.
+
+### Fixed
+
+- **A marathon is no longer filed as a half:** deriving the discipline from a distance now gives the marathon for 42.195 km, and 10 miles for 16 km.
+
+---
+
 ## [1.30.0] - 2026-09-01
 
 ### Removed

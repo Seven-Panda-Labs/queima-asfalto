@@ -592,8 +592,19 @@ describe('validateRestoreDocument', () => {
     expect(check('bucketListItems', { ...base, disciplines: ['km_42_2'] })).toBeNull()
     expect(check('bucketListItems', { ...base, eventType: '42.2Km' })).toBeNull()
     expect(check('bucketListItems', { ...base, disciplines: [] })).toBe('invalid_disciplines')
+    // The ceiling, on both sides of it. It mirrors `validDisciplineList` in
+    // firestore.rules, which has to enumerate the entries.
     expect(
-      check('bucketListItems', { ...base, disciplines: ['km_5', 'km_10', 'km_21_1', 'km_42_2', 'km_5'] }),
+      check('bucketListItems', {
+        ...base,
+        disciplines: ['m_1500', 'm_3000', 'km_5', 'km_10', 'km_15', 'mi_10'],
+      }),
+    ).toBeNull()
+    expect(
+      check('bucketListItems', {
+        ...base,
+        disciplines: ['m_1500', 'm_3000', 'km_5', 'km_10', 'km_15', 'mi_10', 'km_21_1'],
+      }),
     ).toBe('invalid_disciplines')
     expect(check('bucketListItems', { ...base, disciplines: ['ultra'] })).toBe('invalid_disciplines')
     expect(check('bucketListItems', base)).toBe('invalid_disciplines')

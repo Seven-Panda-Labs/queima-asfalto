@@ -4,6 +4,22 @@
 
 ---
 
+## [1.31.0] - 2026-09-01
+
+### Añadido
+
+- **Más distancias:** 1500 m, 3000 m, 15K, 10 millas, 30K, 50K, 50 millas, 100K y 100 millas se suman a las cuatro originales. Las nuevas llegan desactivadas: activa las que corres en Ajustes, Disciplinas.
+
+### Cambiado
+
+- **Los gráficos de puntos llevan una forma por familia de distancia:** círculo, triángulo, cuadrado, rombo y estrella, para que la disciplina no dependa solo del color.
+
+### Corregido
+
+- **Un maratón deja de archivarse como media:** al derivar la disciplina desde la distancia, 42,195 km da maratón, y 16 km da 10 millas.
+
+---
+
 ## [1.30.0] - 2026-09-01
 
 ### Eliminado

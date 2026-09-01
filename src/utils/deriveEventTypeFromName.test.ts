@@ -26,7 +26,7 @@ describe('deriveEventTypeFromName', () => {
 
   it('detecta provas por millas', () => {
     const result = deriveEventTypeFromName('X Millas del Guadiana')
-    expect(result.eventType).toBe('km_21_1')
+    expect(result.eventType).toBe('mi_10')
     expect(result.realDistance).toBeCloseTo(16.1, 0)
   })
 

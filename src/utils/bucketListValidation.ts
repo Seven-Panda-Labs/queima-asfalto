@@ -4,6 +4,9 @@ import type { EventType } from '../types/Event'
 import { EVENT_TYPES } from '../types/Event'
 
 const VALID_EVENT_TYPES: EventType[] = [...EVENT_TYPES]
+
+/** Mirrors `validDisciplineList` in firestore.rules. */
+export const MAX_BUCKET_LIST_DISCIPLINES = 6
 const URL_PATTERN = /^https?:\/\/.+/i
 
 export type BucketListFieldErrors = Record<string, string>
@@ -31,6 +34,10 @@ export function validateBucketListItem(
     !uniqueDisciplines.every((discipline) => VALID_EVENT_TYPES.includes(discipline))
   ) {
     errors.disciplines = i18n.t('validation.disciplinesRequired')
+  } else if (uniqueDisciplines.length > MAX_BUCKET_LIST_DISCIPLINES) {
+    errors.disciplines = i18n.t('validation.disciplinesMax', {
+      max: MAX_BUCKET_LIST_DISCIPLINES,
+    })
   }
 
   if (data.link?.trim() && !URL_PATTERN.test(data.link.trim())) {

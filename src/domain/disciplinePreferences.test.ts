@@ -57,3 +57,9 @@ describe('visibleDisciplines', () => {
     expect(visibleDisciplines(['km_10'], ['km_7' as never])).toEqual(['km_10'])
   })
 })
+
+describe('DEFAULT_ENABLED_DISCIPLINES', () => {
+  it('stays the four the app shipped with, however wide the catalogue grows', () => {
+    expect(DEFAULT_ENABLED_DISCIPLINES).toEqual(['km_5', 'km_10', 'km_21_1', 'km_42_2'])
+  })
+})

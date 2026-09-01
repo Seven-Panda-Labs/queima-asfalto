@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   EVENT_STATUSES,
   EVENT_TYPES,
+  NOMINAL_DISTANCE_KM,
   normalizeEventStatus,
   normalizeEventType,
 } from './eventCodes'
@@ -36,5 +37,19 @@ describe('normalizeEventType', () => {
     for (const type of EVENT_TYPES) {
       expect(normalizeEventType(type)).toBe(type)
     }
+  })
+})
+
+describe('the discipline catalogue', () => {
+  it('runs shortest to longest, which the analytics depend on', () => {
+    const distances = EVENT_TYPES.map((eventType) => NOMINAL_DISTANCE_KM[eventType])
+    expect(distances).toEqual([...distances].sort((left, right) => left - right))
+  })
+
+  it('gives every discipline a nominal distance', () => {
+    for (const eventType of EVENT_TYPES) {
+      expect(NOMINAL_DISTANCE_KM[eventType]).toBeGreaterThan(0)
+    }
+    expect(Object.keys(NOMINAL_DISTANCE_KM).sort()).toEqual([...EVENT_TYPES].sort())
   })
 })

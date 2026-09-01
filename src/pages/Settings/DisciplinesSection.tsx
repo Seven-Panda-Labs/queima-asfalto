@@ -42,7 +42,7 @@ export function DisciplinesSection() {
       <h2 className="text-lg font-semibold text-foreground">{t('settings.disciplinesSection')}</h2>
       <p className="mt-2 text-sm text-muted">{t('settings.disciplinesSubtitle')}</p>
 
-      <fieldset disabled={saving} className="mt-4 space-y-3">
+      <fieldset disabled={saving} className="mt-4 grid gap-3 sm:grid-cols-2">
         <legend className="sr-only">{t('settings.disciplinesSection')}</legend>
         {EVENT_TYPES.map((discipline) => {
           const checked = enabledDisciplines.includes(discipline)
