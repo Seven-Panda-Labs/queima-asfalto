@@ -60,6 +60,17 @@ export type RaceCatalogEdition = {
   confirmedAt: string
 }
 
+/**
+ * Who wrote an entry.
+ *
+ * Curated and harvested entries share one collection, so the queue that asks
+ * "what needs a human" is one query, and a harvest never has to guess whether it
+ * is about to overwrite something a person checked.
+ */
+export const CATALOG_PRODUCERS = ['curated', 'harvest'] as const
+
+export type CatalogProducer = (typeof CATALOG_PRODUCERS)[number]
+
 export type RaceCatalogEntry = {
   /** Stable slug. Referenced by `races.catalogRaceId`, so it never changes. */
   id: string
@@ -78,6 +89,18 @@ export type RaceCatalogEntry = {
   review: CatalogReviewState
   /** Where the entry came from, so a reviewer knows what to check against. */
   source: string
+  /** Defaults to `curated` for anything written before the field existed. */
+  producer?: CatalogProducer
+  /**
+   * Out of the catalog without being gone.
+   *
+   * `races.catalogRaceId` points at an id, and no Firestore rule can check for
+   * references, so a hard delete would orphan whatever already points here.
+   */
+  retired?: boolean
+  /** Set by the writer, so an operator can see how stale an entry is. */
+  updatedAt?: string
+  updatedBy?: string
 }
 
 export type RaceCatalog = {

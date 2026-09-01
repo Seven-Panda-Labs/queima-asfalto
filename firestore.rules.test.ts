@@ -770,6 +770,67 @@ describe('firestore.rules', () => {
     }
   })
 
+  describe('raceCatalog', () => {
+    const race = { id: 'berlin-marathon', name: 'Berlin Marathon', country: 'DE', city: 'Berlin' }
+
+    it('lets any signed-in account read it, pending included', async () => {
+      await seedDocument('raceCatalog/berlin-marathon', race)
+      await seedDocument('users/user-pending', { accountStatus: 'pending' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc('raceCatalog/berlin-marathon').get(),
+      )
+      // A pending account cannot see its own races yet, and can still see the
+      // catalog: it is the same public list on every instance.
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-pending').firestore()
+          .doc('raceCatalog/berlin-marathon').get(),
+      )
+    })
+
+    it('denies a signed-out reader', async () => {
+      await seedDocument('raceCatalog/berlin-marathon', race)
+      await assertFails(
+        testEnv.unauthenticatedContext().firestore()
+          .doc('raceCatalog/berlin-marathon').get(),
+      )
+    })
+
+    it('lets an admin write and refuses everyone else', async () => {
+      await seedDocument('users/user-admin', { name: 'Operator', admin: true })
+      await seedDocument('users/user-alice', { name: 'Alice' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .doc('raceCatalog/berlin-marathon').set(race),
+      )
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc('raceCatalog/london-marathon').set({ ...race, id: 'london-marathon' }),
+      )
+    })
+
+    it('refuses an entry with no name, even from an admin', async () => {
+      await seedDocument('users/user-admin', { name: 'Operator', admin: true })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .doc('raceCatalog/nameless').set({ ...race, name: '' }),
+      )
+    })
+
+    it('never deletes, so nothing points at a hole', async () => {
+      await seedDocument('users/user-admin', { name: 'Operator', admin: true })
+      await seedDocument('raceCatalog/berlin-marathon', race)
+
+      await assertFails(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .doc('raceCatalog/berlin-marathon').delete(),
+      )
+    })
+  })
+
   describe('parkrunCatalog', () => {
     const catalogPayload = {
       syncedAt: '2026-08-29',

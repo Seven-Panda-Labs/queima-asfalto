@@ -445,6 +445,20 @@ service cloud.firestore {
         && isApprovedUser(request.auth.uid);
     }
 
+    // The catalog: everyone signed in reads it, only an operator writes it.
+    //
+    // Rules rather than a callable, unlike account status: there is nothing
+    // private here and no side effect to coordinate, so the admin area writes
+    // straight to Firestore and `isAdmin` is the whole gate. A retired entry stays
+    // readable, because `races.catalogRaceId` may still point at it.
+    match /raceCatalog/{raceId} {
+      allow read: if isSignedIn();
+      allow create, update: if isAdmin(request.auth.uid)
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0;
+      allow delete: if false;
+    }
+
     match /goals/{goalId} {
       allow read: if isSignedIn()
         && resource.data.userId == request.auth.uid

@@ -8,16 +8,24 @@
 
 ## Português
 
-O catálogo é a lista curada de provas que a app conhece por nome, em [`src/data/race-catalog.json`](../src/data/race-catalog.json), com os tipos e as funções puras em [`shared/raceCatalog/`](../shared/raceCatalog/). Serve dois propósitos: preencher uma corrida sem a escrever à mão, e, quando as datas forem de confiança, alimentar os prazos de inscrição de #246.
+O catálogo é a lista de provas que a app conhece por nome, e **vive na instância**, na colecção `raceCatalog` do Firestore, um documento por prova. Os tipos e as funções puras estão em [`shared/raceCatalog/`](../shared/raceCatalog/). Serve dois propósitos: preencher uma corrida sem a escrever à mão, e, quando as datas forem de confiança, alimentar os prazos de inscrição de #246.
 
-### Uma forma, dois produtores
+Não há catálogo commitado no repo. Cada instância mantém o seu, editado na área de administração (#261), e uma instância que nunca o povoou tem um catálogo vazio, o que é um estado normal: o preenchimento não oferece nada.
 
-| Produtor | O que é | Estado |
-|----------|---------|--------|
-| Seed commitado | JSON neste repo, curado por PR | existe |
-| Colheita agendada | um documento Firestore refrescado por uma função | #210 |
+Para começar com as provas já revistas, `npm run seed:race-catalog -- --confirm` escreve as 14 que existiam quando o catálogo mudou de casa. Corre uma vez, nunca sobrepõe o que já lá está, e a lista está em [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). É um arranque, não um catálogo.
 
-O seed é também o fallback: uma instância sem Cloud Functions fica com ele e funciona.
+### Uma colecção, dois produtores
+
+| Produtor | O que escreve | Estado |
+|----------|---------------|--------|
+| Curadoria | entradas escritas na área de administração, `producer: 'curated'` | #261 |
+| Colheita agendada | candidatos escritos por uma função, `producer: 'harvest'` | #210 |
+
+Partilham a colecção de propósito: a fila de «o que precisa de um humano» é uma consulta só, e uma colheita nunca tem de adivinhar se está a sobrepor algo que alguém verificou.
+
+Um documento por prova, e não um documento com todas: as entradas editam-se uma a uma, e ler-modificar-escrever um documento grande perdia a edição que chegasse em segundo. O catálogo do parkrun escolheu o contrário pela razão contrária, milhares de entradas que ninguém edita.
+
+Nada se apaga. O `races.catalogRaceId` aponta para um id e nenhuma regra do Firestore consegue verificar referências, logo uma entrada sai de circulação com `retired: true` e continua legível.
 
 ### A regra da revisão
 
@@ -30,13 +38,15 @@ Cada entrada tem um campo `review`, e é este o ponto do formato:
 
 ### Revisar uma entrada
 
+`npm run catalog:review` lista o que precisa de trabalho, lendo a instância: nunca verificadas, verificadas mas sem edição futura, e em ordem. Depois, por entrada:
+
 1. Abre o site oficial da prova, o que está em `officialUrl`.
 2. Confirma nome, cidade, país, disciplinas, método de inscrição e mês típico.
 3. Acrescenta `editions` se houver datas publicadas: `raceDate`, e para o portão `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, com `timezone` IANA quando a hora importa. O `typicalFee` é o preço de referência dessa edição, com `feeCurrency` em ISO 4217; uma prova tem quase sempre vários preços, e este é o de entrada.
 4. Muda `review` para `reviewed` e actualiza `source` para dizer onde confirmaste.
-5. Actualiza `updatedAt` no topo do ficheiro.
+5. Grava. O `updatedAt` e o `updatedBy` ficam no documento.
 
-Uma entrada por PR é aceitável e preferível a um lote: são factos verificáveis um a um, e um lote esconde o que não foi verificado.
+Uma entrada de cada vez, e não um lote: são factos verificáveis um a um, e um lote esconde o que não foi verificado.
 
 ### O que entra no catálogo
 
@@ -64,16 +74,24 @@ Muitas provas cobram menos a quem é do país. O `typicalFee` guarda o que **um 
 
 [Português](#portugues)
 
-The catalog is the curated list of races the app knows by name, in [`src/data/race-catalog.json`](../src/data/race-catalog.json), with the types and pure functions in [`shared/raceCatalog/`](../shared/raceCatalog/). It serves two purposes: filling in a race without typing it, and, once the dates can be trusted, feeding the registration deadlines of #246.
+The catalog is the list of races the app knows by name, and it **lives in the instance**, in the Firestore `raceCatalog` collection, one document per race. The types and pure functions are in [`shared/raceCatalog/`](../shared/raceCatalog/). It serves two purposes: filling in a race without typing it, and, once the dates can be trusted, feeding the registration deadlines of #246.
 
-### One shape, two producers
+There is no committed catalog in the repo. Each instance keeps its own, edited in the admin area (#261), and an instance that never populated one has an empty catalog, which is a normal state: the prefill offers nothing.
 
-| Producer | What it is | State |
-|----------|-----------|-------|
-| Committed seed | JSON in this repo, curated by PR | exists |
-| Scheduled harvest | a Firestore document refreshed by a function | #210 |
+To start with the races already reviewed, `npm run seed:race-catalog -- --confirm` writes the 14 that existed when the catalog moved. It runs once, never overwrites what is already there, and the list is in [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). A bootstrap, not a catalog.
 
-The seed is also the fallback: an instance with no Cloud Functions keeps it and works.
+### One collection, two producers
+
+| Producer | What it writes | State |
+|----------|----------------|-------|
+| Curation | entries written in the admin area, `producer: 'curated'` | #261 |
+| Scheduled harvest | candidates written by a function, `producer: 'harvest'` | #210 |
+
+They share the collection on purpose: the queue asking "what needs a human" is one query, and a harvest never has to guess whether it is about to overwrite something a person checked.
+
+One document per race, not one document holding all of them: entries are edited one at a time, and a read-modify-write of a big document would lose whichever edit landed second. The parkrun catalog chose the opposite for the opposite reason, thousands of entries nobody edits.
+
+Nothing is deleted. `races.catalogRaceId` points at an id and no Firestore rule can check for references, so an entry leaves circulation with `retired: true` and stays readable.
 
 ### The review rule
 
@@ -86,13 +104,15 @@ Every entry carries a `review` field, and this is the point of the format:
 
 ### Reviewing an entry
 
+`npm run catalog:review` lists what needs work, reading the instance: never checked, checked but out of editions, and in order. Then, per entry:
+
 1. Open the race's official site, the one in `officialUrl`.
 2. Confirm the name, city, country, disciplines, entry method and typical month.
 3. Add `editions` when dates are published: `raceDate`, and for the gate `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, with an IANA `timezone` when the hour matters. `typicalFee` is that edition's headline price, with `feeCurrency` in ISO 4217; a race almost always has several prices and this is the entry one.
 4. Set `review` to `reviewed` and update `source` to say where it was confirmed.
-5. Update `updatedAt` at the top of the file.
+5. Save. `updatedAt` and `updatedBy` are written on the document.
 
-One entry per PR is fine, and better than a batch: these are facts verifiable one at a time, and a batch hides what was not verified.
+One entry at a time, not a batch: these are facts verifiable one at a time, and a batch hides what was not verified.
 
 ### What belongs in the catalog
 
