@@ -21,6 +21,7 @@
     "backfill:track-pacing": "tsx scripts/backfill-track-pacing.ts",
     "backfill:races": "tsx scripts/backfill-races.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
+    "admin:grant": "tsx scripts/grant-admin.ts",
     "setup:githooks": "git config core.hooksPath .githooks",
     "test": "vitest run",
     "test:rules": "firebase emulators:exec --only firestore --project demo-queima-asfalto \"vitest run --config vitest.config.rules.ts\"",

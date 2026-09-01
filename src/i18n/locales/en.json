@@ -1108,6 +1108,12 @@
     "roleIsConsoleOnly": "The administrator role is granted and revoked in the Firebase console only, on purpose: no privileged surface hands out privilege.",
     "statusPending": "Pending",
     "statusApproved": "Approved",
-    "statusBlocked": "Blocked"
+    "statusBlocked": "Blocked",
+    "delete": "Delete",
+    "deleteTitle": "Delete this account?",
+    "deleteMessage": "This deletes the account {{account}} and everything it holds: races, results, photos, activity files, goals and shares. There is no way back.",
+    "deleted": "Account deleted: {{documents}} documents and {{files}} files.",
+    "deleteError": "Could not delete the account.",
+    "deletedStorageUnreachable": "Account deleted ({{documents}} documents), but its files were not found in the bucket and may remain. Check the function logs."
   }
 }

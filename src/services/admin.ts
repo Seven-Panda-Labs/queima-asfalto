@@ -23,6 +23,25 @@ export async function listUsersForAdmin(): Promise<AdminUserList> {
   return result.data
 }
 
+export type DeleteAccountReport = {
+  uid: string
+  documents: Record<string, number>
+  storageFiles: number
+  authUserDeleted: boolean
+  /** The account had media, and the bucket held none of it. See the callable. */
+  storageUnreachable: boolean
+}
+
+/** Irreversible. Returns what it removed, so the panel can say so rather than imply it. */
+export async function deleteAccountForAdmin(uid: string): Promise<DeleteAccountReport> {
+  const callable = httpsCallable<{ uid: string }, DeleteAccountReport>(
+    functions,
+    'adminDeleteAccount',
+  )
+  const result = await callable({ uid })
+  return result.data
+}
+
 export async function setAccountStatusForAdmin(
   uid: string,
   status: 'approved' | 'rejected',

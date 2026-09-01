@@ -1108,6 +1108,12 @@
     "roleIsConsoleOnly": "Le rôle d'administrateur se donne et se retire uniquement dans la console Firebase, volontairement : aucune surface privilégiée ne distribue de privilège.",
     "statusPending": "En attente",
     "statusApproved": "Approuvé",
-    "statusBlocked": "Bloqué"
+    "statusBlocked": "Bloqué",
+    "delete": "Supprimer",
+    "deleteTitle": "Supprimer ce compte ?",
+    "deleteMessage": "Cela supprime le compte {{account}} et tout ce qu'il contient : courses, résultats, photos, fichiers d'activité, objectifs et partages. Il n'y a pas de retour possible.",
+    "deleted": "Compte supprimé : {{documents}} documents et {{files}} fichiers.",
+    "deleteError": "Impossible de supprimer le compte.",
+    "deletedStorageUnreachable": "Compte supprimé ({{documents}} documents), mais ses fichiers n'ont pas été trouvés dans le bucket et peuvent rester. Vérifie les logs de la fonction."
   }
 }
