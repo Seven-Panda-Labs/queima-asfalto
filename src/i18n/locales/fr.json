@@ -79,10 +79,19 @@
     "cancelled": "Annulé"
   },
   "eventType": {
+    "m_1500": "1500 m",
+    "m_3000": "3000 m",
     "km_5": "5 km",
     "km_10": "10 km",
+    "km_15": "15 km",
+    "mi_10": "10 miles",
     "km_21_1": "Semi-marathon",
-    "km_42_2": "Marathon"
+    "km_30": "30 km",
+    "km_42_2": "Marathon",
+    "km_50": "50 km",
+    "mi_50": "50 miles",
+    "km_100": "100 km",
+    "mi_100": "100 miles"
   },
   "viewMode": {
     "list": "Liste",

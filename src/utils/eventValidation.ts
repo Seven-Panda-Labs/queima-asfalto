@@ -1,4 +1,5 @@
 import type { EventStatus, EventType } from '../types/Event'
+import { EVENT_TYPES, NOMINAL_DISTANCE_KM } from '../domain/eventCodes'
 import i18n from '../i18n'
 import { isFutureDate, isPastDate } from './date'
 
@@ -71,8 +72,27 @@ export function validateEventDateStatus(date: Date, status: EventStatus): Valida
   return { valid: true }
 }
 
+/**
+ * The discipline whose nominal distance sits closest to the measured one, in
+ * log space so 3 km lands on the 3000 m and not on the 5K: proportional error
+ * is what matters between distances that span two orders of magnitude.
+ *
+ * Ties go to the shorter discipline, which is the conservative read of a race
+ * measured between two of them.
+ */
 export function deriveEventType(distanceKm: number): EventType {
-  if (distanceKm <= 6) return 'km_5'
-  if (distanceKm <= 11) return 'km_10'
-  return 'km_21_1'
+  if (!(distanceKm > 0)) return 'km_10'
+
+  let best: EventType = EVENT_TYPES[0]!
+  let bestDistance = Infinity
+  for (const eventType of EVENT_TYPES) {
+    const nominal = NOMINAL_DISTANCE_KM[eventType]
+    const gap = Math.abs(Math.log(distanceKm / nominal))
+    if (gap < bestDistance) {
+      best = eventType
+      bestDistance = gap
+    }
+  }
+
+  return best
 }

@@ -4,6 +4,22 @@
 
 ---
 
+## [1.31.0] - 2026-09-01
+
+### Ajouté
+
+- **Plus de distances :** 1500 m, 3000 m, 15 km, 10 miles, 30 km, 50 km, 50 miles, 100 km et 100 miles rejoignent les quatre d'origine. Les nouvelles arrivent désactivées : active celles que tu cours dans Réglages, Disciplines.
+
+### Modifié
+
+- **Les graphiques en points portent une forme par famille de distance :** cercle, triangle, carré, losange et étoile, pour que la discipline ne repose pas sur la seule couleur.
+
+### Corrigé
+
+- **Un marathon n'est plus classé comme semi :** 42,195 km donne désormais le marathon, et 16 km donne 10 miles.
+
+---
+
 ## [1.30.0] - 2026-09-01
 
 ### Supprimé

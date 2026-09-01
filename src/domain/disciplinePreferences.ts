@@ -1,7 +1,11 @@
 import { EVENT_TYPES, isEventType, type EventType } from './eventCodes'
 
-/** Every account starts with the four disciplines the app shipped with. */
-export const DEFAULT_ENABLED_DISCIPLINES: EventType[] = [...EVENT_TYPES]
+/**
+ * Every account starts with the four disciplines the app shipped with, not with
+ * the whole catalogue: widening `EVENT_TYPES` must not grow the pickers of
+ * someone who only races those four.
+ */
+export const DEFAULT_ENABLED_DISCIPLINES: EventType[] = ['km_5', 'km_10', 'km_21_1', 'km_42_2']
 
 /**
  * An account that never touched the setting has no field and gets everything.

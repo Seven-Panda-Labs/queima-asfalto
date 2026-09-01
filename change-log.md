@@ -4,6 +4,22 @@
 
 ---
 
+## [1.31.0] - 2026-09-01
+
+### Adicionado
+
+- **Mais distâncias:** 1500 m, 3000 m, 15Km, 10 milhas, 30Km, 50Km, 50 milhas, 100Km e 100 milhas juntam-se às quatro de sempre. As novas chegam desligadas: liga as que corres em Definições, Disciplinas.
+
+### Alterado
+
+- **Os gráficos de pontos ganham uma forma por família de distância:** círculo, triângulo, quadrado, losango e estrela, para a disciplina não depender só da cor.
+
+### Corrigido
+
+- **Uma maratona deixa de ser arquivada como meia:** ao derivar a disciplina a partir da distância, 42,195 km passa a dar maratona, e 16 km dá 10 milhas.
+
+---
+
 ## [1.30.0] - 2026-09-01
 
 ### Removido

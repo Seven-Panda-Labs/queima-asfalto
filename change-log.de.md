@@ -4,6 +4,22 @@
 
 ---
 
+## [1.31.0] - 2026-09-01
+
+### Hinzugefügt
+
+- **Mehr Distanzen:** 1500 m, 3000 m, 15K, 10 Meilen, 30K, 50K, 50 Meilen, 100K und 100 Meilen kommen zu den vier ursprünglichen dazu. Die neuen sind zunächst aus: schalte unter Einstellungen, Disziplinen die ein, die du läufst.
+
+### Geändert
+
+- **Die Punktdiagramme tragen eine Form pro Distanzfamilie:** Kreis, Dreieck, Quadrat, Raute und Stern, damit eine Disziplin nicht allein an der Farbe hängt.
+
+### Behoben
+
+- **Ein Marathon wird nicht mehr als Halbmarathon eingeordnet:** aus 42,195 km wird der Marathon, aus 16 km werden 10 Meilen.
+
+---
+
 ## [1.30.0] - 2026-09-01
 
 ### Entfernt

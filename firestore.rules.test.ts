@@ -1088,6 +1088,30 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts a discipline beyond the original four', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-ultra')
+          .set(validEventPayload(userId, { eventType: 'km_100', realDistance: 100 })),
+      )
+    })
+
+    it('still rejects a discipline that is not in the catalogue', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db
+          .collection('events')
+          .doc('event-backyard')
+          .set(validEventPayload(userId, { eventType: 'backyard' })),
+      )
+    })
+
     it('allows restoring an event that kept its legacy portuguese encodings', async () => {
       await seedApproved()
       const db = testEnv.authenticatedContext(userId).firestore()

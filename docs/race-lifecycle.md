@@ -100,7 +100,7 @@ As lacunas mais caras não são fases inteiras que faltam, são as passagens ent
 
 ### Restrição transversal: vocabulário de distâncias
 
-`EventType` tem quatro valores (5K, 10K, meia, maratona). Isso limita as duas pontas do ciclo: uma prova descoberta de 17 km não tem onde ser arquivada, e `normalizeEventType('Outra')` já achata tudo o que não encaixa em 10 km, o que envenena ritmos, recordes e previsões a jusante. Qualquer trabalho em descoberta herda este problema no momento em que lê um catálogo real. Ver [#223](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/223).
+`EventType` cobre agora 13 distâncias predefinidas, da pista às 100 milhas, com as quatro originais activas por omissão e as restantes a ligar nas Definições. O que fica de fora não é distância: trail, vertical e formatos por tempo (backyard) não se descrevem por um número, e disciplinas definidas pelo utilizador continuam fora, pelo custo que têm nas partilhas. Ver [#223](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/223).
 
 ### Decisões já tomadas
 
@@ -243,7 +243,7 @@ The expensive gaps are not whole missing stages, they are the handoffs between s
 
 ### Cross-cutting constraint: the distance vocabulary
 
-`EventType` has four values (5K, 10K, half, marathon). That limits both ends of the loop: a discovered 17 km race has nowhere to be filed, and `normalizeEventType('Outra')` already flattens everything that does not fit into the 10K, which poisons paces, records and predictions downstream. Any work on discovery inherits this the moment it reads a real catalog. See [#223](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/223).
+`EventType` now covers 13 preset distances, from the track to 100 miles, with the original four enabled by default and the rest switched on in Settings. What stays out is not a distance: trail, vertical and timed formats (backyard) are not described by a number, and user-defined disciplines remain out for what they cost shares. See [#223](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/223).
 
 ### Decisions already taken
 

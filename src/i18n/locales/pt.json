@@ -79,10 +79,19 @@
     "cancelled": "Cancelado"
   },
   "eventType": {
+    "m_1500": "1500 m",
+    "m_3000": "3000 m",
     "km_5": "5Km",
     "km_10": "10Km",
+    "km_15": "15Km",
+    "mi_10": "10 milhas",
     "km_21_1": "Meia Maratona",
-    "km_42_2": "Maratona"
+    "km_30": "30Km",
+    "km_42_2": "Maratona",
+    "km_50": "50Km",
+    "mi_50": "50 milhas",
+    "km_100": "100Km",
+    "mi_100": "100 milhas"
   },
   "viewMode": {
     "list": "Lista",

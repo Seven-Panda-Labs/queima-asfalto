@@ -56,7 +56,8 @@ service cloud.firestore {
     }
 
     function validEventType(eventType) {
-      return eventType in ['km_5', 'km_10', 'km_21_1', 'km_42_2',
+      return eventType in ['m_1500', 'm_3000', 'km_5', 'km_10', 'km_15', 'mi_10',
+        'km_21_1', 'km_30', 'km_42_2', 'km_50', 'mi_50', 'km_100', 'mi_100',
         '5Km', '10Km', '21.1Km', '42.2Km', 'Outra'];
     }
 
