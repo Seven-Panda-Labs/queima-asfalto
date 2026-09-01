@@ -9,16 +9,31 @@
  *
  * Ordered by how soon the race typically falls, so the queue reads as a calendar.
  *
- *   npm run catalog:review
+ * Reads the instance's collection, so it needs credentials like the backfills:
+ *
+ *   FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+ *     npm run catalog:review
+ *
+ *   npm run catalog:review        # production, with Application Default Credentials
  */
-import { readFileSync } from 'node:fs'
+import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
+import { RACE_CATALOG_COLLECTION } from '../shared/raceCatalog/collection.js'
 import { editionReviewQueue, needsEditionReview } from '../shared/raceCatalog/catalog.js'
-import type { RaceCatalog } from '../shared/raceCatalog/types.js'
+import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
 
-const catalog = JSON.parse(
-  readFileSync(resolve(import.meta.dirname, '../src/data/race-catalog.json'), 'utf8'),
-) as RaceCatalog
+const require = createRequire(resolve(import.meta.dirname, '../functions/package.json'))
+const { initializeApp } = require('firebase-admin/app')
+const { getFirestore } = require('firebase-admin/firestore')
+
+const PROJECT_ID =
+  process.env.GCLOUD_PROJECT ?? process.env.GOOGLE_CLOUD_PROJECT ?? 'queima-asfalto'
+
+initializeApp({ projectId: PROJECT_ID })
+const races = (await getFirestore().collection(RACE_CATALOG_COLLECTION).get()).docs.map(
+  (document: { data: () => RaceCatalogEntry }) => document.data(),
+) as RaceCatalogEntry[]
+const catalog = { updatedAt: PROJECT_ID, races }
 
 const today = new Date()
 const MONTHS = [
@@ -39,7 +54,7 @@ const staleEditions = editionReviewQueue(catalog.races, today).filter(
 )
 const current = catalog.races.filter((race) => !needsEditionReview(race, today))
 
-console.log(`Catalog updated ${catalog.updatedAt}, ${catalog.races.length} races\n`)
+console.log(`Project ${PROJECT_ID}, ${catalog.races.length} races in the catalog\n`)
 
 console.log(`Never checked (${unreviewed.length}):`)
 for (const race of unreviewed) {

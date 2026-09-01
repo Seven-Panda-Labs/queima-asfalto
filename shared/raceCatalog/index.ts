@@ -1,6 +1,9 @@
+export { RACE_CATALOG_COLLECTION } from './collection.js'
 export {
+  CATALOG_PRODUCERS,
   CATALOG_REVIEW_STATES,
   RACE_ENTRY_METHODS,
+  type CatalogProducer,
   type CatalogReviewState,
   type RaceCatalog,
   type RaceCatalogEdition,

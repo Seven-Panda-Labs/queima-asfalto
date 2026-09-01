@@ -1,18 +1,22 @@
-import type { RaceCatalog } from '../../shared/raceCatalog'
-
-let catalogPromise: Promise<RaceCatalog> | null = null
+import { collection, getDocs } from 'firebase/firestore'
+import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
+import { db } from './firebase'
 
 /**
- * The curated catalog committed to the repo.
+ * The instance's catalog.
  *
- * Lazily imported, like the parkrun seed, so 26 races and whatever they grow into
- * stay out of the main bundle. There is no Firestore side yet: a harvested catalog
- * refreshing this shape is #210, and when it lands this file gains the same
- * seed-versus-synced fallback `parkrunCatalog.ts` already has.
+ * There is no bundled copy any more: an instance that never seeded one has an
+ * empty catalog, and the callers offer nothing rather than pretending.
+ *
+ * Retired entries are filtered here rather than in the query on purpose. A
+ * Firestore `!=` filter only matches documents where the field exists, so
+ * `where('retired', '!=', true)` would drop every entry that was never retired,
+ * which is all of them. The catalog is tens of documents, so reading it whole and
+ * filtering in memory is both correct and cheap.
  */
-export async function loadRaceCatalog(): Promise<RaceCatalog> {
-  catalogPromise ??= import('../data/race-catalog.json').then(
-    (module) => module.default as RaceCatalog,
-  )
-  return catalogPromise
+export async function loadRaceCatalog(): Promise<RaceCatalogEntry[]> {
+  const snapshot = await getDocs(collection(db, RACE_CATALOG_COLLECTION))
+  return snapshot.docs
+    .map((document) => document.data() as RaceCatalogEntry)
+    .filter((race) => race.retired !== true)
 }
