@@ -5,18 +5,15 @@ import {
   beforeUserSignedIn,
   HttpsError,
 } from 'firebase-functions/v2/identity'
+import type { AccountStatus } from '../shared/account/types.js'
 import { parseRegistrationLocale, resolveEffectiveAccountStatus } from '../shared/account/types.js'
 import { blockingFunctionOptions } from '../functionOptions.js'
-import {
-  assertAccountApprovalConfig,
-  getAdminEmail,
-  isAccountApprovalRequired,
-} from './config.js'
+import { assertAccountApprovalConfig, isAccountApprovalRequired } from './config.js'
 import {
   buildInitialUserProfile,
   buildLegacyApprovedUserProfile,
-  resolveInitialAccountStatus,
 } from './userProfile.js'
+import { listAdminEmails } from './admins.js'
 import { notifyAdminNewUser } from './notifications.js'
 
 function ensureAdminApp(): void {
@@ -49,8 +46,10 @@ export const accountApprovalBeforeUserCreated = beforeUserCreated(
       return
     }
 
-    const adminEmail = getAdminEmail()
-    const accountStatus = resolveInitialAccountStatus(user.email, adminEmail)
+    // Everybody starts pending, the operator included: the old ADMIN_EMAIL
+    // auto-approved whoever matched it, and that exception is what the documented
+    // first run step replaces.
+    const accountStatus: AccountStatus = 'pending'
     const registrationLocale = parseRegistrationLocale(event.locale)
 
     await userRef.set(
@@ -69,6 +68,7 @@ export const accountApprovalBeforeUserCreated = beforeUserCreated(
           uid: user.uid,
           name: user.displayName ?? '',
           email: user.email ?? '',
+          adminEmails: await listAdminEmails(db),
           registrationLocale,
         })
       } catch (error) {

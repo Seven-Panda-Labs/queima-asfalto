@@ -240,6 +240,25 @@ describe('firestore.rules', () => {
       await assertFails(db.doc('users/user-alice').set({ displayName: 'Hacked' }))
     })
 
+    it('denies a client from making itself an admin, on create or on update', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(db.doc(`users/${userId}`).set({ name: 'Alice', admin: true }))
+
+      await assertSucceeds(db.doc(`users/${userId}`).set({ name: 'Alice' }))
+      await assertFails(db.doc(`users/${userId}`).update({ admin: true }))
+    })
+
+    it('lets an admin keep its flag while editing its own profile', async () => {
+      await seedDocument('users/user-admin', { name: 'Admin', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+
+      await assertSucceeds(db.doc('users/user-admin').update({ name: 'Operator' }))
+      // Taking the flag off is a write to it, and the client cannot make one.
+      await assertFails(db.doc('users/user-admin').update({ admin: false }))
+    })
+
     it('denies clients from setting accountStatus on create', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()

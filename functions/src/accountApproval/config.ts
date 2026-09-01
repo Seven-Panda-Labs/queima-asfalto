@@ -6,11 +6,6 @@ export function isAccountApprovalRequired(): boolean {
   return parseTruthy(process.env.ACCOUNT_APPROVAL_REQUIRED)
 }
 
-export function getAdminEmail(): string | undefined {
-  const email = process.env.ADMIN_EMAIL?.trim().toLowerCase()
-  return email && email.includes('@') ? email : undefined
-}
-
 export function getAppPublicUrl(): string | undefined {
   const url = process.env.APP_PUBLIC_URL?.trim()
   if (!url) {
@@ -57,9 +52,6 @@ export function assertAccountApprovalConfig(): void {
   }
 
   const missing: string[] = []
-  if (!getAdminEmail()) {
-    missing.push('ADMIN_EMAIL')
-  }
   if (!getAppPublicUrl()) {
     missing.push('APP_PUBLIC_URL')
   }

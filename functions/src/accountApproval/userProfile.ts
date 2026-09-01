@@ -6,20 +6,6 @@ export function normalizeAccountEmail(email: string | undefined): string {
   return email?.trim().toLowerCase() ?? ''
 }
 
-export function resolveInitialAccountStatus(
-  email: string | undefined,
-  adminEmail: string | undefined,
-): AccountStatus {
-  const normalized = normalizeAccountEmail(email)
-  if (!normalized) {
-    return 'pending'
-  }
-  if (adminEmail && normalized === adminEmail) {
-    return 'approved'
-  }
-  return 'pending'
-}
-
 export function buildInitialUserProfile(params: {
   uid: string
   displayName?: string

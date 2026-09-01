@@ -1,6 +1,5 @@
 import type { AppLanguage } from '../shared/account/types.js'
 import {
-  getAdminEmail,
   getAppPublicUrl,
   getApprovalHandlerBaseUrl,
   getApprovalTokenSecret,
@@ -16,16 +15,24 @@ export async function notifyAdminNewUser(params: {
   uid: string
   name: string
   email: string
+  /** Where to send it. Empty on an instance with no operator yet. */
+  adminEmails: string[]
   registrationLocale?: AppLanguage
 }): Promise<void> {
-  const adminEmail = getAdminEmail()
   const apiKey = getResendApiKey()
   const from = getEmailFrom()
   const appPublicUrl = getAppPublicUrl()
   const handlerBaseUrl = getApprovalHandlerBaseUrl()
   const tokenSecret = getApprovalTokenSecret()
 
-  if (!adminEmail || !apiKey || !from || !appPublicUrl || !handlerBaseUrl || !tokenSecret) {
+  if (
+    params.adminEmails.length === 0 ||
+    !apiKey ||
+    !from ||
+    !appPublicUrl ||
+    !handlerBaseUrl ||
+    !tokenSecret
+  ) {
     return
   }
 
@@ -41,13 +48,11 @@ export async function notifyAdminNewUser(params: {
     language,
   })
 
-  await sendEmailViaResend({
-    apiKey,
-    from,
-    to: adminEmail,
-    subject,
-    html,
-  })
+  // One mail each rather than one with several recipients, so one bad address
+  // cannot take the others down with it.
+  for (const to of params.adminEmails) {
+    await sendEmailViaResend({ apiKey, from, to, subject, html })
+  }
 }
 
 export async function notifyUserApproved(params: {
