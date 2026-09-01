@@ -49,7 +49,8 @@
     "settings": "Definições",
     "shares": "Partilhas",
     "pendingInvites": "{{count}} convite(s) pendente(s)",
-    "main": "Navegação principal"
+    "main": "Navegação principal",
+    "admin": "Admin"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1086,5 +1087,27 @@
     "success": {
       "import": "Dados importados! A tua época está na app. VAMOS!"
     }
+  },
+  "admin": {
+    "usersTitle": "Utilizadores",
+    "usersSubtitle": "Aprova, bloqueia ou desbloqueia contas desta instância.",
+    "columnAccount": "Conta",
+    "columnStatus": "Estado",
+    "columnSince": "Registo",
+    "approve": "Aprovar",
+    "block": "Bloquear",
+    "approved": "Conta aprovada.",
+    "blocked": "Conta bloqueada.",
+    "loadError": "Não foi possível carregar as contas.",
+    "actionError": "Não foi possível mudar o estado da conta.",
+    "noName": "(sem nome)",
+    "self": "É a tua conta",
+    "roleBadge": "Admin",
+    "truncated": "Há mais contas do que as mostradas.",
+    "blockKeepsData": "Bloquear não apaga nada: a conta perde acesso e os dados ficam.",
+    "roleIsConsoleOnly": "O papel de administrador só se dá ou retira na consola do Firebase, de propósito: nenhuma superfície privilegiada distribui privilégio.",
+    "statusPending": "Pendente",
+    "statusApproved": "Aprovada",
+    "statusBlocked": "Bloqueada"
   }
 }

@@ -12,6 +12,8 @@ import { SyncIndicator } from '../SyncIndicator'
 import { APP_VERSION } from '../../appVersion'
 import { isPrivacyPolicyEnabled, privacyPolicyPath } from '../../config/privacyPolicy'
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
+import { useAuth } from '../../contexts/AuthContext'
+import { useIsAdmin } from '../../hooks/useIsAdmin'
 
 const REPO_URL = 'https://github.com/Seven-Panda-Labs/queima-asfalto'
 
@@ -36,6 +38,8 @@ export function Layout() {
   const persistenceWarning = getPersistenceWarning()
   const { pendingReceivedCount } = useShares()
   const showPrivacyPolicy = isPrivacyPolicyEnabled()
+  const { user } = useAuth()
+  const { isAdmin } = useIsAdmin(user?.uid)
 
   useReminders()
   usePushRegistration()
@@ -69,6 +73,11 @@ export function Layout() {
                   </span>
                 </NavLink>
               ))}
+              {isAdmin ? (
+                <NavLink to="/admin" className={navLinkClass}>
+                  {t('nav.admin')}
+                </NavLink>
+              ) : null}
             </nav>
           </div>
         </div>

@@ -49,7 +49,8 @@
     "settings": "Einstellungen",
     "shares": "Freigaben",
     "pendingInvites": "{{count}} ausstehende Einladung(en)",
-    "main": "Hauptnavigation"
+    "main": "Hauptnavigation",
+    "admin": "Admin"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1086,5 +1087,27 @@
     "success": {
       "import": "Daten importiert! Deine Saison ist in der App. LOS GEHT'S!"
     }
+  },
+  "admin": {
+    "usersTitle": "Benutzer",
+    "usersSubtitle": "Konten dieser Instanz freigeben, sperren oder entsperren.",
+    "columnAccount": "Konto",
+    "columnStatus": "Status",
+    "columnSince": "Registriert",
+    "approve": "Freigeben",
+    "block": "Sperren",
+    "approved": "Konto freigegeben.",
+    "blocked": "Konto gesperrt.",
+    "loadError": "Konten konnten nicht geladen werden.",
+    "actionError": "Kontostatus konnte nicht geändert werden.",
+    "noName": "(kein Name)",
+    "self": "Das ist dein Konto",
+    "roleBadge": "Admin",
+    "truncated": "Es gibt mehr Konten als angezeigt.",
+    "blockKeepsData": "Sperren löscht nichts: das Konto verliert den Zugang, die Daten bleiben.",
+    "roleIsConsoleOnly": "Die Administratorrolle wird nur in der Firebase Console vergeben und entzogen, mit Absicht: keine privilegierte Oberfläche verteilt Privilegien.",
+    "statusPending": "Ausstehend",
+    "statusApproved": "Freigegeben",
+    "statusBlocked": "Gesperrt"
   }
 }
