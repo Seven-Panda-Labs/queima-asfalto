@@ -37,6 +37,8 @@ export type Event = {
    * subcollection per event would grow with every race ever run.
    */
   trackPacingDriftSeconds?: number
+  /** The race this is a running of. Absent on events older than the collection. */
+  raceId?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -60,6 +62,7 @@ export type EventCreate = {
   resultsPlatform?: ResultsPlatform
   parkrunEventSlug?: string
   parkrunCountryUrl?: string
+  raceId?: string
 }
 
 export type EventFilters = {

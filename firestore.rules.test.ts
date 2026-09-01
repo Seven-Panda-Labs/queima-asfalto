@@ -560,6 +560,24 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts a raceId on an item and rejects one that is not a string', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('bucketListItems')
+          .doc('item-linked')
+          .set(validBucketListPayload(userId, { raceId: 'race-1' })),
+      )
+      await assertFails(
+        db
+          .collection('bucketListItems')
+          .doc('item-bad-race')
+          .set(validBucketListPayload(userId, { raceId: 42 })),
+      )
+    })
+
     it('allows owners to create bucket list items', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()
@@ -1189,6 +1207,30 @@ describe('firestore.rules', () => {
       )
       await assertSucceeds(
         db.collection('bucketListItems').doc('bucket-1').set(validBucketListPayload(userId)),
+      )
+    })
+
+    it('accepts a raceId and rejects one that is not a string', async () => {
+      await seedApproved()
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-linked')
+          .set(validEventPayload(userId, { raceId: 'race-1' })),
+      )
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-unlinked')
+          .set(validEventPayload(userId, { raceId: null })),
+      )
+      await assertFails(
+        db
+          .collection('events')
+          .doc('event-bad-race')
+          .set(validEventPayload(userId, { raceId: 42 })),
       )
     })
 

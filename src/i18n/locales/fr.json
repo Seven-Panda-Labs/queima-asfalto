@@ -713,6 +713,7 @@
     "rejectReasons": {
       "missing_required_field": "Champ obligatoire manquant",
       "invalid_event_type": "Type de course invalide",
+      "invalid_race_id": "Identité de course invalide",
       "invalid_event_status": "Statut invalide",
       "invalid_distance": "Distance invalide",
       "invalid_name": "Nom invalide",

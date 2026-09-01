@@ -713,6 +713,7 @@
     "rejectReasons": {
       "missing_required_field": "Required field missing",
       "invalid_event_type": "Invalid race type",
+      "invalid_race_id": "Invalid race identity",
       "invalid_event_status": "Invalid status",
       "invalid_distance": "Invalid distance",
       "invalid_name": "Invalid name",

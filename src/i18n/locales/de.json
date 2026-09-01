@@ -713,6 +713,7 @@
     "rejectReasons": {
       "missing_required_field": "Pflichtfeld fehlt",
       "invalid_event_type": "Ungültige Wettkampfart",
+      "invalid_race_id": "Ungültige Rennkennung",
       "invalid_event_status": "Ungültiger Status",
       "invalid_distance": "Ungültige Distanz",
       "invalid_name": "Ungültiger Name",

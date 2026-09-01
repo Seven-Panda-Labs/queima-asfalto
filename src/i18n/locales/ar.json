@@ -725,6 +725,7 @@
     "rejectReasons": {
       "missing_required_field": "حقل مطلوب مفقود",
       "invalid_event_type": "نوع سباق غير صالح",
+      "invalid_race_id": "معرّف سباق غير صالح",
       "invalid_event_status": "حالة غير صالحة",
       "invalid_distance": "مسافة غير صالحة",
       "invalid_name": "اسم غير صالح",

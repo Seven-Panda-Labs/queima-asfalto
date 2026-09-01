@@ -713,6 +713,7 @@
     "rejectReasons": {
       "missing_required_field": "Campo obrigatório em falta",
       "invalid_event_type": "Tipo de prova inválido",
+      "invalid_race_id": "Identidade de corrida inválida",
       "invalid_event_status": "Estado inválido",
       "invalid_distance": "Distância inválida",
       "invalid_name": "Nome inválido",

@@ -15,6 +15,7 @@ import {
 } from 'firebase/firestore'
 import i18n from '../i18n'
 import { db } from './firebase'
+import { findOrCreateRaceId } from './races'
 import { deleteAllEventMedia } from './eventMedia'
 import type { Event, EventCreate, EventFilters } from '../types/Event'
 import { normalizeEventStatus, normalizeEventType } from '../domain/eventCodes'
@@ -83,6 +84,7 @@ function docToEvent(id: string, data: Record<string, unknown>): Event {
       typeof data.parkrunCountryUrl === 'string' ? data.parkrunCountryUrl : undefined,
     trackPacingDriftSeconds:
       typeof data.trackPacingDriftSeconds === 'number' ? data.trackPacingDriftSeconds : undefined,
+    raceId: (data.raceId as string | null) ?? undefined,
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
     updatedAt: timestampToDate(data.updatedAt as Timestamp | undefined),
   }
@@ -103,6 +105,18 @@ function applyFilters(events: Event[], filters?: EventFilters): Event[] {
 }
 
 export async function createEvent(userId: string, data: EventCreate): Promise<string> {
+  // Scheduling from the bucket list passes the item's race through, so the two
+  // land on one identity rather than being matched by name a second time.
+  const raceId =
+    data.raceId ??
+    (await findOrCreateRaceId(userId, {
+      name: data.name,
+      location: data.location,
+      locationLat: data.locationLat,
+      locationLng: data.locationLng,
+      locationGeocodeQuery: data.locationGeocodeQuery,
+    }))
+
   const ref = await addDoc(collection(db, EVENTS_COLLECTION), {
     userId,
     name: data.name,
@@ -125,6 +139,7 @@ export async function createEvent(userId: string, data: EventCreate): Promise<st
     parkrunEventSlug: data.parkrunEventSlug ?? null,
     parkrunCountryUrl: data.parkrunCountryUrl ?? null,
     resultsVerified: null,
+    raceId: raceId ?? null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })

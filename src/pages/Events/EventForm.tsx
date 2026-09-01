@@ -93,6 +93,9 @@ export function EventForm() {
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM)
   const [bucketListItemId, setBucketListItemId] = useState<string | null>(null)
+  // Carried from the bucket list so the event joins the wish's race instead of
+  // being matched by name again, which would split an identity on a typo.
+  const [bucketListRaceId, setBucketListRaceId] = useState<string | null>(null)
   const [showRemoveFromBucketList, setShowRemoveFromBucketList] = useState(false)
   const [removingFromBucketList, setRemovingFromBucketList] = useState(false)
   const [loadingEvent, setLoadingEvent] = useState(isEditing)
@@ -160,6 +163,7 @@ export function EventForm() {
 
     const { fromBucketList } = state
     setBucketListItemId(fromBucketList.bucketListItemId)
+    setBucketListRaceId(fromBucketList.raceId ?? null)
     setForm({
       name: fromBucketList.name,
       date: new Date(),
@@ -376,6 +380,7 @@ export function EventForm() {
         : detectPlatform(trimmedResultsUrl, form.name.trim()) ?? undefined,
       parkrunEventSlug: isParkrunEvent ? parkrunSlug ?? undefined : undefined,
       parkrunCountryUrl: isParkrunEvent ? parkrunCountryUrl : undefined,
+      raceId: bucketListRaceId ?? undefined,
     }
   }
 

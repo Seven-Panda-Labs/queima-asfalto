@@ -15,6 +15,7 @@ import {
 import { db } from './firebase'
 import type { BucketListItem, BucketListItemCreate } from '../types/BucketListItem'
 import { normalizeBucketListDisciplines } from '../utils/bucketListDisciplines'
+import { findOrCreateRaceId } from './races'
 
 const BUCKET_LIST_COLLECTION = 'bucketListItems'
 
@@ -47,6 +48,7 @@ export function docToBucketListItem(id: string, data: Record<string, unknown>): 
     link: (data.link as string | null) ?? undefined,
     emoji: (data.emoji as string | null) ?? undefined,
     notes: (data.notes as string | null) ?? undefined,
+    raceId: (data.raceId as string | null) ?? undefined,
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
     updatedAt: timestampToDate(data.updatedAt as Timestamp | undefined),
   }
@@ -56,6 +58,16 @@ export async function createBucketListItem(
   userId: string,
   data: BucketListItemCreate,
 ): Promise<string> {
+  const raceId =
+    data.raceId ??
+    (await findOrCreateRaceId(userId, {
+      name: data.name,
+      location: data.location,
+      locationLat: data.locationLat,
+      locationLng: data.locationLng,
+      locationGeocodeQuery: data.locationGeocodeQuery,
+    }))
+
   const ref = await addDoc(collection(db, BUCKET_LIST_COLLECTION), {
     userId,
     name: data.name.trim(),
@@ -71,6 +83,7 @@ export async function createBucketListItem(
     link: data.link?.trim() || null,
     emoji: data.emoji ?? null,
     notes: data.notes?.trim() || null,
+    raceId: raceId ?? null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })

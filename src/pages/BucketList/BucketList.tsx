@@ -50,6 +50,7 @@ const UnmappedBucketListPanel = lazy(() =>
 export type EventFormFromBucketListState = {
   fromBucketList: {
     bucketListItemId: string
+    raceId?: string
     name: string
     location: string
     locationLat?: number
@@ -170,6 +171,7 @@ export function BucketList() {
     const state: EventFormFromBucketListState = {
       fromBucketList: {
         bucketListItemId: item.id,
+        raceId: item.raceId,
         name: item.name,
         location: item.location,
         locationLat: item.locationLat,
