@@ -26,17 +26,38 @@ export const CATALOG_REVIEW_STATES = ['unreviewed', 'reviewed'] as const
 
 export type CatalogReviewState = (typeof CATALOG_REVIEW_STATES)[number]
 
-/** One edition. Absent until someone has the dates from the organiser. */
+/**
+ * One edition. Absent until someone has the dates from the organiser.
+ *
+ * Carries its own provenance rather than inheriting the entry's, because dates
+ * are per year and get added long after the entry was first checked. Without
+ * this, confirming an entry today would silently vouch for a 2028 edition
+ * somebody adds in 2027.
+ *
+ * The three gate fields take an instant (`2026-08-14T02:00:00Z`) when the
+ * organiser publishes a time, and a plain date (`2026-09-18`) when only the day
+ * is known. Inventing midnight would be inventing precision.
+ */
 export type RaceCatalogEdition = {
   year: number
   /** ISO date, `YYYY-MM-DD`. */
   raceDate?: string
-  /** ISO instant, because an opening time is a moment, not a day. */
   registrationOpensAt?: string
   registrationClosesAt?: string
   lotteryDrawAt?: string
   /** IANA zone, so a reminder can print the local opening time. */
   timezone?: string
+  /**
+   * The headline entry fee, in major units. `typical` because a race usually has
+   * several: early bird, international, charity, club.
+   */
+  typicalFee?: number
+  /** ISO 4217, required whenever `typicalFee` is set. */
+  feeCurrency?: string
+  /** Where these dates came from. */
+  source: string
+  /** `YYYY-MM-DD`, the day someone last read them off that source. */
+  confirmedAt: string
 }
 
 export type RaceCatalogEntry = {

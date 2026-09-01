@@ -6,7 +6,14 @@ import {
   RACE_ENTRY_METHODS,
   type RaceCatalog,
 } from './types.js'
-import { canAssertDates, editionForYear, findCatalogRace, searchCatalogRaces } from './catalog.js'
+import {
+  canAssertDates,
+  editionForYear,
+  editionReviewQueue,
+  findCatalogRace,
+  needsEditionReview,
+  searchCatalogRaces,
+} from './catalog.js'
 
 const catalog = seed as RaceCatalog
 
@@ -44,6 +51,22 @@ describe('the committed seed', () => {
       for (const edition of race.editions ?? []) {
         expect(edition.year).toBeGreaterThan(2000)
         if (edition.raceDate !== undefined) expect(edition.raceDate).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+        if (edition.typicalFee !== undefined) {
+          expect(edition.typicalFee).toBeGreaterThan(0)
+          // A number with no currency is not a price.
+          expect(edition.feeCurrency).toMatch(/^[A-Z]{3}$/)
+        }
+        // Provenance per edition, not inherited from the entry.
+        expect(edition.source.length).toBeGreaterThan(0)
+        expect(edition.confirmedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+        for (const gate of [
+          edition.registrationOpensAt,
+          edition.registrationClosesAt,
+          edition.lotteryDrawAt,
+        ]) {
+          // A day when only the day is published, an instant when the hour is.
+          if (gate !== undefined) expect(gate).toMatch(/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}Z)?$/)
+        }
       }
     }
   })
@@ -77,8 +100,8 @@ describe('searchCatalogRaces', () => {
   })
 
   it('matches the city as well as the name', () => {
-    expect(searchCatalogRaces(catalog.races, 'cape town').map((race) => race.id)).toContain(
-      'two-oceans-half-marathon',
+    expect(searchCatalogRaces(catalog.races, 'copenhagen').map((race) => race.id)).toContain(
+      'copenhagen-half-marathon',
     )
   })
 
@@ -92,10 +115,10 @@ describe('searchCatalogRaces', () => {
 })
 
 describe('canAssertDates', () => {
-  it('is false for every entry in the seed as it stands', () => {
-    for (const race of catalog.races) {
-      expect(canAssertDates(race)).toBe(false)
-    }
+  it('is false for an entry nobody has checked', () => {
+    // Built rather than found: every entry in the seed is reviewed today, and the
+    // rule has to keep holding for the next one that is not.
+    expect(canAssertDates({ ...catalog.races[0]!, review: 'unreviewed' })).toBe(false)
   })
 
   it('is true once an entry is reviewed', () => {
@@ -103,14 +126,57 @@ describe('canAssertDates', () => {
   })
 })
 
+describe('needsEditionReview', () => {
+  const entry = {
+    ...catalog.races[0]!,
+    review: 'reviewed' as const,
+    editions: [
+      {
+        year: 2027,
+        raceDate: '2027-03-07',
+        source: 'test',
+        confirmedAt: '2026-09-01',
+      },
+    ],
+  }
+
+  it('is false while an edition is still ahead', () => {
+    expect(needsEditionReview(entry, new Date('2026-09-01'))).toBe(false)
+  })
+
+  it('turns true the day after the last edition ran', () => {
+    expect(needsEditionReview(entry, new Date('2027-03-08'))).toBe(true)
+  })
+
+  it('is true for an entry with no editions at all', () => {
+    expect(needsEditionReview({ ...entry, editions: [] }, new Date('2026-09-01'))).toBe(true)
+  })
+})
+
+describe('editionReviewQueue', () => {
+  it('puts the races whose month comes round soonest first', () => {
+    const queue = editionReviewQueue(catalog.races, new Date('2026-09-01'))
+    const months = queue.map((race) => race.typicalRaceMonth)
+    expect(months[0]).toBe(9)
+    expect(queue.every((race) => needsEditionReview(race, new Date('2026-09-01')))).toBe(true)
+  })
+
+  it('leaves out what has an edition ahead of it', () => {
+    const queue = editionReviewQueue(catalog.races, new Date('2026-09-01'))
+    expect(queue.map((race) => race.id)).not.toContain('tokyo-marathon')
+  })
+})
+
 describe('editionForYear', () => {
   it('finds the year, or null', () => {
     const race = {
       ...catalog.races[0]!,
-      editions: [{ year: 2027, raceDate: '2027-03-07' }],
+      editions: [
+        { year: 2027, raceDate: '2027-03-07', source: 'test', confirmedAt: '2026-09-01' },
+      ],
     }
     expect(editionForYear(race, 2027)?.raceDate).toBe('2027-03-07')
     expect(editionForYear(race, 2028)).toBeNull()
-    expect(editionForYear(catalog.races[0]!, 2027)).toBeNull()
+    expect(editionForYear({ ...catalog.races[0]!, editions: [] }, 2027)).toBeNull()
   })
 })
