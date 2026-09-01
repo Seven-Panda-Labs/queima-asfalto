@@ -158,3 +158,66 @@ describe('buildCourseComparison', () => {
     expect(history.runs).toHaveLength(3)
   })
 })
+
+describe('grouping by race identity', () => {
+  function linked(
+    id: string,
+    name: string,
+    date: string,
+    time: string,
+    realDistance: number,
+    raceId?: string,
+  ): Event {
+    return {
+      id,
+      name,
+      date: new Date(date),
+      realDistance,
+      time,
+      status: 'completed',
+      eventType: 'km_5',
+      raceId,
+    } as Event
+  }
+
+  it('groups two runnings of one race however the name was typed', () => {
+    const current = linked('e2', 'Tierparklauf 2026', '2026-05-01', '00:21:30', 5, 'race-tp')
+    const earlier = linked('e1', 'Lauf im Tierpark', '2025-05-01', '00:22:30', 5, 'race-tp')
+
+    const comparison = buildCourseComparison(current, [current, earlier])
+
+    expect(comparison?.kind).toBe('ran')
+    expect(comparison?.runs).toHaveLength(2)
+  })
+
+  it('keeps the distances of one race apart, because a race is not a course', () => {
+    // Tierparklauf runs a 5K and a 10K. One race, two courses.
+    const fiveK = linked('e1', 'Tierparklauf', '2026-05-01', '00:21:30', 5, 'race-tp')
+    const tenK = linked('e2', 'Tierparklauf', '2026-09-01', '00:45:00', 10, 'race-tp')
+
+    const comparison = buildCourseComparison(tenK, [fiveK, tenK])
+
+    expect(comparison).toBeNull()
+  })
+
+  it('still tolerates the same course measured differently', () => {
+    const current = linked('e2', 'Tierparklauf', '2026-05-01', '00:21:30', 5, 'race-tp')
+    const earlier = linked('e1', 'Tierparklauf', '2025-05-01', '00:22:30', 4.9, 'race-tp')
+
+    expect(buildCourseComparison(current, [current, earlier])?.runs).toHaveLength(2)
+  })
+
+  it('falls back to the name when only one side carries an identity', () => {
+    const linkedRun = linked('e2', 'Tierparklauf', '2026-05-01', '00:21:30', 5, 'race-tp')
+    const older = linked('e1', 'Tierparklauf', '2025-05-01', '00:22:30', 5, undefined)
+
+    expect(buildCourseComparison(linkedRun, [linkedRun, older])?.runs).toHaveLength(2)
+  })
+
+  it('does not group two races that only share a name, once both are identified', () => {
+    const mine = linked('e2', 'Tierparklauf', '2026-05-01', '00:21:30', 5, 'race-a')
+    const other = linked('e1', 'Tierparklauf', '2025-05-01', '00:22:30', 5, 'race-b')
+
+    expect(buildCourseComparison(mine, [mine, other])).toBeNull()
+  })
+})

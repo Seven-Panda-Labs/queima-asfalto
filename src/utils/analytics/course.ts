@@ -54,8 +54,28 @@ function isUpcoming(event: Event): boolean {
   return (event.status === 'planned' || event.status === 'confirmed') && !event.time?.trim()
 }
 
+/**
+ * The same race, by identity when both sides have one and by the typed name when
+ * either does not.
+ *
+ * The fallback is not a leftover: most events predate `races`, and one backfilled
+ * race sitting next to one that is not still has to group.
+ */
+function sameRace(candidate: Event, reference: Event): boolean {
+  if (candidate.raceId && reference.raceId) return candidate.raceId === reference.raceId
+  return courseKey(candidate.name) === courseKey(reference.name)
+}
+
+/**
+ * The same race and a comparable distance, both of them.
+ *
+ * Identity alone would be wrong: a race commonly offers several distances, and
+ * Tierparklauf running a 5K and a 10K is one race and two courses. What separates
+ * them is the distance, so the tolerance stays on top of the identity rather than
+ * being replaced by it.
+ */
 function sameCourse(candidate: AnalysableResult, reference: Event): boolean {
-  if (courseKey(candidate.event.name) !== courseKey(reference.name)) return false
+  if (!sameRace(candidate.event, reference)) return false
   const spread = Math.abs(candidate.distanceKm - reference.realDistance) / reference.realDistance
   return spread <= SAME_COURSE_DISTANCE_TOLERANCE
 }
