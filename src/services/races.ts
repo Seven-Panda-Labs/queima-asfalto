@@ -14,6 +14,7 @@ import {
 } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Race, RaceCreate } from '../types/Race'
+import { findRaceByName } from '../domain/raceMatching'
 
 const RACES_COLLECTION = 'races'
 
@@ -93,6 +94,26 @@ export async function getRace(raceId: string): Promise<Race | null> {
 export async function listRaces(userId: string): Promise<Race[]> {
   const snapshot = await getDocs(racesCollectionQuery(userId))
   return snapshot.docs.map((document) => docToRace(document.id, document.data()))
+}
+
+/**
+ * The id of the race this name belongs to, creating one if it does not exist yet.
+ *
+ * Best effort on purpose: nothing reads `raceId` yet, so a race that cannot be
+ * written must not stop an event or a bucket list item being saved. The backfill
+ * script picks up whatever this misses.
+ */
+export async function findOrCreateRaceId(
+  userId: string,
+  data: RaceCreate,
+): Promise<string | null> {
+  try {
+    const existing = findRaceByName(await listRaces(userId), data.name)
+    if (existing) return existing.id
+    return await createRace(userId, data)
+  } catch {
+    return null
+  }
 }
 
 export function racesCollectionQuery(userId: string) {

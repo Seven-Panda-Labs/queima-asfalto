@@ -15,6 +15,8 @@ export type BucketListItem = {
   link?: string
   emoji?: string
   notes?: string
+  /** The race this is a wish for. Absent on items older than the collection. */
+  raceId?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -31,4 +33,5 @@ export type BucketListItemCreate = {
   link?: string
   emoji?: string
   notes?: string
+  raceId?: string
 }

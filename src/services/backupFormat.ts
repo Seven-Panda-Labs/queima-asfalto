@@ -827,6 +827,7 @@ const ALLOWED_PLATFORM = new Set<string>(RESULTS_PLATFORMS)
 export const RESTORE_REJECTION_CODES = [
   'missing_required_field',
   'invalid_event_type',
+  'invalid_race_id',
   'invalid_event_status',
   'invalid_distance',
   'invalid_name',
@@ -927,6 +928,7 @@ function validateEvent(data: Record<string, unknown>): RestoreRejectionCode | nu
   }
   if (!validGeocodeFields(data)) return 'invalid_geocode'
   if (!validResultsFields(data)) return 'invalid_results_field'
+  if (!validOptionalRaceId(data)) return 'invalid_race_id'
   return null
 }
 
@@ -979,7 +981,12 @@ function validateBucketListItem(data: Record<string, unknown>): RestoreRejection
   if (!validDisciplines && !validLegacy) return 'invalid_disciplines'
 
   if (!validGeocodeFields(data)) return 'invalid_geocode'
+  if (!validOptionalRaceId(data)) return 'invalid_race_id'
   return null
+}
+
+function validOptionalRaceId(data: Record<string, unknown>): boolean {
+  return data.raceId === undefined || data.raceId === null || typeof data.raceId === 'string'
 }
 
 function validateRace(data: Record<string, unknown>): RestoreRejectionCode | null {

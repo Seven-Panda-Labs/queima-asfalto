@@ -586,6 +586,25 @@ describe('validateRestoreDocument', () => {
     expect(check('performanceGoals', { ...base, type: 'other' })).toBe('invalid_performance_goal')
   })
 
+  it('rejects a race identity that is not a string, on an event and on an item', () => {
+    const event = {
+      userId: 'user-ze',
+      name: 'Berlim',
+      date: '2026-09-27T07:00:00.000Z',
+      realDistance: 42.195,
+      eventType: 'km_42_2',
+      location: 'Berlim',
+      status: 'completed',
+    }
+    expect(check('events', { ...event, raceId: 'race-1' })).toBeNull()
+    expect(check('events', { ...event, raceId: null })).toBeNull()
+    expect(check('events', { ...event, raceId: 42 })).toBe('invalid_race_id')
+
+    const item = { userId: 'user-ze', name: 'Comrades', location: 'Durban', realDistance: 89, disciplines: ['km_42_2'] }
+    expect(check('bucketListItems', { ...item, raceId: 'race-1' })).toBeNull()
+    expect(check('bucketListItems', { ...item, raceId: 42 })).toBe('invalid_race_id')
+  })
+
   it('validates bucket list disciplines, including the legacy singular field', () => {
     const base = { userId: 'user-ze', name: 'Comrades', location: 'Durban', realDistance: 89 }
 
