@@ -1,0 +1,368 @@
+{
+  "updatedAt": "2026-09-01",
+  "races": [
+    {
+      "id": "tokyo-marathon",
+      "name": "Tokyo Marathon",
+      "country": "JP",
+      "city": "Tokyo",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.marathon.tokyo/en/",
+      "typicalRaceMonth": 3
+    },
+    {
+      "id": "boston-marathon",
+      "name": "Boston Marathon",
+      "country": "US",
+      "city": "Boston",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "qualifying",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.baa.org/",
+      "typicalRaceMonth": 4,
+      "typicalWindowNote": "Qualifying time by age group, and a registration week months ahead"
+    },
+    {
+      "id": "london-marathon",
+      "name": "TCS London Marathon",
+      "country": "GB",
+      "city": "London",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.tcslondonmarathon.com/",
+      "typicalRaceMonth": 4
+    },
+    {
+      "id": "berlin-marathon",
+      "name": "BMW Berlin Marathon",
+      "country": "DE",
+      "city": "Berlin",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.bmw-berlin-marathon.com/en/",
+      "typicalRaceMonth": 9
+    },
+    {
+      "id": "chicago-marathon",
+      "name": "Bank of America Chicago Marathon",
+      "country": "US",
+      "city": "Chicago",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.chicagomarathon.com/",
+      "typicalRaceMonth": 10
+    },
+    {
+      "id": "new-york-city-marathon",
+      "name": "TCS New York City Marathon",
+      "country": "US",
+      "city": "New York",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.tcsnycmarathon.org/",
+      "typicalRaceMonth": 11
+    },
+    {
+      "id": "sydney-marathon",
+      "name": "TCS Sydney Marathon",
+      "country": "AU",
+      "city": "Sydney",
+      "disciplines": [
+        "km_42_2"
+      ],
+      "entryMethod": "lottery",
+      "review": "unreviewed",
+      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "officialUrl": "https://www.sydneymarathon.org/",
+      "typicalRaceMonth": 8
+    },
+    {
+      "id": "lisbon-half-marathon",
+      "name": "EDP Lisbon Half Marathon",
+      "country": "PT",
+      "city": "Lisbon",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en and runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "officialUrl": "https://www.maratonaclubedeportugal.com/en/corrida-marco/edp-lisbon-half-marathon/",
+      "typicalRaceMonth": 3,
+      "typicalWindowNote": "SuperHalfs series"
+    },
+    {
+      "id": "prague-half-marathon",
+      "name": "Generali Prague Half Marathon",
+      "country": "CZ",
+      "city": "Prague",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en, fetched 2026-09-01",
+      "officialUrl": "https://www.runczech.com/en",
+      "typicalRaceMonth": 4,
+      "typicalWindowNote": "SuperHalfs series"
+    },
+    {
+      "id": "berlin-half-marathon",
+      "name": "Generali Berlin Half Marathon",
+      "country": "DE",
+      "city": "Berlin",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en and runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "officialUrl": "https://www.generali-berliner-halbmarathon.de/en/",
+      "typicalRaceMonth": 4,
+      "typicalWindowNote": "SuperHalfs series. Runna lists it as end of March"
+    },
+    {
+      "id": "copenhagen-half-marathon",
+      "name": "Copenhagen Half Marathon",
+      "country": "DK",
+      "city": "Copenhagen",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en, fetched 2026-09-01",
+      "officialUrl": "https://cphhalf.dk/",
+      "typicalRaceMonth": 9,
+      "typicalWindowNote": "SuperHalfs series"
+    },
+    {
+      "id": "cardiff-half-marathon",
+      "name": "Cardiff Half Marathon",
+      "country": "GB",
+      "city": "Cardiff",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en, fetched 2026-09-01",
+      "officialUrl": "https://www.cardiffhalfmarathon.co.uk/",
+      "typicalRaceMonth": 10,
+      "typicalWindowNote": "SuperHalfs series"
+    },
+    {
+      "id": "valencia-half-marathon",
+      "name": "Valencia Half Marathon Trinidad Alfonso Zurich",
+      "country": "ES",
+      "city": "Valencia",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "superhalfs.com/en, fetched 2026-09-01",
+      "officialUrl": "https://www.valenciaciudaddelrunning.com/en/half/half-marathon/",
+      "typicalRaceMonth": 10,
+      "typicalWindowNote": "SuperHalfs series"
+    },
+    {
+      "id": "nyc-half-marathon",
+      "name": "United Airlines NYC Half",
+      "country": "US",
+      "city": "New York",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 3
+    },
+    {
+      "id": "great-north-run",
+      "name": "Great North Run",
+      "country": "GB",
+      "city": "Newcastle upon Tyne",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 9
+    },
+    {
+      "id": "barcelona-half-marathon",
+      "name": "Barcelona Half Marathon",
+      "country": "ES",
+      "city": "Barcelona",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 2
+    },
+    {
+      "id": "paris-half-marathon",
+      "name": "Paris Half Marathon",
+      "country": "FR",
+      "city": "Paris",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 3,
+      "typicalWindowNote": "Early March"
+    },
+    {
+      "id": "tokyo-half-marathon",
+      "name": "Tokyo Half Marathon",
+      "country": "JP",
+      "city": "Tokyo",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 3
+    },
+    {
+      "id": "napa-to-sonoma-half-marathon",
+      "name": "Napa to Sonoma Half Marathon",
+      "country": "US",
+      "city": "Napa",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 7
+    },
+    {
+      "id": "gold-coast-half-marathon",
+      "name": "Gold Coast Half Marathon",
+      "country": "AU",
+      "city": "Gold Coast",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 7
+    },
+    {
+      "id": "two-oceans-half-marathon",
+      "name": "Two Oceans Half Marathon",
+      "country": "ZA",
+      "city": "Cape Town",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 4,
+      "typicalWindowNote": "Mid April"
+    },
+    {
+      "id": "sydney-half-marathon",
+      "name": "Sydney Half Marathon",
+      "country": "AU",
+      "city": "Sydney",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 5,
+      "typicalWindowNote": "Early May. Not the Sydney Marathon, which runs in August"
+    },
+    {
+      "id": "vancouver-half-marathon",
+      "name": "Vancouver Half Marathon",
+      "country": "CA",
+      "city": "Vancouver",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 5
+    },
+    {
+      "id": "rio-de-janeiro-half-marathon",
+      "name": "Rio de Janeiro Half Marathon",
+      "country": "BR",
+      "city": "Rio de Janeiro",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 8,
+      "typicalWindowNote": "Mid August"
+    },
+    {
+      "id": "kauai-half-marathon",
+      "name": "Kauai Half Marathon",
+      "country": "US",
+      "city": "Poipu",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 9
+    },
+    {
+      "id": "athens-half-marathon",
+      "name": "Athens Half Marathon",
+      "country": "GR",
+      "city": "Athens",
+      "disciplines": [
+        "km_21_1"
+      ],
+      "entryMethod": "unknown",
+      "review": "unreviewed",
+      "source": "runna.com/blog/best-half-marathons-world, fetched 2026-09-01",
+      "typicalRaceMonth": 4,
+      "typicalWindowNote": "End of April"
+    }
+  ]
+}
