@@ -38,6 +38,12 @@ Cada entrada tem um campo `review`, e é este o ponto do formato:
 
 Uma entrada por PR é aceitável e preferível a um lote: são factos verificáveis um a um, e um lote esconde o que não foi verificado.
 
+### O que entra no catálogo
+
+Uma prova entra quando a app pode fazer algo com ela, e o que a app faz é avisar antes de o portão fechar. Uma prova com sorteio, com esgotamento antecipado ou com tempo de qualificação tem portão; uma que abre inscrições e as mantém abertas até à véspera não tem, e no catálogo seria um nome e um mês que ninguém lê.
+
+Foi por isto que a primeira lista encolheu de 27 para 14 entradas: as provas de destino sem portão saíram, e o que ficou são as sete Majors mais Sydney, as seis SuperHalfs e o 10K de Lisboa.
+
 ### Preços com vários níveis
 
 Muitas provas cobram menos a quem é do país. O `typicalFee` guarda o que **um corredor de fora** paga, porque é esse o utilizador que o catálogo serve: quem consulta uma prova a 2000 km de casa está a planear uma viagem. O outro preço vai para a nota.
@@ -87,6 +93,12 @@ Every entry carries a `review` field, and this is the point of the format:
 5. Update `updatedAt` at the top of the file.
 
 One entry per PR is fine, and better than a batch: these are facts verifiable one at a time, and a batch hides what was not verified.
+
+### What belongs in the catalog
+
+A race belongs when the app can do something with it, and what the app does is warn before the gate closes. A race with a lottery, an early sell-out or a qualifying time has a gate; one that opens registration and keeps it open until the day before does not, and in the catalog it would be a name and a month nobody reads.
+
+That is why the first list shrank from 27 entries to 14: destination races with no gate came out, and what stayed is the seven Majors plus Sydney, the six SuperHalfs and the Lisbon 10K.
 
 ### Tiered fees
 

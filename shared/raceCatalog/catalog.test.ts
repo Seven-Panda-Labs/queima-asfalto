@@ -100,8 +100,8 @@ describe('searchCatalogRaces', () => {
   })
 
   it('matches the city as well as the name', () => {
-    expect(searchCatalogRaces(catalog.races, 'cape town').map((race) => race.id)).toContain(
-      'two-oceans-half-marathon',
+    expect(searchCatalogRaces(catalog.races, 'copenhagen').map((race) => race.id)).toContain(
+      'copenhagen-half-marathon',
     )
   })
 
@@ -116,8 +116,9 @@ describe('searchCatalogRaces', () => {
 
 describe('canAssertDates', () => {
   it('is false for an entry nobody has checked', () => {
-    const unreviewed = catalog.races.find((race) => race.review === 'unreviewed')!
-    expect(canAssertDates(unreviewed)).toBe(false)
+    // Built rather than found: every entry in the seed is reviewed today, and the
+    // rule has to keep holding for the next one that is not.
+    expect(canAssertDates({ ...catalog.races[0]!, review: 'unreviewed' })).toBe(false)
   })
 
   it('is true once an entry is reviewed', () => {
