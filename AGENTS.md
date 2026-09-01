@@ -113,6 +113,7 @@ The pre-push hook covers every agent and human that shells out to `git`. Emergen
 | Architecture | [docs/architecture.md](docs/architecture.md) |
 | Connectors | [docs/adding-a-results-connector.md](docs/adding-a-results-connector.md) |
 | Race lifecycle (product) | [docs/race-lifecycle.md](docs/race-lifecycle.md) |
+| Race catalog and its review rule | [docs/race-catalog.md](docs/race-catalog.md) |
 | Self-hosting | [docs/self-hosting.md](docs/self-hosting.md) |
 
 ## GitHub CI
