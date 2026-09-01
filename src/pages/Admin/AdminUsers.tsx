@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
+import { AdminTabs } from './AdminTabs'
 import { useToast } from '../../contexts/ToastContext'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import {
@@ -93,6 +94,7 @@ export function AdminUsers() {
   return (
     <PageShell title={t('admin.usersTitle')}>
       <p className="mt-2 text-sm text-muted">{t('admin.usersSubtitle')}</p>
+      <AdminTabs />
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
 

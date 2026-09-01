@@ -21,6 +21,9 @@ vi.mock('../../contexts/ToastContext', () => ({
   useToast: () => ({ success: vi.fn(), error: vi.fn() }),
 }))
 
+// The tabs need a router, and this file is about the table.
+vi.mock('./AdminTabs', () => ({ AdminTabs: () => null }))
+
 vi.mock('../../components/PageShell/PageShell', () => ({
   PageShell: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }))

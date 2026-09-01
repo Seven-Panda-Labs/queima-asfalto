@@ -16,6 +16,8 @@ import { PerformanceGoalForm } from './pages/Goals/PerformanceGoalForm'
 import { Login } from './pages/Login/Login'
 import { NotFound } from './pages/NotFound/NotFound'
 import { Results } from './pages/Results/Results'
+import { AdminCatalog } from './pages/Admin/AdminCatalog'
+import { AdminCatalogForm } from './pages/Admin/AdminCatalogForm'
 import { AdminOnly } from './pages/Admin/AdminOnly'
 import { AdminUsers } from './pages/Admin/AdminUsers'
 import { Settings } from './pages/Settings/Settings'
@@ -76,6 +78,30 @@ export default function App() {
               element={
                 <AdminOnly>
                   <AdminUsers />
+                </AdminOnly>
+              }
+            />
+            <Route
+              path="admin/catalogo"
+              element={
+                <AdminOnly>
+                  <AdminCatalog />
+                </AdminOnly>
+              }
+            />
+            <Route
+              path="admin/catalogo/novo"
+              element={
+                <AdminOnly>
+                  <AdminCatalogForm />
+                </AdminOnly>
+              }
+            />
+            <Route
+              path="admin/catalogo/:id"
+              element={
+                <AdminOnly>
+                  <AdminCatalogForm />
                 </AdminOnly>
               }
             />
