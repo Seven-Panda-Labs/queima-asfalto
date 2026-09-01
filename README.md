@@ -116,6 +116,7 @@ Alterações de versão devem actualizar `package.json`, `change-log.md` e `chan
 | [`docs/timing-scraping-disclaimer.md`](docs/timing-scraping-disclaimer.md) | Aviso sobre scraping de sites de timing e ToS de terceiros |
 | [`docs/architecture.md`](docs/architecture.md) | Arquitectura (PWA, Firestore, Cloud Functions, conectores) |
 | [`docs/adding-a-results-connector.md`](docs/adding-a-results-connector.md) | Guia para adicionar um conector de resultados oficiais |
+| [`docs/race-lifecycle.md`](docs/race-lifecycle.md) | Ciclo de vida de uma corrida (do desejo à análise), fases e lacunas |
 | [`docs/console-restrictions.md`](docs/console-restrictions.md) | Restrições Firebase / Geoapify no Console |
 | [`docs/visual-identity.md`](docs/visual-identity.md) | Paleta, tipografia e tokens de UI |
 | [`docs/voice.md`](docs/voice.md) | Tom de voz da marca (copy e i18n) |
@@ -225,6 +226,7 @@ Version bumps must update `package.json`, `change-log.md`, and `change-log.en.md
 | [`docs/timing-scraping-disclaimer.md`](docs/timing-scraping-disclaimer.md) | Timing site scraping and third-party ToS notice |
 | [`docs/architecture.md`](docs/architecture.md) | Architecture (PWA, Firestore, Cloud Functions, connectors) |
 | [`docs/adding-a-results-connector.md`](docs/adding-a-results-connector.md) | How to add an official results connector |
+| [`docs/race-lifecycle.md`](docs/race-lifecycle.md) | The race lifecycle (wish to analysis), stages and gaps |
 | [`docs/console-restrictions.md`](docs/console-restrictions.md) | Firebase / Geoapify console restrictions |
 | [`docs/visual-identity.md`](docs/visual-identity.md) | Palette, typography, and UI tokens |
 | [`docs/voice.md`](docs/voice.md) | Brand voice (copy and i18n) |
