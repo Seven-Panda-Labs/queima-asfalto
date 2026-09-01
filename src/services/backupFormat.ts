@@ -16,8 +16,11 @@ import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
 
 export const BACKUP_APP_ID = 'queima-asfalto'
 export const BACKUP_KIND = 'user-backup'
-/** 2 added the `tracks/` directory and the `eventTracks` section. */
-export const BACKUP_SCHEMA_VERSION = 2
+/**
+ * 2 added the `tracks/` directory and the `eventTracks` section.
+ * 3 added the `races` section.
+ */
+export const BACKUP_SCHEMA_VERSION = 3
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
 export const BACKUP_MEDIA_DIR = 'media'
 export const BACKUP_TRACKS_DIR = 'tracks'
@@ -47,6 +50,7 @@ export const BACKUP_SECTION_KEYS = [
   'goals',
   'performanceGoals',
   'bucketListItems',
+  'races',
   'userProfile',
   'shares',
 ] as const
@@ -61,6 +65,7 @@ export const RESTORABLE_SECTIONS = [
   'goals',
   'performanceGoals',
   'bucketListItems',
+  'races',
   'userProfile',
 ] as const
 
@@ -83,6 +88,7 @@ export const BACKUP_SECTION_FILES: Record<BackupSectionKey, string> = {
   goals: 'goals.json',
   performanceGoals: 'performanceGoals.json',
   bucketListItems: 'bucketListItems.json',
+  races: 'races.json',
   userProfile: 'userProfile.json',
   shares: 'shares.json',
 }
@@ -96,6 +102,7 @@ export const BACKUP_SECTION_COLLECTIONS: Record<
   goals: 'goals',
   performanceGoals: 'performanceGoals',
   bucketListItems: 'bucketListItems',
+  races: 'races',
   shares: 'shares',
 }
 
@@ -222,6 +229,7 @@ export function emptyBackupSections(): BackupSections {
     goals: [],
     performanceGoals: [],
     bucketListItems: [],
+    races: [],
     userProfile: [],
     shares: [],
   }
@@ -974,6 +982,14 @@ function validateBucketListItem(data: Record<string, unknown>): RestoreRejection
   return null
 }
 
+function validateRace(data: Record<string, unknown>): RestoreRejectionCode | null {
+  if (!hasAll(data, ['userId', 'name', 'location'])) return 'missing_required_field'
+  if (!isNonEmptyString(data.name)) return 'invalid_name'
+  if (typeof data.location !== 'string') return 'invalid_location'
+  if (!validGeocodeFields(data)) return 'invalid_geocode'
+  return null
+}
+
 function validateEventMedia(
   document: BackupDocument,
   data: Record<string, unknown>,
@@ -1104,6 +1120,8 @@ export function validateRestoreDocument(
       return validatePerformanceGoal(data)
     case 'bucketListItems':
       return validateBucketListItem(data)
+    case 'races':
+      return validateRace(data)
     case 'eventMedia':
       return validateEventMedia(document, data, context)
     case 'eventTracks':

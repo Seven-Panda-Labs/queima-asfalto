@@ -144,6 +144,17 @@ function validPerformanceGoalPayload(userId: string, overrides: Record<string, u
   }
 }
 
+function validRacePayload(userId: string, overrides: Record<string, unknown> = {}) {
+  return {
+    userId,
+    name: 'Maratona do Porto',
+    location: 'Porto',
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...overrides,
+  }
+}
+
 function validBucketListPayload(userId: string, overrides: Record<string, unknown> = {}) {
   return {
     userId,
@@ -561,6 +572,72 @@ describe('firestore.rules', () => {
       await seedDocument('bucketListItems/item-1', validBucketListPayload('user-alice'))
       const db = testEnv.authenticatedContext('user-bob').firestore()
       await assertFails(db.collection('bucketListItems').doc('item-1').get())
+    })
+  })
+
+  describe('races', () => {
+    it('allows owners to create, update and delete a race', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const ref = db.collection('races').doc('race-1')
+
+      await assertSucceeds(ref.set(validRacePayload(userId)))
+      await assertSucceeds(
+        ref.set(validRacePayload(userId, { name: 'Maratona do Porto EDP' })),
+      )
+      await assertSucceeds(ref.delete())
+    })
+
+    it('accepts the optional catalog pointer and official url', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('races')
+          .doc('race-catalog')
+          .set(
+            validRacePayload(userId, {
+              catalogRaceId: 'berlin-marathon',
+              officialUrl: 'https://example.test/berlin',
+              locationLat: 52.5,
+              locationLng: 13.4,
+            }),
+          ),
+      )
+    })
+
+    it('rejects a race with no name', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.collection('races').doc('race-empty').set(validRacePayload(userId, { name: '' })),
+      )
+    })
+
+    it('rejects a race written for another user', async () => {
+      const db = testEnv.authenticatedContext('user-bob').firestore()
+
+      await assertFails(
+        db.collection('races').doc('race-foreign').set(validRacePayload('user-alice')),
+      )
+    })
+
+    it('denies other users from reading a race', async () => {
+      await seedDocument('races/race-1', validRacePayload('user-alice'))
+      const db = testEnv.authenticatedContext('user-bob').firestore()
+
+      await assertFails(db.collection('races').doc('race-1').get())
+    })
+
+    it('denies a pending account', async () => {
+      await seedDocument('users/user-pending', { accountStatus: 'pending' })
+      const db = testEnv.authenticatedContext('user-pending').firestore()
+
+      await assertFails(
+        db.collection('races').doc('race-pending').set(validRacePayload('user-pending')),
+      )
     })
   })
 

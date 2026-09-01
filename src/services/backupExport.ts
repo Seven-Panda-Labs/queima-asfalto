@@ -323,16 +323,16 @@ export async function collectUserBackup(
 }> {
   onProgress?.({ phase: 'collections' })
 
-  const [events, goals, performanceGoals, bucketListItems, shares, userProfile] = await Promise.all(
-    [
+  const [events, goals, performanceGoals, bucketListItems, races, shares, userProfile] =
+    await Promise.all([
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.events, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.goals, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.performanceGoals, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.bucketListItems, 'userId', userId),
+      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.races, 'userId', userId),
       readShares(userId),
       readUserProfile(userId),
-    ],
-  )
+    ])
 
   const eventIds = events.documents.map((document) => document.id)
   const media = await readEventMedia(eventIds, onProgress)
@@ -343,6 +343,7 @@ export async function collectUserBackup(
   sections.goals = goals.documents
   sections.performanceGoals = performanceGoals.documents
   sections.bucketListItems = bucketListItems.documents
+  sections.races = races.documents
   sections.eventMedia = media.documents
   sections.eventTracks = tracks.documents
   sections.shares = shares
@@ -373,7 +374,8 @@ export async function collectUserBackup(
     events.documents.length === 0 &&
     goals.documents.length === 0 &&
     performanceGoals.documents.length === 0 &&
-    bucketListItems.documents.length === 0
+    bucketListItems.documents.length === 0 &&
+    races.documents.length === 0
   ) {
     warnings.push('no_data')
   }
