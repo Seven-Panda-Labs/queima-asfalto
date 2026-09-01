@@ -10,6 +10,8 @@ export {
 export {
   canAssertDates,
   editionForYear,
+  editionReviewQueue,
+  needsEditionReview,
   findCatalogRace,
   searchCatalogRaces,
 } from './catalog.js'

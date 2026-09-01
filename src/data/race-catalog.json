@@ -10,10 +10,24 @@
         "km_42_2"
       ],
       "entryMethod": "lottery",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "review": "reviewed",
+      "source": "marathon.tokyo/en, confirmed 2026-09-01",
       "officialUrl": "https://www.marathon.tokyo/en/",
-      "typicalRaceMonth": 3
+      "typicalRaceMonth": 3,
+      "registrationUrl": "https://entry.onetokyo.org/english/entry/agreement",
+      "typicalWindowNote": "General entry is a lottery, applications in the August before the race",
+      "editions": [
+        {
+          "year": 2027,
+          "raceDate": "2027-03-07",
+          "registrationOpensAt": "2026-08-14T02:00:00Z",
+          "registrationClosesAt": "2026-08-28T08:00:00Z",
+          "lotteryDrawAt": "2026-09-18",
+          "timezone": "Asia/Tokyo",
+          "source": "marathon.tokyo/en and entry.onetokyo.org, read 2026-09-01",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "boston-marathon",
@@ -24,71 +38,143 @@
         "km_42_2"
       ],
       "entryMethod": "qualifying",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "review": "reviewed",
+      "source": "baa.org/races/boston-marathon, confirmed 2026-09-01",
       "officialUrl": "https://www.baa.org/",
       "typicalRaceMonth": 4,
-      "typicalWindowNote": "Qualifying time by age group, and a registration week months ahead"
+      "typicalWindowNote": "Qualifying time by age group. The qualifying window opened 2025-09-13, and acceptances follow in early October with no published date",
+      "registrationUrl": "https://baa.my.site.com/s/login/",
+      "editions": [
+        {
+          "year": 2027,
+          "raceDate": "2027-04-19",
+          "registrationOpensAt": "2026-09-14",
+          "registrationClosesAt": "2026-09-18T21:00:00Z",
+          "timezone": "America/New_York",
+          "source": "baa.org/races/boston-marathon/info-for-athletes, read 2026-09-01",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "london-marathon",
-      "name": "TCS London Marathon",
+      "name": "London Marathon",
       "country": "GB",
       "city": "London",
       "disciplines": [
         "km_42_2"
       ],
       "entryMethod": "lottery",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
-      "officialUrl": "https://www.tcslondonmarathon.com/",
-      "typicalRaceMonth": 4
+      "review": "reviewed",
+      "source": "londonmarathonevents.co.uk, confirmed 2026-09-01",
+      "officialUrl": "https://www.londonmarathonevents.co.uk/london-marathon",
+      "typicalRaceMonth": 4,
+      "registrationUrl": "https://www.londonmarathonevents.co.uk/london-marathon/enter-ballot",
+      "typicalWindowNote": "The ballot opens within days of the previous edition and runs about a week. The 2027 race runs across 24 and 25 April, the only two day edition, and only the first day is stored",
+      "editions": [
+        {
+          "year": 2027,
+          "raceDate": "2027-04-24",
+          "registrationOpensAt": "2026-04-24",
+          "registrationClosesAt": "2026-05-01",
+          "lotteryDrawAt": "2026-07-09",
+          "timezone": "Europe/London",
+          "source": "londonmarathonevents.co.uk/london-marathon and /enter-ballot, read 2026-09-01. Ballot window 24 April to 1 May 2026 supplied in review",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "berlin-marathon",
-      "name": "BMW Berlin Marathon",
+      "name": "Berlin Marathon",
       "country": "DE",
       "city": "Berlin",
       "disciplines": [
         "km_42_2"
       ],
       "entryMethod": "lottery",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "review": "reviewed",
+      "source": "bmw-berlin-marathon.com/en, confirmed 2026-09-01",
       "officialUrl": "https://www.bmw-berlin-marathon.com/en/",
-      "typicalRaceMonth": 9
+      "typicalRaceMonth": 9,
+      "registrationUrl": "https://www.bmw-berlin-marathon.com/en/registration/lottery",
+      "typicalWindowNote": "The lottery for the next year opens within days of the race and stays open about six weeks. The draw date is not published",
+      "editions": [
+        {
+          "year": 2026,
+          "raceDate": "2026-09-27",
+          "registrationOpensAt": "2025-09-25",
+          "registrationClosesAt": "2025-11-06",
+          "timezone": "Europe/Berlin",
+          "typicalFee": 205,
+          "feeCurrency": "EUR",
+          "source": "bmw-berlin-marathon.com/en/registration, read 2026-09-01",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "chicago-marathon",
-      "name": "Bank of America Chicago Marathon",
+      "name": "Chicago Marathon",
       "country": "US",
       "city": "Chicago",
       "disciplines": [
         "km_42_2"
       ],
       "entryMethod": "lottery",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
+      "review": "reviewed",
+      "source": "chicagomarathon.com, confirmed 2026-09-01",
       "officialUrl": "https://www.chicagomarathon.com/",
-      "typicalRaceMonth": 10
+      "typicalRaceMonth": 10,
+      "registrationUrl": "https://www.chicagomarathon.com/apply/",
+      "typicalWindowNote": "Non-guaranteed entry drawing. The opening date is not published, only the closing and the result. US residents pay 245 USD; the stored fee is the one a runner travelling in pays",
+      "editions": [
+        {
+          "year": 2026,
+          "raceDate": "2026-10-11",
+          "registrationClosesAt": "2025-11-18T20:00:00Z",
+          "lotteryDrawAt": "2025-12-11",
+          "timezone": "America/Chicago",
+          "typicalFee": 255,
+          "feeCurrency": "USD",
+          "source": "chicagomarathon.com/apply, read 2026-09-01",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "new-york-city-marathon",
-      "name": "TCS New York City Marathon",
+      "name": "New York City Marathon",
       "country": "US",
       "city": "New York",
       "disciplines": [
         "km_42_2"
       ],
       "entryMethod": "lottery",
-      "review": "unreviewed",
-      "source": "The six World Marathon Majors, plus Sydney. Month and entry method from general knowledge, unchecked.",
-      "officialUrl": "https://www.tcsnycmarathon.org/",
-      "typicalRaceMonth": 11
+      "review": "reviewed",
+      "source": "nyrr.org, supplied in review 2026-09-01",
+      "officialUrl": "https://www.nyrr.org/tcsnycmarathon",
+      "typicalRaceMonth": 11,
+      "registrationUrl": "https://www.nyrr.org/tcsnycmarathon/runners/entry/2027",
+      "typicalWindowNote": "The drawing runs in February for a race the following November, about nine months ahead. The 2027 window is not open yet, and the registration link is year specific. The site sits behind a virtual queue, so it cannot be read automatically",
+      "editions": [
+        {
+          "year": 2026,
+          "raceDate": "2026-11-01",
+          "registrationOpensAt": "2026-02-04",
+          "registrationClosesAt": "2026-02-25",
+          "lotteryDrawAt": "2026-03-04",
+          "timezone": "America/New_York",
+          "typicalFee": 358,
+          "feeCurrency": "USD",
+          "source": "nyrr.org, supplied in review 2026-09-01",
+          "confirmedAt": "2026-09-01"
+        }
+      ]
     },
     {
       "id": "sydney-marathon",
-      "name": "TCS Sydney Marathon",
+      "name": "Sydney Marathon",
       "country": "AU",
       "city": "Sydney",
       "disciplines": [
@@ -102,7 +188,7 @@
     },
     {
       "id": "lisbon-half-marathon",
-      "name": "EDP Lisbon Half Marathon",
+      "name": "Lisbon Half Marathon",
       "country": "PT",
       "city": "Lisbon",
       "disciplines": [
@@ -117,7 +203,7 @@
     },
     {
       "id": "prague-half-marathon",
-      "name": "Generali Prague Half Marathon",
+      "name": "Prague Half Marathon",
       "country": "CZ",
       "city": "Prague",
       "disciplines": [
@@ -132,7 +218,7 @@
     },
     {
       "id": "berlin-half-marathon",
-      "name": "Generali Berlin Half Marathon",
+      "name": "Berlin Half Marathon",
       "country": "DE",
       "city": "Berlin",
       "disciplines": [
@@ -177,7 +263,7 @@
     },
     {
       "id": "valencia-half-marathon",
-      "name": "Valencia Half Marathon Trinidad Alfonso Zurich",
+      "name": "Valencia Half Marathon",
       "country": "ES",
       "city": "Valencia",
       "disciplines": [
@@ -192,7 +278,7 @@
     },
     {
       "id": "nyc-half-marathon",
-      "name": "United Airlines NYC Half",
+      "name": "NYC Half",
       "country": "US",
       "city": "New York",
       "disciplines": [

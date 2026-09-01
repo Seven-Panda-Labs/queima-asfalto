@@ -32,11 +32,19 @@ Cada entrada tem um campo `review`, e é este o ponto do formato:
 
 1. Abre o site oficial da prova, o que está em `officialUrl`.
 2. Confirma nome, cidade, país, disciplinas, método de inscrição e mês típico.
-3. Acrescenta `editions` se houver datas publicadas: `raceDate`, e para o portão `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, com `timezone` IANA quando a hora importa.
+3. Acrescenta `editions` se houver datas publicadas: `raceDate`, e para o portão `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, com `timezone` IANA quando a hora importa. O `typicalFee` é o preço de referência dessa edição, com `feeCurrency` em ISO 4217; uma prova tem quase sempre vários preços, e este é o de entrada.
 4. Muda `review` para `reviewed` e actualiza `source` para dizer onde confirmaste.
 5. Actualiza `updatedAt` no topo do ficheiro.
 
 Uma entrada por PR é aceitável e preferível a um lote: são factos verificáveis um a um, e um lote esconde o que não foi verificado.
+
+### Preços com vários níveis
+
+Muitas provas cobram menos a quem é do país. O `typicalFee` guarda o que **um corredor de fora** paga, porque é esse o utilizador que o catálogo serve: quem consulta uma prova a 2000 km de casa está a planear uma viagem. O outro preço vai para a nota.
+
+### Nomes sem patrocinador
+
+`name` guarda o nome da prova sem o patrocinador: «Berlin Marathon», não «BMW Berlin Marathon». O patrocinador muda de contrato para contrato e o nome no catálogo ficaria errado sem nada acontecer. Alguns organizadores usam eles próprios o nome simples, o que confirma que é o nome estável.
 
 ### O `id` é para sempre
 
@@ -74,11 +82,19 @@ Every entry carries a `review` field, and this is the point of the format:
 
 1. Open the race's official site, the one in `officialUrl`.
 2. Confirm the name, city, country, disciplines, entry method and typical month.
-3. Add `editions` when dates are published: `raceDate`, and for the gate `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, with an IANA `timezone` when the hour matters.
+3. Add `editions` when dates are published: `raceDate`, and for the gate `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, with an IANA `timezone` when the hour matters. `typicalFee` is that edition's headline price, with `feeCurrency` in ISO 4217; a race almost always has several prices and this is the entry one.
 4. Set `review` to `reviewed` and update `source` to say where it was confirmed.
 5. Update `updatedAt` at the top of the file.
 
 One entry per PR is fine, and better than a batch: these are facts verifiable one at a time, and a batch hides what was not verified.
+
+### Tiered fees
+
+Plenty of races charge residents less. `typicalFee` holds what a **visiting runner** pays, because that is the user the catalog serves: someone looking up a race 2000 km from home is planning a trip. The other price goes in the note.
+
+### Names without sponsors
+
+`name` holds the race without its sponsor: "Berlin Marathon", not "BMW Berlin Marathon". Sponsors change from one contract to the next, and the catalog name would go quietly wrong. Some organisers use the plain name themselves, which is what makes it the stable one.
 
 ### The `id` is forever
 
