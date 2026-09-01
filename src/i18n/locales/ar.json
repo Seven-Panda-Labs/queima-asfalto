@@ -49,7 +49,8 @@
     "settings": "الإعدادات",
     "shares": "المشاركات",
     "pendingInvites": "{{count}} دعوة (دعوات) معلّقة",
-    "main": "التنقل الرئيسي"
+    "main": "التنقل الرئيسي",
+    "admin": "الإدارة"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1098,5 +1099,27 @@
     "success": {
       "import": "تم استيراد البيانات! موسمك الآن في التطبيق. انطلق!"
     }
+  },
+  "admin": {
+    "usersTitle": "المستخدمون",
+    "usersSubtitle": "اعتمد أو احجب أو أعد تمكين حسابات هذه النسخة.",
+    "columnAccount": "الحساب",
+    "columnStatus": "الحالة",
+    "columnSince": "تاريخ التسجيل",
+    "approve": "اعتماد",
+    "block": "حجب",
+    "approved": "تم اعتماد الحساب.",
+    "blocked": "تم حجب الحساب.",
+    "loadError": "تعذّر تحميل الحسابات.",
+    "actionError": "تعذّر تغيير حالة الحساب.",
+    "noName": "(بدون اسم)",
+    "self": "هذا حسابك",
+    "roleBadge": "مسؤول",
+    "truncated": "هناك حسابات أكثر من المعروضة.",
+    "blockKeepsData": "الحجب لا يحذف شيئا: يفقد الحساب الوصول وتبقى البيانات.",
+    "roleIsConsoleOnly": "يُمنح دور المسؤول ويُسحب من وحدة تحكم Firebase فقط، وهذا مقصود: لا توجد واجهة ذات صلاحيات توزّع الصلاحيات.",
+    "statusPending": "قيد الانتظار",
+    "statusApproved": "معتمد",
+    "statusBlocked": "محجوب"
   }
 }

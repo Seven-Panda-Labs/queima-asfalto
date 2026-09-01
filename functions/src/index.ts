@@ -3,6 +3,7 @@ export {
   accountApprovalBeforeUserSignedIn,
 } from './accountApproval/blocking.js'
 export { accountApprovalAction } from './accountApproval/approveAccountAction.js'
+export { adminListUsers, adminSetAccountStatus } from './admin.js'
 export { lookupOfficialResults } from './lookupOfficialResults.js'
 export { dispatchReminders } from './reminders.js'
 export { syncParkrunCatalog } from './parkrunCatalog.js'

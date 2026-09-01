@@ -49,7 +49,8 @@
     "settings": "Settings",
     "shares": "Shares",
     "pendingInvites": "{{count}} pending invite(s)",
-    "main": "Main navigation"
+    "main": "Main navigation",
+    "admin": "Admin"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1086,5 +1087,27 @@
     "success": {
       "import": "Data imported! Your season is in the app. LET'S GO!"
     }
+  },
+  "admin": {
+    "usersTitle": "Users",
+    "usersSubtitle": "Approve, block or unblock accounts on this instance.",
+    "columnAccount": "Account",
+    "columnStatus": "Status",
+    "columnSince": "Signed up",
+    "approve": "Approve",
+    "block": "Block",
+    "approved": "Account approved.",
+    "blocked": "Account blocked.",
+    "loadError": "Could not load the accounts.",
+    "actionError": "Could not change the account status.",
+    "noName": "(no name)",
+    "self": "This is your account",
+    "roleBadge": "Admin",
+    "truncated": "There are more accounts than shown.",
+    "blockKeepsData": "Blocking deletes nothing: the account loses access and the data stays.",
+    "roleIsConsoleOnly": "The administrator role is granted and revoked in the Firebase console only, on purpose: no privileged surface hands out privilege.",
+    "statusPending": "Pending",
+    "statusApproved": "Approved",
+    "statusBlocked": "Blocked"
   }
 }

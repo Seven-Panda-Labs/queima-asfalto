@@ -16,6 +16,8 @@ import { PerformanceGoalForm } from './pages/Goals/PerformanceGoalForm'
 import { Login } from './pages/Login/Login'
 import { NotFound } from './pages/NotFound/NotFound'
 import { Results } from './pages/Results/Results'
+import { AdminOnly } from './pages/Admin/AdminOnly'
+import { AdminUsers } from './pages/Admin/AdminUsers'
 import { Settings } from './pages/Settings/Settings'
 import { ANALYSIS_PATH } from './utils/eventNavigation'
 
@@ -69,6 +71,14 @@ export default function App() {
             <Route path="analise" element={<Results />} />
             <Route path="resultados" element={<AnalysisRouteRedirect />} />
             <Route path="definicoes" element={<Settings />} />
+            <Route
+              path="admin"
+              element={
+                <AdminOnly>
+                  <AdminUsers />
+                </AdminOnly>
+              }
+            />
             <Route path="novidades" element={
               <Suspense fallback={null}>
                 <Changelog />

@@ -49,7 +49,8 @@
     "settings": "Ajustes",
     "shares": "Compartir",
     "pendingInvites": "{{count}} invitación(es) pendiente(s)",
-    "main": "Navegación principal"
+    "main": "Navegación principal",
+    "admin": "Admin"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1086,5 +1087,27 @@
     "success": {
       "import": "¡Datos importados! Tu temporada ya está en la app. ¡VAMOS!"
     }
+  },
+  "admin": {
+    "usersTitle": "Usuarios",
+    "usersSubtitle": "Aprueba, bloquea o desbloquea cuentas de esta instancia.",
+    "columnAccount": "Cuenta",
+    "columnStatus": "Estado",
+    "columnSince": "Registro",
+    "approve": "Aprobar",
+    "block": "Bloquear",
+    "approved": "Cuenta aprobada.",
+    "blocked": "Cuenta bloqueada.",
+    "loadError": "No se pudieron cargar las cuentas.",
+    "actionError": "No se pudo cambiar el estado de la cuenta.",
+    "noName": "(sin nombre)",
+    "self": "Es tu cuenta",
+    "roleBadge": "Admin",
+    "truncated": "Hay más cuentas de las mostradas.",
+    "blockKeepsData": "Bloquear no borra nada: la cuenta pierde acceso y los datos quedan.",
+    "roleIsConsoleOnly": "El rol de administrador se da y se quita solo en la consola de Firebase, a propósito: ninguna superficie privilegiada reparte privilegios.",
+    "statusPending": "Pendiente",
+    "statusApproved": "Aprobada",
+    "statusBlocked": "Bloqueada"
   }
 }

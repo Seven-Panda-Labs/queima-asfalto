@@ -49,7 +49,8 @@
     "settings": "Paramètres",
     "shares": "Partages",
     "pendingInvites": "{{count}} invitation(s) en attente",
-    "main": "Navigation principale"
+    "main": "Navigation principale",
+    "admin": "Admin"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1086,5 +1087,27 @@
     "success": {
       "import": "Données importées ! Ta saison est dans l'app. C'EST PARTI !"
     }
+  },
+  "admin": {
+    "usersTitle": "Utilisateurs",
+    "usersSubtitle": "Approuve, bloque ou débloque les comptes de cette instance.",
+    "columnAccount": "Compte",
+    "columnStatus": "Statut",
+    "columnSince": "Inscription",
+    "approve": "Approuver",
+    "block": "Bloquer",
+    "approved": "Compte approuvé.",
+    "blocked": "Compte bloqué.",
+    "loadError": "Impossible de charger les comptes.",
+    "actionError": "Impossible de changer le statut du compte.",
+    "noName": "(sans nom)",
+    "self": "C'est ton compte",
+    "roleBadge": "Admin",
+    "truncated": "Il y a plus de comptes que ceux affichés.",
+    "blockKeepsData": "Bloquer ne supprime rien : le compte perd l'accès et les données restent.",
+    "roleIsConsoleOnly": "Le rôle d'administrateur se donne et se retire uniquement dans la console Firebase, volontairement : aucune surface privilégiée ne distribue de privilège.",
+    "statusPending": "En attente",
+    "statusApproved": "Approuvé",
+    "statusBlocked": "Bloqué"
   }
 }
