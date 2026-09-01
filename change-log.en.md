@@ -9,15 +9,13 @@
 ### Added
 
 - **More distances:** 1500 m, 3000 m, 15K, 10 miles, 30K, 50K, 50 miles, 100K and 100 miles join the original four. The new ones arrive switched off: turn on the ones you race in Settings, Disciplines.
+- **Race catalog:** the instance now knows races by name, with how you get in and each edition's deadlines and draw. This is what will warn you before entries close.
+- **Admin area:** approving, blocking and deleting accounts, and keeping the catalog, inside the app rather than in the console.
 
 ### Changed
 
-- **Picking disciplines got compact:** the 13 distances are now pills grouped into track, road and ultra, instead of a 13 row checkbox list.
-- **The point charts carry a shape per distance family:** circle, triangle, square, diamond and star, so a discipline is never identified by colour alone.
-
-### Fixed
-
-- **A marathon is no longer filed as a half:** deriving the discipline from a distance now gives the marathon for 42.195 km, and 10 miles for 16 km.
+- **Picking disciplines got compact:** the 13 distances are now pills grouped into track, road and ultra.
+- **Self-hosting:** the administrator is no longer the `ADMIN_EMAIL` variable but a user with `admin: true`, set once in the console. See [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

@@ -9,15 +9,13 @@
 ### Añadido
 
 - **Más distancias:** 1500 m, 3000 m, 15K, 10 millas, 30K, 50K, 50 millas, 100K y 100 millas se suman a las cuatro originales. Las nuevas llegan desactivadas: activa las que corres en Ajustes, Disciplinas.
+- **Catálogo de carreras:** la instancia ya conoce carreras por nombre, con la forma de inscripción y los plazos y el sorteo de cada edición. Es lo que avisará antes de que cierren las inscripciones.
+- **Área de administración:** aprobar, bloquear y eliminar cuentas, y mantener el catálogo, dentro de la app en lugar de la consola.
 
 ### Cambiado
 
-- **Elegir disciplinas es más compacto:** las 13 distancias ahora son pastillas agrupadas en pista, ruta y ultra, en lugar de una lista de 13 filas con casillas.
-- **Los gráficos de puntos llevan una forma por familia de distancia:** círculo, triángulo, cuadrado, rombo y estrella, para que la disciplina no dependa solo del color.
-
-### Corregido
-
-- **Un maratón deja de archivarse como media:** al derivar la disciplina desde la distancia, 42,195 km da maratón, y 16 km da 10 millas.
+- **Elegir disciplinas es más compacto:** las 13 distancias ahora son pastillas agrupadas en pista, ruta y ultra.
+- **Self-hosting:** el administrador ya no es la variable `ADMIN_EMAIL` sino un usuario con `admin: true`, definido una vez en la consola. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

@@ -9,15 +9,13 @@
 ### Adicionado
 
 - **Mais distâncias:** 1500 m, 3000 m, 15Km, 10 milhas, 30Km, 50Km, 50 milhas, 100Km e 100 milhas juntam-se às quatro de sempre. As novas chegam desligadas: liga as que corres em Definições, Disciplinas.
+- **Catálogo de provas:** a instância passa a conhecer provas por nome, com a forma de inscrição, os prazos e o sorteio de cada edição. É o que vai dar avisos antes de as inscrições fecharem.
+- **Área de administração:** aprovar, bloquear e eliminar contas, e manter o catálogo, dentro da app em vez da consola.
 
 ### Alterado
 
-- **Escolher disciplinas ficou compacto:** as 13 distâncias passam a pastilhas agrupadas em pista, estrada e ultra, em vez de uma lista de 13 linhas com caixas.
-- **Os gráficos de pontos ganham uma forma por família de distância:** círculo, triângulo, quadrado, losango e estrela, para a disciplina não depender só da cor.
-
-### Corrigido
-
-- **Uma maratona deixa de ser arquivada como meia:** ao derivar a disciplina a partir da distância, 42,195 km passa a dar maratona, e 16 km dá 10 milhas.
+- **Escolher disciplinas ficou compacto:** as 13 distâncias passam a pastilhas agrupadas em pista, estrada e ultra.
+- **Self-hosting:** o administrador deixa de ser a variável `ADMIN_EMAIL` e passa a ser um utilizador com `admin: true`, dado uma vez na consola. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
