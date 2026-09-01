@@ -54,7 +54,7 @@ A PWA fala **directamente** com Firestore e Storage (com regras de segurança no
 |--------|-------------|------------------|
 | UI | `src/pages/`, `src/components/` | Rotas, formulários, dashboards, mapa |
 | Estado / hooks | `src/hooks/`, `src/contexts/` | Auth, partilhas, cooldown de lookup |
-| Serviços cliente | `src/services/` | Firestore, Storage, callables, Geoapify, export/import, backup zip |
+| Serviços cliente | `src/services/` | Firestore, Storage, callables, Geoapify, backup zip |
 | Lógica partilhada | `shared/` | Detecção de plataforma, parsing de URLs, permissões de partilha, lembretes, usada pela app **e** pelas Functions |
 | Backend | `functions/src/` | Callables, agendador, conectores de timing |
 | Regras | `firestore.rules`, `storage.rules` | Isolamento por `userId`, validação de paths |
@@ -238,7 +238,7 @@ The PWA talks **directly** to Firestore and Storage (with security rules on the 
 |-------|----------|----------------|
 | UI | `src/pages/`, `src/components/` | Routes, forms, dashboards, map |
 | State / hooks | `src/hooks/`, `src/contexts/` | Auth, shares, lookup cooldown |
-| Client services | `src/services/` | Firestore, Storage, callables, Geoapify, export/import, backup zip |
+| Client services | `src/services/` | Firestore, Storage, callables, Geoapify, backup zip |
 | Shared logic | `shared/` | Platform detection, URL parsing, share permissions, reminders, used by the app **and** Functions |
 | Backend | `functions/src/` | Callables, scheduler, timing connectors |
 | Rules | `firestore.rules`, `storage.rules` | `userId` isolation, path validation |

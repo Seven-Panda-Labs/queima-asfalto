@@ -4,6 +4,14 @@
 
 ---
 
+## [1.30.0] - 2026-09-01
+
+### Supprimé
+
+- **L'import et l'export Excel sont supprimés :** la sauvegarde complète en `.zip` couvre la même chose avec plus de précision, photos, vidéos, fichiers d'activité et objectifs compris, et restaure tout avec les mêmes identifiants. Le tableur n'est plus une porte d'entrée : les courses s'ajoutent dans l'app, ou se restaurent depuis une sauvegarde.
+
+---
+
 ## [1.29.1] - 2026-08-31
 
 ### Modifié

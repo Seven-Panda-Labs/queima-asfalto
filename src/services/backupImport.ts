@@ -352,7 +352,7 @@ async function writeFlatSection(
     const chunk = prepared.slice(index, index + RESTORE_BATCH_SIZE)
     const batch = writeBatch(db)
     for (const entry of chunk) {
-      // Preserved document id, unlike the Excel import which mints new auto-ids.
+      // Preserved document id, so a restore round trips.
       batch.set(doc(db, collectionName, entry.document.id), entry.data)
     }
 

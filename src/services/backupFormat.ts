@@ -389,7 +389,7 @@ function pad(value: number): string {
   return String(value).padStart(2, '0')
 }
 
-/** `queima_asfalto_backup_2026-08-03.zip`, mirroring the Excel export naming. */
+/** `queima_asfalto_backup_2026-08-03.zip`. */
 export function backupFileName(exportedAt: Date): string {
   const stamp = `${exportedAt.getFullYear()}-${pad(exportedAt.getMonth() + 1)}-${pad(exportedAt.getDate())}`
   return `queima_asfalto_backup_${stamp}.zip`

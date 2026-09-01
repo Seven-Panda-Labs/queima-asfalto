@@ -4,6 +4,14 @@
 
 ---
 
+## [1.30.0] - 2026-09-01
+
+### Eliminado
+
+- **Se eliminan el import y el export de Excel:** la copia completa en `.zip` cubre lo mismo con más precisión, incluidas fotos, vídeos, archivos de actividad y objetivos, y lo restaura todo con los mismos identificadores. La hoja de cálculo deja de ser una vía de entrada: las carreras se añaden en la app o se restauran desde una copia.
+
+---
+
 ## [1.29.1] - 2026-08-31
 
 ### Cambiado

@@ -1,6 +1,5 @@
 import type { EventStatus, EventType } from '../domain/eventCodes'
 import type { GoalOutcome } from '../types/Goal'
-import { normalizeImportSkipReason } from '../types/importSkipReasons'
 import i18n from './index'
 
 export function formatEventStatusLabel(status: EventStatus): string {
@@ -26,13 +25,6 @@ export function formatGoalOutcomeShortLabel(outcome: GoalOutcome): string {
 
 export function isEnglishLocale(): boolean {
   return i18n.language === 'en'
-}
-
-export function formatImportSkipReason(reason: string): string {
-  const normalized = normalizeImportSkipReason(reason)
-  const key = `import.skipReasons.${normalized}`
-  if (i18n.exists(key)) return i18n.t(key)
-  return reason
 }
 
 export function formatBackupSectionLabel(section: string): string {

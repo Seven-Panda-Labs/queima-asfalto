@@ -22,7 +22,7 @@ describe('isAnalysableResult', () => {
   })
 
   it('rebuilds the time from a stored pace when there is no time', () => {
-    // The Excel import accepts a pace column with no time column.
+    // Spreadsheet-imported races can carry a pace and no time.
     const event = makeEvent({
       id: '1',
       date: new Date(2026, 0, 1),

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.30.0] - 2026-09-01
+
+### Entfernt
+
+- **Excel-Import und -Export sind entfernt:** Das vollständige `.zip`-Backup deckt dasselbe genauer ab, inklusive Fotos, Videos, Aktivitätsdateien und Ziele, und stellt alles mit denselben Kennungen wieder her. Eine Tabelle ist kein Weg mehr hinein: Rennen werden in der App angelegt oder aus einem Backup wiederhergestellt.
+
+---
+
 ## [1.29.1] - 2026-08-31
 
 ### Geändert
