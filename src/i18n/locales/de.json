@@ -1108,6 +1108,12 @@
     "roleIsConsoleOnly": "Die Administratorrolle wird nur in der Firebase Console vergeben und entzogen, mit Absicht: keine privilegierte Oberfläche verteilt Privilegien.",
     "statusPending": "Ausstehend",
     "statusApproved": "Freigegeben",
-    "statusBlocked": "Gesperrt"
+    "statusBlocked": "Gesperrt",
+    "delete": "Löschen",
+    "deleteTitle": "Dieses Konto löschen?",
+    "deleteMessage": "Damit werden das Konto {{account}} und alles darin gelöscht: Rennen, Ergebnisse, Fotos, Aktivitätsdateien, Ziele und Freigaben. Es gibt keinen Weg zurück.",
+    "deleted": "Konto gelöscht: {{documents}} Dokumente und {{files}} Dateien.",
+    "deleteError": "Konto konnte nicht gelöscht werden.",
+    "deletedStorageUnreachable": "Konto gelöscht ({{documents}} Dokumente), aber seine Dateien wurden im Bucket nicht gefunden und könnten bleiben. Prüfe die Function-Logs."
   }
 }

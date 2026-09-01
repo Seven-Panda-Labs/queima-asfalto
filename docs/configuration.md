@@ -78,6 +78,7 @@ Copia [`functions/.env.example`](../functions/.env.example) para `functions/.env
 | `FUNCTIONS_REGION` | Não | Região de deploy (predefinição: `europe-west1`). Deve coincidir com `VITE_FIREBASE_FUNCTIONS_REGION`. |
 | `FUNCTIONS_SERVICE_ACCOUNT` | Não | Email da service account para funções callable (partilhas, lookup de resultados). Se omitida, usa a conta predefinida do projeto. Ver Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | Não | Fuso horário de `dispatchReminders` (predefinição: `Europe/Lisbon`) |
+| `STORAGE_BUCKET` | Não | Bucket a apagar quando uma conta é eliminada. Sem ele usa-se o bucket predefinido do projecto, que num projecto recente é `PROJECT.firebasestorage.app` e não o antigo `PROJECT.appspot.com`. Se não coincidir com `VITE_FIREBASE_STORAGE_BUCKET`, a eliminação não encontra os ficheiros |
 | `ACCOUNT_APPROVAL_REQUIRED` | Não | `true` para activar aprovação de contas novas (blocking functions). Requer [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) no projeto. |
 | `APP_PUBLIC_URL` | Sim* | URL pública da PWA (links nos emails) |
 
@@ -205,6 +206,7 @@ Copy [`functions/.env.example`](../functions/.env.example) to `functions/.env` (
 | `FUNCTIONS_REGION` | No | Deploy region (default: `europe-west1`). Must match `VITE_FIREBASE_FUNCTIONS_REGION`. |
 | `FUNCTIONS_SERVICE_ACCOUNT` | No | Service account email for callable functions (shares, results lookup). If omitted, uses the project default runtime account. See Firebase Console → Project settings → Service accounts. |
 | `SCHEDULER_TIMEZONE` | No | Time zone for `dispatchReminders` (default: `Europe/Lisbon`) |
+| `STORAGE_BUCKET` | No | The bucket to purge when an account is deleted. Without it the project default is used, which on a recent project is `PROJECT.firebasestorage.app` rather than the older `PROJECT.appspot.com`. If it does not match `VITE_FIREBASE_STORAGE_BUCKET`, deletion will not find the files |
 | `ACCOUNT_APPROVAL_REQUIRED` | No | `true` to enable new-account approval (blocking functions). Requires [Identity Platform](https://firebase.google.com/docs/auth#identity-platform) on the project. |
 | `APP_PUBLIC_URL` | Yes* | Public PWA URL (email links) |
 

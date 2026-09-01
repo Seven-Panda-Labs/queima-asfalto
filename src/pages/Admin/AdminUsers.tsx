@@ -3,7 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
-import { listUsersForAdmin, setAccountStatusForAdmin, type AdminUser } from '../../services/admin'
+import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
+import {
+  deleteAccountForAdmin,
+  listUsersForAdmin,
+  setAccountStatusForAdmin,
+  type AdminUser,
+} from '../../services/admin'
 import { formatDatePt } from '../../utils/date'
 
 type Busy = { uid: string; action: 'approved' | 'rejected' } | null
@@ -17,6 +23,8 @@ export function AdminUsers() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [busy, setBusy] = useState<Busy>(null)
+  const [toDelete, setToDelete] = useState<AdminUser | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -50,6 +58,29 @@ export function AdminUsers() {
       toast.error(t('admin.actionError'))
     } finally {
       setBusy(null)
+    }
+  }
+
+  async function handleDelete() {
+    if (!toDelete) return
+
+    setDeleting(true)
+    try {
+      const report = await deleteAccountForAdmin(toDelete.uid)
+      setUsers((current) => current.filter((entry) => entry.uid !== toDelete.uid))
+      const documents = Object.values(report.documents).reduce((sum, count) => sum + count, 0)
+      if (report.storageUnreachable) {
+        // The rows are gone and the files are not, which is worse than a failure
+        // because it looks like a success.
+        toast.error(t('admin.deletedStorageUnreachable', { documents }))
+      } else {
+        toast.success(t('admin.deleted', { documents, files: report.storageFiles }))
+      }
+    } catch {
+      toast.error(t('admin.deleteError'))
+    } finally {
+      setDeleting(false)
+      setToDelete(null)
     }
   }
 
@@ -130,6 +161,14 @@ export function AdminUsers() {
                               {t('admin.block')}
                             </button>
                           ) : null}
+                          <button
+                            type="button"
+                            disabled={working}
+                            onClick={() => setToDelete(entry)}
+                            className="rounded-md border border-danger px-3 py-1.5 text-xs font-semibold text-danger hover:bg-danger/10 disabled:opacity-60"
+                          >
+                            {t('admin.delete')}
+                          </button>
                         </div>
                       )}
                     </td>
@@ -148,6 +187,18 @@ export function AdminUsers() {
       </p>
 
       <p className="mt-2 text-xs text-muted">{t('admin.roleIsConsoleOnly')}</p>
+
+      <ConfirmDialog
+        open={toDelete !== null}
+        title={t('admin.deleteTitle')}
+        message={t('admin.deleteMessage', {
+          account: toDelete?.email || toDelete?.name || '',
+        })}
+        confirmLabel={t('admin.delete')}
+        loading={deleting}
+        onConfirm={() => void handleDelete()}
+        onCancel={() => setToDelete(null)}
+      />
     </PageShell>
   )
 }
