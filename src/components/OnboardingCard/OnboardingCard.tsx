@@ -12,6 +12,8 @@ type OnboardingCardProps = {
   facts: OnboardingFacts
   /** The anchor's item, so the entry step lands on the right race. */
   anchorItemId?: string
+  /** Or its event, for an anchor that never was a wish. */
+  anchorEventId?: string
   onDismiss: () => void
 }
 
@@ -37,7 +39,12 @@ function Tick({ done }: { done: boolean }) {
  * does with this once it has it. The card leaves when the four steps are done,
  * or when the runner says so.
  */
-export function OnboardingCard({ facts, anchorItemId, onDismiss }: OnboardingCardProps) {
+export function OnboardingCard({
+  facts,
+  anchorItemId,
+  anchorEventId,
+  onDismiss,
+}: OnboardingCardProps) {
   const { t } = useTranslation()
   const steps = onboardingSteps(facts)
   const progress = onboardingProgress(facts)
@@ -73,7 +80,7 @@ export function OnboardingCard({ facts, anchorItemId, onDismiss }: OnboardingCar
                     {t(`onboarding.steps.${step.id as OnboardingStepId}.why`)}
                   </p>
                   <Link
-                    to={onboardingStepPath(step.id, { anchorItemId })}
+                    to={onboardingStepPath(step.id, { anchorItemId, anchorEventId })}
                     className="mt-1 inline-block text-xs font-semibold text-primary hover:underline"
                   >
                     {t(`onboarding.steps.${step.id as OnboardingStepId}.action`)}

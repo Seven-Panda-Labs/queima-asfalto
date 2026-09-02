@@ -19,10 +19,52 @@ export type OnboardingFacts = {
   /** The runner has been through the discipline switches, whatever they chose. */
   disciplinesChosen: boolean
   hasAnchor: boolean
-  /** An attempt at getting into a race: the thing that turns a wish into a plan. */
+  /**
+   * The place in the anchor is sorted, however it was recorded.
+   *
+   * An entry is the planning story of getting in, and it is what the deadline
+   * reminders read. But a runner who is already registered says so by putting
+   * the race on the calendar as confirmed, and asking them to plan an entry for
+   * a race they are in would be the app not looking.
+   */
   hasEntry: boolean
   /** One finished race with a time, which is all the analysis needs to start. */
   hasResult: boolean
+}
+
+type OnboardingSource = {
+  disciplinesChosen: boolean
+  /** The races that are anchors, by identity. */
+  anchorRaceIds: ReadonlySet<string>
+  entries: readonly { id: string }[]
+  events: readonly { raceId?: string; status: string; time?: string }[]
+}
+
+/**
+ * What the account already says, read once.
+ *
+ * In the domain rather than in the page because getting these wrong is what
+ * makes a checklist ask for something the runner has already done: the anchor
+ * step asked the wish, which a season planned as events never had, and the
+ * entry step asked for a document that a registered runner has no reason to
+ * create.
+ */
+export function onboardingFactsFrom(source: OnboardingSource): OnboardingFacts {
+  const bookedAnchor = source.events.some(
+    (event) =>
+      event.raceId &&
+      source.anchorRaceIds.has(event.raceId) &&
+      (event.status === 'confirmed' || event.status === 'completed'),
+  )
+
+  return {
+    disciplinesChosen: source.disciplinesChosen,
+    hasAnchor: source.anchorRaceIds.size > 0,
+    hasEntry: source.entries.length > 0 || bookedAnchor,
+    hasResult: source.events.some(
+      (event) => event.status === 'completed' && Boolean(event.time?.trim()),
+    ),
+  }
 }
 
 export type OnboardingStep = {
@@ -83,7 +125,7 @@ export function shouldShowOnboarding(
 /** Where a step is done, given what the runner already has. */
 export function onboardingStepPath(
   id: OnboardingStepId,
-  context: { anchorItemId?: string } = {},
+  context: { anchorItemId?: string; anchorEventId?: string } = {},
 ): string {
   switch (id) {
     case 'disciplines':
@@ -91,11 +133,12 @@ export function onboardingStepPath(
     case 'anchor':
       return '/bucket-list/novo'
     case 'entry':
-      // Straight to the anchor's entry when there is one: the step is about
-      // that race, not about entries in general.
-      return context.anchorItemId
-        ? `/bucket-list/${context.anchorItemId}/inscricao`
-        : '/bucket-list'
+      // Straight at the anchor: the step is about that race, not about entries
+      // in general. An anchor that exists only as an event has no entry form to
+      // send anybody to, and its own page is where its status is set.
+      if (context.anchorItemId) return `/bucket-list/${context.anchorItemId}/inscricao`
+      if (context.anchorEventId) return `/eventos/${context.anchorEventId}`
+      return '/bucket-list'
     case 'result':
       return '/eventos/novo'
   }
