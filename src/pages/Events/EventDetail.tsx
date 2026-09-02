@@ -22,6 +22,7 @@ import { SharedContextBanner } from '../../components/SharedOwnerTabs/SharedOwne
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
+import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useEventMedia } from '../../hooks/useEventMedia'
 import { useEventTrack } from '../../hooks/useEventTrack'
 import { useEvents } from '../../hooks/useEvents'
@@ -30,11 +31,13 @@ import { useShares } from '../../hooks/useShares'
 import { deleteEventMedia, uploadEventMediaFiles } from '../../services/eventMedia'
 import { getEvent } from '../../services/events'
 import type { Event } from '../../types/Event'
+import type { RaceEntry } from '../../types/RaceEntry'
 import type { EventMedia } from '../../types/EventMedia'
 import type { MediaValidationErrorCode } from '../../utils/mediaValidation'
 import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
-import { needsOutcomeReason } from '../../domain/outcomeReasons'
+import { needsOutcomeReason, offersNextEdition } from '../../domain/outcomeReasons'
+import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollover'
 import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
 import { buildCourseComparison } from '../../utils/analytics/course'
@@ -78,7 +81,8 @@ export function EventDetail() {
   const [editingOutcome, setEditingOutcome] = useState(false)
   const { shares } = useShares()
   const { allEvents, removeEvent } = useEvents()
-  const { addItem } = useBucketList()
+  const { addItem, items: bucketListItems } = useBucketList()
+  const { entries: raceEntries, addEntry } = useRaceEntries()
 
   const requestedOwnerId = parseOwnerSearchParam(searchParams)
   const activeShare = useMemo(
@@ -116,6 +120,7 @@ export function EventDetail() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [recovering, setRecovering] = useState(false)
+  const [tryingAgain, setTryingAgain] = useState(false)
   const [selectedFiles, setSelectedFiles] = useState<File[]>([])
   const [uploading, setUploading] = useState(false)
   const [uploadErrors, setUploadErrors] = useState<
@@ -219,6 +224,57 @@ export function EventDetail() {
       setError(t('eventDetail.recoverError'))
     } finally {
       setRecovering(false)
+    }
+  }
+
+  /**
+   * Next season, from the race that failed.
+   *
+   * A failure degrades one race and not the season, and there is always the
+   * option of trying again. The failed race stays: it happened, and deleting it
+   * is what "recover to bucket list" is for.
+   */
+  async function handleTryAgainNextSeason() {
+    if (!event?.raceId) return
+
+    setTryingAgain(true)
+    try {
+      const existingItem = bucketListItems.find((item) => item.raceId === event.raceId)
+      const itemId =
+        existingItem?.id ??
+        (await addItem({ ...eventToBucketListItem(event), raceId: event.raceId }))
+
+      const attempts = raceEntries.filter((entry) => entry.bucketListItemId === itemId)
+      // The season after the race that failed, never after the latest attempt:
+      // a recurring item has already been rolled over by the time the runner
+      // asks, and asking twice must not book two seasons.
+      const year = nextAttemptYear(event.date.getFullYear())
+      const previous =
+        attempts.find((entry) => entry.year === event.date.getFullYear()) ??
+        attempts.reduce<RaceEntry | null>(
+          (best, entry) => (!best || entry.year > best.year ? entry : best),
+          null,
+        )
+
+      const already = attempts.some((entry) => entry.year === year)
+      if (!already) {
+        await addEntry(
+          nextSeasonAttempt(itemId, year, {
+            id: previous?.id ?? '',
+            raceId: event.raceId,
+            discipline: previous?.discipline ?? event.eventType,
+            entryMethod: previous?.entryMethod ?? 'unknown',
+            registrationUrl: previous?.registrationUrl,
+          }),
+        )
+      }
+
+      toast.success(t(already ? 'outcome.tryAgainExists' : 'outcome.tryAgainDone', { year }))
+      navigate(`/bucket-list/${itemId}/inscricao`)
+    } catch {
+      setError(t('outcome.tryAgainError'))
+    } finally {
+      setTryingAgain(false)
     }
   }
 
@@ -513,6 +569,17 @@ export function EventDetail() {
           >
             {t('common.edit')}
           </Link>
+
+          {offersNextEdition(event.outcomeReason) && event.raceId ? (
+            <button
+              type="button"
+              onClick={() => void handleTryAgainNextSeason()}
+              disabled={tryingAgain}
+              className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground hover:bg-background disabled:opacity-60"
+            >
+              {t('outcome.tryAgain')}
+            </button>
+          ) : null}
 
           {canRecoverEventToBucketList(event.status) ? (
             <button

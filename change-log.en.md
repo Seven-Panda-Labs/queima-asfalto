@@ -13,6 +13,7 @@
 - **Anchor races:** mark the one to three races that fix your year and they come first in every group.
 - **Season rules:** a race can say what it is for, a build-up or a test, and which anchor it prepares. The app shows the tune-up window, about half the distance three to four weeks out, and warns when a race lands in the anchor taper or when a month gets crowded.
 - **When it fails:** a race that passes with no result now asks what happened (dropped out, injury, did not go, cancelled, travel, something else) instead of saying you missed it. A DNF counts as a race started and stops showing up as missing data, while staying out of pace, records and predictions.
+- **Try again:** on a race that failed to injury, a DNF or a cancellation, one button creates next season's attempt and takes you to its entry. The races that were preparing an anchor that failed are flagged, so you decide whether they still make sense.
 
 ---
 

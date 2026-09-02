@@ -13,6 +13,7 @@
 - **Courses pivots :** marque les une à trois courses qui fixent ton année et elles passent en premier dans chaque groupe.
 - **Règles de saison :** une course peut dire à quoi elle sert, build-up ou test, et quel pivot elle prépare. L'app montre la fenêtre du test, environ la moitié de la distance trois à quatre semaines avant, et alerte quand une course tombe dans l'affûtage du pivot ou quand un mois est trop chargé.
 - **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé (abandon, blessure, pas venu, annulée, voyage, autre) au lieu de dire que tu l'as manquée. Un abandon compte comme une course commencée et n'apparaît plus comme donnée manquante, tout en restant hors des allures, des records et des prévisions.
+- **Réessayer :** sur une course perdue pour blessure, abandon ou annulation, un bouton crée la tentative de la saison prochaine et t'emmène à son inscription. Les courses qui préparaient un pivot qui a échoué sont signalées, à toi de voir si elles ont encore du sens.
 
 ---
 

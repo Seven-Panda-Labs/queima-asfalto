@@ -13,6 +13,7 @@
 - **Carreras ancla:** marca las una a tres carreras que fijan tu año y aparecerán primero en cada grupo.
 - **Reglas de temporada:** cada carrera puede decir para qué sirve, build-up o test, y qué ancla prepara. La app muestra la ventana del test, unos la mitad de la distancia tres o cuatro semanas antes, y avisa cuando una carrera cae en el afinamiento del ancla o cuando el mes se llena.
 - **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió (abandono, lesión, no fui, cancelada, viaje, otro) en vez de decir que la perdiste. Un abandono cuenta como carrera empezada y deja de figurar como datos que faltan, siguiendo fuera de ritmos, récords y predicciones.
+- **Intentarlo otra vez:** en una carrera perdida por lesión, abandono o cancelación, un botón crea el intento de la próxima temporada y te lleva a su inscripción. Las carreras que preparaban un ancla que falló quedan marcadas, para que decidas si siguen teniendo sentido.
 
 ---
 

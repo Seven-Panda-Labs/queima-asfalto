@@ -1276,7 +1276,8 @@
       "taper_clash": "tombe dans l'affûtage du pivot",
       "tune_up_window": "hors de la fenêtre de test",
       "crowded_month_one": "mois à 1 course",
-      "crowded_month_other": "mois à {{count}} courses"
+      "crowded_month_other": "mois à {{count}} courses",
+      "anchor_failed": "le pivot qu'elle préparait a échoué"
     },
     "beforeAnchor_one": "1 semaine avant {{anchor}}",
     "beforeAnchor_other": "{{count}} semaines avant {{anchor}}"
@@ -1292,6 +1293,10 @@
       "travel": "Le voyage est tombé à l'eau",
       "other": "Autre raison"
     },
-    "editTitle": "Corriger ce qui s'est passé"
+    "editTitle": "Corriger ce qui s'est passé",
+    "tryAgain": "Réessayer la saison prochaine",
+    "tryAgainDone": "Tentative {{year}} créée, en veille.",
+    "tryAgainError": "Impossible de créer la tentative de la saison prochaine.",
+    "tryAgainExists": "La tentative {{year}} existe déjà."
   }
 }
