@@ -15,6 +15,7 @@ import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import { validateBucketListItem } from '../../utils/bucketListValidation'
 import { deriveEventTypeFromName } from '../../utils/deriveEventTypeFromName'
 import { formatTargetMonth, TARGET_MONTHS } from '../../utils/targetMonth'
+import { RACE_ROLES, type RaceRole } from '../../domain/seasonRules'
 
 const LocationMap = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.LocationMap })),
@@ -31,6 +32,8 @@ type FormState = {
   targetYear: string
   isAnchor: boolean
   recurring: boolean
+  role: RaceRole | ''
+  servesRaceId: string
   link: string
   emoji: string
   notes: string
@@ -56,6 +59,8 @@ function emptyForm(): FormState {
     targetYear: '',
     isAnchor: false,
     recurring: false,
+    role: '',
+    servesRaceId: '',
     link: '',
     emoji: '🏃',
     notes: '',
@@ -70,6 +75,16 @@ export function BucketListForm() {
   const isEditing = Boolean(id)
   const navigate = useNavigate()
   const ownBucketList = useBucketList()
+
+  // Only an anchor that already has an identity can be pointed at: the reference
+  // is a race, not a wish, so that it survives the wish being closed.
+  const anchorOptions = useMemo(
+    () =>
+      ownBucketList.items
+        .filter((entry) => entry.isAnchor && entry.raceId && entry.id !== id)
+        .map((entry) => ({ raceId: entry.raceId!, name: entry.name })),
+    [ownBucketList.items, id],
+  )
   const sharedBucketList = useSharedBucketList(sharedOwnerId)
   const isShared = Boolean(sharedOwnerId)
   const addItem = isShared ? sharedBucketList.addItem : ownBucketList.addItem
@@ -135,6 +150,8 @@ export function BucketListForm() {
             targetYear: item.targetYear ? String(item.targetYear) : '',
             isAnchor: item.isAnchor === true,
             recurring: item.recurring === true,
+            role: item.role ?? '',
+            servesRaceId: item.servesRaceId ?? '',
             link: item.link ?? '',
             emoji: item.emoji ?? '🏃',
             notes: '',
@@ -159,6 +176,8 @@ export function BucketListForm() {
           targetYear: item.targetYear ? String(item.targetYear) : '',
           isAnchor: item.isAnchor === true,
           recurring: item.recurring === true,
+          role: item.role ?? '',
+          servesRaceId: item.servesRaceId ?? '',
           link: item.link ?? '',
           emoji: item.emoji ?? '🏃',
           notes: item.notes ?? '',
@@ -245,6 +264,10 @@ export function BucketListForm() {
       targetYear: form.targetYear ? Number(form.targetYear) : undefined,
       isAnchor: form.isAnchor,
       recurring: form.recurring,
+      // An anchor is not preparing for anything, so its role and its target are
+      // dropped rather than kept around to contradict the flag later.
+      role: form.isAnchor || !form.role ? undefined : form.role,
+      servesRaceId: form.isAnchor ? undefined : form.servesRaceId || undefined,
       link: form.link.trim() || undefined,
       emoji: form.emoji || undefined,
       notes: form.notes.trim() || undefined,
@@ -452,6 +475,55 @@ export function BucketListForm() {
               <span className="block text-xs text-muted">{t('bucketList.recurringHint')}</span>
             </span>
           </label>
+
+          {form.isAnchor ? null : (
+            <>
+              <div>
+                <label htmlFor="role" className="block text-sm font-semibold text-foreground">
+                  {t('bucketList.role')}
+                </label>
+                <select
+                  id="role"
+                  value={form.role}
+                  onChange={(e) => updateField('role', e.target.value as RaceRole | '')}
+                  className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2"
+                >
+                  <option value="">{t('common.dash')}</option>
+                  {RACE_ROLES.filter((role) => role !== 'none').map((role) => (
+                    <option key={role} value={role}>
+                      {t(`bucketList.roles.${role}`)}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-xs text-muted">{t('bucketList.roleHint')}</p>
+              </div>
+
+              <div>
+                <label htmlFor="serves" className="block text-sm font-semibold text-foreground">
+                  {t('bucketList.serves')}
+                </label>
+                <select
+                  id="serves"
+                  value={form.servesRaceId}
+                  onChange={(e) => updateField('servesRaceId', e.target.value)}
+                  className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2"
+                  disabled={anchorOptions.length === 0}
+                >
+                  <option value="">{t('common.dash')}</option>
+                  {anchorOptions.map((anchor) => (
+                    <option key={anchor.raceId} value={anchor.raceId}>
+                      {anchor.name}
+                    </option>
+                  ))}
+                </select>
+                <p className="mt-1 text-xs text-muted">
+                  {anchorOptions.length === 0
+                    ? t('bucketList.servesEmpty')
+                    : t('bucketList.servesHint')}
+                </p>
+              </div>
+            </>
+          )}
 
           <div>
             <label htmlFor="link" className="block text-sm font-semibold text-foreground">

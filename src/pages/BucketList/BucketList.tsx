@@ -19,6 +19,14 @@ import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
+import {
+  racesServing,
+  tuneUpFit,
+  seasonWarnings,
+  tuneUpWindowFor,
+  type SeasonRace,
+} from '../../domain/seasonRules'
+import type { ItemSeason } from './BucketListFunnel'
 import { BucketListFunnel } from './BucketListFunnel'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
@@ -161,6 +169,58 @@ export function BucketList() {
     () => buildRaceEntryFunnel(filteredItems, isSharedView ? [] : raceEntries),
     [filteredItems, isSharedView, raceEntries],
   )
+
+  /**
+   * The season, as the rules can read it: the races that have a date.
+   *
+   * A wish with only a target month is not on the calendar yet, so no rule can
+   * say anything about it. The id is the race identity when there is one, because
+   * that is what an anchor is pointed at by.
+   */
+  const seasonByItem = useMemo(() => {
+    const entryByItem = new Map(
+      raceEntries
+        .filter((entry) => entry.bucketListItemId)
+        .map((entry) => [entry.bucketListItemId!, entry]),
+    )
+
+    const races: SeasonRace[] = []
+    const itemIdByRaceId = new Map<string, string>()
+    for (const item of ownBucketList.items) {
+      const raceDate = entryByItem.get(item.id)?.raceDate
+      if (!raceDate) continue
+      const id = item.raceId ?? item.id
+      itemIdByRaceId.set(id, item.id)
+      races.push({
+        id,
+        name: item.name,
+        date: raceDate,
+        distanceKm: item.realDistance,
+        isAnchor: item.isAnchor === true,
+        role: item.role,
+        servesRaceId: item.servesRaceId,
+      })
+    }
+
+    const warnings = seasonWarnings(races)
+    const byRaceId = new Map(races.map((race) => [race.id, race]))
+    const annotations = new Map<string, ItemSeason>()
+    for (const race of races) {
+      const itemId = itemIdByRaceId.get(race.id)!
+      const anchor = race.servesRaceId ? byRaceId.get(race.servesRaceId) : undefined
+      annotations.set(itemId, {
+        window: race.isAnchor ? tuneUpWindowFor(race) : undefined,
+        serving: race.isAnchor ? racesServing(race.id, races).length : 0,
+        serves: anchor
+          ? { name: anchor.name, weeksBefore: tuneUpFit(anchor, race).weeksBefore }
+          : undefined,
+        warnings: warnings
+          .filter((warning) => warning.raceId === race.id)
+          .map(({ rule, count }) => ({ rule, count })),
+      })
+    }
+    return annotations
+  }, [ownBucketList.items, raceEntries])
 
   const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
   const unmappedItems = useMemo(
@@ -351,6 +411,7 @@ export function BucketList() {
         ) : (
           <BucketListFunnel
             groups={funnelGroups}
+            season={isSharedView ? new Map() : seasonByItem}
             showEntryLink={!isSharedView}
             actions={({ item }) => (
               <>

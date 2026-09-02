@@ -11,6 +11,7 @@
 - **Entry planning:** the bucket list is now grouped by what is left to do, with "needs action" at the top, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won.
 - **Deadline warnings:** a notification on the day a window opens, 30, 7 and 1 days before it closes, on the day of a draw, and counting down to the deadline for securing a place. Switch it on in Settings, Notifications.
 - **Anchor races:** mark the one to three races that fix your year and they come first in every group.
+- **Season rules:** a race can say what it is for, a build-up or a test, and which anchor it prepares. The app shows the tune-up window, about half the distance three to four weeks out, and warns when a race lands in the anchor taper or when a month gets crowded.
 
 ---
 

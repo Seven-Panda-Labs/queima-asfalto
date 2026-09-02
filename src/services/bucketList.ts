@@ -15,6 +15,7 @@ import {
 import { db } from './firebase'
 import type { BucketListItem, BucketListItemCreate } from '../types/BucketListItem'
 import { normalizeBucketListDisciplines } from '../utils/bucketListDisciplines'
+import { isRaceRole } from '../domain/seasonRules'
 import { findOrCreateRaceId } from './races'
 
 const BUCKET_LIST_COLLECTION = 'bucketListItems'
@@ -48,6 +49,8 @@ export function docToBucketListItem(id: string, data: Record<string, unknown>): 
     targetYear: typeof data.targetYear === 'number' ? data.targetYear : undefined,
     isAnchor: data.isAnchor === true,
     recurring: data.recurring === true,
+    role: typeof data.role === 'string' && isRaceRole(data.role) ? data.role : undefined,
+    servesRaceId: (data.servesRaceId as string | null) ?? undefined,
     link: (data.link as string | null) ?? undefined,
     emoji: (data.emoji as string | null) ?? undefined,
     notes: (data.notes as string | null) ?? undefined,
@@ -86,6 +89,8 @@ export async function createBucketListItem(
     targetYear: data.targetYear ?? null,
     isAnchor: data.isAnchor === true,
     recurring: data.recurring === true,
+    role: data.role ?? null,
+    servesRaceId: data.servesRaceId ?? null,
     link: data.link?.trim() || null,
     emoji: data.emoji ?? null,
     notes: data.notes?.trim() || null,
