@@ -13,6 +13,7 @@
 - **Provas âncora:** marca as uma a três provas que fixam o teu ano e elas aparecem primeiro em cada grupo.
 - **Regras de temporada:** cada prova pode dizer para que serve, build-up ou teste, e que âncora prepara. A app mostra a janela do teste, cerca de metade da distância três a quatro semanas antes, e avisa quando uma prova cai no afinamento da âncora ou quando o mês fica cheio.
 - **Quando falha:** uma prova que passa sem resultado pergunta o que aconteceu (desistência, lesão, não fui, cancelada, viagem, outro) em vez de dizer que faltaste. Uma desistência passa a contar como prova começada e deixa de aparecer como dados em falta, continuando fora de ritmos, recordes e previsões.
+- **Tentar outra vez:** numa prova falhada por lesão, desistência ou cancelamento, um botão cria a tentativa da próxima temporada e leva-te à inscrição. As provas que preparavam uma âncora que falhou ficam marcadas, para decidires se ainda fazem sentido.
 
 ---
 

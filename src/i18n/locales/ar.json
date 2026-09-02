@@ -1296,7 +1296,8 @@
       "crowded_month_two": "شهر فيه سباقان",
       "crowded_month_few": "شهر فيه {{count}} سباقات",
       "crowded_month_many": "شهر فيه {{count}} سباقا",
-      "crowded_month_other": "شهر فيه {{count}} سباق"
+      "crowded_month_other": "شهر فيه {{count}} سباق",
+      "anchor_failed": "المرساة التي كانت تجهّز لها فشلت"
     },
     "beforeAnchor_zero": "بلا أسابيع قبل {{anchor}}",
     "beforeAnchor_one": "أسبوع واحد قبل {{anchor}}",
@@ -1316,6 +1317,10 @@
       "travel": "فشلت الرحلة",
       "other": "سبب آخر"
     },
-    "editTitle": "تصحيح ما حدث"
+    "editTitle": "تصحيح ما حدث",
+    "tryAgain": "أعد المحاولة في الموسم القادم",
+    "tryAgainDone": "أُنشئت محاولة {{year}}، وهي قيد المتابعة.",
+    "tryAgainError": "تعذّر إنشاء محاولة الموسم القادم.",
+    "tryAgainExists": "محاولة {{year}} موجودة بالفعل."
   }
 }

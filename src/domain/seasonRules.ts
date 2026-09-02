@@ -26,9 +26,16 @@ export type SeasonRace = {
   role?: RaceRole
   /** The anchor this race is preparing for. */
   servesRaceId?: string
+  /** The race was run, or should have been, and produced no result. */
+  failed?: boolean
 }
 
-export const SEASON_RULES = ['tune_up_window', 'taper_clash', 'crowded_month'] as const
+export const SEASON_RULES = [
+  'tune_up_window',
+  'taper_clash',
+  'crowded_month',
+  'anchor_failed',
+] as const
 
 export type SeasonRuleId = (typeof SEASON_RULES)[number]
 
@@ -88,6 +95,18 @@ export function tuneUpWindowFor(anchor: SeasonRace): TuneUpWindow {
   }
 }
 
+/**
+ * Where a race sits in the season, out of every attempt at it.
+ *
+ * The next attempt if there is one, and otherwise the last one that happened. A
+ * race whose only date is in the past still belongs in the season: an anchor
+ * that was run and failed is what flags everything that was serving it.
+ */
+export function seasonDate(dates: readonly Date[], today: Date = new Date()): Date | undefined {
+  const sorted = [...dates].sort((left, right) => left.getTime() - right.getTime())
+  return sorted.find((date) => date.getTime() >= today.getTime()) ?? sorted[sorted.length - 1]
+}
+
 export type TuneUpFit = {
   fits: boolean
   weeksBefore: number
@@ -144,6 +163,23 @@ export function seasonWarnings(races: readonly SeasonRace[], today: Date = new D
       if (race.servesRaceId === anchor.id && !tuneUpFit(anchor, race).fits) {
         warnings.push({ rule: 'tune_up_window', raceId: race.id, anchorId: anchor.id })
       }
+    }
+  }
+
+  // An anchor that failed is in the past, so this rule reads every race rather
+  // than only the upcoming ones. A failure degrades one race and not the season:
+  // the races that were serving it are flagged, never cancelled, and the runner
+  // decides whether they still make sense.
+  const failedAnchors = new Set(
+    races.filter((race) => race.isAnchor && race.failed).map((race) => race.id),
+  )
+  for (const race of upcoming) {
+    if (race.servesRaceId && failedAnchors.has(race.servesRaceId)) {
+      warnings.push({
+        rule: 'anchor_failed',
+        raceId: race.id,
+        anchorId: race.servesRaceId,
+      })
     }
   }
 

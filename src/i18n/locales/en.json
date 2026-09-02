@@ -1276,7 +1276,8 @@
       "taper_clash": "lands in the anchor taper",
       "tune_up_window": "outside the tune-up window",
       "crowded_month_one": "month with 1 race",
-      "crowded_month_other": "month with {{count}} races"
+      "crowded_month_other": "month with {{count}} races",
+      "anchor_failed": "the anchor it prepared failed"
     },
     "beforeAnchor_one": "1 week before {{anchor}}",
     "beforeAnchor_other": "{{count}} weeks before {{anchor}}"
@@ -1292,6 +1293,10 @@
       "travel": "Travel fell through",
       "other": "Something else"
     },
-    "editTitle": "Correct what happened"
+    "editTitle": "Correct what happened",
+    "tryAgain": "Try again next season",
+    "tryAgainDone": "{{year}} attempt created, now watching.",
+    "tryAgainError": "Could not create next season attempt.",
+    "tryAgainExists": "The {{year}} attempt is already there."
   }
 }

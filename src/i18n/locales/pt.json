@@ -1276,7 +1276,8 @@
       "taper_clash": "cai no afinamento da âncora",
       "tune_up_window": "fora da janela de teste",
       "crowded_month_one": "mês com 1 prova",
-      "crowded_month_other": "mês com {{count}} provas"
+      "crowded_month_other": "mês com {{count}} provas",
+      "anchor_failed": "a âncora que preparava falhou"
     },
     "beforeAnchor_one": "1 semana antes de {{anchor}}",
     "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
@@ -1292,6 +1293,10 @@
       "travel": "A viagem falhou",
       "other": "Outro motivo"
     },
-    "editTitle": "Corrigir o que aconteceu"
+    "editTitle": "Corrigir o que aconteceu",
+    "tryAgain": "Tentar outra vez na próxima temporada",
+    "tryAgainDone": "Tentativa de {{year}} criada, a acompanhar.",
+    "tryAgainError": "Não foi possível criar a tentativa da próxima temporada.",
+    "tryAgainExists": "A tentativa de {{year}} já existe."
   }
 }

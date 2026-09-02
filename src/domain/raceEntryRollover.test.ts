@@ -1,7 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import type { BucketListItem } from '../types/BucketListItem'
 import type { RaceEntry } from '../types/RaceEntry'
-import { attemptCountFor, isAttemptFinished, rolloversToCreate } from './raceEntryRollover'
+import {
+  attemptCountFor,
+  isAttemptFinished,
+  nextAttemptYear,
+  nextSeasonAttempt,
+  rolloversToCreate,
+} from './raceEntryRollover'
 
 const TODAY = new Date('2026-09-02')
 
@@ -132,5 +138,55 @@ describe('attemptCountFor', () => {
     const entries = [entry({ id: 'a', year: 2025 }), entry({ id: 'b', year: 2026 })]
     expect(attemptCountFor('wish', entries)).toBe(2)
     expect(attemptCountFor('other', entries)).toBe(0)
+  })
+})
+
+describe('nextAttemptYear', () => {
+  it('is the season after the last attempt', () => {
+    expect(nextAttemptYear(2026, TODAY)).toBe(2027)
+  })
+
+  it('never lands in a season already gone', () => {
+    expect(nextAttemptYear(2024, TODAY)).toBe(2027)
+  })
+})
+
+describe('nextSeasonAttempt', () => {
+  it('carries the shape of the gate and none of its dates', () => {
+    const previous = entry({
+      id: 'entry-1',
+      raceId: 'race-1',
+      year: 2026,
+      entryMethod: 'lottery',
+      entryStatus: 'registered',
+      registrationUrl: 'https://example.invalid/enter',
+      raceDate: new Date('2026-05-10'),
+      lotteryDrawAt: new Date('2026-01-10'),
+    })
+
+    const next = nextSeasonAttempt('item-1', 2027, previous)
+
+    expect(next).toEqual({
+      raceId: 'race-1',
+      bucketListItemId: 'item-1',
+      year: 2027,
+      discipline: previous.discipline,
+      entryMethod: 'lottery',
+      entryStatus: 'watching',
+      raceDateConfirmed: false,
+      registrationUrl: 'https://example.invalid/enter',
+      rolledOverFrom: 'entry-1',
+    })
+  })
+
+  it('points back at nothing when there was no entry to fail', () => {
+    const next = nextSeasonAttempt('item-1', 2027, {
+      id: '',
+      raceId: 'race-1',
+      entryMethod: 'unknown',
+    })
+
+    expect(next.rolledOverFrom).toBeUndefined()
+    expect(next.entryStatus).toBe('watching')
   })
 })

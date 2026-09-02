@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   MAX_RACES_PER_MONTH,
   racesServing,
+  seasonDate,
   seasonWarnings,
   tuneUpFit,
   tuneUpWindowFor,
@@ -36,6 +37,22 @@ describe('tuneUpWindowFor', () => {
     expect(tuneUpWindowFor(race({ id: 'half', isAnchor: true, distanceKm: 21.0975 })).targetDistanceKm).toBe(
       11,
     )
+  })
+})
+
+describe('seasonDate', () => {
+  it('is the next attempt when there is one', () => {
+    const dates = [new Date('2026-05-10'), new Date('2027-05-09')]
+    expect(seasonDate(dates, TODAY)?.toISOString().slice(0, 10)).toBe('2027-05-09')
+  })
+
+  it('falls back to the last one that happened', () => {
+    const dates = [new Date('2025-05-11'), new Date('2026-05-10')]
+    expect(seasonDate(dates, TODAY)?.toISOString().slice(0, 10)).toBe('2026-05-10')
+  })
+
+  it('has nothing to say about a wish with no date at all', () => {
+    expect(seasonDate([], TODAY)).toBeUndefined()
   })
 })
 
@@ -140,6 +157,44 @@ describe('seasonWarnings', () => {
       TODAY,
     )
     expect(warnings).toEqual([])
+  })
+})
+
+describe('seasonWarnings, anchor_failed', () => {
+  it('flags what was serving an anchor that failed, and leaves the rest alone', () => {
+    const failedAnchor = race({
+      id: 'porto',
+      isAnchor: true,
+      date: new Date('2026-05-10'),
+      failed: true,
+    })
+    const buildUp = race({
+      id: 'cascais',
+      date: new Date('2027-01-10'),
+      distanceKm: 21.0975,
+      servesRaceId: 'porto',
+    })
+    const unrelated = race({ id: 'sintra', date: new Date('2027-01-24'), distanceKm: 10 })
+
+    const warnings = seasonWarnings([failedAnchor, buildUp, unrelated], TODAY)
+
+    expect(warnings.filter((warning) => warning.rule === 'anchor_failed')).toEqual([
+      { rule: 'anchor_failed', raceId: 'cascais', anchorId: 'porto' },
+    ])
+  })
+
+  it('says nothing while the anchor is still standing', () => {
+    const standing = race({ id: 'london', isAnchor: true, date: new Date('2027-04-24') })
+    const buildUp = race({
+      id: 'cascais',
+      date: new Date('2027-04-03'),
+      distanceKm: 21.0975,
+      servesRaceId: 'london',
+    })
+
+    const warnings = seasonWarnings([standing, buildUp], TODAY)
+
+    expect(warnings.some((warning) => warning.rule === 'anchor_failed')).toBe(false)
   })
 })
 

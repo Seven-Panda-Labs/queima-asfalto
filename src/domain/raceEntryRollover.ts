@@ -57,27 +57,51 @@ export function rolloversToCreate(
     // Already rolled once: the next year's entry exists and points back at this one.
     if (rolled.has(latest.id)) continue
 
-    // Never a year in the past: an attempt that ended two seasons ago rolls to
-    // the season the runner can still enter.
-    const nextYear = Math.max(latest.year + 1, today.getFullYear() + 1)
+    const nextYear = nextAttemptYear(latest.year, today)
     if (attempts.some((entry) => entry.year === nextYear)) continue
 
-    created.push({
-      raceId: latest.raceId,
-      bucketListItemId: item.id,
-      year: nextYear,
-      discipline: latest.discipline,
-      // Everything about the gate is a fact about last year, so only the shape of
-      // the gate carries over. The dates do not.
-      entryMethod: latest.entryMethod,
-      entryStatus: 'watching',
-      raceDateConfirmed: false,
-      registrationUrl: latest.registrationUrl,
-      rolledOverFrom: latest.id,
-    })
+    created.push(nextSeasonAttempt(item.id, nextYear, latest))
   }
 
   return created
+}
+
+/**
+ * The season a next attempt belongs to.
+ *
+ * Never a year in the past: an attempt that ended two seasons ago rolls to the
+ * season the runner can still enter.
+ */
+export function nextAttemptYear(latestYear: number, today: Date = new Date()): number {
+  return Math.max(latestYear + 1, today.getFullYear() + 1)
+}
+
+/**
+ * Next season's attempt at the same race.
+ *
+ * Everything about the gate is a fact about last year, so only the shape of the
+ * gate carries over. The dates do not.
+ */
+export function nextSeasonAttempt(
+  bucketListItemId: string,
+  year: number,
+  previous: Pick<
+    RaceEntry,
+    'id' | 'raceId' | 'discipline' | 'entryMethod' | 'registrationUrl'
+  >,
+): RaceEntryCreate {
+  return {
+    raceId: previous.raceId,
+    bucketListItemId,
+    year,
+    discipline: previous.discipline,
+    entryMethod: previous.entryMethod,
+    entryStatus: 'watching',
+    raceDateConfirmed: false,
+    registrationUrl: previous.registrationUrl,
+    // A race that failed with no entry ever recorded has nothing to point back at.
+    rolledOverFrom: previous.id || undefined,
+  }
 }
 
 /** How many years running this race has been attempted, including the one in hand. */

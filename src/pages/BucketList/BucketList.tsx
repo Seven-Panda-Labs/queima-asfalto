@@ -16,11 +16,13 @@ import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwn
 import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDialog/ScheduleDisciplineDialog'
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
+import { useEvents } from '../../hooks/useEvents'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
 import {
   racesServing,
+  seasonDate,
   tuneUpFit,
   seasonWarnings,
   tuneUpWindowFor,
@@ -105,6 +107,8 @@ export function BucketList() {
 
   const ownBucketList = useBucketList()
   const { entries: raceEntries, loading: entriesLoading, addEntry } = useRaceEntries()
+  /** Only to know which races failed: the reason lives on the event. */
+  const { allEvents } = useEvents()
   const sharedBucketList = useSharedBucketList(activeOwnerId)
 
   // Only for the account's own list: rolling over somebody else's wishes is not
@@ -178,16 +182,29 @@ export function BucketList() {
    * that is what an anchor is pointed at by.
    */
   const seasonByItem = useMemo(() => {
-    const entryByItem = new Map(
-      raceEntries
-        .filter((entry) => entry.bucketListItemId)
-        .map((entry) => [entry.bucketListItemId!, entry]),
+    // Every attempt at each race, because the date the season cares about is not
+    // always the latest one: a rolled over item holds next year's attempt with
+    // no date yet and last year's, which is the one that was run.
+    const datesByItem = new Map<string, Date[]>()
+    for (const entry of raceEntries) {
+      if (!entry.bucketListItemId || !entry.raceDate) continue
+      const dates = datesByItem.get(entry.bucketListItemId) ?? []
+      dates.push(entry.raceDate)
+      datesByItem.set(entry.bucketListItemId, dates)
+    }
+
+    // A race that was run, or should have been, and produced no result. The
+    // failure lives on the event, and the race identity is what joins them.
+    const failedRaceIds = new Set(
+      allEvents
+        .filter((event) => event.outcomeReason && event.raceId)
+        .map((event) => event.raceId!),
     )
 
     const races: SeasonRace[] = []
     const itemIdByRaceId = new Map<string, string>()
     for (const item of ownBucketList.items) {
-      const raceDate = entryByItem.get(item.id)?.raceDate
+      const raceDate = seasonDate(datesByItem.get(item.id) ?? [])
       if (!raceDate) continue
       const id = item.raceId ?? item.id
       itemIdByRaceId.set(id, item.id)
@@ -199,6 +216,7 @@ export function BucketList() {
         isAnchor: item.isAnchor === true,
         role: item.role,
         servesRaceId: item.servesRaceId,
+        failed: item.raceId ? failedRaceIds.has(item.raceId) : false,
       })
     }
 
@@ -208,9 +226,12 @@ export function BucketList() {
     for (const race of races) {
       const itemId = itemIdByRaceId.get(race.id)!
       const anchor = race.servesRaceId ? byRaceId.get(race.servesRaceId) : undefined
+      // A window and a count of what is preparing it are planning, so they go
+      // once the anchor has been run.
+      const anchorAhead = race.isAnchor && race.date.getTime() >= Date.now()
       annotations.set(itemId, {
-        window: race.isAnchor ? tuneUpWindowFor(race) : undefined,
-        serving: race.isAnchor ? racesServing(race.id, races).length : 0,
+        window: anchorAhead ? tuneUpWindowFor(race) : undefined,
+        serving: anchorAhead ? racesServing(race.id, races).length : 0,
         serves: anchor
           ? { name: anchor.name, weeksBefore: tuneUpFit(anchor, race).weeksBefore }
           : undefined,
@@ -220,7 +241,7 @@ export function BucketList() {
       })
     }
     return annotations
-  }, [ownBucketList.items, raceEntries])
+  }, [allEvents, ownBucketList.items, raceEntries])
 
   const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
   const unmappedItems = useMemo(

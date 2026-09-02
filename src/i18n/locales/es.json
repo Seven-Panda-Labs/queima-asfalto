@@ -1276,7 +1276,8 @@
       "taper_clash": "cae en el afinamiento del ancla",
       "tune_up_window": "fuera de la ventana de test",
       "crowded_month_one": "mes con 1 carrera",
-      "crowded_month_other": "mes con {{count}} carreras"
+      "crowded_month_other": "mes con {{count}} carreras",
+      "anchor_failed": "el ancla que preparaba falló"
     },
     "beforeAnchor_one": "1 semana antes de {{anchor}}",
     "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
@@ -1292,6 +1293,10 @@
       "travel": "El viaje se cayó",
       "other": "Otro motivo"
     },
-    "editTitle": "Corregir qué pasó"
+    "editTitle": "Corregir qué pasó",
+    "tryAgain": "Intentarlo otra vez la próxima temporada",
+    "tryAgainDone": "Intento de {{year}} creado, en seguimiento.",
+    "tryAgainError": "No se pudo crear el intento de la próxima temporada.",
+    "tryAgainExists": "El intento de {{year}} ya existe."
   }
 }

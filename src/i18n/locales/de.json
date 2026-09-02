@@ -1276,7 +1276,8 @@
       "taper_clash": "fällt in das Tapering des Ankers",
       "tune_up_window": "außerhalb des Testfensters",
       "crowded_month_one": "Monat mit 1 Rennen",
-      "crowded_month_other": "Monat mit {{count}} Rennen"
+      "crowded_month_other": "Monat mit {{count}} Rennen",
+      "anchor_failed": "der Anker, den es vorbereitete, ist ausgefallen"
     },
     "beforeAnchor_one": "1 Woche vor {{anchor}}",
     "beforeAnchor_other": "{{count}} Wochen vor {{anchor}}"
@@ -1292,6 +1293,10 @@
       "travel": "Reise geplatzt",
       "other": "Etwas anderes"
     },
-    "editTitle": "Korrigieren, was passiert ist"
+    "editTitle": "Korrigieren, was passiert ist",
+    "tryAgain": "Nächste Saison neu versuchen",
+    "tryAgainDone": "Versuch {{year}} angelegt, wird beobachtet.",
+    "tryAgainError": "Der Versuch für die nächste Saison konnte nicht angelegt werden.",
+    "tryAgainExists": "Der Versuch {{year}} ist schon angelegt."
   }
 }
