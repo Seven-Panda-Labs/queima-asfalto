@@ -1367,6 +1367,7 @@
   "anchor": {
     "makeAnchor": "Marcar como âncora de {{year}}",
     "isAnchor": "Âncora de {{year}}",
-    "toggleHint": "As provas âncora fixam a temporada: delas saem a janela de teste, os avisos e a previsão."
+    "toggleHint": "As provas âncora fixam a temporada: delas saem a janela de teste, os avisos e a previsão.",
+    "error": "Não foi possível marcar a âncora. Tenta outra vez."
   }
 }

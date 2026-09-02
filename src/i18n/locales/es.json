@@ -1367,6 +1367,7 @@
   "anchor": {
     "makeAnchor": "Marcar como ancla de {{year}}",
     "isAnchor": "Ancla de {{year}}",
-    "toggleHint": "Las carreras ancla fijan la temporada: de ellas salen la ventana del test, los avisos y la previsión."
+    "toggleHint": "Las carreras ancla fijan la temporada: de ellas salen la ventana del test, los avisos y la previsión.",
+    "error": "No se pudo marcar el ancla. Inténtalo otra vez."
   }
 }

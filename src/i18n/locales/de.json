@@ -1367,6 +1367,7 @@
   "anchor": {
     "makeAnchor": "Als Anker {{year}} markieren",
     "isAnchor": "Anker {{year}}",
-    "toggleHint": "Ankerrennen legen die Saison fest: Testfenster, Warnungen und Prognose kommen von ihnen."
+    "toggleHint": "Ankerrennen legen die Saison fest: Testfenster, Warnungen und Prognose kommen von ihnen.",
+    "error": "Der Anker konnte nicht gesetzt werden. Versuche es erneut."
   }
 }

@@ -1367,6 +1367,7 @@
   "anchor": {
     "makeAnchor": "Make the anchor of {{year}}",
     "isAnchor": "Anchor of {{year}}",
-    "toggleHint": "Anchor races fix the season: the tune-up window, the warnings and the prediction all come from them."
+    "toggleHint": "Anchor races fix the season: the tune-up window, the warnings and the prediction all come from them.",
+    "error": "Could not set the anchor. Try again."
   }
 }

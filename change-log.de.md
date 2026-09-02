@@ -19,6 +19,7 @@
 - **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte. Nach der Freigabe kommt eine E-Mail und die Anmeldung geht.
 - **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, und jeder sagt, was die App damit macht: Distanzen wählen, das Hauptrennen des Jahres markieren, dessen Anmeldung planen und ein gelaufenes Rennen erfassen. Es verschwindet, wenn sie erledigt sind, oder wenn du sagst, dass du die App kennst.
 - **Ankerrennen dort markieren, wo sie sind:** der Anker lebt jetzt am Rennen und pro Saison, und wird mit einem Knopf auf der Event-Seite gesetzt, vergangen oder künftig. Eine als Events geplante Saison bekommt Testfenster, Warnungen und Prognose, ohne etwas in der Bucket List neu anzulegen.
+- **Behoben:** Anmeldungen und Rennidentitäten scheiterten in der Produktion an fehlenden Firestore-Indexen, wodurch der Anker-Knopf nichts tat und die Konsole voller Fehler war.
 
 ---
 

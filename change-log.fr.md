@@ -19,6 +19,7 @@
 - **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit. Une fois validé, l'utilisateur reçoit un email et peut se connecter.
 - **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait : choisir tes distances, marquer la course principale de ton année, planifier son inscription et enregistrer une course déjà courue. Il disparaît quand elles sont faites, ou quand tu dis que tu connais l'app.
 - **Marquer les courses pivots là où elles sont :** le pivot vit désormais sur la course et par saison, et se marque avec un bouton sur la page de l'événement, passé ou à venir. Une saison déjà planifiée en événements gagne la fenêtre du test, les alertes et la prévision, sans rien recréer dans la bucket list.
+- **Corrigé :** les inscriptions et les identités de course échouaient en production faute d'index Firestore, ce qui rendait le bouton pivot inopérant et remplissait la console d'erreurs.
 
 ---
 
