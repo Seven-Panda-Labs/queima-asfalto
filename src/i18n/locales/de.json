@@ -613,7 +613,9 @@
     "permissionDeniedHint": "Berechtigung verweigert. Aktiviere Benachrichtigungen in deinen Browser- oder Systemeinstellungen.",
     "enableForPermission": "Aktiviere Erinnerungen, um die Benachrichtigungsberechtigung anzufordern.",
     "activateError": "Benachrichtigungen konnten auf diesem Gerät nicht aktiviert werden.",
-    "configLegend": "Erinnerungskonfiguration"
+    "configLegend": "Erinnerungskonfiguration",
+    "deadlines": "Über Anmeldefristen informieren",
+    "deadlinesHint": "Wann ein Fenster öffnet, wann es schließt (30, 7 und 1 Tag vorher), der Tag der Ziehung, und die Frist, einen gewonnenen Platz zu sichern. Feste Kadenz, zur oben gewählten Uhrzeit."
   },
   "backup": {
     "title": "Vollständiges Backup",

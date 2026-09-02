@@ -47,3 +47,79 @@ export function parseReminderLocale(value: unknown): ReminderLocale {
   if (value === 'pt') return 'pt'
   return 'en'
 }
+
+/**
+ * What a deadline notification says.
+ *
+ * The race name, then the gate, then when. Built from parts rather than a
+ * sentence per case, because four gates times three day shapes times six
+ * languages is 72 sentences nobody would keep true.
+ */
+const DEADLINE_PHRASES: Record<
+  ReminderLocale,
+  Record<'place_confirm' | 'registration_closes' | 'lottery_draw' | 'registration_opens', string>
+> = {
+  pt: {
+    place_confirm: 'garante o teu lugar',
+    registration_closes: 'as inscrições fecham',
+    lottery_draw: 'sorteio',
+    registration_opens: 'as inscrições abrem',
+  },
+  en: {
+    place_confirm: 'secure your place',
+    registration_closes: 'registration closes',
+    lottery_draw: 'lottery draw',
+    registration_opens: 'registration opens',
+  },
+  es: {
+    place_confirm: 'asegura tu plaza',
+    registration_closes: 'las inscripciones cierran',
+    lottery_draw: 'sorteo',
+    registration_opens: 'las inscripciones abren',
+  },
+  de: {
+    place_confirm: 'sichere deinen Platz',
+    registration_closes: 'die Anmeldung schließt',
+    lottery_draw: 'Ziehung',
+    registration_opens: 'die Anmeldung öffnet',
+  },
+  fr: {
+    place_confirm: 'sécurise ta place',
+    registration_closes: 'les inscriptions ferment',
+    lottery_draw: 'tirage au sort',
+    registration_opens: 'les inscriptions ouvrent',
+  },
+  ar: {
+    place_confirm: 'ثبّت مكانك',
+    registration_closes: 'يغلق التسجيل',
+    lottery_draw: 'القرعة',
+    registration_opens: 'يفتح التسجيل',
+  },
+}
+
+const WHEN: Record<ReminderLocale, { today: string; tomorrow: string; days: (n: number) => string }> = {
+  pt: { today: 'hoje', tomorrow: 'amanhã', days: (n) => `daqui a ${n} dias` },
+  en: { today: 'today', tomorrow: 'tomorrow', days: (n) => `in ${n} days` },
+  es: { today: 'hoy', tomorrow: 'mañana', days: (n) => `en ${n} días` },
+  de: { today: 'heute', tomorrow: 'morgen', days: (n) => `in ${n} Tagen` },
+  fr: { today: "aujourd'hui", tomorrow: 'demain', days: (n) => `dans ${n} jours` },
+  ar: { today: 'اليوم', tomorrow: 'غدًا', days: (n) => `بعد ${n} أيام` },
+}
+
+export function formatDeadlineBody(
+  raceName: string,
+  kind: keyof (typeof DEADLINE_PHRASES)['en'],
+  daysBefore: number,
+  locale: ReminderLocale,
+  localTime?: string,
+): string {
+  const when = WHEN[locale]
+  const timing =
+    daysBefore === 0 ? when.today : daysBefore === 1 ? when.tomorrow : when.days(daysBefore)
+  const phrase = DEADLINE_PHRASES[locale][kind]
+  // The hour only helps on the day itself, and only when the organiser published
+  // one: "opens today at 11:00 JST" is worth saying, "opens in 30 days at 11:00"
+  // is noise.
+  const suffix = daysBefore === 0 && localTime ? ` ${localTime}` : ''
+  return `${raceName}: ${phrase} ${timing}${suffix}`
+}

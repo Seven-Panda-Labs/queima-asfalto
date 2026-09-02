@@ -63,6 +63,10 @@ export function NotificationPrefsSection() {
     }
   }
 
+  async function handleDeadlineToggle(deadlineRemindersEnabled: boolean) {
+    await savePrefs({ deadlineRemindersEnabled })
+  }
+
   async function handleTimeChange(reminderTime: string) {
     try {
       await savePrefs({ reminderTime })
@@ -132,6 +136,19 @@ export function NotificationPrefsSection() {
               className="mt-1 w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
             />
           </div>
+
+          <label className="flex items-start gap-3">
+            <input
+              type="checkbox"
+              checked={prefs.deadlineRemindersEnabled}
+              onChange={(event) => void handleDeadlineToggle(event.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-border"
+            />
+            <span className="text-sm text-foreground">
+              {t('notifications.deadlines')}
+              <span className="block text-xs text-muted">{t('notifications.deadlinesHint')}</span>
+            </span>
+          </label>
         </fieldset>
 
         <p className="rounded-md border border-border bg-background px-3 py-2 text-xs text-muted">

@@ -4,6 +4,16 @@
 
 ---
 
+## [1.32.0] - 2026-09-02
+
+### Hinzugefügt
+
+- **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, mit "braucht Handlung" oben, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern.
+- **Fristwarnungen:** eine Benachrichtigung am Tag der Öffnung, 30, 7 und 1 Tag vor dem Schluss, am Tag der Ziehung, und im Countdown zur Frist für den gewonnenen Platz. Einschalten unter Einstellungen, Benachrichtigungen.
+- **Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, und sie stehen in jeder Gruppe oben.
+
+---
+
 ## [1.31.0] - 2026-09-01
 
 ### Hinzugefügt

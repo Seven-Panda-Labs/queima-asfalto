@@ -27,3 +27,14 @@ export {
   type Reminder,
   type ReminderEvent,
 } from './reminderScheduler.js'
+export {
+  buildDeadlineReminderId,
+  computeDeadlineReminders,
+  DEADLINE_KINDS,
+  DEADLINE_OFFSETS,
+  isDeadlineRelevant,
+  type DeadlineKind,
+  type DeadlineReminder,
+  type ReminderDeadlineEntry,
+} from './deadlineScheduler.js'
+export { formatDeadlineBody } from './reminderBody.js'

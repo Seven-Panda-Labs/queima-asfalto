@@ -613,7 +613,9 @@
     "permissionDeniedHint": "Permissão negada. Ativa notificações nas definições do browser ou do sistema.",
     "enableForPermission": "Ativa os lembretes para pedir permissão de notificação.",
     "activateError": "Não foi possível ativar notificações neste dispositivo.",
-    "configLegend": "Configuração do lembrete"
+    "configLegend": "Configuração do lembrete",
+    "deadlines": "Avisar sobre prazos de inscrição",
+    "deadlinesHint": "Quando abre, quando fecha (30, 7 e 1 dias antes), o dia do sorteio, e o prazo para garantir um lugar ganho. Cadência fixa, à hora que escolheste acima."
   },
   "backup": {
     "title": "Backup completo",

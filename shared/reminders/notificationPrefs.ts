@@ -6,12 +6,22 @@ export type NotificationPrefs = {
   notificationsEnabled: boolean
   reminderDaysBefore: ReminderDaysBefore
   reminderTime: string
+  /**
+   * Registration deadlines, on their own fixed cadence.
+   *
+   * On by default once notifications are on: somebody who asked to be reminded
+   * about a race day wants to hear that its entries are about to close, and
+   * having to find a second switch to get that is a worse default than one
+   * notification too many.
+   */
+  deadlineRemindersEnabled: boolean
 }
 
 export const DEFAULT_NOTIFICATION_PREFS: NotificationPrefs = {
   notificationsEnabled: false,
   reminderDaysBefore: 1,
   reminderTime: '08:00',
+  deadlineRemindersEnabled: true,
 }
 
 const REMINDER_TIME_PATTERN = /^([01]\d|2[0-3]):[0-5]\d$/
@@ -42,5 +52,8 @@ export function parseNotificationPrefs(
       ? data.reminderDaysBefore
       : DEFAULT_NOTIFICATION_PREFS.reminderDaysBefore,
     reminderTime,
+    // Absent reads as on, so an account that predates the field gets the
+    // deadlines it never had a chance to ask for.
+    deadlineRemindersEnabled: data.deadlineRemindersEnabled !== false,
   }
 }

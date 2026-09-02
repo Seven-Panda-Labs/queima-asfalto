@@ -114,12 +114,12 @@ Dados partilhados **não** são expostos em bruto no Firestore do convidado: a r
 ```mermaid
 flowchart LR
   SCH["Cloud Scheduler<br/>(cada 60 min)"] --> DR["dispatchReminders"]
-  DR --> FS[("Firestore<br/>users, events")]
+  DR --> FS[("Firestore<br/>users, events, raceEntries")]
   DR --> FCM["FCM"]
   FCM --> PWA["PWA<br/>(service worker)"]
 ```
 
-Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcional em `src/services/reminderQueue.ts`.
+Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcional em `src/services/reminderQueue.ts`. Os prazos de inscrição têm cadência própria e fixa (`deadlineScheduler.ts`), a par dos lembretes de prova.
 
 ### Firestore: coleções principais
 
@@ -300,7 +300,7 @@ Shared data is **not** exposed in plain form in the invitee’s Firestore: redac
 ```mermaid
 flowchart LR
   SCH["Cloud Scheduler<br/>(every 60 min)"] --> DR["dispatchReminders"]
-  DR --> FS[("Firestore<br/>users, events")]
+  DR --> FS[("Firestore<br/>users, events, raceEntries")]
   DR --> FCM["FCM"]
   FCM --> PWA["PWA<br/>(service worker)"]
 ```
