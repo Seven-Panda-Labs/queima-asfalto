@@ -378,7 +378,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Les courses de tes rêves. Quand tu es prêt, planifie-les dans le calendrier.",
+    "subtitle": "Les courses que tu veux courir, et ce qu'il reste à faire pour y entrer.",
     "empty": "Aucun élément dans la bucket list pour l'instant",
     "emptyHint": "Ajoute les événements dont tu rêves.",
     "addFirst": "Ajouter un premier élément",
@@ -405,7 +405,13 @@
     "noMappedItems": "Aucun élément de la bucket list avec un lieu sur la carte pour les filtres sélectionnés.",
     "unmappedTitle": "Sans lieu sur la carte",
     "unmappedHint": "Ces éléments ont besoin d'un lieu valide. Modifie-les pour corriger ou utilise l'autocomplétion.",
-    "mapClusterHint": "Clique sur un cercle numéroté pour zoomer ou déployer les éléments de la même zone."
+    "mapClusterHint": "Clique sur un cercle numéroté pour zoomer ou déployer les éléments de la même zone.",
+    "targetYear": "Année visée",
+    "targetYearHint": "Vide veut dire n'importe quelle année, et c'est bien ce qu'est un rêve.",
+    "isAnchor": "Course pivot de l'année",
+    "isAnchorHint": "Une à trois par an. Les réserver fixe le reste du calendrier, et elles passent en premier dans chaque groupe.",
+    "recurring": "J'essaie celle-ci chaque année",
+    "recurringHint": "Pour que l'année suivante soit proposée quand celle-ci se termine."
   },
   "goals": {
     "title": "Objectifs",
@@ -1183,6 +1189,66 @@
       "stale": "Confirmées, sans édition à venir ({{count}})",
       "current": "Rien à faire ({{count}})",
       "retired": "Hors circulation ({{count}})"
+    }
+  },
+  "funnel": {
+    "groups": {
+      "action_needed": "Demande une action ({{count}})",
+      "applied": "Candidature envoyée ({{count}})",
+      "watching": "En attente d'ouverture ({{count}})",
+      "in": "Dedans ({{count}})",
+      "dream": "Envies ({{count}})",
+      "missed": "Passé ({{count}})"
+    },
+    "actionNeededHint": "Elles ferment bientôt, ou la place est gagnée et reste à sécuriser.",
+    "anchor": "Ancre",
+    "planEntry": "Planifier l'inscription",
+    "editEntry": "Inscription",
+    "opens": "ouvre {{date}}",
+    "closes": "ferme {{date}}",
+    "draw": "tirage {{date}}",
+    "confirmBy": "sécuriser avant {{date}}",
+    "race": "course {{date}}"
+  },
+  "entry": {
+    "title": "Inscription",
+    "subtitle": "Quand elle ouvre, quand elle ferme, et ce qu'il reste à faire pour entrer dans cette course.",
+    "year": "Année",
+    "discipline": "Distance",
+    "method": "Mode d'inscription",
+    "status": "Statut",
+    "dates": "Dates",
+    "datesHint": "Laisse vide ce qui n'est pas encore publié. Rien n'est inventé.",
+    "raceDate": "Date de la course",
+    "opensAt": "Ouverture des inscriptions",
+    "closesAt": "Fermeture des inscriptions",
+    "drawAt": "Tirage",
+    "placeConfirmByAt": "Sécuriser la place avant",
+    "raceDateConfirmed": "La date de la course est confirmée",
+    "registrationUrl": "Lien d'inscription",
+    "fee": "Prix",
+    "feeCurrency": "Devise",
+    "saved": "Inscription enregistrée.",
+    "saveError": "Impossible d'enregistrer l'inscription.",
+    "yearError": "Une année entre 2000 et 2100.",
+    "closesBeforeOpens": "La fermeture ne peut pas précéder l'ouverture.",
+    "itemGone": "Cette envie n'existe plus.",
+    "methods": {
+      "lottery": "Tirage au sort",
+      "first_come": "Premier arrivé",
+      "qualifying": "Temps de qualification",
+      "charity": "Caritatif",
+      "invite": "Invitation",
+      "unknown": "Je ne sais pas encore"
+    },
+    "statuses": {
+      "watching": "En veille",
+      "applied": "Candidature envoyée",
+      "accepted": "Acceptée, à sécuriser",
+      "registered": "Inscrit",
+      "rejected": "Non tiré au sort",
+      "declined": "Renoncé",
+      "missed": "Délai manqué"
     }
   }
 }

@@ -378,7 +378,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Provas sonho. Quando estiveres pronto, agenda como evento no calendário.",
+    "subtitle": "Provas que queres correr, e o que falta para entrar em cada uma.",
     "empty": "Ainda sem provas na bucket list",
     "emptyHint": "Adiciona os eventos dos teus sonhos.",
     "addFirst": "Adicionar primeiro item",
@@ -405,7 +405,13 @@
     "noMappedItems": "Nenhum item com localização no mapa para os filtros seleccionados.",
     "unmappedTitle": "Sem localização no mapa",
     "unmappedHint": "Estes itens precisam de um local válido. Edita para corrigir ou usar autocomplete.",
-    "mapClusterHint": "Clica num círculo com número para aproximar ou expandir itens na mesma zona."
+    "mapClusterHint": "Clica num círculo com número para aproximar ou expandir itens na mesma zona.",
+    "targetYear": "Ano alvo",
+    "targetYearHint": "Em branco significa qualquer ano, que é o que um sonho é.",
+    "isAnchor": "Prova âncora do ano",
+    "isAnchorHint": "Uma a três por ano. A marcação destas fixa o resto do calendário, e aparecem primeiro em cada grupo.",
+    "recurring": "Tento esta todos os anos",
+    "recurringHint": "Serve para o ano seguinte ser proposto quando este acabar."
   },
   "goals": {
     "title": "Objetivos",
@@ -1183,6 +1189,66 @@
       "stale": "Confirmadas, sem edição futura ({{count}})",
       "current": "Em ordem ({{count}})",
       "retired": "Fora de circulação ({{count}})"
+    }
+  },
+  "funnel": {
+    "groups": {
+      "action_needed": "A precisar de acção ({{count}})",
+      "applied": "Candidatura entregue ({{count}})",
+      "watching": "À espera de abrir ({{count}})",
+      "in": "Dentro ({{count}})",
+      "dream": "Desejos ({{count}})",
+      "missed": "Passou ({{count}})"
+    },
+    "actionNeededHint": "Estas fecham em breve, ou já ganhaste o lugar e falta garanti-lo.",
+    "anchor": "Âncora",
+    "planEntry": "Planear inscrição",
+    "editEntry": "Inscrição",
+    "opens": "abre {{date}}",
+    "closes": "fecha {{date}}",
+    "draw": "sorteio {{date}}",
+    "confirmBy": "garantir até {{date}}",
+    "race": "prova {{date}}"
+  },
+  "entry": {
+    "title": "Inscrição",
+    "subtitle": "Quando abre, quando fecha, e o que falta fazer para entrar nesta prova.",
+    "year": "Ano",
+    "discipline": "Distância",
+    "method": "Forma de inscrição",
+    "status": "Estado",
+    "dates": "Datas",
+    "datesHint": "Deixa em branco o que ainda não foi publicado. Nada se inventa.",
+    "raceDate": "Data da prova",
+    "opensAt": "Inscrições abrem",
+    "closesAt": "Inscrições fecham",
+    "drawAt": "Sorteio",
+    "placeConfirmByAt": "Garantir o lugar até",
+    "raceDateConfirmed": "A data da prova está confirmada",
+    "registrationUrl": "Link de inscrição",
+    "fee": "Preço",
+    "feeCurrency": "Moeda",
+    "saved": "Inscrição guardada.",
+    "saveError": "Não foi possível guardar a inscrição.",
+    "yearError": "Um ano entre 2000 e 2100.",
+    "closesBeforeOpens": "O fecho não pode ser antes da abertura.",
+    "itemGone": "Este desejo já não existe.",
+    "methods": {
+      "lottery": "Sorteio",
+      "first_come": "Por ordem de chegada",
+      "qualifying": "Tempo de qualificação",
+      "charity": "Solidária",
+      "invite": "Convite",
+      "unknown": "Ainda não sei"
+    },
+    "statuses": {
+      "watching": "A observar",
+      "applied": "Candidatura entregue",
+      "accepted": "Aceite, falta garantir",
+      "registered": "Inscrito",
+      "rejected": "Não saiu no sorteio",
+      "declined": "Desisti",
+      "missed": "Perdi o prazo"
     }
   }
 }

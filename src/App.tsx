@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import { AccountApprovalGate } from './components/AccountApprovalGate/AccountApprovalGate'
 import { BucketList } from './pages/BucketList/BucketList'
 import { BucketListForm } from './pages/BucketList/BucketListForm'
+import { EntryForm } from './pages/BucketList/EntryForm'
 import { Dashboard } from './pages/Dashboard/Dashboard'
 import { Events } from './pages/Events/Events'
 import { EventDetail } from './pages/Events/EventDetail'
@@ -65,6 +66,7 @@ export default function App() {
             <Route path="bucket-list" element={<BucketList />} />
             <Route path="bucket-list/novo" element={<BucketListForm />} />
             <Route path="bucket-list/:id/editar" element={<BucketListForm />} />
+            <Route path="bucket-list/:id/inscricao" element={<EntryForm />} />
             <Route path="objetivos" element={<Goals />} />
             <Route path="objetivos/novo" element={<GoalForm />} />
             <Route path="objetivos/performance/novo" element={<PerformanceGoalForm />} />

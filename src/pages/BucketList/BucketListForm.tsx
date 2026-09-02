@@ -28,6 +28,9 @@ type FormState = {
   realDistance: string
   disciplines: EventType[]
   targetMonth: string
+  targetYear: string
+  isAnchor: boolean
+  recurring: boolean
   link: string
   emoji: string
   notes: string
@@ -50,6 +53,9 @@ function emptyForm(): FormState {
     realDistance: String(derived.realDistance),
     disciplines: [derived.eventType],
     targetMonth: '',
+    targetYear: '',
+    isAnchor: false,
+    recurring: false,
     link: '',
     emoji: '🏃',
     notes: '',
@@ -126,6 +132,9 @@ export function BucketListForm() {
             realDistance: String(item.realDistance),
             disciplines: item.disciplines,
             targetMonth: item.targetMonth ?? '',
+            targetYear: item.targetYear ? String(item.targetYear) : '',
+            isAnchor: item.isAnchor === true,
+            recurring: item.recurring === true,
             link: item.link ?? '',
             emoji: item.emoji ?? '🏃',
             notes: '',
@@ -147,6 +156,9 @@ export function BucketListForm() {
           realDistance: String(item.realDistance),
           disciplines: item.disciplines,
           targetMonth: item.targetMonth ?? '',
+          targetYear: item.targetYear ? String(item.targetYear) : '',
+          isAnchor: item.isAnchor === true,
+          recurring: item.recurring === true,
           link: item.link ?? '',
           emoji: item.emoji ?? '🏃',
           notes: item.notes ?? '',
@@ -230,6 +242,9 @@ export function BucketListForm() {
       realDistance: Number(form.realDistance),
       disciplines: [...new Set(form.disciplines)],
       targetMonth: form.targetMonth.trim() || undefined,
+      targetYear: form.targetYear ? Number(form.targetYear) : undefined,
+      isAnchor: form.isAnchor,
+      recurring: form.recurring,
       link: form.link.trim() || undefined,
       emoji: form.emoji || undefined,
       notes: form.notes.trim() || undefined,
@@ -397,6 +412,46 @@ export function BucketListForm() {
             </select>
             <p className="mt-1 text-xs text-muted">{t('bucketList.targetMonthHint')}</p>
           </div>
+
+          <div>
+            <label htmlFor="targetYear" className="block text-sm font-semibold text-foreground">
+              {t('bucketList.targetYear')}
+            </label>
+            <input
+              id="targetYear"
+              type="number"
+              value={form.targetYear}
+              onChange={(e) => updateField('targetYear', e.target.value)}
+              className="mt-1 w-full rounded-md border border-border bg-surface px-3 py-2"
+            />
+            <p className="mt-1 text-xs text-muted">{t('bucketList.targetYearHint')}</p>
+          </div>
+
+          <label className="flex items-start gap-2 text-sm text-foreground">
+            <input
+              type="checkbox"
+              checked={form.isAnchor}
+              onChange={(e) => updateField('isAnchor', e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-border"
+            />
+            <span>
+              {t('bucketList.isAnchor')}
+              <span className="block text-xs text-muted">{t('bucketList.isAnchorHint')}</span>
+            </span>
+          </label>
+
+          <label className="flex items-start gap-2 text-sm text-foreground">
+            <input
+              type="checkbox"
+              checked={form.recurring}
+              onChange={(e) => updateField('recurring', e.target.checked)}
+              className="mt-1 h-4 w-4 rounded border-border"
+            />
+            <span>
+              {t('bucketList.recurring')}
+              <span className="block text-xs text-muted">{t('bucketList.recurringHint')}</span>
+            </span>
+          </label>
 
           <div>
             <label htmlFor="link" className="block text-sm font-semibold text-foreground">

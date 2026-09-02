@@ -1,0 +1,100 @@
+import type { ReactNode } from 'react'
+import { Link } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { formatEventTypeLabel } from '../../i18n/formatters'
+import { formatDatePt } from '../../utils/date'
+import type { FunnelGroup, FunnelRow } from '../../domain/raceEntryFunnel'
+import type { RaceEntry } from '../../types/RaceEntry'
+
+type BucketListFunnelProps = {
+  groups: FunnelGroup[]
+  /** Rendered at the end of every row: the icons the page already had. */
+  actions: (row: FunnelRow) => ReactNode
+  showEntryLink: boolean
+}
+
+/**
+ * The date this row is waiting on, said in words.
+ *
+ * A date on its own is useless here: "12 October" answers nothing, while "closes
+ * 12 October" is the whole point of the group.
+ */
+function WaitingOn({ entry }: { entry: RaceEntry | null }) {
+  const { t } = useTranslation()
+  if (!entry) return null
+
+  const parts: string[] = []
+  if (entry.placeConfirmByAt) {
+    parts.push(t('funnel.confirmBy', { date: formatDatePt(entry.placeConfirmByAt) }))
+  }
+  if (entry.registrationOpensAt && !entry.registrationClosesAt) {
+    parts.push(t('funnel.opens', { date: formatDatePt(entry.registrationOpensAt) }))
+  }
+  if (entry.registrationClosesAt) {
+    parts.push(t('funnel.closes', { date: formatDatePt(entry.registrationClosesAt) }))
+  }
+  if (entry.lotteryDrawAt && entry.entryStatus === 'applied') {
+    parts.push(t('funnel.draw', { date: formatDatePt(entry.lotteryDrawAt) }))
+  }
+  if (parts.length === 0 && entry.raceDate) {
+    parts.push(t('funnel.race', { date: formatDatePt(entry.raceDate) }))
+  }
+
+  if (parts.length === 0) return null
+  return <span className="text-xs text-muted">{parts.join(' · ')}</span>
+}
+
+export function BucketListFunnel({ groups, actions, showEntryLink }: BucketListFunnelProps) {
+  const { t } = useTranslation()
+  const populated = groups.filter((group) => group.rows.length > 0)
+
+  return (
+    <div className="space-y-8">
+      {populated.map((group) => (
+        <section key={group.key}>
+          <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+            {t(`funnel.groups.${group.key}`, { count: group.rows.length })}
+          </h2>
+          {group.key === 'action_needed' ? (
+            <p className="mt-1 text-xs text-accent">{t('funnel.actionNeededHint')}</p>
+          ) : null}
+
+          <ul className="mt-2 divide-y divide-border rounded-lg border border-border bg-surface">
+            {group.rows.map(({ item, entry }) => (
+              <li key={item.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
+                <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
+                  {item.emoji ? <span aria-hidden>{item.emoji}</span> : null}
+                  <span>{item.name}</span>
+                </span>
+                {item.isAnchor ? (
+                  <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
+                    {t('funnel.anchor')}
+                  </span>
+                ) : null}
+
+                <span className="text-xs text-muted">
+                  {item.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')}
+                </span>
+                {item.location ? <span className="text-xs text-muted">{item.location}</span> : null}
+
+                <WaitingOn entry={entry} />
+
+                <div className="ml-auto flex flex-nowrap items-center gap-1">
+                  {showEntryLink ? (
+                    <Link
+                      to={`/bucket-list/${item.id}/inscricao`}
+                      className="rounded-md px-2 py-1 text-xs font-semibold text-muted transition-colors hover:bg-background hover:text-primary"
+                    >
+                      {entry ? t('funnel.editEntry') : t('funnel.planEntry')}
+                    </Link>
+                  ) : null}
+                  {actions({ item, entry })}
+                </div>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )
+}
