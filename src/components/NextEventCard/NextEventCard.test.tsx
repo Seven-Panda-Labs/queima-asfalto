@@ -19,10 +19,13 @@ const event = {
   location: 'Berlin',
 } as Event
 
-function renderCard(target?: Parameters<typeof NextEventCard>[0]['target']) {
+function renderCard(
+  target?: Parameters<typeof NextEventCard>[0]['target'],
+  projection?: Parameters<typeof NextEventCard>[0]['projection'],
+) {
   render(
     <MemoryRouter>
-      <NextEventCard event={event} target={target} />
+      <NextEventCard event={event} target={target} projection={projection} />
     </MemoryRouter>,
   )
 }
@@ -48,6 +51,21 @@ describe('NextEventCard', () => {
   it('says it in the singular for a course run once', () => {
     renderCard({ targetSeconds: 1540, paceSeconds: 308, runs: 1 })
     expect(screen.getByText('1 vez aqui')).toBeInTheDocument()
+  })
+
+  it('shows the projection when the course has never been run', () => {
+    renderCard(null, { predictedSeconds: 2830, paceSeconds: 283, fromBuildUp: true })
+    expect(screen.getByText(/Previsão: 47:10/)).toBeInTheDocument()
+    expect(screen.getByText('da prova de preparação')).toBeInTheDocument()
+  })
+
+  it('keeps the time to beat over the projection: the same course says more', () => {
+    renderCard(
+      { targetSeconds: 1540, paceSeconds: 308, runs: 15 },
+      { predictedSeconds: 2830, paceSeconds: 283, fromBuildUp: true },
+    )
+    expect(screen.getByText(/A bater: 25:40/)).toBeInTheDocument()
+    expect(screen.queryByText(/Previsão/)).not.toBeInTheDocument()
   })
 
   it('still renders the empty hero with no event at all', () => {

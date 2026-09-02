@@ -12,6 +12,7 @@ import { EventMediaGallery } from '../../components/EventMediaGallery/EventMedia
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { EventTrackSection } from '../../components/EventTrack'
 import { CourseHistory } from '../../components/CourseHistory'
+import { RaceProjection } from '../../components/RaceProjection'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
 import { EventResultEditor } from '../../components/EventResultEditor'
 import { PencilIcon } from '../../components/icons/actionIcons'
@@ -41,6 +42,7 @@ import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollov
 import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
 import { buildCourseComparison } from '../../utils/analytics/course'
+import { projectRaceTime, racesPreparing } from '../../utils/analytics/racePrediction'
 import { canRecoverEventToBucketList, eventToBucketListItem } from '../../utils/eventToBucketList'
 import { eventHasCoordinates } from '../../services/eventGeocoding'
 import {
@@ -139,6 +141,23 @@ export function EventDetail() {
     () => (event && !isSharedView ? buildCourseComparison(event, allEvents) : null),
     [event, isSharedView, allEvents],
   )
+
+  /**
+   * Only for an anchor still ahead: this is the race the build-ups were run for,
+   * and a race already run has a result instead of an estimate.
+   */
+  const projection = useMemo(() => {
+    if (!event || isSharedView || !isFutureDate(event.date)) return null
+    const anchor = bucketListItems.find(
+      (item) => item.raceId && item.raceId === event.raceId && item.isAnchor,
+    )
+    if (!anchor) return null
+    return projectRaceTime(
+      { distanceKm: event.realDistance, date: event.date },
+      allEvents,
+      racesPreparing(event.raceId, bucketListItems),
+    )
+  }, [allEvents, bucketListItems, event, isSharedView])
 
   const personalRecordIds = isSharedView
     ? new Set<string>()
@@ -513,6 +532,8 @@ export function EventDetail() {
             </Suspense>
           </section>
         ) : null}
+
+        {projection ? <RaceProjection projection={projection} /> : null}
 
         {courseComparison ? <CourseHistory comparison={courseComparison} /> : null}
 

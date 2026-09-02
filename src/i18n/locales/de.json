@@ -150,7 +150,9 @@
     "allTargetsDone": "Alles erledigt. Zeit, die Latte höher zu legen.",
     "viewAllGoals": "Alle anzeigen",
     "noGoals": "Noch keine Ziele in {{year}}",
-    "createGoal": "Ziel erstellen"
+    "createGoal": "Ziel erstellen",
+    "projected": "Prognose: {{time}} · {{pace}}/km",
+    "projectedBuildUp": "aus dem Vorbereitungsrennen"
   },
   "events": {
     "title": "Events",
@@ -1298,5 +1300,11 @@
     "tryAgainDone": "Versuch {{year}} angelegt, wird beobachtet.",
     "tryAgainError": "Der Versuch für die nächste Saison konnte nicht angelegt werden.",
     "tryAgainExists": "Der Versuch {{year}} ist schon angelegt."
+  },
+  "projection": {
+    "title": "Prognose für dieses Rennen",
+    "basis": "Bestes Ergebnis der letzten 12 Monate: {{name}}, {{date}}.",
+    "basisStale": "Keine Rennen in den letzten 12 Monaten; aus deiner neuesten Marke: {{name}}, {{date}}.",
+    "basisBuildUp": "Aus deinem Vorbereitungsrennen: {{name}}, {{date}}."
   }
 }

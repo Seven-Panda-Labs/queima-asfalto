@@ -18,10 +18,22 @@ export type NextEventTarget = {
   runs: number
 }
 
+export type NextEventProjection = {
+  predictedSeconds: number
+  paceSeconds: number
+  /** The basis is a race declared as preparing this one. */
+  fromBuildUp: boolean
+}
+
 type NextEventCardProps = {
   event?: Event | null
   /** Only for a course already run: there is nothing to beat otherwise. */
   target?: NextEventTarget | null
+  /**
+   * What form says about the distance ahead. Second to `target`: a time set on
+   * this very course beats an equivalence from another one.
+   */
+  projection?: NextEventProjection | null
 }
 
 /** Asfalto low poly sobre o gradiente, mais o brilho que lhe dá profundidade. */
@@ -106,7 +118,7 @@ function EmptyHero() {
   )
 }
 
-export function NextEventCard({ event, target }: NextEventCardProps) {
+export function NextEventCard({ event, target, projection }: NextEventCardProps) {
   const { t } = useTranslation()
   const today = new Date()
 
@@ -143,6 +155,18 @@ export function NextEventCard({ event, target }: NextEventCardProps) {
             <span className="font-normal text-white/75">
               {t('dashboard.courseTargetRuns', { count: target.runs })}
             </span>
+          </p>
+        ) : projection ? (
+          <p className="mt-3 inline-flex flex-wrap items-baseline gap-x-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
+            <span>
+              {t('dashboard.projected', {
+                time: formatDurationSeconds(projection.predictedSeconds),
+                pace: formatPaceSeconds(projection.paceSeconds),
+              })}
+            </span>
+            {projection.fromBuildUp ? (
+              <span className="font-normal text-white/75">{t('dashboard.projectedBuildUp')}</span>
+            ) : null}
           </p>
         ) : null}
       </div>
