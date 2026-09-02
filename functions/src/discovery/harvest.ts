@@ -6,6 +6,13 @@ import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
 import { dedupeRaces } from '../shared/eventDiscovery/dedup.js'
 import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guards.js'
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
+import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
+import {
+  davengoStarterUrl,
+  readDavengoSearch,
+  withDavengoDistances,
+  type DavengoSearchResponse,
+} from '../shared/eventDiscovery/davengo.js'
 import { parseSitemap, selectEventUrls } from '../shared/eventDiscovery/sitemap.js'
 import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCatalogEntry.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
@@ -36,14 +43,24 @@ function isoDay(date: Date): string {
   return date.toISOString().slice(0, 10)
 }
 
-async function harvestSource(
-  source: DiscoverySource,
-  now: Date,
-): Promise<DiscoveredRace[]> {
-  const sitemap = await fetchPage(source.sitemapUrl)
-  if (!sitemap) {
-    throw new Error(`${source.id}: sitemap unavailable`)
+/** One page, fetched politely, with a failure that costs the page and not the run. */
+async function page(source: DiscoverySource, url: string): Promise<string | null> {
+  await delay(DELAY_BETWEEN_PAGES_MS)
+  try {
+    return await fetchPage(url)
+  } catch (error) {
+    // One page timing out says nothing about the other hundred.
+    console.warn(`${source.id}: ${url} failed`, error)
+    return null
   }
+}
+
+/** A sitemap of event pages, each carrying its own `schema.org` node. */
+async function harvestSitemap(source: DiscoverySource): Promise<DiscoveredRace[]> {
+  if (!source.sitemapUrl || !source.pathPrefix) return []
+
+  const sitemap = await fetchPage(source.sitemapUrl)
+  if (!sitemap) throw new Error(`${source.id}: sitemap unavailable`)
 
   const urls = selectEventUrls(parseSitemap(sitemap), {
     pathPrefix: source.pathPrefix,
@@ -52,23 +69,82 @@ async function harvestSource(
 
   const races: DiscoveredRace[] = []
   for (const url of urls) {
-    await delay(DELAY_BETWEEN_PAGES_MS)
-    let html: string | null = null
-    try {
-      html = await fetchPage(url)
-    } catch (error) {
-      // One page timing out says nothing about the other hundred.
-      console.warn(`${source.id}: ${url} failed`, error)
-      continue
-    }
-    if (!html) continue
+    const html = await page(source, url)
+    if (html) races.push(...readRacesFromHtml(html))
+  }
+  return races
+}
 
-    for (const race of readRacesFromHtml(html)) {
-      if (isHarvestable(race, now)) races.push(race)
+/**
+ * A JSON calendar, plus one page per race for the distances.
+ *
+ * davengo's search endpoint answers with everything except how long the race
+ * is, and its starter list is where the competitions are named. Two requests a
+ * race is affordable once a week and unthinkable per query, which is the whole
+ * reason the harvest is scheduled.
+ */
+async function harvestSearch(source: DiscoverySource): Promise<DiscoveredRace[]> {
+  if (!source.searchUrl) return []
+
+  const races: DiscoveredRace[] = []
+  let pages = 1
+
+  for (let index = 0; index < Math.min(pages, source.pageLimit); index += 1) {
+    const body = await page(source, `${source.searchUrl}${index}`)
+    if (!body) break
+
+    let response: DavengoSearchResponse
+    try {
+      response = JSON.parse(body) as DavengoSearchResponse
+    } catch {
+      console.warn(`${source.id}: page ${index} was not json`)
+      break
+    }
+
+    pages = Math.max(pages, (response.futurePages ?? 0) + 1)
+
+    for (const race of readDavengoSearch(response)) {
+      if (race.distancesKm.length > 0) {
+        races.push(race)
+        continue
+      }
+      const starter = davengoStarterUrl(
+        (response.eventEntries ?? []).find((entry) => entry.name === race.name) ?? {},
+      )
+      const html = starter ? await page(source, starter) : null
+      races.push(html ? withDavengoDistances(race, html) : race)
     }
   }
 
   return races
+}
+
+/** The whole calendar on one page, which is one request for every race on it. */
+async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]> {
+  if (!source.listingUrl) return []
+
+  const html = await fetchPage(source.listingUrl)
+  if (!html) throw new Error(`${source.id}: calendar unavailable`)
+
+  return readSccCalendar(html, {
+    city: source.city ?? '',
+    country: source.country ?? 'XX',
+    baseUrl: source.baseUrl ?? source.listingUrl,
+  })
+}
+
+async function harvestSource(
+  source: DiscoverySource,
+  now: Date,
+): Promise<DiscoveredRace[]> {
+  const races =
+    source.kind === 'search'
+      ? await harvestSearch(source)
+      : source.kind === 'listing'
+        ? await harvestListing(source)
+        : await harvestSitemap(source)
+
+  return races.filter((race) => isHarvestable(race, now))
 }
 
 export type HarvestResult = {
@@ -95,8 +171,13 @@ export async function refreshDiscoveryCatalog(
   }
 
   const discovered: DiscoveredRace[] = []
+  /** Which source each race came from, which is what a reviewer needs. */
+  const sourceByUrl = new Map<string, string>()
   for (const source of sources) {
-    discovered.push(...(await harvestSource(source, now)))
+    for (const race of await harvestSource(source, now)) {
+      discovered.push(race)
+      sourceByUrl.set(race.sourceUrl, source.id)
+    }
   }
 
   const races = dedupeRaces(discovered)
@@ -125,7 +206,10 @@ export async function refreshDiscoveryCatalog(
   let skipped = 0
 
   for (const race of races) {
-    const entry = toCatalogEntry(race, { source: sourceOf(race, sources), harvestedAt: provenance.harvestedAt })
+    const entry = toCatalogEntry(race, {
+      source: sourceByUrl.get(race.sourceUrl) ?? provenance.source,
+      harvestedAt: provenance.harvestedAt,
+    })
     const ref = db.collection(RACE_CATALOG_COLLECTION).doc(entry.id)
     const existingSnap = await ref.get()
     const existing = existingSnap.exists
@@ -154,18 +238,6 @@ export async function refreshDiscoveryCatalog(
     })
 
   return { written, harvested: races.length, skipped, sources: sources.map((source) => source.id) }
-}
-
-/** Which source a race came from, so a reviewer knows what to check against. */
-function sourceOf(race: DiscoveredRace, sources: readonly DiscoverySource[]): string {
-  const host = (() => {
-    try {
-      return new URL(race.sourceUrl).host.replace(/^www\./, '')
-    } catch {
-      return ''
-    }
-  })()
-  return sources.find((source) => source.id === host)?.id ?? (host || sources[0]!.id)
 }
 
 export const harvestRaceCatalog = onSchedule(

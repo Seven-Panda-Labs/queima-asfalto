@@ -1,0 +1,84 @@
+{
+ "todayPagePastEvents": 0,
+ "todayPageFutureEvents": 10,
+ "pastEvents": 1649,
+ "futureEvents": 36,
+ "pastPages": -165,
+ "futurePages": 3,
+ "requestedPage": 0,
+ "todayDate": "02.09.2026",
+ "eventEntries": [
+  {
+   "index": 1,
+   "name": "8. Flensburg liebt dich Marathon 2026",
+   "date": "06.09.2026",
+   "dateString": "06. September 2026",
+   "location": "Deutschland, Flensburg",
+   "logoUrl": "https://static.davengo.com/media/byEvent/68bad7364c8d2765e256b3e7/logo.jpg",
+   "actions": [
+    {
+     "actionName": "Geschlossen",
+     "actionType": 3,
+     "actionLink": "https://www.davengo.com/event/overview/68bad7364c8d2765e256b3e7"
+    },
+    {
+     "actionName": "Teilnehmerliste ansehen",
+     "actionType": 0,
+     "actionLink": "https://www.davengo.com/event/starter/8-flensburg-liebt-dich-marathon-2026/"
+    }
+   ],
+   "isPast": false,
+   "hasResults": false,
+   "isV3": false,
+   "containsRegularRegistration": false
+  },
+  {
+   "index": 2,
+   "name": "Neue Presse Firmenlauf 2026",
+   "date": "11.09.2026",
+   "dateString": "11. September 2026",
+   "location": "Deutschland, Gemünda",
+   "logoUrl": "https://static.davengo.com/media/byEvent/69e12589bd079706f7260677/logo.jpg",
+   "actions": [
+    {
+     "actionName": "Anmeldung",
+     "actionType": 1,
+     "actionLink": "https://www.davengo.com/event/overview/neue-presse-firmenlauf-2026"
+    },
+    {
+     "actionName": "Teilnehmerliste ansehen",
+     "actionType": 0,
+     "actionLink": "https://www.davengo.com/event/starter/neue-presse-firmenlauf-2026/"
+    }
+   ],
+   "isPast": false,
+   "hasResults": false,
+   "isV3": false,
+   "containsRegularRegistration": false
+  },
+  {
+   "index": 3,
+   "name": "38. Kiel.Lauf powered by Förde Sparkasse 2026",
+   "date": "13.09.2026",
+   "dateString": "13. September 2026",
+   "location": "Deutschland, Kiel",
+   "logoUrl": "https://static.davengo.com/media/byEvent/68b04d786ad3da1c64d06e3d/logo.jpg",
+   "actions": [
+    {
+     "actionName": "Anmeldung",
+     "actionType": 1,
+     "actionLink": "https://www.davengo.com/event/overview/38-kiellauf-powered-by-foerde-sparkasse-2026"
+    },
+    {
+     "actionName": "Teilnehmerliste ansehen",
+     "actionType": 0,
+     "actionLink": "https://www.davengo.com/event/starter/38-kiellauf-powered-by-foerde-sparkasse-2026/"
+    }
+   ],
+   "isPast": false,
+   "hasResults": false,
+   "isV3": false,
+   "containsRegularRegistration": false
+  }
+ ]
+}

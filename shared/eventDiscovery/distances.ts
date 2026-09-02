@@ -7,7 +7,7 @@ import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes.js'
  * needs most. What the sources do carry is an offer per distance, named the way
  * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m".
  */
-const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,3}))?\s*(km|k\b|milhas?|miles?|m\b)/giu
+const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,4}))?\s*(km|k\b|milhas?|miles?|m\b)/giu
 
 const MILE_KM = 1.609344
 
@@ -83,7 +83,9 @@ export function parseDistancesKm(labels: readonly string[]): number[] {
             ? value / 1000
             : value
 
-      const rounded = Math.round(km * 1000) / 1000
+      // Four decimals, because 21,0975 km is a half marathon and 21,098 is a
+      // number nobody wrote.
+      const rounded = Math.round(km * 10000) / 10000
       if (rounded >= MIN_KM && rounded <= MAX_KM) {
         found.add(rounded)
         readANumber = true

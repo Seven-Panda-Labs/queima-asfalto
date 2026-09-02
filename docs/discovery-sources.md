@@ -14,9 +14,18 @@ que decide se entra são duas coisas, por esta ordem:
 1. **Permissão.** O `robots.txt` permite o caminho, o sitemap está anunciado, e
    os termos não proíbem leitura automática. Um desafio de bot (Cloudflare, por
    exemplo) é uma resposta: não.
-2. **Forma dos dados.** A página do evento carrega um nó `schema.org`
-   `Event`/`SportsEvent`. Uma fonte assim custa um URL, um prefixo e um
-   fixture, não um conector.
+2. **Forma dos dados.** Uma de três, e nada mais:
+
+   | `kind` | Forma | Custo por corrida |
+   |---|---|---|
+   | `sitemap` | uma página por evento, cada uma com `schema.org` | um pedido por evento |
+   | `search` | um calendário em JSON, mais uma página por evento | um pedido por evento |
+   | `listing` | o calendário todo numa página | um pedido, total |
+
+   O que precisa de um browser a correr para os dados existirem não é fonte. O
+   `/v3/event/register/…/overview` do davengo é uma app Vaadin, e conduzir esse
+   protocolo é a mesma classe de coisa que uma grelha Livewire: rota que muda
+   por deploy, e o operador a dizer sem dizer que não quer aquele tráfego.
 
 Não escrevemos um conector por calendário. Há centenas e listam em grande parte
 as mesmas provas, por isso o objectivo não é cobertura de fontes, é escolher as
@@ -56,7 +65,7 @@ contagens decrescentes).
 3. Guarda o bloco JSON-LD como fixture em `shared/eventDiscovery/fixtures/`.
 4. Acrescenta a fonte a `DISCOVERY_SOURCES` em
    [`functions/src/discovery/sources.ts`](../functions/src/discovery/sources.ts)
-   com o `sitemapUrl`, o `pathPrefix` e um `pageLimit`.
+   com o `kind` e o que ele precisa.
 5. Um teste sobre o fixture. Se o parser precisar de mudar para a ler, é porque
    a fonte não é tier 1 ou 2, e aí a conversa é outra.
 
@@ -77,9 +86,19 @@ things decide whether it qualifies, in this order:
 1. **Permission.** `robots.txt` allows the path, the sitemap is advertised, and
    the terms do not forbid automated reading. A bot challenge (Cloudflare, say)
    is an answer: no.
-2. **Data shape.** The event page carries a `schema.org` `Event` /
-   `SportsEvent` node. A source like that costs a URL, a path prefix and a
-   fixture, not a connector.
+2. **Data shape.** One of three, and nothing else:
+
+   | `kind` | Shape | Cost per run |
+   |---|---|---|
+   | `sitemap` | a page per event, each with `schema.org` | one fetch per event |
+   | `search` | a JSON calendar, plus a page per event | one fetch per event |
+   | `listing` | the whole calendar on one page | one fetch, total |
+
+   Anything that needs a browser to run before the data exists is not a source.
+   davengo's `/v3/event/register/…/overview` is a Vaadin app, and driving that
+   protocol is the same class of thing as a Livewire grid: a route that changes
+   per deploy, and the operator saying without saying that they do not want that
+   traffic.
 
 We do not write one connector per calendar. There are hundreds and they largely
 list the same races, so the goal is not source coverage; it is picking the ones
@@ -119,7 +138,7 @@ countdowns).
 3. Save that JSON-LD block as a fixture in `shared/eventDiscovery/fixtures/`.
 4. Add the source to `DISCOVERY_SOURCES` in
    [`functions/src/discovery/sources.ts`](../functions/src/discovery/sources.ts)
-   with its `sitemapUrl`, `pathPrefix` and a `pageLimit`.
+   with its `kind` and whatever that kind needs.
 5. One test over the fixture. If the parser has to change to read it, the source
    is not tier 1 or 2, and that is a different conversation.
 

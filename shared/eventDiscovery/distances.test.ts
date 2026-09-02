@@ -60,6 +60,9 @@ describe('parseDistancesKm', () => {
 
   it('keeps the decimals of a distance written in kilometres', () => {
     expect(parseDistancesKm(['Maratona 42,195 km'])).toEqual([42.195])
+    // Four decimals, which is how the scc calendar writes a half marathon.
+    expect(parseDistancesKm(['21,0975 km'])).toEqual([21.0975])
+    expect(parseDistancesKm(['4,2195 km'])).toEqual([4.2195])
   })
 
   it('reads miles', () => {
