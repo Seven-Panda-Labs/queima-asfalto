@@ -41,6 +41,7 @@ export function DataQualityNote({
               count: quality.missingClassification,
             })}`
           : ''}
+        {quality.dnf > 0 ? ` ${t('analysis.qualityDnf', { count: quality.dnf })}` : ''}
       </p>
 
       {quality.excluded.length > 0 ? (

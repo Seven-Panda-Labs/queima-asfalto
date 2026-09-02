@@ -369,7 +369,14 @@ export function Events() {
                       </>
                     ) : null}
                     <td className="px-4 py-3">
-                      <StatusBadge status={event.status} />
+                      <div className="flex flex-wrap items-center gap-1">
+                        <StatusBadge status={event.status} />
+                        {event.outcomeReason ? (
+                          <span className="rounded-full border border-border px-2 py-0.5 text-xs font-semibold text-muted">
+                            {t(`outcome.reasons.${event.outcomeReason}`)}
+                          </span>
+                        ) : null}
+                      </div>
                     </td>
                     {!isSharedView ? (
                     <td className="px-4 py-3">

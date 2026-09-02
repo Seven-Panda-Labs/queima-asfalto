@@ -48,6 +48,9 @@ export function CareerTotals({ totals, rhythm }: CareerTotalsProps) {
         {rhythm?.longestGapDays != null
           ? ` · ${t('analysis.longestGap', { days: rhythm.longestGapDays })}`
           : ''}
+        {/* Not a tile: a race started and not finished belongs next to the career,
+            not among the numbers it is deliberately kept out of. */}
+        {totals.dnf > 0 ? ` · ${t('analysis.careerDnf', { count: totals.dnf })}` : ''}
       </p>
     </div>
   )

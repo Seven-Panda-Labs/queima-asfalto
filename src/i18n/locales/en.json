@@ -569,7 +569,9 @@
     "tooltipTime": "Time {{time}}",
     "tooltipTopPercent": "Top {{percent}}%",
     "trendLine": "Trend",
-    "trendSummary": "{{change}} points a year at the current rate"
+    "trendSummary": "{{change}} points a year at the current rate",
+    "qualityDnf": "{{count}} not finished, counted as started.",
+    "careerDnf": "{{count}} not finished"
   },
   "settings": {
     "title": "Settings",
@@ -753,7 +755,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, event «{{event}}» has passed. Marked as Missed automatically."
+    "faltouAuto": "{{name}}, event «{{event}}» has passed with no result. Open it and say what happened."
   },
   "validation": {
     "futureNoCompleted": "Future events cannot be Completed or marked as Missed.",
@@ -1278,5 +1280,18 @@
     },
     "beforeAnchor_one": "1 week before {{anchor}}",
     "beforeAnchor_other": "{{count}} weeks before {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "No result recorded. What happened?",
+    "promptHint": "It stays on the race. A DNF counts as a race started, and stays out of pace, records and predictions.",
+    "reasons": {
+      "dnf": "Dropped out",
+      "injury": "Injury",
+      "did_not_go": "Did not go",
+      "cancelled_by_organiser": "Cancelled by the organiser",
+      "travel": "Travel fell through",
+      "other": "Something else"
+    },
+    "editTitle": "Correct what happened"
   }
 }

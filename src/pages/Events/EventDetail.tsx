@@ -7,6 +7,7 @@ import {
 } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
+import { OutcomeReasonPrompt } from '../../components/OutcomeReasonPrompt'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { EventTrackSection } from '../../components/EventTrack'
@@ -33,6 +34,7 @@ import type { EventMedia } from '../../types/EventMedia'
 import type { MediaValidationErrorCode } from '../../utils/mediaValidation'
 import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
+import { needsOutcomeReason } from '../../domain/outcomeReasons'
 import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
 import { buildCourseComparison } from '../../utils/analytics/course'
@@ -73,6 +75,7 @@ export function EventDetail() {
   const [editingResult, setEditingResult] = useState(
     () => searchParams.get('resultado') === 'editar',
   )
+  const [editingOutcome, setEditingOutcome] = useState(false)
   const { shares } = useShares()
   const { allEvents, removeEvent } = useEvents()
   const { addItem } = useBucketList()
@@ -335,9 +338,31 @@ export function EventDetail() {
           </div>
           <div className="flex flex-wrap items-center gap-2">
             {isRecord ? <PersonalRecordIndicator /> : null}
+            {event.outcomeReason ? (
+              <button
+                type="button"
+                disabled={isSharedView}
+                onClick={() => setEditingOutcome(true)}
+                className="rounded-full border border-border px-2 py-0.5 text-xs font-semibold text-muted enabled:hover:border-primary enabled:hover:text-primary"
+                title={isSharedView ? undefined : t('outcome.editTitle')}
+              >
+                {t(`outcome.reasons.${event.outcomeReason}`)}
+              </button>
+            ) : null}
             <StatusBadge status={event.status} />
           </div>
         </header>
+
+        {!isSharedView && (needsOutcomeReason(event) || editingOutcome) ? (
+          <OutcomeReasonPrompt
+            eventId={event.id}
+            current={event.outcomeReason}
+            onSaved={() => {
+              setEditingOutcome(false)
+              reloadEvent()
+            }}
+          />
+        ) : null}
 
         {editingResult && canEditResult ? (
           <div className="mt-6">

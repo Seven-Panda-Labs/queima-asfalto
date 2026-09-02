@@ -5,6 +5,8 @@ const MS_PER_DAY = 24 * 60 * 60 * 1000
 
 export type CareerTotals = {
   races: number
+  /** Races started and not finished. Real races, with no comparable time. */
+  dnf: number
   distanceKm: number
   timeSeconds: number
   firstRace: AnalysableResult
@@ -14,7 +16,10 @@ export type CareerTotals = {
 }
 
 /** Expects `results` in chronological order. */
-export function computeCareerTotals(results: AnalysableResult[]): CareerTotals | null {
+export function computeCareerTotals(
+  results: AnalysableResult[],
+  dnf = 0,
+): CareerTotals | null {
   if (results.length === 0) return null
 
   const locations = new Set(
@@ -25,6 +30,7 @@ export function computeCareerTotals(results: AnalysableResult[]): CareerTotals |
 
   return {
     races: results.length,
+    dnf,
     distanceKm: totalDistanceKm(results),
     timeSeconds: totalTimeSeconds(results),
     firstRace: results[0]!,

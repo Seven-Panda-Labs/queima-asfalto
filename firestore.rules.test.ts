@@ -419,6 +419,24 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts an outcome reason from the list and rejects one outside it', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('events')
+          .doc('event-dnf')
+          .set(validEventPayload(userId, { status: 'completed', outcomeReason: 'dnf' })),
+      )
+      await assertFails(
+        db
+          .collection('events')
+          .doc('event-bad-reason')
+          .set(validEventPayload(userId, { outcomeReason: 'bad_weather' })),
+      )
+    })
+
     it('rejects create when userId does not match auth', async () => {
       const db = testEnv.authenticatedContext('user-alice').firestore()
       await assertFails(

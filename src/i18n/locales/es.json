@@ -569,7 +569,9 @@
     "tooltipTime": "Tiempo {{time}}",
     "tooltipTopPercent": "Top {{percent}}%",
     "trendLine": "Tendencia",
-    "trendSummary": "{{change}} puntos al año al ritmo actual"
+    "trendSummary": "{{change}} puntos al año al ritmo actual",
+    "qualityDnf": "{{count}} sin terminar, contadas como empezadas.",
+    "careerDnf": "{{count}} sin terminar"
   },
   "settings": {
     "title": "Ajustes",
@@ -753,7 +755,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó. Marcado como Perdido automáticamente."
+    "faltouAuto": "{{name}}, el evento «{{event}}» ya pasó sin resultado. Ábrelo y di qué pasó."
   },
   "validation": {
     "futureNoCompleted": "Los eventos futuros no pueden estar Completados ni marcados como Perdidos.",
@@ -1278,5 +1280,18 @@
     },
     "beforeAnchor_one": "1 semana antes de {{anchor}}",
     "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "No hay resultado registrado. ¿Qué pasó?",
+    "promptHint": "Queda en la carrera. Un abandono cuenta como carrera empezada, y sigue fuera de ritmos, récords y predicciones.",
+    "reasons": {
+      "dnf": "Abandoné",
+      "injury": "Lesión",
+      "did_not_go": "No fui",
+      "cancelled_by_organiser": "Cancelada por la organización",
+      "travel": "El viaje se cayó",
+      "other": "Otro motivo"
+    },
+    "editTitle": "Corregir qué pasó"
   }
 }
