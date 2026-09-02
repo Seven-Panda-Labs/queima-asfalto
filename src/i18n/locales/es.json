@@ -1369,5 +1369,19 @@
     "isAnchor": "Ancla de {{year}}",
     "toggleHint": "Las carreras ancla fijan la temporada: de ellas salen la ventana del test, los avisos y la previsión.",
     "error": "No se pudo marcar el ancla. Inténtalo otra vez."
+  },
+  "parkrunDiscovery": {
+    "title": "Parkruns cerca de ti",
+    "useLocation": "Usar mi ubicación",
+    "noReference": "No sabemos dónde corres. Usa tu ubicación o escribe una ciudad en la caja «Dónde».",
+    "locationRefused": "Sin ubicación. Escribe una ciudad en la caja «Dónde» para buscar.",
+    "noneNearby": "Ningún parkrun por aquí.",
+    "away": "a {{km}} km",
+    "saturday": "sábado {{date}}",
+    "plan": "Planificar",
+    "watch": "Watchlist",
+    "planned": "«{{name}}» está en el calendario, el sábado.",
+    "planError": "No se pudo poner este parkrun en el calendario.",
+    "farAway": "El más cercano está a {{km}} km. parkrun no existe en todos los países, así que esto es para cuando viajes."
   }
 }

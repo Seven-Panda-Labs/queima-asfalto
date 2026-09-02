@@ -1369,5 +1369,19 @@
     "isAnchor": "Pivot de {{year}}",
     "toggleHint": "Les courses pivots fixent la saison : la fenêtre du test, les alertes et la prévision en viennent.",
     "error": "Impossible de marquer le pivot. Réessaie."
+  },
+  "parkrunDiscovery": {
+    "title": "Parkruns près de toi",
+    "useLocation": "Utiliser ma position",
+    "noReference": "Nous ne savons pas où tu cours. Utilise ta position, ou tape une ville dans la case « Où ».",
+    "locationRefused": "Pas de position. Tape une ville dans la case « Où » pour chercher.",
+    "noneNearby": "Aucun parkrun dans le coin.",
+    "away": "à {{km}} km",
+    "saturday": "samedi {{date}}",
+    "plan": "Planifier",
+    "watch": "Watchlist",
+    "planned": "« {{name}} » est au calendrier, samedi.",
+    "planError": "Impossible de mettre ce parkrun au calendrier.",
+    "farAway": "Le plus proche est à {{km}} km. parkrun n'existe pas dans tous les pays, donc c'est pour quand tu voyages."
   }
 }

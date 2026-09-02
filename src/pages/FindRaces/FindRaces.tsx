@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { NearbyParkruns } from '../../components/NearbyParkruns'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
@@ -31,8 +32,14 @@ import {
 } from '../../services/raceCatalog'
 import { formatDatePt } from '../../utils/date'
 import type { EventType } from '../../types/Event'
+import type { ParkrunCatalogEvent } from '../../../shared/parkrun/catalog'
+import { useUserResultsProfile } from '../../hooks/useUserResultsProfile'
+
 
 const FIELD = 'mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 text-sm'
+
+/** Every parkrun, everywhere, forever. */
+const PARKRUN_DISTANCE_KM = 5
 
 /** `YYYY-MM-DD`, which is what a native date input wants. */
 function isoDay(date: Date): string {
@@ -125,7 +132,60 @@ export function FindRaces() {
   const { items, addItem } = useBucketList()
   const { entries: raceEntries } = useRaceEntries()
   const { races } = useRaces()
-  const { allEvents } = useEvents()
+  const { profile: resultsProfile } = useUserResultsProfile()
+  const { allEvents, addEvent } = useEvents()
+
+  /**
+   * The runner's own parkruns: the ones they starred, plus the ones they have
+   * run. Evidence, rather than asking the browser where they are.
+   */
+  const knownParkrunSlugs = useMemo(() => {
+    const slugs = new Set(resultsProfile.favoriteParkrunSlugs ?? [])
+    for (const event of allEvents) {
+      if (event.parkrunEventSlug) slugs.add(event.parkrunEventSlug)
+    }
+    return [...slugs]
+  }, [allEvents, resultsProfile.favoriteParkrunSlugs])
+
+  /** Planning is moving it onto the calendar, which for a parkrun is Saturday. */
+  async function planParkrun(parkrun: ParkrunCatalogEvent, date: Date) {
+    if (!user) return
+    try {
+      await addEvent({
+        name: parkrun.longName,
+        date,
+        realDistance: PARKRUN_DISTANCE_KM,
+        eventType: 'km_5',
+        location: parkrun.location,
+        status: 'planned',
+        resultsPlatform: 'parkrun',
+        parkrunEventSlug: parkrun.slug,
+        parkrunCountryUrl: parkrun.countryUrl,
+      })
+      toast.success(t('parkrunDiscovery.planned', { name: parkrun.longName }))
+    } catch {
+      toast.error(t('parkrunDiscovery.planError'))
+    }
+  }
+
+  /** A parkrun to keep an eye on: the one you would travel for. */
+  async function watchParkrun(parkrun: ParkrunCatalogEvent) {
+    if (!user) return
+    try {
+      await addItem({
+        name: parkrun.longName,
+        location: parkrun.location,
+        realDistance: PARKRUN_DISTANCE_KM,
+        disciplines: ['km_5'],
+        // The catalog's country url carries its own scheme.
+        link: `${parkrun.countryUrl.replace(/\/$/, '')}/${parkrun.slug}/`,
+      })
+      setWatchedParkruns((current) => [...current, parkrun.slug])
+      toast.success(t('findRaces.addedToast', { name: parkrun.longName }))
+    } catch {
+      toast.error(t('findRaces.addError'))
+    }
+  }
   const { enabledDisciplines } = useDisciplines()
 
   const [catalog, setCatalog] = useState<RaceCatalogEntry[] | null>(null)
@@ -134,6 +194,7 @@ export function FindRaces() {
   const [anchorRaceId, setAnchorRaceId] = useState('')
   const [adding, setAdding] = useState<string | null>(null)
   const [addedIds, setAddedIds] = useState<string[]>([])
+  const [watchedParkruns, setWatchedParkruns] = useState<string[]>([])
 
   useEffect(() => {
     void loadRaceCatalog().then(setCatalog)
@@ -336,6 +397,14 @@ export function FindRaces() {
           ))}
         </ul>
       )}
+
+      <NearbyParkruns
+        knownSlugs={knownParkrunSlugs}
+        place={criteria.place}
+        onPlan={planParkrun}
+        onWatch={watchParkrun}
+        addedSlugs={watchedParkruns}
+      />
 
       <p className="mt-4 text-xs text-muted">
         {syncedAt

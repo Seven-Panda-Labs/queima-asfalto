@@ -1369,5 +1369,19 @@
     "isAnchor": "Anker {{year}}",
     "toggleHint": "Ankerrennen legen die Saison fest: Testfenster, Warnungen und Prognose kommen von ihnen.",
     "error": "Der Anker konnte nicht gesetzt werden. Versuche es erneut."
+  },
+  "parkrunDiscovery": {
+    "title": "Parkruns in deiner Nähe",
+    "useLocation": "Meinen Standort verwenden",
+    "noReference": "Wir wissen nicht, wo du läufst. Nutze deinen Standort oder tippe eine Stadt in das Feld \"Wo\".",
+    "locationRefused": "Kein Standort. Tippe eine Stadt in das Feld \"Wo\", um zu suchen.",
+    "noneNearby": "Kein parkrun in der Nähe.",
+    "away": "{{km}} km entfernt",
+    "saturday": "Samstag {{date}}",
+    "plan": "Einplanen",
+    "watch": "Watchlist",
+    "planned": "\"{{name}}\" steht für Samstag im Kalender.",
+    "planError": "Dieser parkrun konnte nicht in den Kalender.",
+    "farAway": "Der nächste ist {{km}} km entfernt. parkrun gibt es nicht in jedem Land, das hier ist also für Reisen."
   }
 }
