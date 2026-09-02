@@ -378,7 +378,7 @@
   },
   "bucketList": {
     "title": "Bucket List",
-    "subtitle": "Traumrennen. Wenn du bereit bist, plane sie im Kalender ein.",
+    "subtitle": "Rennen, die du laufen willst, und was noch fehlt, um dabei zu sein.",
     "empty": "Noch keine Bucket-List-Einträge",
     "emptyHint": "Füge deine Traum-Events hinzu.",
     "addFirst": "Ersten Eintrag hinzufügen",
@@ -405,7 +405,13 @@
     "noMappedItems": "Keine Bucket-List-Einträge mit Kartenort für die gewählten Filter.",
     "unmappedTitle": "Kein Kartenort",
     "unmappedHint": "Diese Einträge brauchen einen gültigen Ort. Bearbeite sie oder nutze die Autovervollständigung.",
-    "mapClusterHint": "Klicke auf einen nummerierten Kreis, um hineinzuzoomen oder Einträge im selben Gebiet zu verteilen."
+    "mapClusterHint": "Klicke auf einen nummerierten Kreis, um hineinzuzoomen oder Einträge im selben Gebiet zu verteilen.",
+    "targetYear": "Zieljahr",
+    "targetYearHint": "Leer heißt irgendein Jahr, und genau das ist ein Traum.",
+    "isAnchor": "Ankerrennen des Jahres",
+    "isAnchorHint": "Eines bis drei pro Jahr. Diese zu buchen legt den restlichen Kalender fest, und sie stehen in jeder Gruppe oben.",
+    "recurring": "Ich versuche es jedes Jahr",
+    "recurringHint": "Damit das nächste Jahr angeboten wird, wenn dieses endet."
   },
   "goals": {
     "title": "Ziele",
@@ -1183,6 +1189,66 @@
       "stale": "Bestätigt, ohne kommende Ausgabe ({{count}})",
       "current": "Nichts zu tun ({{count}})",
       "retired": "Außer Betrieb ({{count}})"
+    }
+  },
+  "funnel": {
+    "groups": {
+      "action_needed": "Braucht Handlung ({{count}})",
+      "applied": "Beworben ({{count}})",
+      "watching": "Warten auf die Öffnung ({{count}})",
+      "in": "Drin ({{count}})",
+      "dream": "Wünsche ({{count}})",
+      "missed": "Vorbei ({{count}})"
+    },
+    "actionNeededHint": "Diese schließen bald, oder der Platz ist gewonnen und noch nicht gesichert.",
+    "anchor": "Anker",
+    "planEntry": "Anmeldung planen",
+    "editEntry": "Anmeldung",
+    "opens": "öffnet {{date}}",
+    "closes": "schließt {{date}}",
+    "draw": "Ziehung {{date}}",
+    "confirmBy": "sichern bis {{date}}",
+    "race": "Rennen {{date}}"
+  },
+  "entry": {
+    "title": "Anmeldung",
+    "subtitle": "Wann sie öffnet, wann sie schließt, und was noch fehlt, um bei diesem Rennen dabei zu sein.",
+    "year": "Jahr",
+    "discipline": "Distanz",
+    "method": "Zugang zum Start",
+    "status": "Status",
+    "dates": "Termine",
+    "datesHint": "Was nicht veröffentlicht ist, bleibt leer. Nichts wird erfunden.",
+    "raceDate": "Renntag",
+    "opensAt": "Anmeldung öffnet",
+    "closesAt": "Anmeldung schließt",
+    "drawAt": "Ziehung",
+    "placeConfirmByAt": "Platz sichern bis",
+    "raceDateConfirmed": "Der Renntag ist bestätigt",
+    "registrationUrl": "Anmeldelink",
+    "fee": "Preis",
+    "feeCurrency": "Währung",
+    "saved": "Anmeldung gespeichert.",
+    "saveError": "Anmeldung konnte nicht gespeichert werden.",
+    "yearError": "Ein Jahr zwischen 2000 und 2100.",
+    "closesBeforeOpens": "Der Schluss kann nicht vor der Öffnung liegen.",
+    "itemGone": "Dieser Wunsch existiert nicht mehr.",
+    "methods": {
+      "lottery": "Losverfahren",
+      "first_come": "Nach Anmeldung",
+      "qualifying": "Qualifikationszeit",
+      "charity": "Charity",
+      "invite": "Einladung",
+      "unknown": "Noch unklar"
+    },
+    "statuses": {
+      "watching": "Beobachten",
+      "applied": "Beworben",
+      "accepted": "Angenommen, zu sichern",
+      "registered": "Angemeldet",
+      "rejected": "Nicht gezogen",
+      "declined": "Abgelehnt",
+      "missed": "Frist verpasst"
     }
   }
 }

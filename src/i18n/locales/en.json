@@ -378,7 +378,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Dream races. When you're ready, schedule them on the calendar.",
+    "subtitle": "Races you want to run, and what is left to get into each one.",
     "empty": "No bucket list items yet",
     "emptyHint": "Add your dream events.",
     "addFirst": "Add first item",
@@ -405,7 +405,13 @@
     "noMappedItems": "No bucket list items with a map location for the selected filters.",
     "unmappedTitle": "No map location",
     "unmappedHint": "These items need a valid location. Edit to fix or use autocomplete.",
-    "mapClusterHint": "Click a numbered circle to zoom in or expand items in the same area."
+    "mapClusterHint": "Click a numbered circle to zoom in or expand items in the same area.",
+    "targetYear": "Target year",
+    "targetYearHint": "Blank means any year, which is what a dream is.",
+    "isAnchor": "Anchor race of the year",
+    "isAnchorHint": "One to three a year. Booking these fixes the rest of the calendar, and they come first in every group.",
+    "recurring": "I try this one every year",
+    "recurringHint": "So next year can be offered once this one ends."
   },
   "goals": {
     "title": "Goals",
@@ -1183,6 +1189,66 @@
       "stale": "Confirmed, out of editions ({{count}})",
       "current": "Nothing to do ({{count}})",
       "retired": "Out of circulation ({{count}})"
+    }
+  },
+  "funnel": {
+    "groups": {
+      "action_needed": "Needs action ({{count}})",
+      "applied": "Applied ({{count}})",
+      "watching": "Waiting to open ({{count}})",
+      "in": "In ({{count}})",
+      "dream": "Wishes ({{count}})",
+      "missed": "Gone ({{count}})"
+    },
+    "actionNeededHint": "These close soon, or you have won the place and still have to secure it.",
+    "anchor": "Anchor",
+    "planEntry": "Plan entry",
+    "editEntry": "Entry",
+    "opens": "opens {{date}}",
+    "closes": "closes {{date}}",
+    "draw": "draw {{date}}",
+    "confirmBy": "secure by {{date}}",
+    "race": "race {{date}}"
+  },
+  "entry": {
+    "title": "Entry",
+    "subtitle": "When it opens, when it closes, and what is left to do to get into this race.",
+    "year": "Year",
+    "discipline": "Distance",
+    "method": "How you get in",
+    "status": "Status",
+    "dates": "Dates",
+    "datesHint": "Leave blank whatever has not been published. Nothing is invented.",
+    "raceDate": "Race date",
+    "opensAt": "Registration opens",
+    "closesAt": "Registration closes",
+    "drawAt": "Draw",
+    "placeConfirmByAt": "Secure the place by",
+    "raceDateConfirmed": "The race date is confirmed",
+    "registrationUrl": "Registration link",
+    "fee": "Fee",
+    "feeCurrency": "Currency",
+    "saved": "Entry saved.",
+    "saveError": "Could not save the entry.",
+    "yearError": "A year between 2000 and 2100.",
+    "closesBeforeOpens": "Closing cannot be before opening.",
+    "itemGone": "This wish no longer exists.",
+    "methods": {
+      "lottery": "Lottery",
+      "first_come": "First come",
+      "qualifying": "Qualifying time",
+      "charity": "Charity",
+      "invite": "Invite",
+      "unknown": "Do not know yet"
+    },
+    "statuses": {
+      "watching": "Watching",
+      "applied": "Applied",
+      "accepted": "Accepted, to secure",
+      "registered": "Registered",
+      "rejected": "Not drawn",
+      "declined": "Declined",
+      "missed": "Missed the deadline"
     }
   }
 }

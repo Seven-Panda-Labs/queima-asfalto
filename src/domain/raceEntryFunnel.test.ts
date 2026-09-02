@@ -129,6 +129,26 @@ describe('buildRaceEntryFunnel', () => {
     expect(groups.every((group) => group.rows.length === 0)).toBe(true)
   })
 
+  it('sorts by the next date still ahead, not by one that has passed', () => {
+    const groups = buildRaceEntryFunnel(
+      [item({ id: 'closing' }), item({ id: 'securing' })],
+      [
+        // Opened two days ago and closes in nine.
+        entry({
+          id: 'e1',
+          bucketListItemId: 'closing',
+          registrationOpensAt: days(-2),
+          registrationClosesAt: days(9),
+        }),
+        entry({ id: 'e2', bucketListItemId: 'securing', entryStatus: 'accepted', placeConfirmByAt: days(6) }),
+      ],
+      TODAY,
+    )
+
+    const actionNeeded = groups.find((group) => group.key === 'action_needed')!
+    expect(actionNeeded.rows.map((r) => r.item.id)).toEqual(['securing', 'closing'])
+  })
+
   it('puts anchors first, then the nearest date', () => {
     const groups = buildRaceEntryFunnel(
       [
@@ -176,6 +196,24 @@ describe('nextDateFor', () => {
   it('prefers a deadline to secure a place over the race itself', () => {
     const result = nextDateFor(entry({ raceDate: days(300), placeConfirmByAt: days(5) }))
     expect(result?.toISOString()).toBe(days(5).toISOString())
+  })
+
+  it('ignores a date that has already passed', () => {
+    // The bug this caught: a window that opened last week sorted ahead of a
+    // window closing next week, because the past date was the soonest.
+    const result = nextDateFor(
+      entry({ registrationOpensAt: days(-2), registrationClosesAt: days(9) }),
+      TODAY,
+    )
+    expect(result?.toISOString()).toBe(days(9).toISOString())
+  })
+
+  it('falls back to the most recent one when every date has passed', () => {
+    const result = nextDateFor(
+      entry({ registrationOpensAt: days(-30), registrationClosesAt: days(-2) }),
+      TODAY,
+    )
+    expect(result?.toISOString()).toBe(days(-2).toISOString())
   })
 
   it('is null when there is nothing to wait for', () => {

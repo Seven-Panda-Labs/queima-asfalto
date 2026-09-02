@@ -378,7 +378,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Carreras soñadas. Cuando estés listo, prográmalas en el calendario.",
+    "subtitle": "Carreras que quieres correr, y qué falta para entrar en cada una.",
     "empty": "Aún no hay elementos en la bucket list",
     "emptyHint": "Añade las carreras de tus sueños.",
     "addFirst": "Añadir primer elemento",
@@ -405,7 +405,13 @@
     "noMappedItems": "No hay elementos de la bucket list con ubicación en el mapa para los filtros seleccionados.",
     "unmappedTitle": "Sin ubicación en el mapa",
     "unmappedHint": "Estos elementos necesitan una ubicación válida. Edita para corregir o usa el autocompletado.",
-    "mapClusterHint": "Haz clic en un círculo numerado para acercar o expandir elementos en la misma zona."
+    "mapClusterHint": "Haz clic en un círculo numerado para acercar o expandir elementos en la misma zona.",
+    "targetYear": "Año objetivo",
+    "targetYearHint": "En blanco significa cualquier año, que es lo que es un sueño.",
+    "isAnchor": "Carrera ancla del año",
+    "isAnchorHint": "Una a tres por año. Reservar estas fija el resto del calendario, y aparecen primero en cada grupo.",
+    "recurring": "Lo intento cada año",
+    "recurringHint": "Para que se proponga el año siguiente cuando este termine."
   },
   "goals": {
     "title": "Objetivos",
@@ -1183,6 +1189,66 @@
       "stale": "Confirmadas, sin edición futura ({{count}})",
       "current": "En orden ({{count}})",
       "retired": "Fuera de circulación ({{count}})"
+    }
+  },
+  "funnel": {
+    "groups": {
+      "action_needed": "Requiere acción ({{count}})",
+      "applied": "Solicitud enviada ({{count}})",
+      "watching": "Esperando la apertura ({{count}})",
+      "in": "Dentro ({{count}})",
+      "dream": "Deseos ({{count}})",
+      "missed": "Pasó ({{count}})"
+    },
+    "actionNeededHint": "Estas cierran pronto, o ya ganaste la plaza y falta asegurarla.",
+    "anchor": "Ancla",
+    "planEntry": "Planear inscripción",
+    "editEntry": "Inscripción",
+    "opens": "abre {{date}}",
+    "closes": "cierra {{date}}",
+    "draw": "sorteo {{date}}",
+    "confirmBy": "asegurar antes de {{date}}",
+    "race": "carrera {{date}}"
+  },
+  "entry": {
+    "title": "Inscripción",
+    "subtitle": "Cuándo abre, cuándo cierra y qué falta para entrar en esta carrera.",
+    "year": "Año",
+    "discipline": "Distancia",
+    "method": "Forma de inscripción",
+    "status": "Estado",
+    "dates": "Fechas",
+    "datesHint": "Deja en blanco lo que aún no se ha publicado. Nada se inventa.",
+    "raceDate": "Fecha de la carrera",
+    "opensAt": "Abren inscripciones",
+    "closesAt": "Cierran inscripciones",
+    "drawAt": "Sorteo",
+    "placeConfirmByAt": "Asegurar la plaza antes de",
+    "raceDateConfirmed": "La fecha de la carrera está confirmada",
+    "registrationUrl": "Enlace de inscripción",
+    "fee": "Precio",
+    "feeCurrency": "Moneda",
+    "saved": "Inscripción guardada.",
+    "saveError": "No se pudo guardar la inscripción.",
+    "yearError": "Un año entre 2000 y 2100.",
+    "closesBeforeOpens": "El cierre no puede ser antes de la apertura.",
+    "itemGone": "Este deseo ya no existe.",
+    "methods": {
+      "lottery": "Sorteo",
+      "first_come": "Por orden de llegada",
+      "qualifying": "Tiempo de clasificación",
+      "charity": "Solidaria",
+      "invite": "Invitación",
+      "unknown": "Aún no lo sé"
+    },
+    "statuses": {
+      "watching": "Observando",
+      "applied": "Solicitud enviada",
+      "accepted": "Aceptada, falta asegurar",
+      "registered": "Inscrito",
+      "rejected": "No salió en el sorteo",
+      "declined": "Renuncié",
+      "missed": "Perdí el plazo"
     }
   }
 }

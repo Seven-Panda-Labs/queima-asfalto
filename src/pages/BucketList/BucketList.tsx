@@ -16,6 +16,9 @@ import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwn
 import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDialog/ScheduleDisciplineDialog'
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
+import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
+import { BucketListFunnel } from './BucketListFunnel'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -92,6 +95,7 @@ export function BucketList() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const ownBucketList = useBucketList()
+  const { entries: raceEntries } = useRaceEntries()
   const sharedBucketList = useSharedBucketList(activeOwnerId)
 
   const items = isSharedView ? sharedBucketList.items : ownBucketList.items
@@ -140,6 +144,13 @@ export function BucketList() {
         return a.name.localeCompare(b.name, 'pt')
       })
   }, [items, eventTypeFilter, monthFilter])
+
+  // A shared view carries no entries: the snapshot does not include them, so
+  // every row lands in the group for a race nobody has acted on yet.
+  const funnelGroups = useMemo(
+    () => buildRaceEntryFunnel(filteredItems, isSharedView ? [] : raceEntries),
+    [filteredItems, isSharedView, raceEntries],
+  )
 
   const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
   const unmappedItems = useMemo(
@@ -328,90 +339,62 @@ export function BucketList() {
             </Suspense>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-border bg-surface">
-            <table className="min-w-full text-start text-sm">
-              <thead className="border-b border-border bg-background text-muted">
-                <tr>
-                  <th className="px-4 py-3 font-semibold">{t('eventDetail.title')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('bucketList.disciplines')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('common.location')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('bucketList.targetMonth')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('common.actions')}</th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredItems.map((item) => (
-                  <tr key={item.id} className="border-b border-border last:border-b-0">
-                    <td className="px-4 py-3">
-                      <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
-                        {item.emoji ? <span aria-hidden>{item.emoji}</span> : null}
-                        <span>{item.name}</span>
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 whitespace-nowrap text-muted">
-                      {item.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')}
-                    </td>
-                    <td className="px-4 py-3">{item.location || t('common.dash')}</td>
-                    <td className="px-4 py-3 whitespace-nowrap">
-                      {formatTargetMonth(item.targetMonth)}
-                    </td>
-                    <td className="px-4 py-3">
-                      <div className="flex flex-nowrap gap-1">
-                        {item.link ? (
-                          <a
-                            href={item.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            aria-label={t('common.open')}
-                            title={t('common.open')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <ExternalLinkIcon />
-                          </a>
-                        ) : null}
-                        {canWrite ? (
-                          <>
-                            <Link
-                              to={
-                                activeOwnerId
-                                  ? `/bucket-list/${item.id}/editar?owner=${activeOwnerId}`
-                                  : `/bucket-list/${item.id}/editar`
-                              }
-                              aria-label={t('common.edit')}
-                              title={t('common.edit')}
-                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                            >
-                              <PencilIcon />
-                            </Link>
-                            <button
-                              type="button"
-                              onClick={() => setItemToDelete(item)}
-                              aria-label={t('common.delete')}
-                              title={t('common.delete')}
-                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
-                            >
-                              <TrashIcon />
-                            </button>
-                          </>
-                        ) : null}
-                        {!isSharedView ? (
-                          <button
-                            type="button"
-                            onClick={() => handleSchedule(item)}
-                            aria-label={t('common.schedule')}
-                            title={t('common.schedule')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <CalendarPlusIcon />
-                          </button>
-                        ) : null}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+          <BucketListFunnel
+            groups={funnelGroups}
+            showEntryLink={!isSharedView}
+            actions={({ item }) => (
+              <>
+                {item.link ? (
+                  <a
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={t('common.open')}
+                    title={t('common.open')}
+                    className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                  >
+                    <ExternalLinkIcon />
+                  </a>
+                ) : null}
+                {canWrite ? (
+                  <>
+                    <Link
+                      to={
+                        activeOwnerId
+                          ? `/bucket-list/${item.id}/editar?owner=${activeOwnerId}`
+                          : `/bucket-list/${item.id}/editar`
+                      }
+                      aria-label={t('common.edit')}
+                      title={t('common.edit')}
+                      className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                    >
+                      <PencilIcon />
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={() => setItemToDelete(item)}
+                      aria-label={t('common.delete')}
+                      title={t('common.delete')}
+                      className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
+                    >
+                      <TrashIcon />
+                    </button>
+                  </>
+                ) : null}
+                {!isSharedView ? (
+                  <button
+                    type="button"
+                    onClick={() => handleSchedule(item)}
+                    aria-label={t('common.schedule')}
+                    title={t('common.schedule')}
+                    className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                  >
+                    <CalendarPlusIcon />
+                  </button>
+                ) : null}
+              </>
+            )}
+          />
         )}
           </>
         )}

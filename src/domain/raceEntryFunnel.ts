@@ -111,14 +111,21 @@ export function buildRaceEntryFunnel(
   )
   for (const row of rows) grouped.get(funnelGroupFor(row, today))!.push(row)
 
-  for (const group of grouped.values()) group.sort(compareRows)
+  for (const group of grouped.values()) group.sort((left, right) => compareRows(left, right, today))
 
   return FUNNEL_GROUPS.map((key) => ({ key, rows: grouped.get(key)! }))
 }
 
-/** The next date this row is waiting on, or null when it is waiting on nothing. */
-export function nextDateFor(entry: RaceEntry | null): Date | null {
+/**
+ * The next date this row is waiting on, or null when it is waiting on nothing.
+ *
+ * The soonest one still ahead. A gate that opened last week is not what the row
+ * waits for, and counting it would sort a race whose window is closing behind a
+ * race whose window merely started.
+ */
+export function nextDateFor(entry: RaceEntry | null, today: Date = new Date()): Date | null {
   if (!entry) return null
+
   const candidates = [
     entry.placeConfirmByAt,
     entry.registrationClosesAt,
@@ -127,15 +134,24 @@ export function nextDateFor(entry: RaceEntry | null): Date | null {
     entry.raceDate,
   ].filter((date): date is Date => date instanceof Date)
   if (candidates.length === 0) return null
-  return candidates.reduce((soonest, date) => (date < soonest ? date : soonest))
+
+  const soonest = (dates: Date[]) =>
+    dates.reduce((best, date) => (date < best ? date : best))
+  const ahead = candidates.filter((date) => date.getTime() >= today.getTime())
+
+  // Everything behind us: the latest of them is the most recent thing that
+  // happened, which is the useful one to show.
+  return ahead.length > 0
+    ? soonest(ahead)
+    : candidates.reduce((latest, date) => (date > latest ? date : latest))
 }
 
-function compareRows(left: FunnelRow, right: FunnelRow): number {
+function compareRows(left: FunnelRow, right: FunnelRow, today: Date): number {
   const anchor = (row: FunnelRow) => (row.item.isAnchor ? 0 : 1)
   if (anchor(left) !== anchor(right)) return anchor(left) - anchor(right)
 
-  const leftDate = nextDateFor(left.entry)
-  const rightDate = nextDateFor(right.entry)
+  const leftDate = nextDateFor(left.entry, today)
+  const rightDate = nextDateFor(right.entry, today)
   if (leftDate && rightDate) return leftDate.getTime() - rightDate.getTime()
   if (leftDate) return -1
   if (rightDate) return 1
