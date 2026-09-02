@@ -1,0 +1,148 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://acorrer.pt/#organization",
+      "name": "Acorrer",
+      "url": "https://acorrer.pt",
+      "sameAs": [
+        "https://www.facebook.com/acorrerpt",
+        "https://www.instagram.com/acorrer.pt"
+      ],
+      "email": "geral@acorrer.pt",
+      "logo": {
+        "@type": "ImageObject",
+        "@id": "https://acorrer.pt/#logo",
+        "url": "https://d142bl88nuy41c.cloudfront.net/63689b8f-1d3d-4a1f-92cb-f0dd5f8c7f57/images/acorrer/header-logo.png",
+        "contentUrl": "https://d142bl88nuy41c.cloudfront.net/63689b8f-1d3d-4a1f-92cb-f0dd5f8c7f57/images/acorrer/header-logo.png",
+        "caption": "Acorrer",
+        "inLanguage": "pt-PT",
+        "width": "112",
+        "height": "130"
+      },
+      "description": "Apoio profissional na gestão de eventos desportivos: inscrições, pagamentos, cronometragem e merchandising para trails, ",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Rua Luís António Firmino, 9A R/C",
+        "postalCode": "7080-129",
+        "addressLocality": "Vendas Novas",
+        "addressCountry": "PT"
+      },
+      "telephone": "+351308810089"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://acorrer.pt/#website",
+      "url": "https://acorrer.pt",
+      "name": "Acorrer",
+      "publisher": {
+        "@id": "https://acorrer.pt/#organization"
+      },
+      "inLanguage": "pt-PT",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://acorrer.pt/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    },
+    {
+      "@type": "Event",
+      "@id": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+      "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+      "name": "IV Trail Entre o Dão e o Mondego",
+      "description": "O 4º Trail Entre o Dão e o Mondego realiza-se no dia 08 de Novembro às 08:45 no concelho de Carregal do Sal, é composto ",
+      "startDate": "2026-11-08T08:45:00+00:00",
+      "eventStatus": "https://schema.org/EventScheduled",
+      "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
+      "location": {
+        "@type": "Place",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Carregal do Sal",
+          "addressRegion": "Viseu",
+          "addressCountry": "PT"
+        }
+      },
+      "organizer": {
+        "@id": "https://acorrer.pt/#organization"
+      },
+      "offers": [
+        {
+          "@type": "AggregateOffer",
+          "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+          "priceCurrency": "EUR",
+          "lowPrice": "5.00",
+          "highPrice": "10.00",
+          "offerCount": 4,
+          "availability": "https://schema.org/InStock"
+        },
+        {
+          "@type": "Offer",
+          "name": "Trail Longo 24km",
+          "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+          "price": "10.00",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validThrough": "2026-11-01T23:59:00+00:00"
+        },
+        {
+          "@type": "Offer",
+          "name": "Trail Curto 14km",
+          "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+          "price": "10.00",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validThrough": "2026-11-01T23:59:00+00:00"
+        },
+        {
+          "@type": "Offer",
+          "name": "Caminhada 12km",
+          "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+          "price": "5.00",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validThrough": "2026-11-01T23:59:00+00:00"
+        },
+        {
+          "@type": "Offer",
+          "name": "II Trail + Inclusão (máximo 5km)",
+          "url": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+          "price": "5.00",
+          "priceCurrency": "EUR",
+          "availability": "https://schema.org/InStock",
+          "validThrough": "2026-11-01T23:59:00+00:00"
+        }
+      ]
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "item": {
+            "@id": "https://acorrer.pt",
+            "name": "Acorrer"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "item": {
+            "@id": "https://acorrer.pt/eventos",
+            "name": "Eventos"
+          }
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "item": {
+            "@id": "https://acorrer.pt/eventos/4-trail-entre-o-dao-e-o-mondego-carregal-do-sal",
+            "name": "IV Trail Entre o Dão e o Mondego"
+          }
+        }
+      ]
+    }
+  ]
+}
