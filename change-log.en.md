@@ -8,21 +8,16 @@
 
 ### Added
 
-- **Entry planning:** the bucket list is now grouped by what is left to do, with "needs action" at the top, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won.
-- **Deadline warnings:** a notification on the day a window opens, 30, 7 and 1 days before it closes, on the day of a draw, and counting down to the deadline for securing a place. Switch it on in Settings, Notifications.
-- **Anchor races:** mark the one to three races that fix your year and they come first in every group.
-- **Season rules:** a race can say what it is for, a build-up or a test, and which anchor it prepares. The app shows the tune-up window, about half the distance three to four weeks out, and warns when a race lands in the anchor taper or when a month gets crowded.
-- **When it fails:** a race that passes with no result now asks what happened (dropped out, injury, did not go, cancelled, travel, something else) instead of saying you missed it. A DNF counts as a race started and stops showing up as missing data, while staying out of pace, records and predictions.
-- **Try again:** on a race that failed to injury, a DNF or a cancellation, one button creates next season's attempt and takes you to its entry. The races that were preparing an anchor that failed are flagged, so you decide whether they still make sense.
-- **A prediction on the anchor:** the page of an anchor still ahead, and the home hero when it is the next race, show the predicted time over the distance from your latest build-up race. It is the same number the analysis gives, now where it is of use.
-- **Find races:** a new page on the bucket list searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor fills in the tune-up window and puts the races that fit first. It always says when the catalog was last refreshed, and an unreviewed entry shows its closing date as what the listing says rather than as a promise.
-- **Parkruns in discovery:** parkruns appear in no race calendar, and now have their own section on the discovery page, ordered by how far they are from you. The reference is your own parkruns, the ones you starred and the ones you have run, and failing that your location, asked for on a click. "Plan it" puts the coming Saturday on the calendar at 5 km with the parkrun already picked.
-- **Races with no published distance:** plenty of sources give the date, the town and the entry link and never say how long the race is. Those now reach the catalog, and the page asks you for the distance when you add one instead of storing a number nobody checked.
-- **Two new harvest sources:** davengo (a JSON calendar, plus the starter list its distances come from) and scc-events (the whole calendar on one page, with dates and distances). Off until the operator enables them, like the first one.
-- **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written. Once approved, the user gets an email and can sign in.
-- **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it: pick your distances, mark the main race of your year, plan its entry, and record a race you have already run. It goes when they are done, or when you say you know the app.
-- **Mark anchor races where they are:** the anchor now lives on the race and per season, and is set with a button on the event page, past or future. A season already planned as events gets the tune-up window, the warnings and the prediction, with nothing to recreate in the bucket list.
-- **Fixed:** entries and race identities failed in production for want of Firestore indexes, which left the anchor button doing nothing and filled the console with errors.
+- **Entry planning:** the bucket list is now grouped by what is left to do, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won. With a notification before each deadline, switched on in Settings.
+- **A season around the anchor races:** mark the one to three races that fix your year, on the race's own page. From those the app suggests the window a build-up race fits in, warns when something lands in the taper or a month gets crowded, and shows the time predicted for the anchor from your latest race.
+- **When it fails:** a race that passes with no result asks what happened instead of saying you missed it, a DNF counts as a race started, and one button creates next season's attempt.
+- **Find races:** a new page searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor puts the ones that fit the window first. Parkruns near you are in there too, and they appear in no race calendar.
+- **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it. It goes when they are done.
+
+### Changed
+
+- **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written.
+- **Self-hosting:** the race harvest can read two new sources, and stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 

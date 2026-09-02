@@ -8,21 +8,16 @@
 
 ### Añadido
 
-- **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, con «requiere acción» delante, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada.
-- **Avisos de plazos:** notificación el día en que abren las inscripciones, 30, 7 y 1 días antes de cerrar, el día del sorteo y contando hacia el plazo de asegurar la plaza. Se activa en Ajustes, Notificaciones.
-- **Carreras ancla:** marca las una a tres carreras que fijan tu año y aparecerán primero en cada grupo.
-- **Reglas de temporada:** cada carrera puede decir para qué sirve, build-up o test, y qué ancla prepara. La app muestra la ventana del test, unos la mitad de la distancia tres o cuatro semanas antes, y avisa cuando una carrera cae en el afinamiento del ancla o cuando el mes se llena.
-- **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió (abandono, lesión, no fui, cancelada, viaje, otro) en vez de decir que la perdiste. Un abandono cuenta como carrera empezada y deja de figurar como datos que faltan, siguiendo fuera de ritmos, récords y predicciones.
-- **Intentarlo otra vez:** en una carrera perdida por lesión, abandono o cancelación, un botón crea el intento de la próxima temporada y te lleva a su inscripción. Las carreras que preparaban un ancla que falló quedan marcadas, para que decidas si siguen teniendo sentido.
-- **Previsión en el ancla:** la página de un ancla que está por venir, y el héroe de inicio cuando es la próxima, muestran el tiempo previsto para la distancia a partir de tu carrera de preparación más reciente. Es el mismo número del análisis, ahora donde sirve.
-- **Encontrar carreras:** una página nueva en la bucket list busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla rellena la ventana del test y pone delante las que encajan. Siempre dice cuándo se actualizó el catálogo, y una entrada sin revisar muestra la fecha de cierre como «según la lista», no como promesa.
-- **Parkruns en la búsqueda:** los parkruns no salen en ningún calendario de carreras, y ahora tienen sección propia en la página de descubrimiento, ordenada por la distancia a ti. La referencia son tus parkruns (los marcados y los que ya corriste) y, si no hay ninguno, tu ubicación, pedida al hacer clic. «Planificar» pone el sábado siguiente en el calendario con 5 km y el parkrun ya elegido.
-- **Carreras sin distancia publicada:** muchas fuentes dan la fecha, la ciudad y el enlace de inscripción y nunca dicen la distancia. Ahora entran en el catálogo, y la página te pide la distancia al añadirla, en vez de guardar un número que nadie verificó.
-- **Dos fuentes nuevas en la cosecha:** davengo (calendario en JSON, más la lista de participantes de donde salen las distancias) y scc-events (el calendario entero en una página, con fechas y distancias). Desactivadas hasta que el operador las active, como la primera.
-- **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada. Al aprobarla, el usuario recibe un email y ya puede entrar.
-- **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, y cada uno explica qué hace la app con eso: elegir distancias, marcar la carrera principal del año, planificar su inscripción y registrar una carrera ya corrida. Desaparece al completarlos, o cuando digas que ya conoces la app.
-- **Marcar carreras ancla donde están:** el ancla pasa a vivir en la carrera y por temporada, y se marca con un botón en la página del evento, pasado o futuro. Quien ya tenía la temporada planificada como eventos gana la ventana del test, los avisos y la previsión, sin recrear nada en la bucket list.
-- **Corregido:** las inscripciones y las identidades de carrera fallaban en producción por falta de índices en Firestore, lo que dejaba el botón de ancla sin efecto y llenaba la consola de errores.
+- **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada. Con avisos por notificación antes de cada plazo, que se activan en Ajustes.
+- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera.
+- **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió en vez de decir que la perdiste, un abandono cuenta como carrera empezada, y un botón crea el intento de la próxima temporada.
+- **Encontrar carreras:** una página nueva busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla pone delante las que encajan en la ventana. Incluye los parkruns cerca de ti, que no salen en ningún calendario.
+- **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, cada uno explicando qué hace la app con eso. Desaparece al completarlos.
+
+### Cambiado
+
+- **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada.
+- **Self-hosting:** la cosecha de carreras puede leer dos fuentes nuevas, y sigue desactivada hasta que la actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 

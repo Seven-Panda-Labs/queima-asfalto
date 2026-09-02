@@ -8,21 +8,16 @@
 
 ### Adicionado
 
-- **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, com «a precisar de acção» à frente, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho.
-- **Avisos de prazo:** notificação no dia em que as inscrições abrem, 30, 7 e 1 dias antes de fecharem, no dia do sorteio, e a contar para o prazo de garantir o lugar. Liga-se em Definições, Notificações.
-- **Provas âncora:** marca as uma a três provas que fixam o teu ano e elas aparecem primeiro em cada grupo.
-- **Regras de temporada:** cada prova pode dizer para que serve, build-up ou teste, e que âncora prepara. A app mostra a janela do teste, cerca de metade da distância três a quatro semanas antes, e avisa quando uma prova cai no afinamento da âncora ou quando o mês fica cheio.
-- **Quando falha:** uma prova que passa sem resultado pergunta o que aconteceu (desistência, lesão, não fui, cancelada, viagem, outro) em vez de dizer que faltaste. Uma desistência passa a contar como prova começada e deixa de aparecer como dados em falta, continuando fora de ritmos, recordes e previsões.
-- **Tentar outra vez:** numa prova falhada por lesão, desistência ou cancelamento, um botão cria a tentativa da próxima temporada e leva-te à inscrição. As provas que preparavam uma âncora que falhou ficam marcadas, para decidires se ainda fazem sentido.
-- **Previsão na prova âncora:** a página de uma âncora que está para vir, e o herói da entrada quando é a próxima, mostram o tempo previsto para a distância a partir da tua prova de preparação mais recente. O número é o mesmo da análise, agora onde serve para algo.
-- **Encontrar provas:** uma página nova na bucket list procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora preenche a janela do teste e põe à frente as provas que encaixam. Diz sempre quando o catálogo foi actualizado, e uma entrada não revista mostra a data de fecho como «a listagem diz», não como promessa.
-- **Parkruns na descoberta:** os parkruns não aparecem em nenhum calendário de provas, e agora têm secção própria na página de descoberta, ordenada pela distância a ti. A referência são os teus parkruns (os marcados e os que já correste) e, se não houver nenhum, a tua localização, com autorização pedida ao clique. «Planear» põe o próximo sábado no calendário com 5 km e o parkrun já escolhido.
-- **Provas sem distância publicada:** muitas fontes dão a data, a cidade e o link de inscrição e nunca dizem a distância. Passam a entrar no catálogo, e a página pede-te a distância quando adicionas, em vez de guardar um número que ninguém verificou.
-- **Duas fontes novas na colheita:** o davengo (calendário em JSON, mais a lista de participantes de onde saem as distâncias) e a scc-events (o calendário todo numa página, com datas e distâncias). Ficam desligadas até o operador as activar, como a primeira.
-- **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito. Quem for aprovado recebe email e entra a seguir.
-- **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, e cada um explica o que a app faz com aquilo: escolher distâncias, marcar a prova âncora do ano, planear a inscrição dela e registar uma prova já corrida. Desaparece quando estiverem feitos, ou quando disseres que já conheces a app.
-- **Marcar provas âncora onde elas estão:** a âncora passa a viver na prova e por temporada, e marca-se com um botão na página do evento, passado ou futuro. Quem já tinha a temporada planeada em eventos passa a ter janela de teste, avisos e previsão, sem ter de recriar nada na bucket list.
-- **Corrigido:** as inscrições e as identidades de prova falhavam em produção por falta de índices no Firestore, o que deixava o botão de âncora sem efeito e enchia a consola de erros.
+- **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho. Com avisos por notificação antes de cada prazo, que se ligam em Definições.
+- **A temporada em volta das provas âncora:** marca as uma a três provas que fixam o teu ano, na página da própria prova. A partir delas a app sugere a janela onde encaixa uma prova de preparação, avisa quando algo cai no afinamento ou quando o mês fica cheio, e mostra o tempo previsto para a âncora a partir da tua última prova.
+- **Quando falha:** uma prova que passa sem resultado pergunta o que aconteceu em vez de dizer que faltaste, uma desistência passa a contar como prova começada, e um botão cria a tentativa da próxima temporada.
+- **Encontrar provas:** uma página nova procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora põe à frente as que encaixam na janela. Inclui os parkruns perto de ti, que não aparecem em calendário nenhum.
+- **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, cada um a explicar o que a app faz com aquilo. Desaparece quando estiverem feitos.
+
+### Alterado
+
+- **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito.
+- **Self-hosting:** a colheita de provas pode ler duas fontes novas, e continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
