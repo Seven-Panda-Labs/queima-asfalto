@@ -104,6 +104,7 @@ function emptySectionResults(): Record<RestorableSectionKey, BackupSectionResult
     performanceGoals: emptySectionResult(),
     bucketListItems: emptySectionResult(),
     races: emptySectionResult(),
+    raceEntries: emptySectionResult(),
     userProfile: emptySectionResult(),
   }
 }
@@ -199,6 +200,7 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
     counts.performanceGoals +
     counts.bucketListItems +
     counts.races +
+    counts.raceEntries +
     counts.eventMedia +
     counts.eventTracks +
     counts.userProfile
@@ -325,6 +327,7 @@ export function planBackupRestore(
     'performanceGoals',
     'bucketListItems',
     'races',
+    'raceEntries',
   ] as const) {
     rejections.push(...prepareSection(section, parsed.sections[section], userId).rejections)
   }
@@ -743,6 +746,7 @@ export async function restoreUserBackup(
           performanceGoals: new Set<string>(),
           bucketListItems: new Set<string>(),
           races: new Set<string>(),
+          raceEntries: new Set<string>(),
         }
       : {
           events: await readExistingIds('events', userId),
@@ -750,12 +754,19 @@ export async function restoreUserBackup(
           performanceGoals: await readExistingIds('performanceGoals', userId),
           bucketListItems: await readExistingIds('bucketListItems', userId),
           races: await readExistingIds('races', userId),
+          raceEntries: await readExistingIds('raceEntries', userId),
         }
 
   const events = absorb('events', prepareSection('events', parsed.sections.events, userId), result)
   await writeFlatSection('events', events, existing.events, result, onProgress)
 
-  for (const section of ['goals', 'performanceGoals', 'bucketListItems', 'races'] as const) {
+  for (const section of [
+    'goals',
+    'performanceGoals',
+    'bucketListItems',
+    'races',
+    'raceEntries',
+  ] as const) {
     const prepared = absorb(section, prepareSection(section, parsed.sections[section], userId), result)
     await writeFlatSection(section, prepared, existing[section], result, onProgress)
   }

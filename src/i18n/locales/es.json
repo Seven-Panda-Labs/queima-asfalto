@@ -655,6 +655,7 @@
     "countPerformanceGoals": "{{count}} metas de rendimiento",
     "countBucketListItems": "{{count}} elementos de la bucket list",
     "countRaces": "{{count}} carreras",
+    "countRaceEntries": "{{count}} inscripciones",
     "countUserProfile": "Perfil: idioma, preferencias de notificaciones y perfil de resultados",
     "countShares": "{{count}} compartidos (no restaurables)",
     "existingLoading": "Contando tus datos actuales...",
@@ -707,6 +708,7 @@
       "performanceGoals": "Metas de rendimiento",
       "bucketListItems": "Bucket list",
       "races": "Carreras",
+      "raceEntries": "Inscripciones",
       "userProfile": "Perfil",
       "shares": "Compartidos",
       "eventTracks": "Archivos de actividad"
@@ -722,13 +724,15 @@
       "invalid_geocode": "Coordenadas no válidas",
       "invalid_results_field": "Datos de resultados no válidos",
       "invalid_target_count": "Objetivo no válido",
-      "invalid_year": "Año no válido",
+      "invalid_year": "Año inválido",
       "invalid_performance_goal": "Meta de rendimiento no válida",
       "invalid_disciplines": "Disciplinas no válidas",
       "invalid_media": "Metadatos de foto o vídeo no válidos",
       "unknown_event": "El evento vinculado no existe",
       "foreign_user": "Pertenece a otra cuenta",
-      "invalid_track": "Archivo de actividad no válido"
+      "invalid_track": "Archivo de actividad no válido",
+      "invalid_entry_method": "Forma de inscripción inválida",
+      "invalid_entry_status": "Estado de inscripción inválido"
     }
   },
   "messages": {
@@ -786,7 +790,8 @@
     "goalsLoadError": "No se han podido cargar tus objetivos.",
     "performanceGoalsLoadError": "No se han podido cargar tus objetivos de rendimiento.",
     "bucketListLoadError": "No se ha podido cargar tu bucket list.",
-    "racesLoadError": "No se pudieron cargar las carreras."
+    "racesLoadError": "No se pudieron cargar las carreras.",
+    "raceEntriesLoadError": "No se pudieron cargar las inscripciones."
   },
   "goalForm": {
     "targetCount": "Cantidad objetivo",

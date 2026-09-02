@@ -586,6 +586,22 @@ describe('validateRestoreDocument', () => {
     expect(check('performanceGoals', { ...base, type: 'other' })).toBe('invalid_performance_goal')
   })
 
+  it('validates a race entry, and refuses a status or method it does not know', () => {
+    const entry = {
+      userId: 'user-ze',
+      raceId: 'race-berlim',
+      year: 2027,
+      entryMethod: 'lottery',
+      entryStatus: 'applied',
+    }
+    expect(check('raceEntries', entry)).toBeNull()
+    expect(check('raceEntries', { ...entry, entryStatus: 'maybe' })).toBe('invalid_entry_status')
+    expect(check('raceEntries', { ...entry, entryMethod: 'auction' })).toBe('invalid_entry_method')
+    expect(check('raceEntries', { ...entry, year: 2027.5 })).toBe('invalid_year')
+    expect(check('raceEntries', { ...entry, raceId: '' })).toBe('invalid_race_id')
+    expect(check('raceEntries', { userId: 'user-ze', raceId: 'r' })).toBe('missing_required_field')
+  })
+
   it('rejects a race identity that is not a string, on an event and on an item', () => {
     const event = {
       userId: 'user-ze',

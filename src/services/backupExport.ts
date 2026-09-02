@@ -323,13 +323,14 @@ export async function collectUserBackup(
 }> {
   onProgress?.({ phase: 'collections' })
 
-  const [events, goals, performanceGoals, bucketListItems, races, shares, userProfile] =
+  const [events, goals, performanceGoals, bucketListItems, races, raceEntries, shares, userProfile] =
     await Promise.all([
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.events, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.goals, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.performanceGoals, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.bucketListItems, 'userId', userId),
       readOwnedCollection(BACKUP_SECTION_COLLECTIONS.races, 'userId', userId),
+      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.raceEntries, 'userId', userId),
       readShares(userId),
       readUserProfile(userId),
     ])
@@ -344,6 +345,7 @@ export async function collectUserBackup(
   sections.performanceGoals = performanceGoals.documents
   sections.bucketListItems = bucketListItems.documents
   sections.races = races.documents
+  sections.raceEntries = raceEntries.documents
   sections.eventMedia = media.documents
   sections.eventTracks = tracks.documents
   sections.shares = shares

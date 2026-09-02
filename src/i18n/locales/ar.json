@@ -667,6 +667,7 @@
     "countPerformanceGoals": "{{count}} هدف أداء",
     "countBucketListItems": "{{count}} عنصر في قائمة الأحلام",
     "countRaces": "{{count}} سباقات",
+    "countRaceEntries": "{{count}} تسجيلات",
     "countUserProfile": "الملف الشخصي: اللغة وتفضيلات الإشعارات وملف النتائج",
     "countShares": "{{count}} مشاركة (غير قابلة للاستعادة)",
     "existingLoading": "جارٍ إحصاء بياناتك الحالية...",
@@ -719,6 +720,7 @@
       "performanceGoals": "أهداف الأداء",
       "bucketListItems": "قائمة الأحلام",
       "races": "السباقات",
+      "raceEntries": "التسجيلات",
       "userProfile": "الملف الشخصي",
       "shares": "المشاركات",
       "eventTracks": "ملفات النشاط"
@@ -740,7 +742,9 @@
       "invalid_media": "بيانات وصفية غير صالحة للصورة أو الفيديو",
       "unknown_event": "الفعالية المرتبطة غير موجودة",
       "foreign_user": "ينتمي إلى حساب آخر",
-      "invalid_track": "ملف نشاط غير صالح"
+      "invalid_track": "ملف نشاط غير صالح",
+      "invalid_entry_method": "طريقة تسجيل غير صالحة",
+      "invalid_entry_status": "حالة تسجيل غير صالحة"
     }
   },
   "messages": {
@@ -798,7 +802,8 @@
     "goalsLoadError": "تعذّر تحميل أهدافك.",
     "performanceGoalsLoadError": "تعذّر تحميل أهداف الأداء.",
     "bucketListLoadError": "تعذّر تحميل قائمة أحلامك.",
-    "racesLoadError": "تعذّر تحميل السباقات."
+    "racesLoadError": "تعذّر تحميل السباقات.",
+    "raceEntriesLoadError": "تعذّر تحميل التسجيلات."
   },
   "goalForm": {
     "targetCount": "العدد المستهدف",
