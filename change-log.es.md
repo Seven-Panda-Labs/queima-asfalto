@@ -4,6 +4,16 @@
 
 ---
 
+## [1.32.0] - 2026-09-02
+
+### Añadido
+
+- **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, con «requiere acción» delante, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada.
+- **Avisos de plazos:** notificación el día en que abren las inscripciones, 30, 7 y 1 días antes de cerrar, el día del sorteo y contando hacia el plazo de asegurar la plaza. Se activa en Ajustes, Notificaciones.
+- **Carreras ancla:** marca las una a tres carreras que fijan tu año y aparecerán primero en cada grupo.
+
+---
+
 ## [1.31.0] - 2026-09-01
 
 ### Añadido

@@ -83,6 +83,7 @@ describe('computeReminders', () => {
         notificationsEnabled: true,
         reminderDaysBefore: 1,
         reminderTime: '08:00',
+        deadlineRemindersEnabled: true,
       },
       now,
       LISBON_SUMMER_OFFSET,

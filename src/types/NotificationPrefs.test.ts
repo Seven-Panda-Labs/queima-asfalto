@@ -21,6 +21,7 @@ describe('parseNotificationPrefs', () => {
       notificationsEnabled: true,
       reminderDaysBefore: 3,
       reminderTime: '09:30',
+      deadlineRemindersEnabled: true,
     })
   })
 

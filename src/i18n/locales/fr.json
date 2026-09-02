@@ -613,7 +613,9 @@
     "permissionDeniedHint": "Permission refusée. Active les notifications dans les paramètres de ton navigateur ou de ton système.",
     "enableForPermission": "Active les rappels pour demander la permission de notification.",
     "activateError": "Impossible d'activer les notifications sur cet appareil.",
-    "configLegend": "Configuration des rappels"
+    "configLegend": "Configuration des rappels",
+    "deadlines": "Prévenir des échéances d'inscription",
+    "deadlinesHint": "Quand une fenêtre ouvre, quand elle ferme (30, 7 et 1 jour avant), le jour du tirage, et le délai pour sécuriser une place gagnée. Cadence fixe, à l'heure choisie ci-dessus."
   },
   "backup": {
     "title": "Sauvegarde complète",

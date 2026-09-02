@@ -4,6 +4,16 @@
 
 ---
 
+## [1.32.0] - 2026-09-02
+
+### Adicionado
+
+- **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, com «a precisar de acção» à frente, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho.
+- **Avisos de prazo:** notificação no dia em que as inscrições abrem, 30, 7 e 1 dias antes de fecharem, no dia do sorteio, e a contar para o prazo de garantir o lugar. Liga-se em Definições, Notificações.
+- **Provas âncora:** marca as uma a três provas que fixam o teu ano e elas aparecem primeiro em cada grupo.
+
+---
+
 ## [1.31.0] - 2026-09-01
 
 ### Adicionado

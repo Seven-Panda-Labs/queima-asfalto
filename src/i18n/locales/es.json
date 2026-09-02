@@ -613,7 +613,9 @@
     "permissionDeniedHint": "Permiso denegado. Activa las notificaciones en los ajustes del navegador o del sistema.",
     "enableForPermission": "Activa los recordatorios para solicitar permiso de notificación.",
     "activateError": "No se pudieron activar las notificaciones en este dispositivo.",
-    "configLegend": "Configuración del recordatorio"
+    "configLegend": "Configuración del recordatorio",
+    "deadlines": "Avisar sobre plazos de inscripción",
+    "deadlinesHint": "Cuándo abre, cuándo cierra (30, 7 y 1 días antes), el día del sorteo y el plazo para asegurar una plaza ganada. Cadencia fija, a la hora que elegiste arriba."
   },
   "backup": {
     "title": "Copia de seguridad completa",

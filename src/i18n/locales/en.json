@@ -613,7 +613,9 @@
     "permissionDeniedHint": "Permission denied. Enable notifications in your browser or system settings.",
     "enableForPermission": "Enable reminders to request notification permission.",
     "activateError": "Could not enable notifications on this device.",
-    "configLegend": "Reminder configuration"
+    "configLegend": "Reminder configuration",
+    "deadlines": "Warn about registration deadlines",
+    "deadlinesHint": "When a window opens, when it closes (30, 7 and 1 days before), the day of a draw, and the deadline to secure a place you have won. Fixed cadence, at the hour you chose above."
   },
   "backup": {
     "title": "Full backup",

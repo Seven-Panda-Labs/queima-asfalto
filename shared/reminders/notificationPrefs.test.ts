@@ -21,7 +21,20 @@ describe('parseNotificationPrefs', () => {
       notificationsEnabled: true,
       reminderDaysBefore: 3,
       reminderTime: '09:30',
+      // Absent in the document, and on: an account that predates the field gets
+      // the deadlines it never had a chance to ask for.
+      deadlineRemindersEnabled: true,
     })
+  })
+
+  it('reads an explicit no as a no, and anything else as a yes', () => {
+    expect(
+      parseNotificationPrefs({ notificationsEnabled: true, deadlineRemindersEnabled: false })
+        .deadlineRemindersEnabled,
+    ).toBe(false)
+    expect(
+      parseNotificationPrefs({ notificationsEnabled: true }).deadlineRemindersEnabled,
+    ).toBe(true)
   })
 
   it('falls back to defaults for invalid values', () => {
