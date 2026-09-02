@@ -117,7 +117,9 @@
     "subtitle": "Plan anual de carreras. Registra eventos, objetivos y resultados.",
     "google": "Iniciar sesión con Google",
     "emulator": "Iniciar sesión (emulador)",
-    "emulatorHint": "Modo emulador, sin Google OAuth. Ver docs/emulators.md."
+    "emulatorHint": "Modo emulador, sin Google OAuth. Ver docs/emulators.md.",
+    "pendingApproval": "Tu cuenta está esperando aprobación. Recibirás un email cuando se apruebe y podrás entrar entonces.",
+    "rejected": "Esta cuenta no fue aprobada. Habla con el administrador de la instancia."
   },
   "accountApproval": {
     "pendingTitle": "Pendiente de aprobación",

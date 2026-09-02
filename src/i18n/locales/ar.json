@@ -117,7 +117,9 @@
     "subtitle": "خطة الجري السنوية. تابع الفعاليات والأهداف والنتائج.",
     "google": "تسجيل الدخول باستخدام Google",
     "emulator": "تسجيل الدخول (المحاكي)",
-    "emulatorHint": "وضع المحاكي، بدون Google OAuth. انظر docs/emulators.md."
+    "emulatorHint": "وضع المحاكي، بدون Google OAuth. انظر docs/emulators.md.",
+    "pendingApproval": "حسابك في انتظار الموافقة. ستصلك رسالة بريد عند الموافقة، ويمكنك الدخول بعدها.",
+    "rejected": "لم يُوافق على هذا الحساب. تحدّث إلى مسؤول النسخة."
   },
   "accountApproval": {
     "pendingTitle": "في انتظار الموافقة",

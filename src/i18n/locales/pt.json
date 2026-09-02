@@ -117,7 +117,9 @@
     "subtitle": "Plano anual de corridas: regista eventos, objetivos e resultados.",
     "google": "Entrar com Google",
     "emulator": "Entrar (emulador)",
-    "emulatorHint": "Modo emulador, sem Google OAuth. Ver docs/emulators.md."
+    "emulatorHint": "Modo emulador, sem Google OAuth. Ver docs/emulators.md.",
+    "pendingApproval": "A tua conta está à espera de aprovação. Recebes um email quando for aprovada e podes entrar a seguir.",
+    "rejected": "Esta conta não foi aprovada. Fala com o administrador da instância."
   },
   "accountApproval": {
     "pendingTitle": "À espera de aprovação",

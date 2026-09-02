@@ -173,17 +173,17 @@ Por defeito, qualquer utilizador com Google Sign-In pode usar a instância. Para
 
 Não há variável de administrador. O administrador é um utilizador com `admin: true`, e é ele que recebe os emails de aprovação. Numa instância nova ainda não existe nenhum, logo a primeira conta tem de ser promovida à mão, uma vez:
 
-1. Entra na app com a tua conta. Ficas em «pendente», o que é esperado.
-2. No Firebase Console → Firestore → `users/{o teu uid}`, acrescenta `admin: true` (boolean) e muda `accountStatus` para `approved`.
+1. Tenta entrar com a tua conta. O login é recusado com «à espera de aprovação», o que é esperado: a conta foi criada em `pending` e uma conta pendente não entra.
+2. No Firebase Console → Firestore → `users/{o teu uid}`, acrescenta `admin: true` (boolean) e muda `accountStatus` para `approved`. Depois entra outra vez.
 3. A partir daí, cada registo novo envia-te email, e nenhum cliente consegue escrever estes dois campos: as regras tornam-nos imutáveis do browser.
 
 Se removeres o `admin` de todos os utilizadores, ninguém recebe os emails de aprovação e voltas a precisar da consola. Não é um estado que a app impeça.
 
 **Fluxo**
 
-1. Novo utilizador entra com Google → ecrã «À espera de aprovação».
+1. Novo utilizador entra com Google → a conta é criada e o login é recusado com «à espera de aprovação». Uma conta pendente não escreve nada no Firestore, portanto entrar só produziria uma app que parece avariada.
 2. Admin recebe email com links **Aprovar** / **Rejeitar**.
-3. Utilizador aprovado recebe email e pode usar a app; rejeitado vê mensagem e não acede aos dados.
+3. Utilizador aprovado recebe email e já consegue entrar; rejeitado vê a razão no login e não acede a nada.
 
 Sem esta opção, ignora este passo, a instância mantém o comportamento anterior.
 
@@ -478,17 +478,17 @@ By default, any Google Sign-In user can use the instance. To require **manual ap
 
 There is no administrator variable. The administrator is a user with `admin: true`, and that is who the approval emails go to. A fresh instance has none, so the first account is promoted by hand, once:
 
-1. Sign in with your account. You land on "pending", which is expected.
-2. In Firebase Console → Firestore → `users/{your uid}`, add `admin: true` (boolean) and set `accountStatus` to `approved`.
+1. Try to sign in with your account. Sign-in is refused with "waiting for approval", which is expected: the account was created `pending`, and a pending account does not get in.
+2. In Firebase Console → Firestore → `users/{your uid}`, add `admin: true` (boolean) and set `accountStatus` to `approved`. Then sign in again.
 3. From then on every new sign-up emails you, and no client can write either field: the rules make them immutable from the browser.
 
 If you remove `admin` from every user, nobody receives the approval emails and you are back to needing the console. The app does not prevent that state.
 
 **Flow**
 
-1. New user signs in with Google → “Waiting for approval” screen.
+1. New user signs in with Google → the account is created and sign-in is refused with "waiting for approval". A pending account can write nothing to Firestore, so letting it in would only produce an app that looks broken.
 2. Admin receives email with **Approve** / **Reject** links.
-3. Approved user gets email and can use the app; rejected users see a message and cannot access data.
+3. Approved user gets an email and can sign in; rejected users see the reason on the login screen and reach nothing.
 
 If you do not need this, skip this step, the instance keeps the previous behavior.
 

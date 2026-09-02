@@ -7,6 +7,7 @@ import {
 } from 'firebase-functions/v2/identity'
 import type { AccountStatus } from '../shared/account/types.js'
 import { parseRegistrationLocale, resolveEffectiveAccountStatus } from '../shared/account/types.js'
+import { SIGN_IN_REFUSALS } from '../shared/account/signInRefusal.js'
 import { blockingFunctionOptions } from '../functionOptions.js'
 import { assertAccountApprovalConfig, isAccountApprovalRequired } from './config.js'
 import {
@@ -23,6 +24,8 @@ function ensureAdminApp(): void {
 }
 
 const blockingOptions = blockingFunctionOptions()
+
+
 
 export const accountApprovalBeforeUserCreated = beforeUserCreated(
   blockingOptions,
@@ -118,11 +121,15 @@ export const accountApprovalBeforeUserSignedIn = beforeUserSignedIn(
 
     const status = resolveEffectiveAccountStatus(snapshot.data())
 
+    // Refused at the door, not gated inside the app. An account waiting for
+    // approval can write nothing, so letting it in only produces a screen that
+    // looks broken. The user is emailed the moment it is approved.
+    if (status === 'pending') {
+      throw new HttpsError('permission-denied', SIGN_IN_REFUSALS.pending)
+    }
+
     if (status === 'rejected') {
-      throw new HttpsError(
-        'permission-denied',
-        'This account was not approved. Contact the site administrator.',
-      )
+      throw new HttpsError('permission-denied', SIGN_IN_REFUSALS.rejected)
     }
   },
 )

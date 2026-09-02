@@ -16,6 +16,7 @@
 - **Neu versuchen:** bei einem Rennen, das an Verletzung, DNF oder Absage gescheitert ist, legt ein Knopf den Versuch der nächsten Saison an und führt zu seiner Anmeldung. Die Rennen, die einen ausgefallenen Anker vorbereitet haben, werden markiert, damit du entscheidest, ob sie noch Sinn haben.
 - **Prognose beim Anker:** die Seite eines noch bevorstehenden Ankers, und der Startbereich, wenn er das nächste Rennen ist, zeigen die prognostizierte Zeit über die Distanz aus deinem letzten Vorbereitungsrennen. Es ist dieselbe Zahl wie in der Analyse, jetzt dort, wo sie nützt.
 - **Rennen finden:** eine neue Seite an der Bucket List durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker füllt das Testfenster und stellt die passenden Rennen nach vorne. Sie sagt immer, wann der Katalog aktualisiert wurde, und ein ungeprüfter Eintrag zeigt seinen Anmeldeschluss als Angabe der Liste, nicht als Versprechen.
+- **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte. Nach der Freigabe kommt eine E-Mail und die Anmeldung geht.
 
 ---
 
