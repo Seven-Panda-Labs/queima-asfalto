@@ -17,6 +17,7 @@
 - **Prognose beim Anker:** die Seite eines noch bevorstehenden Ankers, und der Startbereich, wenn er das nächste Rennen ist, zeigen die prognostizierte Zeit über die Distanz aus deinem letzten Vorbereitungsrennen. Es ist dieselbe Zahl wie in der Analyse, jetzt dort, wo sie nützt.
 - **Rennen finden:** eine neue Seite an der Bucket List durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker füllt das Testfenster und stellt die passenden Rennen nach vorne. Sie sagt immer, wann der Katalog aktualisiert wurde, und ein ungeprüfter Eintrag zeigt seinen Anmeldeschluss als Angabe der Liste, nicht als Versprechen.
 - **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte. Nach der Freigabe kommt eine E-Mail und die Anmeldung geht.
+- **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, und jeder sagt, was die App damit macht: Distanzen wählen, das Hauptrennen des Jahres markieren, dessen Anmeldung planen und ein gelaufenes Rennen erfassen. Es verschwindet, wenn sie erledigt sind, oder wenn du sagst, dass du die App kennst.
 
 ---
 

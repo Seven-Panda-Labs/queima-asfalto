@@ -1335,5 +1335,33 @@
     "backToBucketList": "Back to the bucket list",
     "fitsAnchor_one": "fits, 1 week out",
     "fitsAnchor_other": "fits, {{count}} weeks out"
+  },
+  "onboarding": {
+    "title": "Getting started",
+    "subtitle": "Four steps and the app knows what to show you. Each one says what it is for.",
+    "progress": "{{done}} of {{total}}",
+    "dismiss": "I know the app, hide this",
+    "steps": {
+      "disciplines": {
+        "title": "Pick the distances you race",
+        "why": "They decide what the app offers you everywhere: filters, records, predictions, and the races discovery puts in front of you.",
+        "action": "Open disciplines"
+      },
+      "anchor": {
+        "title": "Mark the main race of your year",
+        "why": "One to three races fix your season. Its date is where the countdown, the deadline warnings and the window for a build-up race all come from.",
+        "action": "Add my anchor"
+      },
+      "entry": {
+        "title": "Plan the entry for that race",
+        "why": "An entry says how you get in and when the gate closes. That is what turns a wish into a plan, and what the reminders read.",
+        "action": "Plan the entry"
+      },
+      "result": {
+        "title": "Record a race you have already run",
+        "why": "One result is enough for records, average pace and a predicted time for the anchor. The official link fills in the rest for you.",
+        "action": "Record a race"
+      }
+    }
   }
 }

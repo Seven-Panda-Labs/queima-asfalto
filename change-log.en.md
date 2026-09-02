@@ -17,6 +17,7 @@
 - **A prediction on the anchor:** the page of an anchor still ahead, and the home hero when it is the next race, show the predicted time over the distance from your latest build-up race. It is the same number the analysis gives, now where it is of use.
 - **Find races:** a new page on the bucket list searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor fills in the tune-up window and puts the races that fit first. It always says when the catalog was last refreshed, and an unreviewed entry shows its closing date as what the listing says rather than as a promise.
 - **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written. Once approved, the user gets an email and can sign in.
+- **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it: pick your distances, mark the main race of your year, plan its entry, and record a race you have already run. It goes when they are done, or when you say you know the app.
 
 ---
 

@@ -1335,5 +1335,33 @@
     "backToBucketList": "Volver a la bucket list",
     "fitsAnchor_one": "encaja, 1 semana antes",
     "fitsAnchor_other": "encaja, {{count}} semanas antes"
+  },
+  "onboarding": {
+    "title": "Empezar",
+    "subtitle": "Cuatro pasos y la app sabe qué mostrarte. Cada uno explica para qué sirve.",
+    "progress": "{{done}} de {{total}}",
+    "dismiss": "Ya conozco la app, ocultar esto",
+    "steps": {
+      "disciplines": {
+        "title": "Elegir las distancias que corres",
+        "why": "Deciden lo que la app te ofrece en todas partes: filtros, récords, previsiones y las carreras que te muestra la búsqueda.",
+        "action": "Abrir disciplinas"
+      },
+      "anchor": {
+        "title": "Marcar la carrera principal del año",
+        "why": "Una a tres carreras fijan tu temporada. De su fecha salen la cuenta atrás, los avisos de plazos y la ventana donde encaja una carrera de preparación.",
+        "action": "Añadir mi ancla"
+      },
+      "entry": {
+        "title": "Planificar la inscripción de esa carrera",
+        "why": "La inscripción dice cómo se entra y cuándo cierra. Es lo que convierte un deseo en plan, y lo que leen los avisos.",
+        "action": "Planificar la inscripción"
+      },
+      "result": {
+        "title": "Registrar una carrera que ya corriste",
+        "why": "Una marca basta para tener récords, ritmo medio y un tiempo previsto para el ancla. El enlace oficial rellena el resto.",
+        "action": "Registrar una carrera"
+      }
+    }
   }
 }
