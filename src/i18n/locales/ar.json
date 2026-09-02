@@ -1222,7 +1222,8 @@
     "closes": "يغلق {{date}}",
     "draw": "القرعة {{date}}",
     "confirmBy": "التثبيت قبل {{date}}",
-    "race": "السباق {{date}}"
+    "race": "السباق {{date}}",
+    "andOthers": "و{{count}} أخرى"
   },
   "entry": {
     "title": "التسجيل",
@@ -1263,6 +1264,9 @@
       "rejected": "لم تُوفَّق القرعة",
       "declined": "انسحبت",
       "missed": "فات الموعد"
-    }
+    },
+    "registeredNeedsDate": "للتسجيل، حدّد تاريخ السباق: سيذهب إلى التقويم.",
+    "registeredNeedsDiscipline": "حدّد المسافة التي ستركضها.",
+    "savedWithEvent": "تم حفظ التسجيل، والسباق في التقويم."
   }
 }

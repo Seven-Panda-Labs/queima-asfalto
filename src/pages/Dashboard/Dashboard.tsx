@@ -13,7 +13,10 @@ import { RecordStrip } from '../../components/RecordStrip'
 import { TargetCard } from '../../components/TargetCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
+import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
+import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { DeadlineCard } from '../../components/DeadlineCard'
 import { buildCourseComparison } from '../../utils/analytics/course'
 import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
@@ -30,6 +33,8 @@ export function Dashboard() {
   const { user } = useAuth()
   const currentYear = new Date().getFullYear()
   const { allEvents, loading: eventsLoading, error: eventsError } = useEvents()
+  const { items: bucketListItems } = useBucketList()
+  const { entries: raceEntries } = useRaceEntries()
   const { goals, loading: goalsLoading, error: goalsError } = useGoals({ year: currentYear })
   const {
     goals: performanceGoals,
@@ -82,6 +87,10 @@ export function Dashboard() {
         ) : (
           <NextEventCard event={nextEvent} target={nextEventTarget} />
         )}
+      </section>
+
+      <section className="mt-5">
+        <DeadlineCard items={bucketListItems} entries={raceEntries} />
       </section>
 
       <section className="mt-5">

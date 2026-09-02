@@ -1210,7 +1210,8 @@
     "closes": "fecha {{date}}",
     "draw": "sorteio {{date}}",
     "confirmBy": "garantir até {{date}}",
-    "race": "prova {{date}}"
+    "race": "prova {{date}}",
+    "andOthers": "e mais {{count}}"
   },
   "entry": {
     "title": "Inscrição",
@@ -1251,6 +1252,9 @@
       "rejected": "Não saiu no sorteio",
       "declined": "Desisti",
       "missed": "Perdi o prazo"
-    }
+    },
+    "registeredNeedsDate": "Para ficar inscrito, diz a data da prova: ela vai para o calendário.",
+    "registeredNeedsDiscipline": "Diz que distância vais correr.",
+    "savedWithEvent": "Inscrição guardada, e a prova foi para o calendário."
   }
 }

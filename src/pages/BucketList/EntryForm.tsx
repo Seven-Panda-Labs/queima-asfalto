@@ -7,6 +7,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { formatEventTypeLabel } from '../../i18n/formatters'
+import { createEvent } from '../../services/events'
 import { findOrCreateRaceId } from '../../services/races'
 import type { EventType } from '../../types/Event'
 import {
@@ -125,6 +126,16 @@ export function EntryForm() {
     const opens = fromInputDate(form.registrationOpensAt)
     const closes = fromInputDate(form.registrationClosesAt)
     if (opens && closes && closes < opens) next.registrationClosesAt = t('entry.closesBeforeOpens')
+
+    // Registered means it goes on the calendar, and a calendar needs a day and a
+    // distance. The form already holds both fields, so it asks here rather than
+    // in a dialog on top of itself.
+    const raceDate = fromInputDate(form.raceDate)
+    if (form.entryStatus === 'registered') {
+      if (!raceDate) next.raceDate = t('entry.registeredNeedsDate')
+      if (!form.discipline) next.discipline = t('entry.registeredNeedsDiscipline')
+    }
+
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
@@ -152,7 +163,7 @@ export function EntryForm() {
         discipline: form.discipline || undefined,
         entryMethod: form.entryMethod,
         entryStatus: form.entryStatus,
-        raceDate: fromInputDate(form.raceDate),
+        raceDate,
         raceDateConfirmed: form.raceDateConfirmed,
         registrationOpensAt: opens,
         registrationClosesAt: closes,
@@ -164,12 +175,32 @@ export function EntryForm() {
         notes: form.notes.trim() || undefined,
       }
 
-      if (existing) {
-        await editEntry(existing.id, payload)
-      } else {
-        await addEntry(payload)
+      // The event is created once, when the place is secured. `confirmed` is
+      // exactly what being registered already means, and creating it here saves
+      // typing the same race into the calendar by hand.
+      let eventId = existing?.eventId
+      if (form.entryStatus === 'registered' && !eventId && raceDate && form.discipline) {
+        eventId = await createEvent(user.uid, {
+          name: item.name,
+          date: raceDate,
+          realDistance: item.realDistance,
+          eventType: form.discipline,
+          location: item.location,
+          locationLat: item.locationLat,
+          locationLng: item.locationLng,
+          status: 'confirmed',
+          emoji: item.emoji,
+          raceId,
+        })
       }
-      toast.success(t('entry.saved'))
+
+      const withEvent = { ...payload, eventId }
+      if (existing) {
+        await editEntry(existing.id, withEvent)
+      } else {
+        await addEntry(withEvent)
+      }
+      toast.success(eventId && !existing?.eventId ? t('entry.savedWithEvent') : t('entry.saved'))
       navigate('/bucket-list')
     } catch {
       toast.error(t('entry.saveError'))

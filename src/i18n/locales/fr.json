@@ -1210,7 +1210,8 @@
     "closes": "ferme {{date}}",
     "draw": "tirage {{date}}",
     "confirmBy": "sécuriser avant {{date}}",
-    "race": "course {{date}}"
+    "race": "course {{date}}",
+    "andOthers": "et {{count}} de plus"
   },
   "entry": {
     "title": "Inscription",
@@ -1251,6 +1252,9 @@
       "rejected": "Non tiré au sort",
       "declined": "Renoncé",
       "missed": "Délai manqué"
-    }
+    },
+    "registeredNeedsDate": "Pour être inscrit, donne la date de la course : elle va au calendrier.",
+    "registeredNeedsDiscipline": "Indique la distance que tu vas courir.",
+    "savedWithEvent": "Inscription enregistrée, et la course est au calendrier."
   }
 }
