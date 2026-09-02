@@ -1363,5 +1363,10 @@
         "action": "Rennen erfassen"
       }
     }
+  },
+  "anchor": {
+    "makeAnchor": "Als Anker {{year}} markieren",
+    "isAnchor": "Anker {{year}}",
+    "toggleHint": "Ankerrennen legen die Saison fest: Testfenster, Warnungen und Prognose kommen von ihnen."
   }
 }

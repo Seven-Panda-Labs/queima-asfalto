@@ -8,6 +8,7 @@ import {
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
 import { OutcomeReasonPrompt } from '../../components/OutcomeReasonPrompt'
+import { AnchorToggle } from '../../components/AnchorToggle'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { EventTrackSection } from '../../components/EventTrack'
@@ -24,6 +25,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { useRaces } from '../../hooks/useRaces'
 import { useEventMedia } from '../../hooks/useEventMedia'
 import { useEventTrack } from '../../hooks/useEventTrack'
 import { useEvents } from '../../hooks/useEvents'
@@ -38,6 +40,7 @@ import type { MediaValidationErrorCode } from '../../utils/mediaValidation'
 import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
 import { needsOutcomeReason, offersNextEdition } from '../../domain/outcomeReasons'
+import { isAnchorFor } from '../../domain/seasonAnchors'
 import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollover'
 import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
@@ -85,6 +88,7 @@ export function EventDetail() {
   const { allEvents, removeEvent } = useEvents()
   const { addItem, items: bucketListItems } = useBucketList()
   const { entries: raceEntries, addEntry } = useRaceEntries()
+  const { races } = useRaces()
 
   const requestedOwnerId = parseOwnerSearchParam(searchParams)
   const activeShare = useMemo(
@@ -148,16 +152,16 @@ export function EventDetail() {
    */
   const projection = useMemo(() => {
     if (!event || isSharedView || !isFutureDate(event.date)) return null
-    const anchor = bucketListItems.find(
-      (item) => item.raceId && item.raceId === event.raceId && item.isAnchor,
-    )
-    if (!anchor) return null
+    // The projection is for an anchor, and being one is a fact about the season
+    // this running falls in.
+    const race = races.find((candidate) => candidate.id === event.raceId)
+    if (!race || !isAnchorFor(race, event.date.getFullYear())) return null
     return projectRaceTime(
       { distanceKm: event.realDistance, date: event.date },
       allEvents,
       racesPreparing(event.raceId, bucketListItems),
     )
-  }, [allEvents, bucketListItems, event, isSharedView])
+  }, [allEvents, bucketListItems, event, isSharedView, races])
 
   const personalRecordIds = isSharedView
     ? new Set<string>()
@@ -412,6 +416,14 @@ export function EventDetail() {
             </div>
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            {!isSharedView && user ? (
+              <AnchorToggle
+                event={event}
+                races={races}
+                userId={user.uid}
+                onChanged={reloadEvent}
+              />
+            ) : null}
             {isRecord ? <PersonalRecordIndicator /> : null}
             {event.outcomeReason ? (
               <button

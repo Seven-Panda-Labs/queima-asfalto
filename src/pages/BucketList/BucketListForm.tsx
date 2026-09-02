@@ -16,6 +16,9 @@ import { validateBucketListItem } from '../../utils/bucketListValidation'
 import { deriveEventTypeFromName } from '../../utils/deriveEventTypeFromName'
 import { formatTargetMonth, TARGET_MONTHS } from '../../utils/targetMonth'
 import { RACE_ROLES, type RaceRole } from '../../domain/seasonRules'
+import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
+import { useRaces } from '../../hooks/useRaces'
+import { setRaceAnchorYear } from '../../services/races'
 
 const LocationMap = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.LocationMap })),
@@ -72,18 +75,32 @@ export function BucketListForm() {
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
   const sharedOwnerId = searchParams.get('owner')
+  /**
+   * The season a wish is about.
+   *
+   * A wish can be about no particular year, and an anchor is always about one,
+   * so the year the runner typed comes first and the one we are in is the
+   * fallback.
+   */
+  function anchorYearFor(payload: BucketListItemCreate): number {
+    return payload.targetYear ?? new Date().getFullYear()
+  }
+
   const isEditing = Boolean(id)
   const navigate = useNavigate()
   const ownBucketList = useBucketList()
+
+  const { races } = useRaces()
+  const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
 
   // Only an anchor that already has an identity can be pointed at: the reference
   // is a race, not a wish, so that it survives the wish being closed.
   const anchorOptions = useMemo(
     () =>
       ownBucketList.items
-        .filter((entry) => entry.isAnchor && entry.raceId && entry.id !== id)
+        .filter((entry) => entry.raceId && anchorIds.has(entry.raceId) && entry.id !== id)
         .map((entry) => ({ raceId: entry.raceId!, name: entry.name })),
-    [ownBucketList.items, id],
+    [anchorIds, ownBucketList.items, id],
   )
   const sharedBucketList = useSharedBucketList(sharedOwnerId)
   const isShared = Boolean(sharedOwnerId)
@@ -174,7 +191,11 @@ export function BucketListForm() {
           disciplines: item.disciplines,
           targetMonth: item.targetMonth ?? '',
           targetYear: item.targetYear ? String(item.targetYear) : '',
-          isAnchor: item.isAnchor === true,
+          // The race is where the answer lives; the wish's own flag is only
+          // still read for a wish nobody has carried over yet.
+          isAnchor: item.raceId
+            ? anchorIds.has(item.raceId)
+            : item.isAnchor === true,
           recurring: item.recurring === true,
           role: item.role ?? '',
           servesRaceId: item.servesRaceId ?? '',
@@ -193,7 +214,7 @@ export function BucketListForm() {
     return () => {
       cancelled = true
     }
-  }, [id, sharedOwnerId, sharedBucketList.items, sharedBucketList.loading, t])
+  }, [anchorIds, id, sharedOwnerId, sharedBucketList.items, sharedBucketList.loading, t])
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -291,6 +312,12 @@ export function BucketListForm() {
     try {
       if (isEditing && id) {
         await editItem(id, payload)
+        // The flag a reader trusts is on the race, so an edit writes it there
+        // too rather than waiting for the next load to carry it over.
+        const raceId = ownBucketList.items.find((entry) => entry.id === id)?.raceId
+        if (raceId) {
+          await setRaceAnchorYear(raceId, anchorYearFor(payload), form.isAnchor)
+        }
       } else {
         await addItem(payload)
       }

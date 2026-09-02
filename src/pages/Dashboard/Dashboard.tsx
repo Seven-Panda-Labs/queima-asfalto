@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AchievementShelf } from '../../components/AchievementShelf'
@@ -26,6 +26,9 @@ import { computeBestPerformances } from '../../utils/bestPerformances'
 import { computeDashboardHighlights } from '../../utils/dashboardHighlights'
 import { computeDashboardStats } from '../../utils/stats'
 import { findNextEvent } from '../../utils/nextEvent'
+import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
+import { useAnchorMigration } from '../../hooks/useAnchorMigration'
+import { useRaces } from '../../hooks/useRaces'
 import {
   shouldShowOnboarding,
   type OnboardingFacts,
@@ -44,7 +47,7 @@ export function Dashboard() {
   const { user } = useAuth()
   const currentYear = new Date().getFullYear()
   const { allEvents, loading: eventsLoading, error: eventsError } = useEvents()
-  const { items: bucketListItems } = useBucketList()
+  const { items: bucketListItems, editItem: editBucketListItem } = useBucketList()
   const { entries: raceEntries } = useRaceEntries()
   const { goals, loading: goalsLoading, error: goalsError } = useGoals({ year: currentYear })
   const {
@@ -52,6 +55,24 @@ export function Dashboard() {
     loading: performanceLoading,
     error: performanceError,
   } = usePerformanceGoals({ year: currentYear })
+
+  const { races, loading: racesLoading } = useRaces()
+  const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
+
+  /** Carries the anchors the app knew on the wish over to the race, once. */
+  const clearItemAnchor = useCallback(
+    async (itemId: string) => {
+      await editBucketListItem(itemId, { isAnchor: false })
+    },
+    [editBucketListItem],
+  )
+  useAnchorMigration(
+    bucketListItems,
+    raceEntries,
+    races,
+    racesLoading || eventsLoading,
+    clearItemAnchor,
+  )
 
   const nextEvent = findNextEvent(allEvents)
 
@@ -73,10 +94,8 @@ export function Dashboard() {
    */
   const nextEventProjection = useMemo(() => {
     if (!nextEvent || nextEventTarget) return null
-    const anchor = bucketListItems.find(
-      (item) => item.raceId && item.raceId === nextEvent.raceId && item.isAnchor,
-    )
-    if (!anchor) return null
+    const race = races.find((candidate) => candidate.id === nextEvent.raceId)
+    if (!race || !isAnchorFor(race, nextEvent.date.getFullYear())) return null
     const projected = projectRaceTime(
       { distanceKm: nextEvent.realDistance, date: nextEvent.date },
       allEvents,
@@ -88,7 +107,7 @@ export function Dashboard() {
       paceSeconds: projected.paceSeconds,
       fromBuildUp: projected.fromBuildUp,
     }
-  }, [allEvents, bucketListItems, nextEvent, nextEventTarget])
+  }, [allEvents, bucketListItems, nextEvent, nextEventTarget, races])
 
   /**
    * The first session, from what the account already holds rather than from a
@@ -103,14 +122,18 @@ export function Dashboard() {
   const onboardingFacts: OnboardingFacts = useMemo(
     () => ({
       disciplinesChosen: onboarding?.disciplinesChosen === true,
-      hasAnchor: bucketListItems.some((item) => item.isAnchor),
+      // Any season: somebody whose 2026 is planned has an anchor whether or not
+      // this year's is still ahead.
+      hasAnchor: anchorIds.size > 0,
       hasEntry: raceEntries.length > 0,
       hasResult: allEvents.some((event) => event.status === 'completed' && Boolean(event.time)),
     }),
-    [allEvents, bucketListItems, onboarding, raceEntries],
+    [allEvents, anchorIds, onboarding, raceEntries],
   )
 
-  const anchorItemId = bucketListItems.find((item) => item.isAnchor)?.id
+  const anchorItemId = bucketListItems.find(
+    (item) => item.raceId && anchorIds.has(item.raceId),
+  )?.id
 
   async function handleDismissOnboarding() {
     if (!user) return

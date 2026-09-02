@@ -154,7 +154,8 @@ describe('buildRaceEntryFunnel', () => {
       [
         item({ id: 'soon' }),
         item({ id: 'later' }),
-        item({ id: 'anchor', isAnchor: true }),
+        // The anchor is a fact about the race, so the sort reads the identity.
+        item({ id: 'anchor', raceId: 'race-anchor' }),
       ],
       [
         entry({ id: 'e1', bucketListItemId: 'soon', registrationOpensAt: days(10) }),
@@ -162,6 +163,7 @@ describe('buildRaceEntryFunnel', () => {
         entry({ id: 'e3', bucketListItemId: 'anchor', registrationOpensAt: days(120) }),
       ],
       TODAY,
+      new Set(['race-anchor']),
     )
 
     const watching = groups.find((group) => group.key === 'watching')!

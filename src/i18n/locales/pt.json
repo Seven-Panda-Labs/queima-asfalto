@@ -1363,5 +1363,10 @@
         "action": "Registar uma prova"
       }
     }
+  },
+  "anchor": {
+    "makeAnchor": "Marcar como âncora de {{year}}",
+    "isAnchor": "Âncora de {{year}}",
+    "toggleHint": "As provas âncora fixam a temporada: delas saem a janela de teste, os avisos e a previsão."
   }
 }
