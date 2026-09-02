@@ -7,6 +7,7 @@ import {
   getDocs,
   orderBy,
   query,
+  runTransaction,
   serverTimestamp,
   updateDoc,
   where,
@@ -15,6 +16,7 @@ import {
 import { db } from './firebase'
 import type { Race, RaceCreate } from '../types/Race'
 import { findRaceByName } from '../domain/raceMatching'
+import { parseAnchorYears, toggleAnchorYear } from '../domain/seasonAnchors'
 
 const RACES_COLLECTION = 'races'
 
@@ -42,6 +44,7 @@ export function docToRace(id: string, data: Record<string, unknown>): Race {
     locationGeocodeQuery:
       typeof data.locationGeocodeQuery === 'string' ? data.locationGeocodeQuery : undefined,
     catalogRaceId: (data.catalogRaceId as string | null) ?? undefined,
+    anchorYears: parseAnchorYears(data.anchorYears),
     officialUrl: (data.officialUrl as string | null) ?? undefined,
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
     updatedAt: timestampToDate(data.updatedAt as Timestamp | undefined),
@@ -114,6 +117,31 @@ export async function findOrCreateRaceId(
   } catch {
     return null
   }
+}
+
+/**
+ * Mark or unmark a race as the anchor of one season.
+ *
+ * A transaction because the same race can be toggled from the event page and
+ * from the bucket list, and the stored value is a list: a read-modify-write
+ * would lose whichever click landed second.
+ */
+export async function setRaceAnchorYear(
+  raceId: string,
+  year: number,
+  anchor: boolean,
+): Promise<void> {
+  const ref = doc(db, RACES_COLLECTION, raceId)
+  await runTransaction(db, async (transaction) => {
+    const snapshot = await transaction.get(ref)
+    if (!snapshot.exists()) return
+
+    const years = toggleAnchorYear(parseAnchorYears(snapshot.data().anchorYears), year, anchor)
+    transaction.update(ref, {
+      anchorYears: years.length > 0 ? years : null,
+      updatedAt: serverTimestamp(),
+    })
+  })
 }
 
 export function racesCollectionQuery(userId: string) {

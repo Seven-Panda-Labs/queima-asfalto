@@ -18,6 +18,7 @@
 - **Encontrar carreras:** una página nueva en la bucket list busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla rellena la ventana del test y pone delante las que encajan. Siempre dice cuándo se actualizó el catálogo, y una entrada sin revisar muestra la fecha de cierre como «según la lista», no como promesa.
 - **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada. Al aprobarla, el usuario recibe un email y ya puede entrar.
 - **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, y cada uno explica qué hace la app con eso: elegir distancias, marcar la carrera principal del año, planificar su inscripción y registrar una carrera ya corrida. Desaparece al completarlos, o cuando digas que ya conoces la app.
+- **Marcar carreras ancla donde están:** el ancla pasa a vivir en la carrera y por temporada, y se marca con un botón en la página del evento, pasado o futuro. Quien ya tenía la temporada planificada como eventos gana la ventana del test, los avisos y la previsión, sin recrear nada en la bucket list.
 
 ---
 

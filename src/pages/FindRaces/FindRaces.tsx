@@ -9,6 +9,7 @@ import { useBucketList } from '../../hooks/useBucketList'
 import { useDisciplines } from '../../contexts/DisciplinesContext'
 import { useEvents } from '../../hooks/useEvents'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { useRaces } from '../../hooks/useRaces'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { visibleDisciplines } from '../../domain/disciplinePreferences'
 import {
@@ -19,6 +20,7 @@ import {
 } from '../../domain/raceDiscovery'
 import type { SeasonRace } from '../../domain/seasonRules'
 import { tuneUpWindowFor } from '../../domain/seasonRules'
+import { isAnchorFor } from '../../domain/seasonAnchors'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { canAssertDates } from '../../../shared/raceCatalog'
 import {
@@ -122,13 +124,14 @@ export function FindRaces() {
   const toast = useToast()
   const { items, addItem } = useBucketList()
   const { entries: raceEntries } = useRaceEntries()
+  const { races } = useRaces()
   const { allEvents } = useEvents()
   const { enabledDisciplines } = useDisciplines()
 
   const [catalog, setCatalog] = useState<RaceCatalogEntry[] | null>(null)
   const [syncedAt, setSyncedAt] = useState<Date | null>(null)
   const [criteria, setCriteria] = useState<DiscoveryCriteria>(EMPTY_CRITERIA)
-  const [anchorItemId, setAnchorItemId] = useState('')
+  const [anchorRaceId, setAnchorRaceId] = useState('')
   const [adding, setAdding] = useState<string | null>(null)
   const [addedIds, setAddedIds] = useState<string[]>([])
 
@@ -137,35 +140,51 @@ export function FindRaces() {
     void loadHarvestSyncedAt().then(setSyncedAt)
   }, [])
 
-  /** The anchors that have a date: a window can only come from one of those. */
+  /**
+   * The anchors a window can come from: still ahead, and with a date.
+   *
+   * Read off the race rather than the wish, so an anchor that was scheduled, or
+   * that never was a wish at all, is offered here too.
+   */
   const anchors = useMemo(() => {
-    const dateOf = (itemId: string, raceId?: string) =>
-      raceEntries.find((entry) => entry.bucketListItemId === itemId)?.raceDate ??
-      allEvents.find((event) => raceId && event.raceId === raceId)?.date
+    const now = Date.now()
+    const candidates: { itemId?: string; race: SeasonRace }[] = []
 
-    return items
-      .filter((item) => item.isAnchor)
-      .map((item) => {
-        const date = dateOf(item.id, item.raceId)
-        if (!date) return null
-        const race: SeasonRace = {
-          id: item.raceId ?? item.id,
-          name: item.name,
-          date,
-          distanceKm: item.realDistance,
-          isAnchor: true,
-        }
-        return { itemId: item.id, race }
+    for (const race of races) {
+      const item = items.find((candidate) => candidate.raceId === race.id)
+      const dates = [
+        ...raceEntries.filter((entry) => entry.raceId === race.id).map((entry) => entry.raceDate),
+        ...allEvents.filter((event) => event.raceId === race.id).map((event) => event.date),
+      ].filter((date): date is Date => date instanceof Date)
+
+      const date = dates
+        .filter((candidate) => candidate.getTime() >= now)
+        .sort((left, right) => left.getTime() - right.getTime())[0]
+      if (!date || !isAnchorFor(race, date.getFullYear())) continue
+
+      const distanceKm =
+        item?.realDistance ??
+        allEvents.find((event) => event.raceId === race.id)?.realDistance ??
+        0
+      if (distanceKm <= 0) continue
+
+      candidates.push({
+        itemId: item?.id,
+        race: { id: race.id, name: race.name, date, distanceKm, isAnchor: true },
       })
-      .filter((anchor): anchor is { itemId: string; race: SeasonRace } => anchor !== null)
-  }, [allEvents, items, raceEntries])
+    }
 
-  const anchor = anchors.find((candidate) => candidate.itemId === anchorItemId)?.race
+    return candidates.sort(
+      (left, right) => left.race.date.getTime() - right.race.date.getTime(),
+    )
+  }, [allEvents, items, raceEntries, races])
+
+  const anchor = anchors.find((candidate) => candidate.race.id === anchorRaceId)?.race
 
   /** Picking an anchor fills the window in, which is the query the interviews describe. */
-  function pickAnchor(itemId: string) {
-    setAnchorItemId(itemId)
-    const picked = anchors.find((candidate) => candidate.itemId === itemId)?.race
+  function pickAnchor(raceId: string) {
+    setAnchorRaceId(raceId)
+    const picked = anchors.find((candidate) => candidate.race.id === raceId)?.race
     if (!picked) return
     const window = tuneUpWindowFor(picked)
     setCriteria((current) => ({
@@ -220,14 +239,14 @@ export function FindRaces() {
           </label>
           <select
             id="anchor"
-            value={anchorItemId}
+            value={anchorRaceId}
             onChange={(event) => pickAnchor(event.target.value)}
             className={FIELD}
             disabled={anchors.length === 0}
           >
             <option value="">{t('common.dash')}</option>
-            {anchors.map(({ itemId, race }) => (
-              <option key={itemId} value={itemId}>
+            {anchors.map(({ race }) => (
+              <option key={race.id} value={race.id}>
                 {race.name}
               </option>
             ))}

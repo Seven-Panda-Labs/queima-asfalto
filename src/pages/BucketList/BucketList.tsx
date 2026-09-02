@@ -17,9 +17,11 @@ import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDia
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
+import { useRaces } from '../../hooks/useRaces'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
+import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
 import {
   racesServing,
   seasonDate,
@@ -109,6 +111,9 @@ export function BucketList() {
   const { entries: raceEntries, loading: entriesLoading, addEntry } = useRaceEntries()
   /** Only to know which races failed: the reason lives on the event. */
   const { allEvents } = useEvents()
+  /** Anchors live on the race, so a scheduled or directly created one counts. */
+  const { races } = useRaces()
+  const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
   const sharedBucketList = useSharedBucketList(activeOwnerId)
 
   // Only for the account's own list: rolling over somebody else's wishes is not
@@ -170,8 +175,14 @@ export function BucketList() {
   // A shared view carries no entries: the snapshot does not include them, so
   // every row lands in the group for a race nobody has acted on yet.
   const funnelGroups = useMemo(
-    () => buildRaceEntryFunnel(filteredItems, isSharedView ? [] : raceEntries),
-    [filteredItems, isSharedView, raceEntries],
+    () =>
+      buildRaceEntryFunnel(
+        filteredItems,
+        isSharedView ? [] : raceEntries,
+        undefined,
+        anchorIds,
+      ),
+    [anchorIds, filteredItems, isSharedView, raceEntries],
   )
 
   /**
@@ -201,29 +212,37 @@ export function BucketList() {
         .map((event) => event.raceId!),
     )
 
-    const races: SeasonRace[] = []
+    const anchorYearsById = new Map(races.map((race) => [race.id, race.anchorYears]))
+    const seasonRaces: SeasonRace[] = []
     const itemIdByRaceId = new Map<string, string>()
     for (const item of ownBucketList.items) {
       const raceDate = seasonDate(datesByItem.get(item.id) ?? [])
       if (!raceDate) continue
       const id = item.raceId ?? item.id
       itemIdByRaceId.set(id, item.id)
-      races.push({
+      seasonRaces.push({
         id,
         name: item.name,
         date: raceDate,
         distanceKm: item.realDistance,
-        isAnchor: item.isAnchor === true,
+        // Being an anchor is a fact about a season, so the season asked about is
+        // the one this date falls in.
+        isAnchor: item.raceId
+          ? isAnchorFor(
+              { id: item.raceId, anchorYears: anchorYearsById.get(item.raceId) },
+              raceDate.getFullYear(),
+            )
+          : false,
         role: item.role,
         servesRaceId: item.servesRaceId,
         failed: item.raceId ? failedRaceIds.has(item.raceId) : false,
       })
     }
 
-    const warnings = seasonWarnings(races)
-    const byRaceId = new Map(races.map((race) => [race.id, race]))
+    const warnings = seasonWarnings(seasonRaces)
+    const byRaceId = new Map(seasonRaces.map((race) => [race.id, race]))
     const annotations = new Map<string, ItemSeason>()
-    for (const race of races) {
+    for (const race of seasonRaces) {
       const itemId = itemIdByRaceId.get(race.id)!
       const anchor = race.servesRaceId ? byRaceId.get(race.servesRaceId) : undefined
       // A window and a count of what is preparing it are planning, so they go
@@ -231,7 +250,7 @@ export function BucketList() {
       const anchorAhead = race.isAnchor && race.date.getTime() >= Date.now()
       annotations.set(itemId, {
         window: anchorAhead ? tuneUpWindowFor(race) : undefined,
-        serving: anchorAhead ? racesServing(race.id, races).length : 0,
+        serving: anchorAhead ? racesServing(race.id, seasonRaces).length : 0,
         serves: anchor
           ? { name: anchor.name, weeksBefore: tuneUpFit(anchor, race).weeksBefore }
           : undefined,
@@ -241,7 +260,7 @@ export function BucketList() {
       })
     }
     return annotations
-  }, [allEvents, ownBucketList.items, raceEntries])
+  }, [allEvents, ownBucketList.items, raceEntries, races])
 
   const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
   const unmappedItems = useMemo(
@@ -441,6 +460,7 @@ export function BucketList() {
           <BucketListFunnel
             groups={funnelGroups}
             season={isSharedView ? new Map() : seasonByItem}
+            anchorRaceIds={isSharedView ? new Set() : anchorIds}
             showEntryLink={!isSharedView}
             actions={({ item }) => (
               <>

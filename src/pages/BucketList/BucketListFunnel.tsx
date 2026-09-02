@@ -20,6 +20,8 @@ export type ItemSeason = {
 type BucketListFunnelProps = {
   groups: FunnelGroup[]
   season: Map<string, ItemSeason>
+  /** Anchors by race identity: the flag is on the race, not on the wish. */
+  anchorRaceIds: ReadonlySet<string>
   /** Rendered at the end of every row: the icons the page already had. */
   actions: (row: FunnelRow) => ReactNode
   showEntryLink: boolean
@@ -98,7 +100,13 @@ function SeasonNotes({ season }: { season: ItemSeason | undefined }) {
   )
 }
 
-export function BucketListFunnel({ groups, season, actions, showEntryLink }: BucketListFunnelProps) {
+export function BucketListFunnel({
+  groups,
+  season,
+  anchorRaceIds,
+  actions,
+  showEntryLink,
+}: BucketListFunnelProps) {
   const { t } = useTranslation()
   const populated = groups.filter((group) => group.rows.length > 0)
 
@@ -120,7 +128,7 @@ export function BucketListFunnel({ groups, season, actions, showEntryLink }: Buc
                   {item.emoji ? <span aria-hidden>{item.emoji}</span> : null}
                   <span>{item.name}</span>
                 </span>
-                {item.isAnchor ? (
+                {item.raceId && anchorRaceIds.has(item.raceId) ? (
                   <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
                     {t('funnel.anchor')}
                   </span>

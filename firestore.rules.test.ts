@@ -780,6 +780,35 @@ describe('firestore.rules', () => {
       await assertSucceeds(ref.delete())
     })
 
+    it('accepts the seasons a race was an anchor, and refuses junk in them', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('races')
+          .doc('race-anchor')
+          .set(validRacePayload(userId, { anchorYears: [2026, 2027] })),
+      )
+      await assertFails(
+        db
+          .collection('races')
+          .doc('race-bad-year')
+          .set(validRacePayload(userId, { anchorYears: ['2026'] })),
+      )
+      // The cap is what lets the rule check the list at all.
+      await assertFails(
+        db
+          .collection('races')
+          .doc('race-too-many')
+          .set(
+            validRacePayload(userId, {
+              anchorYears: [2020, 2021, 2022, 2023, 2024, 2025, 2026, 2027, 2028],
+            }),
+          ),
+      )
+    })
+
     it('accepts the optional catalog pointer and official url', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()

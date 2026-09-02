@@ -1363,5 +1363,10 @@
         "action": "Enregistrer une course"
       }
     }
+  },
+  "anchor": {
+    "makeAnchor": "Marquer comme pivot de {{year}}",
+    "isAnchor": "Pivot de {{year}}",
+    "toggleHint": "Les courses pivots fixent la saison : la fenêtre du test, les alertes et la prévision en viennent."
   }
 }

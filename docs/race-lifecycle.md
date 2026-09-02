@@ -129,7 +129,7 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 
 Por ordem de quanto bloqueiam trabalho a jusante:
 
-1. **Como se representa o papel de uma prova na temporada?** `isAnchor` nomeia a âncora, mas falta o papel das restantes e a relação com a âncora a que servem. Campo no item, campo na inscrição, ou derivado das datas? É pré-requisito das regras de temporada e da janela de datas de uma pesquisa de build-up.
+1. ~~**Como se representa o papel de uma prova na temporada?**~~ **Respondido.** O papel e a âncora que serve são campos no item (`role`, `servesRaceId`, #250). A âncora não: é `races/{id}.anchorYears`, na identidade da prova e por temporada, porque tem de ser conhecida a partir do desejo, da inscrição e do evento. Um desejo desaparece quando é agendado, e quem planeia directamente em eventos nunca teve desejo nenhum.
 2. **«Build-up» e «teste» são a mesma coisa?** Se um corredor distingue a prova que corre a ritmo de objectivo daquela que corre por volume, a fase 8 tem de as ler de forma diferente: a primeira é evidência sobre a âncora, a segunda não é. Vocabulário a fechar antes de existir um campo.
 3. **Qual é a lista mínima de motivos de falha?** Não um vocabulário completo, só os motivos a que algo reage: o que propõe a época seguinte, o que sai da análise, e o que continua a contar como prova começada.
 4. **A unidade de planeamento é o ano civil ou a temporada?** `Goal.year` e `PerformanceGoal.year` são anos civis, mas o bloco de uma maratona de Março começa no ano anterior. Enquanto os objectivos forem por ano civil, não conseguem descrever um ciclo em torno de uma âncora.
@@ -272,7 +272,7 @@ They live in the issues or in the interviews, and should not be reopened in pass
 
 Ordered by how much downstream work they block:
 
-1. **How is a race's role in the season represented?** `isAnchor` names the anchor, but the role of the others and the relation to the anchor they serve are missing. A field on the item, a field on the entry, or derived from the dates? It is a prerequisite for the season rules and for the date window of a build-up search.
+1. ~~**How is a race's role in the season represented?**~~ **Answered.** The role and the anchor it serves are fields on the item (`role`, `servesRaceId`, #250). The anchor itself is not: it is `races/{id}.anchorYears`, on the race identity and per season, because it has to be knowable from the wish, the entry and the event. A wish is gone once it is scheduled, and somebody who plans straight into events never had one.
 2. **Are "build-up" and "test" the same thing?** If a runner distinguishes the race run at goal pace from the one run for volume, stage 8 has to read them differently: the first is evidence about the anchor, the second is not. Settle the vocabulary before there is a field.
 3. **What is the minimum list of failure reasons?** Not a complete vocabulary, only the reasons something reacts to: what offers next season, what leaves the analysis, and what still counts as a race started.
 4. **Is the planning unit the calendar year or the season?** `Goal.year` and `PerformanceGoal.year` are calendar years, but the block for a March marathon starts in the previous one. While goals are per calendar year, they cannot describe a cycle around an anchor.

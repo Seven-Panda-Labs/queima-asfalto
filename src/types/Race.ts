@@ -25,6 +25,16 @@ export type Race = {
   locationGeocodeQuery?: string
   catalogRaceId?: string
   officialUrl?: string
+  /**
+   * The seasons this race was the runner's anchor, ascending.
+   *
+   * On the race and not on the wish or the event, because an anchor has to be
+   * knowable from all three: a wish is gone once it is scheduled, and a runner
+   * who never used the bucket list has only events. And by year, because being
+   * an anchor is a fact about a season: Berlin can be the anchor in 2026 and a
+   * build-up in 2027.
+   */
+  anchorYears?: number[]
   createdAt: Date
   updatedAt: Date
 }
@@ -37,4 +47,5 @@ export type RaceCreate = {
   locationGeocodeQuery?: string
   catalogRaceId?: string
   officialUrl?: string
+  anchorYears?: number[]
 }

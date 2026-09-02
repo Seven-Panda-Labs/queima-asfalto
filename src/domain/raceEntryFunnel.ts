@@ -92,6 +92,8 @@ export function buildRaceEntryFunnel(
   items: readonly BucketListItem[],
   entries: readonly RaceEntry[],
   today: Date = new Date(),
+  /** The races that are anchors, by identity: the flag lives on the race now. */
+  anchorRaceIds: ReadonlySet<string> = new Set(),
 ): FunnelGroup[] {
   const currentByItem = new Map<string, RaceEntry>()
   for (const entry of entries) {
@@ -111,7 +113,9 @@ export function buildRaceEntryFunnel(
   )
   for (const row of rows) grouped.get(funnelGroupFor(row, today))!.push(row)
 
-  for (const group of grouped.values()) group.sort((left, right) => compareRows(left, right, today))
+  for (const group of grouped.values()) {
+    group.sort((left, right) => compareRows(left, right, today, anchorRaceIds))
+  }
 
   return FUNNEL_GROUPS.map((key) => ({ key, rows: grouped.get(key)! }))
 }
@@ -146,8 +150,14 @@ export function nextDateFor(entry: RaceEntry | null, today: Date = new Date()): 
     : candidates.reduce((latest, date) => (date > latest ? date : latest))
 }
 
-function compareRows(left: FunnelRow, right: FunnelRow, today: Date): number {
-  const anchor = (row: FunnelRow) => (row.item.isAnchor ? 0 : 1)
+function compareRows(
+  left: FunnelRow,
+  right: FunnelRow,
+  today: Date,
+  anchorRaceIds: ReadonlySet<string>,
+): number {
+  const anchor = (row: FunnelRow) =>
+    row.item.raceId && anchorRaceIds.has(row.item.raceId) ? 0 : 1
   if (anchor(left) !== anchor(right)) return anchor(left) - anchor(right)
 
   const leftDate = nextDateFor(left.entry, today)
