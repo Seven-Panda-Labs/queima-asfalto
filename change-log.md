@@ -16,6 +16,7 @@
 - **Tentar outra vez:** numa prova falhada por lesão, desistência ou cancelamento, um botão cria a tentativa da próxima temporada e leva-te à inscrição. As provas que preparavam uma âncora que falhou ficam marcadas, para decidires se ainda fazem sentido.
 - **Previsão na prova âncora:** a página de uma âncora que está para vir, e o herói da entrada quando é a próxima, mostram o tempo previsto para a distância a partir da tua prova de preparação mais recente. O número é o mesmo da análise, agora onde serve para algo.
 - **Encontrar provas:** uma página nova na bucket list procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora preenche a janela do teste e põe à frente as provas que encaixam. Diz sempre quando o catálogo foi actualizado, e uma entrada não revista mostra a data de fecho como «a listagem diz», não como promessa.
+- **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito. Quem for aprovado recebe email e entra a seguir.
 
 ---
 

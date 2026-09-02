@@ -117,7 +117,9 @@
     "subtitle": "Annual running plan. Track events, goals and results.",
     "google": "Sign in with Google",
     "emulator": "Sign in (emulator)",
-    "emulatorHint": "Emulator mode, no Google OAuth. See docs/emulators.md."
+    "emulatorHint": "Emulator mode, no Google OAuth. See docs/emulators.md.",
+    "pendingApproval": "Your account is waiting for approval. You will get an email once it is approved, and can sign in then.",
+    "rejected": "This account was not approved. Talk to the instance administrator."
   },
   "accountApproval": {
     "pendingTitle": "Awaiting approval",

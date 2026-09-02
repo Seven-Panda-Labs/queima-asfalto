@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
+import { describeSignInRefusal } from '../../../shared/account/signInRefusal'
 
 type LoginLocationState = {
   from?: { pathname: string }
@@ -34,31 +35,33 @@ export function Login() {
     return <Navigate to={redirectTo} replace />
   }
 
-  async function handleSignIn() {
+  /**
+   * An account waiting for approval is refused here rather than let in and
+   * gated, so the reason has to survive the trip: it arrives as a token inside
+   * an `auth/internal-error`.
+   */
+  function messageFor(signInError: unknown): string {
+    const refusal = describeSignInRefusal(signInError)
+    if (refusal === 'pending') return t('login.pendingApproval')
+    if (refusal === 'rejected') return t('login.rejected')
+    return t('errors.loginError')
+  }
+
+  async function attemptSignIn(signIn: () => Promise<unknown>) {
     setError(null)
     setSubmitting(true)
     try {
-      await signInWithGoogle()
+      await signIn()
       navigate(redirectTo, { replace: true })
-    } catch {
-      setError(t('errors.loginError'))
+    } catch (signInError) {
+      setError(messageFor(signInError))
     } finally {
       setSubmitting(false)
     }
   }
 
-  async function handleEmulatorSignIn() {
-    setError(null)
-    setSubmitting(true)
-    try {
-      await signInWithEmulatorDev()
-      navigate(redirectTo, { replace: true })
-    } catch {
-      setError(t('errors.loginError'))
-    } finally {
-      setSubmitting(false)
-    }
-  }
+  const handleSignIn = () => attemptSignIn(signInWithGoogle)
+  const handleEmulatorSignIn = () => attemptSignIn(signInWithEmulatorDev)
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-background p-6">

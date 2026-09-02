@@ -16,6 +16,7 @@
 - **Try again:** on a race that failed to injury, a DNF or a cancellation, one button creates next season's attempt and takes you to its entry. The races that were preparing an anchor that failed are flagged, so you decide whether they still make sense.
 - **A prediction on the anchor:** the page of an anchor still ahead, and the home hero when it is the next race, show the predicted time over the distance from your latest build-up race. It is the same number the analysis gives, now where it is of use.
 - **Find races:** a new page on the bucket list searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor fills in the tune-up window and puts the races that fit first. It always says when the catalog was last refreshed, and an unreviewed entry shows its closing date as what the listing says rather than as a promise.
+- **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written. Once approved, the user gets an email and can sign in.
 
 ---
 

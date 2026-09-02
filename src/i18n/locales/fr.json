@@ -117,7 +117,9 @@
     "subtitle": "Plan de course annuel. Suis tes événements, objectifs et résultats.",
     "google": "Se connecter avec Google",
     "emulator": "Se connecter (émulateur)",
-    "emulatorHint": "Mode émulateur, sans OAuth Google. Voir docs/emulators.md."
+    "emulatorHint": "Mode émulateur, sans OAuth Google. Voir docs/emulators.md.",
+    "pendingApproval": "Ton compte attend une validation. Tu recevras un email dès qu'il sera validé, et tu pourras te connecter ensuite.",
+    "rejected": "Ce compte n'a pas été validé. Parles-en à l'administrateur de l'instance."
   },
   "accountApproval": {
     "pendingTitle": "En attente d'approbation",

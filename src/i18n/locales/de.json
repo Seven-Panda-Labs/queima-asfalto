@@ -117,7 +117,9 @@
     "subtitle": "Jahreslaufplan. Events, Ziele und Ergebnisse im Blick.",
     "google": "Mit Google anmelden",
     "emulator": "Anmelden (Emulator)",
-    "emulatorHint": "Emulator-Modus, kein Google OAuth. Siehe docs/emulators.md."
+    "emulatorHint": "Emulator-Modus, kein Google OAuth. Siehe docs/emulators.md.",
+    "pendingApproval": "Dein Konto wartet auf Freigabe. Du bekommst eine E-Mail, sobald es freigegeben ist, und kannst dich dann anmelden.",
+    "rejected": "Dieses Konto wurde nicht freigegeben. Wende dich an den Administrator der Instanz."
   },
   "accountApproval": {
     "pendingTitle": "Warten auf Freigabe",

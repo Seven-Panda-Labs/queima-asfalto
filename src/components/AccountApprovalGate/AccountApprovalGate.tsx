@@ -6,6 +6,13 @@ import { useAccountStatus } from '../../hooks/useAccountStatus'
 import { PendingApproval } from '../../pages/AccountApproval/PendingApproval'
 import { RejectedAccount } from '../../pages/AccountApproval/RejectedAccount'
 
+/**
+ * The window a refused sign-in cannot cover.
+ *
+ * A pending account is turned away at sign-in, so nobody reaches the app while
+ * waiting any more. This still matters for a session that was already open when
+ * the status changed: blocking functions run on sign-in, not on every read.
+ */
 export function AccountApprovalGate() {
   const { t } = useTranslation()
   const { user } = useAuth()
