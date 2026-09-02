@@ -15,6 +15,7 @@
 - **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé (abandon, blessure, pas venu, annulée, voyage, autre) au lieu de dire que tu l'as manquée. Un abandon compte comme une course commencée et n'apparaît plus comme donnée manquante, tout en restant hors des allures, des records et des prévisions.
 - **Réessayer :** sur une course perdue pour blessure, abandon ou annulation, un bouton crée la tentative de la saison prochaine et t'emmène à son inscription. Les courses qui préparaient un pivot qui a échoué sont signalées, à toi de voir si elles ont encore du sens.
 - **Une prévision sur le pivot :** la page d'un pivot encore à venir, et le héros d'accueil quand c'est la prochaine course, affichent le temps prévu sur la distance à partir de ta dernière course de préparation. C'est le même chiffre que l'analyse, désormais là où il sert.
+- **Trouver des courses :** une nouvelle page dans la bucket list cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot remplit la fenêtre du test et met devant les courses qui conviennent. Elle dit toujours quand le catalogue a été mis à jour, et une entrée non vérifiée affiche sa date de clôture comme ce que dit la liste, pas comme une promesse.
 
 ---
 

@@ -1306,5 +1306,32 @@
     "basis": "Mejor marca de los últimos 12 meses: {{name}}, {{date}}.",
     "basisStale": "Sin carreras en los últimos 12 meses; a partir de la marca más reciente: {{name}}, {{date}}.",
     "basisBuildUp": "A partir de tu carrera de preparación: {{name}}, {{date}}."
+  },
+  "findRaces": {
+    "greeting": "Descubrir",
+    "title": "Encontrar carreras",
+    "subtitle": "Carreras futuras del catálogo de esta instancia, listas para tu bucket list.",
+    "cta": "Encontrar carreras",
+    "forAnchor": "Para preparar",
+    "forAnchorHint": "Elegir un ancla rellena la ventana del test.",
+    "noAnchors": "Marca una carrera como ancla del año para tener una ventana sugerida.",
+    "from": "Desde",
+    "to": "Hasta",
+    "place": "Dónde",
+    "placePlaceholder": "Ciudad o nombre",
+    "closes": "las inscripciones cierran el {{date}}",
+    "closesUnreviewed": "la lista dice que cierra el {{date}}",
+    "openSource": "Ver origen",
+    "add": "Añadir",
+    "added": "Añadida",
+    "addedToast": "«{{name}}» fue a tu bucket list.",
+    "addError": "No se pudo añadir esta carrera.",
+    "emptyCatalog": "El catálogo de esta instancia está vacío. Un administrador puede añadir carreras o activar la cosecha.",
+    "noMatches": "Nada en el catálogo con estos criterios.",
+    "syncedAt": "Catálogo actualizado el {{date}}.",
+    "neverSynced": "Catálogo mantenido a mano en esta instancia.",
+    "backToBucketList": "Volver a la bucket list",
+    "fitsAnchor_one": "encaja, 1 semana antes",
+    "fitsAnchor_other": "encaja, {{count}} semanas antes"
   }
 }

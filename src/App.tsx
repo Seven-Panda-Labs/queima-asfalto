@@ -7,6 +7,7 @@ import { AccountApprovalGate } from './components/AccountApprovalGate/AccountApp
 import { BucketList } from './pages/BucketList/BucketList'
 import { BucketListForm } from './pages/BucketList/BucketListForm'
 import { EntryForm } from './pages/BucketList/EntryForm'
+import { FindRaces } from './pages/FindRaces'
 import { Dashboard } from './pages/Dashboard/Dashboard'
 import { Events } from './pages/Events/Events'
 import { EventDetail } from './pages/Events/EventDetail'
@@ -64,6 +65,7 @@ export default function App() {
             <Route path="eventos/:id/editar" element={<EventForm />} />
             <Route path="eventos/:id" element={<EventDetail />} />
             <Route path="bucket-list" element={<BucketList />} />
+            <Route path="bucket-list/descobrir" element={<FindRaces />} />
             <Route path="bucket-list/novo" element={<BucketListForm />} />
             <Route path="bucket-list/:id/editar" element={<BucketListForm />} />
             <Route path="bucket-list/:id/inscricao" element={<EntryForm />} />

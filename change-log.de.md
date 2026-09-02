@@ -15,6 +15,7 @@
 - **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt jetzt, was passiert ist (Ausstieg, Verletzung, nicht hingegangen, abgesagt, Reise, anderes), statt zu sagen, du hättest es verpasst. Ein DNF zählt als gestartetes Rennen und gilt nicht mehr als fehlende Daten, bleibt aber aus Tempo, Rekorden und Prognosen heraus.
 - **Neu versuchen:** bei einem Rennen, das an Verletzung, DNF oder Absage gescheitert ist, legt ein Knopf den Versuch der nächsten Saison an und führt zu seiner Anmeldung. Die Rennen, die einen ausgefallenen Anker vorbereitet haben, werden markiert, damit du entscheidest, ob sie noch Sinn haben.
 - **Prognose beim Anker:** die Seite eines noch bevorstehenden Ankers, und der Startbereich, wenn er das nächste Rennen ist, zeigen die prognostizierte Zeit über die Distanz aus deinem letzten Vorbereitungsrennen. Es ist dieselbe Zahl wie in der Analyse, jetzt dort, wo sie nützt.
+- **Rennen finden:** eine neue Seite an der Bucket List durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker füllt das Testfenster und stellt die passenden Rennen nach vorne. Sie sagt immer, wann der Katalog aktualisiert wurde, und ein ungeprüfter Eintrag zeigt seinen Anmeldeschluss als Angabe der Liste, nicht als Versprechen.
 
 ---
 
