@@ -27,6 +27,16 @@ describe('stripEdition', () => {
     expect(stripEdition('3. Berlin Halbmarathon')).toBe('Berlin Halbmarathon')
   })
 
+  it('drops an edition written at the end, which is how one source writes it', () => {
+    expect(stripEdition('Correr pela Europa - 9ª Edição')).toBe('Correr pela Europa')
+    expect(stripEdition('Meia de Cascais 12th edition')).toBe('Meia de Cascais')
+  })
+
+  it('drops a trailing year, which is the same problem', () => {
+    expect(stripEdition('Maratona de Lisboa 2026')).toBe('Maratona de Lisboa')
+    expect(stripEdition('XI Run Castle 2027')).toBe('Run Castle')
+  })
+
   it('leaves a name that only looks like one alone', () => {
     expect(stripEdition('Maratona de Lisboa')).toBe('Maratona de Lisboa')
     expect(stripEdition('Mil Metros do Porto')).toBe('Mil Metros do Porto')

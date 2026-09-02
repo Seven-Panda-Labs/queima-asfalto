@@ -1,4 +1,4 @@
-import type { EventType } from '../../src/domain/eventCodes.js'
+import type { EventType } from '../domain/eventCodes.js'
 
 /** How a place in the race is obtained. The scarce thing, not the race itself. */
 export const RACE_ENTRY_METHODS = [

@@ -19,7 +19,20 @@ const EDITION_PREFIX = /^\s*(?:[ivxlcdm]+|\d{1,3}\.?[ºªoa]?)\s*[-–—.)]?\s+
  */
 const ROMAN = /^(?:X{0,4})(?:IX|IV|V?I{0,3})$/i
 
+/**
+ * The edition written at the end instead of the front.
+ *
+ * Real data: "Correr pela Europa - 9ª Edição". Next year it is the tenth, and
+ * an id built from the raw name would file it as a different race. A trailing
+ * year does the same damage, so it goes too.
+ */
+const EDITION_SUFFIX =
+  /\s*[-–—,]?\s*(?:\d{1,3}\s*(?:[ºªoa]|th|st|nd|rd)?\s*(?:edi[çc][ãa]o|edition|ed\.?)|(?:19|20)\d{2})\s*$/i
+
 export function stripEdition(name: string): string {
+  const withoutSuffix = name.replace(EDITION_SUFFIX, '').trim()
+  if (withoutSuffix && withoutSuffix !== name.trim()) return stripEdition(withoutSuffix)
+
   const match = EDITION_PREFIX.exec(name)
   if (!match) return name.trim()
 

@@ -8,6 +8,19 @@ function isoDay(value: string): string {
   return value.slice(0, 10)
 }
 
+/**
+ * The same object without the keys that hold nothing.
+ *
+ * Firestore refuses `undefined` outright, and a harvested race is mostly
+ * optional fields: a listing with no price and no deadline would fail the write
+ * rather than store what it does know.
+ */
+function compact<T extends Record<string, unknown>>(value: T): T {
+  return Object.fromEntries(
+    Object.entries(value).filter(([, item]) => item !== undefined),
+  ) as T
+}
+
 export type HarvestProvenance = {
   /** Named the way a reviewer would go and check: the source's host. */
   source: string
@@ -30,7 +43,7 @@ export function toCatalogEntry(
   const day = isoDay(race.startDate)
   const year = Number(day.slice(0, 4))
 
-  const edition: RaceCatalogEdition = {
+  const edition: RaceCatalogEdition = compact({
     year,
     raceDate: day,
     registrationClosesAt: race.registrationClosesAt,
@@ -38,9 +51,9 @@ export function toCatalogEntry(
     feeCurrency: race.lowPrice !== undefined ? race.currency : undefined,
     source: provenance.source,
     confirmedAt: provenance.harvestedAt,
-  }
+  })
 
-  return {
+  return compact({
     id: catalogId(race),
     name: race.name,
     country: race.country ?? 'XX',
@@ -57,7 +70,7 @@ export function toCatalogEntry(
     producer: 'harvest',
     updatedAt: provenance.harvestedAt,
     updatedBy: 'harvest',
-  }
+  })
 }
 
 /**
@@ -76,12 +89,12 @@ export function mergeIntoCatalog(
     const editions = existing.editions ?? []
     const incoming = harvested.editions?.[0]
     if (!incoming || editions.some((edition) => edition.year === incoming.year)) return null
-    return {
+    return compact({
       ...existing,
       editions: [...editions, incoming].sort((left, right) => left.year - right.year),
       updatedAt: harvested.updatedAt,
       updatedBy: harvested.updatedBy,
-    }
+    })
   }
 
   const editions = [...(existing.editions ?? [])]
@@ -92,9 +105,9 @@ export function mergeIntoCatalog(
     else editions.push(incoming)
   }
 
-  return {
+  return compact({
     ...harvested,
     editions: editions.sort((left, right) => left.year - right.year),
     retired: existing.retired,
-  }
+  })
 }
