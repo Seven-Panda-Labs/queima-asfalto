@@ -150,7 +150,9 @@
     "allTargetsDone": "All done. Time to raise the bar.",
     "viewAllGoals": "View all",
     "noGoals": "No goals yet in {{year}}",
-    "createGoal": "Create goal"
+    "createGoal": "Create goal",
+    "projected": "Predicted: {{time}} · {{pace}}/km",
+    "projectedBuildUp": "from the build-up"
   },
   "events": {
     "title": "Events",
@@ -1298,5 +1300,11 @@
     "tryAgainDone": "{{year}} attempt created, now watching.",
     "tryAgainError": "Could not create next season attempt.",
     "tryAgainExists": "The {{year}} attempt is already there."
+  },
+  "projection": {
+    "title": "Predicted for this race",
+    "basis": "Best result in the last 12 months: {{name}}, {{date}}.",
+    "basisStale": "No races in the last 12 months; from your most recent mark: {{name}}, {{date}}.",
+    "basisBuildUp": "From your build-up race: {{name}}, {{date}}."
   }
 }

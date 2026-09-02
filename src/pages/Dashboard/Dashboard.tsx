@@ -18,6 +18,7 @@ import { useEvents } from '../../hooks/useEvents'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { DeadlineCard } from '../../components/DeadlineCard'
 import { buildCourseComparison } from '../../utils/analytics/course'
+import { projectRaceTime, racesPreparing } from '../../utils/analytics/racePrediction'
 import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { computeBestPerformances } from '../../utils/bestPerformances'
@@ -56,6 +57,29 @@ export function Dashboard() {
       runs: comparison.runs.length,
     }
   }, [nextEvent, allEvents])
+  /**
+   * Only for an anchor: the build-up races were run for this one, and a chip on
+   * every race would say something the runner did not ask about.
+   */
+  const nextEventProjection = useMemo(() => {
+    if (!nextEvent || nextEventTarget) return null
+    const anchor = bucketListItems.find(
+      (item) => item.raceId && item.raceId === nextEvent.raceId && item.isAnchor,
+    )
+    if (!anchor) return null
+    const projected = projectRaceTime(
+      { distanceKm: nextEvent.realDistance, date: nextEvent.date },
+      allEvents,
+      racesPreparing(nextEvent.raceId, bucketListItems),
+    )
+    if (!projected) return null
+    return {
+      predictedSeconds: projected.predictedSeconds,
+      paceSeconds: projected.paceSeconds,
+      fromBuildUp: projected.fromBuildUp,
+    }
+  }, [allEvents, bucketListItems, nextEvent, nextEventTarget])
+
   const stats = computeDashboardStats(allEvents, currentYear)
   const bestPerformances = computeBestPerformances(allEvents)
   const highlights = computeDashboardHighlights(goals, performanceGoals)
@@ -85,7 +109,11 @@ export function Dashboard() {
             {eventsError}
           </p>
         ) : (
-          <NextEventCard event={nextEvent} target={nextEventTarget} />
+          <NextEventCard
+            event={nextEvent}
+            target={nextEventTarget}
+            projection={nextEventProjection}
+          />
         )}
       </section>
 

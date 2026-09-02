@@ -14,6 +14,7 @@
 - **Saisonregeln:** ein Rennen kann sagen, wozu es dient, Build-up oder Test, und welchen Anker es vorbereitet. Die App zeigt das Testfenster, etwa die halbe Distanz drei bis vier Wochen vorher, und warnt, wenn ein Rennen in das Tapering des Ankers fällt oder ein Monat zu voll wird.
 - **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt jetzt, was passiert ist (Ausstieg, Verletzung, nicht hingegangen, abgesagt, Reise, anderes), statt zu sagen, du hättest es verpasst. Ein DNF zählt als gestartetes Rennen und gilt nicht mehr als fehlende Daten, bleibt aber aus Tempo, Rekorden und Prognosen heraus.
 - **Neu versuchen:** bei einem Rennen, das an Verletzung, DNF oder Absage gescheitert ist, legt ein Knopf den Versuch der nächsten Saison an und führt zu seiner Anmeldung. Die Rennen, die einen ausgefallenen Anker vorbereitet haben, werden markiert, damit du entscheidest, ob sie noch Sinn haben.
+- **Prognose beim Anker:** die Seite eines noch bevorstehenden Ankers, und der Startbereich, wenn er das nächste Rennen ist, zeigen die prognostizierte Zeit über die Distanz aus deinem letzten Vorbereitungsrennen. Es ist dieselbe Zahl wie in der Analyse, jetzt dort, wo sie nützt.
 
 ---
 

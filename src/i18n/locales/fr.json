@@ -150,7 +150,9 @@
     "allTargetsDone": "Tout est fait. Il est temps de relever la barre.",
     "viewAllGoals": "Tout voir",
     "noGoals": "Aucun objectif pour l'instant en {{year}}",
-    "createGoal": "Créer un objectif"
+    "createGoal": "Créer un objectif",
+    "projected": "Prévision : {{time}} · {{pace}}/km",
+    "projectedBuildUp": "de la course de préparation"
   },
   "events": {
     "title": "Événements",
@@ -1298,5 +1300,11 @@
     "tryAgainDone": "Tentative {{year}} créée, en veille.",
     "tryAgainError": "Impossible de créer la tentative de la saison prochaine.",
     "tryAgainExists": "La tentative {{year}} existe déjà."
+  },
+  "projection": {
+    "title": "Prévision pour cette course",
+    "basis": "Meilleur résultat des 12 derniers mois : {{name}}, {{date}}.",
+    "basisStale": "Aucune course sur les 12 derniers mois ; à partir de ta marque la plus récente : {{name}}, {{date}}.",
+    "basisBuildUp": "À partir de ta course de préparation : {{name}}, {{date}}."
   }
 }

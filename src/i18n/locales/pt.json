@@ -150,7 +150,9 @@
     "allTargetsDone": "Tudo cumprido. Falta pôr a fasquia mais alta.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Ainda sem objetivos em {{year}}",
-    "createGoal": "Criar objetivo"
+    "createGoal": "Criar objetivo",
+    "projected": "Previsão: {{time}} · {{pace}}/km",
+    "projectedBuildUp": "da prova de preparação"
   },
   "events": {
     "title": "Eventos",
@@ -1298,5 +1300,11 @@
     "tryAgainDone": "Tentativa de {{year}} criada, a acompanhar.",
     "tryAgainError": "Não foi possível criar a tentativa da próxima temporada.",
     "tryAgainExists": "A tentativa de {{year}} já existe."
+  },
+  "projection": {
+    "title": "Previsão para esta prova",
+    "basis": "Melhor marca dos últimos 12 meses: {{name}}, {{date}}.",
+    "basisStale": "Sem provas nos últimos 12 meses; a partir da marca mais recente: {{name}}, {{date}}.",
+    "basisBuildUp": "A partir da tua prova de preparação: {{name}}, {{date}}."
   }
 }

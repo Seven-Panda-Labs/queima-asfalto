@@ -154,7 +154,9 @@
     "allTargetsDone": "كل شيء مكتمل. حان وقت رفع السقف.",
     "viewAllGoals": "عرض الكل",
     "noGoals": "لا توجد أهداف بعد في {{year}}",
-    "createGoal": "إنشاء هدف"
+    "createGoal": "إنشاء هدف",
+    "projected": "التوقع: {{time}} · {{pace}}/كم",
+    "projectedBuildUp": "من سباق التجهيز"
   },
   "events": {
     "title": "الفعاليات",
@@ -1322,5 +1324,11 @@
     "tryAgainDone": "أُنشئت محاولة {{year}}، وهي قيد المتابعة.",
     "tryAgainError": "تعذّر إنشاء محاولة الموسم القادم.",
     "tryAgainExists": "محاولة {{year}} موجودة بالفعل."
+  },
+  "projection": {
+    "title": "التوقع لهذا السباق",
+    "basis": "أفضل نتيجة في آخر 12 شهرا: {{name}}، {{date}}.",
+    "basisStale": "لا سباقات في آخر 12 شهرا؛ انطلاقا من أحدث نتيجة: {{name}}، {{date}}.",
+    "basisBuildUp": "انطلاقا من سباق التجهيز: {{name}}، {{date}}."
   }
 }

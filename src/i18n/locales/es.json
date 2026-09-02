@@ -150,7 +150,9 @@
     "allTargetsDone": "Todo cumplido. Toca subir el listón.",
     "viewAllGoals": "Ver todos",
     "noGoals": "Aún no hay objetivos en {{year}}",
-    "createGoal": "Crear objetivo"
+    "createGoal": "Crear objetivo",
+    "projected": "Previsión: {{time}} · {{pace}}/km",
+    "projectedBuildUp": "de la carrera de preparación"
   },
   "events": {
     "title": "Eventos",
@@ -1298,5 +1300,11 @@
     "tryAgainDone": "Intento de {{year}} creado, en seguimiento.",
     "tryAgainError": "No se pudo crear el intento de la próxima temporada.",
     "tryAgainExists": "El intento de {{year}} ya existe."
+  },
+  "projection": {
+    "title": "Previsión para esta carrera",
+    "basis": "Mejor marca de los últimos 12 meses: {{name}}, {{date}}.",
+    "basisStale": "Sin carreras en los últimos 12 meses; a partir de la marca más reciente: {{name}}, {{date}}.",
+    "basisBuildUp": "A partir de tu carrera de preparación: {{name}}, {{date}}."
   }
 }
