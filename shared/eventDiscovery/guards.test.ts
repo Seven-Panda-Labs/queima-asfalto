@@ -33,10 +33,15 @@ describe('isHarvestable', () => {
     expect(isHarvestable(race, TODAY)).toBe(true)
   })
 
-  it('leaves the past, the cancelled and the distanceless', () => {
+  it('leaves the past and the cancelled', () => {
     expect(isHarvestable({ ...race, startDate: '2026-05-10T09:00:00Z' }, TODAY)).toBe(false)
     expect(isHarvestable({ ...race, cancelled: true }, TODAY)).toBe(false)
-    expect(isHarvestable({ ...race, distancesKm: [] }, TODAY)).toBe(false)
+  })
+
+  it('keeps a race whose distance nobody publishes', () => {
+    // The date, the town and the entry link are worth having on their own. The
+    // runner is asked for the distance when they add it.
+    expect(isHarvestable({ startDate: race.startDate, cancelled: false }, TODAY)).toBe(true)
   })
 
   it('leaves a date it cannot read', () => {

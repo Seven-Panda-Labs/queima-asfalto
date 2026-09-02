@@ -50,12 +50,15 @@ function Candidate({
   candidate,
   added,
   adding,
+  disciplineOptions,
   onAdd,
 }: {
   candidate: DiscoveryCandidate
   added: boolean
   adding: boolean
-  onAdd: () => void
+  /** Offered when no source said how long the race is. */
+  disciplineOptions: EventType[]
+  onAdd: (discipline?: EventType) => void
 }) {
   const { t } = useTranslation()
   const { entry, edition, date, fitsAnchor, weeksBeforeAnchor } = candidate
@@ -77,7 +80,9 @@ function Candidate({
         {[entry.city, entry.country].filter(Boolean).join(', ')}
       </span>
       <span className="text-xs text-muted">
-        {entry.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')}
+        {entry.disciplines.length > 0
+          ? entry.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')
+          : t('findRaces.distanceUnknown')}
       </span>
       {fee ? <span className="text-xs text-muted">{fee}</span> : null}
       {/* An unreviewed entry may prefill a field and may never assert a deadline,
@@ -104,14 +109,37 @@ function Candidate({
             {t('findRaces.openSource')}
           </a>
         ) : null}
-        <button
-          type="button"
-          onClick={onAdd}
-          disabled={added || adding}
-          className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:border-primary hover:text-primary disabled:opacity-50"
-        >
-          {added ? t('findRaces.added') : t('findRaces.add')}
-        </button>
+        {added ? (
+          <span className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-muted">
+            {t('findRaces.added')}
+          </span>
+        ) : entry.disciplines.length === 0 ? (
+          // No source published a distance, and a wish needs one. Asking beats
+          // storing a number nobody checked.
+          <select
+            value=""
+            disabled={adding}
+            onChange={(event) => onAdd(event.target.value as EventType)}
+            className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-foreground disabled:opacity-50"
+            aria-label={t('findRaces.addWithDistance')}
+          >
+            <option value="">{t('findRaces.addWithDistance')}</option>
+            {disciplineOptions.map((discipline) => (
+              <option key={discipline} value={discipline}>
+                {formatEventTypeLabel(discipline)}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <button
+            type="button"
+            onClick={() => onAdd()}
+            disabled={adding}
+            className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:border-primary hover:text-primary disabled:opacity-50"
+          >
+            {t('findRaces.add')}
+          </button>
+        )}
       </div>
     </li>
   )
@@ -265,12 +293,18 @@ export function FindRaces() {
     [criteria.disciplines, enabledDisciplines],
   )
 
-  async function handleAdd(entry: RaceCatalogEntry) {
+  async function handleAdd(entry: RaceCatalogEntry, discipline?: EventType) {
     if (!user) return
+    if (entry.disciplines.length === 0 && !discipline) return
     setAdding(entry.id)
     try {
       const raceId = await findOrCreateCatalogRaceId(user.uid, entry)
-      await addItem(catalogRaceToBucketListItem(entry, raceId, anchor?.id))
+      await addItem(
+        catalogRaceToBucketListItem(entry, raceId, {
+          servesRaceId: anchor?.id,
+          discipline,
+        }),
+      )
       setAddedIds((current) => [...current, entry.id])
       toast.success(t('findRaces.addedToast', { name: entry.name }))
     } catch {
@@ -392,7 +426,8 @@ export function FindRaces() {
               candidate={candidate}
               added={addedIds.includes(candidate.entry.id)}
               adding={adding === candidate.entry.id}
-              onAdd={() => void handleAdd(candidate.entry)}
+              disciplineOptions={disciplineOptions}
+              onAdd={(discipline) => void handleAdd(candidate.entry, discipline)}
             />
           ))}
         </ul>

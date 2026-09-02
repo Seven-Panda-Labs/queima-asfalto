@@ -1,6 +1,6 @@
 import { collection, doc, getDoc, getDocs, Timestamp } from 'firebase/firestore'
 import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
-import { NOMINAL_DISTANCE_KM } from '../domain/eventCodes'
+import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes'
 import { TARGET_MONTHS } from '../utils/targetMonth'
 import type { BucketListItemCreate } from '../types/BucketListItem'
 import { db } from './firebase'
@@ -58,12 +58,25 @@ const MAX_DISCIPLINES = 6
 export function catalogRaceToBucketListItem(
   race: RaceCatalogEntry,
   raceId: string | null,
-  /** The anchor the search was for, when it was for one. */
-  servesRaceId?: string,
+  options: {
+    /** The anchor the search was for, when it was for one. */
+    servesRaceId?: string
+    /**
+     * What the runner said the distance is.
+     *
+     * Required for a race whose distance no source published: the catalog would
+     * rather hold nothing than a number nobody checked, so the answer comes
+     * from the person adding it.
+     */
+    discipline?: EventType
+  } = {},
 ): BucketListItemCreate {
-  const disciplines = race.disciplines.slice(0, MAX_DISCIPLINES)
+  const { servesRaceId, discipline } = options
+  const disciplines = (
+    discipline ? [discipline] : race.disciplines
+  ).slice(0, MAX_DISCIPLINES)
   const longest = disciplines.reduce(
-    (best, discipline) => Math.max(best, NOMINAL_DISTANCE_KM[discipline]),
+    (best, value) => Math.max(best, NOMINAL_DISTANCE_KM[value]),
     0,
   )
   const upcoming = (race.editions ?? []).find((edition) => edition.raceDate)
@@ -72,8 +85,9 @@ export function catalogRaceToBucketListItem(
     name: race.name,
     location: [race.city, race.country].filter(Boolean).join(', '),
     // The distance a wish carries is the longest on offer: scheduling is where
-    // one of them becomes the event.
-    realDistance: longest > 0 ? longest : 10,
+    // one of them becomes the event. A wish with no distance at all cannot be
+    // saved, so the caller has to have asked.
+    realDistance: longest,
     disciplines,
     targetMonth: race.typicalRaceMonth
       ? TARGET_MONTHS[race.typicalRaceMonth - 1]

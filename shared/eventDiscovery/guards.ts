@@ -37,13 +37,19 @@ export function isHarvestStale(
  *
  * A race in the past cannot be entered, and a cancelled one should not be
  * suggested. Both still exist as pages the sitemap lists forever.
+ *
+ * A race with no distance is kept. Plenty of sources publish the date, the
+ * town and the entry link and never say how long the thing is: davengo has the
+ * start time to the minute and the distances only inside a Vaadin app. Dropping
+ * those threw away most of a good calendar, so they arrive with no discipline
+ * and the runner is asked for it when they add one, which is the shape the
+ * review rule already asks for: suggest, never assert.
  */
 export function isHarvestable(
-  race: { startDate: string; cancelled: boolean; distancesKm: readonly number[] },
+  race: { startDate: string; cancelled: boolean },
   today: Date = new Date(),
 ): boolean {
   if (race.cancelled) return false
-  if (race.distancesKm.length === 0) return false
   const start = new Date(race.startDate)
   if (Number.isNaN(start.getTime())) return false
   return start.getTime() >= today.getTime()

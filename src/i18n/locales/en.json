@@ -1334,7 +1334,9 @@
     "neverSynced": "Catalog kept by hand on this instance.",
     "backToBucketList": "Back to the bucket list",
     "fitsAnchor_one": "fits, 1 week out",
-    "fitsAnchor_other": "fits, {{count}} weeks out"
+    "fitsAnchor_other": "fits, {{count}} weeks out",
+    "distanceUnknown": "distance not published",
+    "addWithDistance": "Add as…"
   },
   "onboarding": {
     "title": "Getting started",

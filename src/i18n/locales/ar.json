@@ -1362,7 +1362,9 @@
     "fitsAnchor_two": "مناسب، قبل أسبوعين",
     "fitsAnchor_few": "مناسب، قبل {{count}} أسابيع",
     "fitsAnchor_many": "مناسب، قبل {{count}} أسبوعا",
-    "fitsAnchor_other": "مناسب، قبل {{count}} أسبوع"
+    "fitsAnchor_other": "مناسب، قبل {{count}} أسبوع",
+    "distanceUnknown": "المسافة غير منشورة",
+    "addWithDistance": "أضف كـ…"
   },
   "onboarding": {
     "title": "البداية",

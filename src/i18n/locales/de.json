@@ -1334,7 +1334,9 @@
     "neverSynced": "Katalog wird auf dieser Instanz von Hand gepflegt.",
     "backToBucketList": "Zurück zur Bucket List",
     "fitsAnchor_one": "passt, 1 Woche vorher",
-    "fitsAnchor_other": "passt, {{count}} Wochen vorher"
+    "fitsAnchor_other": "passt, {{count}} Wochen vorher",
+    "distanceUnknown": "Distanz nicht veröffentlicht",
+    "addWithDistance": "Hinzufügen als…"
   },
   "onboarding": {
     "title": "Loslegen",
