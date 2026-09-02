@@ -30,6 +30,7 @@ import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
 import { useAnchorMigration } from '../../hooks/useAnchorMigration'
 import { useRaces } from '../../hooks/useRaces'
 import {
+  onboardingFactsFrom,
   shouldShowOnboarding,
   type OnboardingFacts,
 } from '../../domain/onboarding'
@@ -120,19 +121,24 @@ export function Dashboard() {
   }, [user])
 
   const onboardingFacts: OnboardingFacts = useMemo(
-    () => ({
-      disciplinesChosen: onboarding?.disciplinesChosen === true,
-      // Any season: somebody whose 2026 is planned has an anchor whether or not
-      // this year's is still ahead.
-      hasAnchor: anchorIds.size > 0,
-      hasEntry: raceEntries.length > 0,
-      hasResult: allEvents.some((event) => event.status === 'completed' && Boolean(event.time)),
-    }),
+    () =>
+      onboardingFactsFrom({
+        disciplinesChosen: onboarding?.disciplinesChosen === true,
+        // Any season: somebody whose 2026 is planned has an anchor whether or
+        // not this year's is still ahead.
+        anchorRaceIds: anchorIds,
+        entries: raceEntries,
+        events: allEvents,
+      }),
     [allEvents, anchorIds, onboarding, raceEntries],
   )
 
   const anchorItemId = bucketListItems.find(
     (item) => item.raceId && anchorIds.has(item.raceId),
+  )?.id
+  /** For an anchor that never was a wish, its own page is where to send anybody. */
+  const anchorEventId = allEvents.find(
+    (event) => event.raceId && anchorIds.has(event.raceId),
   )?.id
 
   async function handleDismissOnboarding() {
@@ -170,6 +176,7 @@ export function Dashboard() {
           <OnboardingCard
             facts={onboardingFacts}
             anchorItemId={anchorItemId}
+            anchorEventId={anchorEventId}
             onDismiss={() => void handleDismissOnboarding()}
           />
         </div>

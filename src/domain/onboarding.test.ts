@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
+  onboardingFactsFrom,
   onboardingProgress,
   onboardingStepPath,
   onboardingSteps,
@@ -13,6 +14,66 @@ const NOTHING: OnboardingFacts = {
   hasEntry: false,
   hasResult: false,
 }
+
+describe('onboardingFactsFrom', () => {
+  const empty = {
+    disciplinesChosen: false,
+    anchorRaceIds: new Set<string>(),
+    entries: [],
+    events: [],
+  }
+
+  it('reads the anchor off the races, not off any wish', () => {
+    expect(onboardingFactsFrom({ ...empty, anchorRaceIds: new Set(['race-1']) }).hasAnchor).toBe(
+      true,
+    )
+    expect(onboardingFactsFrom(empty).hasAnchor).toBe(false)
+  })
+
+  it('takes an anchor already on the calendar as booked', () => {
+    // The production case: a season planned as confirmed events, with no entry
+    // documents at all. Asking that runner to plan an entry is not looking.
+    const facts = onboardingFactsFrom({
+      ...empty,
+      anchorRaceIds: new Set(['race-lisboa']),
+      events: [{ raceId: 'race-lisboa', status: 'confirmed' }],
+    })
+    expect(facts.hasEntry).toBe(true)
+  })
+
+  it('still takes an entry as booked, whatever race it is for', () => {
+    expect(onboardingFactsFrom({ ...empty, entries: [{ id: 'entry-1' }] }).hasEntry).toBe(true)
+  })
+
+  it('does not take a merely planned anchor as booked', () => {
+    const facts = onboardingFactsFrom({
+      ...empty,
+      anchorRaceIds: new Set(['race-lisboa']),
+      events: [{ raceId: 'race-lisboa', status: 'planned' }],
+    })
+    expect(facts.hasEntry).toBe(false)
+  })
+
+  it('does not take somebody else s race as the anchor being booked', () => {
+    const facts = onboardingFactsFrom({
+      ...empty,
+      anchorRaceIds: new Set(['race-lisboa']),
+      events: [{ raceId: 'race-sintra', status: 'confirmed' }],
+    })
+    expect(facts.hasEntry).toBe(false)
+  })
+
+  it('needs a time before it calls a race a result', () => {
+    expect(
+      onboardingFactsFrom({ ...empty, events: [{ status: 'completed', time: '00:47:12' }] })
+        .hasResult,
+    ).toBe(true)
+    // A DNF is completed and has no time: nothing for the analysis to read yet.
+    expect(
+      onboardingFactsFrom({ ...empty, events: [{ status: 'completed' }] }).hasResult,
+    ).toBe(false)
+  })
+})
 
 describe('onboardingSteps', () => {
   it('runs the lifecycle order, anchor before anything about results', () => {
@@ -77,6 +138,10 @@ describe('onboardingStepPath', () => {
     expect(onboardingStepPath('entry', { anchorItemId: 'item-1' })).toBe(
       '/bucket-list/item-1/inscricao',
     )
+  })
+
+  it('sends it at the anchor event when the anchor was never a wish', () => {
+    expect(onboardingStepPath('entry', { anchorEventId: 'event-1' })).toBe('/eventos/event-1')
   })
 
   it('falls back to the list when there is no anchor yet', () => {
