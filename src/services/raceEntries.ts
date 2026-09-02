@@ -4,7 +4,6 @@ import {
   deleteDoc,
   doc,
   getDocs,
-  orderBy,
   query,
   serverTimestamp,
   updateDoc,
@@ -141,16 +140,14 @@ export async function listRaceEntries(userId: string): Promise<RaceEntry[]> {
 }
 
 /**
- * Ordered by year, and nothing else.
+ * Every attempt the account owns, in no order.
  *
- * The funnel groups and sorts in memory on purpose: every group is derived from
- * dates that pass on their own, so a Firestore order could not express it and a
- * composite index would buy nothing.
+ * The funnel groups and sorts in memory anyway: every group is derived from
+ * dates that pass on their own, so a Firestore order could not express it. It
+ * used to ask for one by year regardless, and a filter plus an order needs a
+ * composite index, which is a thing that can be missing or still building while
+ * the page shows nothing.
  */
 export function raceEntriesCollectionQuery(userId: string) {
-  return query(
-    collection(db, RACE_ENTRIES_COLLECTION),
-    where('userId', '==', userId),
-    orderBy('year', 'desc'),
-  )
+  return query(collection(db, RACE_ENTRIES_COLLECTION), where('userId', '==', userId))
 }

@@ -5,7 +5,6 @@ import {
   doc,
   getDoc,
   getDocs,
-  orderBy,
   query,
   runTransaction,
   serverTimestamp,
@@ -144,10 +143,14 @@ export async function setRaceAnchorYear(
   })
 }
 
+/**
+ * Every race the account owns, in no order.
+ *
+ * No `orderBy`: a filter plus an order needs a composite index, and a race
+ * collection nobody paginates has nothing to gain from one. Callers that care
+ * about order sort in memory, which costs nothing at this size and cannot fail
+ * while an index builds.
+ */
 export function racesCollectionQuery(userId: string) {
-  return query(
-    collection(db, RACES_COLLECTION),
-    where('userId', '==', userId),
-    orderBy('createdAt', 'desc'),
-  )
+  return query(collection(db, RACES_COLLECTION), where('userId', '==', userId))
 }

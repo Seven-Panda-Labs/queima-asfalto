@@ -10,11 +10,15 @@ import { describe, expect, it } from 'vitest'
  * anybody hit "The query requires an index" against the real database. A test
  * is the only thing that can see it before a deploy.
  *
+ * The cheapest way to pass this test is to not need an index: a filter with no
+ * order needs none, and a collection nobody paginates loses nothing by sorting
+ * in memory. That is what those two queries do now.
+ *
  * It reads the services with a regular expression, which is coarse. The floor
  * below is the guard: if the pattern stops matching what the code looks like,
  * the count drops and this fails instead of quietly checking nothing.
  */
-const QUERY_FLOOR = 6
+const QUERY_FLOOR = 4
 
 const COLLECTION_NAMES: Record<string, string> = {
   EVENTS_COLLECTION: 'events',
