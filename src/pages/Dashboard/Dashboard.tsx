@@ -1,8 +1,9 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { AchievementShelf } from '../../components/AchievementShelf'
 import { NextEventCard } from '../../components/NextEventCard'
+import { OnboardingCard } from '../../components/OnboardingCard'
 import {
   FinishFlagIcon,
   RoadIcon,
@@ -25,6 +26,15 @@ import { computeBestPerformances } from '../../utils/bestPerformances'
 import { computeDashboardHighlights } from '../../utils/dashboardHighlights'
 import { computeDashboardStats } from '../../utils/stats'
 import { findNextEvent } from '../../utils/nextEvent'
+import {
+  shouldShowOnboarding,
+  type OnboardingFacts,
+} from '../../domain/onboarding'
+import {
+  dismissOnboarding,
+  getOnboardingProfile,
+  type OnboardingProfile,
+} from '../../services/users'
 
 /** Quantos objetivos por cumprir cabem antes de remeter para a página de objetivos. */
 const FEATURED_TARGETS = 3
@@ -80,6 +90,39 @@ export function Dashboard() {
     }
   }, [allEvents, bucketListItems, nextEvent, nextEventTarget])
 
+  /**
+   * The first session, from what the account already holds rather than from a
+   * flag: somebody who arrived through a backup restore has done all of it.
+   */
+  const [onboarding, setOnboarding] = useState<OnboardingProfile | null>(null)
+  useEffect(() => {
+    if (!user) return
+    void getOnboardingProfile(user.uid).then(setOnboarding)
+  }, [user])
+
+  const onboardingFacts: OnboardingFacts = useMemo(
+    () => ({
+      disciplinesChosen: onboarding?.disciplinesChosen === true,
+      hasAnchor: bucketListItems.some((item) => item.isAnchor),
+      hasEntry: raceEntries.length > 0,
+      hasResult: allEvents.some((event) => event.status === 'completed' && Boolean(event.time)),
+    }),
+    [allEvents, bucketListItems, onboarding, raceEntries],
+  )
+
+  const anchorItemId = bucketListItems.find((item) => item.isAnchor)?.id
+
+  async function handleDismissOnboarding() {
+    if (!user) return
+    setOnboarding({ disciplinesChosen: true, dismissedAt: new Date() })
+    try {
+      await dismissOnboarding(user.uid)
+    } catch {
+      // A checklist nobody can hide is worse than one that comes back on the
+      // next load, so the local state stands either way.
+    }
+  }
+
   const stats = computeDashboardStats(allEvents, currentYear)
   const bestPerformances = computeBestPerformances(allEvents)
   const highlights = computeDashboardHighlights(goals, performanceGoals)
@@ -99,6 +142,16 @@ export function Dashboard() {
 
   return (
     <PageShell greeting={greeting} title={t('nav.dashboard')}>
+      {onboarding && shouldShowOnboarding(onboardingFacts, onboarding.dismissedAt) ? (
+        <div className="mt-6">
+          <OnboardingCard
+            facts={onboardingFacts}
+            anchorItemId={anchorItemId}
+            onDismiss={() => void handleDismissOnboarding()}
+          />
+        </div>
+      ) : null}
+
       <section className="mt-6">
         {eventsLoading ? (
           <div className="h-40 animate-pulse rounded-2xl bg-border/60" aria-hidden />

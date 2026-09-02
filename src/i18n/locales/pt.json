@@ -1335,5 +1335,33 @@
     "backToBucketList": "Voltar à bucket list",
     "fitsAnchor_one": "encaixa, 1 semana antes",
     "fitsAnchor_other": "encaixa, {{count}} semanas antes"
+  },
+  "onboarding": {
+    "title": "Começar",
+    "subtitle": "Quatro passos e a app passa a saber o que te mostrar. Cada um explica para que serve.",
+    "progress": "{{done}} de {{total}}",
+    "dismiss": "Já conheço a app, esconder isto",
+    "steps": {
+      "disciplines": {
+        "title": "Escolher as distâncias que corres",
+        "why": "Decidem o que a app te oferece em todo o lado: filtros, recordes, previsões e as provas que a descoberta te mostra.",
+        "action": "Abrir as disciplinas"
+      },
+      "anchor": {
+        "title": "Marcar a prova principal do ano",
+        "why": "Uma a três provas fixam a tua temporada. A partir da data dela saem a contagem decrescente, os avisos de prazo e a janela onde encaixa uma prova de preparação.",
+        "action": "Adicionar a minha âncora"
+      },
+      "entry": {
+        "title": "Planear a inscrição dessa prova",
+        "why": "A inscrição diz como se entra e quando fecha. É o que transforma um desejo em plano, e é o que os avisos leem.",
+        "action": "Planear a inscrição"
+      },
+      "result": {
+        "title": "Registar uma prova que já corres",
+        "why": "Uma marca basta para teres recordes, ritmo médio e um tempo previsto para a âncora. O link oficial preenche o resto por ti.",
+        "action": "Registar uma prova"
+      }
+    }
   }
 }

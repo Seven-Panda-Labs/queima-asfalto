@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, getDoc, setDoc, serverTimestamp, type Timestamp } from 'firebase/firestore'
 import type { User } from 'firebase/auth'
 import {
   DEFAULT_NOTIFICATION_PREFS,
@@ -183,6 +183,40 @@ export async function updateUserResultsProfile(
       ...payload,
       updatedAt: serverTimestamp(),
     },
+    { merge: true },
+  )
+}
+
+export type OnboardingProfile = {
+  /** The runner has been through the discipline switches, whatever they chose. */
+  disciplinesChosen: boolean
+  dismissedAt: Date | null
+}
+
+/**
+ * What only the user document knows about the first session.
+ *
+ * `enabledDisciplines` is read for its presence, not its value: the defaults are
+ * what an untouched account has, so the field existing is the only evidence
+ * that somebody made the choice.
+ */
+export async function getOnboardingProfile(userId: string): Promise<OnboardingProfile> {
+  const snapshot = await getDoc(doc(db, 'users', userId))
+  if (!snapshot.exists()) return { disciplinesChosen: false, dismissedAt: null }
+
+  const data = snapshot.data()
+  const dismissedAt = data.onboardingDismissedAt as Timestamp | undefined
+
+  return {
+    disciplinesChosen: Array.isArray(data.enabledDisciplines),
+    dismissedAt: dismissedAt?.toDate() ?? null,
+  }
+}
+
+export async function dismissOnboarding(userId: string): Promise<void> {
+  await setDoc(
+    doc(db, 'users', userId),
+    { onboardingDismissedAt: serverTimestamp(), updatedAt: serverTimestamp() },
     { merge: true },
   )
 }

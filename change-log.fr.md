@@ -17,6 +17,7 @@
 - **Une prévision sur le pivot :** la page d'un pivot encore à venir, et le héros d'accueil quand c'est la prochaine course, affichent le temps prévu sur la distance à partir de ta dernière course de préparation. C'est le même chiffre que l'analyse, désormais là où il sert.
 - **Trouver des courses :** une nouvelle page dans la bucket list cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot remplit la fenêtre du test et met devant les courses qui conviennent. Elle dit toujours quand le catalogue a été mis à jour, et une entrée non vérifiée affiche sa date de clôture comme ce que dit la liste, pas comme une promesse.
 - **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit. Une fois validé, l'utilisateur reçoit un email et peut se connecter.
+- **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait : choisir tes distances, marquer la course principale de ton année, planifier son inscription et enregistrer une course déjà courue. Il disparaît quand elles sont faites, ou quand tu dis que tu connais l'app.
 
 ---
 

@@ -17,6 +17,7 @@
 - **Previsión en el ancla:** la página de un ancla que está por venir, y el héroe de inicio cuando es la próxima, muestran el tiempo previsto para la distancia a partir de tu carrera de preparación más reciente. Es el mismo número del análisis, ahora donde sirve.
 - **Encontrar carreras:** una página nueva en la bucket list busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla rellena la ventana del test y pone delante las que encajan. Siempre dice cuándo se actualizó el catálogo, y una entrada sin revisar muestra la fecha de cierre como «según la lista», no como promesa.
 - **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada. Al aprobarla, el usuario recibe un email y ya puede entrar.
+- **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, y cada uno explica qué hace la app con eso: elegir distancias, marcar la carrera principal del año, planificar su inscripción y registrar una carrera ya corrida. Desaparece al completarlos, o cuando digas que ya conoces la app.
 
 ---
 

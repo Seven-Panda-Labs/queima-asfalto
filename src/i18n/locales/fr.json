@@ -1335,5 +1335,33 @@
     "backToBucketList": "Retour à la bucket list",
     "fitsAnchor_one": "convient, 1 semaine avant",
     "fitsAnchor_other": "convient, {{count}} semaines avant"
+  },
+  "onboarding": {
+    "title": "Commencer",
+    "subtitle": "Quatre étapes et l'app sait quoi t'afficher. Chacune dit à quoi elle sert.",
+    "progress": "{{done}} sur {{total}}",
+    "dismiss": "Je connais l'app, masquer",
+    "steps": {
+      "disciplines": {
+        "title": "Choisir les distances que tu cours",
+        "why": "Elles décident de ce que l'app te propose partout : filtres, records, prévisions et les courses que la recherche te met devant.",
+        "action": "Ouvrir les disciplines"
+      },
+      "anchor": {
+        "title": "Marquer la course principale de ton année",
+        "why": "Une à trois courses fixent ta saison. De sa date viennent le compte à rebours, les alertes de délai et la fenêtre où une course de préparation tient.",
+        "action": "Ajouter mon pivot"
+      },
+      "entry": {
+        "title": "Planifier l'inscription de cette course",
+        "why": "L'inscription dit comment on entre et quand ça ferme. C'est ce qui transforme une envie en plan, et ce que lisent les rappels.",
+        "action": "Planifier l'inscription"
+      },
+      "result": {
+        "title": "Enregistrer une course déjà courue",
+        "why": "Un résultat suffit pour les records, l'allure moyenne et un temps prévu pour le pivot. Le lien officiel remplit le reste.",
+        "action": "Enregistrer une course"
+      }
+    }
   }
 }

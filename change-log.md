@@ -17,6 +17,7 @@
 - **Previsão na prova âncora:** a página de uma âncora que está para vir, e o herói da entrada quando é a próxima, mostram o tempo previsto para a distância a partir da tua prova de preparação mais recente. O número é o mesmo da análise, agora onde serve para algo.
 - **Encontrar provas:** uma página nova na bucket list procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora preenche a janela do teste e põe à frente as provas que encaixam. Diz sempre quando o catálogo foi actualizado, e uma entrada não revista mostra a data de fecho como «a listagem diz», não como promessa.
 - **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito. Quem for aprovado recebe email e entra a seguir.
+- **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, e cada um explica o que a app faz com aquilo: escolher distâncias, marcar a prova âncora do ano, planear a inscrição dela e registar uma prova já corrida. Desaparece quando estiverem feitos, ou quando disseres que já conheces a app.
 
 ---
 

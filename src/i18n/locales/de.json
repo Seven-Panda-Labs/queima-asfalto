@@ -1335,5 +1335,33 @@
     "backToBucketList": "Zurück zur Bucket List",
     "fitsAnchor_one": "passt, 1 Woche vorher",
     "fitsAnchor_other": "passt, {{count}} Wochen vorher"
+  },
+  "onboarding": {
+    "title": "Loslegen",
+    "subtitle": "Vier Schritte, und die App weiß, was sie dir zeigen soll. Jeder sagt, wozu er dient.",
+    "progress": "{{done}} von {{total}}",
+    "dismiss": "Ich kenne die App, ausblenden",
+    "steps": {
+      "disciplines": {
+        "title": "Wähle die Distanzen, die du läufst",
+        "why": "Sie entscheiden, was die App dir überall anbietet: Filter, Rekorde, Prognosen und die Rennen, die die Suche dir vorlegt.",
+        "action": "Disziplinen öffnen"
+      },
+      "anchor": {
+        "title": "Markiere das Hauptrennen deines Jahres",
+        "why": "Ein bis drei Rennen legen deine Saison fest. Aus seinem Datum kommen der Countdown, die Fristwarnungen und das Fenster für ein Vorbereitungsrennen.",
+        "action": "Anker hinzufügen"
+      },
+      "entry": {
+        "title": "Plane die Anmeldung für dieses Rennen",
+        "why": "Die Anmeldung sagt, wie man hineinkommt und wann geschlossen wird. Das macht aus einem Wunsch einen Plan, und das lesen die Erinnerungen.",
+        "action": "Anmeldung planen"
+      },
+      "result": {
+        "title": "Erfasse ein Rennen, das du gelaufen bist",
+        "why": "Ein Ergebnis reicht für Rekorde, Durchschnittstempo und eine Prognose für den Anker. Der offizielle Link füllt den Rest aus.",
+        "action": "Rennen erfassen"
+      }
+    }
   }
 }
