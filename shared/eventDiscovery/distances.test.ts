@@ -1,5 +1,10 @@
 import { describe, expect, it } from 'vitest'
-import { nearestEventType, parseDistancesKm, toDisciplines } from './distances'
+import {
+  isChildrensRace,
+  nearestEventType,
+  parseDistancesKm,
+  toDisciplines,
+} from './distances'
 
 describe('parseDistancesKm', () => {
   it('reads the offer names an organiser actually writes', () => {
@@ -13,13 +18,14 @@ describe('parseDistancesKm', () => {
   })
 
   it('reads metres as metres', () => {
-    expect(parseDistancesKm(['3000 m', 'Corrida Jovem 4000m'])).toEqual([3, 4])
+    expect(parseDistancesKm(['3000 m', 'Corrida 4000m'])).toEqual([3, 4])
     // In metres, three digits after the separator is a thousands separator.
     expect(parseDistancesKm(['10.000 m'])).toEqual([10])
   })
 
-  it('throws out the children s dashes an event sells beside the race', () => {
-    // Straight from acorrer: one event sells a 10K and five youth races.
+  it('throws out the children s races an event sells beside the race', () => {
+    // Straight from acorrer: one event sells a 10K and five youth races. The
+    // 1000 m one used to survive on its number alone.
     expect(
       parseDistancesKm([
         'Corrida 10km',
@@ -28,11 +34,35 @@ describe('parseDistancesKm', () => {
         'Corrida Jovem 200m',
         'Corrida Jovem 100m',
       ]),
-    ).toEqual([1, 5, 10])
+    ).toEqual([5, 10])
+  })
+
+  it('reads a distance an organiser names instead of measuring', () => {
+    // Straight from davengo's starter list and the scc calendar.
+    expect(parseDistancesKm(['Halbmarathon'])).toEqual([21.0975])
+    expect(parseDistancesKm(['Media Maraton de Bogota'])).toEqual([21.0975])
+    expect(parseDistancesKm(['21. swb-Marathon Bremen 2026'])).toEqual([42.195])
+    // A number beats the word it sits next to.
+    expect(parseDistancesKm(['Viertelmarathon (ca 10,5 km)'])).toEqual([10.5])
+  })
+
+  it('does not read a half marathon as a marathon', () => {
+    expect(parseDistancesKm(['Halbmarathon'])).not.toContain(42.195)
+    expect(parseDistancesKm(['Meia Maratona de Lisboa'])).toEqual([21.0975])
+  })
+
+  it('leaves a children s race out however it is written', () => {
+    expect(parseDistancesKm(['Kinderlauf 2km'])).toEqual([])
+    expect(parseDistancesKm(['Bambini 800m'])).toEqual([])
+    expect(parseDistancesKm(['mini-MARATHON 4,2195 km'])).toEqual([])
+    expect(parseDistancesKm(['Kids Run 1 km'])).toEqual([])
   })
 
   it('keeps the decimals of a distance written in kilometres', () => {
     expect(parseDistancesKm(['Maratona 42,195 km'])).toEqual([42.195])
+    // Four decimals, which is how the scc calendar writes a half marathon.
+    expect(parseDistancesKm(['21,0975 km'])).toEqual([21.0975])
+    expect(parseDistancesKm(['4,2195 km'])).toEqual([4.2195])
   })
 
   it('reads miles', () => {
@@ -76,5 +106,20 @@ describe('toDisciplines', () => {
 
   it('has nothing to map with no distances', () => {
     expect(toDisciplines([])).toEqual([])
+  })
+})
+
+describe('isChildrensRace', () => {
+  it('recognises the words organisers use for them', () => {
+    expect(isChildrensRace('Kinderlauf')).toBe(true)
+    expect(isChildrensRace('Corrida Jovem 1000m')).toBe(true)
+    expect(isChildrensRace('junior parkrun')).toBe(true)
+  })
+
+  it('leaves an adult race alone', () => {
+    expect(isChildrensRace('Halbmarathon')).toBe(false)
+    expect(isChildrensRace('Maratona de Lisboa')).toBe(false)
+    // A name that merely contains the letters is not a children's race.
+    expect(isChildrensRace('Corrida da Minifábrica')).toBe(false)
   })
 })
