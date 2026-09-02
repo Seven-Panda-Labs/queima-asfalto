@@ -597,6 +597,37 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts the season fields and rejects a role outside the list', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('bucketListItems')
+          .doc('item-tune-up')
+          .set(
+            validBucketListPayload(userId, {
+              role: 'test',
+              servesRaceId: 'race-anchor',
+              isAnchor: false,
+              targetYear: 2027,
+            }),
+          ),
+      )
+      await assertFails(
+        db
+          .collection('bucketListItems')
+          .doc('item-bad-role')
+          .set(validBucketListPayload(userId, { role: 'coach' })),
+      )
+      await assertFails(
+        db
+          .collection('bucketListItems')
+          .doc('item-bad-serves')
+          .set(validBucketListPayload(userId, { servesRaceId: 7 })),
+      )
+    })
+
     it('allows owners to create bucket list items', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()

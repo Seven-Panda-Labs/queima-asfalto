@@ -411,7 +411,16 @@
     "isAnchor": "Prova âncora do ano",
     "isAnchorHint": "Uma a três por ano. A marcação destas fixa o resto do calendário, e aparecem primeiro em cada grupo.",
     "recurring": "Tento esta todos os anos",
-    "recurringHint": "Serve para o ano seguinte ser proposto quando este acabar."
+    "recurringHint": "Serve para o ano seguinte ser proposto quando este acabar.",
+    "role": "Para que serve esta prova",
+    "roleHint": "Um teste corre-se a ritmo de objectivo e diz-te onde estás. Um build-up faz parte do volume.",
+    "roles": {
+      "build_up": "Build-up",
+      "test": "Teste"
+    },
+    "serves": "Prepara qual âncora",
+    "servesHint": "A janela sugerida sai da data e da distância da âncora.",
+    "servesEmpty": "Marca primeiro uma prova como âncora do ano."
   },
   "goals": {
     "title": "Objetivos",
@@ -1256,5 +1265,18 @@
     "registeredNeedsDate": "Para ficar inscrito, diz a data da prova: ela vai para o calendário.",
     "registeredNeedsDiscipline": "Diz que distância vais correr.",
     "savedWithEvent": "Inscrição guardada, e a prova foi para o calendário."
+  },
+  "season": {
+    "tuneUpWindow": "teste de ~{{distance}} km entre {{from}} e {{to}}",
+    "serving_one": "1 prova a preparar",
+    "serving_other": "{{count}} provas a preparar",
+    "warnings": {
+      "taper_clash": "cai no afinamento da âncora",
+      "tune_up_window": "fora da janela de teste",
+      "crowded_month_one": "mês com 1 prova",
+      "crowded_month_other": "mês com {{count}} provas"
+    },
+    "beforeAnchor_one": "1 semana antes de {{anchor}}",
+    "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
   }
 }

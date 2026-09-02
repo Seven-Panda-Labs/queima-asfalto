@@ -9,6 +9,15 @@ import pt from './locales/pt.json'
 /** Sections nest: `eventMedia.errors` is an object, not a string. */
 type Bundle = Record<string, Record<string, unknown>>
 
+/** A section named by a dotted path, so nested groups can be checked too. */
+function sectionOf(bundle: Bundle, path: string): Record<string, unknown> {
+  let current: unknown = bundle
+  for (const step of path.split('.')) {
+    current = (current as Record<string, unknown>)[step]
+  }
+  return current as Record<string, unknown>
+}
+
 const LOCALES: Record<string, Bundle> = { ar, de, en, es, fr, pt }
 
 /**
@@ -21,6 +30,9 @@ const PLURALISED = [
   ['dashboard', 'courseTargetRuns'],
   ['courseHistory', 'subtitle'],
   ['courseHistory', 'subtitleUpcoming'],
+  ['season', 'serving'],
+  ['season', 'beforeAnchor'],
+  ['season.warnings', 'crowded_month'],
 ] as const
 
 /** Enough counts to reach every category any of these languages defines. */
@@ -35,7 +47,8 @@ describe('plural forms', () => {
   for (const [language, bundle] of Object.entries(LOCALES)) {
     for (const [section, key] of PLURALISED) {
       it(`${language}: ${section}.${key} covers every category the language uses`, () => {
-        const present = Object.keys(bundle[section]).filter((name) =>
+        const forms = sectionOf(bundle, section)
+        const present = Object.keys(forms).filter((name) =>
           name.startsWith(`${key}_`),
         )
 
@@ -45,7 +58,7 @@ describe('plural forms', () => {
 
         // A form that is present but empty renders as nothing at all.
         for (const name of present) {
-          const text = bundle[section][name]
+          const text = forms[name]
           expect(typeof text).toBe('string')
           expect(String(text).trim().length).toBeGreaterThan(0)
         }
@@ -56,7 +69,7 @@ describe('plural forms', () => {
   it('leaves no unsuffixed base key that would shadow the plural forms', () => {
     for (const bundle of Object.values(LOCALES)) {
       for (const [section, key] of PLURALISED) {
-        expect(Object.keys(bundle[section])).not.toContain(key)
+        expect(Object.keys(sectionOf(bundle, section))).not.toContain(key)
       }
     }
   })

@@ -11,6 +11,7 @@
 - **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, avec « demande une action » en tête, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée.
 - **Alertes d'échéance :** une notification le jour de l'ouverture, 30, 7 et 1 jour avant la fermeture, le jour du tirage, et en compte à rebours vers le délai pour sécuriser la place. À activer dans Réglages, Notifications.
 - **Courses pivots :** marque les une à trois courses qui fixent ton année et elles passent en premier dans chaque groupe.
+- **Règles de saison :** une course peut dire à quoi elle sert, build-up ou test, et quel pivot elle prépare. L'app montre la fenêtre du test, environ la moitié de la distance trois à quatre semaines avant, et alerte quand une course tombe dans l'affûtage du pivot ou quand un mois est trop chargé.
 
 ---
 

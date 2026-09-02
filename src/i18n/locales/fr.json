@@ -411,7 +411,16 @@
     "isAnchor": "Course pivot de l'année",
     "isAnchorHint": "Une à trois par an. Les réserver fixe le reste du calendrier, et elles passent en premier dans chaque groupe.",
     "recurring": "J'essaie celle-ci chaque année",
-    "recurringHint": "Pour que l'année suivante soit proposée quand celle-ci se termine."
+    "recurringHint": "Pour que l'année suivante soit proposée quand celle-ci se termine.",
+    "role": "À quoi sert cette course",
+    "roleHint": "Un test se court à l'allure objectif et te dit où tu en es. Un build-up fait partie du volume.",
+    "roles": {
+      "build_up": "Build-up",
+      "test": "Test"
+    },
+    "serves": "Prépare quelle course pivot",
+    "servesHint": "La fenêtre suggérée vient de la date et de la distance du pivot.",
+    "servesEmpty": "Marque d'abord une course comme pivot de l'année."
   },
   "goals": {
     "title": "Objectifs",
@@ -1256,5 +1265,18 @@
     "registeredNeedsDate": "Pour être inscrit, donne la date de la course : elle va au calendrier.",
     "registeredNeedsDiscipline": "Indique la distance que tu vas courir.",
     "savedWithEvent": "Inscription enregistrée, et la course est au calendrier."
+  },
+  "season": {
+    "tuneUpWindow": "test de ~{{distance}} km entre {{from}} et {{to}}",
+    "serving_one": "1 course en préparation",
+    "serving_other": "{{count}} courses en préparation",
+    "warnings": {
+      "taper_clash": "tombe dans l'affûtage du pivot",
+      "tune_up_window": "hors de la fenêtre de test",
+      "crowded_month_one": "mois à 1 course",
+      "crowded_month_other": "mois à {{count}} courses"
+    },
+    "beforeAnchor_one": "1 semaine avant {{anchor}}",
+    "beforeAnchor_other": "{{count}} semaines avant {{anchor}}"
   }
 }

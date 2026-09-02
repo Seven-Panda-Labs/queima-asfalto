@@ -411,7 +411,16 @@
     "isAnchor": "Carrera ancla del año",
     "isAnchorHint": "Una a tres por año. Reservar estas fija el resto del calendario, y aparecen primero en cada grupo.",
     "recurring": "Lo intento cada año",
-    "recurringHint": "Para que se proponga el año siguiente cuando este termine."
+    "recurringHint": "Para que se proponga el año siguiente cuando este termine.",
+    "role": "Para qué sirve esta carrera",
+    "roleHint": "Un test se corre a ritmo objetivo y te dice dónde estás. Un build-up es parte del volumen.",
+    "roles": {
+      "build_up": "Build-up",
+      "test": "Test"
+    },
+    "serves": "Prepara qué ancla",
+    "servesHint": "La ventana sugerida sale de la fecha y la distancia del ancla.",
+    "servesEmpty": "Marca primero una carrera como ancla del año."
   },
   "goals": {
     "title": "Objetivos",
@@ -1256,5 +1265,18 @@
     "registeredNeedsDate": "Para quedar inscrito, indica la fecha de la carrera: va al calendario.",
     "registeredNeedsDiscipline": "Indica qué distancia vas a correr.",
     "savedWithEvent": "Inscripción guardada, y la carrera fue al calendario."
+  },
+  "season": {
+    "tuneUpWindow": "test de ~{{distance}} km entre {{from}} y {{to}}",
+    "serving_one": "1 carrera preparando",
+    "serving_other": "{{count}} carreras preparando",
+    "warnings": {
+      "taper_clash": "cae en el afinamiento del ancla",
+      "tune_up_window": "fuera de la ventana de test",
+      "crowded_month_one": "mes con 1 carrera",
+      "crowded_month_other": "mes con {{count}} carreras"
+    },
+    "beforeAnchor_one": "1 semana antes de {{anchor}}",
+    "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
   }
 }

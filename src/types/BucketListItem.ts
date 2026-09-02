@@ -1,4 +1,5 @@
 import type { EventType } from './Event'
+import type { RaceRole } from '../domain/seasonRules'
 
 export type BucketListItem = {
   id: string
@@ -28,6 +29,21 @@ export type BucketListItem = {
   isAnchor?: boolean
   /** "I try this one every year", which is what makes a rollover worth offering. */
   recurring?: boolean
+  /**
+   * What this race is for, when it is not an anchor.
+   *
+   * There is no `anchor` role: an anchor is `isAnchor`, and a role is what a race
+   * that serves one is doing. Two fields saying the same thing would drift.
+   */
+  role?: RaceRole
+  /**
+   * The `races` identity of the anchor this one prepares for.
+   *
+   * A race and not an event, because the anchor is often still an entry with no
+   * event yet. An item with no identity cannot be pointed at, which is one more
+   * reason #249 exists.
+   */
+  servesRaceId?: string
   link?: string
   emoji?: string
   notes?: string
@@ -49,6 +65,8 @@ export type BucketListItemCreate = {
   targetYear?: number
   isAnchor?: boolean
   recurring?: boolean
+  role?: RaceRole
+  servesRaceId?: string
   link?: string
   emoji?: string
   notes?: string

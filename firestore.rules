@@ -104,6 +104,16 @@ service cloud.firestore {
         && (!('parkrunCountryUrl' in data) || data.parkrunCountryUrl == null || data.parkrunCountryUrl is string);
     }
 
+    function validOptionalSeasonFields(data) {
+      return (!('role' in data) || data.role == null
+          || data.role in ['build_up', 'test', 'none'])
+        && (!('servesRaceId' in data) || data.servesRaceId == null
+          || data.servesRaceId is string)
+        && (!('targetYear' in data) || data.targetYear == null || data.targetYear is int)
+        && (!('isAnchor' in data) || data.isAnchor == null || data.isAnchor is bool)
+        && (!('recurring' in data) || data.recurring == null || data.recurring is bool);
+    }
+
     function validOptionalRaceId(data) {
       return !('raceId' in data) || data.raceId == null || data.raceId is string;
     }
@@ -218,7 +228,8 @@ service cloud.firestore {
         && data.name.size() > 0
         && data.location is string
         && validOptionalGeocodeFields(data)
-        && validOptionalRaceId(data);
+        && validOptionalRaceId(data)
+        && validOptionalSeasonFields(data);
     }
 
     function validBucketListUpdate() {
@@ -237,7 +248,8 @@ service cloud.firestore {
         && (!('link' in data) || data.link == null || data.link is string)
         && (!('emoji' in data) || data.emoji == null || data.emoji is string)
         && (!('notes' in data) || data.notes == null || data.notes is string)
-        && validOptionalRaceId(data);
+        && validOptionalRaceId(data)
+        && validOptionalSeasonFields(data);
     }
 
     function validEntryMethod(method) {

@@ -411,7 +411,16 @@
     "isAnchor": "Ankerrennen des Jahres",
     "isAnchorHint": "Eines bis drei pro Jahr. Diese zu buchen legt den restlichen Kalender fest, und sie stehen in jeder Gruppe oben.",
     "recurring": "Ich versuche es jedes Jahr",
-    "recurringHint": "Damit das nächste Jahr angeboten wird, wenn dieses endet."
+    "recurringHint": "Damit das nächste Jahr angeboten wird, wenn dieses endet.",
+    "role": "Wozu dieses Rennen dient",
+    "roleHint": "Ein Test wird im Zieltempo gelaufen und sagt dir, wo du stehst. Ein Build-up ist Teil des Umfangs.",
+    "roles": {
+      "build_up": "Build-up",
+      "test": "Test"
+    },
+    "serves": "Bereitet welchen Anker vor",
+    "servesHint": "Das vorgeschlagene Fenster ergibt sich aus Datum und Distanz des Ankers.",
+    "servesEmpty": "Markiere zuerst ein Rennen als Anker des Jahres."
   },
   "goals": {
     "title": "Ziele",
@@ -1256,5 +1265,18 @@
     "registeredNeedsDate": "Für eine Anmeldung braucht es den Renntag: er geht in den Kalender.",
     "registeredNeedsDiscipline": "Sag, welche Distanz du läufst.",
     "savedWithEvent": "Anmeldung gespeichert, und das Rennen steht im Kalender."
+  },
+  "season": {
+    "tuneUpWindow": "Test über ~{{distance}} km zwischen {{from}} und {{to}}",
+    "serving_one": "1 Rennen zur Vorbereitung",
+    "serving_other": "{{count}} Rennen zur Vorbereitung",
+    "warnings": {
+      "taper_clash": "fällt in das Tapering des Ankers",
+      "tune_up_window": "außerhalb des Testfensters",
+      "crowded_month_one": "Monat mit 1 Rennen",
+      "crowded_month_other": "Monat mit {{count}} Rennen"
+    },
+    "beforeAnchor_one": "1 Woche vor {{anchor}}",
+    "beforeAnchor_other": "{{count}} Wochen vor {{anchor}}"
   }
 }

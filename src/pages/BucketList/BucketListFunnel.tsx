@@ -4,10 +4,22 @@ import { useTranslation } from 'react-i18next'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { formatDatePt } from '../../utils/date'
 import type { FunnelGroup, FunnelRow } from '../../domain/raceEntryFunnel'
+import type { SeasonRuleId, TuneUpWindow } from '../../domain/seasonRules'
 import type { RaceEntry } from '../../types/RaceEntry'
+
+/** What the season rules have to say about one row. */
+export type ItemSeason = {
+  window?: TuneUpWindow
+  /** How many races are declared as preparing for this anchor. */
+  serving: number
+  /** The anchor this race prepares, and how far ahead of it this race sits. */
+  serves?: { name: string; weeksBefore: number }
+  warnings: { rule: SeasonRuleId; count?: number }[]
+}
 
 type BucketListFunnelProps = {
   groups: FunnelGroup[]
+  season: Map<string, ItemSeason>
   /** Rendered at the end of every row: the icons the page already had. */
   actions: (row: FunnelRow) => ReactNode
   showEntryLink: boolean
@@ -44,7 +56,49 @@ function WaitingOn({ entry }: { entry: RaceEntry | null }) {
   return <span className="text-xs text-muted">{parts.join(' · ')}</span>
 }
 
-export function BucketListFunnel({ groups, actions, showEntryLink }: BucketListFunnelProps) {
+/**
+ * What the rules say, said briefly.
+ *
+ * Warnings and never blocks: a race in the taper week might be a parkrun with the
+ * kids, and the runner knows that and the app does not.
+ */
+function SeasonNotes({ season }: { season: ItemSeason | undefined }) {
+  const { t } = useTranslation()
+  if (!season) return null
+
+  return (
+    <>
+      {season.window ? (
+        <span className="text-xs text-muted">
+          {t('season.tuneUpWindow', {
+            distance: season.window.targetDistanceKm,
+            from: formatDatePt(season.window.from),
+            to: formatDatePt(season.window.to),
+          })}
+          {season.serving > 0 ? ` · ${t('season.serving', { count: season.serving })}` : ''}
+        </span>
+      ) : null}
+      {season.serves && season.serves.weeksBefore >= 1 ? (
+        <span className="text-xs text-muted">
+          {t('season.beforeAnchor', {
+            count: Math.round(season.serves.weeksBefore),
+            anchor: season.serves.name,
+          })}
+        </span>
+      ) : null}
+      {season.warnings.map(({ rule, count }) => (
+        <span
+          key={`${rule}-${count ?? 0}`}
+          className="rounded-full bg-warning-bg px-2 py-0.5 text-xs font-semibold text-warning-fg"
+        >
+          {t(`season.warnings.${rule}`, { count: count ?? 0 })}
+        </span>
+      ))}
+    </>
+  )
+}
+
+export function BucketListFunnel({ groups, season, actions, showEntryLink }: BucketListFunnelProps) {
   const { t } = useTranslation()
   const populated = groups.filter((group) => group.rows.length > 0)
 
@@ -77,7 +131,14 @@ export function BucketListFunnel({ groups, actions, showEntryLink }: BucketListF
                 </span>
                 {item.location ? <span className="text-xs text-muted">{item.location}</span> : null}
 
+                {item.role && item.role !== 'none' ? (
+                  <span className="text-xs font-semibold text-muted">
+                    {t(`bucketList.roles.${item.role}`)}
+                  </span>
+                ) : null}
+
                 <WaitingOn entry={entry} />
+                <SeasonNotes season={season.get(item.id)} />
 
                 <div className="ml-auto flex flex-nowrap items-center gap-1">
                   {showEntryLink ? (

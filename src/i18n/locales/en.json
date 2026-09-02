@@ -411,7 +411,16 @@
     "isAnchor": "Anchor race of the year",
     "isAnchorHint": "One to three a year. Booking these fixes the rest of the calendar, and they come first in every group.",
     "recurring": "I try this one every year",
-    "recurringHint": "So next year can be offered once this one ends."
+    "recurringHint": "So next year can be offered once this one ends.",
+    "role": "What this race is for",
+    "roleHint": "A test is run at goal pace and tells you where you are. A build-up is part of the volume.",
+    "roles": {
+      "build_up": "Build-up",
+      "test": "Test"
+    },
+    "serves": "Prepares which anchor",
+    "servesHint": "The suggested window comes from the anchor date and distance.",
+    "servesEmpty": "Mark a race as an anchor of the year first."
   },
   "goals": {
     "title": "Goals",
@@ -1256,5 +1265,18 @@
     "registeredNeedsDate": "To be registered, give the race date: it goes on the calendar.",
     "registeredNeedsDiscipline": "Say which distance you are running.",
     "savedWithEvent": "Entry saved, and the race is on the calendar."
+  },
+  "season": {
+    "tuneUpWindow": "tune-up of ~{{distance}} km between {{from}} and {{to}}",
+    "serving_one": "1 race preparing",
+    "serving_other": "{{count}} races preparing",
+    "warnings": {
+      "taper_clash": "lands in the anchor taper",
+      "tune_up_window": "outside the tune-up window",
+      "crowded_month_one": "month with 1 race",
+      "crowded_month_other": "month with {{count}} races"
+    },
+    "beforeAnchor_one": "1 week before {{anchor}}",
+    "beforeAnchor_other": "{{count}} weeks before {{anchor}}"
   }
 }

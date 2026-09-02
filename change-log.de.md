@@ -11,6 +11,7 @@
 - **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, mit "braucht Handlung" oben, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern.
 - **Fristwarnungen:** eine Benachrichtigung am Tag der Öffnung, 30, 7 und 1 Tag vor dem Schluss, am Tag der Ziehung, und im Countdown zur Frist für den gewonnenen Platz. Einschalten unter Einstellungen, Benachrichtigungen.
 - **Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, und sie stehen in jeder Gruppe oben.
+- **Saisonregeln:** ein Rennen kann sagen, wozu es dient, Build-up oder Test, und welchen Anker es vorbereitet. Die App zeigt das Testfenster, etwa die halbe Distanz drei bis vier Wochen vorher, und warnt, wenn ein Rennen in das Tapering des Ankers fällt oder ein Monat zu voll wird.
 
 ---
 

@@ -423,7 +423,16 @@
     "isAnchor": "سباق مرساة السنة",
     "isAnchorHint": "من واحد إلى ثلاثة في السنة. حجزها يثبّت بقية التقويم، وتظهر أولا في كل مجموعة.",
     "recurring": "أحاوله كل سنة",
-    "recurringHint": "حتى تُقترح السنة التالية عند انتهاء هذه."
+    "recurringHint": "حتى تُقترح السنة التالية عند انتهاء هذه.",
+    "role": "ما الغرض من هذا السباق",
+    "roleHint": "الاختبار يُركض بإيقاع الهدف ويقول لك أين أنت. أما البناء فهو جزء من الحجم.",
+    "roles": {
+      "build_up": "بناء",
+      "test": "اختبار"
+    },
+    "serves": "يجهّز أي مرساة",
+    "servesHint": "النافذة المقترحة تأتي من تاريخ المرساة ومسافتها.",
+    "servesEmpty": "حدّد أولا سباقا كمرساة للسنة."
   },
   "goals": {
     "title": "الأهداف",
@@ -1268,5 +1277,30 @@
     "registeredNeedsDate": "للتسجيل، حدّد تاريخ السباق: سيذهب إلى التقويم.",
     "registeredNeedsDiscipline": "حدّد المسافة التي ستركضها.",
     "savedWithEvent": "تم حفظ التسجيل، والسباق في التقويم."
+  },
+  "season": {
+    "tuneUpWindow": "اختبار بنحو {{distance}} كم بين {{from}} و{{to}}",
+    "serving_zero": "لا سباقات للتجهيز",
+    "serving_one": "سباق واحد للتجهيز",
+    "serving_two": "سباقان للتجهيز",
+    "serving_few": "{{count}} سباقات للتجهيز",
+    "serving_many": "{{count}} سباقا للتجهيز",
+    "serving_other": "{{count}} سباق للتجهيز",
+    "warnings": {
+      "taper_clash": "يقع في تخفيف المرساة",
+      "tune_up_window": "خارج نافذة الاختبار",
+      "crowded_month_zero": "شهر بلا سباقات",
+      "crowded_month_one": "شهر فيه سباق واحد",
+      "crowded_month_two": "شهر فيه سباقان",
+      "crowded_month_few": "شهر فيه {{count}} سباقات",
+      "crowded_month_many": "شهر فيه {{count}} سباقا",
+      "crowded_month_other": "شهر فيه {{count}} سباق"
+    },
+    "beforeAnchor_zero": "بلا أسابيع قبل {{anchor}}",
+    "beforeAnchor_one": "أسبوع واحد قبل {{anchor}}",
+    "beforeAnchor_two": "أسبوعان قبل {{anchor}}",
+    "beforeAnchor_few": "{{count}} أسابيع قبل {{anchor}}",
+    "beforeAnchor_many": "{{count}} أسبوعا قبل {{anchor}}",
+    "beforeAnchor_other": "{{count}} أسبوع قبل {{anchor}}"
   }
 }
