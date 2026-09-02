@@ -528,6 +528,18 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    /**
+     * How current the harvested half of the catalog is.
+     *
+     * Written only by the scheduled harvest, through the admin SDK. Readable by
+     * anyone signed in, because the page that searches the catalog has to be
+     * able to say when it was last refreshed rather than implying live data.
+     */
+    match /raceCatalogHarvest/{docId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
     match /goals/{goalId} {
       allow read: if isSignedIn()
         && resource.data.userId == request.auth.uid

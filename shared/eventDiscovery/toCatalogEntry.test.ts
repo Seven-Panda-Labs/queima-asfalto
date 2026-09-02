@@ -50,6 +50,19 @@ describe('toCatalogEntry', () => {
     expect(entry.typicalRaceMonth).toBe(9)
   })
 
+  it('holds no undefined value, which Firestore refuses outright', () => {
+    const bare = toCatalogEntry(
+      race({ city: undefined, registrationClosesAt: undefined, lowPrice: undefined, currency: undefined }),
+      PROVENANCE,
+    )
+
+    const undefinedKeys = (value: object) =>
+      Object.entries(value).filter(([, item]) => item === undefined).map(([key]) => key)
+
+    expect(undefinedKeys(bare)).toEqual([])
+    expect(undefinedKeys(bare.editions![0]!)).toEqual([])
+  })
+
   it('never guesses how you get in', () => {
     expect(toCatalogEntry(race(), PROVENANCE).entryMethod).toBe('unknown')
   })
@@ -116,5 +129,12 @@ describe('mergeIntoCatalog', () => {
   it('keeps a retired entry retired: somebody took it out on purpose', () => {
     const previous = { ...toCatalogEntry(race(), PROVENANCE), retired: true }
     expect(mergeIntoCatalog(previous, toCatalogEntry(race(), PROVENANCE))!.retired).toBe(true)
+  })
+
+  it('leaves no `retired: undefined` behind on an entry that was never retired', () => {
+    const previous = toCatalogEntry(race(), PROVENANCE)
+    const merged = mergeIntoCatalog(previous, toCatalogEntry(race(), PROVENANCE))!
+
+    expect('retired' in merged).toBe(false)
   })
 })

@@ -1,4 +1,4 @@
-import { NOMINAL_DISTANCE_KM, type EventType } from '../../src/domain/eventCodes.js'
+import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes.js'
 
 /**
  * The distances an event offers, read off the names of what it sells.
@@ -7,11 +7,17 @@ import { NOMINAL_DISTANCE_KM, type EventType } from '../../src/domain/eventCodes
  * needs most. What the sources do carry is an offer per distance, named the way
  * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m".
  */
-const DISTANCE_PATTERN = /(\d{1,5}(?:[.,]\d{1,3})?)\s*(km|k\b|milhas?|miles?|m\b)/giu
+const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,3}))?\s*(km|k\b|milhas?|miles?|m\b)/giu
 
 const MILE_KM = 1.609344
 
-/** Anything shorter is a lap count or a bib number, not a race. */
+/**
+ * Anything shorter is a sprint, not a race this app files.
+ *
+ * Real data: an event with a 10 km race also sells "Corrida Jovem 100m" and
+ * "200m". Those are children's dashes, and reading them as distances put a
+ * hundred kilometre race in a village 10K.
+ */
 const MIN_KM = 0.4
 /** Anything longer is a stage race or a typo. */
 const MAX_KM = 250
@@ -21,21 +27,25 @@ export function parseDistancesKm(labels: readonly string[]): number[] {
 
   for (const label of labels) {
     for (const match of label.matchAll(DISTANCE_PATTERN)) {
-      const raw = Number(match[1]!.replace(',', '.'))
-      if (!Number.isFinite(raw)) continue
+      const whole = match[1]!
+      const fraction = match[3]
+      const unit = match[4]!.toLowerCase()
 
-      const unit = match[2]!.toLowerCase()
-      // A bare "m" is metres, and "10.000 m" arrives as 10 once the thousands
-      // separator is read as a decimal point, so metres are only believed when
-      // the number is big enough to be a distance in them.
+      // "10.000 m" is ten thousand metres and "21,1 km" is twenty one point one:
+      // in metres a group of exactly three digits is a thousands separator,
+      // which is also how "42,195 km" keeps its decimals.
+      const isThousands = unit === 'm' && fraction?.length === 3
+      const value = isThousands
+        ? Number(`${whole}${fraction}`)
+        : Number(fraction ? `${whole}.${fraction}` : whole)
+      if (!Number.isFinite(value)) continue
+
       const km =
         unit.startsWith('mil') || unit.startsWith('mile')
-          ? raw * MILE_KM
+          ? value * MILE_KM
           : unit === 'm'
-            ? raw >= 400
-              ? raw / 1000
-              : raw
-            : raw
+            ? value / 1000
+            : value
 
       const rounded = Math.round(km * 1000) / 1000
       if (rounded >= MIN_KM && rounded <= MAX_KM) found.add(rounded)

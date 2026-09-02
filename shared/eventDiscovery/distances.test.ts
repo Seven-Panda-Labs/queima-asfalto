@@ -12,13 +12,27 @@ describe('parseDistancesKm', () => {
     expect(parseDistancesKm(['Meia maratona 21,1 km'])).toEqual([21.1])
   })
 
-  it('reads metres when the number is big enough to be metres', () => {
-    expect(parseDistancesKm(['3000 m'])).toEqual([3])
-    // A thousands separator read as a decimal point lands on 10 either way.
+  it('reads metres as metres', () => {
+    expect(parseDistancesKm(['3000 m', 'Corrida Jovem 4000m'])).toEqual([3, 4])
+    // In metres, three digits after the separator is a thousands separator.
     expect(parseDistancesKm(['10.000 m'])).toEqual([10])
-    // No race is five metres long, so a small number with a bare "m" is read
-    // as the kilometres the organiser meant.
-    expect(parseDistancesKm(['5 m'])).toEqual([5])
+  })
+
+  it('throws out the children s dashes an event sells beside the race', () => {
+    // Straight from acorrer: one event sells a 10K and five youth races.
+    expect(
+      parseDistancesKm([
+        'Corrida 10km',
+        'Caminhada 5km',
+        'Corrida Jovem 1000m',
+        'Corrida Jovem 200m',
+        'Corrida Jovem 100m',
+      ]),
+    ).toEqual([1, 5, 10])
+  })
+
+  it('keeps the decimals of a distance written in kilometres', () => {
+    expect(parseDistancesKm(['Maratona 42,195 km'])).toEqual([42.195])
   })
 
   it('reads miles', () => {

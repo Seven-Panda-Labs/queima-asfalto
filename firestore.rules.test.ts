@@ -925,6 +925,26 @@ describe('firestore.rules', () => {
     }
   })
 
+  describe('raceCatalogHarvest', () => {
+    it('lets a signed-in reader see how stale the catalog is', async () => {
+      await seedDocument('raceCatalogHarvest/status', { harvested: 92, written: 90 })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc('raceCatalogHarvest/status').get(),
+      )
+    })
+
+    it('is not writable from a browser, admin included', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .doc('raceCatalogHarvest/status').set({ harvested: 0 }),
+      )
+    })
+  })
+
   describe('raceCatalog', () => {
     const race = { id: 'berlin-marathon', name: 'Berlin Marathon', country: 'DE', city: 'Berlin' }
 

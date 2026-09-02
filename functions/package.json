@@ -6,7 +6,7 @@
     "node": "24"
   },
   "scripts": {
-    "build": "rm -rf lib src/shared && cp -r ../shared/officialResults src/shared && rm -f src/shared/*.test.ts && mkdir -p src/shared/shares && cp ../shared/shares/*.ts src/shared/shares && rm -f src/shared/shares/*.test.ts && mkdir -p src/shared/reminders && cp ../shared/reminders/*.ts src/shared/reminders && rm -f src/shared/reminders/*.test.ts && mkdir -p src/shared/parkrun && cp ../shared/parkrun/catalog.ts ../shared/parkrun/catalogSource.ts src/shared/parkrun && mkdir -p src/shared/account && cp ../shared/account/*.ts src/shared/account && rm -f src/shared/account/*.test.ts && tsc",
+    "build": "rm -rf lib src/shared && cp -r ../shared/officialResults src/shared && rm -f src/shared/*.test.ts && mkdir -p src/shared/shares && cp ../shared/shares/*.ts src/shared/shares && rm -f src/shared/shares/*.test.ts && mkdir -p src/shared/reminders && cp ../shared/reminders/*.ts src/shared/reminders && rm -f src/shared/reminders/*.test.ts && mkdir -p src/shared/parkrun && cp ../shared/parkrun/catalog.ts ../shared/parkrun/catalogSource.ts src/shared/parkrun && mkdir -p src/shared/account && cp ../shared/account/*.ts src/shared/account && rm -f src/shared/account/*.test.ts && mkdir -p src/shared/domain && cp ../shared/domain/*.ts src/shared/domain && rm -f src/shared/domain/*.test.ts && mkdir -p src/shared/raceCatalog && cp ../shared/raceCatalog/*.ts src/shared/raceCatalog && rm -f src/shared/raceCatalog/*.test.ts && mkdir -p src/shared/eventDiscovery && cp ../shared/eventDiscovery/*.ts src/shared/eventDiscovery && rm -f src/shared/eventDiscovery/*.test.ts && tsc",
     "watch": "npm run build && tsc --watch"
   },
   "dependencies": {

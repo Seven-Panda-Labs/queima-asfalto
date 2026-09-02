@@ -224,6 +224,21 @@ esse documento não existe ou está parado há mais de 45 dias — instâncias s
 Cloud Functions continuam a funcionar com essa cópia, que podes actualizar
 com `npm run sync:parkrun-events`.
 
+**Descoberta de provas (opcional, desligada por defeito).** A função agendada
+`harvestRaceCatalog` lê os sitemaps das fontes que activares e escreve as provas
+que encontra em `raceCatalog`, sempre como `unreviewed`, e nunca por cima do que
+uma pessoa reviu. Não corre nada sem `DISCOVERY_SOURCES` em `functions/.env`:
+
+```
+DISCOVERY_SOURCES=acorrer.pt
+```
+
+Sem essa variável a função sai imediatamente. É deliberado: a colheita lê
+páginas de terceiros, e essa decisão é de quem opera a instância, não de quem
+actualiza a versão. Antes de activar uma fonte, lê o `robots.txt` e os termos
+dela: as que estão na lista foram escolhidas por permitirem o sitemap e
+publicarem `schema.org`, mas isso pode mudar sem aviso.
+
 Deploy parcial:
 
 | Comando | O quê |
@@ -242,6 +257,8 @@ Deploy parcial:
 | `lookupOfficialResults` | Callable (importação resultados oficiais) |
 | `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable (partilhas) |
 | `dispatchReminders` | Agendada (cada 60 min, Cloud Scheduler) |
+| `syncParkrunCatalog` | Agendada (semanal, Cloud Scheduler) |
+| `harvestRaceCatalog` | Agendada (semanal; só corre com `DISCOVERY_SOURCES`) |
 | `accountApprovalBeforeUserCreated`, `accountApprovalBeforeUserSignedIn` | Blocking Auth (só se `ACCOUNT_APPROVAL_REQUIRED=true`) |
 | `accountApprovalAction` | HTTP (links de aprovação; rewrite Hosting `/api/account-approval`) |
 
@@ -512,6 +529,21 @@ that document is missing or has been stalled for over 45 days, so instances
 without Cloud Functions keep working from that copy — refresh it with
 `npm run sync:parkrun-events`.
 
+**Race discovery (optional, off by default).** The `harvestRaceCatalog`
+scheduled function reads the sitemaps of the sources you enable and writes what
+it finds into `raceCatalog`, always as `unreviewed` and never over anything a
+person reviewed. Nothing runs without `DISCOVERY_SOURCES` in `functions/.env`:
+
+```
+DISCOVERY_SOURCES=acorrer.pt
+```
+
+Without that variable the function returns immediately. That is deliberate: a
+harvest reads third-party pages, and that decision belongs to whoever operates
+the instance, not to whoever upgrades it. Before enabling a source, read its
+`robots.txt` and its terms: the ones on the list were picked for allowing the
+sitemap and publishing `schema.org`, and either can change without notice.
+
 Partial deploy:
 
 | Command | What |
@@ -530,6 +562,8 @@ Partial deploy:
 | `lookupOfficialResults` | Callable (official results import) |
 | `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable (sharing) |
 | `dispatchReminders` | Scheduled (every 60 min, Cloud Scheduler) |
+| `syncParkrunCatalog` | Scheduled (weekly, Cloud Scheduler) |
+| `harvestRaceCatalog` | Scheduled (weekly; only runs with `DISCOVERY_SOURCES`) |
 | `accountApprovalBeforeUserCreated`, `accountApprovalBeforeUserSignedIn` | Blocking Auth (only if `ACCOUNT_APPROVAL_REQUIRED=true`) |
 | `accountApprovalAction` | HTTP (approval links; Hosting rewrite `/api/account-approval`) |
 
