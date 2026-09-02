@@ -19,6 +19,7 @@
 - **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito. Quem for aprovado recebe email e entra a seguir.
 - **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, e cada um explica o que a app faz com aquilo: escolher distâncias, marcar a prova âncora do ano, planear a inscrição dela e registar uma prova já corrida. Desaparece quando estiverem feitos, ou quando disseres que já conheces a app.
 - **Marcar provas âncora onde elas estão:** a âncora passa a viver na prova e por temporada, e marca-se com um botão na página do evento, passado ou futuro. Quem já tinha a temporada planeada em eventos passa a ter janela de teste, avisos e previsão, sem ter de recriar nada na bucket list.
+- **Corrigido:** as inscrições e as identidades de prova falhavam em produção por falta de índices no Firestore, o que deixava o botão de âncora sem efeito e enchia a consola de erros.
 
 ---
 

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useToast } from '../../contexts/ToastContext'
 import { isAnchorFor } from '../../domain/seasonAnchors'
 import { findOrCreateRaceId, setRaceAnchorYear } from '../../services/races'
 import { updateEvent } from '../../services/events'
@@ -22,6 +23,7 @@ type AnchorToggleProps = {
  */
 export function AnchorToggle({ event, races, userId, onChanged }: AnchorToggleProps) {
   const { t } = useTranslation()
+  const toast = useToast()
   const [saving, setSaving] = useState(false)
 
   const year = event.date.getFullYear()
@@ -43,12 +45,17 @@ export function AnchorToggle({ event, races, userId, onChanged }: AnchorTogglePr
             locationLng: event.locationLng,
             locationGeocodeQuery: event.locationGeocodeQuery,
           })) ?? undefined
-        if (!raceId) return
+        if (!raceId) throw new Error('race identity unavailable')
         await updateEvent(event.id, { raceId })
       }
 
       await setRaceAnchorYear(raceId, year, !isAnchor)
       onChanged()
+    } catch (error) {
+      // Minting the identity is best effort by design, so a failure here has to
+      // say so: a button that silently does nothing is worse than an error.
+      console.error('anchor toggle failed', error)
+      toast.error(t('anchor.error'))
     } finally {
       setSaving(false)
     }

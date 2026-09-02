@@ -1,6 +1,20 @@
 {
   "indexes": [
     {
+      "collectionGroup": "bucketListItems",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "events",
       "queryScope": "COLLECTION",
       "fields": [
@@ -23,13 +37,27 @@
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "status",
+          "fieldPath": "eventType",
           "order": "ASCENDING"
         }
       ]
     },
     {
       "collectionGroup": "events",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "goals",
       "queryScope": "COLLECTION",
       "fields": [
         {
@@ -53,34 +81,6 @@
         {
           "fieldPath": "year",
           "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "goals",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "eventType",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "bucketListItems",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
-          "fieldPath": "userId",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "createdAt",
-          "order": "DESCENDING"
         }
       ]
     },
@@ -113,11 +113,39 @@
       ]
     },
     {
+      "collectionGroup": "raceEntries",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "year",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "races",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "shares",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "ownerId",
+          "fieldPath": "granteeEmail",
           "order": "ASCENDING"
         },
         {
@@ -145,20 +173,6 @@
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "granteeEmail",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "status",
-          "order": "ASCENDING"
-        }
-      ]
-    },
-    {
-      "collectionGroup": "shares",
-      "queryScope": "COLLECTION",
-      "fields": [
-        {
           "fieldPath": "ownerId",
           "order": "ASCENDING"
         },
@@ -182,6 +196,20 @@
         },
         {
           "fieldPath": "granteeId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "status",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "shares",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "ownerId",
           "order": "ASCENDING"
         },
         {

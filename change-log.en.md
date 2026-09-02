@@ -19,6 +19,7 @@
 - **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written. Once approved, the user gets an email and can sign in.
 - **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it: pick your distances, mark the main race of your year, plan its entry, and record a race you have already run. It goes when they are done, or when you say you know the app.
 - **Mark anchor races where they are:** the anchor now lives on the race and per season, and is set with a button on the event page, past or future. A season already planned as events gets the tune-up window, the warnings and the prediction, with nothing to recreate in the bucket list.
+- **Fixed:** entries and race identities failed in production for want of Firestore indexes, which left the anchor button doing nothing and filled the console with errors.
 
 ---
 
