@@ -1369,5 +1369,19 @@
     "isAnchor": "Anchor of {{year}}",
     "toggleHint": "Anchor races fix the season: the tune-up window, the warnings and the prediction all come from them.",
     "error": "Could not set the anchor. Try again."
+  },
+  "parkrunDiscovery": {
+    "title": "Parkruns near you",
+    "useLocation": "Use my location",
+    "noReference": "We do not know where you run. Use your location, or type a town in the \"Where\" box.",
+    "locationRefused": "No location. Type a town in the \"Where\" box to search.",
+    "noneNearby": "No parkrun around here.",
+    "away": "{{km}} km away",
+    "saturday": "Saturday {{date}}",
+    "plan": "Plan it",
+    "watch": "Watchlist",
+    "planned": "\"{{name}}\" is on the calendar for Saturday.",
+    "planError": "Could not put this parkrun on the calendar.",
+    "farAway": "The nearest is {{km}} km away. parkrun does not run in every country, so this is for when you travel."
   }
 }

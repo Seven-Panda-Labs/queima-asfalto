@@ -1369,5 +1369,19 @@
     "isAnchor": "Âncora de {{year}}",
     "toggleHint": "As provas âncora fixam a temporada: delas saem a janela de teste, os avisos e a previsão.",
     "error": "Não foi possível marcar a âncora. Tenta outra vez."
+  },
+  "parkrunDiscovery": {
+    "title": "Parkruns perto de ti",
+    "useLocation": "Usar a minha localização",
+    "noReference": "Não sabemos onde corres. Usa a tua localização, ou escreve uma cidade na caixa «Onde».",
+    "locationRefused": "Sem localização. Escreve uma cidade na caixa «Onde» para procurar.",
+    "noneNearby": "Nenhum parkrun por aqui.",
+    "away": "a {{km}} km",
+    "saturday": "sábado {{date}}",
+    "plan": "Planear",
+    "watch": "Watchlist",
+    "planned": "«{{name}}» foi para o calendário, sábado.",
+    "planError": "Não foi possível pôr este parkrun no calendário.",
+    "farAway": "O mais próximo fica a {{km}} km. O parkrun não existe em todos os países, portanto isto é para quando viajares."
   }
 }
