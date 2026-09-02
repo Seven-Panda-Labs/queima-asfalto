@@ -20,6 +20,7 @@ import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { useDisciplines } from '../../contexts/DisciplinesContext'
 import { visibleDisciplines } from '../../domain/disciplinePreferences'
+import { countsAsStarted } from '../../domain/outcomeReasons'
 import { formatPerformanceGoalLabel } from '../../types/PerformanceGoal'
 import { formatDatePt } from '../../utils/date'
 import {
@@ -211,7 +212,11 @@ export function Results() {
   const percentileSummary = useMemo(() => summarisePercentiles(percentiles), [percentiles])
 
   const progressions = useMemo(() => buildRecordProgressions(results), [results])
-  const careerTotals = useMemo(() => computeCareerTotals(results), [results])
+  const dnfCount = useMemo(
+    () => allEvents.filter((event) => countsAsStarted(event.outcomeReason)).length,
+    [allEvents],
+  )
+  const careerTotals = useMemo(() => computeCareerTotals(results, dnfCount), [results, dnfCount])
   const rhythm = useMemo(() => computeActivityRhythm(results), [results])
   const calendar = useMemo(() => buildActivityCalendar(results), [results])
   /** An estimate for a discipline the user does not race is noise, so the

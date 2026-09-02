@@ -569,7 +569,9 @@
     "tooltipTime": "Tempo {{time}}",
     "tooltipTopPercent": "Top {{percent}}%",
     "trendLine": "Tendência",
-    "trendSummary": "{{change}} pontos por ano ao ritmo actual"
+    "trendSummary": "{{change}} pontos por ano ao ritmo actual",
+    "qualityDnf": "{{count}} não terminada(s), contadas como começadas.",
+    "careerDnf": "{{count}} não terminada(s)"
   },
   "settings": {
     "title": "Definições",
@@ -753,7 +755,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, o evento «{{event}}» passou. Marcado como Faltou automaticamente."
+    "faltouAuto": "{{name}}, o evento «{{event}}» passou sem resultado. Abre-o e diz o que aconteceu."
   },
   "validation": {
     "futureNoCompleted": "Eventos futuros não podem estar Concluídos ou marcados como Faltou.",
@@ -1278,5 +1280,18 @@
     },
     "beforeAnchor_one": "1 semana antes de {{anchor}}",
     "beforeAnchor_other": "{{count}} semanas antes de {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "Não há resultado registado. O que aconteceu?",
+    "promptHint": "Fica na prova. Uma desistência conta como prova começada, e continua fora de ritmos, recordes e previsões.",
+    "reasons": {
+      "dnf": "Desisti a meio",
+      "injury": "Lesão",
+      "did_not_go": "Não fui",
+      "cancelled_by_organiser": "Cancelada pela organização",
+      "travel": "A viagem falhou",
+      "other": "Outro motivo"
+    },
+    "editTitle": "Corrigir o que aconteceu"
   }
 }

@@ -581,7 +581,9 @@
     "tooltipTime": "الزمن {{time}}",
     "tooltipTopPercent": "ضمن {{percent}}% الأوائل",
     "trendLine": "الاتجاه",
-    "trendSummary": "{{change}} نقطة في السنة بالوتيرة الحالية"
+    "trendSummary": "{{change}} نقطة في السنة بالوتيرة الحالية",
+    "qualityDnf": "{{count}} لم تُكمل، وتُحسب كبدايات.",
+    "careerDnf": "{{count}} لم تُكمل"
   },
   "settings": {
     "title": "الإعدادات",
@@ -765,7 +767,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}، انتهى موعد الفعالية «{{event}}». تم تعليمها تلقائيًا على أنها لم تُحضَر."
+    "faltouAuto": "{{name}}، انتهى موعد «{{event}}» دون نتيجة. افتحها وقل ما حدث."
   },
   "validation": {
     "futureNoCompleted": "لا يمكن تعليم الفعاليات المستقبلية كمكتملة أو لم تُحضَر.",
@@ -1302,5 +1304,18 @@
     "beforeAnchor_few": "{{count}} أسابيع قبل {{anchor}}",
     "beforeAnchor_many": "{{count}} أسبوعا قبل {{anchor}}",
     "beforeAnchor_other": "{{count}} أسبوع قبل {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "لا نتيجة مسجّلة. ماذا حدث؟",
+    "promptHint": "يبقى على السباق. الانسحاب يُحسب سباقا بدأته، ويظل خارج الإيقاعات والأرقام والتوقعات.",
+    "reasons": {
+      "dnf": "انسحبت",
+      "injury": "إصابة",
+      "did_not_go": "لم أذهب",
+      "cancelled_by_organiser": "أُلغي من المنظمين",
+      "travel": "فشلت الرحلة",
+      "other": "سبب آخر"
+    },
+    "editTitle": "تصحيح ما حدث"
   }
 }

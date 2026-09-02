@@ -569,7 +569,9 @@
     "tooltipTime": "Zeit {{time}}",
     "tooltipTopPercent": "Top {{percent}}%",
     "trendLine": "Trend",
-    "trendSummary": "{{change}} Punkte pro Jahr beim aktuellen Tempo"
+    "trendSummary": "{{change}} Punkte pro Jahr beim aktuellen Tempo",
+    "qualityDnf": "{{count}} nicht beendet, als gestartet gezählt.",
+    "careerDnf": "{{count}} nicht beendet"
   },
   "settings": {
     "title": "Einstellungen",
@@ -753,7 +755,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, Event «{{event}}» ist vorbei. Automatisch als Verpasst markiert."
+    "faltouAuto": "{{name}}, Event «{{event}}» ist ohne Ergebnis vorbei. Öffne es und sag, was passiert ist."
   },
   "validation": {
     "futureNoCompleted": "Zukünftige Events können nicht Abgeschlossen oder als Verpasst markiert werden.",
@@ -1278,5 +1280,18 @@
     },
     "beforeAnchor_one": "1 Woche vor {{anchor}}",
     "beforeAnchor_other": "{{count}} Wochen vor {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "Kein Ergebnis erfasst. Was ist passiert?",
+    "promptHint": "Es bleibt am Rennen. Ein DNF zählt als gestartetes Rennen und bleibt aus Tempo, Rekorden und Prognosen heraus.",
+    "reasons": {
+      "dnf": "Ausgestiegen",
+      "injury": "Verletzung",
+      "did_not_go": "Nicht hingegangen",
+      "cancelled_by_organiser": "Vom Veranstalter abgesagt",
+      "travel": "Reise geplatzt",
+      "other": "Etwas anderes"
+    },
+    "editTitle": "Korrigieren, was passiert ist"
   }
 }

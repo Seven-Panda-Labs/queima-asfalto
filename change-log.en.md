@@ -12,6 +12,7 @@
 - **Deadline warnings:** a notification on the day a window opens, 30, 7 and 1 days before it closes, on the day of a draw, and counting down to the deadline for securing a place. Switch it on in Settings, Notifications.
 - **Anchor races:** mark the one to three races that fix your year and they come first in every group.
 - **Season rules:** a race can say what it is for, a build-up or a test, and which anchor it prepares. The app shows the tune-up window, about half the distance three to four weeks out, and warns when a race lands in the anchor taper or when a month gets crowded.
+- **When it fails:** a race that passes with no result now asks what happened (dropped out, injury, did not go, cancelled, travel, something else) instead of saying you missed it. A DNF counts as a race started and stops showing up as missing data, while staying out of pace, records and predictions.
 
 ---
 

@@ -19,6 +19,7 @@ import { findOrCreateRaceId } from './races'
 import { deleteAllEventMedia } from './eventMedia'
 import type { Event, EventCreate, EventFilters } from '../types/Event'
 import { normalizeEventStatus, normalizeEventType } from '../domain/eventCodes'
+import { isOutcomeReason, type OutcomeReason } from '../domain/outcomeReasons'
 import { calculatePace } from '../utils/pace'
 import { normalizeTime } from '../utils/time'
 
@@ -78,6 +79,10 @@ function docToEvent(id: string, data: Record<string, unknown>): Event {
         ? data.resultsPlatform
         : undefined,
     resultsVerified: data.resultsVerified === true,
+    outcomeReason:
+      typeof data.outcomeReason === 'string' && isOutcomeReason(data.outcomeReason)
+        ? data.outcomeReason
+        : undefined,
     parkrunEventSlug:
       typeof data.parkrunEventSlug === 'string' ? data.parkrunEventSlug : undefined,
     parkrunCountryUrl:
@@ -139,6 +144,7 @@ export async function createEvent(userId: string, data: EventCreate): Promise<st
     parkrunEventSlug: data.parkrunEventSlug ?? null,
     parkrunCountryUrl: data.parkrunCountryUrl ?? null,
     resultsVerified: null,
+    outcomeReason: data.outcomeReason ?? null,
     raceId: raceId ?? null,
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
@@ -148,7 +154,10 @@ export async function createEvent(userId: string, data: EventCreate): Promise<st
 
 export async function updateEvent(
   eventId: string,
-  data: Partial<Omit<Event, 'id' | 'userId' | 'createdAt'>>,
+  data: Omit<Partial<Omit<Event, 'id' | 'userId' | 'createdAt'>>, 'outcomeReason'> & {
+    /** `null` clears it: a reason stops being true the moment a time exists. */
+    outcomeReason?: OutcomeReason | null
+  },
 ): Promise<void> {
   const ref = doc(db, EVENTS_COLLECTION, eventId)
   await updateDoc(ref, {
@@ -239,8 +248,23 @@ export async function saveResults(eventId: string, data: SaveResultsInput): Prom
     classification: data.classification?.trim() || undefined,
     notes: data.notes?.trim() || undefined,
     resultsVerified: data.verified === true,
+    // A time answers the question the reason was asked to answer.
+    outcomeReason: null,
     status: 'completed',
   })
+}
+
+/**
+ * What happened to a race that produced no result.
+ *
+ * Its own function because it is the one write that comes from a runner who is
+ * being asked a question, rather than from a form they went looking for.
+ */
+export async function saveOutcomeReason(
+  eventId: string,
+  reason: OutcomeReason,
+): Promise<void> {
+  await updateEvent(eventId, { outcomeReason: reason })
 }
 
 export { docToEvent }

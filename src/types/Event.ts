@@ -6,6 +6,7 @@ export { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 
 import type { EventStatus, EventType } from '../domain/eventCodes'
 import type { ResultsPlatform } from '../../shared/officialResults'
+import type { OutcomeReason } from '../domain/outcomeReasons'
 
 export type Event = {
   id: string
@@ -30,6 +31,13 @@ export type Event = {
   parkrunEventSlug?: string
   parkrunCountryUrl?: string
   resultsVerified?: boolean
+  /**
+   * Why the race produced no result.
+   *
+   * A DNF is `completed` with `outcomeReason: 'dnf'` rather than a status of its
+   * own, so every exhaustive map over `EventStatus` stays as it is.
+   */
+  outcomeReason?: OutcomeReason
   /**
    * Seconds per kilometre the second half of the race was slower than the first,
    * from the uploaded track. Denormalised from `events/{id}/track` on purpose:
@@ -62,6 +70,7 @@ export type EventCreate = {
   resultsPlatform?: ResultsPlatform
   parkrunEventSlug?: string
   parkrunCountryUrl?: string
+  outcomeReason?: OutcomeReason
   raceId?: string
 }
 

@@ -12,6 +12,7 @@
 - **Fristwarnungen:** eine Benachrichtigung am Tag der Öffnung, 30, 7 und 1 Tag vor dem Schluss, am Tag der Ziehung, und im Countdown zur Frist für den gewonnenen Platz. Einschalten unter Einstellungen, Benachrichtigungen.
 - **Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, und sie stehen in jeder Gruppe oben.
 - **Saisonregeln:** ein Rennen kann sagen, wozu es dient, Build-up oder Test, und welchen Anker es vorbereitet. Die App zeigt das Testfenster, etwa die halbe Distanz drei bis vier Wochen vorher, und warnt, wenn ein Rennen in das Tapering des Ankers fällt oder ein Monat zu voll wird.
+- **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt jetzt, was passiert ist (Ausstieg, Verletzung, nicht hingegangen, abgesagt, Reise, anderes), statt zu sagen, du hättest es verpasst. Ein DNF zählt als gestartetes Rennen und gilt nicht mehr als fehlende Daten, bleibt aber aus Tempo, Rekorden und Prognosen heraus.
 
 ---
 

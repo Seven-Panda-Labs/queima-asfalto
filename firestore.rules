@@ -114,6 +114,12 @@ service cloud.firestore {
         && (!('recurring' in data) || data.recurring == null || data.recurring is bool);
     }
 
+    function validOptionalOutcomeReason(data) {
+      return !('outcomeReason' in data) || data.outcomeReason == null
+        || data.outcomeReason in ['dnf', 'injury', 'did_not_go',
+          'cancelled_by_organiser', 'travel', 'other'];
+    }
+
     function validOptionalRaceId(data) {
       return !('raceId' in data) || data.raceId == null || data.raceId is string;
     }
@@ -131,6 +137,7 @@ service cloud.firestore {
         && data.location is string
         && validOptionalGeocodeFields(data)
         && validOptionalResultsFields(data)
+        && validOptionalOutcomeReason(data)
         && validOptionalRaceId(data);
     }
 
@@ -154,6 +161,7 @@ service cloud.firestore {
         && (!('notes' in data) || data.notes == null || data.notes is string)
         && (!('resultsVerified' in data) || data.resultsVerified == null || data.resultsVerified is bool)
         && (!('trackPacingDriftSeconds' in data) || data.trackPacingDriftSeconds == null || data.trackPacingDriftSeconds is number)
+        && validOptionalOutcomeReason(data)
         && validOptionalRaceId(data);
     }
 

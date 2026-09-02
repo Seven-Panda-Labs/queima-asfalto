@@ -30,6 +30,22 @@ describe('computeDataQuality', () => {
     expect(quality.missingClassification).toBe(2)
   })
 
+  it('counts a DNF as an outcome instead of chasing it for a time', () => {
+    const dnf = makeEvent({
+      id: 'dnf',
+      date: new Date(2026, 6, 1),
+      eventType: 'km_42_2',
+      outcomeReason: 'dnf',
+    })
+    const quality = computeDataQuality([...events, dnf])
+
+    expect(quality.dnf).toBe(1)
+    // A race with no time to ask for stays out of both the exclusion list and
+    // the count of what is missing.
+    expect(quality.excluded.map((event) => event.id)).toEqual(['noTime', 'noDistance'])
+    expect(quality.missingTime).toBe(2)
+  })
+
   it('reports verification as a share of completed races', () => {
     const quality = computeDataQuality(events)
 

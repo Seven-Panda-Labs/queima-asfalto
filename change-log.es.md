@@ -12,6 +12,7 @@
 - **Avisos de plazos:** notificación el día en que abren las inscripciones, 30, 7 y 1 días antes de cerrar, el día del sorteo y contando hacia el plazo de asegurar la plaza. Se activa en Ajustes, Notificaciones.
 - **Carreras ancla:** marca las una a tres carreras que fijan tu año y aparecerán primero en cada grupo.
 - **Reglas de temporada:** cada carrera puede decir para qué sirve, build-up o test, y qué ancla prepara. La app muestra la ventana del test, unos la mitad de la distancia tres o cuatro semanas antes, y avisa cuando una carrera cae en el afinamiento del ancla o cuando el mes se llena.
+- **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió (abandono, lesión, no fui, cancelada, viaje, otro) en vez de decir que la perdiste. Un abandono cuenta como carrera empezada y deja de figurar como datos que faltan, siguiendo fuera de ritmos, récords y predicciones.
 
 ---
 

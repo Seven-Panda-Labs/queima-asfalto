@@ -569,7 +569,9 @@
     "tooltipTime": "Temps {{time}}",
     "tooltipTopPercent": "Top {{percent}}%",
     "trendLine": "Tendance",
-    "trendSummary": "{{change}} points par an au rythme actuel"
+    "trendSummary": "{{change}} points par an au rythme actuel",
+    "qualityDnf": "{{count}} non terminée(s), comptées comme commencées.",
+    "careerDnf": "{{count}} non terminée(s)"
   },
   "settings": {
     "title": "Paramètres",
@@ -753,7 +755,7 @@
     }
   },
   "messages": {
-    "faltouAuto": "{{name}}, l'événement « {{event}} » est passé. Marqué automatiquement comme Manqué."
+    "faltouAuto": "{{name}}, l'événement « {{event}} » est passé sans résultat. Ouvre-le et dis ce qui s'est passé."
   },
   "validation": {
     "futureNoCompleted": "Les événements futurs ne peuvent pas être Terminés ni marqués comme Manqués.",
@@ -1278,5 +1280,18 @@
     },
     "beforeAnchor_one": "1 semaine avant {{anchor}}",
     "beforeAnchor_other": "{{count}} semaines avant {{anchor}}"
+  },
+  "outcome": {
+    "promptTitle": "Aucun résultat enregistré. Que s'est-il passé ?",
+    "promptHint": "Cela reste sur la course. Un abandon compte comme une course commencée, et reste hors des allures, des records et des prévisions.",
+    "reasons": {
+      "dnf": "J'ai abandonné",
+      "injury": "Blessure",
+      "did_not_go": "Je n'y suis pas allé",
+      "cancelled_by_organiser": "Annulée par l'organisation",
+      "travel": "Le voyage est tombé à l'eau",
+      "other": "Autre raison"
+    },
+    "editTitle": "Corriger ce qui s'est passé"
   }
 }

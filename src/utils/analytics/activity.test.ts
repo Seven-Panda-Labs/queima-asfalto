@@ -21,6 +21,14 @@ describe('computeCareerTotals', () => {
     expect(totals.lastRace.event.id).toBe('3')
   })
 
+  it('carries the races started and not finished, which have no result to sum', () => {
+    const totals = computeCareerTotals(results, 2)!
+
+    expect(totals.races).toBe(3)
+    expect(totals.dnf).toBe(2)
+    expect(totals.distanceKm).toBe(30)
+  })
+
   it('returns null without results', () => {
     expect(computeCareerTotals([])).toBeNull()
   })
