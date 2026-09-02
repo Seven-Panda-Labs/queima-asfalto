@@ -1306,5 +1306,32 @@
     "basis": "Bestes Ergebnis der letzten 12 Monate: {{name}}, {{date}}.",
     "basisStale": "Keine Rennen in den letzten 12 Monaten; aus deiner neuesten Marke: {{name}}, {{date}}.",
     "basisBuildUp": "Aus deinem Vorbereitungsrennen: {{name}}, {{date}}."
+  },
+  "findRaces": {
+    "greeting": "Entdecken",
+    "title": "Rennen finden",
+    "subtitle": "Kommende Rennen aus dem Katalog dieser Instanz, bereit für deine Bucket List.",
+    "cta": "Rennen finden",
+    "forAnchor": "Zur Vorbereitung von",
+    "forAnchorHint": "Ein Anker füllt das Testfenster aus.",
+    "noAnchors": "Markiere ein Rennen als Anker des Jahres, um ein Fenster vorgeschlagen zu bekommen.",
+    "from": "Ab",
+    "to": "Bis",
+    "place": "Wo",
+    "placePlaceholder": "Stadt oder Name",
+    "closes": "Anmeldung schließt am {{date}}",
+    "closesUnreviewed": "die Liste sagt, es schließt am {{date}}",
+    "openSource": "Quelle ansehen",
+    "add": "Hinzufügen",
+    "added": "Hinzugefügt",
+    "addedToast": "\"{{name}}\" ist auf deiner Bucket List.",
+    "addError": "Dieses Rennen konnte nicht hinzugefügt werden.",
+    "emptyCatalog": "Der Katalog dieser Instanz ist leer. Ein Administrator kann Rennen anlegen oder die Ernte einschalten.",
+    "noMatches": "Im Katalog passt nichts zu diesen Kriterien.",
+    "syncedAt": "Katalog zuletzt aktualisiert am {{date}}.",
+    "neverSynced": "Katalog wird auf dieser Instanz von Hand gepflegt.",
+    "backToBucketList": "Zurück zur Bucket List",
+    "fitsAnchor_one": "passt, 1 Woche vorher",
+    "fitsAnchor_other": "passt, {{count}} Wochen vorher"
   }
 }

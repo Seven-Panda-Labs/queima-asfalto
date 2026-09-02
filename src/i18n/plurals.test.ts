@@ -32,6 +32,7 @@ const PLURALISED = [
   ['courseHistory', 'subtitleUpcoming'],
   ['season', 'serving'],
   ['season', 'beforeAnchor'],
+  ['findRaces', 'fitsAnchor'],
   ['season.warnings', 'crowded_month'],
 ] as const
 

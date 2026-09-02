@@ -1306,5 +1306,32 @@
     "basis": "Best result in the last 12 months: {{name}}, {{date}}.",
     "basisStale": "No races in the last 12 months; from your most recent mark: {{name}}, {{date}}.",
     "basisBuildUp": "From your build-up race: {{name}}, {{date}}."
+  },
+  "findRaces": {
+    "greeting": "Discover",
+    "title": "Find races",
+    "subtitle": "Upcoming races from this instance catalog, ready to add to your bucket list.",
+    "cta": "Find races",
+    "forAnchor": "Preparing for",
+    "forAnchorHint": "Picking an anchor fills in the tune-up window.",
+    "noAnchors": "Mark a race as an anchor of the year to get a suggested window.",
+    "from": "From",
+    "to": "To",
+    "place": "Where",
+    "placePlaceholder": "City or name",
+    "closes": "entries close {{date}}",
+    "closesUnreviewed": "the listing says it closes {{date}}",
+    "openSource": "View source",
+    "add": "Add",
+    "added": "Added",
+    "addedToast": "\"{{name}}\" went to your bucket list.",
+    "addError": "Could not add this race.",
+    "emptyCatalog": "This instance catalog is empty. An administrator can add races, or switch the harvest on.",
+    "noMatches": "Nothing in the catalog matches these criteria.",
+    "syncedAt": "Catalog last refreshed {{date}}.",
+    "neverSynced": "Catalog kept by hand on this instance.",
+    "backToBucketList": "Back to the bucket list",
+    "fitsAnchor_one": "fits, 1 week out",
+    "fitsAnchor_other": "fits, {{count}} weeks out"
   }
 }

@@ -1306,5 +1306,32 @@
     "basis": "Melhor marca dos últimos 12 meses: {{name}}, {{date}}.",
     "basisStale": "Sem provas nos últimos 12 meses; a partir da marca mais recente: {{name}}, {{date}}.",
     "basisBuildUp": "A partir da tua prova de preparação: {{name}}, {{date}}."
+  },
+  "findRaces": {
+    "greeting": "Descobrir",
+    "title": "Encontrar provas",
+    "subtitle": "Provas futuras do catálogo desta instância, para acrescentar à tua bucket list.",
+    "cta": "Encontrar provas",
+    "forAnchor": "Para preparar",
+    "forAnchorHint": "Escolher uma âncora preenche a janela do teste.",
+    "noAnchors": "Marca uma prova como âncora do ano para teres uma janela sugerida.",
+    "from": "A partir de",
+    "to": "Até",
+    "place": "Onde",
+    "placePlaceholder": "Cidade ou nome",
+    "closes": "inscrições fecham {{date}}",
+    "closesUnreviewed": "a listagem diz que fecha {{date}}",
+    "openSource": "Ver origem",
+    "add": "Adicionar",
+    "added": "Adicionada",
+    "addedToast": "«{{name}}» foi para a bucket list.",
+    "addError": "Não foi possível adicionar esta prova.",
+    "emptyCatalog": "O catálogo desta instância está vazio. Um administrador pode acrescentar provas, ou activar a colheita automática.",
+    "noMatches": "Nada no catálogo com estes critérios.",
+    "syncedAt": "Catálogo actualizado a {{date}}.",
+    "neverSynced": "Catálogo mantido à mão nesta instância.",
+    "backToBucketList": "Voltar à bucket list",
+    "fitsAnchor_one": "encaixa, 1 semana antes",
+    "fitsAnchor_other": "encaixa, {{count}} semanas antes"
   }
 }

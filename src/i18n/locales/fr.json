@@ -1306,5 +1306,32 @@
     "basis": "Meilleur résultat des 12 derniers mois : {{name}}, {{date}}.",
     "basisStale": "Aucune course sur les 12 derniers mois ; à partir de ta marque la plus récente : {{name}}, {{date}}.",
     "basisBuildUp": "À partir de ta course de préparation : {{name}}, {{date}}."
+  },
+  "findRaces": {
+    "greeting": "Découvrir",
+    "title": "Trouver des courses",
+    "subtitle": "Courses à venir du catalogue de cette instance, prêtes pour ta bucket list.",
+    "cta": "Trouver des courses",
+    "forAnchor": "Pour préparer",
+    "forAnchorHint": "Choisir un pivot remplit la fenêtre du test.",
+    "noAnchors": "Marque une course comme pivot de l'année pour avoir une fenêtre suggérée.",
+    "from": "À partir du",
+    "to": "Jusquau",
+    "place": "Où",
+    "placePlaceholder": "Ville ou nom",
+    "closes": "les inscriptions ferment le {{date}}",
+    "closesUnreviewed": "la liste dit que ça ferme le {{date}}",
+    "openSource": "Voir la source",
+    "add": "Ajouter",
+    "added": "Ajoutée",
+    "addedToast": "« {{name}} » est dans ta bucket list.",
+    "addError": "Impossible d'ajouter cette course.",
+    "emptyCatalog": "Le catalogue de cette instance est vide. Un administrateur peut ajouter des courses ou activer la récolte.",
+    "noMatches": "Rien dans le catalogue ne correspond à ces critères.",
+    "syncedAt": "Catalogue mis à jour le {{date}}.",
+    "neverSynced": "Catalogue tenu à la main sur cette instance.",
+    "backToBucketList": "Retour à la bucket list",
+    "fitsAnchor_one": "convient, 1 semaine avant",
+    "fitsAnchor_other": "convient, {{count}} semaines avant"
   }
 }
