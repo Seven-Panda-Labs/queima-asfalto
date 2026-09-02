@@ -67,6 +67,11 @@ describe('toCatalogEntry', () => {
     expect(toCatalogEntry(race(), PROVENANCE).entryMethod).toBe('unknown')
   })
 
+  it('carries no discipline for a race whose distance nobody published', () => {
+    const entry = toCatalogEntry(race({ distancesKm: [] }), PROVENANCE)
+    expect(entry.disciplines).toEqual([])
+  })
+
   it('files the distances under presets and keeps the id stable', () => {
     const entry = toCatalogEntry(race(), PROVENANCE)
     expect(entry.disciplines).toEqual(['km_10', 'mi_10'])

@@ -1334,7 +1334,9 @@
     "neverSynced": "Catálogo mantido à mão nesta instância.",
     "backToBucketList": "Voltar à bucket list",
     "fitsAnchor_one": "encaixa, 1 semana antes",
-    "fitsAnchor_other": "encaixa, {{count}} semanas antes"
+    "fitsAnchor_other": "encaixa, {{count}} semanas antes",
+    "distanceUnknown": "distância não publicada",
+    "addWithDistance": "Adicionar com…"
   },
   "onboarding": {
     "title": "Começar",
