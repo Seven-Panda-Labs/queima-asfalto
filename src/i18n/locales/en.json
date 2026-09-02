@@ -1210,7 +1210,8 @@
     "closes": "closes {{date}}",
     "draw": "draw {{date}}",
     "confirmBy": "secure by {{date}}",
-    "race": "race {{date}}"
+    "race": "race {{date}}",
+    "andOthers": "and {{count}} more"
   },
   "entry": {
     "title": "Entry",
@@ -1251,6 +1252,9 @@
       "rejected": "Not drawn",
       "declined": "Declined",
       "missed": "Missed the deadline"
-    }
+    },
+    "registeredNeedsDate": "To be registered, give the race date: it goes on the calendar.",
+    "registeredNeedsDiscipline": "Say which distance you are running.",
+    "savedWithEvent": "Entry saved, and the race is on the calendar."
   }
 }

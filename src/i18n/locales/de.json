@@ -1210,7 +1210,8 @@
     "closes": "schließt {{date}}",
     "draw": "Ziehung {{date}}",
     "confirmBy": "sichern bis {{date}}",
-    "race": "Rennen {{date}}"
+    "race": "Rennen {{date}}",
+    "andOthers": "und {{count}} weitere"
   },
   "entry": {
     "title": "Anmeldung",
@@ -1251,6 +1252,9 @@
       "rejected": "Nicht gezogen",
       "declined": "Abgelehnt",
       "missed": "Frist verpasst"
-    }
+    },
+    "registeredNeedsDate": "Für eine Anmeldung braucht es den Renntag: er geht in den Kalender.",
+    "registeredNeedsDiscipline": "Sag, welche Distanz du läufst.",
+    "savedWithEvent": "Anmeldung gespeichert, und das Rennen steht im Kalender."
   }
 }

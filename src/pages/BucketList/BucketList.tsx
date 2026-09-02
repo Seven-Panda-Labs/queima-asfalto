@@ -17,6 +17,7 @@ import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDia
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
 import { BucketListFunnel } from './BucketListFunnel'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
@@ -95,8 +96,17 @@ export function BucketList() {
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
   const ownBucketList = useBucketList()
-  const { entries: raceEntries } = useRaceEntries()
+  const { entries: raceEntries, loading: entriesLoading, addEntry } = useRaceEntries()
   const sharedBucketList = useSharedBucketList(activeOwnerId)
+
+  // Only for the account's own list: rolling over somebody else's wishes is not
+  // this page's business.
+  useRaceEntryRollover(
+    isSharedView ? [] : ownBucketList.items,
+    raceEntries,
+    ownBucketList.loading || entriesLoading,
+    addEntry,
+  )
 
   const items = isSharedView ? sharedBucketList.items : ownBucketList.items
   const loading = isSharedView ? sharedBucketList.loading : ownBucketList.loading
