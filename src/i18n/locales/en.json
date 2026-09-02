@@ -655,6 +655,7 @@
     "countPerformanceGoals": "{{count}} performance goals",
     "countBucketListItems": "{{count}} bucket list items",
     "countRaces": "{{count}} races",
+    "countRaceEntries": "{{count}} entries",
     "countUserProfile": "Profile: language, notification preferences and results profile",
     "countShares": "{{count}} shares (not restorable)",
     "existingLoading": "Counting your current data...",
@@ -707,6 +708,7 @@
       "performanceGoals": "Performance goals",
       "bucketListItems": "Bucket list",
       "races": "Races",
+      "raceEntries": "Entries",
       "userProfile": "Profile",
       "shares": "Shares",
       "eventTracks": "Activity files"
@@ -728,7 +730,9 @@
       "invalid_media": "Invalid photo or video metadata",
       "unknown_event": "The linked event does not exist",
       "foreign_user": "Belongs to another account",
-      "invalid_track": "Invalid activity file"
+      "invalid_track": "Invalid activity file",
+      "invalid_entry_method": "Invalid entry method",
+      "invalid_entry_status": "Invalid entry status"
     }
   },
   "messages": {
@@ -786,7 +790,8 @@
     "goalsLoadError": "Could not load your goals.",
     "performanceGoalsLoadError": "Could not load your performance goals.",
     "bucketListLoadError": "Could not load your bucket list.",
-    "racesLoadError": "Could not load the races."
+    "racesLoadError": "Could not load the races.",
+    "raceEntriesLoadError": "Could not load the entries."
   },
   "goalForm": {
     "targetCount": "Target count",

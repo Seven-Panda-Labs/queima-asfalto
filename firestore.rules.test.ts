@@ -612,6 +612,112 @@ describe('firestore.rules', () => {
     })
   })
 
+  describe('raceEntries', () => {
+    function validEntry(userId: string, overrides: Record<string, unknown> = {}) {
+      return {
+        userId,
+        raceId: 'race-berlin',
+        year: 2027,
+        entryMethod: 'lottery',
+        entryStatus: 'watching',
+        raceDateConfirmed: false,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        ...overrides,
+      }
+    }
+
+    it('allows an owner to create, update and delete an entry', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const ref = db.collection('raceEntries').doc('entry-1')
+
+      await assertSucceeds(ref.set(validEntry(userId)))
+      await assertSucceeds(ref.set(validEntry(userId, { entryStatus: 'applied' })))
+      await assertSucceeds(ref.delete())
+    })
+
+    it('accepts the whole set of dates, including the one to secure a place', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('raceEntries')
+          .doc('entry-dates')
+          .set(
+            validEntry(userId, {
+              raceDate: new Date('2027-04-24'),
+              registrationOpensAt: new Date('2026-04-24'),
+              registrationClosesAt: new Date('2026-05-01'),
+              lotteryDrawAt: new Date('2026-07-09'),
+              placeConfirmByAt: new Date('2026-07-31'),
+              discipline: 'km_42_2',
+              fee: 89,
+              bucketListItemId: 'item-1',
+              eventId: 'event-1',
+            }),
+          ),
+      )
+    })
+
+    it('refuses an unknown status or method', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.collection('raceEntries').doc('bad-status').set(
+          validEntry(userId, { entryStatus: 'maybe' }),
+        ),
+      )
+      await assertFails(
+        db.collection('raceEntries').doc('bad-method').set(
+          validEntry(userId, { entryMethod: 'auction' }),
+        ),
+      )
+    })
+
+    it('refuses an entry with no race behind it', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db.collection('raceEntries').doc('no-race').set(validEntry(userId, { raceId: '' })),
+      )
+    })
+
+    it('refuses a date that is not a timestamp', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db
+          .collection('raceEntries')
+          .doc('bad-date')
+          .set(validEntry(userId, { registrationClosesAt: '2026-05-01' })),
+      )
+    })
+
+    it('keeps one account out of another account entries', async () => {
+      await seedDocument('raceEntries/entry-1', validEntry('user-alice'))
+      const db = testEnv.authenticatedContext('user-bob').firestore()
+
+      await assertFails(db.collection('raceEntries').doc('entry-1').get())
+      await assertFails(
+        db.collection('raceEntries').doc('entry-2').set(validEntry('user-alice')),
+      )
+    })
+
+    it('denies a pending account', async () => {
+      await seedDocument('users/user-pending', { accountStatus: 'pending' })
+      const db = testEnv.authenticatedContext('user-pending').firestore()
+
+      await assertFails(
+        db.collection('raceEntries').doc('entry-pending').set(validEntry('user-pending')),
+      )
+    })
+  })
+
   describe('races', () => {
     it('allows owners to create, update and delete a race', async () => {
       const userId = 'user-alice'

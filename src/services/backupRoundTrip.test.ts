@@ -168,6 +168,33 @@ function rawFixture() {
         },
       },
     ],
+    raceEntries: [
+      {
+        id: 'entry-berlim-2027',
+        data: {
+          userId: USER_ID,
+          raceId: 'race-berlim',
+          bucketListItemId: 'bucket-1',
+          year: 2027,
+          discipline: 'km_42_2',
+          raceDate: ts('2027-09-26T07:00:00Z'),
+          raceDateConfirmed: false,
+          entryMethod: 'lottery',
+          entryStatus: 'applied',
+          registrationOpensAt: ts('2026-09-25T08:00:00Z'),
+          registrationClosesAt: ts('2026-11-06T22:59:00Z'),
+          lotteryDrawAt: ts('2026-11-20T10:00:00Z'),
+          placeConfirmByAt: ts('2026-12-04T22:59:00Z'),
+          registrationUrl: 'https://example.test/lottery',
+          fee: 205,
+          feeCurrency: 'EUR',
+          checklist: [{ label: 'Provar o tempo de qualificação', done: false }],
+          notes: null,
+          createdAt: ts('2026-09-02T09:00:00Z'),
+          updatedAt: ts('2026-09-02T09:00:00Z'),
+        },
+      },
+    ],
     userProfile: [
       {
         id: USER_ID,
@@ -286,6 +313,7 @@ describe('backup zip round trip', () => {
       performanceGoals: raw.performanceGoals.length,
       bucketListItems: raw.bucketListItems.length,
       races: raw.races.length,
+      raceEntries: raw.raceEntries.length,
       userProfile: 1,
       shares: 1,
     })

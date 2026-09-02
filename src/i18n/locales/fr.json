@@ -655,6 +655,7 @@
     "countPerformanceGoals": "{{count}} objectifs de performance",
     "countBucketListItems": "{{count}} éléments de bucket list",
     "countRaces": "{{count}} courses",
+    "countRaceEntries": "{{count}} inscriptions",
     "countUserProfile": "Profil : langue, préférences de notification et profil de résultats",
     "countShares": "{{count}} partages (non restaurables)",
     "existingLoading": "Comptage de tes données actuelles...",
@@ -707,6 +708,7 @@
       "performanceGoals": "Objectifs de performance",
       "bucketListItems": "Bucket list",
       "races": "Courses",
+      "raceEntries": "Inscriptions",
       "userProfile": "Profil",
       "shares": "Partages",
       "eventTracks": "Fichiers d'activité"
@@ -728,7 +730,9 @@
       "invalid_media": "Métadonnées photo ou vidéo invalides",
       "unknown_event": "L'événement lié n'existe pas",
       "foreign_user": "Appartient à un autre compte",
-      "invalid_track": "Fichier d'activité invalide"
+      "invalid_track": "Fichier d'activité invalide",
+      "invalid_entry_method": "Mode d'inscription invalide",
+      "invalid_entry_status": "Statut d'inscription invalide"
     }
   },
   "messages": {
@@ -786,7 +790,8 @@
     "goalsLoadError": "Impossible de charger tes objectifs.",
     "performanceGoalsLoadError": "Impossible de charger tes objectifs de performance.",
     "bucketListLoadError": "Impossible de charger ta bucket list.",
-    "racesLoadError": "Impossible de charger les courses."
+    "racesLoadError": "Impossible de charger les courses.",
+    "raceEntriesLoadError": "Impossible de charger les inscriptions."
   },
   "goalForm": {
     "targetCount": "Nombre cible",

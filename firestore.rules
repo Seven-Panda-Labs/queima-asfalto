@@ -240,6 +240,41 @@ service cloud.firestore {
         && validOptionalRaceId(data);
     }
 
+    function validEntryMethod(method) {
+      return method in ['lottery', 'first_come', 'qualifying', 'charity', 'invite', 'unknown'];
+    }
+
+    function validEntryStatus(status) {
+      return status in ['watching', 'applied', 'accepted', 'registered', 'rejected',
+        'declined', 'missed'];
+    }
+
+    function validOptionalTimestamp(data, field) {
+      return !(field in data) || data[field] == null || data[field] is timestamp;
+    }
+
+    function validRaceEntryWrite(data) {
+      return data.keys().hasAll(['userId', 'raceId', 'year', 'entryMethod', 'entryStatus'])
+        && isOwner(data.userId)
+        && isApprovedUser(data.userId)
+        && data.raceId is string
+        && data.raceId.size() > 0
+        && data.year is int
+        && data.year >= 2000 && data.year <= 2100
+        && validEntryMethod(data.entryMethod)
+        && validEntryStatus(data.entryStatus)
+        && (!('discipline' in data) || data.discipline == null || validEventType(data.discipline))
+        && validOptionalTimestamp(data, 'raceDate')
+        && validOptionalTimestamp(data, 'registrationOpensAt')
+        && validOptionalTimestamp(data, 'registrationClosesAt')
+        && validOptionalTimestamp(data, 'lotteryDrawAt')
+        && validOptionalTimestamp(data, 'placeConfirmByAt')
+        && (!('fee' in data) || data.fee == null || data.fee is number)
+        && (!('bucketListItemId' in data) || data.bucketListItemId == null
+            || data.bucketListItemId is string)
+        && (!('eventId' in data) || data.eventId == null || data.eventId is string);
+    }
+
     function validRaceWrite(data) {
       return data.keys().hasAll(['userId', 'name', 'location'])
         && isOwner(data.userId)
@@ -426,6 +461,20 @@ service cloud.firestore {
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validBucketListUpdate();
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
+    }
+
+    match /raceEntries/{entryId} {
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
+      allow create: if validRaceEntryWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validRaceEntryWrite(request.resource.data);
       allow delete: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && isApprovedUser(request.auth.uid);

@@ -655,6 +655,7 @@
     "countPerformanceGoals": "{{count}} Leistungsziele",
     "countBucketListItems": "{{count}} Einträge auf der Bucket List",
     "countRaces": "{{count}} Rennen",
+    "countRaceEntries": "{{count}} Anmeldungen",
     "countUserProfile": "Profil: Sprache, Benachrichtigungseinstellungen und Ergebnisprofil",
     "countShares": "{{count}} Freigaben (nicht wiederherstellbar)",
     "existingLoading": "Deine aktuellen Daten werden gezählt...",
@@ -707,6 +708,7 @@
       "performanceGoals": "Leistungsziele",
       "bucketListItems": "Bucket List",
       "races": "Rennen",
+      "raceEntries": "Anmeldungen",
       "userProfile": "Profil",
       "shares": "Freigaben",
       "eventTracks": "Aktivitätsdateien"
@@ -728,7 +730,9 @@
       "invalid_media": "Ungültige Foto- oder Video-Metadaten",
       "unknown_event": "Das verknüpfte Event existiert nicht",
       "foreign_user": "Gehört zu einem anderen Konto",
-      "invalid_track": "Ungültige Aktivitätsdatei"
+      "invalid_track": "Ungültige Aktivitätsdatei",
+      "invalid_entry_method": "Ungültige Anmeldeart",
+      "invalid_entry_status": "Ungültiger Anmeldestatus"
     }
   },
   "messages": {
@@ -786,7 +790,8 @@
     "goalsLoadError": "Deine Ziele konnten nicht geladen werden.",
     "performanceGoalsLoadError": "Deine Leistungsziele konnten nicht geladen werden.",
     "bucketListLoadError": "Deine Bucket List konnte nicht geladen werden.",
-    "racesLoadError": "Die Rennen konnten nicht geladen werden."
+    "racesLoadError": "Die Rennen konnten nicht geladen werden.",
+    "raceEntriesLoadError": "Die Anmeldungen konnten nicht geladen werden."
   },
   "goalForm": {
     "targetCount": "Zielanzahl",

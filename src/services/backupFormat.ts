@@ -3,6 +3,7 @@ import { APP_VERSION } from '../appVersion'
 import { MAX_TRACK_BYTES } from '../constants/activityTrack'
 import { MAX_PHOTO_BYTES, MAX_VIDEO_BYTES } from '../constants/eventMedia'
 import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
+import { ENTRY_METHODS, ENTRY_STATUSES } from '../types/RaceEntry'
 import { RESULTS_PLATFORMS } from '../../shared/officialResults'
 import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
 
@@ -19,8 +20,9 @@ export const BACKUP_KIND = 'user-backup'
 /**
  * 2 added the `tracks/` directory and the `eventTracks` section.
  * 3 added the `races` section.
+ * 4 added the `raceEntries` section.
  */
-export const BACKUP_SCHEMA_VERSION = 3
+export const BACKUP_SCHEMA_VERSION = 4
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
 export const BACKUP_MEDIA_DIR = 'media'
 export const BACKUP_TRACKS_DIR = 'tracks'
@@ -51,6 +53,7 @@ export const BACKUP_SECTION_KEYS = [
   'performanceGoals',
   'bucketListItems',
   'races',
+  'raceEntries',
   'userProfile',
   'shares',
 ] as const
@@ -66,6 +69,7 @@ export const RESTORABLE_SECTIONS = [
   'performanceGoals',
   'bucketListItems',
   'races',
+  'raceEntries',
   'userProfile',
 ] as const
 
@@ -89,6 +93,7 @@ export const BACKUP_SECTION_FILES: Record<BackupSectionKey, string> = {
   performanceGoals: 'performanceGoals.json',
   bucketListItems: 'bucketListItems.json',
   races: 'races.json',
+  raceEntries: 'raceEntries.json',
   userProfile: 'userProfile.json',
   shares: 'shares.json',
 }
@@ -103,6 +108,7 @@ export const BACKUP_SECTION_COLLECTIONS: Record<
   performanceGoals: 'performanceGoals',
   bucketListItems: 'bucketListItems',
   races: 'races',
+  raceEntries: 'raceEntries',
   shares: 'shares',
 }
 
@@ -230,6 +236,7 @@ export function emptyBackupSections(): BackupSections {
     performanceGoals: [],
     bucketListItems: [],
     races: [],
+    raceEntries: [],
     userProfile: [],
     shares: [],
   }
@@ -822,12 +829,17 @@ const ALLOWED_STATUS = new Set<string>([...EVENT_STATUSES, ...LEGACY_STATUS_VALU
 const MAX_BUCKET_LIST_DISCIPLINES = 6
 
 const ALLOWED_TYPE = new Set<string>([...EVENT_TYPES, ...LEGACY_TYPE_VALUES])
+const ALLOWED_ENTRY_METHOD = new Set<string>(ENTRY_METHODS)
+const ALLOWED_ENTRY_STATUS = new Set<string>(ENTRY_STATUSES)
 const ALLOWED_PLATFORM = new Set<string>(RESULTS_PLATFORMS)
 
 export const RESTORE_REJECTION_CODES = [
   'missing_required_field',
   'invalid_event_type',
   'invalid_race_id',
+  'invalid_year',
+  'invalid_entry_method',
+  'invalid_entry_status',
   'invalid_event_status',
   'invalid_distance',
   'invalid_name',
@@ -997,6 +1009,21 @@ function validateRace(data: Record<string, unknown>): RestoreRejectionCode | nul
   return null
 }
 
+function validateRaceEntry(data: Record<string, unknown>): RestoreRejectionCode | null {
+  if (!hasAll(data, ['userId', 'raceId', 'year', 'entryMethod', 'entryStatus'])) {
+    return 'missing_required_field'
+  }
+  if (!isNonEmptyString(data.raceId)) return 'invalid_race_id'
+  if (typeof data.year !== 'number' || !Number.isInteger(data.year)) return 'invalid_year'
+  if (typeof data.entryMethod !== 'string' || !ALLOWED_ENTRY_METHOD.has(data.entryMethod)) {
+    return 'invalid_entry_method'
+  }
+  if (typeof data.entryStatus !== 'string' || !ALLOWED_ENTRY_STATUS.has(data.entryStatus)) {
+    return 'invalid_entry_status'
+  }
+  return null
+}
+
 function validateEventMedia(
   document: BackupDocument,
   data: Record<string, unknown>,
@@ -1129,6 +1156,8 @@ export function validateRestoreDocument(
       return validateBucketListItem(data)
     case 'races':
       return validateRace(data)
+    case 'raceEntries':
+      return validateRaceEntry(data)
     case 'eventMedia':
       return validateEventMedia(document, data, context)
     case 'eventTracks':
