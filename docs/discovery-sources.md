@@ -57,6 +57,15 @@ E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
 um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
 contagens decrescentes).
 
+### Limite conhecido: a deduplicação não vê o catálogo
+
+A deduplicação compara as provas de uma colheita entre si, e nunca com o que já
+está guardado. Como as entradas curadas foram escritas sem patrocinador de
+propósito e as colhidas trazem sempre o do organizador, a mesma prova entra duas
+vezes: «Berlin Marathon» e «BMW BERLIN-MARATHON». Está descrito, com o
+contra-exemplo que qualquer solução tem de sobreviver, na
+[issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
+
 ### Acrescentar uma fonte
 
 1. Verifica o `robots.txt` e os termos. Se houver dúvida, pede autorização.
@@ -129,6 +138,15 @@ that are cheapest to read, then deduplicating.
 Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
 the runner can see and correct) and may never **assert** (no reminders, no
 countdowns).
+
+### Known limit: dedup does not see the catalog
+
+Dedup compares the races of one harvest against each other, and never against
+what is already stored. Since curated entries were written sponsor-free on
+purpose and harvested ones always carry the organiser's sponsor, the same race
+lands twice: "Berlin Marathon" and "BMW BERLIN-MARATHON". Written up, with the
+counterexample any fix has to survive, in
+[issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
 
 ### Adding a source
 
