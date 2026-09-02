@@ -8,21 +8,16 @@
 
 ### Ajouté
 
-- **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, avec « demande une action » en tête, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée.
-- **Alertes d'échéance :** une notification le jour de l'ouverture, 30, 7 et 1 jour avant la fermeture, le jour du tirage, et en compte à rebours vers le délai pour sécuriser la place. À activer dans Réglages, Notifications.
-- **Courses pivots :** marque les une à trois courses qui fixent ton année et elles passent en premier dans chaque groupe.
-- **Règles de saison :** une course peut dire à quoi elle sert, build-up ou test, et quel pivot elle prépare. L'app montre la fenêtre du test, environ la moitié de la distance trois à quatre semaines avant, et alerte quand une course tombe dans l'affûtage du pivot ou quand un mois est trop chargé.
-- **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé (abandon, blessure, pas venu, annulée, voyage, autre) au lieu de dire que tu l'as manquée. Un abandon compte comme une course commencée et n'apparaît plus comme donnée manquante, tout en restant hors des allures, des records et des prévisions.
-- **Réessayer :** sur une course perdue pour blessure, abandon ou annulation, un bouton crée la tentative de la saison prochaine et t'emmène à son inscription. Les courses qui préparaient un pivot qui a échoué sont signalées, à toi de voir si elles ont encore du sens.
-- **Une prévision sur le pivot :** la page d'un pivot encore à venir, et le héros d'accueil quand c'est la prochaine course, affichent le temps prévu sur la distance à partir de ta dernière course de préparation. C'est le même chiffre que l'analyse, désormais là où il sert.
-- **Trouver des courses :** une nouvelle page dans la bucket list cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot remplit la fenêtre du test et met devant les courses qui conviennent. Elle dit toujours quand le catalogue a été mis à jour, et une entrée non vérifiée affiche sa date de clôture comme ce que dit la liste, pas comme une promesse.
-- **Parkruns dans la découverte :** les parkruns ne figurent dans aucun calendrier de courses, et ont maintenant leur propre section sur la page de découverte, triée par distance. La référence, ce sont tes parkruns (ceux que tu as marqués et ceux que tu as courus) et, à défaut, ta position, demandée au clic. « Planifier » met le samedi suivant au calendrier, 5 km, avec le parkrun déjà choisi.
-- **Courses sans distance publiée :** beaucoup de sources donnent la date, la ville et le lien d'inscription et jamais la distance. Elles entrent maintenant dans le catalogue, et la page te demande la distance au moment de l'ajout, au lieu d'enregistrer un chiffre que personne n'a vérifié.
-- **Deux nouvelles sources de récolte :** davengo (un calendrier en JSON, plus la liste des partants d'où viennent les distances) et scc-events (tout le calendrier sur une page, avec dates et distances). Éteintes jusqu'à ce que l'opérateur les active, comme la première.
-- **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit. Une fois validé, l'utilisateur reçoit un email et peut se connecter.
-- **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait : choisir tes distances, marquer la course principale de ton année, planifier son inscription et enregistrer une course déjà courue. Il disparaît quand elles sont faites, ou quand tu dis que tu connais l'app.
-- **Marquer les courses pivots là où elles sont :** le pivot vit désormais sur la course et par saison, et se marque avec un bouton sur la page de l'événement, passé ou à venir. Une saison déjà planifiée en événements gagne la fenêtre du test, les alertes et la prévision, sans rien recréer dans la bucket list.
-- **Corrigé :** les inscriptions et les identités de course échouaient en production faute d'index Firestore, ce qui rendait le bouton pivot inopérant et remplissait la console d'erreurs.
+- **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée. Avec une notification avant chaque échéance, à activer dans Réglages.
+- **Une saison autour des courses pivots :** marque les une à trois courses qui fixent ton année, sur la page de la course elle-même. À partir d'elles, l'app suggère la fenêtre où tient une course de préparation, alerte quand quelque chose tombe dans l'affûtage ou quand un mois est trop chargé, et affiche le temps prévu pour le pivot à partir de ta dernière course.
+- **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé au lieu de dire que tu l'as manquée, un abandon compte comme une course commencée, et un bouton crée la tentative de la saison prochaine.
+- **Trouver des courses :** une nouvelle page cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot met devant celles qui tiennent dans la fenêtre. Les parkruns près de toi y sont aussi, eux qui ne figurent dans aucun calendrier.
+- **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait. Il disparaît quand elles sont faites.
+
+### Modifié
+
+- **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit.
+- **Self-hosting :** la récolte de courses peut lire deux nouvelles sources, et reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 

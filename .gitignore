@@ -14,10 +14,19 @@ dist-ssr
 *.local
 .firebase
 emulator-data
-.env.privacy.generated
 src/generated/privacyPolicy.content.ts
 .firebaserc
-functions/.env
+
+# Every env file is a secret until proven otherwise, and the proof is being an
+# example. Firebase also reads functions/.env.<project-id>, which is the one
+# that would have slipped through: a file with real keys, one deploy away from a
+# public repository.
+.env*
+!.env.example
+!.env.emulator.example
+!.env.test
+functions/.env*
+!functions/.env.example
 
 # Editor directories and files
 .vscode/*

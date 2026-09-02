@@ -8,21 +8,16 @@
 
 ### Hinzugefügt
 
-- **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, mit "braucht Handlung" oben, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern.
-- **Fristwarnungen:** eine Benachrichtigung am Tag der Öffnung, 30, 7 und 1 Tag vor dem Schluss, am Tag der Ziehung, und im Countdown zur Frist für den gewonnenen Platz. Einschalten unter Einstellungen, Benachrichtigungen.
-- **Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, und sie stehen in jeder Gruppe oben.
-- **Saisonregeln:** ein Rennen kann sagen, wozu es dient, Build-up oder Test, und welchen Anker es vorbereitet. Die App zeigt das Testfenster, etwa die halbe Distanz drei bis vier Wochen vorher, und warnt, wenn ein Rennen in das Tapering des Ankers fällt oder ein Monat zu voll wird.
-- **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt jetzt, was passiert ist (Ausstieg, Verletzung, nicht hingegangen, abgesagt, Reise, anderes), statt zu sagen, du hättest es verpasst. Ein DNF zählt als gestartetes Rennen und gilt nicht mehr als fehlende Daten, bleibt aber aus Tempo, Rekorden und Prognosen heraus.
-- **Neu versuchen:** bei einem Rennen, das an Verletzung, DNF oder Absage gescheitert ist, legt ein Knopf den Versuch der nächsten Saison an und führt zu seiner Anmeldung. Die Rennen, die einen ausgefallenen Anker vorbereitet haben, werden markiert, damit du entscheidest, ob sie noch Sinn haben.
-- **Prognose beim Anker:** die Seite eines noch bevorstehenden Ankers, und der Startbereich, wenn er das nächste Rennen ist, zeigen die prognostizierte Zeit über die Distanz aus deinem letzten Vorbereitungsrennen. Es ist dieselbe Zahl wie in der Analyse, jetzt dort, wo sie nützt.
-- **Rennen finden:** eine neue Seite an der Bucket List durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker füllt das Testfenster und stellt die passenden Rennen nach vorne. Sie sagt immer, wann der Katalog aktualisiert wurde, und ein ungeprüfter Eintrag zeigt seinen Anmeldeschluss als Angabe der Liste, nicht als Versprechen.
-- **Parkruns in der Suche:** parkruns stehen in keinem Rennkalender, und haben jetzt einen eigenen Abschnitt auf der Entdecken-Seite, nach Entfernung zu dir sortiert. Als Bezug dienen deine eigenen parkruns, die markierten und die gelaufenen, und andernfalls dein Standort, auf Klick erfragt. "Einplanen" setzt den kommenden Samstag mit 5 km und dem gewählten parkrun in den Kalender.
-- **Rennen ohne veröffentlichte Distanz:** viele Quellen nennen Datum, Ort und Anmeldelink und nie die Distanz. Die kommen jetzt in den Katalog, und die Seite fragt dich beim Hinzufügen nach der Distanz, statt eine Zahl zu speichern, die niemand geprüft hat.
-- **Zwei neue Erntequellen:** davengo (ein JSON-Kalender plus die Starterliste, aus der die Distanzen kommen) und scc-events (der ganze Kalender auf einer Seite, mit Daten und Distanzen). Aus, bis der Betreiber sie einschaltet, wie die erste.
-- **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte. Nach der Freigabe kommt eine E-Mail und die Anmeldung geht.
-- **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, und jeder sagt, was die App damit macht: Distanzen wählen, das Hauptrennen des Jahres markieren, dessen Anmeldung planen und ein gelaufenes Rennen erfassen. Es verschwindet, wenn sie erledigt sind, oder wenn du sagst, dass du die App kennst.
-- **Ankerrennen dort markieren, wo sie sind:** der Anker lebt jetzt am Rennen und pro Saison, und wird mit einem Knopf auf der Event-Seite gesetzt, vergangen oder künftig. Eine als Events geplante Saison bekommt Testfenster, Warnungen und Prognose, ohne etwas in der Bucket List neu anzulegen.
-- **Behoben:** Anmeldungen und Rennidentitäten scheiterten in der Produktion an fehlenden Firestore-Indexen, wodurch der Anker-Knopf nichts tat und die Konsole voller Fehler war.
+- **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern. Mit einer Benachrichtigung vor jeder Frist, einzuschalten in den Einstellungen.
+- **Eine Saison um die Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, auf der Seite des Rennens selbst. Daraus schlägt die App das Fenster für ein Vorbereitungsrennen vor, warnt, wenn etwas in das Tapering fällt oder ein Monat zu voll wird, und zeigt die prognostizierte Zeit für den Anker aus deinem letzten Rennen.
+- **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt, was passiert ist, statt zu sagen, du hättest es verpasst, ein DNF zählt als gestartetes Rennen, und ein Knopf legt den Versuch der nächsten Saison an.
+- **Rennen finden:** eine neue Seite durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker stellt die passenden nach vorne. Auch die parkruns in deiner Nähe sind dabei, die in keinem Rennkalender stehen.
+- **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, jeder sagt, was die App damit macht. Es verschwindet, wenn sie erledigt sind.
+
+### Geändert
+
+- **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte.
+- **Self-hosting:** die Rennernte kann zwei neue Quellen lesen und bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
