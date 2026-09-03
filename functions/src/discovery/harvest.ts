@@ -8,6 +8,7 @@ import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guard
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
+import { readKilometerliebeCalendar } from '../shared/eventDiscovery/kilometerliebe.js'
 import { readMarathonDePage } from '../shared/eventDiscovery/marathonDe.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
@@ -139,6 +140,22 @@ async function harvestSearch(source: DiscoverySource): Promise<DiscoveredRace[]>
 }
 
 /** The whole calendar on one page, which is one request for every race on it. */
+/** One calendar page, by whichever reader understands that site's markup. */
+function readListing(source: DiscoverySource, url: string, html: string): DiscoveredRace[] {
+  switch (source.listingReader) {
+    case 'planet-marathon':
+      return readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
+    case 'kilometerliebe':
+      return readKilometerliebeCalendar(html, { baseUrl: source.baseUrl ?? url })
+    default:
+      return readSccCalendar(html, {
+        city: source.city ?? '',
+        country: source.country ?? 'XX',
+        baseUrl: source.baseUrl ?? url,
+      })
+  }
+}
+
 async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]> {
   const pages = source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : [])
   const races: DiscoveredRace[] = []
@@ -147,15 +164,7 @@ async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]
     const html = await fetchPage(url, source.charset)
     if (!html) throw new Error(`${source.id}: calendar unavailable`)
 
-    races.push(
-      ...(source.listingReader === 'planet-marathon'
-        ? readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
-        : readSccCalendar(html, {
-            city: source.city ?? '',
-            country: source.country ?? 'XX',
-            baseUrl: source.baseUrl ?? url,
-          })),
-    )
+    races.push(...readListing(source, url, html))
     if (url !== pages[pages.length - 1]) await delay(DELAY_BETWEEN_PAGES_MS)
   }
 

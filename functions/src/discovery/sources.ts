@@ -48,6 +48,18 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     pageLimit: 1,
   },
   {
+    // The whole German year on one page, with the fields as attributes rather
+    // than as prose. Cheapest source we read, and the one that finally weighs
+    // the catalog towards 5K, 10K and half marathons.
+    id: 'kilometerliebe.de',
+    kind: 'listing',
+    listingReader: 'kilometerliebe',
+    listingUrl: 'https://www.kilometerliebe.de/events/',
+    baseUrl: 'https://www.kilometerliebe.de/events/',
+    country: 'DE',
+    pageLimit: 1,
+  },
+  {
     // A German directory with no schema.org, and worth its own reader for what
     // it has that nothing else does: the city, every distance on offer, and the
     // entry fee per distance. 406 event pages, read a slice at a time.

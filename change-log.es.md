@@ -4,6 +4,14 @@
 
 ---
 
+## [1.35.0] - 2026-09-03
+
+### Añadido
+
+- **Carreras cortas en el descubrimiento:** la cosecha puede leer kilometerliebe.de, un calendario alemán que trae 447 carreras con sus distancias exactas: 271 con 10 km, 242 con 5 km y 172 con media maratón. Es la primera fuente que inclina el catálogo hacia las distancias cortas en vez de las maratones. Sigue apagada hasta que la actives.
+
+---
+
 ## [1.34.0] - 2026-09-03
 
 ### Añadido

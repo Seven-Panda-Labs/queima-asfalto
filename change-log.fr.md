@@ -4,6 +4,14 @@
 
 ---
 
+## [1.35.0] - 2026-09-03
+
+### Ajouté
+
+- **Les courses courtes dans la découverte :** la récolte peut désormais lire kilometerliebe.de, un calendrier allemand qui apporte 447 courses avec leurs distances exactes : 271 avec un 10 km, 242 avec un 5 km et 172 avec un semi. C'est la première source qui fait pencher le catalogue vers les courtes distances plutôt que vers les marathons. Elle reste éteinte jusqu'à ce que tu l'actives.
+
+---
+
 ## [1.34.0] - 2026-09-03
 
 ### Ajouté

@@ -5,9 +5,10 @@ import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes.js'
  *
  * `schema.org/Event` has no distance field, which is the one thing discovery
  * needs most. What the sources do carry is an offer per distance, named the way
- * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m".
+ * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m",
+ * "1 Meile".
  */
-const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,4}))?\s*(km|k\b|milhas?|miles?|m\b)/giu
+const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,4}))?\s*(km|k\b|milhas?|miles?|meilen?|m\b)/giu
 
 const MILE_KM = 1.609344
 
@@ -77,7 +78,8 @@ export function parseDistancesKm(labels: readonly string[]): number[] {
       if (!Number.isFinite(value)) continue
 
       const km =
-        unit.startsWith('mil') || unit.startsWith('mile')
+        // "milhas", "miles" and the German "Meile", which is the same mile.
+        unit.startsWith('mil') || unit.startsWith('mile') || unit.startsWith('meile')
           ? value * MILE_KM
           : unit === 'm'
             ? value / 1000

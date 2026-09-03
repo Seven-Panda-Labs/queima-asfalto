@@ -4,6 +4,14 @@
 
 ---
 
+## [1.35.0] - 2026-09-03
+
+### Added
+
+- **Short races in discovery:** the harvest can now read kilometerliebe.de, a German calendar that brings 447 races with their exact distances: 271 with a 10K, 242 with a 5K and 172 with a half marathon. It is the first source that weighs the catalog towards the short distances instead of marathons. It stays off until you enable it.
+
+---
+
 ## [1.34.0] - 2026-09-03
 
 ### Added

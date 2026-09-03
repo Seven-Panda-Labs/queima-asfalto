@@ -123,3 +123,15 @@ describe('isChildrensRace', () => {
     expect(isChildrensRace('Corrida da Minifábrica')).toBe(false)
   })
 })
+
+describe('the German mile', () => {
+  it('reads "1 Meile" as a mile, like "1 mile"', () => {
+    // Real pill from a German calendar: the "New Balance KÖ MEILE".
+    expect(parseDistancesKm(['1 Meile'])).toEqual([1.6093])
+    expect(parseDistancesKm(['5 Meilen'])).toEqual([8.0467])
+  })
+
+  it('leaves a metre reading alone', () => {
+    expect(parseDistancesKm(['800 m'])).toEqual([0.8])
+  })
+})

@@ -21,7 +21,7 @@ export type DiscoverySourceKind = 'sitemap' | 'search' | 'listing'
  * A listing is somebody's own markup, so each one needs its own reader. The
  * name is here rather than in the harvest so a source is one object.
  */
-export const LISTING_READERS = ['scc-events', 'planet-marathon'] as const
+export const LISTING_READERS = ['scc-events', 'planet-marathon', 'kilometerliebe'] as const
 
 export type ListingReader = (typeof LISTING_READERS)[number]
 
