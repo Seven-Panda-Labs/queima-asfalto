@@ -75,3 +75,21 @@ export function selectEventUrls(
     })
     .slice(0, selection.limit)
 }
+
+/**
+ * The slice of a page list to read this week.
+ *
+ * A sitemap without `lastmod` has no order to exploit, so a limit would read
+ * the same first pages every run and never reach the rest. Rotating by an
+ * offset that moves each week covers the whole list in `ceil(total / limit)`
+ * runs, deterministically, with no state to keep.
+ */
+export function rotatePages(
+  urls: readonly string[],
+  limit: number,
+  offset: number,
+): string[] {
+  if (urls.length === 0 || limit <= 0) return []
+  const start = ((offset % urls.length) + urls.length) % urls.length
+  return [...urls.slice(start), ...urls.slice(0, start)].slice(0, limit)
+}

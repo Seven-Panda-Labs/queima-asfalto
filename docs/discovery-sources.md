@@ -40,6 +40,7 @@ Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
 | `acorrer.pt` | `sitemap` | provas em Portugal, com `schema.org` em cada página |
 | `davengo.com` | `search` | provas na Alemanha, distâncias tiradas da lista de participantes |
 | `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
+| `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
 | `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
 
 O `planet-marathon.de` é um calendário mantido à mão por uma pessoa (Franz
@@ -57,6 +58,25 @@ Três coisas que só ele tem:
 
 Também deixa cair a maratona que é a perna de uma estafeta de triatlo e a que se
 corre em três etapas: nenhuma delas é uma maratona que se possa inscrever.
+
+O `marathon.de` é a única fonte que dá **preço**. Não tem `schema.org`, mas cada
+página de evento está escrita sempre da mesma forma, com etiquetas:
+
+```
+Datum: Samstag, 05.09.2026        (um intervalo de dois dias começa no primeiro)
+Ort: Wolgast, Deutschland         cidade e país, o país por nome alemão
+Distanzen: 21 km / 42 km
+Startgebühr: 21 km ... 16,00 - 25,00 Euro | 42 km ... 25,00 - 35,00 Euro
+```
+
+Duas consequências que valem a pena saber:
+
+- **O sitemap não tem `lastmod`**, portanto um limite leria sempre as mesmas
+  primeiras páginas. Cada corrida lê uma fatia diferente (`rotatePages`), com o
+  desvio a andar por semana: 150 páginas por semana cobrem as 406 em três.
+- **O preço é o do evento, não o da distância.** `lowPrice` é o mais barato que
+  a página lista e `highPrice` o mais caro, que é o que os campos significam.
+  Numa prova que vende 5 km e maratona, o preço da entrada não é um número só.
 
 ### O que a colheita faz
 
@@ -159,6 +179,7 @@ None of them runs unless `DISCOVERY_SOURCES` names it.
 | `acorrer.pt` | `sitemap` | races in Portugal, `schema.org` on every page |
 | `davengo.com` | `search` | races in Germany, distances read off the starter list |
 | `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
+| `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
 | `planet-marathon.de` | `listing` | marathons on every continent, three pages |
 
 `planet-marathon.de` is a calendar one person keeps by hand (Franz Schwengler),
@@ -177,6 +198,25 @@ only it has:
 
 It also drops the marathon that is a leg of a triathlon relay and the one run
 over three stages: neither is a marathon anybody can enter.
+
+`marathon.de` is the only source that gives a **fee**. No `schema.org`, but
+every event page is written the same way, with labels:
+
+```
+Datum: Samstag, 05.09.2026        (a two day range starts on the first)
+Ort: Wolgast, Deutschland         city and country, the country in German
+Distanzen: 21 km / 42 km
+Startgebühr: 21 km ... 16,00 - 25,00 Euro | 42 km ... 25,00 - 35,00 Euro
+```
+
+Two consequences worth knowing:
+
+- **The sitemap has no `lastmod`**, so a limit would read the same first pages
+  for ever. Each run reads a different slice (`rotatePages`), the offset moving
+  by week: 150 pages a week covers all 406 in three.
+- **The fee is the event's, not the distance's.** `lowPrice` is the cheapest the
+  page lists and `highPrice` the dearest, which is what those fields mean. For a
+  race selling a 5K and a marathon, the entry fee is not one number.
 
 ### What the harvest does
 
