@@ -8,7 +8,10 @@ import {
   matchDistance,
   namesAgreeAcrossYears,
   parkrunEditionsAsPodiums,
+  parkrunWinnerSeconds,
   parseEventOverview,
+  parseParkrunEventHistory,
+  parseParkrunHistoryTime,
   parseParkrunEventResults,
   parsePodiumTime,
   parseYearIndex,
@@ -458,5 +461,88 @@ describe('parkrunEditionsAsPodiums', () => {
       openPodiums: 0,
     })
     expect(stats[0]?.finishers).toEqual([90, 91, 92])
+  })
+})
+
+/** An event history page's shape. The times are real encodings, the people are not. */
+const HISTORY_PAGE = `
+<table class="Results-table Results-table--compact js-ResultsTable">
+<tr class="Results-table-thead"><th class="Results-table-th">parkrun #</th><th class="Results-table-th">Datum</th></tr>
+<tr class="Results-table-row" data-parkrun="3" data-date="2026-08-29" data-finishers="193" data-volunteers="15" data-male="Fictional Man" data-female="Fictional Woman" data-maletime="1535" data-femaletime="2007">
+  <td class="Results-table-td"><a href="https://www.parkrun.com.de/musterheide/results/3">3</a></td>
+</tr>
+<tr class="Results-table-row" data-parkrun="1" data-date="2026-08-15" data-finishers="176" data-volunteers="18" data-male="Fictional Man" data-female="Fictional Woman" data-maletime="1814" data-femaletime="1805">
+  <td class="Results-table-td"><a href="https://www.parkrun.com.de/musterheide/results/1">1</a></td>
+</tr>
+<tr class="Results-table-row" data-parkrun="2" data-date="2026-08-22" data-finishers="0" data-volunteers="12" data-male="Fictional Man" data-female="" data-maletime="1755" data-femaletime="">
+  <td class="Results-table-td"><a href="https://www.parkrun.com.de/musterheide/results/2">2</a></td>
+</tr>
+</table>`
+
+describe('parseParkrunHistoryTime', () => {
+  it('reads the page\'s own notation, digits from the right', () => {
+    expect(parseParkrunHistoryTime('1535')).toBe(935)
+    expect(parseParkrunHistoryTime('2007')).toBe(1207)
+    expect(parseParkrunHistoryTime('959')).toBe(599)
+  })
+
+  it('reads a time past the hour', () => {
+    expect(parseParkrunHistoryTime('10530')).toBe(3930)
+  })
+
+  it('refuses what cannot be a time', () => {
+    expect(parseParkrunHistoryTime('1575')).toBeNull()
+    expect(parseParkrunHistoryTime('15')).toBeNull()
+    expect(parseParkrunHistoryTime('')).toBeNull()
+  })
+})
+
+describe('parseParkrunEventHistory', () => {
+  it('reads every edition, newest first', () => {
+    const history = parseParkrunEventHistory(HISTORY_PAGE)
+
+    expect(history?.slug).toBe('musterheide')
+    expect(history?.editions.map((edition) => edition.date)).toEqual([
+      '2026-08-29',
+      '2026-08-22',
+      '2026-08-15',
+    ])
+  })
+
+  it('reads the field and both winning times', () => {
+    const newest = parseParkrunEventHistory(HISTORY_PAGE)?.editions[0]
+
+    expect(newest).toMatchObject({
+      eventNumber: 3,
+      finishers: 193,
+      maleSeconds: 935,
+      femaleSeconds: 1207,
+    })
+  })
+
+  it('leaves a missing time and an empty field as nothing, not as zero', () => {
+    const middle = parseParkrunEventHistory(HISTORY_PAGE)?.editions[1]
+
+    expect(middle?.femaleSeconds).toBeNull()
+    expect(middle?.finishers).toBeNull()
+  })
+
+  it('refuses a page that is not a history', () => {
+    expect(parseParkrunEventHistory('<html><body>Nothing here</body></html>')).toBeNull()
+  })
+})
+
+describe('parkrunWinnerSeconds', () => {
+  it('takes the first finisher, which is not always the man', () => {
+    const editions = parseParkrunEventHistory(HISTORY_PAGE)?.editions ?? []
+
+    // 18:14 and 18:05 on the same morning: she won.
+    expect(parkrunWinnerSeconds(editions[2]!)).toBe(1085)
+    expect(parkrunWinnerSeconds(editions[0]!)).toBe(935)
+  })
+
+  it('copes with an edition that lists only one', () => {
+    const editions = parseParkrunEventHistory(HISTORY_PAGE)?.editions ?? []
+    expect(parkrunWinnerSeconds(editions[1]!)).toBe(1075)
   })
 })

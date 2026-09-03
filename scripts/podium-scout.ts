@@ -26,10 +26,14 @@
  *                        is one more request each
  *   --parkrun            also list parkrun events near Berlin (no results read)
  *   --parkrun-from-file <dir>
- *                        read parkrun results from pages saved in a browser.
- *                        parkrun refuses automated readers by user-agent, so
- *                        this makes no request: save each event's results page
- *                        from your own browser and point this at the folder.
+ *                        read parkrun from pages saved in a browser. parkrun
+ *                        refuses automated readers by user-agent, so this makes
+ *                        no request. Two page shapes are recognised and told
+ *                        apart by their markup: an event's history page, which
+ *                        gives the winner and the field of every edition it has
+ *                        ever had, and a single edition's results page, which is
+ *                        the only one that gives second and third place.
+ *   --parkrun-window 6   how many recent editions of a history page to count
  *   --radius 50          km from the centre, for parkrun
  *   --center 52.52,13.405
  *   --cache              reuse pages already fetched, under node_modules/.cache
@@ -48,11 +52,14 @@ import {
   parseEventOverview,
   parsePodiumTime,
   parkrunEditionsAsPodiums,
+  parkrunWinnerSeconds,
+  parseParkrunEventHistory,
   parseParkrunEventResults,
   parseYearIndex,
   podiumHits,
   type EditionPodium,
   type ParkrunEdition,
+  type ParkrunHistory,
   type PodiumStats,
 } from './podiumScout.js'
 import {
@@ -125,6 +132,7 @@ const options = {
   finishers: flag('finishers'),
   parkrun: flag('parkrun'),
   parkrunFromFile: arg('parkrun-from-file'),
+  parkrunWindow: Number(arg('parkrun-window') ?? 6),
   radius: Number(arg('radius') ?? 50),
   center: numbers(arg('center') ?? '52.52,13.405'),
   cache: flag('cache'),
@@ -410,12 +418,84 @@ for (const distance of options.distances) {
 if (options.parkrunFromFile) {
   const dir = resolve(options.parkrunFromFile)
   const editions: ParkrunEdition[] = []
+  const histories: ParkrunHistory[] = []
   const unreadable: string[] = []
 
   for (const file of readdirSync(dir).filter((name) => /\.html?$/i.test(name)).sort()) {
-    const edition = parseParkrunEventResults(readFileSync(resolve(dir, file), 'utf8'))
+    const html = readFileSync(resolve(dir, file), 'utf8')
+
+    // The history page's rows carry data-parkrun, a single edition's carry
+    // data-position, so the markup says which page this is.
+    const history = parseParkrunEventHistory(html)
+    if (history) {
+      histories.push(history)
+      continue
+    }
+
+    const edition = parseParkrunEventResults(html)
     if (edition) editions.push(edition)
     else unreadable.push(file)
+  }
+
+  if (histories.length > 0) {
+    const target = targets.get(5) ?? null
+    lines.push('')
+    lines.push('## parkrun, from saved history pages')
+    lines.push('')
+    lines.push(
+      `${histories.length} events, the last ${options.parkrunWindow} editions of each, nothing fetched.`,
+    )
+    lines.push('These pages name the first man and the first woman home and nobody else, so')
+    lines.push('this table answers whether you would have won, not whether you would have been')
+    lines.push('third. Winner is whichever of the two was faster.')
+    lines.push('')
+
+    const header = ['parkrun', 'Editions', 'Winner median', 'Winner ranged', 'Field median', 'Fastest ever', 'History', 'Last']
+    if (target != null) header.splice(2, 0, `Won with ${formatSeconds(target)}`)
+    lines.push(`| ${header.join(' | ')} |`)
+    lines.push(`|${header.map(() => '---').join('|')}|`)
+
+    const rows = histories.map((history) => {
+      const window = history.editions.slice(0, Math.max(1, options.parkrunWindow))
+      const winners = window
+        .map(parkrunWinnerSeconds)
+        .filter((seconds): seconds is number => seconds != null)
+      const allTime = history.editions
+        .map(parkrunWinnerSeconds)
+        .filter((seconds): seconds is number => seconds != null)
+      const fields = window
+        .map((edition) => edition.finishers)
+        .filter((count): count is number => count != null)
+
+      return {
+        history,
+        window,
+        winners: [...winners].sort((left, right) => left - right),
+        fastestEver: allTime.length > 0 ? Math.min(...allTime) : null,
+        fields,
+        wins: target == null ? 0 : winners.filter((seconds) => seconds > target).length,
+      }
+    })
+
+    rows.sort((left, right) => {
+      if (target != null && right.wins !== left.wins) return right.wins - left.wins
+      return (median(right.winners) ?? 0) - (median(left.winners) ?? 0)
+    })
+
+    for (const row of rows) {
+      const cells = [
+        `[${row.history.slug} parkrun](https://www.parkrun.com.de/${row.history.slug}/results/eventhistory/)`,
+        String(row.window.length),
+        time(median(row.winners)),
+        `${time(row.winners[0] ?? null)}\u2013${time(row.winners.at(-1) ?? null)}`,
+        row.fields.length > 0 ? String(median(row.fields)) : '-',
+        time(row.fastestEver),
+        `${row.history.editions.length} editions`,
+        row.history.editions[0]?.date ?? '-',
+      ]
+      if (target != null) cells.splice(2, 0, `${row.wins} of ${row.window.length}`)
+      lines.push(`| ${cells.join(' | ')} |`)
+    }
   }
 
   const parkrunStats = aggregatePodiums(parkrunEditionsAsPodiums(editions))
@@ -429,8 +509,11 @@ if (options.parkrunFromFile) {
     return medianThird(right) - medianThird(left)
   })
 
+  if (editions.length === 0 && unreadable.length === 0) {
+    // Nothing but history pages in the folder, and that section already ran.
+  } else {
   lines.push('')
-  lines.push('## parkrun, from saved pages')
+  lines.push('## parkrun, from saved edition pages')
   lines.push('')
   lines.push(
     `${editions.length} editions read from ${dir}, nothing fetched. Every parkrun is 5 km, and`,
@@ -460,6 +543,7 @@ if (options.parkrunFromFile) {
     ]
     if (target != null) cells.splice(2, 0, `${podiumHits(entry, target)} of ${entry.editions}`)
     lines.push(`| ${cells.join(' | ')} |`)
+  }
   }
 }
 

@@ -528,3 +528,86 @@ export function parkrunEditionsAsPodiums(editions: readonly ParkrunEdition[]): E
     sourceUrl: `https://www.parkrun.com.de/${edition.slug}/results/`,
   }))
 }
+
+/**
+ * The event history page, which is one file for an event's whole life.
+ *
+ * Every row carries the day, the field, and the first man and first woman home,
+ * in data attributes: one saved page answers "how fast do you have to be to win
+ * here" for 361 Saturdays. What it does not carry is second and third place, so
+ * it triages events and cannot settle a podium.
+ *
+ * Names are in those attributes too, and are not read.
+ */
+export type ParkrunHistoryEdition = {
+  eventNumber: number
+  date: string
+  finishers: number | null
+  /** First man home, in seconds, and first woman. Either can be missing. */
+  maleSeconds: number | null
+  femaleSeconds: number | null
+}
+
+export type ParkrunHistory = {
+  slug: string
+  editions: ParkrunHistoryEdition[]
+}
+
+/**
+ * The page writes 15:35 as "1535", so the digits are read from the right.
+ *
+ * Anything else would turn a 1:05:30 into nonsense, and a four digit time into
+ * fifteen hundred seconds.
+ */
+export function parseParkrunHistoryTime(value: string): number | null {
+  const digits = value.trim()
+  if (!/^\d{3,6}$/.test(digits)) return null
+
+  const seconds = Number(digits.slice(-2))
+  const minutes = Number(digits.slice(-4, -2))
+  const hours = digits.length > 4 ? Number(digits.slice(0, -4)) : 0
+  if (seconds > 59 || minutes > 59) return null
+
+  return hours * 3600 + minutes * 60 + seconds
+}
+
+const HISTORY_ROW = /<tr[^>]*class="[^"]*Results-table-row[^"]*"([^>]*)>/gi
+const HISTORY_SLUG = /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/results\/\d+/i
+
+export function parseParkrunEventHistory(html: string): ParkrunHistory | null {
+  const slug = HISTORY_SLUG.exec(html)?.[1]?.toLowerCase()
+  if (!slug) return null
+
+  const editions: ParkrunHistoryEdition[] = []
+
+  for (const row of html.matchAll(HISTORY_ROW)) {
+    const attributes = row[1] ?? ''
+    const read = (name: string) =>
+      new RegExp(`data-${name}="([^"]*)"`, 'i').exec(attributes)?.[1] ?? ''
+
+    const date = read('date')
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) continue
+
+    const finishers = Number(read('finishers'))
+    editions.push({
+      eventNumber: Number(read('parkrun')) || 0,
+      date,
+      finishers: Number.isFinite(finishers) && finishers > 0 ? finishers : null,
+      maleSeconds: parseParkrunHistoryTime(read('maletime')),
+      femaleSeconds: parseParkrunHistoryTime(read('femaletime')),
+    })
+  }
+
+  if (editions.length === 0) return null
+
+  editions.sort((left, right) => right.date.localeCompare(left.date))
+  return { slug, editions }
+}
+
+/** The first finisher, whoever it was: the two the page names are not ranked against each other. */
+export function parkrunWinnerSeconds(edition: ParkrunHistoryEdition): number | null {
+  const times = [edition.maleSeconds, edition.femaleSeconds].filter(
+    (seconds): seconds is number => seconds != null,
+  )
+  return times.length === 0 ? null : Math.min(...times)
+}
