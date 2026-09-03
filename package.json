@@ -22,6 +22,7 @@
     "backfill:track-pacing": "tsx scripts/backfill-track-pacing.ts",
     "backfill:races": "tsx scripts/backfill-races.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
+    "scout:podium": "tsx scripts/podium-scout.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",
     "setup:githooks": "git config core.hooksPath .githooks",
     "test": "vitest run",
