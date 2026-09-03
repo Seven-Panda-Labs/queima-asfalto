@@ -10,6 +10,10 @@
 
 - **More short races:** discovery can now read two German calendars full of 5K, 10K and half marathons. It stays off until you enable them.
 
+### Fixed
+
+- **Self-hosting:** deploying the functions failed after the last dependency update.
+
 ---
 
 ## [1.34.0] - 2026-09-03

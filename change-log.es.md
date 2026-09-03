@@ -10,6 +10,10 @@
 
 - **Más carreras cortas:** el descubrimiento puede leer dos calendarios alemanes llenos de 5 km, 10 km y medias maratones. Sigue apagado hasta que los actives.
 
+### Corregido
+
+- **Self-hosting:** el deploy de las funciones fallaba desde la última actualización de dependencias.
+
 ---
 
 ## [1.34.0] - 2026-09-03

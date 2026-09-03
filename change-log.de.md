@@ -10,6 +10,10 @@
 
 - **Mehr kurze Strecken:** die Suche kann jetzt zwei deutsche Kalender lesen, voll mit 5 km, 10 km und Halbmarathons. Sie bleibt aus, bis du sie einschaltest.
 
+### Behoben
+
+- **Self-hosting:** das Deployment der Functions schlug seit dem letzten Abhängigkeits-Update fehl.
+
 ---
 
 ## [1.34.0] - 2026-09-03

@@ -10,6 +10,10 @@
 
 - **Plus de courses courtes :** la découverte peut lire deux calendriers allemands remplis de 5 km, 10 km et semi-marathons. Elle reste éteinte jusqu'à ce que tu les actives.
 
+### Corrigé
+
+- **Self-hosting :** le déploiement des functions échouait depuis la dernière mise à jour des dépendances.
+
 ---
 
 ## [1.34.0] - 2026-09-03
