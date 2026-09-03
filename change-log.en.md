@@ -20,7 +20,7 @@
 - **Planning is moving:** scheduling a race from the bucket list puts it on the calendar and takes it off the list, without asking. The anchor and the season role live on the race, so nothing is lost in the move.
 - **Self-hosting:** the race harvest can read two new sources, and stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
 - **Fixed:** a distance like 42.195 km could not be saved. The browser refused the value silently, before the app got to validate anything.
-- **Fixed:** the same race showed up twice in the catalog, once under the sponsor's name. The harvest now recognises a race the catalog already holds, even under a different name or in another language, and adds the edition to it instead of creating a second entry.
+- **Fixed:** the same race showed up twice in the catalog, once under the sponsor's name. The harvest now recognises a race the catalog already holds, even under a different name or in another language, and adds the edition to it instead of creating a second entry. The pairs it cannot decide on its own go to a queue in the admin area, one answer away.
 
 ---
 

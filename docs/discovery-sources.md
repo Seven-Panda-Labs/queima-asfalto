@@ -163,10 +163,21 @@ same day, the same city and a distance in common:
 
 Anything else stays two races. The Berlin marathon weekend shows why: "GENERALI
 5K im Rahmen des BMW BERLIN-MARATHON" and "R5K Tour Finale" are both 5 km, both
-in Berlin, both on 26/09/2026, and they are two different races. What the harvest
-still does not solve, two sources bringing the same race under names that do not
-agree, is in
-[issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
+in Berlin, both on 26/09/2026, and they are two different races.
+
+A copy is pointed at the survivor (`duplicateOfCatalogRaceId`) and never
+deleted: `races.catalogRaceId` may already point at it, and no Firestore rule
+can check for references.
+
+**The rest is a question, not a rule.** Two sources can bring the same race
+under two organiser names that agree on nothing, with nobody having checked
+either entry, and there is no evidence there to merge on. Those pairs, same day,
+same city, a distance in common, and no name or review to settle it, go to
+"Possibly the same race" at the top of the admin catalog, with two answers:
+
+- **Same race**, which points the second entry at the first.
+- **Different races**, which is written on both entries (`notDuplicateOf`) so the
+  next harvest neither merges them nor asks again.
 
 ### Adding a source
 

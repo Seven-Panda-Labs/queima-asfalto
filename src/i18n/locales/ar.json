@@ -1212,11 +1212,19 @@
       "invite": "دعوة",
       "unknown": "غير معروف"
     },
+    "duplicatesTitle": "قد يكون السباق نفسه ({{count}})",
+    "duplicatesHint": "اليوم نفسه والمدينة نفسها والمسافة نفسها، ولا الاسم ولا المراجعة تحسم الأمر. الدمج يجعل المدخل الثاني يشير إلى الأول دون حذفه، والجواب يبقى محفوظا في الحالتين.",
+    "duplicatesKeep": "مقترح",
+    "duplicatesMerge": "السباق نفسه، الإبقاء على {{name}}",
+    "duplicatesSeparate": "سباقان مختلفان",
+    "duplicatesUndo": "الفصل عن {{name}}",
+    "duplicatesError": "تعذر الحفظ.",
     "catalogGroup": {
       "unreviewed": "لم تُؤكَّد ({{count}})",
       "stale": "مؤكَّدة، بلا نسخة قادمة ({{count}})",
       "current": "لا شيء للعمل ({{count}})",
-      "retired": "خارج الخدمة ({{count}})"
+      "retired": "خارج الخدمة ({{count}})",
+      "copies": "نسخة من مدخل آخر ({{count}})"
     }
   },
   "funnel": {

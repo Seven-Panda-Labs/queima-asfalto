@@ -5,9 +5,17 @@ import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { AdminCatalog } from './AdminCatalog'
 
 const listCatalogForAdmin = vi.fn()
+const unmergeCatalogRace = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
   listCatalogForAdmin: () => listCatalogForAdmin(),
+  mergeCatalogRaces: vi.fn(),
+  separateCatalogRaces: vi.fn(),
+  unmergeCatalogRace: (...args: unknown[]) => unmergeCatalogRace(...args),
+}))
+
+vi.mock('../../contexts/AuthContext', () => ({
+  useAuth: () => ({ user: { uid: 'admin' } }),
 }))
 
 vi.mock('../../components/PageShell/PageShell', () => ({

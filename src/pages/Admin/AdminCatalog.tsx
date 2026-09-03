@@ -3,11 +3,13 @@ import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { needsEditionReview, type RaceCatalogEntry } from '../../../shared/raceCatalog'
-import { listCatalogForAdmin } from '../../services/adminRaceCatalog'
+import { useAuth } from '../../contexts/AuthContext'
+import { listCatalogForAdmin, unmergeCatalogRace } from '../../services/adminRaceCatalog'
 import { AdminTabs } from './AdminTabs'
+import { CatalogDuplicates } from './CatalogDuplicates'
 
 type Group = {
-  key: 'unreviewed' | 'stale' | 'current' | 'retired'
+  key: 'unreviewed' | 'stale' | 'current' | 'retired' | 'copies'
   races: RaceCatalogEntry[]
 }
 
@@ -19,7 +21,11 @@ type Group = {
  * catalog.
  */
 function groupForReview(races: RaceCatalogEntry[], today: Date): Group[] {
-  const live = races.filter((race) => race.retired !== true)
+  // An entry pointed at another one is not work: it is a decision already made,
+  // and it gets its own group at the end so it stays visible and undoable.
+  const live = races.filter(
+    (race) => race.retired !== true && !race.duplicateOfCatalogRaceId,
+  )
   const monthsAway = (race: RaceCatalogEntry) =>
     ((race.typicalRaceMonth ?? 13) - (today.getUTCMonth() + 1) + 12) % 12
   const byMonth = (left: RaceCatalogEntry, right: RaceCatalogEntry) =>
@@ -41,6 +47,10 @@ function groupForReview(races: RaceCatalogEntry[], today: Date): Group[] {
       races: live.filter((race) => !needsEditionReview(race, today)).sort(byMonth),
     },
     { key: 'retired', races: races.filter((race) => race.retired === true).sort(byMonth) },
+    {
+      key: 'copies',
+      races: races.filter((race) => Boolean(race.duplicateOfCatalogRaceId)).sort(byMonth),
+    },
   ]
 }
 
@@ -52,6 +62,7 @@ function nextEdition(race: RaceCatalogEntry): string | null {
 
 export function AdminCatalog() {
   const { t } = useTranslation()
+  const { user } = useAuth()
   const [races, setRaces] = useState<RaceCatalogEntry[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -91,6 +102,10 @@ export function AdminCatalog() {
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
 
+      {user ? (
+        <CatalogDuplicates races={races} adminUid={user.uid} onChanged={load} />
+      ) : null}
+
       {loading ? (
         <div className="mt-6 space-y-3" aria-hidden>
           {Array.from({ length: 3 }).map((_, index) => (
@@ -128,6 +143,20 @@ export function AdminCatalog() {
                       <span className="ml-auto text-xs tabular-nums text-muted">
                         {nextEdition(race) ?? t('admin.catalogNoEdition')}
                       </span>
+                      {race.duplicateOfCatalogRaceId && user ? (
+                        <button
+                          type="button"
+                          onClick={async () => {
+                            await unmergeCatalogRace(race.id, user.uid)
+                            await load()
+                          }}
+                          className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
+                        >
+                          {t('admin.duplicatesUndo', {
+                            name: race.duplicateOfCatalogRaceId,
+                          })}
+                        </button>
+                      ) : null}
                     </li>
                   ))}
                 </ul>

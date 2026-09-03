@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { RaceCatalogEntry } from '../raceCatalog/types'
-import { findCatalogDuplicate } from './duplicates'
+import { catalogDuplicateCandidates, findCatalogDuplicate } from './duplicates'
 
 function entry(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id' | 'name'>): RaceCatalogEntry {
   return {
@@ -133,5 +133,98 @@ describe('findCatalogDuplicate', () => {
     const one = entry({ id: 'a', name: 'Volkslauf Prenzlauer Berg', disciplines: ['km_10'] })
     const two = entry({ id: 'b', name: 'Sparkassen Firmenlauf', disciplines: ['km_10'] })
     expect(findCatalogDuplicate(two, [one])).toBeNull()
+  })
+})
+
+describe('findCatalogDuplicate, once an operator has answered', () => {
+  it('never relinks a pair that was said to be two races', () => {
+    const generali = entry({
+      id: 'de-berlin-generali-5k',
+      name: 'GENERALI 5K',
+      disciplines: ['km_5'],
+      notDuplicateOf: ['de-berlin-r5k-tour-finale'],
+      editions: [{ year: 2026, raceDate: '2026-09-26', source: 's', confirmedAt: '2026-09-02' }],
+    })
+    // Same name shape as the reviewed side, which would otherwise match.
+    const r5k = entry({
+      id: 'de-berlin-r5k-tour-finale',
+      name: 'GENERALI 5K',
+      review: 'reviewed',
+      disciplines: ['km_5'],
+      editions: [{ year: 2026, raceDate: '2026-09-26', source: 's', confirmedAt: '2026-09-02' }],
+    })
+    expect(findCatalogDuplicate(generali, [r5k])).toBeNull()
+  })
+
+  it('does not point a copy at another copy', () => {
+    const copy = { ...curatedMarathon, duplicateOfCatalogRaceId: 'somewhere-else' }
+    expect(findCatalogDuplicate(entry({ id: 'new', name: 'BMW BERLIN-MARATHON' }), [copy])).toBeNull()
+  })
+})
+
+describe('catalogDuplicateCandidates', () => {
+  const one = entry({ id: 'a', name: 'Volkslauf Prenzlauer Berg', disciplines: ['km_10'] })
+  const two = entry({ id: 'b', name: 'Sparkassen Firmenlauf', disciplines: ['km_10'] })
+
+  it('asks about the pair no rule will merge on its own', () => {
+    expect(catalogDuplicateCandidates([one, two])).toHaveLength(1)
+  })
+
+  it('says nothing about a pair the harvest already merges', () => {
+    // A curated entry and its sponsored name: findCatalogDuplicate handles it,
+    // so asking a person would be asking twice.
+    const harvested = entry({ id: 'de-berlin-bmw-berlin-marathon', name: 'BMW BERLIN-MARATHON' })
+    expect(catalogDuplicateCandidates([curatedMarathon, harvested])).toEqual([])
+  })
+
+  it('offers the entry a person stands behind as the survivor', () => {
+    const withFee = entry({
+      id: 'b',
+      name: 'Sparkassen Firmenlauf',
+      disciplines: ['km_10'],
+      editions: [
+        {
+          year: 2026,
+          raceDate: '2026-09-27',
+          typicalFee: 25,
+          feeCurrency: 'EUR',
+          source: 's',
+          confirmedAt: '2026-09-02',
+        },
+      ],
+    })
+    const [candidate] = catalogDuplicateCandidates([one, withFee])
+    expect(candidate.keep.id).toBe('b')
+    expect(candidate.drop.id).toBe('a')
+  })
+
+  it('drops a pair once it has been answered, either way', () => {
+    expect(catalogDuplicateCandidates([one, { ...two, notDuplicateOf: ['a'] }])).toEqual([])
+    expect(
+      catalogDuplicateCandidates([one, { ...two, duplicateOfCatalogRaceId: 'a' }]),
+    ).toEqual([])
+  })
+
+  it('asks about the two 5 km of the Berlin weekend, which is the point', () => {
+    // No rule can tell these apart, so a person has to, and the queue is where
+    // the question gets asked.
+    const generali = entry({
+      id: 'de-berlin-generali-5k',
+      name: 'GENERALI 5K im Rahmen des BMW BERLIN-MARATHON',
+      disciplines: ['km_5'],
+      editions: [{ year: 2026, raceDate: '2026-09-26', source: 's', confirmedAt: '2026-09-02' }],
+    })
+    const r5k = entry({
+      id: 'de-berlin-r5k-tour-finale',
+      name: 'R5K Tour Finale',
+      disciplines: ['km_5'],
+      editions: [{ year: 2026, raceDate: '2026-09-26', source: 's', confirmedAt: '2026-09-02' }],
+    })
+    expect(catalogDuplicateCandidates([generali, r5k])).toHaveLength(1)
+  })
+
+  it('reports each pair once', () => {
+    const three = entry({ id: 'c', name: 'Lauf der Sympathie', disciplines: ['km_10'] })
+    expect(catalogDuplicateCandidates([one, two, three])).toHaveLength(3)
   })
 })

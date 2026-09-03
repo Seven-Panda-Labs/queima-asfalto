@@ -1200,11 +1200,19 @@
       "invite": "Einladung",
       "unknown": "Unbekannt"
     },
+    "duplicatesTitle": "Möglicherweise dasselbe Rennen ({{count}})",
+    "duplicatesHint": "Gleicher Tag, gleiche Stadt, gleiche Distanz, und weder der Name noch eine Prüfung entscheiden es. Zusammenführen verweist den zweiten Eintrag auf den ersten, ohne ihn zu löschen; die Antwort wird in beiden Fällen gespeichert.",
+    "duplicatesKeep": "Vorschlag",
+    "duplicatesMerge": "Dasselbe Rennen, {{name}} behalten",
+    "duplicatesSeparate": "Verschiedene Rennen",
+    "duplicatesUndo": "Von {{name}} trennen",
+    "duplicatesError": "Konnte nicht gespeichert werden.",
     "catalogGroup": {
       "unreviewed": "Nie bestätigt ({{count}})",
       "stale": "Bestätigt, ohne kommende Ausgabe ({{count}})",
       "current": "Nichts zu tun ({{count}})",
-      "retired": "Außer Betrieb ({{count}})"
+      "retired": "Außer Betrieb ({{count}})",
+      "copies": "Kopie eines anderen Eintrags ({{count}})"
     }
   },
   "funnel": {

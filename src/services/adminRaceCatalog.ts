@@ -1,4 +1,4 @@
-import { collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
+import { arrayUnion, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
 import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
 import { db } from './firebase'
 
@@ -36,4 +36,58 @@ export async function saveCatalogRaceForAdmin(
 
 export async function catalogRaceIdExists(id: string): Promise<boolean> {
   return (await getDoc(doc(db, RACE_CATALOG_COLLECTION, id))).exists()
+}
+
+/**
+ * One race, two entries: point the copy at the survivor.
+ *
+ * A merge and not a delete, and a merge write and not a whole one: the copy
+ * keeps every field it had, because `races.catalogRaceId` may already point at
+ * it and because being wrong about this has to be undoable.
+ */
+export async function mergeCatalogRaces(
+  keepId: string,
+  dropId: string,
+  adminUid: string,
+): Promise<void> {
+  await setDoc(
+    doc(db, RACE_CATALOG_COLLECTION, dropId),
+    { duplicateOfCatalogRaceId: keepId, updatedAt: new Date().toISOString(), updatedBy: adminUid },
+    { merge: true },
+  )
+}
+
+/** Undo the above. The entry goes back to standing on its own. */
+export async function unmergeCatalogRace(id: string, adminUid: string): Promise<void> {
+  await setDoc(
+    doc(db, RACE_CATALOG_COLLECTION, id),
+    { duplicateOfCatalogRaceId: null, updatedAt: new Date().toISOString(), updatedBy: adminUid },
+    { merge: true },
+  )
+}
+
+/**
+ * Two races, and the answer written on both.
+ *
+ * On both because either one can be the harvested side next week, and the point
+ * of recording it is that the question is asked once.
+ */
+export async function separateCatalogRaces(
+  leftId: string,
+  rightId: string,
+  adminUid: string,
+): Promise<void> {
+  const updatedAt = new Date().toISOString()
+  await Promise.all(
+    [
+      [leftId, rightId],
+      [rightId, leftId],
+    ].map(([id, other]) =>
+      setDoc(
+        doc(db, RACE_CATALOG_COLLECTION, id),
+        { notDuplicateOf: arrayUnion(other), updatedAt, updatedBy: adminUid },
+        { merge: true },
+      ),
+    ),
+  )
 }

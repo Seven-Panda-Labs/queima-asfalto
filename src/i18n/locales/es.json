@@ -1200,11 +1200,19 @@
       "invite": "Invitación",
       "unknown": "Desconocida"
     },
+    "duplicatesTitle": "Posiblemente la misma carrera ({{count}})",
+    "duplicatesHint": "Mismo día, misma ciudad, misma distancia, y ni el nombre ni una revisión lo deciden. Unir apunta la segunda entrada a la primera sin borrarla; la respuesta queda guardada en cualquier caso.",
+    "duplicatesKeep": "sugerida",
+    "duplicatesMerge": "Misma carrera, quedarse con {{name}}",
+    "duplicatesSeparate": "Carreras distintas",
+    "duplicatesUndo": "Separar de {{name}}",
+    "duplicatesError": "No se pudo guardar.",
     "catalogGroup": {
       "unreviewed": "Nunca confirmadas ({{count}})",
       "stale": "Confirmadas, sin edición futura ({{count}})",
       "current": "En orden ({{count}})",
-      "retired": "Fuera de circulación ({{count}})"
+      "retired": "Fuera de circulación ({{count}})",
+      "copies": "Copia de otra entrada ({{count}})"
     }
   },
   "funnel": {

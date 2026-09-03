@@ -20,7 +20,7 @@
 - **Planificar es mover:** planificar una carrera de la bucket list la pasa al calendario y la quita de la lista, sin preguntar. El ancla y el papel en la temporada viven en la carrera, así que no se pierde nada.
 - **Self-hosting:** la cosecha de carreras puede leer dos fuentes nuevas, y sigue desactivada hasta que la actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 - **Corregido:** no se podía guardar una distancia como 42,195 km. El navegador rechazaba el valor en silencio, antes de que la app validara nada.
-- **Corregido:** la misma carrera aparecía dos veces en el catálogo, una con el nombre del patrocinador. La cosecha reconoce la carrera que el catálogo ya tiene, aunque tenga otro nombre u otro idioma, y le añade la edición en vez de crear una segunda entrada.
+- **Corregido:** la misma carrera aparecía dos veces en el catálogo, una con el nombre del patrocinador. La cosecha reconoce la carrera que el catálogo ya tiene, aunque tenga otro nombre u otro idioma, y le añade la edición en vez de crear una segunda entrada. Los pares que no puede decidir sola pasan a una cola en la administración, a una respuesta de distancia.
 
 ---
 

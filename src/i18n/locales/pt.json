@@ -1200,11 +1200,19 @@
       "invite": "Convite",
       "unknown": "Desconhecida"
     },
+    "duplicatesTitle": "Possivelmente a mesma prova ({{count}})",
+    "duplicatesHint": "Mesmo dia, mesma cidade, mesma distância, e nem o nome nem uma revisão o decidem. Juntar aponta a segunda entrada à primeira sem a apagar; a resposta fica guardada em qualquer dos casos.",
+    "duplicatesKeep": "sugerida",
+    "duplicatesMerge": "Mesma prova, ficar com {{name}}",
+    "duplicatesSeparate": "Provas diferentes",
+    "duplicatesUndo": "Separar de {{name}}",
+    "duplicatesError": "Não foi possível guardar.",
     "catalogGroup": {
       "unreviewed": "Nunca confirmadas ({{count}})",
       "stale": "Confirmadas, sem edição futura ({{count}})",
       "current": "Em ordem ({{count}})",
-      "retired": "Fora de circulação ({{count}})"
+      "retired": "Fora de circulação ({{count}})",
+      "copies": "Cópia de outra entrada ({{count}})"
     }
   },
   "funnel": {
