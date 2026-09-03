@@ -46,12 +46,22 @@ export function callableFunctionOptions(overrides: Partial<CallableOptions> = {}
   return options
 }
 
+/**
+ * The ceiling Identity Platform puts on a blocking function.
+ *
+ * A blocking function runs inside somebody's sign-in, so the platform refuses
+ * anything slower than this, and firebase-functions 7.3 started refusing it at
+ * load time rather than at deploy: one bad value threw while the module was
+ * being imported, so every function in the bundle failed to start.
+ */
+export const BLOCKING_MAX_TIMEOUT_SECONDS = 7
+
 export function blockingFunctionOptions(
   overrides: Omit<Partial<BlockingOptions>, 'region' | 'serviceAccount'> = {},
 ): BlockingOptions {
   const options: BlockingOptions = {
     region: resolveRegion(),
-    timeoutSeconds: 10,
+    timeoutSeconds: BLOCKING_MAX_TIMEOUT_SECONDS,
     memory: '256MiB',
     maxInstances: 10,
     ...overrides,

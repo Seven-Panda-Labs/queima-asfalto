@@ -10,6 +10,10 @@
 
 - **Mais provas curtas:** a descoberta passa a poder ler dois calendários alemães com muitos 5 km, 10 km e meias maratonas. Continua desligada até as activares.
 
+### Corrigido
+
+- **Self-hosting:** o deploy das funções falhava desde a última actualização de dependências.
+
 ---
 
 ## [1.34.0] - 2026-09-03

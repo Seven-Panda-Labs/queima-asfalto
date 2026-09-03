@@ -1,10 +1,12 @@
 import { afterEach, describe, expect, it } from 'vitest'
 import {
+  BLOCKING_MAX_TIMEOUT_SECONDS,
   LOOKUP_CALLABLE_CONCURRENCY,
   LOOKUP_CALLABLE_MAX_INSTANCES,
   SCHEDULER_CONCURRENCY,
   SCHEDULER_MAX_INSTANCES,
   SCHEDULER_TIMEOUT_SECONDS,
+  blockingFunctionOptions,
   callableFunctionOptions,
   scheduleFunctionOptions,
 } from './functionOptions.js'
@@ -64,5 +66,22 @@ describe('scheduleFunctionOptions', () => {
     const options = scheduleFunctionOptions('every 60 minutes')
 
     expect(options.timeZone).toBe('America/New_York')
+  })
+})
+
+describe('blockingFunctionOptions', () => {
+  it('stays inside the ceiling Identity Platform puts on a blocking function', () => {
+    // firebase-functions 7.3 validates this while the module is imported, so a
+    // value over the cap does not fail one function: it stops every function in
+    // the bundle from starting, and the deploy fails its health check.
+    expect(blockingFunctionOptions().timeoutSeconds).toBeLessThanOrEqual(
+      BLOCKING_MAX_TIMEOUT_SECONDS,
+    )
+  })
+
+  it('keeps an override inside it too', () => {
+    expect(
+      blockingFunctionOptions({ timeoutSeconds: 5 }).timeoutSeconds,
+    ).toBeLessThanOrEqual(BLOCKING_MAX_TIMEOUT_SECONDS)
   })
 })
