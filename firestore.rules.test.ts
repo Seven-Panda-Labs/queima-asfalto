@@ -6,6 +6,8 @@ import {
   initializeTestEnvironment,
   type RulesTestEnvironment,
 } from '@firebase/rules-unit-testing'
+import firebase from 'firebase/compat/app'
+import 'firebase/compat/firestore'
 import { Timestamp } from 'firebase/firestore'
 import { afterAll, beforeAll, beforeEach, describe, it } from 'vitest'
 import { DEFAULT_SHARE_PERMISSIONS } from './shared/shares/types.js'
@@ -1010,6 +1012,32 @@ describe('firestore.rules', () => {
           .collection('raceCatalog')
           .doc('de-berlin-bad-pointer')
           .set({ ...race, duplicateOfCatalogRaceId: 42 }),
+      )
+    })
+
+    it('takes an operator saying two entries are different races', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+
+      await assertSucceeds(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-r5k-tour-finale')
+          .set({ ...race, notDuplicateOf: ['de-berlin-generali-5k'] }),
+      )
+      // The app writes it as an arrayUnion, and rules see the value the
+      // transform produces rather than the transform.
+      await assertSucceeds(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-r5k-tour-finale')
+          .set({ notDuplicateOf: firebase.firestore.FieldValue.arrayUnion('de-berlin-another-5k') }, { merge: true }),
+      )
+      await assertFails(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-bad-list')
+          .set({ ...race, notDuplicateOf: 'de-berlin-generali-5k' }),
       )
     })
 

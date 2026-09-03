@@ -107,6 +107,14 @@ export type RaceCatalogEntry = {
    * already be referenced and because a wrong guess has to be reversible.
    */
   duplicateOfCatalogRaceId?: string
+  /**
+   * Entries an operator said this one is not a copy of.
+   *
+   * The day, the city and the distance are the same for the two 5 km of the
+   * Berlin marathon weekend, so the queue that asks about pairs like that has to
+   * be able to take no for an answer and not ask again after the next harvest.
+   */
+  notDuplicateOf?: string[]
   /** Set by the writer, so an operator can see how stale an entry is. */
   updatedAt?: string
   updatedBy?: string

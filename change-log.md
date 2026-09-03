@@ -20,7 +20,7 @@
 - **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista, sem perguntar. A âncora e o papel na temporada vivem na prova, portanto não se perde nada ao mover.
 - **Self-hosting:** a colheita de provas pode ler duas fontes novas, e continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 - **Corrigido:** não era possível guardar uma distância como 42,195 km. O browser recusava o valor em silêncio, antes de a app chegar a validar.
-- **Corrigido:** a mesma prova aparecia duas vezes no catálogo, uma com o nome do patrocinador. A colheita passa a reconhecer a prova que o catálogo já tem, mesmo com nome diferente ou noutra língua, e junta-lhe a edição em vez de criar uma segunda entrada.
+- **Corrigido:** a mesma prova aparecia duas vezes no catálogo, uma com o nome do patrocinador. A colheita passa a reconhecer a prova que o catálogo já tem, mesmo com nome diferente ou noutra língua, e junta-lhe a edição em vez de criar uma segunda entrada. Os pares que não pode decidir sozinha passam a uma fila na administração, onde ficam a uma resposta de distância.
 
 ---
 

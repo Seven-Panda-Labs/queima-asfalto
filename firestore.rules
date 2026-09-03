@@ -549,7 +549,10 @@ service cloud.firestore {
         && request.resource.data.name.size() > 0
         && (!('duplicateOfCatalogRaceId' in request.resource.data)
           || request.resource.data.duplicateOfCatalogRaceId == null
-          || request.resource.data.duplicateOfCatalogRaceId is string);
+          || request.resource.data.duplicateOfCatalogRaceId is string)
+        && (!('notDuplicateOf' in request.resource.data)
+          || (request.resource.data.notDuplicateOf is list
+            && request.resource.data.notDuplicateOf.size() <= 50));
       allow delete: if false;
     }
 

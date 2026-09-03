@@ -100,6 +100,23 @@ describe('mergeIntoCatalog', () => {
     }
   }
 
+  it('keeps what an operator decided, across the next harvest', () => {
+    // The harvest overwrites the entry whole, so a merge or a separation done
+    // in the admin area has to survive it or next week undoes it.
+    const merged = mergeIntoCatalog(
+      stored({
+        review: 'unreviewed',
+        producer: 'harvest',
+        duplicateOfCatalogRaceId: 'berlin-marathon',
+        notDuplicateOf: ['de-berlin-generali-5k'],
+      }),
+      harvested,
+    )!
+
+    expect(merged.duplicateOfCatalogRaceId).toBe('berlin-marathon')
+    expect(merged.notDuplicateOf).toEqual(['de-berlin-generali-5k'])
+  })
+
   it('writes a race nobody had', () => {
     expect(mergeIntoCatalog(undefined, harvested)).toBe(harvested)
   })

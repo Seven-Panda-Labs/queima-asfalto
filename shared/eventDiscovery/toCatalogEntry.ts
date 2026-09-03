@@ -105,9 +105,13 @@ export function mergeIntoCatalog(
     else editions.push(incoming)
   }
 
+  // The harvest overwrites the entry whole, so anything an operator decided
+  // about it has to be carried across by hand or next week undoes it.
   return compact({
     ...harvested,
     editions: editions.sort((left, right) => left.year - right.year),
     retired: existing.retired,
+    duplicateOfCatalogRaceId: existing.duplicateOfCatalogRaceId,
+    notDuplicateOf: existing.notDuplicateOf,
   })
 }

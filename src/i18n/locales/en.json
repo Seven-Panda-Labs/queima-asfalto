@@ -1200,11 +1200,19 @@
       "invite": "Invite",
       "unknown": "Unknown"
     },
+    "duplicatesTitle": "Possibly the same race ({{count}})",
+    "duplicatesHint": "Same day, same city, same distance, and no name or review to settle it. Merging points the second entry at the first without deleting it; the answer is remembered either way.",
+    "duplicatesKeep": "suggested",
+    "duplicatesMerge": "Same race, keep {{name}}",
+    "duplicatesSeparate": "Different races",
+    "duplicatesUndo": "Separate from {{name}}",
+    "duplicatesError": "Could not save that.",
     "catalogGroup": {
       "unreviewed": "Never confirmed ({{count}})",
       "stale": "Confirmed, out of editions ({{count}})",
       "current": "Nothing to do ({{count}})",
-      "retired": "Out of circulation ({{count}})"
+      "retired": "Out of circulation ({{count}})",
+      "copies": "A copy of another entry ({{count}})"
     }
   },
   "funnel": {

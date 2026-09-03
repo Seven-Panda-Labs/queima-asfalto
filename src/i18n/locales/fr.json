@@ -1200,11 +1200,19 @@
       "invite": "Invitation",
       "unknown": "Inconnue"
     },
+    "duplicatesTitle": "Peut-être la même course ({{count}})",
+    "duplicatesHint": "Même jour, même ville, même distance, et ni le nom ni une vérification ne tranchent. Fusionner fait pointer la seconde entrée vers la première sans la supprimer, et la réponse est retenue dans les deux cas.",
+    "duplicatesKeep": "proposée",
+    "duplicatesMerge": "Même course, garder {{name}}",
+    "duplicatesSeparate": "Courses différentes",
+    "duplicatesUndo": "Séparer de {{name}}",
+    "duplicatesError": "Impossible d'enregistrer.",
     "catalogGroup": {
       "unreviewed": "Jamais confirmées ({{count}})",
       "stale": "Confirmées, sans édition à venir ({{count}})",
       "current": "Rien à faire ({{count}})",
-      "retired": "Hors circulation ({{count}})"
+      "retired": "Hors circulation ({{count}})",
+      "copies": "Copie d'une autre entrée ({{count}})"
     }
   },
   "funnel": {

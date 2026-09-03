@@ -68,6 +68,34 @@ function reviewed(entry: RaceCatalogEntry): boolean {
   return entry.review === 'reviewed' || entry.producer === 'curated'
 }
 
+/** An operator said these two are different races, so no rule may relink them. */
+function keptApart(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  return Boolean(
+    left.notDuplicateOf?.includes(right.id) || right.notDuplicateOf?.includes(left.id),
+  )
+}
+
+/**
+ * As far as the day, the place and the distance can tell, one race.
+ *
+ * Necessary and nowhere near sufficient: the Berlin weekend has two different
+ * 5 km in the same city on the same day. What the two callers do with it is
+ * where they differ, one asserts and the other asks.
+ */
+function couldBeTheSameRace(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  return (
+    left.id !== right.id &&
+    left.retired !== true &&
+    right.retired !== true &&
+    !left.duplicateOfCatalogRaceId &&
+    !right.duplicateOfCatalogRaceId &&
+    !keptApart(left, right) &&
+    sameDay(left, right) &&
+    samePlace(left, right) &&
+    shareADistance(left, right)
+  )
+}
+
 /**
  * The entry a harvested race belongs to, or nothing.
  *
@@ -79,11 +107,7 @@ export function findCatalogDuplicate(
   catalog: readonly RaceCatalogEntry[],
 ): RaceCatalogEntry | null {
   for (const entry of catalog) {
-    if (entry.id === harvested.id) continue
-    if (entry.retired === true) continue
-    if (!sameDay(entry, harvested)) continue
-    if (!samePlace(entry, harvested)) continue
-    if (!shareADistance(entry, harvested)) continue
+    if (!couldBeTheSameRace(entry, harvested)) continue
 
     // A person checked this one, so the harvest is describing it, not finding
     // something new.
@@ -92,4 +116,66 @@ export function findCatalogDuplicate(
   }
 
   return null
+}
+
+/**
+ * How much of an entry somebody stands behind.
+ *
+ * Decides which of a pair is offered as the survivor, and nothing else: a merge
+ * still needs a person to press the button. Reviewed beats unreviewed, and among
+ * unreviewed entries the one carrying a fee or a deadline is the one worth
+ * keeping, because those are the fields a runner actually came for.
+ */
+function worth(entry: RaceCatalogEntry): number {
+  const editions = entry.editions ?? []
+  const hasGates = editions.some(
+    (edition) => edition.typicalFee !== undefined || edition.registrationClosesAt !== undefined,
+  )
+  return (reviewed(entry) ? 8 : 0) + (hasGates ? 4 : 0) + Math.min(editions.length, 3)
+}
+
+export type DuplicateCandidate = {
+  /** The entry offered as the survivor. */
+  keep: RaceCatalogEntry
+  /** The entry that would be pointed at it. */
+  drop: RaceCatalogEntry
+}
+
+/**
+ * Pairs that look like one race and that no rule will merge on its own.
+ *
+ * The automatic rule only acts when a person's entry is one half of the pair or
+ * the names plainly agree, which leaves the case two sources produce: the same
+ * race, two organiser names that do not agree, and nobody having checked
+ * either. That is a judgement, so it becomes a queue instead of a guess.
+ *
+ * The Berlin weekend's two 5 km show up here, and should: a person answering
+ * "different races" is the only thing that can tell them apart, and the answer
+ * is recorded so the pair does not come back every week.
+ */
+export function catalogDuplicateCandidates(
+  catalog: readonly RaceCatalogEntry[],
+): DuplicateCandidate[] {
+  const candidates: DuplicateCandidate[] = []
+
+  for (let index = 0; index < catalog.length; index += 1) {
+    for (let other = index + 1; other < catalog.length; other += 1) {
+      const left = catalog[index]
+      const right = catalog[other]
+      if (!couldBeTheSameRace(left, right)) continue
+      // Whatever the rule would have merged is already merged, so anything left
+      // needing a decision is by definition what it declined.
+      if (findCatalogDuplicate(right, [left])) continue
+
+      const [keep, drop] =
+        worth(left) === worth(right)
+          ? [left, right].sort((a, b) => (a.id < b.id ? -1 : 1))
+          : worth(left) > worth(right)
+            ? [left, right]
+            : [right, left]
+      candidates.push({ keep, drop })
+    }
+  }
+
+  return candidates
 }
