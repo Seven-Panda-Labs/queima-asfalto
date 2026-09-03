@@ -40,11 +40,30 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     // distances. This is the case where reading somebody's HTML pays.
     id: 'scc-events.com',
     kind: 'listing',
+    listingReader: 'scc-events',
     listingUrl: 'https://www.scc-events.com/kalender',
     baseUrl: 'https://www.scc-events.com',
     city: 'Berlin',
     country: 'DE',
     pageLimit: 1,
+  },
+  {
+    // A calendar one person keeps by hand, and the widest reach we have: every
+    // continent, and nothing but the official 42,195 km, which is the site's
+    // own stated rule. No HTTPS and no declared charset, both handled here
+    // rather than in the parser.
+    id: 'planet-marathon.de',
+    kind: 'listing',
+    listingReader: 'planet-marathon',
+    listingUrls: [
+      'http://www.planet-marathon.de/marathon_d.html',
+      'http://www.planet-marathon.de/marathon_europa.html',
+      'http://www.planet-marathon.de/marathon_welt.html',
+    ],
+    // The German page has no country column: the whole page is one country.
+    country: 'DE',
+    charset: 'iso-8859-1',
+    pageLimit: 3,
   },
 ]
 

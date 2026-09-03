@@ -7,6 +7,7 @@ import { dedupeRaces } from '../shared/eventDiscovery/dedup.js'
 import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guards.js'
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
+import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
   davengoStarterUrl,
@@ -122,16 +123,26 @@ async function harvestSearch(source: DiscoverySource): Promise<DiscoveredRace[]>
 
 /** The whole calendar on one page, which is one request for every race on it. */
 async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]> {
-  if (!source.listingUrl) return []
+  const pages = source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : [])
+  const races: DiscoveredRace[] = []
 
-  const html = await fetchPage(source.listingUrl)
-  if (!html) throw new Error(`${source.id}: calendar unavailable`)
+  for (const url of pages.slice(0, source.pageLimit)) {
+    const html = await fetchPage(url, source.charset)
+    if (!html) throw new Error(`${source.id}: calendar unavailable`)
 
-  return readSccCalendar(html, {
-    city: source.city ?? '',
-    country: source.country ?? 'XX',
-    baseUrl: source.baseUrl ?? source.listingUrl,
-  })
+    races.push(
+      ...(source.listingReader === 'planet-marathon'
+        ? readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
+        : readSccCalendar(html, {
+            city: source.city ?? '',
+            country: source.country ?? 'XX',
+            baseUrl: source.baseUrl ?? url,
+          })),
+    )
+    if (url !== pages[pages.length - 1]) await delay(DELAY_BETWEEN_PAGES_MS)
+  }
+
+  return races
 }
 
 async function harvestSource(

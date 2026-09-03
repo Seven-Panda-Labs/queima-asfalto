@@ -4,6 +4,14 @@
 
 ---
 
+## [1.34.0] - 2026-09-03
+
+### Hinzugefügt
+
+- **Eine Rennquelle mehr:** die Ernte kann jetzt planet-marathon.de lesen, einen handgepflegten Marathonkalender mit 386 Rennen in 55 Ländern, und die größte Reichweite, die wir außerhalb Portugals und Deutschlands haben. Sie bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
+
+---
+
 ## [1.33.0] - 2026-09-03
 
 ### Hinzugefügt

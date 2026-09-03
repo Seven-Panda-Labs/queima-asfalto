@@ -31,6 +31,33 @@ Não escrevemos um conector por calendário. Há centenas e listam em grande par
 as mesmas provas, por isso o objectivo não é cobertura de fontes, é escolher as
 mais baratas de ler e depois deduplicar.
 
+### As fontes que este código lê
+
+Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
+
+| id | `kind` | O que dá |
+|---|---|---|
+| `acorrer.pt` | `sitemap` | provas em Portugal, com `schema.org` em cada página |
+| `davengo.com` | `search` | provas na Alemanha, distâncias tiradas da lista de participantes |
+| `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
+| `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
+
+O `planet-marathon.de` é um calendário mantido à mão por uma pessoa (Franz
+Schwengler), e é a fonte de maior alcance que temos: 386 maratonas, 55 países.
+Três coisas que só ele tem:
+
+- **Só a distância oficial.** A regra é da própria página: só entram provas com
+  os 42,195 km. Por isso este leitor não lê distância nenhuma, afirma-a.
+- **Sem HTTPS e sem charset.** O TLS do servidor não negocia, e o
+  `Content-Type` é um `text/html` seco sobre bytes ISO-8859-1. Sem isso
+  declarado na fonte, «Fränkische» entrava no catálogo como «Fr�nkische».
+- **Códigos de país escritos de memória.** `JAP`, `MAY`, `SER`, `ROM`, e `SLK` e
+  `SVK` os dois. A tabela conhece as duas grafias, e uma linha cujo código não
+  resolve é uma linha que se deixa cair: o país é o que a deduplicação compara.
+
+Também deixa cair a maratona que é a perna de uma estafeta de triatlo e a que se
+corre em três etapas: nenhuma delas é uma maratona que se possa inscrever.
+
 ### O que a colheita faz
 
 `harvestRaceCatalog` corre uma vez por semana e, para cada fonte activada:
@@ -122,6 +149,34 @@ things decide whether it qualifies, in this order:
 We do not write one connector per calendar. There are hundreds and they largely
 list the same races, so the goal is not source coverage; it is picking the ones
 that are cheapest to read, then deduplicating.
+
+### The sources this codebase reads
+
+None of them runs unless `DISCOVERY_SOURCES` names it.
+
+| id | `kind` | What it gives |
+|---|---|---|
+| `acorrer.pt` | `sitemap` | races in Portugal, `schema.org` on every page |
+| `davengo.com` | `search` | races in Germany, distances read off the starter list |
+| `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
+| `planet-marathon.de` | `listing` | marathons on every continent, three pages |
+
+`planet-marathon.de` is a calendar one person keeps by hand (Franz Schwengler),
+and it is the widest reach we have: 386 marathons, 55 countries. Three things
+only it has:
+
+- **The official distance only.** That is the site's own rule: nothing is listed
+  unless it has the official 42.195 km. So this reader parses no distance at
+  all, it asserts one.
+- **No HTTPS and no charset.** The server's TLS does not negotiate, and the
+  `Content-Type` is a bare `text/html` over ISO-8859-1 bytes. Without the source
+  declaring that, "Fränkische" enters the catalog as "Fr�nkische".
+- **Country codes typed from memory.** `JAP`, `MAY`, `SER`, `ROM`, and both
+  `SLK` and `SVK`. The table knows either spelling, and a row whose code does
+  not resolve is a row we drop: country is what dedup compares.
+
+It also drops the marathon that is a leg of a triathlon relay and the one run
+over three stages: neither is a marathon anybody can enter.
 
 ### What the harvest does
 

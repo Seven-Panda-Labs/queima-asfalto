@@ -1,3 +1,5 @@
+import { decodeBody } from '../shared/eventDiscovery/charset.js'
+
 const FETCH_TIMEOUT_MS = 20_000
 
 /**
@@ -13,7 +15,10 @@ export const USER_AGENT =
 
 export const DELAY_BETWEEN_PAGES_MS = 700
 
-export async function fetchPage(url: string): Promise<string | null> {
+/**
+ * @param charset what the page is, for a source whose server does not say.
+ */
+export async function fetchPage(url: string, charset?: string): Promise<string | null> {
   const response = await fetch(url, {
     signal: AbortSignal.timeout(FETCH_TIMEOUT_MS),
     headers: { accept: 'text/html,application/xhtml+xml', 'user-agent': USER_AGENT },
@@ -23,7 +28,7 @@ export async function fetchPage(url: string): Promise<string | null> {
   // for: a past event redirects to its results, and the sitemap lists it forever.
   if (!response.ok) return null
 
-  return response.text()
+  return decodeBody(await response.arrayBuffer(), charset)
 }
 
 export function delay(ms: number): Promise<void> {

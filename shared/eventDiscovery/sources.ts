@@ -15,6 +15,16 @@
  */
 export type DiscoverySourceKind = 'sitemap' | 'search' | 'listing'
 
+/**
+ * Whose calendar HTML a listing source is.
+ *
+ * A listing is somebody's own markup, so each one needs its own reader. The
+ * name is here rather than in the harvest so a source is one object.
+ */
+export const LISTING_READERS = ['scc-events', 'planet-marathon'] as const
+
+export type ListingReader = (typeof LISTING_READERS)[number]
+
 export type DiscoverySource = {
   /** Matches `DISCOVERY_SOURCES`, and lands in the catalog as `source`. */
   id: string
@@ -28,9 +38,20 @@ export type DiscoverySource = {
   searchUrl?: string
   /** `listing`: the one page, and what the calendar never says. */
   listingUrl?: string
+  /** More than one page of the same calendar, when a source splits it. */
+  listingUrls?: string[]
+  /** Which reader understands this calendar's HTML. */
+  listingReader?: ListingReader
   baseUrl?: string
   city?: string
   country?: string
+  /**
+   * What the pages are, for a server that does not say.
+   *
+   * Only where it matters: a bare `text/html` and no meta charset means the
+   * fetch decodes as UTF-8, which mangles every accent on a Latin-1 page.
+   */
+  charset?: string
 }
 
 export function selectEnabledSources<T extends { id: string }>(
