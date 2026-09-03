@@ -11,6 +11,14 @@
  *   npx tsx scripts/podium-scout.ts --years 2018-2026 --parkrun --out /tmp/scout.md
  *
  * Options:
+ *   --source strassenlauf|ladv
+ *                        which calendar to read. strassenlauf.org is a Berlin
+ *                        and Brandenburg operator's own portal; ladv.de is the
+ *                        athletics federation's, which covers every state and
+ *                        needs --towns instead of --plz.
+ *   --towns Hannover,Garbsen
+ *                        for --source ladv: the towns that count as the region
+ *   --surface road|any   for --source ladv: road only, or cross-country too
  *   --years 2021-2026    years to read (default: the last five plus this one)
  *   --plz 10,12,13,14    postcode prefixes that count as near Berlin
  *   --distances 5,10     distances to look for, in km
@@ -67,6 +75,15 @@ import {
   parseStrassenlaufApiResponse,
 } from '../shared/officialResults/strassenlauf.js'
 import {
+  LADV_ORIGIN,
+  parseLadvEventPage,
+  parseLadvResultList,
+  listDistancesKm,
+  parseLadvSitemap,
+  slugLooksLikeARace,
+  slugMentionsTown,
+} from './ladvScout.js'
+import {
   catalogSyncDate,
   normalizeParkrunCatalog,
   PARKRUN_EVENTS_URL,
@@ -122,6 +139,9 @@ function years(): number[] {
 }
 
 const options = {
+  source: arg('source') ?? 'strassenlauf',
+  towns: (arg('towns') ?? '').split(',').map((entry) => entry.trim()).filter(Boolean),
+  surface: arg('surface') ?? 'road',
   years: years(),
   postcodes: (arg('plz') ?? '10,12,13,14,15,16').split(',').map((entry) => entry.trim()),
   distances: numbers(arg('distances') ?? '5,10'),
@@ -182,6 +202,14 @@ if (!['m', 'w', 'any'].includes(options.podium)) {
   throw new Error(`Unreadable --podium: ${options.podium}, expected m, w or any`)
 }
 
+if (!['strassenlauf', 'ladv'].includes(options.source)) {
+  throw new Error(`Unreadable --source: ${options.source}, expected strassenlauf or ladv`)
+}
+
+if (options.source === 'ladv' && options.towns.length === 0) {
+  throw new Error('--source ladv needs --towns, for example --towns Hannover,Garbsen,Lehrte')
+}
+
 function sleep(ms: number): Promise<void> {
   return new Promise((done) => setTimeout(done, ms))
 }
@@ -228,7 +256,7 @@ function nearBerlin(postcode: string | null): boolean {
 const rows: EditionPodium[] = []
 let editionsRead = 0
 
-for (const year of options.years) {
+for (const year of options.source === 'strassenlauf' ? options.years : []) {
   const index = await fetchText(`${ORIGIN}/va_ergebnisse.php?flt=${year}`, `index-${year}`)
   if (!index) continue
 
@@ -269,6 +297,80 @@ for (const year of options.years) {
     }
   }
 }
+
+/**
+ * The federation's calendar, narrowed to a region before anything is fetched.
+ *
+ * The town is in the event's URL, so a year of the whole country costs one
+ * request and the region costs nothing on top. Then one page per event for its
+ * result lists, and one per list, which the distance in the list's own slug
+ * keeps down to the ones asked for.
+ */
+async function readLadv(): Promise<void> {
+  for (const year of options.years) {
+    const sitemap = await fetchText(`${LADV_ORIGIN}/sitemap/veranstaltung/${year}`, `ladv-${year}`)
+    if (!sitemap) continue
+
+    const candidates = parseLadvSitemap(sitemap).filter(
+      (event) => slugMentionsTown(event.slug, options.towns) && slugLooksLikeARace(event.slug),
+    )
+    console.error(`${year}: ${candidates.length} races in the region`)
+
+    for (const candidate of candidates) {
+      const page = await fetchText(candidate.url, `ladv-event-${candidate.eventId}`)
+      if (!page) continue
+
+      const event = parseLadvEventPage(page)
+      if (!event) continue
+
+      const town =
+        options.towns.find((name) => candidate.slug.toLowerCase().includes(name.toLowerCase())) ?? ''
+
+      for (const list of event.resultLists) {
+        const wanted = listDistancesKm(list.slug).some(
+          (km) => matchDistance(km, options.distances, options.tolerance) != null,
+        )
+        if (!wanted) continue
+
+        const html = await fetchText(list.url, `ladv-list-${list.listId}`)
+        if (!html) continue
+        editionsRead += 1
+
+        for (const section of parseLadvResultList(html)) {
+          // Only the open men's and women's races: LADV names the class, so an
+          // age group is skipped rather than guessed at.
+          if (section.group == null) continue
+          if (options.surface === 'road' && section.surface !== 'road') continue
+          if (section.date == null || section.distanceKm == null) continue
+
+          const nominalKm = matchDistance(section.distanceKm, options.distances, options.tolerance)
+          if (nominalKm == null) continue
+          if (options.podium !== 'any' && section.group !== options.podium) continue
+
+          rows.push({
+            edition: {
+              eventId: candidate.eventId,
+              date: section.date,
+              name: event.name,
+              place: town,
+              postcode: null,
+            },
+            competition: section.discipline,
+            match: null,
+            finishers: section.finishers,
+            distanceKm: section.distanceKm,
+            nominalKm,
+            group: section.group,
+            places: section.places,
+            sourceUrl: list.url,
+          })
+        }
+      }
+    }
+  }
+}
+
+if (options.source === 'ladv') await readLadv()
 
 /**
  * How many ran, for the podiums that survived deduplication.
@@ -334,21 +436,29 @@ function time(seconds: number | null): string {
 }
 
 const lines: string[] = []
-lines.push('# Podium scout: 5k and 10k near Berlin')
+lines.push(`# Podium scout: ${options.distances.join(' and ')} km`)
 lines.push('')
 lines.push(
-  `Source: strassenlauf.org, years ${options.years[0]} to ${options.years.at(-1)}, postcodes ${options.postcodes.join(', ')}xxx.`,
+  options.source === 'ladv'
+    ? `Source: ladv.de, years ${options.years[0]} to ${options.years.at(-1)}, towns ${options.towns.join(', ')}.`
+    : `Source: strassenlauf.org, years ${options.years[0]} to ${options.years.at(-1)}, postcodes ${options.postcodes.join(', ')}xxx.`,
 )
 lines.push(
   `${editionsRead} editions read, ${fetched} requests, ${cacheHits} from cache. Distances ${options.distances.join(' and ')} km, within ${options.tolerance}%.`,
 )
 lines.push('')
-lines.push("Group M and W are the portal's own two blocks, men first. A competition with a")
-lines.push('single podium is marked ?, because a women-only race looks exactly like an open')
-lines.push('one. "Open" counts editions with fewer than three finishers in that group: a')
-lines.push('place nobody took, which is why an open podium counts as one you would have')
-lines.push('reached. "Field" is the median number of finishers in the competition, both')
-lines.push('podiums together, and it is only there with --finishers.')
+if (options.source === 'ladv') {
+  lines.push('Group M and W are the classes the federation names, so nothing here is inferred:')
+  lines.push('a race run as an age class is not a podium anybody can enter and is left out.')
+  lines.push('"Field" is everyone in that class. Road races only, unless --surface any.')
+} else {
+  lines.push("Group M and W are the portal's own two blocks, men first. A competition with a")
+  lines.push('single podium is marked ?, because a women-only race looks exactly like an open')
+  lines.push('one. "Field" is the median number of finishers in the competition, both podiums')
+  lines.push('together, and it is only there with --finishers.')
+}
+lines.push('"Open" counts editions with fewer than three finishers in that group: a place')
+lines.push('nobody took, which is why an open podium counts as one you would have reached.')
 
 for (const distance of options.distances) {
   const rowsForDistance = stats.filter((entry) => entry.nominalKm === distance)
