@@ -25,12 +25,17 @@
  *   --finishers          also count the field of every competition kept, which
  *                        is one more request each
  *   --parkrun            also list parkrun events near Berlin (no results read)
+ *   --parkrun-from-file <dir>
+ *                        read parkrun results from pages saved in a browser.
+ *                        parkrun refuses automated readers by user-agent, so
+ *                        this makes no request: save each event's results page
+ *                        from your own browser and point this at the folder.
  *   --radius 50          km from the centre, for parkrun
  *   --center 52.52,13.405
  *   --cache              reuse pages already fetched, under node_modules/.cache
  *   --out report.md      write the report to a file instead of stdout
  */
-import { mkdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
+import { mkdirSync, readdirSync, readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { resolve } from 'node:path'
 import {
   aggregatePodiums,
@@ -42,9 +47,12 @@ import {
   median,
   parseEventOverview,
   parsePodiumTime,
+  parkrunEditionsAsPodiums,
+  parseParkrunEventResults,
   parseYearIndex,
   podiumHits,
   type EditionPodium,
+  type ParkrunEdition,
   type PodiumStats,
 } from './podiumScout.js'
 import {
@@ -116,6 +124,7 @@ const options = {
   delay: Number(arg('delay') ?? 800),
   finishers: flag('finishers'),
   parkrun: flag('parkrun'),
+  parkrunFromFile: arg('parkrun-from-file'),
   radius: Number(arg('radius') ?? 50),
   center: numbers(arg('center') ?? '52.52,13.405'),
   cache: flag('cache'),
@@ -394,6 +403,62 @@ for (const distance of options.distances) {
     if (target != null) {
       cells.splice(4, 0, `${podiumHits(entry, target)} of ${entry.editions}`)
     }
+    lines.push(`| ${cells.join(' | ')} |`)
+  }
+}
+
+if (options.parkrunFromFile) {
+  const dir = resolve(options.parkrunFromFile)
+  const editions: ParkrunEdition[] = []
+  const unreadable: string[] = []
+
+  for (const file of readdirSync(dir).filter((name) => /\.html?$/i.test(name)).sort()) {
+    const edition = parseParkrunEventResults(readFileSync(resolve(dir, file), 'utf8'))
+    if (edition) editions.push(edition)
+    else unreadable.push(file)
+  }
+
+  const parkrunStats = aggregatePodiums(parkrunEditionsAsPodiums(editions))
+  const target = targets.get(5) ?? null
+
+  parkrunStats.sort((left, right) => {
+    if (target != null) {
+      const byHits = podiumHits(right, target) - podiumHits(left, target)
+      if (byHits !== 0) return byHits
+    }
+    return medianThird(right) - medianThird(left)
+  })
+
+  lines.push('')
+  lines.push('## parkrun, from saved pages')
+  lines.push('')
+  lines.push(
+    `${editions.length} editions read from ${dir}, nothing fetched. Every parkrun is 5 km, and`,
+  )
+  lines.push('its results table is one podium, not two. Runners\' names are not read.')
+  if (unreadable.length > 0) {
+    lines.push('')
+    lines.push(`Not a results page, skipped: ${unreadable.join(', ')}.`)
+  }
+  lines.push('')
+
+  const header = ['parkrun', 'Editions', '3rd median', '3rd slowest', '3rd fastest', 'Winner median', 'Field', 'Last']
+  if (target != null) header.splice(2, 0, `Podium with ${formatSeconds(target)}`)
+  lines.push(`| ${header.join(' | ')} |`)
+  lines.push(`|${header.map(() => '---').join('|')}|`)
+
+  for (const entry of parkrunStats) {
+    const cells = [
+      `[${entry.raceName}](${entry.lastSourceUrl})`,
+      String(entry.editions),
+      time(median(entry.thirdSeconds)),
+      time(entry.thirdSeconds.at(-1) ?? null),
+      time(entry.thirdSeconds[0] ?? null),
+      time(median(entry.winnerSeconds)),
+      entry.finishers.length > 0 ? String(median(entry.finishers)) : '-',
+      entry.lastDate,
+    ]
+    if (target != null) cells.splice(2, 0, `${podiumHits(entry, target)} of ${entry.editions}`)
     lines.push(`| ${cells.join(' | ')} |`)
   }
 }

@@ -7,7 +7,9 @@ import {
   isOpenRunningCompetition,
   matchDistance,
   namesAgreeAcrossYears,
+  parkrunEditionsAsPodiums,
   parseEventOverview,
+  parseParkrunEventResults,
   parsePodiumTime,
   parseYearIndex,
   podiumHits,
@@ -367,5 +369,94 @@ describe('podiumHits', () => {
     // 2285 beats the 2400 edition, loses to the 2100 one, and walks onto the
     // podium nobody filled.
     expect(podiumHits(stats!, 2285)).toBe(2)
+  })
+})
+
+/** The structure of a saved parkrun results page. Fictional runners only. */
+function parkrunPage(slug: string, date: string, finishers: number, times: string[]): string {
+  const rows = times
+    .map(
+      (time, index) => `
+      <tr class="Results-table-row" data-name="Fictional Runner ${index + 1}" data-position="${index + 1}">
+        <td class="Results-table-td Results-table-td--position">${index + 1}</td>
+        <td class="Results-table-td Results-table-td--name">
+          <motion.div class="compact"><a href="/${slug}/parkrunner/100000${index}">Fictional Runner ${index + 1}</a></motion.div>
+        </td>
+        <td class="Results-table-td Results-table-td--time"><motion.div class="compact">${time}</motion.div></td>
+      </tr>`,
+    )
+    .join('')
+
+  return `<div>
+  <span class="format-date">${date}</span>
+  <motion.div class="statistics-card-grid">
+    <motion.div class="statistics-card">
+      <motion.div class="value">${finishers}</motion.div>
+      <motion.div class="label">finishers</motion.div>
+    </motion.div>
+    <motion.div class="statistics-card">
+      <motion.div class="value">21</motion.div>
+      <motion.div class="label">helfer*innen</motion.div>
+    </motion.div>
+  </motion.div>
+  <table class="Results-table"><tbody>${rows}</tbody></table>
+</div>`
+}
+
+describe('parseParkrunEventResults', () => {
+  it('reads the event, the day, the field and the top three', () => {
+    const edition = parseParkrunEventResults(
+      parkrunPage('musterheide', '2026-08-29', 175, ['17:54', '18:20', '19:02', '31:57']),
+    )
+
+    expect(edition?.slug).toBe('musterheide')
+    expect(edition?.date).toBe('2026-08-29')
+    expect(edition?.finishers).toBe(175)
+    expect(edition?.places.map((place) => place.time)).toEqual(['17:54', '18:20', '19:02'])
+  })
+
+  it('takes the finisher count and not the volunteer count', () => {
+    expect(parseParkrunEventResults(parkrunPage('musterheide', '2026-08-29', 42, ['19:00']))?.finishers).toBe(42)
+  })
+
+  it('does not read runners names', () => {
+    const edition = parseParkrunEventResults(parkrunPage('musterheide', '2026-08-29', 80, ['18:00']))
+    expect(edition?.places.every((place) => place.name === '')).toBe(true)
+  })
+
+  it('reads a day written the local way', () => {
+    const page = parkrunPage('musterheide', '2026-08-29', 80, ['18:00']).replace(
+      '2026-08-29',
+      '29/08/2026',
+    )
+    expect(parseParkrunEventResults(page)?.date).toBe('2026-08-29')
+  })
+
+  it('refuses a page that is not results', () => {
+    expect(parseParkrunEventResults('<html><body>Not found</body></html>')).toBeNull()
+  })
+})
+
+describe('parkrunEditionsAsPodiums', () => {
+  it('gathers a parkrun across weeks into one 5 km race', () => {
+    const editions = ['2026-08-15', '2026-08-22', '2026-08-29'].map((date, index) =>
+      parseParkrunEventResults(
+        parkrunPage('musterheide', date, 90 + index, ['18:00', '18:30', `19:0${index}`]),
+      ),
+    )
+
+    const stats = aggregatePodiums(
+      parkrunEditionsAsPodiums(editions.filter((edition) => edition !== null)),
+    )
+
+    expect(stats).toHaveLength(1)
+    expect(stats[0]).toMatchObject({
+      raceName: 'musterheide parkrun',
+      nominalKm: 5,
+      editions: 3,
+      lastDate: '2026-08-29',
+      openPodiums: 0,
+    })
+    expect(stats[0]?.finishers).toEqual([90, 91, 92])
   })
 })

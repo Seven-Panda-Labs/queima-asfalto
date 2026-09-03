@@ -436,3 +436,95 @@ export function median(values: readonly number[]): number | null {
 export function podiumHits(stats: PodiumStats, targetSeconds: number): number {
   return stats.openPodiums + stats.thirdSeconds.filter((seconds) => seconds > targetSeconds).length
 }
+
+/**
+ * A parkrun event results page, read from a file a person saved.
+ *
+ * parkrun refuses automated readers by user-agent: an agent that says what it
+ * is gets 403 even on robots.txt, while a browser gets served. So this reads
+ * what a browser already fetched, and makes no request of its own.
+ *
+ * Names are deliberately not read. A podium needs three times, not three
+ * people, and these pages are full of real runners.
+ */
+export type ParkrunEdition = {
+  slug: string
+  date: string
+  finishers: number | null
+  places: PodiumPlace[]
+}
+
+const PARKRUN_SLUG = /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/parkrunner\//i
+const PARKRUN_ISO_DATE = /class="format-date"[^>]*>\s*(\d{4})-(\d{2})-(\d{2})/i
+const PARKRUN_LOCAL_DATE = /class="format-date"[^>]*>\s*(\d{2})\/(\d{2})\/(\d{4})/i
+const PARKRUN_ROW = /<tr[^>]*class="[^"]*Results-table-row[^"]*"([^>]*)>([\s\S]*?)<\/tr>/gi
+const PARKRUN_TIME_CELL = /Results-table-td--time[^>]*>([\s\S]*?)<\/td>/i
+
+function parkrunFinishers(html: string): number | null {
+  for (const match of html.matchAll(/class="value"[^>]*>\s*([\d.,]+)\s*</gi)) {
+    // The label sits just after its value, and the page also counts volunteers.
+    const following = html.slice(match.index + match[0].length, match.index + match[0].length + 300)
+    if (!/finisher/i.test(following)) continue
+
+    const total = Number((match[1] ?? '').replace(/[.,]/g, ''))
+    if (Number.isFinite(total)) return total
+  }
+
+  return null
+}
+
+export function parseParkrunEventResults(html: string): ParkrunEdition | null {
+  const slug = PARKRUN_SLUG.exec(html)?.[1]?.toLowerCase()
+  if (!slug) return null
+
+  const iso = PARKRUN_ISO_DATE.exec(html)
+  const local = PARKRUN_LOCAL_DATE.exec(html)
+  const date = iso
+    ? `${iso[1]}-${iso[2]}-${iso[3]}`
+    : local
+      ? `${local[3]}-${local[2]}-${local[1]}`
+      : null
+  if (!date) return null
+
+  const places: PodiumPlace[] = []
+
+  for (const row of html.matchAll(PARKRUN_ROW)) {
+    const position = Number(/data-position="(\d+)"/i.exec(row[1] ?? '')?.[1])
+    if (!Number.isFinite(position) || position > 3) continue
+
+    const time = cellText(PARKRUN_TIME_CELL.exec(row[2] ?? '')?.[1] ?? '')
+    const seconds = parsePodiumTime(time)
+    if (seconds == null) continue
+
+    places.push({ position, name: '', time, seconds })
+  }
+
+  places.sort((left, right) => left.position - right.position)
+  return { slug, date, finishers: parkrunFinishers(html), places }
+}
+
+/**
+ * parkrun editions in the shape the rest of the report already understands.
+ *
+ * Every parkrun is 5 km and none of them splits its results table by gender,
+ * so the group is the one podium there is.
+ */
+export function parkrunEditionsAsPodiums(editions: readonly ParkrunEdition[]): EditionPodium[] {
+  return editions.map((edition) => ({
+    edition: {
+      eventId: `${edition.slug}-${edition.date}`,
+      date: edition.date,
+      name: `${edition.slug} parkrun`,
+      place: `${edition.slug} parkrun`,
+      postcode: `parkrun-${edition.slug}`,
+    },
+    competition: 'parkrun 5 km',
+    match: null,
+    finishers: edition.finishers,
+    distanceKm: 5,
+    nominalKm: 5,
+    group: 'unknown' as const,
+    places: edition.places,
+    sourceUrl: `https://www.parkrun.com.de/${edition.slug}/results/`,
+  }))
+}
