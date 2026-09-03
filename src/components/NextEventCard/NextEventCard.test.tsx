@@ -77,3 +77,80 @@ describe('NextEventCard', () => {
     expect(screen.queryByText('Tierparklauf')).not.toBeInTheDocument()
   })
 })
+
+describe('NextEventCard and the season target', () => {
+  const anchor = {
+    id: 'anchor',
+    name: 'Maratona do Porto',
+    date: new Date('2027-02-01'),
+    realDistance: 42.195,
+    status: 'planned',
+    eventType: 'km_42_2',
+    location: 'Porto',
+  } as Event
+
+  const last = {
+    id: 'last',
+    name: 'Meia de Cascais',
+    date: new Date('2026-08-16'),
+    realDistance: 21.0975,
+    status: 'completed',
+    eventType: 'km_21_1',
+    location: 'Cascais',
+    time: '01:38:20',
+  } as Event
+
+  it('draws the road from the last race to the target', () => {
+    render(
+      <MemoryRouter>
+        <NextEventCard event={event} anchor={anchor} last={last} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Última')).toBeInTheDocument()
+    expect(screen.getByText('A seguir')).toBeInTheDocument()
+    expect(screen.getByText('Prova objetivo')).toBeInTheDocument()
+    // The last race carries its time, which is what makes it worth a stop.
+    expect(screen.getByText('01:38:20')).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: /Maratona do Porto/ })).toHaveAttribute(
+      'href',
+      '/eventos/anchor',
+    )
+  })
+
+  it('starts the road at the next race when nothing was run yet', () => {
+    render(
+      <MemoryRouter>
+        <NextEventCard event={event} anchor={anchor} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.queryByText('Última')).not.toBeInTheDocument()
+    expect(screen.getByText('Prova objetivo')).toBeInTheDocument()
+  })
+
+  it('gives the whole hero to the target on the last stretch', () => {
+    render(
+      <MemoryRouter>
+        <NextEventCard event={event} isAnchor last={last} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Prova objetivo')).toBeInTheDocument()
+    // One of the coach's lines, and no road: there is nowhere further to point.
+    expect(screen.getByText(/treinaste|a sério|Vamos a isto|Sem desculpas/)).toBeInTheDocument()
+    expect(screen.queryByText('A seguir')).not.toBeInTheDocument()
+  })
+
+  it('stays as it was without an anchor', () => {
+    render(
+      <MemoryRouter>
+        <NextEventCard event={event} last={last} />
+      </MemoryRouter>,
+    )
+
+    expect(screen.getByText('Próximo evento')).toBeInTheDocument()
+    expect(screen.queryByText('Prova objetivo')).not.toBeInTheDocument()
+    expect(screen.queryByText('A seguir')).not.toBeInTheDocument()
+  })
+})

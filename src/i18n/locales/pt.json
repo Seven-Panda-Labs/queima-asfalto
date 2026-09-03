@@ -130,6 +130,9 @@
   },
   "dashboard": {
     "nextEvent": "Próximo evento",
+    "anchorEvent": "Prova objetivo",
+    "roadDone": "Última",
+    "roadHere": "A seguir",
     "courseTarget": "A bater: {{time}} · {{pace}}/km",
     "courseTargetRuns_one": "{{count}} vez aqui",
     "courseTargetRuns_other": "{{count}} vezes aqui",
@@ -975,6 +978,12 @@
     }
   },
   "voice": {
+    "anchorNext": [
+      "Foi para isto que treinaste.",
+      "Agora é a sério.",
+      "Vamos a isto!",
+      "É esta. Sem desculpas."
+    ],
     "loading": {
       "shared": {
         "aria": "A carregar dados partilhados de {{name}}",

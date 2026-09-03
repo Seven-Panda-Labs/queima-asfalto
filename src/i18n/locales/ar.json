@@ -130,6 +130,9 @@
   },
   "dashboard": {
     "nextEvent": "الفعالية التالية",
+    "anchorEvent": "السباق الهدف",
+    "roadDone": "الأخيرة",
+    "roadHere": "التالي",
     "courseTarget": "الرقم المطلوب: {{time}} · {{pace}}/كم",
     "courseTargetRuns_zero": "لا مرات هنا",
     "courseTargetRuns_one": "مرة واحدة هنا",
@@ -987,6 +990,12 @@
     }
   },
   "voice": {
+    "anchorNext": [
+      "لهذا تدربت.",
+      "الآن الجد.",
+      "هيا بنا!",
+      "هذا هو. بلا أعذار."
+    ],
     "loading": {
       "shared": {
         "aria": "جارٍ تحميل البيانات المشتركة من {{name}}",

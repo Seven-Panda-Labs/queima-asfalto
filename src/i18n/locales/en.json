@@ -130,6 +130,9 @@
   },
   "dashboard": {
     "nextEvent": "Next event",
+    "anchorEvent": "Target race",
+    "roadDone": "Last",
+    "roadHere": "Next up",
     "courseTarget": "To beat: {{time}} · {{pace}}/km",
     "courseTargetRuns_one": "{{count}} time here",
     "courseTargetRuns_other": "{{count}} times here",
@@ -975,6 +978,12 @@
     }
   },
   "voice": {
+    "anchorNext": [
+      "This is what you trained for.",
+      "Now it counts.",
+      "Let's go!",
+      "This is the one. No excuses."
+    ],
     "loading": {
       "shared": {
         "aria": "Loading shared data from {{name}}",

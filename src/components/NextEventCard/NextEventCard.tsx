@@ -9,6 +9,9 @@ import { formatEventTypeLabel } from '../../types/Goal'
 import { formatDatePt } from '../../utils/date'
 import { formatDurationSeconds, formatPaceSeconds } from '../../utils/analytics/results'
 import { formatDaysUntil } from '../../utils/nextEvent'
+import { pickRandomLine } from '../../utils/pickVoiceLine'
+import { daysUntilEvent } from '../../utils/nextEvent'
+import { SeasonRoad, type RoadStop } from '../SeasonRoad'
 
 export type NextEventTarget = {
   /** The best pace on this course, carried over the distance ahead. */
@@ -27,6 +30,17 @@ export type NextEventProjection = {
 
 type NextEventCardProps = {
   event?: Event | null
+  /**
+   * The season's target, when the next race is not it.
+   *
+   * A countdown to one race says how soon; two say what for, and the road at
+   * the foot of the hero is what makes the second one land.
+   */
+  anchor?: Event | null
+  /** The race behind you, where the road starts. */
+  last?: Event | null
+  /** The next race is the target, which is the season's last stretch. */
+  isAnchor?: boolean
   /** Only for a course already run: there is nothing to beat otherwise. */
   target?: NextEventTarget | null
   /**
@@ -54,7 +68,15 @@ function AsphaltDecoration() {
   )
 }
 
-function Hero({ emoji, children }: { emoji: string; children: ReactNode }) {
+function Hero({
+  emoji,
+  children,
+  footer,
+}: {
+  emoji: string
+  children: ReactNode
+  footer?: ReactNode
+}) {
   return (
     <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary to-primary-hover p-5 text-white shadow-lg sm:p-7">
       <AsphaltDecoration />
@@ -64,6 +86,7 @@ function Hero({ emoji, children }: { emoji: string; children: ReactNode }) {
         </span>
         {children}
       </div>
+      {footer ? <div className="relative">{footer}</div> : null}
     </div>
   )
 }
@@ -118,7 +141,14 @@ function EmptyHero() {
   )
 }
 
-export function NextEventCard({ event, target, projection }: NextEventCardProps) {
+export function NextEventCard({
+  event,
+  anchor,
+  last,
+  isAnchor = false,
+  target,
+  projection,
+}: NextEventCardProps) {
   const { t } = useTranslation()
   const today = new Date()
 
@@ -129,12 +159,64 @@ export function NextEventCard({ event, target, projection }: NextEventCardProps)
     tomorrow: t('dashboard.daysUntilTomorrow'),
     other: (n: number) => t('dashboard.daysUntilOther', { count: n }),
   })
+  const anchorCountdown = anchor
+    ? formatDaysUntil(anchor.date, today, {
+        today: t('dashboard.daysUntilToday'),
+        tomorrow: t('dashboard.daysUntilTomorrow'),
+        other: (n: number) => t('dashboard.daysUntilOther', { count: n }),
+      })
+    : null
+
+  /**
+   * The line for the last stretch, seeded on the countdown.
+   *
+   * A pool rather than one sentence, because this hero is the same every day
+   * for weeks; seeded rather than random, so it does not change under the
+   * runner's eyes on every render.
+   */
+  const anchorLines = t('voice.anchorNext', { returnObjects: true })
+  const anchorLine = isAnchor
+    ? pickRandomLine(
+        Array.isArray(anchorLines) ? anchorLines.filter((line) => typeof line === 'string') : [],
+        daysUntilEvent(event.date, today),
+      )
+    : null
+
+  /**
+   * The road: where you came from, where you are, where you are going.
+   *
+   * Only with a target, and only when it is not the next race: on the last
+   * stretch there is nowhere further to point, and the hero is all target.
+   */
+  const stops: RoadStop[] = []
+  if (anchor && anchorCountdown) {
+    if (last) {
+      stops.push({
+        kicker: t('dashboard.roadDone'),
+        name: last.name,
+        meta: last.time ?? formatDatePt(last.date),
+        href: `/eventos/${last.id}`,
+        kind: 'done',
+      })
+    }
+    stops.push({ kicker: t('dashboard.roadHere'), kind: 'here' })
+    stops.push({
+      kicker: t('dashboard.anchorEvent'),
+      name: anchor.name,
+      meta: anchorCountdown,
+      href: `/eventos/${anchor.id}`,
+      kind: 'target',
+    })
+  }
 
   return (
-    <Hero emoji={event.emoji ?? '🏃'}>
+    <Hero
+      emoji={event.emoji ?? '🏃'}
+      footer={stops.length > 1 ? <SeasonRoad stops={stops} /> : null}
+    >
       <div className="min-w-0 flex-1">
         <p className="text-xs font-semibold uppercase tracking-widest text-white/70">
-          {t('dashboard.nextEvent')}
+          {isAnchor ? t('dashboard.anchorEvent') : t('dashboard.nextEvent')}
         </p>
         <p className="mt-0.5 font-display text-4xl leading-tight tracking-wide sm:text-5xl">
           {countdown}
@@ -144,6 +226,13 @@ export function NextEventCard({ event, target, projection }: NextEventCardProps)
           {formatDatePt(event.date)} • {formatEventTypeLabel(event.eventType)} •{' '}
           {event.location || t('common.dash')}
         </p>
+        {/* Once a season, so it gets the room: this is the race the year was
+            built around, and the hero has nothing further to point at. */}
+        {isAnchor ? (
+          <p className="mt-2 text-lg font-bold leading-tight text-white sm:text-xl">
+            {anchorLine}
+          </p>
+        ) : null}
         {target ? (
           <p className="mt-3 inline-flex flex-wrap items-baseline gap-x-2 rounded-full bg-white/15 px-3 py-1 text-xs font-semibold">
             <span>
