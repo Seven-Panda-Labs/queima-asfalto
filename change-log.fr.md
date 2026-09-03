@@ -4,12 +4,30 @@
 
 ---
 
+## [1.33.0] - 2026-09-03
+
+### Ajouté
+
+- **La route de la saison :** le hero du tableau de bord montre désormais ta dernière course, la prochaine et la course objectif au bout, chacune avec sa distance et son compte à rebours. Dans la dernière ligne droite, quand la prochaine course est l'objectif, le hero est tout à elle.
+
+### Modifié
+
+- **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste, sans demander. Le pivot et le rôle dans la saison vivent sur la course, donc rien n'est perdu au passage.
+- **Alertes de la saison :** elles vivent sur la page de chaque course, et ne disparaissent plus quand tu la planifies.
+
+### Corrigé
+
+- **Distances à décimales :** impossible d'enregistrer 42,195 km. Le navigateur refusait la valeur en silence, avant même que l'app ne valide quoi que ce soit.
+- **Courses en double dans le catalogue :** la même course y figurait deux fois, une fois sous le nom du sponsor. La récolte reconnaît désormais une course que le catalogue possède déjà, même sous un autre nom ou dans une autre langue, et lui ajoute l'édition. Les paires qu'elle ne peut pas trancher seule passent dans une file de l'espace d'administration.
+
+---
+
 ## [1.32.0] - 2026-09-02
 
 ### Ajouté
 
 - **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée. Avec une notification avant chaque échéance, à activer dans Réglages.
-- **Une saison autour des courses pivots :** marque les une à trois courses qui fixent ton année, sur la page de la course elle-même. À partir d'elles, l'app suggère la fenêtre où tient une course de préparation, alerte quand quelque chose tombe dans l'affûtage ou quand un mois est trop chargé, et affiche le temps prévu pour le pivot à partir de ta dernière course. Les alertes et la fenêtre vivent sur la page de chaque course, et ne disparaissent plus quand tu la planifies. Sur le tableau de bord, le hero dessine la route de la saison : ta dernière course, la prochaine, et la course objectif au bout, chacune avec son compte à rebours.
+- **Une saison autour des courses pivots :** marque les une à trois courses qui fixent ton année, sur la page de la course elle-même. À partir d'elles, l'app suggère la fenêtre où tient une course de préparation, alerte quand quelque chose tombe dans l'affûtage ou quand un mois est trop chargé, et affiche le temps prévu pour le pivot à partir de ta dernière course.
 - **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé au lieu de dire que tu l'as manquée, un abandon compte comme une course commencée, et un bouton crée la tentative de la saison prochaine.
 - **Trouver des courses :** une nouvelle page cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot met devant celles qui tiennent dans la fenêtre. Les parkruns près de toi y sont aussi, eux qui ne figurent dans aucun calendrier.
 - **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait. Il disparaît quand elles sont faites.
@@ -17,10 +35,7 @@
 ### Modifié
 
 - **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit.
-- **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste, sans demander. Le pivot et le rôle dans la saison vivent sur la course, donc rien n'est perdu.
 - **Self-hosting :** la récolte de courses peut lire deux nouvelles sources, et reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
-- **Corrigé :** une distance comme 42,195 km ne pouvait pas être enregistrée. Le navigateur refusait la valeur en silence, avant toute validation de l'app.
-- **Corrigé :** la même course apparaissait deux fois dans le catalogue, une fois sous le nom du sponsor. La récolte reconnaît désormais une course que le catalogue possède déjà, même sous un autre nom ou dans une autre langue, et lui ajoute l'édition au lieu de créer une seconde entrée. Les paires qu'elle ne peut pas trancher seule passent dans une file de l'espace d'administration, à une réponse près.
 
 ---
 

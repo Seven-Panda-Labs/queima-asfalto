@@ -4,12 +4,30 @@
 
 ---
 
+## [1.33.0] - 2026-09-03
+
+### Hinzugefügt
+
+- **Die Straße der Saison:** das Hero im Dashboard zeigt jetzt das letzte Rennen, das nächste und am Ende das Zielrennen, jedes mit seiner Distanz und eigenem Countdown. Auf der letzten Etappe, wenn das nächste Rennen das Ziel selbst ist, gehört das Hero ganz ihm.
+
+### Geändert
+
+- **Planen heißt verschieben:** ein Rennen aus der Bucket List einzuplanen legt es in den Kalender und nimmt es von der Liste, ohne zu fragen. Anker und Saisonrolle leben am Rennen, also geht beim Verschieben nichts verloren.
+- **Saisonhinweise:** sie stehen auf der Seite des Rennens selbst und verschwinden nicht mehr, wenn du es einplanst.
+
+### Behoben
+
+- **Distanzen mit Dezimalstellen:** 42,195 km ließen sich nicht speichern. Der Browser lehnte den Wert stillschweigend ab, bevor die App überhaupt prüfen konnte.
+- **Rennen doppelt im Katalog:** dasselbe Rennen stand zweimal darin, einmal unter dem Sponsornamen. Die Ernte erkennt jetzt ein Rennen, das der Katalog schon hat, auch unter anderem Namen oder in anderer Sprache, und hängt die Ausgabe daran. Die Paare, die sie nicht allein entscheiden kann, landen in einer Liste im Adminbereich.
+
+---
+
 ## [1.32.0] - 2026-09-02
 
 ### Hinzugefügt
 
 - **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern. Mit einer Benachrichtigung vor jeder Frist, einzuschalten in den Einstellungen.
-- **Eine Saison um die Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, auf der Seite des Rennens selbst. Daraus schlägt die App das Fenster für ein Vorbereitungsrennen vor, warnt, wenn etwas in das Tapering fällt oder ein Monat zu voll wird, und zeigt die prognostizierte Zeit für den Anker aus deinem letzten Rennen. Die Warnungen und das Fenster stehen auf der Seite des Rennens selbst und verschwinden nicht mehr, wenn du es einplanst. Im Dashboard zeichnet das Hero die Straße der Saison: das letzte Rennen, das nächste und am Ende das Zielrennen, jedes mit eigenem Countdown.
+- **Eine Saison um die Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, auf der Seite des Rennens selbst. Daraus schlägt die App das Fenster für ein Vorbereitungsrennen vor, warnt, wenn etwas in das Tapering fällt oder ein Monat zu voll wird, und zeigt die prognostizierte Zeit für den Anker aus deinem letzten Rennen.
 - **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt, was passiert ist, statt zu sagen, du hättest es verpasst, ein DNF zählt als gestartetes Rennen, und ein Knopf legt den Versuch der nächsten Saison an.
 - **Rennen finden:** eine neue Seite durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker stellt die passenden nach vorne. Auch die parkruns in deiner Nähe sind dabei, die in keinem Rennkalender stehen.
 - **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, jeder sagt, was die App damit macht. Es verschwindet, wenn sie erledigt sind.
@@ -17,10 +35,7 @@
 ### Geändert
 
 - **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte.
-- **Einplanen heißt verschieben:** ein Rennen von der Bucket List einzuplanen setzt es in den Kalender und nimmt es von der Liste, ohne zu fragen. Anker und Saisonrolle liegen am Rennen, es geht also nichts verloren.
 - **Self-hosting:** die Rennernte kann zwei neue Quellen lesen und bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
-- **Behoben:** eine Distanz wie 42,195 km ließ sich nicht speichern. Der Browser lehnte den Wert stillschweigend ab, bevor die App überhaupt prüfen konnte.
-- **Behoben:** dasselbe Rennen stand zweimal im Katalog, einmal unter dem Sponsornamen. Die Ernte erkennt jetzt ein Rennen, das der Katalog schon hat, auch unter anderem Namen oder in anderer Sprache, und hängt die Ausgabe daran statt einen zweiten Eintrag anzulegen. Die Paare, die sie nicht allein entscheiden kann, landen in einer Liste im Adminbereich, eine Antwort entfernt.
 
 ---
 

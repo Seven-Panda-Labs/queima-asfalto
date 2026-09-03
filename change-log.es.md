@@ -4,12 +4,30 @@
 
 ---
 
+## [1.33.0] - 2026-09-03
+
+### Añadido
+
+- **La carretera de la temporada:** el hero del dashboard muestra tu última carrera, la siguiente y la carrera objetivo al final, cada una con su distancia y su cuenta atrás. En la recta final, cuando la siguiente carrera ya es la objetivo, el hero es todo para ella.
+
+### Cambiado
+
+- **Planificar es mover:** planificar una carrera de la bucket list la pasa al calendario y la saca de la lista, sin preguntar. El ancla y el papel en la temporada viven en la carrera, así que no se pierde nada al mover.
+- **Avisos de la temporada:** aparecen en la página de cada carrera, y dejan de desaparecer al planificarla.
+
+### Corregido
+
+- **Distancias con decimales:** no se podía guardar 42,195 km. El navegador rechazaba el valor en silencio, antes de que la app validara nada.
+- **Carreras repetidas en el catálogo:** la misma carrera aparecía dos veces, una con el nombre del patrocinador. La cosecha reconoce la carrera que el catálogo ya tiene, aunque tenga otro nombre u otro idioma, y le añade la edición. Los pares que no puede decidir sola pasan a una cola en la administración.
+
+---
+
 ## [1.32.0] - 2026-09-02
 
 ### Añadido
 
 - **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada. Con avisos por notificación antes de cada plazo, que se activan en Ajustes.
-- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera. Los avisos y la ventana aparecen en la página de cada carrera, y dejan de desaparecer al planificarla. En el dashboard, el hero dibuja la carretera de la temporada: tu última carrera, la siguiente, y la carrera objetivo al final, cada una con su cuenta atrás.
+- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera.
 - **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió en vez de decir que la perdiste, un abandono cuenta como carrera empezada, y un botón crea el intento de la próxima temporada.
 - **Encontrar carreras:** una página nueva busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla pone delante las que encajan en la ventana. Incluye los parkruns cerca de ti, que no salen en ningún calendario.
 - **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, cada uno explicando qué hace la app con eso. Desaparece al completarlos.
@@ -17,10 +35,7 @@
 ### Cambiado
 
 - **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada.
-- **Planificar es mover:** planificar una carrera de la bucket list la pasa al calendario y la quita de la lista, sin preguntar. El ancla y el papel en la temporada viven en la carrera, así que no se pierde nada.
 - **Self-hosting:** la cosecha de carreras puede leer dos fuentes nuevas, y sigue desactivada hasta que la actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
-- **Corregido:** no se podía guardar una distancia como 42,195 km. El navegador rechazaba el valor en silencio, antes de que la app validara nada.
-- **Corregido:** la misma carrera aparecía dos veces en el catálogo, una con el nombre del patrocinador. La cosecha reconoce la carrera que el catálogo ya tiene, aunque tenga otro nombre u otro idioma, y le añade la edición en vez de crear una segunda entrada. Los pares que no puede decidir sola pasan a una cola en la administración, a una respuesta de distancia.
 
 ---
 

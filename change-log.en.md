@@ -4,12 +4,30 @@
 
 ---
 
+## [1.33.0] - 2026-09-03
+
+### Added
+
+- **The season's road:** the dashboard hero now shows your last race, the next one and the target race at the end, each with its distance and its own countdown. On the last stretch, when the next race is the target itself, the hero is all target.
+
+### Changed
+
+- **Planning moves:** scheduling a race from the bucket list puts it on the calendar and takes it off the list, without asking. The anchor and the season role live on the race, so nothing is lost in the move.
+- **Season warnings:** they live on each race's own page, and stop disappearing when you schedule it.
+
+### Fixed
+
+- **Distances with decimals:** 42.195 km could not be saved. The browser refused the value in silence, before the app got to validate anything.
+- **Races twice in the catalog:** the same race showed up twice, once under the sponsor's name. The harvest now recognises a race the catalog already holds, even under a different name or in another language, and adds the edition to it. The pairs it cannot decide on its own go to a queue in the admin area.
+
+---
+
 ## [1.32.0] - 2026-09-02
 
 ### Added
 
 - **Entry planning:** the bucket list is now grouped by what is left to do, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won. With a notification before each deadline, switched on in Settings.
-- **A season around the anchor races:** mark the one to three races that fix your year, on the race's own page. From those the app suggests the window a build-up race fits in, warns when something lands in the taper or a month gets crowded, and shows the time predicted for the anchor from your latest race. The warnings and the window live on each race's own page, and stop disappearing when you schedule it. On the dashboard the hero draws the season's road: your last race, the next one, and the target race at the end, each with its own countdown.
+- **A season around the anchor races:** mark the one to three races that fix your year, on the race's own page. From those the app suggests the window a build-up race fits in, warns when something lands in the taper or a month gets crowded, and shows the time predicted for the anchor from your latest race.
 - **When it fails:** a race that passes with no result asks what happened instead of saying you missed it, a DNF counts as a race started, and one button creates next season's attempt.
 - **Find races:** a new page searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor puts the ones that fit the window first. Parkruns near you are in there too, and they appear in no race calendar.
 - **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it. It goes when they are done.
@@ -17,10 +35,7 @@
 ### Changed
 
 - **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written.
-- **Planning is moving:** scheduling a race from the bucket list puts it on the calendar and takes it off the list, without asking. The anchor and the season role live on the race, so nothing is lost in the move.
 - **Self-hosting:** the race harvest can read two new sources, and stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
-- **Fixed:** a distance like 42.195 km could not be saved. The browser refused the value silently, before the app got to validate anything.
-- **Fixed:** the same race showed up twice in the catalog, once under the sponsor's name. The harvest now recognises a race the catalog already holds, even under a different name or in another language, and adds the edition to it instead of creating a second entry. The pairs it cannot decide on its own go to a queue in the admin area, one answer away.
 
 ---
 
