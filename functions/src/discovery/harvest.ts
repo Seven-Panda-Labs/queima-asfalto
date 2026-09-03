@@ -8,6 +8,7 @@ import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guard
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
+import { readMarathonDePage } from '../shared/eventDiscovery/marathonDe.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
   davengoStarterUrl,
@@ -15,7 +16,7 @@ import {
   withDavengoDistances,
   type DavengoSearchResponse,
 } from '../shared/eventDiscovery/davengo.js'
-import { parseSitemap, selectEventUrls } from '../shared/eventDiscovery/sitemap.js'
+import { parseSitemap, rotatePages, selectEventUrls } from '../shared/eventDiscovery/sitemap.js'
 import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCatalogEntry.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
@@ -57,22 +58,38 @@ async function page(source: DiscoverySource, url: string): Promise<string | null
   }
 }
 
-/** A sitemap of event pages, each carrying its own `schema.org` node. */
-async function harvestSitemap(source: DiscoverySource): Promise<DiscoveredRace[]> {
+/** Which week's slice a rotating source reads, from the run date alone. */
+function weekIndex(now: Date): number {
+  return Math.floor(now.getTime() / (7 * 24 * 60 * 60 * 1000))
+}
+
+/** A sitemap of event pages, each read by the source's own reader. */
+async function harvestSitemap(source: DiscoverySource, now: Date): Promise<DiscoveredRace[]> {
   if (!source.sitemapUrl || !source.pathPrefix) return []
 
-  const sitemap = await fetchPage(source.sitemapUrl)
+  const sitemap = await fetchPage(source.sitemapUrl, source.charset)
   if (!sitemap) throw new Error(`${source.id}: sitemap unavailable`)
 
-  const urls = selectEventUrls(parseSitemap(sitemap), {
+  const all = selectEventUrls(parseSitemap(sitemap), {
     pathPrefix: source.pathPrefix,
-    limit: source.pageLimit,
+    // Rotation needs the whole list before it can pick this week's slice.
+    limit: source.rotatePages ? Number.MAX_SAFE_INTEGER : source.pageLimit,
   })
+  const urls = source.rotatePages
+    ? rotatePages(all, source.pageLimit, weekIndex(now) * source.pageLimit)
+    : all
 
   const races: DiscoveredRace[] = []
   for (const url of urls) {
     const html = await page(source, url)
-    if (html) races.push(...readRacesFromHtml(html))
+    if (!html) continue
+
+    if (source.pageReader === 'marathon-de') {
+      const race = readMarathonDePage(html, { sourceUrl: url })
+      if (race) races.push(race)
+    } else {
+      races.push(...readRacesFromHtml(html))
+    }
   }
   return races
 }
@@ -154,7 +171,7 @@ async function harvestSource(
       ? await harvestSearch(source)
       : source.kind === 'listing'
         ? await harvestListing(source)
-        : await harvestSitemap(source)
+        : await harvestSitemap(source, now)
 
   return races.filter((race) => isHarvestable(race, now))
 }

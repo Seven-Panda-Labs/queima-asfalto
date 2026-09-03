@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Una fuente más de carreras:** la cosecha puede leer planet-marathon.de, un calendario de maratones mantenido a mano con 386 carreras en 55 países, y el mayor alcance que tenemos fuera de Portugal y Alemania. Sigue apagada hasta que la actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Dos fuentes de carreras nuevas:** la cosecha puede leer marathon.de, que da la ciudad, las distancias y el precio de la inscripción (el primero que tenemos), y planet-marathon.de, un calendario de maratones mantenido a mano con 386 carreras en 55 países. Sigue apagada hasta que las actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 

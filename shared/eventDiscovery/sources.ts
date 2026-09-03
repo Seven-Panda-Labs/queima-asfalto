@@ -25,6 +25,17 @@ export const LISTING_READERS = ['scc-events', 'planet-marathon'] as const
 
 export type ListingReader = (typeof LISTING_READERS)[number]
 
+/**
+ * Whose event page a sitemap source points at.
+ *
+ * `schema-org` is the reason a sitemap source is cheap: the page describes
+ * itself. A directory without it needs its own reader, and is worth one only
+ * when it carries something nobody else publishes.
+ */
+export const PAGE_READERS = ['schema-org', 'marathon-de'] as const
+
+export type PageReader = (typeof PAGE_READERS)[number]
+
 export type DiscoverySource = {
   /** Matches `DISCOVERY_SOURCES`, and lands in the catalog as `source`. */
   id: string
@@ -34,6 +45,15 @@ export type DiscoverySource = {
   /** `sitemap`: where the sitemap is, and which paths in it are events. */
   sitemapUrl?: string
   pathPrefix?: string
+  /** Which reader understands an event page. Defaults to `schema.org`. */
+  pageReader?: PageReader
+  /**
+   * Read a different slice each week.
+   *
+   * For a sitemap with no `lastmod`: without it, `pageLimit` would read the
+   * same pages for ever and the rest of the calendar would never arrive.
+   */
+  rotatePages?: boolean
   /** `search`: the paged endpoint, with the page number appended. */
   searchUrl?: string
   /** `listing`: the one page, and what the calendar never says. */

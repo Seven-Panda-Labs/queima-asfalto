@@ -48,6 +48,18 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     pageLimit: 1,
   },
   {
+    // A German directory with no schema.org, and worth its own reader for what
+    // it has that nothing else does: the city, every distance on offer, and the
+    // entry fee per distance. 406 event pages, read a slice at a time.
+    id: 'marathon.de',
+    kind: 'sitemap',
+    sitemapUrl: 'https://www.marathon.de/sitemap.xml',
+    pathPrefix: '/laufevent/',
+    pageReader: 'marathon-de',
+    rotatePages: true,
+    pageLimit: 150,
+  },
+  {
     // A calendar one person keeps by hand, and the widest reach we have: every
     // continent, and nothing but the official 42,195 km, which is the site's
     // own stated rule. No HTTPS and no declared charset, both handled here

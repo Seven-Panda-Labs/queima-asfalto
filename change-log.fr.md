@@ -8,7 +8,7 @@
 
 ### Ajouté
 
-- **Une source de courses en plus :** la récolte peut désormais lire planet-marathon.de, un calendrier de marathons tenu à la main avec 386 courses dans 55 pays, et la plus large portée que nous ayons hors du Portugal et de l'Allemagne. Elle reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Deux nouvelles sources de courses :** la récolte peut désormais lire marathon.de, qui donne la ville, les distances et le prix de l'inscription (le premier que nous ayons), et planet-marathon.de, un calendrier de marathons tenu à la main avec 386 courses dans 55 pays. Elle reste éteinte jusqu'à ce que tu les actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseSitemap, selectEventUrls } from './sitemap'
+import { parseSitemap, rotatePages, selectEventUrls } from './sitemap'
 
 const XML = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -67,5 +67,24 @@ describe('selectEventUrls', () => {
       { url: 'not a url at all' },
     ]
     expect(selectEventUrls(entries, selection)).toEqual(['https://a.invalid/eventos/x'])
+  })
+})
+
+describe('rotatePages', () => {
+  const urls = ['a', 'b', 'c', 'd', 'e']
+
+  it('reads the first slice, then the next one', () => {
+    expect(rotatePages(urls, 2, 0)).toEqual(['a', 'b'])
+    expect(rotatePages(urls, 2, 2)).toEqual(['c', 'd'])
+  })
+
+  it('wraps around, so every page is read in the end', () => {
+    expect(rotatePages(urls, 2, 4)).toEqual(['e', 'a'])
+    expect(rotatePages(urls, 2, 6)).toEqual(['b', 'c'])
+  })
+
+  it('takes a limit past the end, and an empty list', () => {
+    expect(rotatePages(urls, 99, 3)).toEqual(['d', 'e', 'a', 'b', 'c'])
+    expect(rotatePages([], 10, 3)).toEqual([])
   })
 })
