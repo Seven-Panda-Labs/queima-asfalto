@@ -4,6 +4,14 @@
 
 ---
 
+## [1.34.0] - 2026-09-03
+
+### Adicionado
+
+- **Mais uma fonte de provas:** a colheita passa a poder ler o planet-marathon.de, um calendário de maratonas mantido à mão com 386 provas em 55 países, e a maior cobertura fora de Portugal e da Alemanha que temos. Continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+
+---
+
 ## [1.33.0] - 2026-09-03
 
 ### Adicionado

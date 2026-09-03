@@ -4,6 +4,14 @@
 
 ---
 
+## [1.34.0] - 2026-09-03
+
+### Added
+
+- **One more race source:** the harvest can now read planet-marathon.de, a hand kept marathon calendar with 386 races in 55 countries, and the widest reach we have outside Portugal and Germany. It stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
+
+---
+
 ## [1.33.0] - 2026-09-03
 
 ### Added

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.34.0] - 2026-09-03
+
+### Ajouté
+
+- **Une source de courses en plus :** la récolte peut désormais lire planet-marathon.de, un calendrier de marathons tenu à la main avec 386 courses dans 55 pays, et la plus large portée que nous ayons hors du Portugal et de l'Allemagne. Elle reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
+
+---
+
 ## [1.33.0] - 2026-09-03
 
 ### Ajouté
