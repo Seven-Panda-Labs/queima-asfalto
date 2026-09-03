@@ -1,3 +1,5 @@
+import type { RaceRole } from '../domain/seasonRules'
+
 /**
  * A race, as an identity that outlives any one running of it.
  *
@@ -35,6 +37,16 @@ export type Race = {
    * build-up in 2027.
    */
   anchorYears?: number[]
+  /**
+   * What this race is for, when it is not an anchor, and which anchor it
+   * prepares.
+   *
+   * Here for the same reason as `anchorYears`: a wish is gone once it is
+   * scheduled, and the season rules are about the calendar. On the wish, a
+   * build-up lost its role the moment it became a real race.
+   */
+  role?: RaceRole
+  servesRaceId?: string
   createdAt: Date
   updatedAt: Date
 }
@@ -48,4 +60,6 @@ export type RaceCreate = {
   catalogRaceId?: string
   officialUrl?: string
   anchorYears?: number[]
+  role?: RaceRole
+  servesRaceId?: string
 }

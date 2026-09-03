@@ -15,7 +15,7 @@ import {
 import { db } from './firebase'
 import type { BucketListItem, BucketListItemCreate } from '../types/BucketListItem'
 import { normalizeBucketListDisciplines } from '../utils/bucketListDisciplines'
-import { isRaceRole } from '../domain/seasonRules'
+import { isRaceRole, type RaceRole } from '../domain/seasonRules'
 import { findOrCreateRaceId } from './races'
 
 const BUCKET_LIST_COLLECTION = 'bucketListItems'
@@ -103,7 +103,18 @@ export async function createBucketListItem(
 
 export async function updateBucketListItem(
   itemId: string,
-  data: Partial<Omit<BucketListItem, 'id' | 'userId' | 'createdAt'>>,
+  data: Omit<
+    Partial<Omit<BucketListItem, 'id' | 'userId' | 'createdAt'>>,
+    'role' | 'servesRaceId'
+  > & {
+    /**
+     * `null` clears them, and clearing is what the migration onto the race
+     * needs: `undefined` is filtered out below, so it would leave the wish
+     * still saying what the race now says.
+     */
+    role?: RaceRole | null
+    servesRaceId?: string | null
+  },
 ): Promise<void> {
   const ref = doc(db, BUCKET_LIST_COLLECTION, itemId)
   const payload: Record<string, unknown> = { ...withoutUndefined(data as Record<string, unknown>) }

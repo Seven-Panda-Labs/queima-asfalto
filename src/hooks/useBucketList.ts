@@ -55,7 +55,7 @@ export function useBucketList() {
   )
 
   const editItem = useCallback(
-    async (itemId: string, data: Partial<Omit<BucketListItem, 'id' | 'userId' | 'createdAt'>>) => {
+    async (itemId: string, data: Parameters<typeof updateBucketListItem>[1]) => {
       await updateBucketListItem(itemId, data)
     },
     [],

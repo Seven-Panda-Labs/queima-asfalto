@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { BucketListItem } from '../types/BucketListItem'
 import type { RaceEntry } from '../types/RaceEntry'
-import { anchorClaimsToWrite } from './anchorMigration'
+import { anchorClaimsToWrite, roleClaimsToWrite } from './anchorMigration'
 
 const TODAY = new Date('2026-09-02')
 
@@ -101,5 +101,37 @@ describe('anchorClaimsToWrite', () => {
         TODAY,
       ),
     ).toEqual([])
+  })
+})
+
+describe('roleClaimsToWrite', () => {
+  const races = [{ id: 'race-cascais' }]
+
+  it('moves the role and the anchor it serves onto the race', () => {
+    const claims = roleClaimsToWrite(
+      [item({ id: 'wish', raceId: 'race-cascais', role: 'test', servesRaceId: 'race-lisboa' })],
+      races,
+    )
+    expect(claims).toEqual([
+      { raceId: 'race-cascais', role: 'test', servesRaceId: 'race-lisboa' },
+    ])
+  })
+
+  it('leaves a race that already says something alone', () => {
+    // The event page may be what said it, and that answer is newer.
+    expect(
+      roleClaimsToWrite(
+        [item({ id: 'wish', raceId: 'race-cascais', role: 'test' })],
+        [{ id: 'race-cascais', role: 'build_up' }],
+      ),
+    ).toEqual([])
+  })
+
+  it('has nothing to move for a wish that says nothing', () => {
+    expect(roleClaimsToWrite([item({ id: 'plain', raceId: 'race-cascais' })], races)).toEqual([])
+  })
+
+  it('needs a race identity to move anything to', () => {
+    expect(roleClaimsToWrite([item({ id: 'wish', role: 'test' })], races)).toEqual([])
   })
 })
