@@ -130,6 +130,9 @@
   },
   "dashboard": {
     "nextEvent": "Próximo evento",
+    "anchorEvent": "Carrera objetivo",
+    "roadDone": "Última",
+    "roadHere": "A seguir",
     "courseTarget": "A batir: {{time}} · {{pace}}/km",
     "courseTargetRuns_one": "{{count}} vez aquí",
     "courseTargetRuns_other": "{{count}} veces aquí",
@@ -975,6 +978,12 @@
     }
   },
   "voice": {
+    "anchorNext": [
+      "Para esto entrenaste.",
+      "Ahora va en serio.",
+      "¡Vamos a ello!",
+      "Es esta. Sin excusas."
+    ],
     "loading": {
       "shared": {
         "aria": "Cargando datos compartidos de {{name}}",

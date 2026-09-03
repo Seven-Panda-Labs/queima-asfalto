@@ -130,6 +130,9 @@
   },
   "dashboard": {
     "nextEvent": "Nächstes Event",
+    "anchorEvent": "Zielrennen",
+    "roadDone": "Zuletzt",
+    "roadHere": "Als nächstes",
     "courseTarget": "Zu schlagen: {{time}} · {{pace}}/km",
     "courseTargetRuns_one": "{{count}} Mal hier",
     "courseTargetRuns_other": "{{count}} Mal hier",
@@ -975,6 +978,12 @@
     }
   },
   "voice": {
+    "anchorNext": [
+      "Dafür hast du trainiert.",
+      "Jetzt zählt es.",
+      "Los gehts!",
+      "Das ist es. Keine Ausreden."
+    ],
     "loading": {
       "shared": {
         "aria": "Geteilte Daten von {{name}} werden geladen",

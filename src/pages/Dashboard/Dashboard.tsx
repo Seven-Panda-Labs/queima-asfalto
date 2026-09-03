@@ -25,7 +25,7 @@ import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { computeBestPerformances } from '../../utils/bestPerformances'
 import { computeDashboardHighlights } from '../../utils/dashboardHighlights'
 import { computeDashboardStats } from '../../utils/stats'
-import { findNextEvent } from '../../utils/nextEvent'
+import { findNextEvent, seasonHorizon } from '../../utils/nextEvent'
 import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
 import { useSeasonMigration } from '../../hooks/useSeasonMigration'
 import { useRaces } from '../../hooks/useRaces'
@@ -79,6 +79,8 @@ export function Dashboard() {
   )
 
   const nextEvent = findNextEvent(allEvents)
+  /** The next race, and the target it is leading to. */
+  const horizon = useMemo(() => seasonHorizon(allEvents, races), [allEvents, races])
 
   // Only for a course already run. buildCourseComparison returns the upcoming
   // shape exactly when the race has no result of its own yet.
@@ -196,6 +198,9 @@ export function Dashboard() {
           </p>
         ) : (
           <NextEventCard
+            anchor={horizon?.anchor}
+            last={horizon?.last}
+            isAnchor={horizon?.nextIsAnchor}
             event={nextEvent}
             target={nextEventTarget}
             projection={nextEventProjection}
