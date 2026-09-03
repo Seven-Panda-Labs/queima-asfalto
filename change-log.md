@@ -17,7 +17,9 @@
 ### Alterado
 
 - **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito.
+- **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista, sem perguntar. A âncora e o papel na temporada vivem na prova, portanto não se perde nada ao mover.
 - **Self-hosting:** a colheita de provas pode ler duas fontes novas, e continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Corrigido:** não era possível guardar uma distância como 42,195 km. O browser recusava o valor em silêncio, antes de a app chegar a validar.
 
 ---
 

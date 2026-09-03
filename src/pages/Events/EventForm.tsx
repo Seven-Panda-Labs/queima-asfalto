@@ -1,7 +1,6 @@
 import { lazy, Suspense, useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import { ParkrunEventPicker } from '../../components/ParkrunEventPicker/ParkrunEventPicker'
 import { DatePicker } from '../../components/DatePicker'
 import { EmojiPicker } from '../../components/EmojiPicker'
@@ -96,8 +95,6 @@ export function EventForm() {
   // Carried from the bucket list so the event joins the wish's race instead of
   // being matched by name again, which would split an identity on a typo.
   const [bucketListRaceId, setBucketListRaceId] = useState<string | null>(null)
-  const [showRemoveFromBucketList, setShowRemoveFromBucketList] = useState(false)
-  const [removingFromBucketList, setRemovingFromBucketList] = useState(false)
   const [loadingEvent, setLoadingEvent] = useState(isEditing)
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
@@ -410,11 +407,23 @@ export function EventForm() {
     if (payload.locationLat == null) {
       await geocodeAndUpdateEvent(newId, payload.location, i18n.language)
     }
+    /**
+     * Planning is moving it: the wish is off the list once the race is on the
+     * calendar. It used to ask, and the answer was never interesting, because a
+     * wish and an event for the same race say the same thing twice. What the
+     * wish carried that had to outlive it, the anchor and the role, lives on the
+     * race now.
+     */
     if (bucketListItemId) {
-      setShowRemoveFromBucketList(true)
-    } else {
-      navigate('/eventos')
+      try {
+        await removeItem(bucketListItemId)
+      } catch {
+        // The event is saved either way, and a wish left behind is a duplicate
+        // rather than a loss.
+      }
+      toast.success(t('eventForm.movedFromBucketList', { name: payload.name }))
     }
+    navigate('/eventos')
   }
 
   async function handleSubmit(event: FormEvent) {
@@ -487,24 +496,6 @@ export function EventForm() {
     setParkrunPromptError(null)
   }
 
-  async function handleRemoveFromBucketList() {
-    if (!bucketListItemId) {
-      navigate('/eventos')
-      return
-    }
-
-    setRemovingFromBucketList(true)
-    try {
-      await removeItem(bucketListItemId)
-    } finally {
-      setRemovingFromBucketList(false)
-      navigate('/eventos')
-    }
-  }
-
-  function handleKeepInBucketList() {
-    navigate('/eventos')
-  }
 
   if (loadingEvent) {
     return (
@@ -640,10 +631,13 @@ export function EventForm() {
             <label htmlFor="realDistance" className="block text-sm font-semibold text-foreground">
               {t('eventForm.distanceKm')}
             </label>
+            {/* A marathon is 42.195 km and a half is 21.0975. With a step of a
+                tenth the browser refuses both, and refuses them silently: the
+                form never submits and the app's own validation never runs. */}
             <input
               id="realDistance"
               type="number"
-              step="0.1"
+              step="any"
               min="0.1"
               value={form.realDistance}
               onChange={(e) => updateField('realDistance', e.target.value)}
@@ -789,15 +783,6 @@ export function EventForm() {
         </div>
       </form>
 
-      <ConfirmDialog
-        open={showRemoveFromBucketList}
-        title={t('eventForm.removeBucketTitle')}
-        message={t('eventForm.removeBucketMessage')}
-        confirmLabel={t('common.delete')}
-        onConfirm={() => void handleRemoveFromBucketList()}
-        onCancel={handleKeepInBucketList}
-        loading={removingFromBucketList}
-      />
 
       <ParkrunProfilePromptDialog
         open={showParkrunPrompt}

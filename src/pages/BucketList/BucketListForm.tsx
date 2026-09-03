@@ -406,10 +406,13 @@ export function BucketListForm() {
             <label htmlFor="realDistance" className="block text-sm font-semibold text-foreground">
               {t('eventForm.distanceKm')}
             </label>
+            {/* A marathon is 42.195 km and a half is 21.0975. With a step of a
+                tenth the browser refuses both, and refuses them silently: the
+                form never submits and the app's own validation never runs. */}
             <input
               id="realDistance"
               type="number"
-              step="0.1"
+              step="any"
               min="0.1"
               value={form.realDistance}
               onChange={(e) => updateField('realDistance', e.target.value)}
