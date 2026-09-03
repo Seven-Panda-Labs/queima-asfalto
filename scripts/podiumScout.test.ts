@@ -10,6 +10,8 @@ import {
   parkrunEditionsAsPodiums,
   parkrunWinnerSeconds,
   parseEventOverview,
+  parkrunPlace,
+  parkrunSlug,
   parseParkrunEventHistory,
   parseParkrunHistoryTime,
   parseParkrunEventResults,
@@ -466,6 +468,7 @@ describe('parkrunEditionsAsPodiums', () => {
 
 /** An event history page's shape. The times are real encodings, the people are not. */
 const HISTORY_PAGE = `
+<meta name="geo.placename" content="Musterheide, Musterstadt" />
 <table class="Results-table Results-table--compact js-ResultsTable">
 <tr class="Results-table-thead"><th class="Results-table-th">parkrun #</th><th class="Results-table-th">Datum</th></tr>
 <tr class="Results-table-row" data-parkrun="3" data-date="2026-08-29" data-finishers="193" data-volunteers="15" data-male="Fictional Man" data-female="Fictional Woman" data-maletime="1535" data-femaletime="2007">
@@ -544,5 +547,46 @@ describe('parkrunWinnerSeconds', () => {
   it('copes with an edition that lists only one', () => {
     const editions = parseParkrunEventHistory(HISTORY_PAGE)?.editions ?? []
     expect(parkrunWinnerSeconds(editions[1]!)).toBe(1075)
+  })
+})
+
+describe('parkrunSlug', () => {
+  it('reads the event from whichever link the page happens to carry', () => {
+    expect(parkrunSlug('<a href="/musterheide/results/eventhistory/">x</a>')).toBe('musterheide')
+    expect(parkrunSlug('<a href="https://www.parkrun.com.de/musterheide/results/361">361</a>')).toBe('musterheide')
+    expect(parkrunSlug('<a href="/musterheide/parkrunner/100/">x</a>')).toBe('musterheide')
+    expect(parkrunSlug('<link href="https://www.parkrun.com.de/musterheide/feed/">')).toBe('musterheide')
+  })
+
+  it('gives up rather than guess', () => {
+    expect(parkrunSlug('<html><body>nothing</body></html>')).toBeNull()
+  })
+})
+
+describe('parkrunPlace', () => {
+  it('takes the place the page states for its own map', () => {
+    expect(parkrunPlace(HISTORY_PAGE)).toBe('Musterheide, Musterstadt')
+    expect(parkrunPlace('<html></html>')).toBeNull()
+  })
+})
+
+describe('a results page with nothing on it', () => {
+  it('is refused, so an unread page cannot read as an empty podium', () => {
+    const page = `
+      <span class="format-date">2026-08-29</span>
+      <a href="/musterheide/parkrunner/100/">someone</a>
+      <table class="Results-table"><tbody></tbody></table>`
+
+    expect(parseParkrunEventResults(page)).toBeNull()
+  })
+})
+
+describe('aggregatePodiums and an unfinished podium', () => {
+  it('counts two finishers as an open podium and nothing as neither', () => {
+    const twoFinishers = edition('22. Musterlauf', '2025-09-07', null)
+    const noFinishers: EditionPodium = { ...twoFinishers, places: [] }
+
+    expect(aggregatePodiums([twoFinishers])[0]?.openPodiums).toBe(1)
+    expect(aggregatePodiums([noFinishers])[0]?.openPodiums).toBe(0)
   })
 })

@@ -450,8 +450,8 @@ if (options.parkrunFromFile) {
     lines.push('third. Winner is whichever of the two was faster.')
     lines.push('')
 
-    const header = ['parkrun', 'Editions', 'Winner median', 'Winner ranged', 'Field median', 'Fastest ever', 'History', 'Last']
-    if (target != null) header.splice(2, 0, `Won with ${formatSeconds(target)}`)
+    const header = ['parkrun', 'Where', 'Editions', 'Winner median', 'Winner ranged', 'Field median', 'Fastest ever', 'History', 'Last']
+    if (target != null) header.splice(3, 0, `Won with ${formatSeconds(target)}`)
     lines.push(`| ${header.join(' | ')} |`)
     lines.push(`|${header.map(() => '---').join('|')}|`)
 
@@ -485,6 +485,7 @@ if (options.parkrunFromFile) {
     for (const row of rows) {
       const cells = [
         `[${row.history.slug} parkrun](https://www.parkrun.com.de/${row.history.slug}/results/eventhistory/)`,
+        row.history.place ?? '-',
         String(row.window.length),
         time(median(row.winners)),
         `${time(row.winners[0] ?? null)}\u2013${time(row.winners.at(-1) ?? null)}`,
@@ -493,7 +494,7 @@ if (options.parkrunFromFile) {
         `${row.history.editions.length} editions`,
         row.history.editions[0]?.date ?? '-',
       ]
-      if (target != null) cells.splice(2, 0, `${row.wins} of ${row.window.length}`)
+      if (target != null) cells.splice(3, 0, `${row.wins} of ${row.window.length}`)
       lines.push(`| ${cells.join(' | ')} |`)
     }
   }

@@ -395,7 +395,10 @@ export function aggregatePodiums(rows: readonly EditionPodium[]): PodiumStats[] 
 
       const third = row.places.find((place) => place.position === 3)
       if (third) thirds.push(third.seconds)
-      else openPodiums += 1
+      // Fewer than three finishers is a place nobody took. No finishers at all
+      // is a page we failed to read, and counting that as an open podium would
+      // turn a parsing failure into an invitation.
+      else if (row.places.length > 0) openPodiums += 1
 
       const winner = row.places.find((place) => place.position === 1)
       if (winner) winners.push(winner.seconds)
@@ -454,7 +457,34 @@ export type ParkrunEdition = {
   places: PodiumPlace[]
 }
 
-const PARKRUN_SLUG = /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/parkrunner\//i
+/**
+ * Which event a saved page belongs to.
+ *
+ * Tried in order, because no single one of these is always there: the event
+ * number is a link on some events' history pages and plain text on others,
+ * which is what made the Georgengarten page unreadable at first.
+ */
+const PARKRUN_SLUG_PATTERNS = [
+  /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/results\/eventhistory/i,
+  /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/results\/\d+/i,
+  /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/parkrunner\//i,
+  /parkrun\.[a-z.]+\/([a-z0-9][a-z0-9-]{2,})\/(?:feed|results)/i,
+]
+
+export function parkrunSlug(html: string): string | null {
+  for (const pattern of PARKRUN_SLUG_PATTERNS) {
+    const slug = pattern.exec(html)?.[1]?.toLowerCase()
+    if (slug) return slug
+  }
+
+  return null
+}
+
+/** "Georgengarten, Hannover", which the page states for its own map. */
+export function parkrunPlace(html: string): string | null {
+  const place = /<meta[^>]*name="geo\.placename"[^>]*content="([^"]*)"/i.exec(html)?.[1]
+  return place ? decodeEntities(place).trim() || null : null
+}
 const PARKRUN_ISO_DATE = /class="format-date"[^>]*>\s*(\d{4})-(\d{2})-(\d{2})/i
 const PARKRUN_LOCAL_DATE = /class="format-date"[^>]*>\s*(\d{2})\/(\d{2})\/(\d{4})/i
 const PARKRUN_ROW = /<tr[^>]*class="[^"]*Results-table-row[^"]*"([^>]*)>([\s\S]*?)<\/tr>/gi
@@ -474,7 +504,7 @@ function parkrunFinishers(html: string): number | null {
 }
 
 export function parseParkrunEventResults(html: string): ParkrunEdition | null {
-  const slug = PARKRUN_SLUG.exec(html)?.[1]?.toLowerCase()
+  const slug = parkrunSlug(html)
   if (!slug) return null
 
   const iso = PARKRUN_ISO_DATE.exec(html)
@@ -498,6 +528,10 @@ export function parseParkrunEventResults(html: string): ParkrunEdition | null {
 
     places.push({ position, name: '', time, seconds })
   }
+
+  // A page with a day and no finishers is not a results page: an empty podium
+  // would otherwise count as a place nobody took, which reads as good news.
+  if (places.length === 0) return null
 
   places.sort((left, right) => left.position - right.position)
   return { slug, date, finishers: parkrunFinishers(html), places }
@@ -550,6 +584,8 @@ export type ParkrunHistoryEdition = {
 
 export type ParkrunHistory = {
   slug: string
+  /** As the page states it for its own map, when it does. */
+  place: string | null
   editions: ParkrunHistoryEdition[]
 }
 
@@ -572,10 +608,9 @@ export function parseParkrunHistoryTime(value: string): number | null {
 }
 
 const HISTORY_ROW = /<tr[^>]*class="[^"]*Results-table-row[^"]*"([^>]*)>/gi
-const HISTORY_SLUG = /(?:^|["'/])([a-z0-9][a-z0-9-]{2,})\/results\/\d+/i
 
 export function parseParkrunEventHistory(html: string): ParkrunHistory | null {
-  const slug = HISTORY_SLUG.exec(html)?.[1]?.toLowerCase()
+  const slug = parkrunSlug(html)
   if (!slug) return null
 
   const editions: ParkrunHistoryEdition[] = []
@@ -601,7 +636,7 @@ export function parseParkrunEventHistory(html: string): ParkrunHistory | null {
   if (editions.length === 0) return null
 
   editions.sort((left, right) => right.date.localeCompare(left.date))
-  return { slug, editions }
+  return { slug, place: parkrunPlace(html), editions }
 }
 
 /** The first finisher, whoever it was: the two the page names are not ranked against each other. */
