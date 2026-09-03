@@ -135,3 +135,21 @@ describe('the German mile', () => {
     expect(parseDistancesKm(['800 m'])).toEqual([0.8])
   })
 })
+
+describe('numbers that share one unit', () => {
+  it('reads every distance in "3,3 / 6,6 / 9,9 km"', () => {
+    // Real description: "mit drei Strecken (3,3 / 6,6 / 9,9 km)".
+    expect(parseDistancesKm(['Team Lauf mit drei Strecken (3,3 / 6,6 / 9,9 km)'])).toEqual([
+      3.3, 6.6, 9.9,
+    ])
+  })
+
+  it('reads a list written with & or +', () => {
+    expect(parseDistancesKm(['Strecken 5 & 10 km'])).toEqual([5, 10])
+    expect(parseDistancesKm(['10 + 21 km'])).toEqual([10, 21])
+  })
+
+  it('leaves a single distance exactly as it was', () => {
+    expect(parseDistancesKm(['Halbmarathon 21,0975 km'])).toEqual([21.0975])
+  })
+})

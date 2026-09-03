@@ -8,7 +8,7 @@
 
 ### Adicionado
 
-- **Provas curtas na descoberta:** a colheita passa a poder ler o kilometerliebe.de, um calendário alemão que traz 447 provas com as distâncias exactas: 271 com 10 km, 242 com 5 km e 172 com meia maratona. É a primeira fonte que pesa o catálogo para as distâncias curtas em vez das maratonas. Continua desligada até a activares.
+- **Provas curtas na descoberta:** a colheita passa a poder ler o kilometerliebe.de, um calendário alemão que traz 447 provas com as distâncias exactas: 271 com 10 km, 242 com 5 km e 172 com meia maratona. E o running.life junta-se-lhe, com as provas alemãs mais próximas em `schema.org`, cerca de 480 por corrida. São as primeiras fontes que pesam o catálogo para as distâncias curtas em vez das maratonas. Continuam desligadas até as activares.
 
 ---
 

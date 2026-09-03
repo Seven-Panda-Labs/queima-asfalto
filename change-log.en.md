@@ -8,7 +8,7 @@
 
 ### Added
 
-- **Short races in discovery:** the harvest can now read kilometerliebe.de, a German calendar that brings 447 races with their exact distances: 271 with a 10K, 242 with a 5K and 172 with a half marathon. It is the first source that weighs the catalog towards the short distances instead of marathons. It stays off until you enable it.
+- **Short races in discovery:** the harvest can now read kilometerliebe.de, a German calendar that brings 447 races with their exact distances: 271 with a 10K, 242 with a 5K and 172 with a half marathon. running.life joins it, with the nearest German races as `schema.org`, around 480 a run. They are the first sources that weigh the catalog towards the short distances instead of marathons. They stay off until you enable them.
 
 ---
 

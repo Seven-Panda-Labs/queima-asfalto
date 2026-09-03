@@ -49,9 +49,9 @@ function isoDay(date: Date): string {
 
 /** One page, fetched politely, with a failure that costs the page and not the run. */
 async function page(source: DiscoverySource, url: string): Promise<string | null> {
-  await delay(DELAY_BETWEEN_PAGES_MS)
+  await delay(source.delayMs ?? DELAY_BETWEEN_PAGES_MS)
   try {
-    return await fetchPage(url)
+    return await fetchPage(url, source.charset)
   } catch (error) {
     // One page timing out says nothing about the other hundred.
     console.warn(`${source.id}: ${url} failed`, error)
@@ -147,6 +147,10 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
       return readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
     case 'kilometerliebe':
       return readKilometerliebeCalendar(html, { baseUrl: source.baseUrl ?? url })
+    case 'schema-org':
+      // The calendar describes every race on it, so the page is the data and
+      // no event page needs fetching.
+      return readRacesFromHtml(html)
     default:
       return readSccCalendar(html, {
         city: source.city ?? '',
@@ -157,15 +161,29 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
 }
 
 async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]> {
-  const pages = source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : [])
+  const template = source.listingUrlTemplate
+  const pages = template
+    ? Array.from({ length: source.pageLimit }, (_, index) =>
+        template.replace('{page}', String(index + 1)),
+      )
+    : (source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : []))
   const races: DiscoveredRace[] = []
 
-  for (const url of pages.slice(0, source.pageLimit)) {
+  const pace = source.delayMs ?? DELAY_BETWEEN_PAGES_MS
+  for (const [index, url] of pages.slice(0, source.pageLimit).entries()) {
     const html = await fetchPage(url, source.charset)
-    if (!html) throw new Error(`${source.id}: calendar unavailable`)
+    if (!html) {
+      // The first page refusing means the source is unavailable and the run
+      // should say so. A later page refusing is a site asking us to stop, and
+      // what we already read is worth keeping: nothing is written until every
+      // source has been read anyway.
+      if (index === 0) throw new Error(`${source.id}: calendar unavailable`)
+      console.warn(`${source.id}: stopped at ${url}, keeping ${races.length} races`)
+      break
+    }
 
     races.push(...readListing(source, url, html))
-    if (url !== pages[pages.length - 1]) await delay(DELAY_BETWEEN_PAGES_MS)
+    if (url !== pages[pages.length - 1]) await delay(pace)
   }
 
   return races

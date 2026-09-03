@@ -8,7 +8,7 @@
 
 ### Hinzugefügt
 
-- **Kurze Strecken in der Suche:** die Ernte kann jetzt kilometerliebe.de lesen, einen deutschen Kalender mit 447 Rennen und ihren genauen Distanzen: 271 mit 10 km, 242 mit 5 km und 172 mit Halbmarathon. Die erste Quelle, die den Katalog zu den kurzen Strecken hin verschiebt statt zu den Marathons. Sie bleibt aus, bis du sie einschaltest.
+- **Kurze Strecken in der Suche:** die Ernte kann jetzt kilometerliebe.de lesen, einen deutschen Kalender mit 447 Rennen und ihren genauen Distanzen: 271 mit 10 km, 242 mit 5 km und 172 mit Halbmarathon. Dazu kommt running.life mit den nächstgelegenen deutschen Rennen als `schema.org`, etwa 480 pro Lauf. Die ersten Quellen, die den Katalog zu den kurzen Strecken hin verschieben statt zu den Marathons. Sie bleiben aus, bis du sie einschaltest.
 
 ---
 

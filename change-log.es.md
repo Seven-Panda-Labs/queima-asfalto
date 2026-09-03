@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Carreras cortas en el descubrimiento:** la cosecha puede leer kilometerliebe.de, un calendario alemán que trae 447 carreras con sus distancias exactas: 271 con 10 km, 242 con 5 km y 172 con media maratón. Es la primera fuente que inclina el catálogo hacia las distancias cortas en vez de las maratones. Sigue apagada hasta que la actives.
+- **Carreras cortas en el descubrimiento:** la cosecha puede leer kilometerliebe.de, un calendario alemán que trae 447 carreras con sus distancias exactas: 271 con 10 km, 242 con 5 km y 172 con media maratón. Y se le suma running.life, con las carreras alemanas más cercanas en `schema.org`, unas 480 por cosecha. Son las primeras fuentes que inclinan el catálogo hacia las distancias cortas en vez de las maratones. Siguen apagadas hasta que las actives.
 
 ---
 
