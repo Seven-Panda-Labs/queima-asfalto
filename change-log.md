@@ -8,7 +8,7 @@
 
 ### Adicionado
 
-- **Provas curtas na descoberta:** a colheita passa a poder ler o kilometerliebe.de, um calendário alemão que traz 447 provas com as distâncias exactas: 271 com 10 km, 242 com 5 km e 172 com meia maratona. E o running.life junta-se-lhe, com as provas alemãs mais próximas em `schema.org`, cerca de 480 por corrida. São as primeiras fontes que pesam o catálogo para as distâncias curtas em vez das maratonas. Continuam desligadas até as activares.
+- **Mais provas curtas:** a descoberta passa a poder ler dois calendários alemães com muitos 5 km, 10 km e meias maratonas. Continua desligada até as activares.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### Adicionado
 
-- **Duas fontes de provas novas:** a colheita passa a poder ler o marathon.de, que dá cidade, distâncias e o preço da inscrição (o primeiro que temos), e o planet-marathon.de, um calendário de maratonas mantido à mão com 386 provas em 55 países. Continua desligada até as activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Duas fontes novas na descoberta:** maratonas em 55 países, e provas alemãs com o preço da inscrição. Continua desligada até as activares.
 
 ---
 
@@ -24,17 +24,17 @@
 
 ### Adicionado
 
-- **A estrada da temporada:** o herói do dashboard passa a mostrar a última prova, a próxima e a prova objetivo no fim, cada uma com a sua distância e a sua contagem. Na recta final, quando a próxima prova já é a objetivo, o herói é todo dela.
+- **A estrada da temporada:** o herói mostra a última prova, a próxima e a prova objetivo, com a contagem para cada uma.
 
 ### Alterado
 
-- **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista, sem perguntar. A âncora e o papel na temporada vivem na prova, portanto não se perde nada ao mover.
-- **Avisos da temporada:** aparecem na página de cada prova, e deixam de desaparecer quando a agendas.
+- **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista.
+- **Avisos da temporada:** ficam na página da prova e já não desaparecem quando a agendas.
 
 ### Corrigido
 
-- **Distâncias com decimais:** não era possível guardar 42,195 km. O browser recusava o valor em silêncio, antes de a app chegar a validar.
-- **Provas repetidas no catálogo:** a mesma prova aparecia duas vezes, uma com o nome do patrocinador. A colheita passa a reconhecer a prova que o catálogo já tem, mesmo com nome diferente ou noutra língua, e junta-lhe a edição. Os pares que não pode decidir sozinha passam a uma fila na administração.
+- **Distâncias com decimais:** já é possível guardar 42,195 km.
+- **Provas repetidas no catálogo:** a mesma prova deixa de aparecer duas vezes com nomes diferentes. Os casos duvidosos vão para uma fila na administração.
 
 ---
 

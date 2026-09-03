@@ -8,7 +8,7 @@
 
 ### Ajouté
 
-- **Les courses courtes dans la découverte :** la récolte peut désormais lire kilometerliebe.de, un calendrier allemand qui apporte 447 courses avec leurs distances exactes : 271 avec un 10 km, 242 avec un 5 km et 172 avec un semi. running.life la rejoint, avec les courses allemandes les plus proches en `schema.org`, environ 480 par récolte. Ce sont les premières sources qui font pencher le catalogue vers les courtes distances plutôt que vers les marathons. Elles restent éteintes jusqu'à ce que tu les actives.
+- **Plus de courses courtes :** la découverte peut lire deux calendriers allemands remplis de 5 km, 10 km et semi-marathons. Elle reste éteinte jusqu'à ce que tu les actives.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### Ajouté
 
-- **Deux nouvelles sources de courses :** la récolte peut désormais lire marathon.de, qui donne la ville, les distances et le prix de l'inscription (le premier que nous ayons), et planet-marathon.de, un calendrier de marathons tenu à la main avec 386 courses dans 55 pays. Elle reste éteinte jusqu'à ce que tu les actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Deux nouvelles sources :** des marathons dans 55 pays, et des courses allemandes avec le prix de l'inscription. Elle reste éteinte jusqu'à ce que tu les actives.
 
 ---
 
@@ -24,17 +24,17 @@
 
 ### Ajouté
 
-- **La route de la saison :** le hero du tableau de bord montre désormais ta dernière course, la prochaine et la course objectif au bout, chacune avec sa distance et son compte à rebours. Dans la dernière ligne droite, quand la prochaine course est l'objectif, le hero est tout à elle.
+- **La route de la saison :** le hero montre ta dernière course, la prochaine et la course objectif, chacune avec son compte à rebours.
 
 ### Modifié
 
-- **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste, sans demander. Le pivot et le rôle dans la saison vivent sur la course, donc rien n'est perdu au passage.
-- **Alertes de la saison :** elles vivent sur la page de chaque course, et ne disparaissent plus quand tu la planifies.
+- **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste.
+- **Alertes de la saison :** elles restent sur la page de la course et ne disparaissent plus quand tu la planifies.
 
 ### Corrigé
 
-- **Distances à décimales :** impossible d'enregistrer 42,195 km. Le navigateur refusait la valeur en silence, avant même que l'app ne valide quoi que ce soit.
-- **Courses en double dans le catalogue :** la même course y figurait deux fois, une fois sous le nom du sponsor. La récolte reconnaît désormais une course que le catalogue possède déjà, même sous un autre nom ou dans une autre langue, et lui ajoute l'édition. Les paires qu'elle ne peut pas trancher seule passent dans une file de l'espace d'administration.
+- **Distances à décimales :** 42,195 km s'enregistre enfin.
+- **Courses en double dans le catalogue :** la même course n'y figure plus deux fois sous des noms différents. Les cas douteux passent dans une file de l'espace d'administration.
 
 ---
 

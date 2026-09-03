@@ -8,7 +8,7 @@
 
 ### Hinzugefügt
 
-- **Kurze Strecken in der Suche:** die Ernte kann jetzt kilometerliebe.de lesen, einen deutschen Kalender mit 447 Rennen und ihren genauen Distanzen: 271 mit 10 km, 242 mit 5 km und 172 mit Halbmarathon. Dazu kommt running.life mit den nächstgelegenen deutschen Rennen als `schema.org`, etwa 480 pro Lauf. Die ersten Quellen, die den Katalog zu den kurzen Strecken hin verschieben statt zu den Marathons. Sie bleiben aus, bis du sie einschaltest.
+- **Mehr kurze Strecken:** die Suche kann jetzt zwei deutsche Kalender lesen, voll mit 5 km, 10 km und Halbmarathons. Sie bleibt aus, bis du sie einschaltest.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### Hinzugefügt
 
-- **Zwei neue Rennquellen:** die Ernte kann jetzt marathon.de lesen, das Ort, Distanzen und die Startgebühr liefert (die erste, die wir haben), und planet-marathon.de, einen handgepflegten Marathonkalender mit 386 Rennen in 55 Ländern. Sie bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Zwei neue Quellen:** Marathons in 55 Ländern und deutsche Rennen mit der Startgebühr. Sie bleibt aus, bis du sie einschaltest.
 
 ---
 
@@ -24,17 +24,17 @@
 
 ### Hinzugefügt
 
-- **Die Straße der Saison:** das Hero im Dashboard zeigt jetzt das letzte Rennen, das nächste und am Ende das Zielrennen, jedes mit seiner Distanz und eigenem Countdown. Auf der letzten Etappe, wenn das nächste Rennen das Ziel selbst ist, gehört das Hero ganz ihm.
+- **Die Straße der Saison:** das Hero zeigt das letzte Rennen, das nächste und das Zielrennen, jedes mit eigenem Countdown.
 
 ### Geändert
 
-- **Planen heißt verschieben:** ein Rennen aus der Bucket List einzuplanen legt es in den Kalender und nimmt es von der Liste, ohne zu fragen. Anker und Saisonrolle leben am Rennen, also geht beim Verschieben nichts verloren.
-- **Saisonhinweise:** sie stehen auf der Seite des Rennens selbst und verschwinden nicht mehr, wenn du es einplanst.
+- **Planen heißt verschieben:** ein Rennen aus der Bucket List einzuplanen legt es in den Kalender und nimmt es von der Liste.
+- **Saisonhinweise:** sie bleiben auf der Seite des Rennens und verschwinden nicht mehr, wenn du es einplanst.
 
 ### Behoben
 
-- **Distanzen mit Dezimalstellen:** 42,195 km ließen sich nicht speichern. Der Browser lehnte den Wert stillschweigend ab, bevor die App überhaupt prüfen konnte.
-- **Rennen doppelt im Katalog:** dasselbe Rennen stand zweimal darin, einmal unter dem Sponsornamen. Die Ernte erkennt jetzt ein Rennen, das der Katalog schon hat, auch unter anderem Namen oder in anderer Sprache, und hängt die Ausgabe daran. Die Paare, die sie nicht allein entscheiden kann, landen in einer Liste im Adminbereich.
+- **Distanzen mit Dezimalstellen:** 42,195 km lassen sich jetzt speichern.
+- **Rennen doppelt im Katalog:** dasselbe Rennen steht nicht mehr zweimal unter verschiedenen Namen darin. Die Zweifelsfälle landen in einer Liste im Adminbereich.
 
 ---
 

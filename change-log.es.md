@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Carreras cortas en el descubrimiento:** la cosecha puede leer kilometerliebe.de, un calendario alemán que trae 447 carreras con sus distancias exactas: 271 con 10 km, 242 con 5 km y 172 con media maratón. Y se le suma running.life, con las carreras alemanas más cercanas en `schema.org`, unas 480 por cosecha. Son las primeras fuentes que inclinan el catálogo hacia las distancias cortas en vez de las maratones. Siguen apagadas hasta que las actives.
+- **Más carreras cortas:** el descubrimiento puede leer dos calendarios alemanes llenos de 5 km, 10 km y medias maratones. Sigue apagado hasta que los actives.
 
 ---
 
@@ -16,7 +16,7 @@
 
 ### Añadido
 
-- **Dos fuentes de carreras nuevas:** la cosecha puede leer marathon.de, que da la ciudad, las distancias y el precio de la inscripción (el primero que tenemos), y planet-marathon.de, un calendario de maratones mantenido a mano con 386 carreras en 55 países. Sigue apagada hasta que las actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Dos fuentes nuevas:** maratones en 55 países, y carreras alemanas con el precio de la inscripción. Sigue apagado hasta que las actives.
 
 ---
 
@@ -24,17 +24,17 @@
 
 ### Añadido
 
-- **La carretera de la temporada:** el hero del dashboard muestra tu última carrera, la siguiente y la carrera objetivo al final, cada una con su distancia y su cuenta atrás. En la recta final, cuando la siguiente carrera ya es la objetivo, el hero es todo para ella.
+- **La carretera de la temporada:** el hero muestra tu última carrera, la siguiente y la carrera objetivo, cada una con su cuenta atrás.
 
 ### Cambiado
 
-- **Planificar es mover:** planificar una carrera de la bucket list la pasa al calendario y la saca de la lista, sin preguntar. El ancla y el papel en la temporada viven en la carrera, así que no se pierde nada al mover.
-- **Avisos de la temporada:** aparecen en la página de cada carrera, y dejan de desaparecer al planificarla.
+- **Planificar es mover:** planificar una carrera de la bucket list la pasa al calendario y la saca de la lista.
+- **Avisos de la temporada:** se quedan en la página de la carrera y ya no desaparecen al planificarla.
 
 ### Corregido
 
-- **Distancias con decimales:** no se podía guardar 42,195 km. El navegador rechazaba el valor en silencio, antes de que la app validara nada.
-- **Carreras repetidas en el catálogo:** la misma carrera aparecía dos veces, una con el nombre del patrocinador. La cosecha reconoce la carrera que el catálogo ya tiene, aunque tenga otro nombre u otro idioma, y le añade la edición. Los pares que no puede decidir sola pasan a una cola en la administración.
+- **Distancias con decimales:** ya se puede guardar 42,195 km.
+- **Carreras repetidas en el catálogo:** la misma carrera deja de aparecer dos veces con nombres distintos. Los casos dudosos pasan a una cola en la administración.
 
 ---
 
