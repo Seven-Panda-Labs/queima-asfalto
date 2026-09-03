@@ -4,12 +4,30 @@
 
 ---
 
+## [1.33.0] - 2026-09-03
+
+### Adicionado
+
+- **A estrada da temporada:** o herói do dashboard passa a mostrar a última prova, a próxima e a prova objetivo no fim, cada uma com a sua distância e a sua contagem. Na recta final, quando a próxima prova já é a objetivo, o herói é todo dela.
+
+### Alterado
+
+- **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista, sem perguntar. A âncora e o papel na temporada vivem na prova, portanto não se perde nada ao mover.
+- **Avisos da temporada:** aparecem na página de cada prova, e deixam de desaparecer quando a agendas.
+
+### Corrigido
+
+- **Distâncias com decimais:** não era possível guardar 42,195 km. O browser recusava o valor em silêncio, antes de a app chegar a validar.
+- **Provas repetidas no catálogo:** a mesma prova aparecia duas vezes, uma com o nome do patrocinador. A colheita passa a reconhecer a prova que o catálogo já tem, mesmo com nome diferente ou noutra língua, e junta-lhe a edição. Os pares que não pode decidir sozinha passam a uma fila na administração.
+
+---
+
 ## [1.32.0] - 2026-09-02
 
 ### Adicionado
 
 - **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho. Com avisos por notificação antes de cada prazo, que se ligam em Definições.
-- **A temporada em volta das provas âncora:** marca as uma a três provas que fixam o teu ano, na página da própria prova. A partir delas a app sugere a janela onde encaixa uma prova de preparação, avisa quando algo cai no afinamento ou quando o mês fica cheio, e mostra o tempo previsto para a âncora a partir da tua última prova. Os avisos e a janela aparecem na página de cada prova, e deixam de desaparecer quando a agendas. No dashboard, o herói desenha a estrada da temporada: a última prova, a próxima, e a prova objetivo no fim, com a contagem para cada uma.
+- **A temporada em volta das provas âncora:** marca as uma a três provas que fixam o teu ano, na página da própria prova. A partir delas a app sugere a janela onde encaixa uma prova de preparação, avisa quando algo cai no afinamento ou quando o mês fica cheio, e mostra o tempo previsto para a âncora a partir da tua última prova.
 - **Quando falha:** uma prova que passa sem resultado pergunta o que aconteceu em vez de dizer que faltaste, uma desistência passa a contar como prova começada, e um botão cria a tentativa da próxima temporada.
 - **Encontrar provas:** uma página nova procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora põe à frente as que encaixam na janela. Inclui os parkruns perto de ti, que não aparecem em calendário nenhum.
 - **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, cada um a explicar o que a app faz com aquilo. Desaparece quando estiverem feitos.
@@ -17,10 +35,7 @@
 ### Alterado
 
 - **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito.
-- **Planear é mover:** agendar uma prova da bucket list passa-a para o calendário e tira-a da lista, sem perguntar. A âncora e o papel na temporada vivem na prova, portanto não se perde nada ao mover.
 - **Self-hosting:** a colheita de provas pode ler duas fontes novas, e continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
-- **Corrigido:** não era possível guardar uma distância como 42,195 km. O browser recusava o valor em silêncio, antes de a app chegar a validar.
-- **Corrigido:** a mesma prova aparecia duas vezes no catálogo, uma com o nome do patrocinador. A colheita passa a reconhecer a prova que o catálogo já tem, mesmo com nome diferente ou noutra língua, e junta-lhe a edição em vez de criar uma segunda entrada. Os pares que não pode decidir sozinha passam a uma fila na administração, onde ficam a uma resposta de distância.
 
 ---
 
