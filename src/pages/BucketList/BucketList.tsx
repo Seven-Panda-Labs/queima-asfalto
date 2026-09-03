@@ -21,16 +21,8 @@ import { useRaces } from '../../hooks/useRaces'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
-import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
-import {
-  racesServing,
-  seasonDate,
-  tuneUpFit,
-  seasonWarnings,
-  tuneUpWindowFor,
-  type SeasonRace,
-} from '../../domain/seasonRules'
-import type { ItemSeason } from './BucketListFunnel'
+import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
+import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { BucketListFunnel } from './BucketListFunnel'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
@@ -192,75 +184,23 @@ export function BucketList() {
    * say anything about it. The id is the race identity when there is one, because
    * that is what an anchor is pointed at by.
    */
-  const seasonByItem = useMemo(() => {
-    // Every attempt at each race, because the date the season cares about is not
-    // always the latest one: a rolled over item holds next year's attempt with
-    // no date yet and last year's, which is the one that was run.
-    const datesByItem = new Map<string, Date[]>()
-    for (const entry of raceEntries) {
-      if (!entry.bucketListItemId || !entry.raceDate) continue
-      const dates = datesByItem.get(entry.bucketListItemId) ?? []
-      dates.push(entry.raceDate)
-      datesByItem.set(entry.bucketListItemId, dates)
-    }
-
-    // A race that was run, or should have been, and produced no result. The
-    // failure lives on the event, and the race identity is what joins them.
-    const failedRaceIds = new Set(
-      allEvents
-        .filter((event) => event.outcomeReason && event.raceId)
-        .map((event) => event.raceId!),
-    )
-
-    const anchorYearsById = new Map(races.map((race) => [race.id, race.anchorYears]))
-    const seasonRaces: SeasonRace[] = []
-    const itemIdByRaceId = new Map<string, string>()
-    for (const item of ownBucketList.items) {
-      const raceDate = seasonDate(datesByItem.get(item.id) ?? [])
-      if (!raceDate) continue
-      const id = item.raceId ?? item.id
-      itemIdByRaceId.set(id, item.id)
-      seasonRaces.push({
-        id,
-        name: item.name,
-        date: raceDate,
-        distanceKm: item.realDistance,
-        // Being an anchor is a fact about a season, so the season asked about is
-        // the one this date falls in.
-        isAnchor: item.raceId
-          ? isAnchorFor(
-              { id: item.raceId, anchorYears: anchorYearsById.get(item.raceId) },
-              raceDate.getFullYear(),
-            )
-          : false,
-        role: item.role,
-        servesRaceId: item.servesRaceId,
-        failed: item.raceId ? failedRaceIds.has(item.raceId) : false,
-      })
-    }
-
-    const warnings = seasonWarnings(seasonRaces)
-    const byRaceId = new Map(seasonRaces.map((race) => [race.id, race]))
-    const annotations = new Map<string, ItemSeason>()
-    for (const race of seasonRaces) {
-      const itemId = itemIdByRaceId.get(race.id)!
-      const anchor = race.servesRaceId ? byRaceId.get(race.servesRaceId) : undefined
-      // A window and a count of what is preparing it are planning, so they go
-      // once the anchor has been run.
-      const anchorAhead = race.isAnchor && race.date.getTime() >= Date.now()
-      annotations.set(itemId, {
-        window: anchorAhead ? tuneUpWindowFor(race) : undefined,
-        serving: anchorAhead ? racesServing(race.id, seasonRaces).length : 0,
-        serves: anchor
-          ? { name: anchor.name, weeksBefore: tuneUpFit(anchor, race).weeksBefore }
-          : undefined,
-        warnings: warnings
-          .filter((warning) => warning.raceId === race.id)
-          .map(({ rule, count }) => ({ rule, count })),
-      })
-    }
-    return annotations
-  }, [allEvents, ownBucketList.items, raceEntries, races])
+  /**
+   * The season, read off the calendar.
+   *
+   * Keyed by race identity because that is what a wish, an entry and an event
+   * all point at: a race that has been scheduled keeps its window and its
+   * warnings, which it lost when this was built from wishes.
+   */
+  const season = useMemo(
+    () =>
+      buildSeasonBoard({
+        races,
+        entries: raceEntries,
+        events: allEvents,
+        items: ownBucketList.items,
+      }).byRaceId,
+    [allEvents, ownBucketList.items, raceEntries, races],
+  )
 
   const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
   const unmappedItems = useMemo(
@@ -459,7 +399,7 @@ export function BucketList() {
         ) : (
           <BucketListFunnel
             groups={funnelGroups}
-            season={isSharedView ? new Map() : seasonByItem}
+            season={isSharedView ? new Map() : season}
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
             showEntryLink={!isSharedView}
             actions={({ item }) => (

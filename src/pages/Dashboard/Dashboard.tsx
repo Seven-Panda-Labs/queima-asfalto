@@ -27,7 +27,7 @@ import { computeDashboardHighlights } from '../../utils/dashboardHighlights'
 import { computeDashboardStats } from '../../utils/stats'
 import { findNextEvent } from '../../utils/nextEvent'
 import { anyAnchorRaceIds, isAnchorFor } from '../../domain/seasonAnchors'
-import { useAnchorMigration } from '../../hooks/useAnchorMigration'
+import { useSeasonMigration } from '../../hooks/useSeasonMigration'
 import { useRaces } from '../../hooks/useRaces'
 import {
   onboardingFactsFrom,
@@ -61,18 +61,21 @@ export function Dashboard() {
   const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
 
   /** Carries the anchors the app knew on the wish over to the race, once. */
-  const clearItemAnchor = useCallback(
-    async (itemId: string) => {
-      await editBucketListItem(itemId, { isAnchor: false })
+  const clearItemSeason = useCallback(
+    async (itemId: string, fields: { anchor?: boolean; role?: boolean }) => {
+      await editBucketListItem(itemId, {
+        ...(fields.anchor ? { isAnchor: false } : {}),
+        ...(fields.role ? { role: null, servesRaceId: null } : {}),
+      })
     },
     [editBucketListItem],
   )
-  useAnchorMigration(
+  useSeasonMigration(
     bucketListItems,
     raceEntries,
     races,
     racesLoading || eventsLoading,
-    clearItemAnchor,
+    clearItemSeason,
   )
 
   const nextEvent = findNextEvent(allEvents)

@@ -16,6 +16,7 @@ import { db } from './firebase'
 import type { Race, RaceCreate } from '../types/Race'
 import { findRaceByName } from '../domain/raceMatching'
 import { parseAnchorYears, toggleAnchorYear } from '../domain/seasonAnchors'
+import { isRaceRole, type RaceRole } from '../domain/seasonRules'
 
 const RACES_COLLECTION = 'races'
 
@@ -44,6 +45,8 @@ export function docToRace(id: string, data: Record<string, unknown>): Race {
       typeof data.locationGeocodeQuery === 'string' ? data.locationGeocodeQuery : undefined,
     catalogRaceId: (data.catalogRaceId as string | null) ?? undefined,
     anchorYears: parseAnchorYears(data.anchorYears),
+    role: typeof data.role === 'string' && isRaceRole(data.role) ? data.role : undefined,
+    servesRaceId: (data.servesRaceId as string | null) ?? undefined,
     officialUrl: (data.officialUrl as string | null) ?? undefined,
     createdAt: timestampToDate(data.createdAt as Timestamp | undefined),
     updatedAt: timestampToDate(data.updatedAt as Timestamp | undefined),
@@ -151,6 +154,22 @@ export async function setRaceAnchorYear(
  * about order sort in memory, which costs nothing at this size and cannot fail
  * while an index builds.
  */
+/**
+ * What a race is for in the season, and which anchor it prepares.
+ *
+ * `null` clears a field: a race that stops being a build-up says nothing rather
+ * than keeping an old answer.
+ */
+export async function setRaceSeasonRole(
+  raceId: string,
+  season: { role?: RaceRole | null; servesRaceId?: string | null },
+): Promise<void> {
+  const payload: Record<string, unknown> = { updatedAt: serverTimestamp() }
+  if ('role' in season) payload.role = season.role ?? null
+  if ('servesRaceId' in season) payload.servesRaceId = season.servesRaceId ?? null
+  await updateDoc(doc(db, RACES_COLLECTION, raceId), payload)
+}
+
 export function racesCollectionQuery(userId: string) {
   return query(collection(db, RACES_COLLECTION), where('userId', '==', userId))
 }

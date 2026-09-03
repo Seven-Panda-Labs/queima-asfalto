@@ -809,6 +809,24 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts what a race is for, and refuses a role outside the list', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db
+          .collection('races')
+          .doc('race-build-up')
+          .set(validRacePayload(userId, { role: 'test', servesRaceId: 'race-anchor' })),
+      )
+      await assertFails(
+        db
+          .collection('races')
+          .doc('race-bad-role')
+          .set(validRacePayload(userId, { role: 'pacer' })),
+      )
+    })
+
     it('accepts the optional catalog pointer and official url', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()

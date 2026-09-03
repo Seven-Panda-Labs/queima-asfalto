@@ -4,22 +4,14 @@ import { useTranslation } from 'react-i18next'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { formatDatePt } from '../../utils/date'
 import type { FunnelGroup, FunnelRow } from '../../domain/raceEntryFunnel'
-import type { SeasonRuleId, TuneUpWindow } from '../../domain/seasonRules'
+import { SeasonNotes } from '../../components/SeasonNotes'
+import type { SeasonAnnotation } from '../../domain/seasonBoard'
 import type { RaceEntry } from '../../types/RaceEntry'
-
-/** What the season rules have to say about one row. */
-export type ItemSeason = {
-  window?: TuneUpWindow
-  /** How many races are declared as preparing for this anchor. */
-  serving: number
-  /** The anchor this race prepares, and how far ahead of it this race sits. */
-  serves?: { name: string; weeksBefore: number }
-  warnings: { rule: SeasonRuleId; count?: number }[]
-}
 
 type BucketListFunnelProps = {
   groups: FunnelGroup[]
-  season: Map<string, ItemSeason>
+  /** Keyed by race identity, which is what survives a wish being scheduled. */
+  season: Map<string, SeasonAnnotation>
   /** Anchors by race identity: the flag is on the race, not on the wish. */
   anchorRaceIds: ReadonlySet<string>
   /** Rendered at the end of every row: the icons the page already had. */
@@ -56,48 +48,6 @@ function WaitingOn({ entry }: { entry: RaceEntry | null }) {
 
   if (parts.length === 0) return null
   return <span className="text-xs text-muted">{parts.join(' · ')}</span>
-}
-
-/**
- * What the rules say, said briefly.
- *
- * Warnings and never blocks: a race in the taper week might be a parkrun with the
- * kids, and the runner knows that and the app does not.
- */
-function SeasonNotes({ season }: { season: ItemSeason | undefined }) {
-  const { t } = useTranslation()
-  if (!season) return null
-
-  return (
-    <>
-      {season.window ? (
-        <span className="text-xs text-muted">
-          {t('season.tuneUpWindow', {
-            distance: season.window.targetDistanceKm,
-            from: formatDatePt(season.window.from),
-            to: formatDatePt(season.window.to),
-          })}
-          {season.serving > 0 ? ` · ${t('season.serving', { count: season.serving })}` : ''}
-        </span>
-      ) : null}
-      {season.serves && season.serves.weeksBefore >= 1 ? (
-        <span className="text-xs text-muted">
-          {t('season.beforeAnchor', {
-            count: Math.round(season.serves.weeksBefore),
-            anchor: season.serves.name,
-          })}
-        </span>
-      ) : null}
-      {season.warnings.map(({ rule, count }) => (
-        <span
-          key={`${rule}-${count ?? 0}`}
-          className="rounded-full bg-warning-bg px-2 py-0.5 text-xs font-semibold text-warning-fg"
-        >
-          {t(`season.warnings.${rule}`, { count: count ?? 0 })}
-        </span>
-      ))}
-    </>
-  )
 }
 
 export function BucketListFunnel({
@@ -146,7 +96,7 @@ export function BucketListFunnel({
                 ) : null}
 
                 <WaitingOn entry={entry} />
-                <SeasonNotes season={season.get(item.id)} />
+                <SeasonNotes season={item.raceId ? season.get(item.raceId) : undefined} />
 
                 <div className="ml-auto flex flex-nowrap items-center gap-1">
                   {showEntryLink ? (

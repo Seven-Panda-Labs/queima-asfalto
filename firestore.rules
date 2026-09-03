@@ -325,7 +325,8 @@ service cloud.firestore {
         && validOptionalGeocodeFields(data)
         && (!('catalogRaceId' in data) || data.catalogRaceId == null || data.catalogRaceId is string)
         && (!('officialUrl' in data) || data.officialUrl == null || data.officialUrl is string)
-        && validAnchorYears(data);
+        && validAnchorYears(data)
+        && validOptionalSeasonFields(data);
     }
 
     function validEventMediaType(type) {

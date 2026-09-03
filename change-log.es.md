@@ -9,7 +9,7 @@
 ### Añadido
 
 - **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada. Con avisos por notificación antes de cada plazo, que se activan en Ajustes.
-- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera.
+- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera. Los avisos y la ventana aparecen en la página de cada carrera, y dejan de desaparecer al planificarla.
 - **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió en vez de decir que la perdiste, un abandono cuenta como carrera empezada, y un botón crea el intento de la próxima temporada.
 - **Encontrar carreras:** una página nueva busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla pone delante las que encajan en la ventana. Incluye los parkruns cerca de ti, que no salen en ningún calendario.
 - **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, cada uno explicando qué hace la app con eso. Desaparece al completarlos.

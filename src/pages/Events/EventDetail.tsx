@@ -9,6 +9,7 @@ import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicato
 import { StatusBadge } from '../../components/StatusBadge'
 import { OutcomeReasonPrompt } from '../../components/OutcomeReasonPrompt'
 import { AnchorToggle } from '../../components/AnchorToggle'
+import { SeasonNotes } from '../../components/SeasonNotes'
 import { EventMediaGallery } from '../../components/EventMediaGallery/EventMediaGallery'
 import { EventMediaUpload } from '../../components/EventMediaUpload/EventMediaUpload'
 import { EventTrackSection } from '../../components/EventTrack'
@@ -41,6 +42,7 @@ import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
 import { needsOutcomeReason, offersNextEdition } from '../../domain/outcomeReasons'
 import { isAnchorFor } from '../../domain/seasonAnchors'
+import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollover'
 import { formatDatePt, isFutureDate } from '../../utils/date'
 import { getPersonalRecordIds } from '../../utils/bestPerformances'
@@ -162,6 +164,22 @@ export function EventDetail() {
       racesPreparing(event.raceId, bucketListItems),
     )
   }, [allEvents, bucketListItems, event, isSharedView, races])
+
+  /**
+   * What the season says about this race.
+   *
+   * On the race's own page because the rules are about the calendar: a build-up
+   * that has been scheduled is exactly the one whose taper clash matters.
+   */
+  const season = useMemo(() => {
+    if (!event?.raceId || isSharedView) return undefined
+    return buildSeasonBoard({
+      races,
+      entries: raceEntries,
+      events: allEvents,
+      items: bucketListItems,
+    }).byRaceId.get(event.raceId)
+  }, [allEvents, bucketListItems, event, isSharedView, raceEntries, races])
 
   const personalRecordIds = isSharedView
     ? new Set<string>()
@@ -543,6 +561,12 @@ export function EventDetail() {
               <EventLocationMap event={event} route={track?.route} />
             </Suspense>
           </section>
+        ) : null}
+
+        {season ? (
+          <div className="mt-4 flex flex-wrap items-center gap-2">
+            <SeasonNotes season={season} />
+          </div>
         ) : null}
 
         {projection ? <RaceProjection projection={projection} /> : null}

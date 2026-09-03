@@ -18,7 +18,7 @@ import { formatTargetMonth, TARGET_MONTHS } from '../../utils/targetMonth'
 import { RACE_ROLES, type RaceRole } from '../../domain/seasonRules'
 import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
 import { useRaces } from '../../hooks/useRaces'
-import { setRaceAnchorYear } from '../../services/races'
+import { setRaceAnchorYear, setRaceSeasonRole } from '../../services/races'
 
 const LocationMap = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.LocationMap })),
@@ -92,6 +92,7 @@ export function BucketListForm() {
 
   const { races } = useRaces()
   const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
+  const raceById = useMemo(() => new Map(races.map((race) => [race.id, race])), [races])
 
   // Only an anchor that already has an identity can be pointed at: the reference
   // is a race, not a wish, so that it survives the wish being closed.
@@ -197,8 +198,9 @@ export function BucketListForm() {
             ? anchorIds.has(item.raceId)
             : item.isAnchor === true,
           recurring: item.recurring === true,
-          role: item.role ?? '',
-          servesRaceId: item.servesRaceId ?? '',
+          role: raceById.get(item.raceId ?? '')?.role ?? item.role ?? '',
+          servesRaceId:
+            raceById.get(item.raceId ?? '')?.servesRaceId ?? item.servesRaceId ?? '',
           link: item.link ?? '',
           emoji: item.emoji ?? '🏃',
           notes: item.notes ?? '',
@@ -214,7 +216,7 @@ export function BucketListForm() {
     return () => {
       cancelled = true
     }
-  }, [anchorIds, id, sharedOwnerId, sharedBucketList.items, sharedBucketList.loading, t])
+  }, [anchorIds, raceById, id, sharedOwnerId, sharedBucketList.items, sharedBucketList.loading, t])
 
   function updateField<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -317,6 +319,12 @@ export function BucketListForm() {
         const raceId = ownBucketList.items.find((entry) => entry.id === id)?.raceId
         if (raceId) {
           await setRaceAnchorYear(raceId, anchorYearFor(payload), form.isAnchor)
+          // What the race is for lives on the race too, since #282's lesson:
+          // the wish is gone the moment it is scheduled.
+          await setRaceSeasonRole(raceId, {
+            role: payload.role ?? null,
+            servesRaceId: payload.servesRaceId ?? null,
+          })
         }
       } else {
         await addItem(payload)
