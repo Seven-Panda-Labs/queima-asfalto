@@ -10,6 +10,10 @@
 
 - **More short races:** discovery can now read two German calendars full of 5K, 10K and half marathons. It stays off until you enable them.
 
+### Changed
+
+- **The catalog updates a source at a time:** the harvest now runs daily and reads one source, instead of all of them once a week. Each source is still read weekly, and one that is down no longer spoils the others' run.
+
 ### Fixed
 
 - **Self-hosting:** deploying the functions failed after the last dependency update.

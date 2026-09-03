@@ -10,6 +10,10 @@
 
 - **Más carreras cortas:** el descubrimiento puede leer dos calendarios alemanes llenos de 5 km, 10 km y medias maratones. Sigue apagado hasta que los actives.
 
+### Cambiado
+
+- **El catálogo se actualiza por partes:** la cosecha corre a diario y lee una fuente cada vez, en lugar de todas una vez por semana. Cada fuente sigue leyéndose una vez por semana, y una que esté caída ya no arruina la ejecución de las demás.
+
 ### Corregido
 
 - **Self-hosting:** el deploy de las funciones fallaba desde la última actualización de dependencias.

@@ -9,6 +9,31 @@
  */
 export const HARVEST_COLLAPSE_FLOOR = 0.8
 
+/**
+ * What a source has in the catalog now, to compare its next harvest against.
+ *
+ * The floor below only means something per source. A run that reads one of
+ * seven brings back a fraction of the catalog, and comparing that fraction to
+ * the whole would reject every run; comparing it to what that source itself
+ * wrote is also a sharper guard than the old one, where a source going dark
+ * was hidden by the volume of the other six.
+ *
+ * An entry written before a run read one source at a time carries the ids
+ * joined, so both shapes are read here.
+ */
+export function storedForSources(
+  entries: readonly { producer?: string; source?: string }[],
+  sourceIds: readonly string[],
+): number {
+  const wanted = new Set(sourceIds)
+  return entries.filter((entry) => {
+    if (entry.producer !== 'harvest') return false
+    return (entry.source ?? '')
+      .split(',')
+      .some((id) => wanted.has(id.trim()))
+  }).length
+}
+
 export function isHarvestCollapse(
   storedCount: number,
   harvestedCount: number,

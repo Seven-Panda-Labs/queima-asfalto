@@ -10,6 +10,10 @@
 
 - **Mehr kurze Strecken:** die Suche kann jetzt zwei deutsche Kalender lesen, voll mit 5 km, 10 km und Halbmarathons. Sie bleibt aus, bis du sie einschaltest.
 
+### Geändert
+
+- **Der Katalog wird stückweise aktualisiert:** die Ernte läuft täglich und liest eine Quelle, statt alle einmal pro Woche. Jede Quelle wird weiterhin wöchentlich gelesen, und eine ausgefallene verdirbt den Lauf der anderen nicht mehr.
+
 ### Behoben
 
 - **Self-hosting:** das Deployment der Functions schlug seit dem letzten Abhängigkeits-Update fehl.

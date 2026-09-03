@@ -10,6 +10,10 @@
 
 - **Mais provas curtas:** a descoberta passa a poder ler dois calendários alemães com muitos 5 km, 10 km e meias maratonas. Continua desligada até as activares.
 
+### Alterado
+
+- **Catálogo actualizado aos poucos:** a colheita passa a correr todos os dias e a ler uma fonte de cada vez, em vez de todas de uma vez por semana. Cada fonte continua a ser lida uma vez por semana, e uma que esteja em baixo já não estraga a corrida das outras.
+
 ### Corrigido
 
 - **Self-hosting:** o deploy das funções falhava desde a última actualização de dependências.

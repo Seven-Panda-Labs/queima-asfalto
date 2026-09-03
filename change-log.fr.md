@@ -10,6 +10,10 @@
 
 - **Plus de courses courtes :** la découverte peut lire deux calendriers allemands remplis de 5 km, 10 km et semi-marathons. Elle reste éteinte jusqu'à ce que tu les actives.
 
+### Modifié
+
+- **Le catalogue se met à jour source par source :** la récolte tourne chaque jour et lit une source, au lieu de toutes une fois par semaine. Chaque source est toujours lue une fois par semaine, et une source en panne ne gâche plus la récolte des autres.
+
 ### Corrigé
 
 - **Self-hosting :** le déploiement des functions échouait depuis la dernière mise à jour des dépendances.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { isHarvestCollapse, isHarvestStale, isHarvestable } from './guards'
+import { storedForSources, isHarvestCollapse, isHarvestStale, isHarvestable } from './guards'
 
 const TODAY = new Date('2026-09-02T12:00:00Z')
 
@@ -46,5 +46,32 @@ describe('isHarvestable', () => {
 
   it('leaves a date it cannot read', () => {
     expect(isHarvestable({ ...race, startDate: 'em breve' }, TODAY)).toBe(false)
+  })
+})
+
+describe('storedForSources', () => {
+  const catalog = [
+    { producer: 'harvest', source: 'kilometerliebe.de' },
+    { producer: 'harvest', source: 'kilometerliebe.de' },
+    { producer: 'harvest', source: 'running.life' },
+    { producer: 'curated', source: 'organiser, confirmed 2026-09-01' },
+  ]
+
+  it('counts what this run\'s source wrote, and nothing else', () => {
+    expect(storedForSources(catalog, ['kilometerliebe.de'])).toBe(2)
+    expect(storedForSources(catalog, ['running.life'])).toBe(1)
+  })
+
+  it('never counts an entry a person wrote', () => {
+    expect(storedForSources(catalog, ['organiser'])).toBe(0)
+  })
+
+  it('reads an entry from back when a run joined its sources', () => {
+    const older = [{ producer: 'harvest', source: 'acorrer.pt,davengo.com' }]
+    expect(storedForSources(older, ['davengo.com'])).toBe(1)
+  })
+
+  it('lets a first run through, because nothing is stored yet', () => {
+    expect(isHarvestCollapse(storedForSources(catalog, ['marathon.de']), 400)).toBe(false)
   })
 })
