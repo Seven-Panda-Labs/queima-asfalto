@@ -151,6 +151,8 @@ describe('isOpenRunningCompetition', () => {
 
   it('drops what is not an individual run', () => {
     expect(isOpenRunningCompetition('5 km Walking')).toBe(false)
+    // How one organiser abbreviates Walking und Nordic Walking.
+    expect(isOpenRunningCompetition('5km W-NW')).toBe(false)
     expect(isOpenRunningCompetition('5 km Nordic Walking')).toBe(false)
     expect(isOpenRunningCompetition('10 Km: Mannschaftswertung')).toBe(false)
     expect(isOpenRunningCompetition('5 km Kinderwagenlauf')).toBe(false)
@@ -300,6 +302,28 @@ describe('aggregatePodiums', () => {
     ])
 
     expect(stats).toHaveLength(2)
+  })
+})
+
+/** The portal ends a results page with this, and it is a clickable panel too. */
+const SIGN_UP_AGAIN_PANEL = `
+<div class="panel panel-default clickable-panel" data-href="/va_details.php?id=964">
+  <div class="panel-heading"><h3 class="panel-title">Gleich wieder anmelden</h3></div>
+  <div class="panel-body"><p>Hier k&ouml;nnen Sie sich gleich anmelden</p></div>
+</div>`
+
+describe('parseEventOverview with the sign-up panel in the middle', () => {
+  it('does not let a titleless panel swallow the next competition', () => {
+    const competitions = parseEventOverview(
+      [
+        panel(0, '10 km Laufen', '<tr><td>1</td><td>Max Mustermann</td><td></td><td>00:33:12</td></tr>'),
+        SIGN_UP_AGAIN_PANEL,
+        panel(1, '5 km Laufen', '<tr><td>1</td><td>Klaus Beispiel</td><td></td><td>00:17:41</td></tr>'),
+      ].join('\n'),
+    )
+
+    expect(competitions.map((entry) => entry.competition)).toEqual(['10 km Laufen', '5 km Laufen'])
+    expect(competitions[1]?.groups[0]?.places[0]?.name).toBe('Klaus Beispiel')
   })
 })
 

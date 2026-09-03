@@ -140,14 +140,25 @@ export function formatSeconds(total: number): string {
   return hours > 0 ? `${hours}:${mmss}` : mmss
 }
 
+const PANEL_START = '<div class="panel[^"]*clickable-panel"'
+
 /**
  * One competition's block, attributes and table kept apart.
  *
  * The attributes are read separately rather than matched in order, so a panel
  * that one day carries them the other way round loses its match index instead
  * of disappearing from the report.
+ *
+ * Two guards, both paid for in real data. The panel must carry a `title`,
+ * because the page ends with a "sign up again" panel that is clickable, has no
+ * title and has no table. And the table has to be this panel's own: without the
+ * lookahead, that titleless panel swallowed the next competition's table and
+ * every competition after it was read under the wrong name.
  */
-const PANEL = /<div class="panel[^"]*clickable-panel"([^>]*)>([\s\S]*?)<\/table>/gi
+const PANEL = new RegExp(
+  `${PANEL_START}((?=[^>]*title=)[^>]*)>((?:(?!${PANEL_START})[\\s\\S])*?)<\\/table>`,
+  'gi',
+)
 
 /**
  * Every competition of one edition, with its podiums.
@@ -213,7 +224,7 @@ export function parseEventOverview(html: string): CompetitionPodiums[] {
  * podium an adult can walk up to and enter.
  */
 const NOT_A_RUN =
-  /walking|walker|nordic|schwimm|freiwasser|staffel|mannschaft|team\b|radfahren|radrennen|radfahrt|\brad\b|\bmtb\b|\bbike\b|inline|skate|kinderwagen|handbike|rollstuhl|duathlon|triathlon|hunde|paarlauf|jugend|senioren|masters|\bU\s?\d{1,3}\b/iu
+  /walking|walker|nordic|\bw-nw\b|\bnw\b|schwimm|freiwasser|staffel|mannschaft|team\b|radfahren|radrennen|radfahrt|\brad\b|\bmtb\b|\bbike\b|inline|skate|kinderwagen|handbike|rollstuhl|duathlon|triathlon|hunde|paarlauf|jugend|senioren|masters|\bU\s?\d{1,3}\b/iu
 
 /**
  * A birth-year window, which is how the portal writes an age-restricted race.
