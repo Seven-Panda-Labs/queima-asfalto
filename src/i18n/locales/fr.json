@@ -287,8 +287,6 @@
     "status": "Statut",
     "statusAdjusted": "Le statut a été ajusté de « {{from}} » à « {{to}} » en raison de la date.",
     "invalidStatusDate": "Statut invalide pour la date sélectionnée.",
-    "removeBucketTitle": "Retirer de la bucket list ?",
-    "removeBucketMessage": "L'événement a été créé. Retirer cet élément de la bucket list ?",
     "distancePlaceholder": "Ex. : 5,4",
     "usedForPace": "Utilisée pour calculer l'allure",
     "usedForGoals": "Utilisé pour compter dans les objectifs",
@@ -305,7 +303,8 @@
     "parkrunPromptSkip": "Enregistrer l'événement sans ID",
     "eventKindLabel": "Type d'événement",
     "kindRegular": "Course",
-    "kindParkrun": "Parkrun"
+    "kindParkrun": "Parkrun",
+    "movedFromBucketList": "« {{name}} » a quitté la bucket list et est au calendrier."
   },
   "parkrun": {
     "eventLabel": "Événement Parkrun",
@@ -382,7 +381,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Les courses que tu veux courir, et ce qu'il reste à faire pour y entrer.",
+    "subtitle": "Ta liste courte de courses à venir : c'est d'ici que viennent les alertes de délai d'inscription.",
     "empty": "Aucun élément dans la bucket list pour l'instant",
     "emptyHint": "Ajoute les événements dont tu rêves.",
     "addFirst": "Ajouter un premier élément",
@@ -1107,8 +1106,8 @@
           "hint": "Un record, une allure, un temps cible. Choisis ton combat."
         },
         "bucketList": {
-          "title": "Aucune course de rêve dans la bucket list pour l'instant.",
-          "hint": "Ajoute les événements dont tu rêves."
+          "title": "Rien encore dans la bucket list.",
+          "hint": "Ajoute les courses que tu envisages. En planifier une la déplace au calendrier."
         }
       }
     },
@@ -1312,7 +1311,7 @@
   "findRaces": {
     "greeting": "Découvrir",
     "title": "Trouver des courses",
-    "subtitle": "Courses à venir du catalogue de cette instance, prêtes pour ta bucket list.",
+    "subtitle": "Courses à venir du catalogue de cette instance, à ajouter à ta bucket list.",
     "cta": "Trouver des courses",
     "forAnchor": "Pour préparer",
     "forAnchorHint": "Choisir un pivot remplit la fenêtre du test.",
@@ -1381,7 +1380,7 @@
     "away": "à {{km}} km",
     "saturday": "samedi {{date}}",
     "plan": "Planifier",
-    "watch": "Watchlist",
+    "watch": "Ajouter",
     "planned": "« {{name}} » est au calendrier, samedi.",
     "planError": "Impossible de mettre ce parkrun au calendrier.",
     "farAway": "Le plus proche est à {{km}} km. parkrun n'existe pas dans tous les pays, donc c'est pour quand tu voyages."

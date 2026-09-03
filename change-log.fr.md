@@ -17,7 +17,9 @@
 ### Modifié
 
 - **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit.
+- **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste, sans demander. Le pivot et le rôle dans la saison vivent sur la course, donc rien n'est perdu.
 - **Self-hosting :** la récolte de courses peut lire deux nouvelles sources, et reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Corrigé :** une distance comme 42,195 km ne pouvait pas être enregistrée. Le navigateur refusait la valeur en silence, avant toute validation de l'app.
 
 ---
 

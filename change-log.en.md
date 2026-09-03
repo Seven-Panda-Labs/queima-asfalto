@@ -17,7 +17,9 @@
 ### Changed
 
 - **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written.
+- **Planning is moving:** scheduling a race from the bucket list puts it on the calendar and takes it off the list, without asking. The anchor and the season role live on the race, so nothing is lost in the move.
 - **Self-hosting:** the race harvest can read two new sources, and stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Fixed:** a distance like 42.195 km could not be saved. The browser refused the value silently, before the app got to validate anything.
 
 ---
 

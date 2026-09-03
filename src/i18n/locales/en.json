@@ -287,8 +287,6 @@
     "status": "Status",
     "statusAdjusted": "Status was adjusted from «{{from}}» to «{{to}}» because of the date.",
     "invalidStatusDate": "Invalid status for the selected date.",
-    "removeBucketTitle": "Remove from bucket list?",
-    "removeBucketMessage": "The event was created. Remove this item from the bucket list?",
     "distancePlaceholder": "E.g. 5.4",
     "usedForPace": "Used to calculate pace",
     "usedForGoals": "Used to count towards goals",
@@ -305,7 +303,8 @@
     "parkrunPromptSkip": "Save event without ID",
     "eventKindLabel": "Event type",
     "kindRegular": "Race",
-    "kindParkrun": "Parkrun"
+    "kindParkrun": "Parkrun",
+    "movedFromBucketList": "\"{{name}}\" left the bucket list and is on the calendar."
   },
   "parkrun": {
     "eventLabel": "Parkrun event",
@@ -382,7 +381,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Races you want to run, and what is left to get into each one.",
+    "subtitle": "Your shortlist of future races: this is where the entry deadline warnings come from.",
     "empty": "No bucket list items yet",
     "emptyHint": "Add your dream events.",
     "addFirst": "Add first item",
@@ -1107,8 +1106,8 @@
           "hint": "A PR, a pace, a target time. Pick your fight."
         },
         "bucketList": {
-          "title": "No dream races on the bucket list yet.",
-          "hint": "Add the events you dream about."
+          "title": "Nothing on the bucket list yet.",
+          "hint": "Add the races you are considering. Planning one moves it to the calendar."
         }
       }
     },
@@ -1312,7 +1311,7 @@
   "findRaces": {
     "greeting": "Discover",
     "title": "Find races",
-    "subtitle": "Upcoming races from this instance catalog, ready to add to your bucket list.",
+    "subtitle": "Upcoming races from this instance catalog, to add to your bucket list.",
     "cta": "Find races",
     "forAnchor": "Preparing for",
     "forAnchorHint": "Picking an anchor fills in the tune-up window.",
@@ -1381,7 +1380,7 @@
     "away": "{{km}} km away",
     "saturday": "Saturday {{date}}",
     "plan": "Plan it",
-    "watch": "Watchlist",
+    "watch": "Add",
     "planned": "\"{{name}}\" is on the calendar for Saturday.",
     "planError": "Could not put this parkrun on the calendar.",
     "farAway": "The nearest is {{km}} km away. parkrun does not run in every country, so this is for when you travel."

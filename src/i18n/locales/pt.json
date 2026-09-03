@@ -287,8 +287,6 @@
     "status": "Estado",
     "statusAdjusted": "O estado foi ajustado de «{{from}}» para «{{to}}» por causa da data.",
     "invalidStatusDate": "Estado inválido para a data selecionada.",
-    "removeBucketTitle": "Remover da bucket list?",
-    "removeBucketMessage": "O evento foi criado. Queres remover este item da bucket list?",
     "distancePlaceholder": "Ex: 5.4",
     "usedForPace": "Usado para calcular ritmo",
     "usedForGoals": "Usado para contar nos objetivos",
@@ -305,7 +303,8 @@
     "parkrunPromptSkip": "Guardar evento sem ID",
     "eventKindLabel": "Tipo de evento",
     "kindRegular": "Corrida",
-    "kindParkrun": "Parkrun"
+    "kindParkrun": "Parkrun",
+    "movedFromBucketList": "«{{name}}» saiu da bucket list e está no calendário."
   },
   "parkrun": {
     "eventLabel": "Evento parkrun",
@@ -382,7 +381,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Provas que queres correr, e o que falta para entrar em cada uma.",
+    "subtitle": "A tua shortlist de provas futuras: é daqui que saem os avisos de prazo de inscrição.",
     "empty": "Ainda sem provas na bucket list",
     "emptyHint": "Adiciona os eventos dos teus sonhos.",
     "addFirst": "Adicionar primeiro item",
@@ -1108,7 +1107,7 @@
         },
         "bucketList": {
           "title": "Ainda sem provas na bucket list.",
-          "hint": "Adiciona os eventos dos teus sonhos."
+          "hint": "Junta as provas que estás a considerar. Planeá-las passa-as para o calendário."
         }
       }
     },
@@ -1312,7 +1311,7 @@
   "findRaces": {
     "greeting": "Descobrir",
     "title": "Encontrar provas",
-    "subtitle": "Provas futuras do catálogo desta instância, para acrescentar à tua bucket list.",
+    "subtitle": "Provas futuras do catálogo desta instância, para juntares à tua bucket list.",
     "cta": "Encontrar provas",
     "forAnchor": "Para preparar",
     "forAnchorHint": "Escolher uma âncora preenche a janela do teste.",
@@ -1381,7 +1380,7 @@
     "away": "a {{km}} km",
     "saturday": "sábado {{date}}",
     "plan": "Planear",
-    "watch": "Watchlist",
+    "watch": "Adicionar",
     "planned": "«{{name}}» foi para o calendário, sábado.",
     "planError": "Não foi possível pôr este parkrun no calendário.",
     "farAway": "O mais próximo fica a {{km}} km. O parkrun não existe em todos os países, portanto isto é para quando viajares."

@@ -287,8 +287,6 @@
     "status": "Estado",
     "statusAdjusted": "El estado se ha ajustado de «{{from}}» a «{{to}}» por la fecha.",
     "invalidStatusDate": "Estado no válido para la fecha seleccionada.",
-    "removeBucketTitle": "¿Quitar de la bucket list?",
-    "removeBucketMessage": "El evento se ha creado. ¿Quieres quitar este elemento de la bucket list?",
     "distancePlaceholder": "Ej.: 5.4",
     "usedForPace": "Se usa para calcular el ritmo",
     "usedForGoals": "Se usa para contar en los objetivos",
@@ -305,7 +303,8 @@
     "parkrunPromptSkip": "Guardar evento sin ID",
     "eventKindLabel": "Tipo de evento",
     "kindRegular": "Carrera",
-    "kindParkrun": "Parkrun"
+    "kindParkrun": "Parkrun",
+    "movedFromBucketList": "«{{name}}» salió de la bucket list y está en el calendario."
   },
   "parkrun": {
     "eventLabel": "Evento parkrun",
@@ -382,7 +381,7 @@
   },
   "bucketList": {
     "title": "Bucket list",
-    "subtitle": "Carreras que quieres correr, y qué falta para entrar en cada una.",
+    "subtitle": "Tu lista corta de carreras futuras: de aquí salen los avisos de plazos de inscripción.",
     "empty": "Aún no hay elementos en la bucket list",
     "emptyHint": "Añade las carreras de tus sueños.",
     "addFirst": "Añadir primer elemento",
@@ -1107,8 +1106,8 @@
           "hint": "Un RP, un ritmo, un tiempo objetivo. Elige tu batalla."
         },
         "bucketList": {
-          "title": "Aún no hay carreras soñadas en la bucket list.",
-          "hint": "Añade los eventos con los que sueñas."
+          "title": "Aún sin carreras en la bucket list.",
+          "hint": "Añade las carreras que estás considerando. Planificar una la pasa al calendario."
         }
       }
     },
@@ -1312,7 +1311,7 @@
   "findRaces": {
     "greeting": "Descubrir",
     "title": "Encontrar carreras",
-    "subtitle": "Carreras futuras del catálogo de esta instancia, listas para tu bucket list.",
+    "subtitle": "Carreras futuras del catálogo de esta instancia, para añadir a tu bucket list.",
     "cta": "Encontrar carreras",
     "forAnchor": "Para preparar",
     "forAnchorHint": "Elegir un ancla rellena la ventana del test.",
@@ -1381,7 +1380,7 @@
     "away": "a {{km}} km",
     "saturday": "sábado {{date}}",
     "plan": "Planificar",
-    "watch": "Watchlist",
+    "watch": "Añadir",
     "planned": "«{{name}}» está en el calendario, el sábado.",
     "planError": "No se pudo poner este parkrun en el calendario.",
     "farAway": "El más cercano está a {{km}} km. parkrun no existe en todos los países, así que esto es para cuando viajes."
