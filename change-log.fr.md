@@ -20,6 +20,7 @@
 - **Planifier, c'est déplacer :** planifier une course de la bucket list la met au calendrier et la retire de la liste, sans demander. Le pivot et le rôle dans la saison vivent sur la course, donc rien n'est perdu.
 - **Self-hosting :** la récolte de courses peut lire deux nouvelles sources, et reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
 - **Corrigé :** une distance comme 42,195 km ne pouvait pas être enregistrée. Le navigateur refusait la valeur en silence, avant toute validation de l'app.
+- **Corrigé :** la même course apparaissait deux fois dans le catalogue, une fois sous le nom du sponsor. La récolte reconnaît désormais une course que le catalogue possède déjà, même sous un autre nom ou dans une autre langue, et lui ajoute l'édition au lieu de créer une seconde entrée.
 
 ---
 

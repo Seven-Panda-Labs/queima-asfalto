@@ -1,5 +1,6 @@
 export * from './davengo.js'
 export * from './dedup.js'
+export * from './duplicates.js'
 export * from './distances.js'
 export * from './guards.js'
 export * from './identity.js'

@@ -24,6 +24,9 @@ export async function loadRaceCatalog(): Promise<RaceCatalogEntry[]> {
   return snapshot.docs
     .map((document) => document.data() as RaceCatalogEntry)
     .filter((race) => race.retired !== true)
+    // A second copy of a race the catalog already holds shows as one row, and
+    // the survivor is the one it points at.
+    .filter((race) => !race.duplicateOfCatalogRaceId)
 }
 
 /**

@@ -98,6 +98,15 @@ export type RaceCatalogEntry = {
    * references, so a hard delete would orphan whatever already points here.
    */
   retired?: boolean
+  /**
+   * The entry this one turned out to be a second copy of.
+   *
+   * Set when a harvest recognises a race the catalog already holds under
+   * another name: "BMW BERLIN-MARATHON" is the reviewed "Berlin Marathon". The
+   * copy is pointed at the survivor rather than deleted, because an id may
+   * already be referenced and because a wrong guess has to be reversible.
+   */
+  duplicateOfCatalogRaceId?: string
   /** Set by the writer, so an operator can see how stale an entry is. */
   updatedAt?: string
   updatedBy?: string

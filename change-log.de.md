@@ -20,6 +20,7 @@
 - **Einplanen heißt verschieben:** ein Rennen von der Bucket List einzuplanen setzt es in den Kalender und nimmt es von der Liste, ohne zu fragen. Anker und Saisonrolle liegen am Rennen, es geht also nichts verloren.
 - **Self-hosting:** die Rennernte kann zwei neue Quellen lesen und bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
 - **Behoben:** eine Distanz wie 42,195 km ließ sich nicht speichern. Der Browser lehnte den Wert stillschweigend ab, bevor die App überhaupt prüfen konnte.
+- **Behoben:** dasselbe Rennen stand zweimal im Katalog, einmal unter dem Sponsornamen. Die Ernte erkennt jetzt ein Rennen, das der Katalog schon hat, auch unter anderem Namen oder in anderer Sprache, und hängt die Ausgabe daran statt einen zweiten Eintrag anzulegen.
 
 ---
 
