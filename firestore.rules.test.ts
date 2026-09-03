@@ -995,6 +995,24 @@ describe('firestore.rules', () => {
   describe('raceCatalog', () => {
     const race = { id: 'berlin-marathon', name: 'Berlin Marathon', country: 'DE', city: 'Berlin' }
 
+    it('accepts the pointer at the race a copy turned out to be', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+
+      await assertSucceeds(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-bmw-berlin-marathon')
+          .set({ ...race, duplicateOfCatalogRaceId: 'berlin-marathon' }),
+      )
+      await assertFails(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-bad-pointer')
+          .set({ ...race, duplicateOfCatalogRaceId: 42 }),
+      )
+    })
+
     it('lets any signed-in account read it, pending included', async () => {
       await seedDocument('raceCatalog/berlin-marathon', race)
       await seedDocument('users/user-pending', { accountStatus: 'pending' })

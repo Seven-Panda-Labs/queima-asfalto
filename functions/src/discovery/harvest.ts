@@ -6,6 +6,7 @@ import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
 import { dedupeRaces } from '../shared/eventDiscovery/dedup.js'
 import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guards.js'
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
+import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
   davengoStarterUrl,
@@ -149,6 +150,8 @@ async function harvestSource(
 
 export type HarvestResult = {
   written: number
+  /** Copies pointed at a race the catalog already held. */
+  deduplicated?: number
   /** Races read, after dropping the past and the cancelled. */
   harvested: number
   skipped: number
@@ -183,15 +186,22 @@ export async function refreshDiscoveryCatalog(
   const races = dedupeRaces(discovered)
   const provenance = { source: sources.map((source) => source.id).join(','), harvestedAt: isoDay(now) }
 
-  const storedSnap = await db
-    .collection(RACE_CATALOG_COLLECTION)
-    .where('producer', '==', 'harvest')
-    .get()
+  /**
+   * The whole catalog, not only what previous harvests wrote.
+   *
+   * The curated entries are the ones a harvest is most likely to duplicate:
+   * they were written sponsor free and sometimes in another language, so
+   * "BMW BERLIN-MARATHON" and "Berlin Half Marathon" never matched by id. Tens
+   * of documents, read once per run.
+   */
+  const catalogSnap = await db.collection(RACE_CATALOG_COLLECTION).get()
+  const catalog = catalogSnap.docs.map((document) => document.data() as RaceCatalogEntry)
+  const harvestedCount = catalog.filter((entry) => entry.producer === 'harvest').length
 
-  if (isHarvestCollapse(storedSnap.size, races.length)) {
+  if (isHarvestCollapse(harvestedCount, races.length)) {
     // Keeping a stale catalog beats publishing a gutted one: these are scrapes,
     // so a template change upstream must cost a run and not the feature.
-    const reason = `collapse: ${races.length} harvested against ${storedSnap.size} stored`
+    const reason = `collapse: ${races.length} harvested against ${harvestedCount} stored`
     console.error(`discovery harvest rejected, ${reason}`)
     return {
       written: 0,
@@ -202,28 +212,43 @@ export async function refreshDiscoveryCatalog(
     }
   }
 
+  const byId = new Map(catalog.map((entry) => [entry.id, entry]))
   let written = 0
   let skipped = 0
+  let deduplicated = 0
 
   for (const race of races) {
     const entry = toCatalogEntry(race, {
       source: sourceByUrl.get(race.sourceUrl) ?? provenance.source,
       harvestedAt: provenance.harvestedAt,
     })
-    const ref = db.collection(RACE_CATALOG_COLLECTION).doc(entry.id)
-    const existingSnap = await ref.get()
-    const existing = existingSnap.exists
-      ? (existingSnap.data() as RaceCatalogEntry)
-      : undefined
 
-    const merged = mergeIntoCatalog(existing, entry)
-    if (!merged) {
+    /**
+     * The race the catalog already holds under another name.
+     *
+     * When there is one, the edition goes to it and this id is not used: the
+     * survivor keeps whatever a person checked, and a copy written by an
+     * earlier run is pointed at it rather than deleted.
+     */
+    const twin = findCatalogDuplicate(entry, catalog)
+    const targetId = twin?.id ?? entry.id
+    const existing = byId.get(targetId)
+
+    const merged = mergeIntoCatalog(existing, twin ? { ...entry, id: targetId } : entry)
+    if (merged) {
+      await db.collection(RACE_CATALOG_COLLECTION).doc(targetId).set(merged, { merge: false })
+      written += 1
+    } else {
       skipped += 1
-      continue
     }
 
-    await ref.set(merged, { merge: false })
-    written += 1
+    if (twin && byId.has(entry.id)) {
+      await db
+        .collection(RACE_CATALOG_COLLECTION)
+        .doc(entry.id)
+        .set({ duplicateOfCatalogRaceId: twin.id, updatedAt: provenance.harvestedAt }, { merge: true })
+      deduplicated += 1
+    }
   }
 
   await db
@@ -234,10 +259,17 @@ export async function refreshDiscoveryCatalog(
       harvested: races.length,
       written,
       skipped,
+      deduplicated,
       sources: sources.map((source) => source.id),
     })
 
-  return { written, harvested: races.length, skipped, sources: sources.map((source) => source.id) }
+  return {
+    written,
+    harvested: races.length,
+    skipped,
+    deduplicated,
+    sources: sources.map((source) => source.id),
+  }
 }
 
 export const harvestRaceCatalog = onSchedule(
@@ -250,7 +282,8 @@ export const harvestRaceCatalog = onSchedule(
       return
     }
     console.log(
-      `discovery harvest: ${result.written} written, ${result.skipped} left alone, from ${result.sources.join(', ')}`,
+      `discovery harvest: ${result.written} written, ${result.skipped} left alone, ` +
+        `${result.deduplicated ?? 0} recognised as copies, from ${result.sources.join(', ')}`,
     )
   },
 )

@@ -57,13 +57,23 @@ E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
 um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
 contagens decrescentes).
 
-### Limite conhecido: a deduplicação não vê o catálogo
+### Duplicados: quando a mesma prova já está no catálogo
 
-A deduplicação compara as provas de uma colheita entre si, e nunca com o que já
-está guardado. Como as entradas curadas foram escritas sem patrocinador de
-propósito e as colhidas trazem sempre o do organizador, a mesma prova entra duas
-vezes: «Berlin Marathon» e «BMW BERLIN-MARATHON». Está descrito, com o
-contra-exemplo que qualquer solução tem de sobreviver, na
+A colheita compara cada prova com o catálogo inteiro, não só com as outras da
+mesma corrida. Duas formas contam como a mesma prova, e ambas exigem o mesmo dia,
+a mesma cidade e uma distância em comum:
+
+1. **Uma entrada que uma pessoa reviu.** Alguém a verificou, e uma colheita a
+   aparecer com o nome do organizador não é novidade. É o que junta «Berlin Half
+   Marathon» e «GENERALI BERLINER HALBMARATHON», que são uma prova e não
+   partilham quase nenhuma letra.
+2. **Nomes que claramente concordam**, depois de tirar patrocinadores e edição.
+
+Fora disso ficam duas provas. O fim de semana da maratona de Berlim mostra
+porquê: a «GENERALI 5K im Rahmen des BMW BERLIN-MARATHON» e a «R5K Tour Finale»
+são ambas de 5 km, ambas em Berlim, ambas a 26/09/2026, e são duas corridas
+diferentes. O que a colheita ainda não resolve, duas fontes a trazerem a mesma
+prova com nomes que não concordam, está na
 [issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
 
 ### Acrescentar uma fonte
@@ -139,13 +149,23 @@ Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
 the runner can see and correct) and may never **assert** (no reminders, no
 countdowns).
 
-### Known limit: dedup does not see the catalog
+### Duplicates: when the catalog already holds the race
 
-Dedup compares the races of one harvest against each other, and never against
-what is already stored. Since curated entries were written sponsor-free on
-purpose and harvested ones always carry the organiser's sponsor, the same race
-lands twice: "Berlin Marathon" and "BMW BERLIN-MARATHON". Written up, with the
-counterexample any fix has to survive, in
+The harvest compares each race against the whole catalog, not only against the
+others in the same run. Two shapes count as the same race, and both need the
+same day, the same city and a distance in common:
+
+1. **An entry a person reviewed.** They checked it, and a harvest turning up
+   with the organiser's own name for it is not news. This is what joins "Berlin
+   Half Marathon" and "GENERALI BERLINER HALBMARATHON", which are one race and
+   share almost no letters.
+2. **Names that plainly agree**, once the sponsors and the edition are gone.
+
+Anything else stays two races. The Berlin marathon weekend shows why: "GENERALI
+5K im Rahmen des BMW BERLIN-MARATHON" and "R5K Tour Finale" are both 5 km, both
+in Berlin, both on 26/09/2026, and they are two different races. What the harvest
+still does not solve, two sources bringing the same race under names that do not
+agree, is in
 [issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
 
 ### Adding a source

@@ -546,7 +546,10 @@ service cloud.firestore {
       allow read: if isSignedIn();
       allow create, update: if isAdmin(request.auth.uid)
         && request.resource.data.name is string
-        && request.resource.data.name.size() > 0;
+        && request.resource.data.name.size() > 0
+        && (!('duplicateOfCatalogRaceId' in request.resource.data)
+          || request.resource.data.duplicateOfCatalogRaceId == null
+          || request.resource.data.duplicateOfCatalogRaceId is string);
       allow delete: if false;
     }
 
