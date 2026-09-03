@@ -86,7 +86,7 @@ function Hero({
         </span>
         {children}
       </div>
-      {footer ? <div className="relative">{footer}</div> : null}
+      {footer ? <div className="relative mt-5">{footer}</div> : null}
     </div>
   )
 }
@@ -149,7 +149,7 @@ export function NextEventCard({
   target,
   projection,
 }: NextEventCardProps) {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const today = new Date()
 
   if (!event) return <EmptyHero />
@@ -188,13 +188,20 @@ export function NextEventCard({
    * Only with a target, and only when it is not the next race: on the last
    * stretch there is nowhere further to point, and the hero is all target.
    */
+  // 21,0975 km is the real distance and not what anybody wants to read on a
+  // road sign, so one decimal, in the reader's own number format.
+  const distance = (race: Event) =>
+    `${new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 1 }).format(
+      race.realDistance,
+    )} km`
+
   const stops: RoadStop[] = []
   if (anchor && anchorCountdown) {
     if (last) {
       stops.push({
         kicker: t('dashboard.roadDone'),
         name: last.name,
-        meta: last.time ?? formatDatePt(last.date),
+        meta: [distance(last), last.time ?? formatDatePt(last.date)].join(' · '),
         href: `/eventos/${last.id}`,
         kind: 'done',
       })
@@ -203,7 +210,7 @@ export function NextEventCard({
     stops.push({
       kicker: t('dashboard.anchorEvent'),
       name: anchor.name,
-      meta: anchorCountdown,
+      meta: [distance(anchor), anchorCountdown].join(' · '),
       href: `/eventos/${anchor.id}`,
       kind: 'target',
     })

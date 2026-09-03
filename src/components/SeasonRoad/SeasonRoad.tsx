@@ -22,6 +22,14 @@ export type RoadStop = {
   kind: 'done' | 'here' | 'target'
 }
 
+/**
+ * Half the marker's width plus a little air, so the road stops at its edge.
+ *
+ * The markers are translucent white on a translucent white road: drawing the
+ * line under one of them showed through it, and the overlap read as a mistake.
+ */
+const MARKER_GAP: Record<RoadStop['kind'], number> = { done: 9, here: 14, target: 18 }
+
 function Marker({ kind }: { kind: RoadStop['kind'] }) {
   if (kind === 'target') {
     return (
@@ -42,7 +50,9 @@ export function SeasonRoad({ stops }: { stops: RoadStop[] }) {
   if (stops.length < 2) return null
 
   return (
-    <ol className="mt-5 flex items-start border-t border-white/15 pt-4">
+    // A panel and not a rule: the countdown above is one thing, the season is
+    // another, and a slightly darker inset says so without a second card.
+    <ol className="flex items-start rounded-xl bg-black/15 px-3 py-3 ring-1 ring-inset ring-white/10 sm:px-5">
       {stops.map((stop, index) => {
         // Each stop draws its own half of the road on either side, so the line
         // is continuous whether there are two stops or three. Which half is
@@ -50,11 +60,18 @@ export function SeasonRoad({ stops }: { stops: RoadStop[] }) {
         // stretch up to "here" is behind you and solid, and everything past it
         // is dashed, because it has not been run yet.
         const here = stops.findIndex((candidate) => candidate.kind === 'here')
-        const line = 'absolute top-1/2 h-px w-1/2 -translate-y-1/2'
+        const line = 'absolute top-1/2 h-px -translate-y-1/2'
         const done = 'bg-white/60'
         const todo = 'border-t border-dashed border-white/40'
         const left = index > 0 ? (index <= here ? done : todo) : null
         const right = index < stops.length - 1 ? (index < here ? done : todo) : null
+        const gap = MARKER_GAP[stop.kind]
+        // Logical properties, because Arabic reads the road the other way.
+        const leftHalf = { insetInlineStart: 0, width: `calc(50% - ${gap}px)` }
+        const rightHalf = {
+          insetInlineStart: `calc(50% + ${gap}px)`,
+          width: `calc(50% - ${gap}px)`,
+        }
         const content = (
           <>
             <p
@@ -65,8 +82,10 @@ export function SeasonRoad({ stops }: { stops: RoadStop[] }) {
               {stop.kicker}
             </p>
             <div className="relative mt-1.5 flex h-6 items-center justify-center">
-              {left ? <span className={`${line} start-0 ${left}`} aria-hidden /> : null}
-              {right ? <span className={`${line} start-1/2 ${right}`} aria-hidden /> : null}
+              {left ? <span className={`${line} ${left}`} style={leftHalf} aria-hidden /> : null}
+              {right ? (
+                <span className={`${line} ${right}`} style={rightHalf} aria-hidden />
+              ) : null}
               <Marker kind={stop.kind} />
             </div>
             {/* Wrapped rather than truncated: on a phone the third of the width
@@ -75,7 +94,7 @@ export function SeasonRoad({ stops }: { stops: RoadStop[] }) {
             {stop.name ? (
               <p className="mt-1 line-clamp-2 text-sm font-bold leading-tight">{stop.name}</p>
             ) : null}
-            {stop.meta ? <p className="truncate text-xs text-white/70">{stop.meta}</p> : null}
+            {stop.meta ? <p className="text-xs leading-tight text-white/70">{stop.meta}</p> : null}
           </>
         )
 

@@ -110,8 +110,11 @@ describe('NextEventCard and the season target', () => {
     expect(screen.getByText('Última')).toBeInTheDocument()
     expect(screen.getByText('A seguir')).toBeInTheDocument()
     expect(screen.getByText('Prova objetivo')).toBeInTheDocument()
-    // The last race carries its time, which is what makes it worth a stop.
-    expect(screen.getByText('01:38:20')).toBeInTheDocument()
+    // The last race carries its distance and its time, which is what makes it
+    // worth a stop, and the target says how far it is in both senses.
+    // Portuguese writes 21,0975 km as 21,1 km, decimal comma included.
+    expect(screen.getByText('21,1 km · 01:38:20')).toBeInTheDocument()
+    expect(screen.getByText(/42,2 km · /)).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Maratona do Porto/ })).toHaveAttribute(
       'href',
       '/eventos/anchor',
