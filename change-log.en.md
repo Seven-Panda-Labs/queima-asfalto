@@ -4,11 +4,19 @@
 
 ---
 
+## [1.35.0] - 2026-09-03
+
+### Added
+
+- **More short races:** discovery can now read two German calendars full of 5K, 10K and half marathons. It stays off until you enable them.
+
+---
+
 ## [1.34.0] - 2026-09-03
 
 ### Added
 
-- **Two new race sources:** the harvest can now read marathon.de, which gives the city, the distances and the entry fee (the first fee we have), and planet-marathon.de, a hand kept marathon calendar with 386 races in 55 countries. It stays off until you enable them. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Two new discovery sources:** marathons in 55 countries, and German races with the entry fee. It stays off until you enable them.
 
 ---
 
@@ -16,17 +24,17 @@
 
 ### Added
 
-- **The season's road:** the dashboard hero now shows your last race, the next one and the target race at the end, each with its distance and its own countdown. On the last stretch, when the next race is the target itself, the hero is all target.
+- **The season's road:** the hero shows your last race, the next one and the target race, each with its countdown.
 
 ### Changed
 
-- **Planning moves:** scheduling a race from the bucket list puts it on the calendar and takes it off the list, without asking. The anchor and the season role live on the race, so nothing is lost in the move.
-- **Season warnings:** they live on each race's own page, and stop disappearing when you schedule it.
+- **Planning is moving:** scheduling a race from the bucket list puts it on the calendar and takes it off the list.
+- **Season warnings:** they stay on the race's page and no longer vanish once you schedule it.
 
 ### Fixed
 
-- **Distances with decimals:** 42.195 km could not be saved. The browser refused the value in silence, before the app got to validate anything.
-- **Races twice in the catalog:** the same race showed up twice, once under the sponsor's name. The harvest now recognises a race the catalog already holds, even under a different name or in another language, and adds the edition to it. The pairs it cannot decide on its own go to a queue in the admin area.
+- **Distances with decimals:** 42.195 km can be saved now.
+- **Races twice in the catalog:** the same race no longer shows up twice under different names. The doubtful pairs go to a queue in the admin area.
 
 ---
 

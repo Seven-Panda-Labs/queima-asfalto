@@ -21,7 +21,12 @@ export type DiscoverySourceKind = 'sitemap' | 'search' | 'listing'
  * A listing is somebody's own markup, so each one needs its own reader. The
  * name is here rather than in the harvest so a source is one object.
  */
-export const LISTING_READERS = ['scc-events', 'planet-marathon'] as const
+export const LISTING_READERS = [
+  'scc-events',
+  'planet-marathon',
+  'kilometerliebe',
+  'schema-org',
+] as const
 
 export type ListingReader = (typeof LISTING_READERS)[number]
 
@@ -60,11 +65,26 @@ export type DiscoverySource = {
   listingUrl?: string
   /** More than one page of the same calendar, when a source splits it. */
   listingUrls?: string[]
+  /**
+   * A paged calendar, as a URL with `{page}` in it.
+   *
+   * Pages 1 to `pageLimit`, in order, because a calendar is ordered by date:
+   * the first pages are the races coming up, and next year's arrive on their
+   * own as the weeks pass.
+   */
+  listingUrlTemplate?: string
   /** Which reader understands this calendar's HTML. */
   listingReader?: ListingReader
   baseUrl?: string
   city?: string
   country?: string
+  /**
+   * Milliseconds between this source's pages, when the default is too fast.
+   *
+   * running.life answers 429 at the standard pace and is happy three seconds
+   * apart. A site that publishes `Crawl-delay` says the same thing out loud.
+   */
+  delayMs?: number
   /**
    * What the pages are, for a server that does not say.
    *

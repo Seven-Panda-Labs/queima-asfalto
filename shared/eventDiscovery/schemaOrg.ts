@@ -1,3 +1,4 @@
+import { toIsoCountry } from './countries.js'
 import { parseDistancesKm } from './distances.js'
 import type { DiscoveredRace } from './types.js'
 
@@ -37,6 +38,11 @@ function flattenNodes(documents: readonly unknown[]): Record<string, unknown>[] 
     if (!isRecord(value)) return
     nodes.push(value)
     if ('@graph' in value) visit(value['@graph'])
+    // A calendar page publishes its events as an ItemList of ListItems, each
+    // wrapping the event in `item`. Without walking that, a page that describes
+    // every race on it reads as no races at all.
+    if ('itemListElement' in value) visit(value.itemListElement)
+    if ('item' in value) visit(value.item)
   }
   for (const document of documents) visit(document)
   return nodes
@@ -82,6 +88,20 @@ function latestValidThrough(offers: readonly Offer[]): string | undefined {
   return dates[dates.length - 1]
 }
 
+/**
+ * Below this, a number in prose is not a race.
+ *
+ * An offer named "400m" is a race somebody can enter. The same 400 in a
+ * sentence is the lap of a track ("auf der 400 m Bahn") or the children's dash
+ * in a programme that runs "von 400 m bis 10 km". Reading those filed a track
+ * sprint on 88 of 470 village races.
+ */
+const PROSE_MIN_KM = 2
+
+function fromProse(labels: readonly string[]): number[] {
+  return parseDistancesKm(labels).filter((km) => km >= PROSE_MIN_KM)
+}
+
 export function readEventNode(node: Record<string, unknown>): DiscoveredRace | null {
   if (!isEventNode(node)) return null
 
@@ -99,7 +119,9 @@ export function readEventNode(node: Record<string, unknown>): DiscoveredRace | n
     .map((offer) => text(offer.name))
     .filter((value): value is string => value !== undefined)
 
-  const country = text(address?.addressCountry)
+  // Documented as ISO 3166-1 alpha-2 and published as anything: "PT" from one
+  // source, "Deutschland" from the next.
+  const country = toIsoCountry(text(address?.addressCountry))
 
   return {
     sourceUrl,
@@ -107,10 +129,14 @@ export function readEventNode(node: Record<string, unknown>): DiscoveredRace | n
     startDate,
     city: text(address?.addressLocality),
     region: text(address?.addressRegion),
-    country: country ? country.toUpperCase() : undefined,
-    // The name is the last resort: plenty of races carry the distance in it and
-    // nothing else, and an event with no distance at all is not a candidate.
-    distancesKm: parseDistancesKm(labels.length > 0 ? labels : [name]),
+    country,
+    // The offers name the distances when there are offers. Otherwise the name
+    // and the description are all there is, and a calendar that sells nothing
+    // on the page ("Teamlauf über 5,5 km") says it there or nowhere.
+    distancesKm:
+      labels.length > 0
+        ? parseDistancesKm(labels)
+        : fromProse([name, text(node.description) ?? '']),
     registrationClosesAt: latestValidThrough(offers),
     lowPrice: money(aggregate?.lowPrice) ?? money(offers[0]?.price),
     highPrice: money(aggregate?.highPrice),

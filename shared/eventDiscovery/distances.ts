@@ -5,9 +5,10 @@ import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes.js'
  *
  * `schema.org/Event` has no distance field, which is the one thing discovery
  * needs most. What the sources do carry is an offer per distance, named the way
- * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m".
+ * the organiser names it: "Trail Longo 17km", "Caminhada 8km", "10.000 m",
+ * "1 Meile".
  */
-const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,4}))?\s*(km|k\b|milhas?|miles?|m\b)/giu
+const DISTANCE_PATTERN = /(\d{1,5})(?:([.,])(\d{1,4}))?\s*(km|k\b|milhas?|miles?|meilen?|m\b)/giu
 
 const MILE_KM = 1.609344
 
@@ -52,13 +53,38 @@ const MIN_KM = 0.4
 /** Anything longer is a stage race or a typo. */
 const MAX_KM = 250
 
+/**
+ * Numbers that share the unit at the end: "drei Strecken (3,3 / 6,6 / 9,9 km)".
+ *
+ * The main pattern needs the unit beside the number, so a list like that gave
+ * up its last distance and dropped the other two. Real prose from a calendar
+ * that publishes no offers, where the description is the only place a distance
+ * exists at all.
+ */
+const SHARED_UNIT =
+  /(\d{1,3}(?:[.,]\d{1,3})?(?:\s*[\/&+]\s*\d{1,3}(?:[.,]\d{1,3})?)+)\s*(km|m)\b/giu
+
+function sharedUnitDistances(label: string): string[] {
+  const expanded: string[] = []
+  for (const match of label.matchAll(SHARED_UNIT)) {
+    const unit = match[2]!
+    for (const number of match[1]!.split(/[\/&+]/)) expanded.push(`${number.trim()} ${unit}`)
+  }
+  return expanded
+}
+
 export function parseDistancesKm(labels: readonly string[]): number[] {
   const found = new Set<number>()
 
-  for (const label of labels) {
+  for (const raw of labels) {
     // A children's race contributes no distance: whatever number it carries is
     // not a distance this app should file.
-    if (isChildrensRace(label)) continue
+    if (isChildrensRace(raw)) continue
+
+    // Rewritten so every number in a shared unit list carries that unit, which
+    // the pattern below needs to see them at all.
+    const expanded = sharedUnitDistances(raw)
+    const label = expanded.length > 0 ? `${raw} ${expanded.join(' ')}` : raw
 
     let readANumber = false
 
@@ -77,7 +103,8 @@ export function parseDistancesKm(labels: readonly string[]): number[] {
       if (!Number.isFinite(value)) continue
 
       const km =
-        unit.startsWith('mil') || unit.startsWith('mile')
+        // "milhas", "miles" and the German "Meile", which is the same mile.
+        unit.startsWith('mil') || unit.startsWith('mile') || unit.startsWith('meile')
           ? value * MILE_KM
           : unit === 'm'
             ? value / 1000

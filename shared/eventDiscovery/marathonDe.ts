@@ -1,3 +1,4 @@
+import { toIsoCountry } from './countries.js'
 import type { DiscoveredRace } from './types.js'
 
 /**
@@ -29,38 +30,6 @@ const MONEY = /(\d{1,5})(?:[.,](\d{2}))?\s*(?:-\s*(\d{1,5})(?:[.,](\d{2}))?\s*)?
 
 /** The site says the race is off, in the middle of the page's own prose. */
 const CANCELLED = /\babgesagt\b|\bentf[äa]llt\b|\bfindet nicht statt\b/i
-
-/**
- * Country names as a German directory writes them.
- *
- * Built from what the 406 event pages actually say rather than from a list of
- * countries, and a name that is not in here drops the race: `country` is what
- * dedup compares, so a wrong one is worse than a missing race.
- */
-const COUNTRY_BY_NAME: Record<string, string> = {
-  ägypten: 'EG', albanien: 'AL', andorra: 'AD', argentinien: 'AR', armenien: 'AM',
-  australien: 'AU', belgien: 'BE', bosnien: 'BA', brasilien: 'BR', bulgarien: 'BG',
-  chile: 'CL', china: 'CN', 'costa rica': 'CR', dänemark: 'DK', deutschland: 'DE',
-  estland: 'EE', färöer: 'FO', finnland: 'FI', frankreich: 'FR', georgien: 'GE',
-  gibraltar: 'GI', grönland: 'GL', griechenland: 'GR', großbritannien: 'GB',
-  grossbritannien: 'GB', uk: 'GB', gb: 'GB', england: 'GB', schottland: 'GB',
-  wales: 'GB', nordirland: 'GB', indien: 'IN', indonesien: 'ID', irland: 'IE', island: 'IS',
-  israel: 'IL', italien: 'IT', japan: 'JP', jordanien: 'JO', kanada: 'CA',
-  kasachstan: 'KZ', katar: 'QA', kenia: 'KE', kolumbien: 'CO', kosovo: 'XK',
-  kroatien: 'HR', kuba: 'CU', lettland: 'LV', libanon: 'LB', liechtenstein: 'LI',
-  litauen: 'LT', luxemburg: 'LU', malaysia: 'MY', malta: 'MT', marokko: 'MA',
-  mauritius: 'MU', mexiko: 'MX', moldau: 'MD', monaco: 'MC', mongolei: 'MN',
-  montenegro: 'ME', namibia: 'NA', nepal: 'NP', neuseeland: 'NZ', niederlande: 'NL',
-  nordmazedonien: 'MK', norwegen: 'NO', österreich: 'AT', oesterreich: 'AT',
-  pakistan: 'PK', peru: 'PE', philippinen: 'PH', polen: 'PL', portugal: 'PT',
-  rumänien: 'RO', russland: 'RU', schweden: 'SE', schweiz: 'CH', senegal: 'SN',
-  serbien: 'RS', singapur: 'SG', slowakei: 'SK', slowenien: 'SI', spanien: 'ES',
-  'sri lanka': 'LK', südafrika: 'ZA', südkorea: 'KR', tansania: 'TZ', thailand: 'TH',
-  tschechien: 'CZ', tunesien: 'TN', türkei: 'TR', turkei: 'TR', ukraine: 'UA',
-  ungarn: 'HU', uruguay: 'UY', usa: 'US', usbekistan: 'UZ',
-  'vereinigte arabische emirate': 'AE', vietnam: 'VN', weißrussland: 'BY',
-  zypern: 'CY',
-}
 
 const CURRENCY_BY_WORD: Record<string, string> = {
   euro: 'EUR', eur: 'EUR', usd: 'USD', chf: 'CHF', gbp: 'GBP',
@@ -116,7 +85,7 @@ export function readMarathonDePage(
   // Vila, Ibiza, Spanien". The country is the last part, the city the first.
   const place = field(html, 'Ort').split(',').map((part) => part.trim())
   const city = place[0] ?? ''
-  const country = COUNTRY_BY_NAME[(place[place.length - 1] ?? '').toLowerCase()]
+  const country = toIsoCountry(place[place.length - 1])
   if (!city || place.length < 2 || !country) return null
 
   const km = distances(field(html, 'Distanzen'))

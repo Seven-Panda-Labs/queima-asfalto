@@ -48,6 +48,32 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     pageLimit: 1,
   },
   {
+    // 20 races per page of schema.org, 116 pages of them, and the event page
+    // adds nothing the list does not already say. Ordered by date, so the first
+    // pages are the races coming up: no rotation, just the nearest 1000.
+    id: 'running.life',
+    kind: 'listing',
+    listingReader: 'schema-org',
+    listingUrlTemplate: 'https://running.life/laufkalender/deutschland?page={page}',
+    // 429 at the standard pace, fine three seconds apart. 25 pages is 500
+    // races and 75 seconds, and the calendar being date ordered means those
+    // are the ones coming up: the far end arrives as the weeks pass.
+    delayMs: 3000,
+    pageLimit: 25,
+  },
+  {
+    // The whole German year on one page, with the fields as attributes rather
+    // than as prose. Cheapest source we read, and the one that finally weighs
+    // the catalog towards 5K, 10K and half marathons.
+    id: 'kilometerliebe.de',
+    kind: 'listing',
+    listingReader: 'kilometerliebe',
+    listingUrl: 'https://www.kilometerliebe.de/events/',
+    baseUrl: 'https://www.kilometerliebe.de/events/',
+    country: 'DE',
+    pageLimit: 1,
+  },
+  {
     // A German directory with no schema.org, and worth its own reader for what
     // it has that nothing else does: the city, every distance on offer, and the
     // entry fee per distance. 406 event pages, read a slice at a time.

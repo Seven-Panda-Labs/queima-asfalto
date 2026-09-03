@@ -18,7 +18,7 @@ export type ResolveParkrunCatalogResult =
   | { status: 'ambiguous'; candidates: ParkrunCatalogEvent[] }
   | { status: 'not_found' }
 
-function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
+export function haversineKm(lat1: number, lng1: number, lat2: number, lng2: number): number {
   const toRad = (value: number) => (value * Math.PI) / 180
   const dLat = toRad(lat2 - lat1)
   const dLng = toRad(lng2 - lng1)

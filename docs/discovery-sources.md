@@ -39,6 +39,8 @@ Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
 |---|---|---|
 | `acorrer.pt` | `sitemap` | provas em Portugal, com `schema.org` em cada página |
 | `davengo.com` | `search` | provas na Alemanha, distâncias tiradas da lista de participantes |
+| `kilometerliebe.de` | `listing` | 447 provas na Alemanha numa página, com as distâncias exactas |
+| `running.life` | `listing` | provas alemãs em `schema.org`, 20 por página, as mais próximas primeiro |
 | `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
 | `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
 | `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
@@ -77,6 +79,48 @@ Duas consequências que valem a pena saber:
 - **O preço é o do evento, não o da distância.** `lowPrice` é o mais barato que
   a página lista e `highPrice` o mais caro, que é o que os campos significam.
   Numa prova que vende 5 km e maratona, o preço da entrada não é um número só.
+
+A `kilometerliebe.de` é a fonte mais barata que lemos e a que finalmente puxa o
+catálogo para as distâncias curtas: um pedido, 447 provas, 271 com 10 km, 242
+com 5 km e 172 com meia maratona. Entrega os campos em atributos, não em prosa:
+
+```html
+<article data-event-card data-event-title="34. Fohlenhoflauf"
+  data-event-city="Homburg" data-event-state="Saarland"
+  data-event-date="2026-09-03" data-event-category="lauf">
+  <span class="distpill">4 km</span><span class="distpill">5 km</span>…
+```
+
+Duas escolhas que valem a pena registar:
+
+- **As distâncias vêm das pastilhas, não do atributo.** O `data-event-distances`
+  diz `5k,10k`, que são os baldes do filtro do site; as pastilhas dizem 4, 5 e
+  10 km, que são as provas.
+- **Só `lauf` e `trail`.** O calendário também tem triatlos e caminhadas, e as
+  distâncias de um triatlo entrariam no catálogo como quilómetros que ninguém
+  correu. Uma prova medida em horas (um 24 h, um backyard) também fica de fora:
+  não tem distância nenhuma.
+
+A `running.life` publica `schema.org` na própria página de calendário, e a página
+de cada evento não acrescenta nada, portanto não se busca nenhuma. São 116
+páginas de 20, e lemos as 25 primeiras: o calendário está ordenado por data, por
+isso essas são as provas que vêm a seguir, e o resto chega sozinho com as
+semanas.
+
+Três coisas que ela nos ensinou, e as três são partilhadas:
+
+- **Responde 429 ao nosso ritmo.** Setecentos milissegundos entre páginas é
+  demasiado depressa para este site, três segundos não. Uma fonte pode agora
+  pedir o seu próprio ritmo (`delayMs`), e uma página recusada a meio do
+  calendário passa a guardar o que já foi lido em vez de deitar a corrida fora.
+- **O país vem como «Deutschland».** O `addressCountry` do schema.org está
+  documentado como ISO 3166-1 alpha-2 e é publicado como quiserem. Passar isso
+  para maiúsculas arquivava provas no país «DEUTSCHLAND», que é o campo que a
+  deduplicação compara.
+- **A distância só existe na descrição**, e em prosa um número pequeno não é uma
+  prova: «na pista de 400 m» é o comprimento da volta e «de 400 m a 10 km» é a
+  prova das crianças. Abaixo de 2 km, um número em prosa não conta. Numa oferta
+  com nome («1500 m») conta sempre.
 
 ### O que a colheita faz
 
@@ -178,6 +222,8 @@ None of them runs unless `DISCOVERY_SOURCES` names it.
 |---|---|---|
 | `acorrer.pt` | `sitemap` | races in Portugal, `schema.org` on every page |
 | `davengo.com` | `search` | races in Germany, distances read off the starter list |
+| `kilometerliebe.de` | `listing` | 447 German races on one page, with the exact distances |
+| `running.life` | `listing` | German races as `schema.org`, 20 a page, the nearest first |
 | `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
 | `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
 | `planet-marathon.de` | `listing` | marathons on every continent, three pages |
@@ -217,6 +263,47 @@ Two consequences worth knowing:
 - **The fee is the event's, not the distance's.** `lowPrice` is the cheapest the
   page lists and `highPrice` the dearest, which is what those fields mean. For a
   race selling a 5K and a marathon, the entry fee is not one number.
+
+`kilometerliebe.de` is the cheapest source we read and the one that finally
+pulls the catalog towards the short distances: one request, 447 races, 271 with
+a 10K, 242 with a 5K and 172 with a half. It hands the fields over as attributes
+rather than as prose:
+
+```html
+<article data-event-card data-event-title="34. Fohlenhoflauf"
+  data-event-city="Homburg" data-event-state="Saarland"
+  data-event-date="2026-09-03" data-event-category="lauf">
+  <span class="distpill">4 km</span><span class="distpill">5 km</span>…
+```
+
+Two choices worth recording:
+
+- **The distances come from the pills, not the attribute.**
+  `data-event-distances` says `5k,10k`, which are the site's filter buckets; the
+  pills say 4, 5 and 10 km, which are the races.
+- **Only `lauf` and `trail`.** The calendar also carries triathlons and hikes,
+  and a triathlon's legs would enter the catalog as kilometres nobody ran. A run
+  measured in hours (a 24h, a backyard) is left out too: it has no distance.
+
+`running.life` publishes `schema.org` on the calendar page itself, and the event
+page adds nothing, so none is fetched. There are 116 pages of 20 and we read the
+first 25: the calendar is ordered by date, so those are the races coming up, and
+the rest arrives on its own as the weeks pass.
+
+Three things it taught us, and all three are shared:
+
+- **It answers 429 at our pace.** Seven hundred milliseconds between pages is
+  too fast for this site and three seconds is not. A source can now ask for its
+  own pace (`delayMs`), and a page refused halfway through a calendar keeps what
+  was already read instead of throwing the run away.
+- **The country arrives as "Deutschland".** schema.org documents
+  `addressCountry` as ISO 3166-1 alpha-2 and sources publish whatever they like.
+  Upper-casing it filed races in the country "DEUTSCHLAND", which is the field
+  dedup compares.
+- **The distance only exists in the description**, and in prose a small number
+  is not a race: "auf der 400 m Bahn" is the lap of a track and "von 400 m bis
+  10 km" is the children's dash. Under 2 km, a number in prose does not count.
+  In a named offer ("1500 m") it always does.
 
 ### What the harvest does
 

@@ -123,3 +123,33 @@ describe('isChildrensRace', () => {
     expect(isChildrensRace('Corrida da Minifábrica')).toBe(false)
   })
 })
+
+describe('the German mile', () => {
+  it('reads "1 Meile" as a mile, like "1 mile"', () => {
+    // Real pill from a German calendar: the "New Balance KÖ MEILE".
+    expect(parseDistancesKm(['1 Meile'])).toEqual([1.6093])
+    expect(parseDistancesKm(['5 Meilen'])).toEqual([8.0467])
+  })
+
+  it('leaves a metre reading alone', () => {
+    expect(parseDistancesKm(['800 m'])).toEqual([0.8])
+  })
+})
+
+describe('numbers that share one unit', () => {
+  it('reads every distance in "3,3 / 6,6 / 9,9 km"', () => {
+    // Real description: "mit drei Strecken (3,3 / 6,6 / 9,9 km)".
+    expect(parseDistancesKm(['Team Lauf mit drei Strecken (3,3 / 6,6 / 9,9 km)'])).toEqual([
+      3.3, 6.6, 9.9,
+    ])
+  })
+
+  it('reads a list written with & or +', () => {
+    expect(parseDistancesKm(['Strecken 5 & 10 km'])).toEqual([5, 10])
+    expect(parseDistancesKm(['10 + 21 km'])).toEqual([10, 21])
+  })
+
+  it('leaves a single distance exactly as it was', () => {
+    expect(parseDistancesKm(['Halbmarathon 21,0975 km'])).toEqual([21.0975])
+  })
+})
