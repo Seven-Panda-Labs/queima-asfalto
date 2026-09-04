@@ -4,6 +4,14 @@
 
 ---
 
+## [1.36.0] - 2026-09-04
+
+### Behoben
+
+- **Katalogaktualisierung:** eine nur teilweise gelesene Quelle (in Abschnitten, oder von der Seite abgebrochen) gilt nicht mehr als defekt, was ihre Aktualisierung verhinderte.
+
+---
+
 ## [1.35.0] - 2026-09-03
 
 ### Hinzugefügt

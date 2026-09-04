@@ -4,6 +4,14 @@
 
 ---
 
+## [1.36.0] - 2026-09-04
+
+### Fixed
+
+- **Catalog updates:** a source read only in part (a slice at a time, or cut short by the site) is no longer taken for broken, which was blocking its update.
+
+---
+
 ## [1.35.0] - 2026-09-03
 
 ### Added

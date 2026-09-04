@@ -4,6 +4,14 @@
 
 ---
 
+## [1.36.0] - 2026-09-04
+
+### Corrigé
+
+- **Mise à jour du catalogue :** une source lue en partie seulement (par tranches, ou coupée par le site) n'est plus prise pour cassée, ce qui empêchait sa mise à jour.
+
+---
+
 ## [1.35.0] - 2026-09-03
 
 ### Ajouté

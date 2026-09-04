@@ -4,6 +4,14 @@
 
 ---
 
+## [1.36.0] - 2026-09-04
+
+### Corregido
+
+- **Actualización del catálogo:** una fuente leída solo en parte (por porciones, o cortada por el sitio) ya no se toma por averiada, lo que impedía su actualización.
+
+---
+
 ## [1.35.0] - 2026-09-03
 
 ### Añadido

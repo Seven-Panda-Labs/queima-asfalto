@@ -75,3 +75,25 @@ describe('storedForSources', () => {
     expect(isHarvestCollapse(storedForSources(catalog, ['marathon.de']), 400)).toBe(false)
   })
 })
+
+describe('isHarvestCollapse and a source read in part', () => {
+  it('does not call a slice a collapse', () => {
+    // marathon.de reads 150 of its 406 pages each run: fewer races than the
+    // catalog holds for it is the design, not an outage.
+    expect(isHarvestCollapse(46, 30, { partial: true })).toBe(false)
+  })
+
+  it('does not call a run the site cut short a collapse', () => {
+    // running.life answers 429 partway through and the run keeps what it read.
+    expect(isHarvestCollapse(226, 180, { partial: true })).toBe(false)
+  })
+
+  it('still refuses a whole read that came back gutted', () => {
+    expect(isHarvestCollapse(226, 180)).toBe(true)
+    expect(isHarvestCollapse(226, 180, { partial: false })).toBe(true)
+  })
+
+  it('keeps taking a floor of its own', () => {
+    expect(isHarvestCollapse(100, 60, { floor: 0.5 })).toBe(false)
+  })
+})
