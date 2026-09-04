@@ -23,6 +23,8 @@ const BY_NAME: Record<string, string> = {
   georgia: 'GE', gibraltar: 'GI', grönland: 'GL', greenland: 'GL',
   griechenland: 'GR', greece: 'GR', großbritannien: 'GB', grossbritannien: 'GB',
   'great britain': 'GB', 'united kingdom': 'GB', uk: 'GB', gb: 'GB',
+  'vereinigtes königreich': 'GB', 'vereinigtes koenigreich': 'GB',
+  'royaume-uni': 'GB', 'reino unido': 'GB',
   england: 'GB', schottland: 'GB', scotland: 'GB', wales: 'GB', nordirland: 'GB',
   indien: 'IN', india: 'IN', indonesien: 'ID', indonesia: 'ID', irland: 'IE',
   ireland: 'IE', island: 'IS', iceland: 'IS', israel: 'IL', italien: 'IT',

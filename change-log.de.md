@@ -4,6 +4,14 @@
 
 ---
 
+## [1.37.0] - 2026-09-04
+
+### Hinzugefügt
+
+- **Halbmarathons außerhalb Deutschlands:** die Suche kann jetzt Halbmarathon-Kalender aus 17 Ländern lesen, von Portugal bis Norwegen. Sie bleibt aus, bis du sie einschaltest.
+
+---
+
 ## [1.36.0] - 2026-09-04
 
 ### Behoben

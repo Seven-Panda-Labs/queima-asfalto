@@ -62,6 +62,43 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     pageLimit: 25,
   },
   {
+    /**
+     * Half marathons, one calendar per country.
+     *
+     * The country calendars publish a description too short to read a distance
+     * from (one race in twenty), while these pages name the race: "Meia
+     * Maratona", "Media Maraton", "Mezza Maratona". Same schema.org as the
+     * German calendar, so no reader of its own.
+     *
+     * Date ordered, six pages each: the nearest 120 of every country, and the
+     * far end arrives as the weeks pass.
+     */
+    id: 'running.life/half-marathons',
+    kind: 'listing',
+    listingReader: 'schema-org',
+    listingCalendars: [
+      'https://running.life/halbmarathons/belgien?page={page}',
+      'https://running.life/halbmarathons/frankreich?page={page}',
+      'https://running.life/halbmarathons/luxemburg?page={page}',
+      'https://running.life/halbmarathons/niederlande?page={page}',
+      'https://running.life/halbmarathons/osterreich?page={page}',
+      'https://running.life/halbmarathons/schweiz?page={page}',
+      'https://running.life/halbmarathons/spanien?page={page}',
+      'https://running.life/halbmarathons/vereinigtes-konigreich?page={page}',
+      'https://running.life/half-marathons/czechia?page={page}',
+      'https://running.life/half-marathons/denmark?page={page}',
+      'https://running.life/half-marathons/greece?page={page}',
+      'https://running.life/half-marathons/hungary?page={page}',
+      'https://running.life/half-marathons/italy?page={page}',
+      'https://running.life/half-marathons/norway?page={page}',
+      'https://running.life/half-marathons/poland?page={page}',
+      'https://running.life/half-marathons/portugal?page={page}',
+      'https://running.life/half-marathons/sweden?page={page}',
+    ],
+    delayMs: 3000,
+    pageLimit: 6,
+  },
+  {
     // The whole German year on one page, with the fields as attributes rather
     // than as prose. Cheapest source we read, and the one that finally weighs
     // the catalog towards 5K, 10K and half marathons.

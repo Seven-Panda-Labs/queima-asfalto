@@ -4,6 +4,14 @@
 
 ---
 
+## [1.37.0] - 2026-09-04
+
+### Ajouté
+
+- **Des semi-marathons hors d'Allemagne :** la découverte peut lire des calendriers de semi-marathon de 17 pays, du Portugal à la Norvège. Elle reste éteinte jusqu'à ce que tu l'actives.
+
+---
+
 ## [1.36.0] - 2026-09-04
 
 ### Corrigé

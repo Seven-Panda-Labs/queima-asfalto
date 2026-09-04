@@ -4,6 +4,14 @@
 
 ---
 
+## [1.37.0] - 2026-09-04
+
+### Added
+
+- **Half marathons outside Germany:** discovery can now read half marathon calendars for 17 countries, from Portugal to Norway. It stays off until you enable it.
+
+---
+
 ## [1.36.0] - 2026-09-04
 
 ### Fixed
