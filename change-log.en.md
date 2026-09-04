@@ -8,7 +8,7 @@
 
 ### Added
 
-- **Half marathons outside Germany:** discovery can now read half marathon calendars for 17 countries, from Portugal to Norway. It stays off until you enable it.
+- **Races in 60 countries:** discovery can now read a worldwide calendar of 2280 races, mostly 5K and 10K, and half marathon calendars for 17 countries. It stays off until you enable them.
 
 ---
 

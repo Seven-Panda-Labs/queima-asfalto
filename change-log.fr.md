@@ -8,7 +8,7 @@
 
 ### Ajouté
 
-- **Des semi-marathons hors d'Allemagne :** la découverte peut lire des calendriers de semi-marathon de 17 pays, du Portugal à la Norvège. Elle reste éteinte jusqu'à ce que tu l'actives.
+- **Des courses dans 60 pays :** la découverte peut lire un calendrier mondial de 2280 courses, surtout des 5 et 10 km, et des calendriers de semi-marathon de 17 pays. Elle reste éteinte jusqu'à ce que tu les actives.
 
 ---
 

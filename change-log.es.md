@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Medias maratones fuera de Alemania:** el descubrimiento puede leer calendarios de media maratón de 17 países, de Portugal a Noruega. Sigue apagado hasta que lo actives.
+- **Carreras en 60 países:** el descubrimiento puede leer un calendario mundial con 2280 carreras, en su mayoría de 5 y 10 km, y calendarios de media maratón de 17 países. Sigue apagado hasta que los actives.
 
 ---
 

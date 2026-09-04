@@ -8,7 +8,7 @@
 
 ### Hinzugefügt
 
-- **Halbmarathons außerhalb Deutschlands:** die Suche kann jetzt Halbmarathon-Kalender aus 17 Ländern lesen, von Portugal bis Norwegen. Sie bleibt aus, bis du sie einschaltest.
+- **Rennen in 60 Ländern:** die Suche kann jetzt einen weltweiten Kalender mit 2280 Rennen lesen, überwiegend 5 und 10 km, sowie Halbmarathon-Kalender aus 17 Ländern. Sie bleibt aus, bis du sie einschaltest.
 
 ---
 
