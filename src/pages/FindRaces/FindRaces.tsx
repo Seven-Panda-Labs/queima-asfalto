@@ -27,8 +27,8 @@ import { canAssertDates } from '../../../shared/raceCatalog'
 import {
   catalogRaceToBucketListItem,
   findOrCreateCatalogRaceId,
-  loadHarvestSyncedAt,
-  loadRaceCatalog,
+  loadHarvestStatus,
+  searchRaceCatalog,
 } from '../../services/raceCatalog'
 import { formatDatePt } from '../../utils/date'
 import type { EventType } from '../../types/Event'
@@ -40,6 +40,36 @@ const FIELD = 'mt-1 w-full rounded-md border border-border bg-surface px-3 py-2 
 
 /** Every parkrun, everywhere, forever. */
 const PARKRUN_DISTANCE_KM = 5
+
+/**
+ * Rows per search, and how many more each time somebody asks.
+ *
+ * The catalog is thousands of races across dozens of countries, so a page that
+ * lists it is a page nobody reads. Twenty is a screen.
+ */
+const PAGE_SIZE = 20
+
+/**
+ * A search needs something to narrow it beyond the date.
+ *
+ * Without this the page opens on "every race in the world, soonest first",
+ * which is the list that made this change necessary. A country, a distance, a
+ * place or an anchor is enough.
+ */
+function hasFilter(criteria: DiscoveryCriteria, anchorRaceId: string): boolean {
+  return Boolean(
+    criteria.country || criteria.place.trim() || criteria.disciplines.length > 0 || anchorRaceId,
+  )
+}
+
+/** The country's own name in the reader's language, with the code as a fallback. */
+function countryName(code: string, language: string): string {
+  try {
+    return new Intl.DisplayNames([language], { type: 'region' }).of(code) ?? code
+  } catch {
+    return code
+  }
+}
 
 /** `YYYY-MM-DD`, which is what a native date input wants. */
 function isoDay(date: Date): string {
@@ -148,13 +178,16 @@ function Candidate({
 /**
  * Races the runner does not know about yet.
  *
- * The catalog is searched here rather than fetched per query: the sources have
- * no filtering endpoint, so a live search would mean pulling their whole
- * calendar every time somebody typed. What the page owes in return is honesty
- * about how current the catalog is.
+ * The catalog is queried, not read: it holds thousands of races across dozens
+ * of countries, and pulling it into the browser to filter there was five
+ * thousand document reads for twenty rows. So the page asks for nothing until
+ * it has something to narrow by, and asks the server for a page at a time.
+ *
+ * What it owes in return is honesty about how current the catalog is, which is
+ * the line at the bottom.
  */
 export function FindRaces() {
-  const { t } = useTranslation()
+  const { t, i18n } = useTranslation()
   const { user } = useAuth()
   const toast = useToast()
   const { items, addItem } = useBucketList()
@@ -217,6 +250,9 @@ export function FindRaces() {
   const { enabledDisciplines } = useDisciplines()
 
   const [catalog, setCatalog] = useState<RaceCatalogEntry[] | null>(null)
+  const [searching, setSearching] = useState(false)
+  const [pageSize, setPageSize] = useState(PAGE_SIZE)
+  const [countries, setCountries] = useState<string[]>([])
   const [syncedAt, setSyncedAt] = useState<Date | null>(null)
   const [criteria, setCriteria] = useState<DiscoveryCriteria>(EMPTY_CRITERIA)
   const [anchorRaceId, setAnchorRaceId] = useState('')
@@ -225,8 +261,10 @@ export function FindRaces() {
   const [watchedParkruns, setWatchedParkruns] = useState<string[]>([])
 
   useEffect(() => {
-    void loadRaceCatalog().then(setCatalog)
-    void loadHarvestSyncedAt().then(setSyncedAt)
+    void loadHarvestStatus().then((status) => {
+      setSyncedAt(status.syncedAt)
+      setCountries(status.countries)
+    })
   }, [])
 
   /**
@@ -283,6 +321,55 @@ export function FindRaces() {
     }))
   }
 
+  /**
+   * One query per search, filtered by the server.
+   *
+   * `place` stays a filter over what came back: Firestore has no substring
+   * match, and a runner typing a town has almost always picked a country too.
+   */
+  const filtered = hasFilter(criteria, anchorRaceId)
+  useEffect(() => {
+    if (!filtered) {
+      setCatalog(null)
+      return
+    }
+
+    let cancelled = false
+    setSearching(true)
+    const timer = setTimeout(() => {
+      void searchRaceCatalog({
+        country: criteria.country || undefined,
+        // One array-contains per query is all Firestore allows, so the rest of
+        // the picked disciplines narrow what came back.
+        discipline: criteria.disciplines[0],
+        from: criteria.from || undefined,
+        to: criteria.to || undefined,
+        limit: pageSize,
+      })
+        .then((races) => {
+          if (!cancelled) setCatalog(races)
+        })
+        .catch(() => {
+          if (!cancelled) setCatalog([])
+        })
+        .finally(() => {
+          if (!cancelled) setSearching(false)
+        })
+    }, 250)
+
+    return () => {
+      cancelled = true
+      clearTimeout(timer)
+    }
+  }, [
+    criteria.country,
+    criteria.disciplines,
+    criteria.from,
+    criteria.to,
+    filtered,
+    pageSize,
+  ])
+
   const candidates = useMemo(
     () => (catalog ? findCandidates(catalog, criteria, { anchor }) : []),
     [anchor, catalog, criteria],
@@ -313,6 +400,11 @@ export function FindRaces() {
       setAdding(null)
     }
   }
+
+  /** Any change to the criteria starts the list from the top again. */
+  useEffect(() => {
+    setPageSize(PAGE_SIZE)
+  }, [criteria.country, criteria.disciplines, criteria.from, criteria.to])
 
   function toggleDiscipline(discipline: EventType) {
     setCriteria((current) => ({
@@ -378,6 +470,26 @@ export function FindRaces() {
         </div>
 
         <div>
+          <label htmlFor="country" className="block text-sm font-semibold text-foreground">
+            {t('findRaces.country')}
+          </label>
+          <select
+            id="country"
+            value={criteria.country}
+            onChange={(event) => setCriteria({ ...criteria, country: event.target.value })}
+            className={FIELD}
+            disabled={countries.length === 0}
+          >
+            <option value="">{t('findRaces.anyCountry')}</option>
+            {countries.map((code) => (
+              <option key={code} value={code}>
+                {countryName(code, i18n.language)}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
           <label htmlFor="place" className="block text-sm font-semibold text-foreground">
             {t('findRaces.place')}
           </label>
@@ -408,12 +520,17 @@ export function FindRaces() {
         </FilterBar>
       </div>
 
-      {catalog === null ? (
+      {!filtered ? (
+        <div className="mt-6 rounded-lg border border-border bg-surface p-5">
+          <p className="text-sm text-foreground">{t('findRaces.pickAFilter')}</p>
+          <p className="mt-1 text-xs text-muted">
+            {countries.length > 0
+              ? t('findRaces.pickAFilterHint', { count: countries.length })
+              : t('findRaces.emptyCatalog')}
+          </p>
+        </div>
+      ) : catalog === null || (searching && candidates.length === 0) ? (
         <p className="mt-6 text-sm text-muted">{t('common.loading')}</p>
-      ) : catalog.length === 0 ? (
-        <p className="mt-6 rounded-lg border border-border bg-surface p-5 text-sm text-muted">
-          {t('findRaces.emptyCatalog')}
-        </p>
       ) : candidates.length === 0 ? (
         <p className="mt-6 rounded-lg border border-border bg-surface p-5 text-sm text-muted">
           {t('findRaces.noMatches')}
@@ -432,6 +549,18 @@ export function FindRaces() {
           ))}
         </ul>
       )}
+
+      {/* A full page means there is probably more behind it. */}
+      {filtered && catalog !== null && catalog.length >= pageSize ? (
+        <button
+          type="button"
+          onClick={() => setPageSize((current) => current + PAGE_SIZE)}
+          disabled={searching}
+          className="mt-4 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground hover:bg-border/40 disabled:opacity-50"
+        >
+          {searching ? t('common.loading') : t('findRaces.more')}
+        </button>
+      ) : null}
 
       <NearbyParkruns
         knownSlugs={knownParkrunSlugs}

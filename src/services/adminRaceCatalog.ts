@@ -1,5 +1,9 @@
 import { arrayUnion, collection, doc, getDoc, getDocs, setDoc } from 'firebase/firestore'
-import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
+import {
+  nextRaceDateOf,
+  RACE_CATALOG_COLLECTION,
+  type RaceCatalogEntry,
+} from '../../shared/raceCatalog'
 import { db } from './firebase'
 
 /**
@@ -26,10 +30,16 @@ export async function saveCatalogRaceForAdmin(
   race: RaceCatalogEntry,
   adminUid: string,
 ): Promise<void> {
+  const today = new Date().toISOString()
   await setDoc(doc(db, RACE_CATALOG_COLLECTION, race.id), {
     ...race,
     producer: race.producer ?? 'curated',
-    updatedAt: new Date().toISOString(),
+    // The field the discovery query filters and orders by. Derived here so a
+    // date edited by hand is searchable without waiting for a harvest.
+    ...(nextRaceDateOf(race.editions, today.slice(0, 10))
+      ? { nextRaceDate: nextRaceDateOf(race.editions, today.slice(0, 10)) }
+      : {}),
+    updatedAt: today,
     updatedBy: adminUid,
   })
 }

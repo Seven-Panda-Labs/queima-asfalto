@@ -115,3 +115,59 @@ describe('firestore indexes', () => {
     },
   )
 })
+
+/**
+ * The discovery query builds its filters from what the runner asked for, so a
+ * regular expression cannot enumerate its shapes. This asserts them from the
+ * function's own contract instead: `searchRaceCatalog` orders by
+ * `nextRaceDate` and adds `country` and one `disciplines` filter when it has
+ * them, which is four shapes and three composite indexes.
+ */
+describe('the discovery query', () => {
+  const SHAPES: { name: string; fields: { fieldPath: string; order?: string; arrayConfig?: string }[] }[] = [
+    {
+      name: 'country and date',
+      fields: [
+        { fieldPath: 'country', order: 'ASCENDING' },
+        { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
+      ],
+    },
+    {
+      name: 'discipline and date',
+      fields: [
+        { fieldPath: 'disciplines', arrayConfig: 'CONTAINS' },
+        { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
+      ],
+    },
+    {
+      name: 'country, discipline and date',
+      fields: [
+        { fieldPath: 'country', order: 'ASCENDING' },
+        { fieldPath: 'disciplines', arrayConfig: 'CONTAINS' },
+        { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
+      ],
+    },
+  ]
+
+  it.each(SHAPES)('declares an index for $name', ({ fields }) => {
+    const match = declaredIndexes().find(
+      (index) =>
+        index.collectionGroup === 'raceCatalog' &&
+        index.fields.length === fields.length &&
+        index.fields.every(
+          (field, position) =>
+            field.fieldPath === fields[position]!.fieldPath &&
+            (field as { arrayConfig?: string }).arrayConfig === fields[position]!.arrayConfig &&
+            field.order === fields[position]!.order,
+        ),
+    )
+    expect(match, 'declare it in firestore.indexes.json').toBeDefined()
+  })
+
+  it('reads the date field the query orders by', () => {
+    // If the query stops ordering by nextRaceDate, these indexes are wrong and
+    // this test is checking nothing.
+    const source = readFileSync('src/services/raceCatalog.ts', 'utf8')
+    expect(source).toContain("orderBy('nextRaceDate')")
+  })
+})

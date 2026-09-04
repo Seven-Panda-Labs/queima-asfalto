@@ -4,6 +4,14 @@
 
 ---
 
+## [1.39.0] - 2026-09-04
+
+### Geändert
+
+- **Rennen finden:** die Seite fragt jetzt nach einem Filter, bevor sie eine Liste zeigt, bekommt eine Suche nach Land, und holt die Ergebnisse seitenweise statt den ganzen Katalog in den Browser zu laden. Bei tausenden Rennen in dutzenden Ländern half die ganze Liste niemandem.
+
+---
+
 ## [1.38.0] - 2026-09-04
 
 ### Behoben

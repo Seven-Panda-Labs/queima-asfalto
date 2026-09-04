@@ -86,6 +86,21 @@ export type RaceCatalogEntry = {
   typicalRaceMonth?: number
   typicalWindowNote?: string
   editions?: RaceCatalogEdition[]
+  /**
+   * The soonest edition that had not happened when this was written.
+   *
+   * A copy of what `editions` already says, and the only reason it exists is
+   * that Firestore cannot filter or order by a field inside an array. Without
+   * it, finding "a 10K in Germany in July" means reading the whole catalog into
+   * the browser, which at five thousand entries is five thousand reads per
+   * visit.
+   *
+   * Written at harvest time, so it goes stale in one case: an entry whose next
+   * edition passes while a later one is still stored drops out of the query
+   * until its source is harvested again, which happens weekly. The alternative
+   * was a field that lies less often and a query that cannot order by date.
+   */
+  nextRaceDate?: string
   review: CatalogReviewState
   /** Where the entry came from, so a reviewer knows what to check against. */
   source: string
