@@ -8,7 +8,7 @@
 
 ### Adicionado
 
-- **Meias maratonas fora da Alemanha:** a descoberta passa a poder ler calendários de meia maratona de 17 países, de Portugal à Noruega. Continua desligada até a activares.
+- **Provas em 60 países:** a descoberta passa a poder ler um calendário mundial com 2280 provas, a maioria de 5 e 10 km, e calendários de meia maratona de 17 países. Continua desligada até as activares.
 
 ---
 

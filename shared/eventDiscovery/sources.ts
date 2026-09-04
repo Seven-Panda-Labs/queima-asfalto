@@ -26,6 +26,7 @@ export const LISTING_READERS = [
   'planet-marathon',
   'kilometerliebe',
   'schema-org',
+  'runme',
 ] as const
 
 export type ListingReader = (typeof LISTING_READERS)[number]

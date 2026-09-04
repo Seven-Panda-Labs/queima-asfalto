@@ -42,6 +42,7 @@ Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
 | `kilometerliebe.de` | `listing` | 447 provas na Alemanha numa página, com as distâncias exactas |
 | `running.life` | `listing` | provas alemãs em `schema.org`, 20 por página, as mais próximas primeiro |
 | `running.life/half-marathons` | `listing` | meias maratonas em 17 países, um calendário por país |
+| `runme.de` | `listing` | 2280 provas em 60 países, um mês por página |
 | `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
 | `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
 | `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
@@ -140,6 +141,28 @@ Calendar Portugal», mas a lista inclui um backyard ultra e um trail, portanto
 afirmar 21,0975 para as provas cujo nome não diz distância nenhuma seria afirmar
 o que não sabemos. Essas entram sem distância, e a distância pergunta-se ao
 adicionar.
+
+A `runme.de` é a fonte de maior alcance que temos e a única onde a Alemanha é
+minoria: 2280 provas em 60 países, com 1532 nos Estados Unidos, 458 na Alemanha,
+e depois Suíça, Áustria, Itália, Reino Unido, França, Nova Zelândia, Emirados,
+Antárctida. Doze pedidos, um por mês, em 27 segundos.
+
+O mês no URL é uma palavra (`/laufkalender/oktober/`), não uma data, portanto os
+mesmos doze endereços avançam sozinhos para sempre.
+
+Cada evento traz o lugar já com código de país, e as distâncias vêm dos nomes do
+que o evento vende, que é a diferença entre esta fonte e as outras:
+
+```
+46499 Hamminkeln, Nordrhein-Westfalen, DE
+  5 km · 5 km-W/NW · 10 km
+```
+
+Duas coisas que o leitor sabe e que valem os comentários que têm: o código
+postal aparece antes da terra na Alemanha e depois nos Estados Unidos («Mountain
+Home 83647»), com letras em Andorra e na Argentina; e uma competição que só é
+marcha («5 km-W», «1 Meilen-W») não é distância de prova, enquanto uma que diz
+as duas coisas («5 km-Laufen & Walking») fica.
 
 ### O que a colheita faz
 
@@ -269,6 +292,7 @@ None of them runs unless `DISCOVERY_SOURCES` names it.
 | `kilometerliebe.de` | `listing` | 447 German races on one page, with the exact distances |
 | `running.life` | `listing` | German races as `schema.org`, 20 a page, the nearest first |
 | `running.life/half-marathons` | `listing` | half marathons in 17 countries, a calendar each |
+| `runme.de` | `listing` | 2280 races in 60 countries, a month a page |
 | `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
 | `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
 | `planet-marathon.de` | `listing` | marathons on every continent, three pages |
@@ -367,6 +391,29 @@ Calendar Portugal" and the list includes a backyard ultra and a trail race, so
 asserting 21.0975 for every race whose name names no distance would be asserting
 what we do not know. Those arrive with no distance, and the distance is asked
 when somebody adds one.
+
+`runme.de` has the widest reach we read and is the only source where Germany is
+the minority: 2280 races in 60 countries, 1532 of them in the United States, 458
+in Germany, then Switzerland, Austria, Italy, the UK, France, New Zealand, the
+Emirates, Antarctica. Twelve requests, one per month, in 27 seconds.
+
+The month in the URL is a word (`/laufkalender/oktober/`) rather than a date, so
+the same twelve addresses roll forward for ever.
+
+Every event carries its place with a country code already, and the distances
+come from the names of what the event sells, which is what separates this source
+from the others:
+
+```
+46499 Hamminkeln, Nordrhein-Westfalen, DE
+  5 km · 5 km-W/NW · 10 km
+```
+
+Two things the reader knows and that earn their comments: the postcode comes
+before the town in Germany and after it in the United States ("Mountain Home
+83647"), with letters in Andorra and Argentina; and a competition that is only a
+walk ("5 km-W", "1 Meilen-W") is not a race distance, while one that says both
+("5 km-Laufen & Walking") stays.
 
 ### What the harvest does
 
