@@ -25,6 +25,12 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          # Both lockfiles, or the functions install never comes from the
+          # cache: five minutes of npm every run, and a job that times out
+          # whenever the registry is slow.
+          cache-dependency-path: |
+            package-lock.json
+            functions/package-lock.json
 
       - name: Setup Java
         uses: actions/setup-java@v4
@@ -58,6 +64,12 @@ jobs:
         with:
           node-version: 24
           cache: npm
+          # Both lockfiles, or the functions install never comes from the
+          # cache: five minutes of npm every run, and a job that times out
+          # whenever the registry is slow.
+          cache-dependency-path: |
+            package-lock.json
+            functions/package-lock.json
 
       - name: Install dependencies
         run: npm ci
