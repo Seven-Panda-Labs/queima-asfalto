@@ -106,3 +106,27 @@ export function selectEnabledSources<T extends { id: string }>(
   if (names.includes('all')) return [...sources]
   return sources.filter((source) => names.includes(source.id.toLowerCase()))
 }
+
+const DAY_MS = 24 * 60 * 60 * 1000
+
+/**
+ * The one source a run reads, out of the enabled ones.
+ *
+ * Reading every source in one run put seven calendars, a few hundred page
+ * fetches and every politeness delay inside a single function invocation, and
+ * the run grew with each source added until the timeout was the limit on how
+ * many sources this app could have.
+ *
+ * So a run reads one, and the schedule runs daily instead of weekly: seven
+ * sources are still refreshed once a week each, in a seventh of the time, and
+ * a source that is down costs its own slot rather than the whole harvest.
+ *
+ * Chosen from the day rather than from stored state: the same day picks the
+ * same source however often the job is forced, and there is no cursor to get
+ * stuck.
+ */
+export function sourceForRun<T>(sources: readonly T[], now: Date): T | undefined {
+  if (sources.length === 0) return undefined
+  const day = Math.floor(now.getTime() / DAY_MS)
+  return sources[((day % sources.length) + sources.length) % sources.length]
+}

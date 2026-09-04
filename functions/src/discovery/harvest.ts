@@ -4,7 +4,11 @@ import { onSchedule } from 'firebase-functions/v2/scheduler'
 import { RACE_CATALOG_COLLECTION } from '../shared/raceCatalog/collection.js'
 import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
 import { dedupeRaces } from '../shared/eventDiscovery/dedup.js'
-import { isHarvestCollapse, isHarvestable } from '../shared/eventDiscovery/guards.js'
+import {
+  isHarvestCollapse,
+  isHarvestable,
+  storedForSources,
+} from '../shared/eventDiscovery/guards.js'
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
@@ -19,6 +23,7 @@ import {
 } from '../shared/eventDiscovery/davengo.js'
 import { parseSitemap, rotatePages, selectEventUrls } from '../shared/eventDiscovery/sitemap.js'
 import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCatalogEntry.js'
+import { sourceForRun } from '../shared/eventDiscovery/sources.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
 import { DELAY_BETWEEN_PAGES_MS, delay, fetchPage } from './fetchPage.js'
@@ -30,8 +35,13 @@ if (getApps().length === 0) {
 
 const db = getFirestore()
 
-/** Race calendars change by the week, not by the hour. */
-const HARVEST_SCHEDULE = 'every monday 05:00'
+/**
+ * Daily, because a run reads one source.
+ *
+ * Seven enabled sources are each refreshed weekly, the same as when one run
+ * read them all, with a seventh of the work in any one invocation.
+ */
+const HARVEST_SCHEDULE = 'every day 05:00'
 
 /**
  * Where the client reads how current the catalog is.
@@ -231,10 +241,30 @@ export async function refreshDiscoveryCatalog(
   const discovered: DiscoveredRace[] = []
   /** Which source each race came from, which is what a reviewer needs. */
   const sourceByUrl = new Map<string, string>()
+  const failed: string[] = []
   for (const source of sources) {
-    for (const race of await harvestSource(source, now)) {
-      discovered.push(race)
-      sourceByUrl.set(race.sourceUrl, source.id)
+    try {
+      for (const race of await harvestSource(source, now)) {
+        discovered.push(race)
+        sourceByUrl.set(race.sourceUrl, source.id)
+      }
+    } catch (error) {
+      // A source being down is news for the operator, not an exception that
+      // costs the rest of the run.
+      console.error(`${source.id}: harvest failed`, error)
+      failed.push(source.id)
+    }
+  }
+
+  if (discovered.length === 0) {
+    const reason = failed.length > 0 ? `sources unavailable: ${failed.join(',')}` : 'nothing_found'
+    console.error(`discovery harvest rejected, ${reason}`)
+    return {
+      written: 0,
+      harvested: 0,
+      skipped: 0,
+      sources: sources.map((source) => source.id),
+      reason,
     }
   }
 
@@ -251,7 +281,8 @@ export async function refreshDiscoveryCatalog(
    */
   const catalogSnap = await db.collection(RACE_CATALOG_COLLECTION).get()
   const catalog = catalogSnap.docs.map((document) => document.data() as RaceCatalogEntry)
-  const harvestedCount = catalog.filter((entry) => entry.producer === 'harvest').length
+  const sourceIds = sources.map((source) => source.id)
+  const harvestedCount = storedForSources(catalog, sourceIds)
 
   if (isHarvestCollapse(harvestedCount, races.length)) {
     // Keeping a stale catalog beats publishing a gutted one: these are scrapes,
@@ -306,31 +337,43 @@ export async function refreshDiscoveryCatalog(
     }
   }
 
+  // Merged rather than replaced: a run speaks for the source it read, and the
+  // other six keep the line their own last run wrote.
   await db
     .collection(HARVEST_STATUS_COLLECTION)
     .doc(HARVEST_STATUS_DOC_ID)
-    .set({
-      syncedAt: Timestamp.fromDate(now),
-      harvested: races.length,
-      written,
-      skipped,
-      deduplicated,
-      sources: sources.map((source) => source.id),
-    })
+    .set(
+      {
+        syncedAt: Timestamp.fromDate(now),
+        harvested: races.length,
+        written,
+        skipped,
+        deduplicated,
+        sources: sourceIds,
+        bySource: Object.fromEntries(
+          sourceIds.map((id) => [
+            id,
+            { syncedAt: Timestamp.fromDate(now), harvested: races.length, written },
+          ]),
+        ),
+      },
+      { merge: true },
+    )
 
-  return {
-    written,
-    harvested: races.length,
-    skipped,
-    deduplicated,
-    sources: sources.map((source) => source.id),
-  }
+  return { written, harvested: races.length, skipped, deduplicated, sources: sourceIds }
 }
 
 export const harvestRaceCatalog = onSchedule(
   scheduleFunctionOptions(HARVEST_SCHEDULE, { memory: '512MiB', timeoutSeconds: 540 }),
   async () => {
-    const result = await refreshDiscoveryCatalog(new Date())
+    const now = new Date()
+    const source = sourceForRun(enabledSources(), now)
+    if (!source) {
+      console.log('discovery harvest did not publish: no_sources_enabled')
+      return
+    }
+
+    const result = await refreshDiscoveryCatalog(now, [source])
 
     if (result.reason) {
       console.log(`discovery harvest did not publish: ${result.reason}`)

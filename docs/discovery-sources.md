@@ -124,7 +124,17 @@ Três coisas que ela nos ensinou, e as três são partilhadas:
 
 ### O que a colheita faz
 
-`harvestRaceCatalog` corre uma vez por semana e, para cada fonte activada:
+`harvestRaceCatalog` corre **uma vez por dia e lê uma fonte**, escolhida pelo
+dia: com sete fontes activadas, cada uma é lida uma vez por semana, tal como
+quando uma corrida lia todas, mas com um sétimo do trabalho em cada invocação.
+Ler tudo de uma vez fazia o tempo de execução crescer com cada fonte
+acrescentada, até o limite da função passar a ser o limite de quantas fontes a
+app podia ter. Assim, uma fonte em baixo custa a sua vez e não a colheita.
+
+O dia escolhe a fonte, não um cursor guardado: forçar a execução no mesmo dia lê
+sempre a mesma fonte, e não há estado para encravar.
+
+Para a fonte do dia:
 
 1. Lê o sitemap e escolhe as páginas de evento, as mais recentemente alteradas
    primeiro (`lastmod` ordena o trabalho, não o filtra).
@@ -140,9 +150,11 @@ Três coisas que ela nos ensinou, e as três são partilhadas:
 - **Nunca por cima de uma pessoa.** Uma entrada `curated` ou já `reviewed` só
   recebe uma edição que lhe faltava. Nome, forma de inscrição e datas revistas
   ficam como estão.
-- **Piso de colapso.** Se uma colheita traz menos de 80% do que já está
-  guardado, não publica nada. São scrapes: uma mudança de template lá em cima
-  custa uma corrida, não a funcionalidade.
+- **Piso de colapso.** Se uma colheita traz menos de 80% do que **essa fonte**
+  já tem no catálogo, não publica nada. São scrapes: uma mudança de template lá
+  em cima custa uma corrida, não a funcionalidade. Por fonte e não por catálogo,
+  porque uma corrida lê uma fonte, e porque uma fonte a apagar-se ficava
+  escondida pelo volume das outras.
 
 E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
 um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
@@ -307,7 +319,17 @@ Three things it taught us, and all three are shared:
 
 ### What the harvest does
 
-`harvestRaceCatalog` runs once a week and, for each enabled source:
+`harvestRaceCatalog` runs **once a day and reads one source**, picked by the
+day: with seven sources enabled each is read once a week, the same as when one
+run read them all, with a seventh of the work in any one invocation. Reading
+everything at once made the runtime grow with each source added, until the
+function's timeout was the limit on how many sources this app could have. This
+way a source that is down costs its own slot rather than the harvest.
+
+The day picks the source rather than a stored cursor: forcing a run on the same
+day reads the same source, and there is no state to get stuck.
+
+For the day's source:
 
 1. Reads the sitemap and picks the event pages, most recently changed first
    (`lastmod` orders the work rather than filtering it).
@@ -323,9 +345,11 @@ Three things it taught us, and all three are shared:
 - **Never over a person.** A `curated` or already `reviewed` entry only ever
   gains an edition it was missing. Its name, entry method and reviewed dates
   stay as they are.
-- **Collapse floor.** A harvest returning under 80% of what is already stored
-  publishes nothing. These are scrapes: a template change upstream costs a run,
-  not the feature.
+- **Collapse floor.** A harvest returning under 80% of what **that source**
+  already has in the catalog publishes nothing. These are scrapes: a template
+  change upstream costs a run, not the feature. Per source rather than per
+  catalog, because a run reads one source, and because a source going dark used
+  to be hidden by the volume of the others.
 
 Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
 the runner can see and correct) and may never **assert** (no reminders, no
