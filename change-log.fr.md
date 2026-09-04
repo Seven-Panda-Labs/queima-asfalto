@@ -4,6 +4,14 @@
 
 ---
 
+## [1.38.0] - 2026-09-04
+
+### Corrigé
+
+- **Courses en double dans le catalogue :** la même course n'y entre plus deux fois quand deux sources la nomment un peu différemment, quand l'une ne publie pas la distance, ou quand le nom de la ville change de place dans le nom. Et la file des cas douteux dans l'espace d'administration ne demande plus que ce qui vaut la peine.
+
+---
+
 ## [1.37.0] - 2026-09-04
 
 ### Ajouté

@@ -163,8 +163,10 @@ describe('findCatalogDuplicate, once an operator has answered', () => {
 })
 
 describe('catalogDuplicateCandidates', () => {
-  const one = entry({ id: 'a', name: 'Volkslauf Prenzlauer Berg', disciplines: ['km_10'] })
-  const two = entry({ id: 'b', name: 'Sparkassen Firmenlauf', disciplines: ['km_10'] })
+  // A pair that shares a word without the names agreeing: "rathaus" and
+  // "center" in both, and neither name inside the other.
+  const one = entry({ id: 'a', name: 'Dessauer Rathaus-Center City RUN', disciplines: ['km_10'] })
+  const two = entry({ id: 'b', name: '27. Rathaus-Center CityRUN', disciplines: ['km_10'] })
 
   it('asks about the pair no rule will merge on its own', () => {
     expect(catalogDuplicateCandidates([one, two])).toHaveLength(1)
@@ -180,7 +182,7 @@ describe('catalogDuplicateCandidates', () => {
   it('offers the entry a person stands behind as the survivor', () => {
     const withFee = entry({
       id: 'b',
-      name: 'Sparkassen Firmenlauf',
+      name: '27. Rathaus-Center CityRUN',
       disciplines: ['km_10'],
       editions: [
         {
@@ -205,9 +207,10 @@ describe('catalogDuplicateCandidates', () => {
     ).toEqual([])
   })
 
-  it('asks about the two 5 km of the Berlin weekend, which is the point', () => {
-    // No rule can tell these apart, so a person has to, and the queue is where
-    // the question gets asked.
+  it('does not ask about the two 5 km of the Berlin weekend', () => {
+    // It used to, and with a hundred entries that was a fair question. At
+    // catalog scale it is noise: they share a Saturday and a town and nothing
+    // else, and the answer was always "two races".
     const generali = entry({
       id: 'de-berlin-generali-5k',
       name: 'GENERALI 5K im Rahmen des BMW BERLIN-MARATHON',
@@ -220,11 +223,215 @@ describe('catalogDuplicateCandidates', () => {
       disciplines: ['km_5'],
       editions: [{ year: 2026, raceDate: '2026-09-26', source: 's', confirmedAt: '2026-09-02' }],
     })
-    expect(catalogDuplicateCandidates([generali, r5k])).toHaveLength(1)
+    expect(catalogDuplicateCandidates([generali, r5k])).toEqual([])
   })
 
   it('reports each pair once', () => {
-    const three = entry({ id: 'c', name: 'Lauf der Sympathie', disciplines: ['km_10'] })
+    const three = entry({ id: 'c', name: 'Rathaus-Center Lauf', disciplines: ['km_10'] })
     expect(catalogDuplicateCandidates([one, two, three])).toHaveLength(3)
+  })
+})
+
+describe('the pairs a runner found in the catalog', () => {
+  function real(
+    name: string,
+    city: string,
+    day: string,
+    disciplines: string[],
+  ): RaceCatalogEntry {
+    return entry({
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      city,
+      disciplines: disciplines as RaceCatalogEntry['disciplines'],
+      editions: [{ year: 2026, raceDate: day, source: 'x', confirmedAt: '2026-09-04' }],
+    })
+  }
+
+  it('merges a race whose distance one source leaves out', () => {
+    // Side by side in production: running.life publishes no distance for it,
+    // runme.de publishes the 5 km. Not knowing a distance is not knowing a
+    // different one.
+    const bare = real('Birkenfelder Firmenlauf', 'Birkenfeld', '2026-09-05', [])
+    const full = real(
+      'Birkenfelder Firmenlauf - Die Wirtschaft läuft',
+      'Birkenfeld',
+      '2026-09-05',
+      ['km_5'],
+    )
+    expect(findCatalogDuplicate(full, [bare])?.id).toBe(bare.id)
+    expect(findCatalogDuplicate(bare, [full])?.id).toBe(full.id)
+  })
+
+  it('merges the pairs whose names carry a suffix', () => {
+    const pairs: [RaceCatalogEntry, RaceCatalogEntry][] = [
+      [
+        real('WILDMAN Harz', 'Wildemann', '2026-09-05', ['km_50']),
+        real('Wildman Harz - Ultra 55k', 'Wildemann', '2026-09-05', ['km_50']),
+      ],
+      [
+        real('Tannen-Cross-Lauf Demmin', 'Demmin', '2026-09-05', ['km_10']),
+        real('Tannen-Cross-Lauf der Hansestadt Demmin', 'Demmin', '2026-09-05', ['km_5', 'km_10']),
+      ],
+      [
+        real('Neckarsteiglauf', 'Heidelberg', '2026-09-11', ['km_50', 'km_100']),
+        real('Neckarsteiglauf 126K', 'Heidelberg', '2026-09-11', ['km_50', 'km_100']),
+      ],
+    ]
+    for (const [left, right] of pairs) {
+      expect(findCatalogDuplicate(right, [left])).not.toBeNull()
+    }
+  })
+
+  it('leaves two races that share a town and a day alone', () => {
+    // A half plus an hour run, and a quarter of an hour run. Two races.
+    const half = real('Zwickauer Halb- und Stundenlauf', 'Zwickau', '2026-09-09', [])
+    const quarter = real('Zwickauer Viertelstundenlauf', 'Zwickau', '2026-09-09', [])
+    expect(findCatalogDuplicate(quarter, [half])).toBeNull()
+  })
+
+  it('leaves the doubtful pair to a person', () => {
+    // Same day, and a town written two ways: "Dessau" and "Dessau-Roßlau".
+    // The queue in the admin area is where this gets decided.
+    const one = real('Dessauer Rathaus-Center City RUN', 'Dessau', '2026-09-13', ['km_5'])
+    const two = real('27. Rathaus-Center CityRUN', 'Dessau-Roßlau', '2026-09-13', ['km_5'])
+    expect(findCatalogDuplicate(two, [one])).toBeNull()
+  })
+})
+
+describe('catalogDuplicateCandidates at catalog scale', () => {
+  function berlin(name: string, disciplines: string[] = ['km_10']) {
+    return entry({
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      city: 'Berlin',
+      disciplines: disciplines as RaceCatalogEntry['disciplines'],
+      editions: [{ year: 2026, raceDate: '2026-09-05', source: 'x', confirmedAt: '2026-09-04' }],
+    })
+  }
+
+  it('stops asking about races that only share a town and a day', () => {
+    // Real pairs from a 3000 entry catalog: one Saturday in Berlin holds a
+    // dozen unrelated races, and every combination of them was a question.
+    const pairs = catalogDuplicateCandidates([
+      berlin('Bierpaarlauf'),
+      berlin('Gravel Run Berlin'),
+      berlin('Hohenschönhausener Gartenlauf'),
+    ])
+    expect(pairs).toEqual([])
+  })
+
+  it('still asks when the names share a word of their own', () => {
+    const pairs = catalogDuplicateCandidates([
+      berlin('Dessauer Rathaus-Center City RUN'),
+      berlin('27. Rathaus-Center CityRUN'),
+    ])
+    expect(pairs).toHaveLength(1)
+  })
+
+  it('does not count the town as that word', () => {
+    expect(
+      catalogDuplicateCandidates([berlin('Berliner Volkslauf'), berlin('Berlin Gravel Run')]),
+    ).toEqual([])
+  })
+})
+
+describe('the town inside the name', () => {
+  function named(name: string, city: string) {
+    return entry({
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      city,
+      disciplines: ['km_10'],
+      editions: [{ year: 2026, raceDate: '2026-09-05', source: 'x', confirmedAt: '2026-09-04' }],
+    })
+  }
+
+  it('merges a race whose town moved to the front, as an adjective', () => {
+    // Real pairs from the catalog, three of them at once.
+    for (const [left, right, city] of [
+      ['28. Erfurter Zooparklauf', 'Zooparklauf Erfurt', 'Erfurt'],
+      ['Hochheimer Weinbergslauf', '22. Weinbergslauf Hochheim', 'Hochheim am Main'],
+      ['Ippesheimer Weinparadieslauf', 'Weinparadieslauf Ippesheim', 'Ippesheim'],
+    ] as const) {
+      expect(findCatalogDuplicate(named(right, city), [named(left, city)])).not.toBeNull()
+    }
+  })
+
+  it('keeps the half and the full marathon of one organiser apart', () => {
+    // "Haspa Halbmarathon Hamburg" and "Haspa Marathon Hamburg" are two races,
+    // and dropping the town does not make them one.
+    const half = named('Haspa Halbmarathon Hamburg', 'Hamburg')
+    const full = named('Haspa Marathon Hamburg', 'Hamburg')
+    expect(findCatalogDuplicate(full, [half])).toBeNull()
+  })
+
+  it('keeps two parkruns in one city apart', () => {
+    const one = named('Alstervorland parkrun Hamburg', 'Hamburg')
+    const two = named('Krupunder See parkrun Hamburg', 'Hamburg')
+    expect(findCatalogDuplicate(two, [one])).toBeNull()
+  })
+})
+
+describe('the same name written differently', () => {
+  function named(name: string, city: string) {
+    return entry({
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      city,
+      disciplines: ['km_10'],
+      editions: [{ year: 2026, raceDate: '2026-09-05', source: 'x', confirmedAt: '2026-09-04' }],
+    })
+  }
+
+  it('merges a name whose words were split or joined', () => {
+    for (const [left, right, city] of [
+      ['Meppener Sparkassen Citylauf', '39. Sparkassen-City-Lauf Meppen', 'Meppen'],
+      ['Dessauer Rathaus-Center City RUN', '27. Rathaus-Center CityRUN', 'Dessau'],
+      ['Phoenix-InWest-Neujahrslauf Dortmund', '15. PhoenixInWest Neujahrslauf', 'Dortmund'],
+    ] as const) {
+      expect(findCatalogDuplicate(named(right, city), [named(left, city)])).not.toBeNull()
+    }
+  })
+
+  it('does not merge a word that merely contains another', () => {
+    // The Zwickau pair again, from the other direction: same letters in the
+    // middle, different races.
+    const hour = named('Stundenlauf', 'Zwickau')
+    const quarter = named('Viertelstundenlauf', 'Zwickau')
+    expect(findCatalogDuplicate(quarter, [hour])).toBeNull()
+  })
+})
+
+describe('what counts as evidence for the queue', () => {
+  function named(name: string, city: string) {
+    return entry({
+      id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+      name,
+      city,
+      disciplines: ['km_5'],
+      editions: [{ year: 2026, raceDate: '2026-09-05', source: 'x', confirmedAt: '2026-09-04' }],
+    })
+  }
+
+  it('does not ask about races that share only a word every race has', () => {
+    // Real pairs from the American half of the catalog.
+    for (const [left, right, city] of [
+      ['Turkey Trails OKC', 'Veterans Voyage OKC', 'Oklahoma City'],
+      ['Hunger Run', 'Huff and Cuff Fitness Run/Walk', 'Toledo'],
+      ['Bay Ridge Half Marathon', 'Brooklyn Greenway Half', 'New York'],
+      ['Dempsey Dash 5K and 1k Fun Run', "Joey's Wings 5K & Kids Obstacle Run", 'Ashburn'],
+    ] as const) {
+      expect(catalogDuplicateCandidates([named(left, city), named(right, city)])).toEqual([])
+    }
+  })
+
+  it('still merges the pair whose shared word is the race', () => {
+    // The generic list is the queue's business only: the merge rule must keep
+    // reading every word, or "Haspa Halbmarathon" and "Haspa Marathon" become
+    // one race.
+    const half = named('Haspa Halbmarathon Hamburg', 'Hamburg')
+    const full = named('Haspa Marathon Hamburg', 'Hamburg')
+    expect(findCatalogDuplicate(full, [half])).toBeNull()
   })
 })

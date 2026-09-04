@@ -4,6 +4,14 @@
 
 ---
 
+## [1.38.0] - 2026-09-04
+
+### Corregido
+
+- **Carreras repetidas en el catálogo:** la misma carrera ya no entra dos veces cuando dos fuentes le dan nombres algo distintos, cuando una no publica la distancia, o cuando el nombre del pueblo cambia de sitio. Y la cola de casos dudosos en la administración solo pregunta lo que vale la pena preguntar.
+
+---
+
 ## [1.37.0] - 2026-09-04
 
 ### Añadido

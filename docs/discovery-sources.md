@@ -217,22 +217,44 @@ contagens decrescentes).
 
 ### Duplicados: quando a mesma prova já está no catálogo
 
-A colheita compara cada prova com o catálogo inteiro, não só com as outras da
-mesma corrida. Duas formas contam como a mesma prova, e ambas exigem o mesmo dia,
-a mesma cidade e uma distância em comum:
+A colheita compara cada prova com o catálogo inteiro **e com o que a própria
+corrida acabou de escrever**. Isto último não era assim, e era o maior furo: com
+sete fontes lidas na mesma corrida, cada uma comparava-se ao catálogo como ele
+estava antes, portanto duas delas a trazerem «Wildman Harz» e «Wildman Harz -
+Ultra 55k» não se viam uma à outra e entravam as duas.
+
+Duas formas contam como a mesma prova, e ambas exigem o mesmo dia e a mesma
+cidade:
 
 1. **Uma entrada que uma pessoa reviu.** Alguém a verificou, e uma colheita a
    aparecer com o nome do organizador não é novidade. É o que junta «Berlin Half
    Marathon» e «GENERALI BERLINER HALBMARATHON», que são uma prova e não
    partilham quase nenhuma letra.
-2. **Nomes que claramente concordam**, depois de tirar patrocinadores e edição.
+2. **Nomes que concordam**, depois de tirar patrocinadores, edição **e o nome da
+   terra**. A cidade já teve de ser igual para o par existir, e muda de lugar e
+   de forma: «28. Erfurter Zooparklauf» é «Zooparklauf Erfurt». Concordam se um
+   nome está dentro do outro, ou se são as mesmas letras na mesma ordem sem
+   separadores: «Sparkassen-City-Lauf» é «Sparkassen Citylauf». Igualdade e não
+   contenção, senão «Stundenlauf» dentro de «Viertelstundenlauf» juntava duas
+   provas diferentes.
 
-Fora disso ficam duas provas. O fim de semana da maratona de Berlim mostra
-porquê: a «GENERALI 5K im Rahmen des BMW BERLIN-MARATHON» e a «R5K Tour Finale»
-são ambas de 5 km, ambas em Berlim, ambas a 26/09/2026, e são duas corridas
-diferentes. O que a colheita ainda não resolve, duas fontes a trazerem a mesma
-prova com nomes que não concordam, está na
-[issue #291](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/291).
+E a distância deixou de poder impedir: se um dos lados não publica nenhuma, não
+sabemos a distância, não é que saibamos que é outra. Metade das fontes não a
+publica, e o «Birkenfelder Firmenlauf» esteve ao lado do «Birkenfelder
+Firmenlauf - Die Wirtschaft läuft» só por isso. Quando os dois lados publicam,
+continua a exigir-se uma em comum.
+
+Fora disso ficam duas provas, como a «GENERALI 5K im Rahmen des BMW
+BERLIN-MARATHON» e a «R5K Tour Finale»: ambas 5 km, ambas em Berlim, ambas a
+26/09/2026, e duas corridas diferentes.
+
+**A fila da administração pergunta o resto, e só o que vale perguntar.** Um par
+entra na fila se, além do dia e da cidade, os nomes partilharem uma palavra com
+significado: nem a terra, nem uma palavra que todas as provas têm («run»,
+«lauf», «marathon», «5k»), nem nada com menos de quatro letras («Turkey Trails
+OKC» e «Veterans Voyage OKC» partilham a abreviatura da cidade). Sem esse
+filtro, um sábado de Setembro em Berlim gera dezenas de perguntas absurdas: num
+catálogo de 3062 entradas, a fila passou de 115 pares para 5.
 
 ### Acrescentar uma fonte
 
@@ -468,15 +490,39 @@ and stays as it was.
 
 ### Duplicates: when the catalog already holds the race
 
-The harvest compares each race against the whole catalog, not only against the
-others in the same run. Two shapes count as the same race, and both need the
-same day, the same city and a distance in common:
+The harvest compares each race against the whole catalog **and against what the
+run itself has just written**. The second half was missing, and it was the
+biggest hole: with seven sources read in one run, each compared itself to the
+catalog as it stood before the run, so two of them bringing "Wildman Harz" and
+"Wildman Harz - Ultra 55k" never saw each other and both were written.
+
+Two shapes count as the same race, and both need the same day and the same city:
 
 1. **An entry a person reviewed.** They checked it, and a harvest turning up
    with the organiser's own name for it is not news. This is what joins "Berlin
    Half Marathon" and "GENERALI BERLINER HALBMARATHON", which are one race and
    share almost no letters.
-2. **Names that plainly agree**, once the sponsors and the edition are gone.
+2. **Names that agree**, once the sponsors, the edition **and the town's name**
+   are gone. The city had to match for the pair to exist at all, and it moves
+   about: "28. Erfurter Zooparklauf" is "Zooparklauf Erfurt". They agree if one
+   name is inside the other, or if they are the same letters in the same order
+   without separators: "Sparkassen-City-Lauf" is "Sparkassen Citylauf". Equality
+   and not containment, or "Stundenlauf" inside "Viertelstundenlauf" would merge
+   two different races.
+
+And the distance can no longer block a merge: if either side publishes none, we
+do not know the distance, which is not the same as knowing a different one. Half
+the sources leave it out, and "Birkenfelder Firmenlauf" sat beside "Birkenfelder
+Firmenlauf - Die Wirtschaft läuft" for that reason alone. When both sides
+publish one, an overlap is still required.
+
+**The queue in the admin area asks about the rest, and only what is worth
+asking.** A pair reaches it when, beyond the day and the city, the names share a
+word that means something: not the town, not a word every race has ("run",
+"lauf", "marathon", "5k"), and nothing under four letters ("Turkey Trails OKC"
+and "Veterans Voyage OKC" share the town's abbreviation). Without that filter
+one September Saturday in Berlin generates dozens of absurd questions: in a 3062
+entry catalog the queue went from 115 pairs to 5.
 
 Anything else stays two races. The Berlin marathon weekend shows why: "GENERALI
 5K im Rahmen des BMW BERLIN-MARATHON" and "R5K Tour Finale" are both 5 km, both

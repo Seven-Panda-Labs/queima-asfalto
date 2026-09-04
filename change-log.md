@@ -4,6 +4,14 @@
 
 ---
 
+## [1.38.0] - 2026-09-04
+
+### Corrigido
+
+- **Provas repetidas no catálogo:** a mesma prova deixa de entrar duas vezes quando duas fontes lhe dão nomes ligeiramente diferentes, quando uma delas não publica a distância, ou quando o nome da terra muda de lugar. E a fila de casos duvidosos na administração passou a perguntar só o que vale perguntar.
+
+---
+
 ## [1.37.0] - 2026-09-04
 
 ### Adicionado
