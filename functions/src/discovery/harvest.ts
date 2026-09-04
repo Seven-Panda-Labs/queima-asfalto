@@ -358,6 +358,13 @@ export async function refreshDiscoveryCatalog(
      * When there is one, the edition goes to it and this id is not used: the
      * survivor keeps whatever a person checked, and a copy written by an
      * earlier run is pointed at it rather than deleted.
+     *
+     * `catalog` grows as this run writes, which is the difference between
+     * catching a pair and not: seven sources read in one run all compared
+     * themselves to the catalog as it was before the run, so two of them
+     * bringing "Wildman Harz" and "Wildman Harz - Ultra 55k" each found no twin
+     * and both were written. Within-run dedup by `raceKey` only merges names
+     * that slugify the same, which those do not.
      */
     const twin = findCatalogDuplicate(entry, catalog)
     const targetId = twin?.id ?? entry.id
@@ -367,6 +374,11 @@ export async function refreshDiscoveryCatalog(
     if (merged) {
       await db.collection(RACE_CATALOG_COLLECTION).doc(targetId).set(merged, { merge: false })
       written += 1
+      // What this run wrote is what the next race in it compares against.
+      const at = catalog.findIndex((candidate) => candidate.id === targetId)
+      if (at >= 0) catalog[at] = merged
+      else catalog.push(merged)
+      byId.set(targetId, merged)
     } else {
       skipped += 1
     }

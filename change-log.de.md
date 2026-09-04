@@ -4,6 +4,14 @@
 
 ---
 
+## [1.38.0] - 2026-09-04
+
+### Behoben
+
+- **Rennen doppelt im Katalog:** dasselbe Rennen landet nicht mehr zweimal darin, wenn zwei Quellen es leicht anders nennen, wenn eine keine Distanz veröffentlicht oder wenn der Ortsname im Namen die Stelle wechselt. Und die Liste der Zweifelsfälle im Adminbereich fragt nur noch, was zu fragen lohnt.
+
+---
+
 ## [1.37.0] - 2026-09-04
 
 ### Hinzugefügt

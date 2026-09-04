@@ -4,6 +4,14 @@
 
 ---
 
+## [1.38.0] - 2026-09-04
+
+### Fixed
+
+- **Races twice in the catalog:** the same race no longer enters twice when two sources name it slightly differently, when one of them publishes no distance, or when the town's name moves around in the name. And the queue of doubtful cases in the admin area now asks only what is worth asking.
+
+---
+
 ## [1.37.0] - 2026-09-04
 
 ### Added

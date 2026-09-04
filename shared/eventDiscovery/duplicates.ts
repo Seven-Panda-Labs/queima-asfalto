@@ -35,11 +35,38 @@ function tokens(name: string): string[] {
   return normalizeName(name).split('-').filter((token) => token.length > 2)
 }
 
-/** One name inside the other, once the noise is gone. */
-function namesAgree(left: string, right: string): boolean {
-  const a = tokens(left)
-  const b = tokens(right)
+/**
+ * The town's name is not part of the race's name.
+ *
+ * The pair has already agreed on the city, so a word that is the city adds
+ * nothing, and it moves around: "28. Erfurter Zooparklauf" is "Zooparklauf
+ * Erfurt", "Hochheimer Weinbergslauf" is "22. Weinbergslauf Hochheim". German
+ * attaches the town as an adjective, hence the few letters of slack.
+ */
+function withoutPlace(name: string, city: string): string[] {
+  const place = tokens(city)
+  const isPlace = (token: string) =>
+    place.some(
+      (word) => token === word || (token.startsWith(word) && token.length - word.length <= 3),
+    )
+  return tokens(name).filter((token) => !isPlace(token))
+}
+
+/**
+ * One name inside the other, once the noise and the town are gone.
+ *
+ * Or the same letters in the same order, which is what separates a race from
+ * itself written differently: "Sparkassen-City-Lauf" and "Sparkassen Citylauf",
+ * "CityRUN" and "City RUN", "PhoenixInWest" and "Phoenix-InWest". Equality and
+ * not containment, because "Stundenlauf" inside "Viertelstundenlauf" is a
+ * different race.
+ */
+function namesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  const a = withoutPlace(left.name, left.city)
+  const b = withoutPlace(right.name, right.city)
   if (a.length === 0 || b.length === 0) return false
+
+  if (a.join('') === b.join('')) return true
 
   const [shorter, longer] = a.length <= b.length ? [a, b] : [b, a]
   return shorter.every((token) => longer.includes(token))
@@ -59,7 +86,20 @@ function samePlace(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
   return Boolean(city(left)) && city(left) === city(right)
 }
 
-function shareADistance(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+/**
+ * The distances do not rule the pair out.
+ *
+ * An overlap where both sides publish one, and a free pass where either side
+ * publishes none: not knowing a distance is not the same as knowing a different
+ * one, and half the sources leave it out. "Birkenfelder Firmenlauf" with no
+ * distance and "Birkenfelder Firmenlauf - Die Wirtschaft läuft" over 5 km sat
+ * side by side in the catalog for exactly this reason.
+ *
+ * The day, the city and the name still have to agree, which is what keeps this
+ * from merging the two different 5 km of the Berlin marathon weekend.
+ */
+function distancesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  if (left.disciplines.length === 0 || right.disciplines.length === 0) return true
   const mine = new Set(left.disciplines)
   return right.disciplines.some((discipline) => mine.has(discipline))
 }
@@ -92,7 +132,7 @@ function couldBeTheSameRace(left: RaceCatalogEntry, right: RaceCatalogEntry): bo
     !keptApart(left, right) &&
     sameDay(left, right) &&
     samePlace(left, right) &&
-    shareADistance(left, right)
+    distancesAgree(left, right)
   )
 }
 
@@ -112,10 +152,50 @@ export function findCatalogDuplicate(
     // A person checked this one, so the harvest is describing it, not finding
     // something new.
     if (reviewed(entry) && !reviewed(harvested)) return entry
-    if (namesAgree(entry.name, harvested.name)) return entry
+    if (namesAgree(entry, harvested)) return entry
   }
 
   return null
+}
+
+/**
+ * Words that every race is called, so sharing one is not evidence.
+ *
+ * Only the queue uses this. The merge rule must not: "Haspa Halbmarathon" and
+ * "Haspa Marathon" would both come down to "haspa" and merge into one race,
+ * and they are two.
+ */
+const GENERIC =
+  /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
+
+/**
+ * The names share a word that means something.
+ *
+ * What the queue needs and the merge rule does not: a reason to suspect the
+ * pair beyond a shared town and a shared Saturday. With a hundred entries the
+ * day and the distance were rare enough to be evidence; with thousands, one
+ * September Saturday in Berlin holds a dozen unrelated races, and the queue
+ * filled with pairs like "Bierpaarlauf" against "Gravel Run Berlin".
+ *
+ * The town's own name does not count as that word: half the races in Berlin
+ * carry "Berlin", and pairing them all is the flood this exists to stop.
+ */
+/**
+ * Under four letters, a shared word is not evidence.
+ *
+ * "Turkey Trails OKC" and "Veterans Voyage OKC" share the town's own
+ * abbreviation, and chasing abbreviations is a list with no end. Every word
+ * that turned out to be real evidence was longer: rathaus, phoenix, sparkassen,
+ * zooparklauf.
+ */
+const EVIDENCE_MIN_LETTERS = 4
+
+function sharesAWord(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  const place = new Set([...tokens(left.city), ...tokens(right.city)])
+  const meaningful = (token: string) =>
+    token.length >= EVIDENCE_MIN_LETTERS && !place.has(token) && !GENERIC.test(token)
+  const mine = new Set(tokens(left.name).filter(meaningful))
+  return tokens(right.name).some((token) => meaningful(token) && mine.has(token))
 }
 
 /**
@@ -166,6 +246,8 @@ export function catalogDuplicateCandidates(
       // Whatever the rule would have merged is already merged, so anything left
       // needing a decision is by definition what it declined.
       if (findCatalogDuplicate(right, [left])) continue
+      // And a pair with no word in common is not a question, it is two races.
+      if (!sharesAWord(left, right)) continue
 
       const [keep, drop] =
         worth(left) === worth(right)

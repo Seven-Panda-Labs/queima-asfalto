@@ -26,9 +26,13 @@ function race(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id'
   }
 }
 
+/**
+ * A real pair from the catalog: the two share "Haspa", which is evidence, and
+ * neither name is inside the other, so no rule merges them on its own.
+ */
 const pair = [
-  race({ id: 'de-berlin-generali-5k', name: 'GENERALI 5K' }),
-  race({ id: 'de-berlin-r5k-tour-finale', name: 'R5K Tour Finale' }),
+  race({ id: 'de-hamburg-haspa-halbmarathon', name: 'Haspa Halbmarathon Hamburg', city: 'Hamburg' }),
+  race({ id: 'de-hamburg-haspa-marathon', name: 'Haspa Marathon Hamburg', city: 'Hamburg' }),
 ]
 
 afterEach(() => {
@@ -52,8 +56,8 @@ describe('CatalogDuplicates', () => {
 
     await waitFor(() =>
       expect(mergeCatalogRaces).toHaveBeenCalledWith(
-        'de-berlin-generali-5k',
-        'de-berlin-r5k-tour-finale',
+        'de-hamburg-haspa-halbmarathon',
+        'de-hamburg-haspa-marathon',
         'admin',
       ),
     )
@@ -67,8 +71,8 @@ describe('CatalogDuplicates', () => {
 
     await waitFor(() =>
       expect(separateCatalogRaces).toHaveBeenCalledWith(
-        'de-berlin-generali-5k',
-        'de-berlin-r5k-tour-finale',
+        'de-hamburg-haspa-halbmarathon',
+        'de-hamburg-haspa-marathon',
         'admin',
       ),
     )
@@ -81,6 +85,6 @@ describe('CatalogDuplicates', () => {
     fireEvent.click(screen.getByRole('button', { name: /mesma prova/i }))
 
     expect(await screen.findByText('Não foi possível guardar.')).toBeInTheDocument()
-    expect(screen.getByText('R5K Tour Finale')).toBeInTheDocument()
+    expect(screen.getByText('Haspa Marathon Hamburg')).toBeInTheDocument()
   })
 })
