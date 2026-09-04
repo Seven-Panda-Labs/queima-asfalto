@@ -4,6 +4,14 @@
 
 ---
 
+## [1.39.0] - 2026-09-04
+
+### Changed
+
+- **Find races:** the page now asks for a filter before it shows a list, gains a country search, and brings results a page at a time instead of downloading the whole catalog into the browser. With thousands of races across dozens of countries, the full list served nobody.
+
+---
+
 ## [1.38.0] - 2026-09-04
 
 ### Fixed

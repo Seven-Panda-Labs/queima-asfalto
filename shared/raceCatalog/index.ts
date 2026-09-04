@@ -10,6 +10,7 @@ export {
   type RaceCatalogEntry,
   type RaceEntryMethod,
 } from './types.js'
+export { nextRaceDateOf } from './schedule.js'
 export {
   canAssertDates,
   editionForYear,
