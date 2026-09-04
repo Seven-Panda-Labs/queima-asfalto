@@ -14,6 +14,7 @@ import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
 import { readKilometerliebeCalendar } from '../shared/eventDiscovery/kilometerliebe.js'
 import { readMarathonDePage } from '../shared/eventDiscovery/marathonDe.js'
+import { readRunmeCalendar } from '../shared/eventDiscovery/runme.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
   davengoStarterUrl,
@@ -172,6 +173,8 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
       return readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
     case 'kilometerliebe':
       return readKilometerliebeCalendar(html, { baseUrl: source.baseUrl ?? url })
+    case 'runme':
+      return readRunmeCalendar(html, { baseUrl: source.baseUrl ?? url })
     case 'schema-org':
       // The calendar describes every race on it, so the page is the data and
       // no event page needs fetching.

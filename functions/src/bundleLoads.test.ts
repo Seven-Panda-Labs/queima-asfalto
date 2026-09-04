@@ -17,7 +17,13 @@ import { describe, expect, it } from 'vitest'
 const ENTRY = resolve(import.meta.dirname, '../lib/index.js')
 
 describe('the compiled functions bundle', () => {
-  it.skipIf(!existsSync(ENTRY))('can be imported the way the container does', async () => {
-    await expect(import(ENTRY)).resolves.toBeDefined()
-  })
+  // Its own budget: this imports firebase-admin and every connector, which is
+  // seconds of work by design and nothing like the rest of the suite.
+  it.skipIf(!existsSync(ENTRY))(
+    'can be imported the way the container does',
+    async () => {
+      await expect(import(ENTRY)).resolves.toBeDefined()
+    },
+    30_000,
+  )
 })

@@ -63,6 +63,40 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
   },
   {
     /**
+     * A worldwide calendar, a month per page.
+     *
+     * The one source where Germany is the minority: a September page is 112
+     * races in the United States, 54 in Germany, then Austria, Switzerland,
+     * Czechia, Italy, France, Colombia. Every distance, and the distances come
+     * from the names of what each event sells.
+     *
+     * The month is a word, so these twelve URLs roll forward for ever.
+     */
+    id: 'runme.de',
+    kind: 'listing',
+    listingReader: 'runme',
+    listingCalendars: [
+      'https://www.runme.de/laufkalender/januar/',
+      'https://www.runme.de/laufkalender/februar/',
+      'https://www.runme.de/laufkalender/maerz/',
+      'https://www.runme.de/laufkalender/april/',
+      'https://www.runme.de/laufkalender/mai/',
+      'https://www.runme.de/laufkalender/juni/',
+      'https://www.runme.de/laufkalender/juli/',
+      'https://www.runme.de/laufkalender/august/',
+      'https://www.runme.de/laufkalender/september/',
+      'https://www.runme.de/laufkalender/oktober/',
+      'https://www.runme.de/laufkalender/november/',
+      'https://www.runme.de/laufkalender/dezember/',
+    ],
+    baseUrl: 'https://www.runme.de/',
+    // Twelve pages of 700KB, so slower than the default and still under a
+    // minute for a year of races.
+    delayMs: 1500,
+    pageLimit: 1,
+  },
+  {
+    /**
      * Half marathons, one calendar per country.
      *
      * The country calendars publish a description too short to read a distance
