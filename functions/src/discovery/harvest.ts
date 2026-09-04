@@ -74,9 +74,17 @@ function weekIndex(now: Date): number {
   return Math.floor(now.getTime() / (7 * 24 * 60 * 60 * 1000))
 }
 
+/**
+ * What one source gave up, and whether that was all of it.
+ *
+ * `partial` is what lets the collapse floor stay strict for a source read whole
+ * and silent about one read in part.
+ */
+type SourceHarvest = { races: DiscoveredRace[]; partial: boolean }
+
 /** A sitemap of event pages, each read by the source's own reader. */
-async function harvestSitemap(source: DiscoverySource, now: Date): Promise<DiscoveredRace[]> {
-  if (!source.sitemapUrl || !source.pathPrefix) return []
+async function harvestSitemap(source: DiscoverySource, now: Date): Promise<SourceHarvest> {
+  if (!source.sitemapUrl || !source.pathPrefix) return { races: [], partial: false }
 
   const sitemap = await fetchPage(source.sitemapUrl, source.charset)
   if (!sitemap) throw new Error(`${source.id}: sitemap unavailable`)
@@ -91,9 +99,13 @@ async function harvestSitemap(source: DiscoverySource, now: Date): Promise<Disco
     : all
 
   const races: DiscoveredRace[] = []
+  let missed = 0
   for (const url of urls) {
     const html = await page(source, url)
-    if (!html) continue
+    if (!html) {
+      missed += 1
+      continue
+    }
 
     if (source.pageReader === 'marathon-de') {
       const race = readMarathonDePage(html, { sourceUrl: url })
@@ -102,7 +114,10 @@ async function harvestSitemap(source: DiscoverySource, now: Date): Promise<Disco
       races.push(...readRacesFromHtml(html))
     }
   }
-  return races
+
+  // A slice by design, or a page that never arrived: either way this is not the
+  // whole source, so a count below what it stored proves nothing.
+  return { races, partial: Boolean(source.rotatePages) || missed > 0 }
 }
 
 /**
@@ -170,7 +185,7 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
   }
 }
 
-async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]> {
+async function harvestListing(source: DiscoverySource): Promise<SourceHarvest> {
   const template = source.listingUrlTemplate
   const pages = template
     ? Array.from({ length: source.pageLimit }, (_, index) =>
@@ -178,6 +193,7 @@ async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]
       )
     : (source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : []))
   const races: DiscoveredRace[] = []
+  let partial = false
 
   const pace = source.delayMs ?? DELAY_BETWEEN_PAGES_MS
   for (const [index, url] of pages.slice(0, source.pageLimit).entries()) {
@@ -189,6 +205,7 @@ async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]
       // source has been read anyway.
       if (index === 0) throw new Error(`${source.id}: calendar unavailable`)
       console.warn(`${source.id}: stopped at ${url}, keeping ${races.length} races`)
+      partial = true
       break
     }
 
@@ -196,21 +213,21 @@ async function harvestListing(source: DiscoverySource): Promise<DiscoveredRace[]
     if (url !== pages[pages.length - 1]) await delay(pace)
   }
 
-  return races
+  return { races, partial }
 }
 
-async function harvestSource(
-  source: DiscoverySource,
-  now: Date,
-): Promise<DiscoveredRace[]> {
-  const races =
+async function harvestSource(source: DiscoverySource, now: Date): Promise<SourceHarvest> {
+  const harvest =
     source.kind === 'search'
-      ? await harvestSearch(source)
+      ? { races: await harvestSearch(source), partial: false }
       : source.kind === 'listing'
         ? await harvestListing(source)
         : await harvestSitemap(source, now)
 
-  return races.filter((race) => isHarvestable(race, now))
+  return {
+    races: harvest.races.filter((race) => isHarvestable(race, now)),
+    partial: harvest.partial,
+  }
 }
 
 export type HarvestResult = {
@@ -242,9 +259,12 @@ export async function refreshDiscoveryCatalog(
   /** Which source each race came from, which is what a reviewer needs. */
   const sourceByUrl = new Map<string, string>()
   const failed: string[] = []
+  let partial = false
   for (const source of sources) {
     try {
-      for (const race of await harvestSource(source, now)) {
+      const harvest = await harvestSource(source, now)
+      partial = partial || harvest.partial
+      for (const race of harvest.races) {
         discovered.push(race)
         sourceByUrl.set(race.sourceUrl, source.id)
       }
@@ -284,7 +304,7 @@ export async function refreshDiscoveryCatalog(
   const sourceIds = sources.map((source) => source.id)
   const harvestedCount = storedForSources(catalog, sourceIds)
 
-  if (isHarvestCollapse(harvestedCount, races.length)) {
+  if (isHarvestCollapse(harvestedCount, races.length, { partial })) {
     // Keeping a stale catalog beats publishing a gutted one: these are scrapes,
     // so a template change upstream must cost a run and not the feature.
     const reason = `collapse: ${races.length} harvested against ${harvestedCount} stored`
@@ -353,7 +373,7 @@ export async function refreshDiscoveryCatalog(
         bySource: Object.fromEntries(
           sourceIds.map((id) => [
             id,
-            { syncedAt: Timestamp.fromDate(now), harvested: races.length, written },
+            { syncedAt: Timestamp.fromDate(now), harvested: races.length, written, partial },
           ]),
         ),
       },

@@ -156,6 +156,12 @@ Para a fonte do dia:
   porque uma corrida lê uma fonte, e porque uma fonte a apagar-se ficava
   escondida pelo volume das outras.
 
+  O piso só se aplica a uma fonte **lida por inteiro**. Uma que leia uma fatia
+  das páginas por desenho (`rotatePages`), ou que o site tenha cortado a meio,
+  traz menos por razões que conhecemos, e o piso não distingue leitura curta de
+  parser avariado. Isentá-las é seguro porque uma colheita nunca apaga: uma
+  corrida curta escreve menos, não remove o que já lá está.
+
 E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
 um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
 contagens decrescentes).
@@ -350,6 +356,12 @@ For the day's source:
   change upstream costs a run, not the feature. Per source rather than per
   catalog, because a run reads one source, and because a source going dark used
   to be hidden by the volume of the others.
+
+  The floor applies only to a source read **whole**. One that reads a slice of
+  its pages by design (`rotatePages`), or that the site cut short, brings back
+  less for reasons we know, and the floor cannot tell a short read from a broken
+  parser. Exempting them is safe because a harvest never deletes: a short run
+  writes fewer entries, it does not remove the ones already there.
 
 Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
 the runner can see and correct) and may never **assert** (no reminders, no

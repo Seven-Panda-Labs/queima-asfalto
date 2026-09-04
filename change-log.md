@@ -4,6 +4,14 @@
 
 ---
 
+## [1.36.0] - 2026-09-04
+
+### Corrigido
+
+- **Actualização do catálogo:** uma fonte que só é lida em parte (por fatias, ou porque o site cortou a meio) deixou de ser tomada por avariada, o que impedia a sua actualização.
+
+---
+
 ## [1.35.0] - 2026-09-03
 
 ### Adicionado

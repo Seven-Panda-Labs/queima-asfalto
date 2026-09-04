@@ -34,13 +34,29 @@ export function storedForSources(
   }).length
 }
 
+/**
+ * A run that could not read the whole source.
+ *
+ * Either by design, because the source rotates a slice of its pages each run,
+ * or because the site stopped answering halfway through. Both bring back fewer
+ * races than the catalog holds for that source, and the floor cannot tell a
+ * short read from a broken parser.
+ *
+ * Exempting them is safe because a harvest never deletes: a short run writes
+ * fewer entries, it does not remove the ones already there. The floor exists to
+ * stop a good catalog being replaced by an error page's worth of nothing, and
+ * that only happens when every page arrived and none of them parsed.
+ */
+export type HarvestReach = { partial?: boolean; floor?: number }
+
 export function isHarvestCollapse(
   storedCount: number,
   harvestedCount: number,
-  floor = HARVEST_COLLAPSE_FLOOR,
+  reach: HarvestReach = {},
 ): boolean {
+  if (reach.partial) return false
   if (storedCount === 0) return false
-  return harvestedCount < storedCount * floor
+  return harvestedCount < storedCount * (reach.floor ?? HARVEST_COLLAPSE_FLOOR)
 }
 
 /** Beyond this a synced catalog stops being current enough to search silently. */
