@@ -85,12 +85,19 @@ export function isHarvestStale(
  * those threw away most of a good calendar, so they arrive with no discipline
  * and the runner is asked for it when they add one, which is the shape the
  * review rule already asks for: suggest, never assert.
+ *
+ * A race with no country is not kept, which is the opposite call and for a
+ * reason: the catalog stores `XX` for a missing country, dedup compares country
+ * before anything else, and two `XX` races in a town called Porto would merge
+ * into one. A source spelling a country in a way we cannot read is a table to
+ * extend, not a race to file in the wrong place.
  */
 export function isHarvestable(
-  race: { startDate: string; cancelled: boolean },
+  race: { startDate: string; cancelled: boolean; country?: string },
   today: Date = new Date(),
 ): boolean {
   if (race.cancelled) return false
+  if (!race.country) return false
   const start = new Date(race.startDate)
   if (Number.isNaN(start.getTime())) return false
   return start.getTime() >= today.getTime()

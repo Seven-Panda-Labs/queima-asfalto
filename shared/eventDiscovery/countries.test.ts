@@ -27,3 +27,17 @@ describe('toIsoCountry', () => {
     expect(toIsoCountry(undefined)).toBeUndefined()
   })
 })
+
+describe('the United Kingdom, however a source writes it', () => {
+  it('reads the German name, which is what a calendar sent', () => {
+    // 117 races filed under the country "XX" until this was in the table.
+    expect(toIsoCountry('Vereinigtes Königreich')).toBe('GB')
+    expect(toIsoCountry('vereinigtes koenigreich')).toBe('GB')
+  })
+
+  it('reads the other spellings a source might use', () => {
+    expect(toIsoCountry('Royaume-Uni')).toBe('GB')
+    expect(toIsoCountry('Reino Unido')).toBe('GB')
+    expect(toIsoCountry('United Kingdom')).toBe('GB')
+  })
+})

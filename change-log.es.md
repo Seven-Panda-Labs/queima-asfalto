@@ -4,6 +4,14 @@
 
 ---
 
+## [1.37.0] - 2026-09-04
+
+### Añadido
+
+- **Medias maratones fuera de Alemania:** el descubrimiento puede leer calendarios de media maratón de 17 países, de Portugal a Noruega. Sigue apagado hasta que lo actives.
+
+---
+
 ## [1.36.0] - 2026-09-04
 
 ### Corregido

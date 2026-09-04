@@ -41,6 +41,7 @@ Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
 | `davengo.com` | `search` | provas na Alemanha, distâncias tiradas da lista de participantes |
 | `kilometerliebe.de` | `listing` | 447 provas na Alemanha numa página, com as distâncias exactas |
 | `running.life` | `listing` | provas alemãs em `schema.org`, 20 por página, as mais próximas primeiro |
+| `running.life/half-marathons` | `listing` | meias maratonas em 17 países, um calendário por país |
 | `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
 | `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
 | `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
@@ -122,6 +123,24 @@ Três coisas que ela nos ensinou, e as três são partilhadas:
   prova das crianças. Abaixo de 2 km, um número em prosa não conta. Numa oferta
   com nome («1500 m») conta sempre.
 
+As meias maratonas fora da Alemanha vêm de um segundo conjunto de páginas do
+mesmo site, uma por país (`/halbmarathons/spanien`, `/half-marathons/portugal`,
+17 delas). São o mesmo `schema.org`, portanto não precisam de leitor próprio, e
+a razão para as ler em vez dos calendários gerais é medível: no calendário geral
+de Espanha, **um evento em vinte** tem distância legível, porque a descrição é
+curta demais; nas páginas de meias, o nome da prova diz «Media Maratón», «Meia
+Maratona», «Mezza Maratona», e sai 21,0975 exacto.
+
+Seis páginas por país, as mais próximas, e um calendário acaba onde acaba: uma
+página além do fim responde 200 com a lista vazia, que é como um calendário diz
+o seu tamanho sem termos de o fixar em código.
+
+O que não fazemos é acreditar no título da página. Ela chama-se «Half Marathon
+Calendar Portugal», mas a lista inclui um backyard ultra e um trail, portanto
+afirmar 21,0975 para as provas cujo nome não diz distância nenhuma seria afirmar
+o que não sabemos. Essas entram sem distância, e a distância pergunta-se ao
+adicionar.
+
 ### O que a colheita faz
 
 `harvestRaceCatalog` corre **uma vez por dia e lê uma fonte**, escolhida pelo
@@ -161,6 +180,13 @@ Para a fonte do dia:
   traz menos por razões que conhecemos, e o piso não distingue leitura curta de
   parser avariado. Isentá-las é seguro porque uma colheita nunca apaga: uma
   corrida curta escreve menos, não remove o que já lá está.
+
+E uma prova que se deixa cair em vez de arquivar: **aquela cujo país não
+sabemos ler**. Um país em falta guarda-se como `XX`, a deduplicação compara o
+país antes de tudo, e duas provas `XX` numa terra chamada Porto passariam a ser
+uma. Uma fonte que escreve um país de uma forma que a tabela não conhece é uma
+tabela para estender, não uma prova para arquivar no lugar errado. Com a
+*distância* a decisão é a oposta, e fica como estava.
 
 E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
 um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
@@ -242,6 +268,7 @@ None of them runs unless `DISCOVERY_SOURCES` names it.
 | `davengo.com` | `search` | races in Germany, distances read off the starter list |
 | `kilometerliebe.de` | `listing` | 447 German races on one page, with the exact distances |
 | `running.life` | `listing` | German races as `schema.org`, 20 a page, the nearest first |
+| `running.life/half-marathons` | `listing` | half marathons in 17 countries, a calendar each |
 | `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
 | `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
 | `planet-marathon.de` | `listing` | marathons on every continent, three pages |
@@ -323,6 +350,24 @@ Three things it taught us, and all three are shared:
   10 km" is the children's dash. Under 2 km, a number in prose does not count.
   In a named offer ("1500 m") it always does.
 
+The half marathons outside Germany come from a second set of pages on the same
+site, one per country (`/halbmarathons/spanien`, `/half-marathons/portugal`,
+17 of them). Same `schema.org`, so no reader of their own, and the reason to
+read them instead of the general country calendars is measurable: on Spain's
+general calendar **one event in twenty** has a readable distance, because the
+description is too short; on the half-marathon pages the race's own name says
+"Media Maratón", "Meia Maratona", "Mezza Maratona", and 21.0975 comes out exact.
+
+Six pages per country, the nearest ones, and a calendar ends where it ends: a
+page past the end answers 200 with an empty list, which is how a calendar states
+its length without us hardcoding a page count.
+
+What we do not do is believe the page's title. It calls itself "Half Marathon
+Calendar Portugal" and the list includes a backyard ultra and a trail race, so
+asserting 21.0975 for every race whose name names no distance would be asserting
+what we do not know. Those arrive with no distance, and the distance is asked
+when somebody adds one.
+
 ### What the harvest does
 
 `harvestRaceCatalog` runs **once a day and reads one source**, picked by the
@@ -366,6 +411,13 @@ For the day's source:
 Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
 the runner can see and correct) and may never **assert** (no reminders, no
 countdowns).
+
+And one race is dropped rather than filed: **a race whose country we cannot
+read**. A missing country is stored as `XX`, dedup compares country before
+anything else, and two `XX` races in a town called Porto would merge into one. A
+source spelling a country in a way the table does not know is a table to extend,
+not a race to file in the wrong place. A missing *distance* is the opposite call,
+and stays as it was.
 
 ### Duplicates: when the catalog already holds the race
 

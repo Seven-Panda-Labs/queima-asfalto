@@ -185,32 +185,52 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
   }
 }
 
+/**
+ * Every calendar a listing source has, each read page by page.
+ *
+ * A source with `listingCalendars` has one per country; the older shapes are a
+ * single calendar, paged or not. `pageLimit` is pages per calendar, so a source
+ * that splits by country reads the nearest races of each rather than all of one.
+ */
+function calendarsOf(source: DiscoverySource): string[] {
+  if (source.listingCalendars) return source.listingCalendars
+  if (source.listingUrlTemplate) return [source.listingUrlTemplate]
+  return source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : [])
+}
+
 async function harvestListing(source: DiscoverySource): Promise<SourceHarvest> {
-  const template = source.listingUrlTemplate
-  const pages = template
-    ? Array.from({ length: source.pageLimit }, (_, index) =>
-        template.replace('{page}', String(index + 1)),
-      )
-    : (source.listingUrls ?? (source.listingUrl ? [source.listingUrl] : []))
+  const calendars = calendarsOf(source)
+  const paged = calendars.some((url) => url.includes('{page}'))
   const races: DiscoveredRace[] = []
   let partial = false
+  let read = 0
 
   const pace = source.delayMs ?? DELAY_BETWEEN_PAGES_MS
-  for (const [index, url] of pages.slice(0, source.pageLimit).entries()) {
-    const html = await fetchPage(url, source.charset)
-    if (!html) {
-      // The first page refusing means the source is unavailable and the run
-      // should say so. A later page refusing is a site asking us to stop, and
-      // what we already read is worth keeping: nothing is written until every
-      // source has been read anyway.
-      if (index === 0) throw new Error(`${source.id}: calendar unavailable`)
-      console.warn(`${source.id}: stopped at ${url}, keeping ${races.length} races`)
-      partial = true
-      break
-    }
+  for (const calendar of calendars) {
+    for (let page = 1; page <= (paged ? source.pageLimit : 1); page += 1) {
+      const url = calendar.replace('{page}', String(page))
+      if (read > 0) await delay(pace)
+      const html = await fetchPage(url, source.charset)
+      read += 1
 
-    races.push(...readListing(source, url, html))
-    if (url !== pages[pages.length - 1]) await delay(pace)
+      if (!html) {
+        // Nothing read at all means the source is unavailable and the run
+        // should say so. Otherwise the site is asking us to stop: what was read
+        // is worth keeping, and the next calendar is somebody else's server.
+        if (races.length === 0 && calendar === calendars[0] && page === 1) {
+          throw new Error(`${source.id}: calendar unavailable`)
+        }
+        console.warn(`${source.id}: stopped at ${url}, keeping ${races.length} races`)
+        partial = true
+        break
+      }
+
+      const found = readListing(source, url, html)
+      // A page past the end answers 200 with an empty calendar, which is how a
+      // calendar says how long it is without us hardcoding a page count.
+      if (found.length === 0) break
+      races.push(...found)
+    }
   }
 
   return { races, partial }

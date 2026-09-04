@@ -66,6 +66,14 @@ export type DiscoverySource = {
   /** More than one page of the same calendar, when a source splits it. */
   listingUrls?: string[]
   /**
+   * Several paged calendars under one source, each a URL with `{page}`.
+   *
+   * A site that splits its calendar by country: one source reads them all, and
+   * a calendar that runs out of pages ends where it ends without stopping the
+   * ones after it.
+   */
+  listingCalendars?: string[]
+  /**
    * A paged calendar, as a URL with `{page}` in it.
    *
    * Pages 1 to `pageLimit`, in order, because a calendar is ordered by date:

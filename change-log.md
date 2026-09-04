@@ -4,6 +4,14 @@
 
 ---
 
+## [1.37.0] - 2026-09-04
+
+### Adicionado
+
+- **Meias maratonas fora da Alemanha:** a descoberta passa a poder ler calendários de meia maratona de 17 países, de Portugal à Noruega. Continua desligada até a activares.
+
+---
+
 ## [1.36.0] - 2026-09-04
 
 ### Corrigido

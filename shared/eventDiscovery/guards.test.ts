@@ -27,7 +27,12 @@ describe('isHarvestStale', () => {
 })
 
 describe('isHarvestable', () => {
-  const race = { startDate: '2026-10-11T09:00:00Z', cancelled: false, distancesKm: [10] }
+  const race = {
+    startDate: '2026-10-11T09:00:00Z',
+    cancelled: false,
+    country: 'PT',
+    distancesKm: [10],
+  }
 
   it('takes a race still ahead', () => {
     expect(isHarvestable(race, TODAY)).toBe(true)
@@ -41,7 +46,9 @@ describe('isHarvestable', () => {
   it('keeps a race whose distance nobody publishes', () => {
     // The date, the town and the entry link are worth having on their own. The
     // runner is asked for the distance when they add it.
-    expect(isHarvestable({ startDate: race.startDate, cancelled: false }, TODAY)).toBe(true)
+    expect(
+      isHarvestable({ startDate: race.startDate, cancelled: false, country: 'PT' }, TODAY),
+    ).toBe(true)
   })
 
   it('leaves a date it cannot read', () => {
@@ -95,5 +102,20 @@ describe('isHarvestCollapse and a source read in part', () => {
 
   it('keeps taking a floor of its own', () => {
     expect(isHarvestCollapse(100, 60, { floor: 0.5 })).toBe(false)
+  })
+})
+
+describe('isHarvestable and a race nobody can place', () => {
+  const race = { startDate: '2099-05-01', cancelled: false, country: 'PT' }
+
+  it('drops a race whose country did not resolve', () => {
+    // It would be stored as XX, and dedup compares country: two XX races in a
+    // town called Porto are one race as far as the guard can tell.
+    expect(isHarvestable({ ...race, country: undefined })).toBe(false)
+    expect(isHarvestable({ ...race, country: '' })).toBe(false)
+  })
+
+  it('keeps one that has a country', () => {
+    expect(isHarvestable(race)).toBe(true)
   })
 })
