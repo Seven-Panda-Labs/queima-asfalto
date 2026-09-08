@@ -191,12 +191,13 @@ describe('nextDateFor', () => {
         registrationOpensAt: days(30),
         lotteryDrawAt: days(60),
       }),
+      TODAY,
     )
     expect(result?.toISOString()).toBe(days(30).toISOString())
   })
 
   it('prefers a deadline to secure a place over the race itself', () => {
-    const result = nextDateFor(entry({ raceDate: days(300), placeConfirmByAt: days(5) }))
+    const result = nextDateFor(entry({ raceDate: days(300), placeConfirmByAt: days(5) }), TODAY)
     expect(result?.toISOString()).toBe(days(5).toISOString())
   })
 

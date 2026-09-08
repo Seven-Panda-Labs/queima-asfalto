@@ -71,6 +71,21 @@ function countryName(code: string, language: string): string {
   }
 }
 
+/**
+ * The countries in the order a reader can follow: by the name on screen.
+ *
+ * The stored list is sorted by ISO code, which is the key nobody sees. In
+ * Portuguese that reads Andorra, Emirados Árabes Unidos, Albânia, Armênia,
+ * Antártida, Argentina, and looks like no order at all. The collator is what
+ * puts Áustria under A and Suíça under S.
+ */
+function byName(codes: readonly string[], language: string): string[] {
+  const collator = new Intl.Collator(language, { sensitivity: 'base' })
+  return [...codes].sort((left, right) =>
+    collator.compare(countryName(left, language), countryName(right, language)),
+  )
+}
+
 /** `YYYY-MM-DD`, which is what a native date input wants. */
 function isoDay(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -375,6 +390,11 @@ export function FindRaces() {
     [anchor, catalog, criteria],
   )
 
+  const sortedCountries = useMemo(
+    () => byName(countries, i18n.language),
+    [countries, i18n.language],
+  )
+
   const disciplineOptions = useMemo(
     () => visibleDisciplines(enabledDisciplines, criteria.disciplines),
     [criteria.disciplines, enabledDisciplines],
@@ -469,25 +489,30 @@ export function FindRaces() {
           />
         </div>
 
-        <div>
-          <label htmlFor="country" className="block text-sm font-semibold text-foreground">
-            {t('findRaces.country')}
-          </label>
-          <select
-            id="country"
-            value={criteria.country}
-            onChange={(event) => setCriteria({ ...criteria, country: event.target.value })}
-            className={FIELD}
-            disabled={countries.length === 0}
-          >
-            <option value="">{t('findRaces.anyCountry')}</option>
-            {countries.map((code) => (
-              <option key={code} value={code}>
-                {countryName(code, i18n.language)}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* No list means no field: a disabled select is a control that does
+            nothing when you click it, which is worse than one that is not
+            there. The list comes from the harvest's status document, so an
+            instance that has not harvested since upgrading has none yet. */}
+        {countries.length > 0 ? (
+          <div>
+            <label htmlFor="country" className="block text-sm font-semibold text-foreground">
+              {t('findRaces.country')}
+            </label>
+            <select
+              id="country"
+              value={criteria.country}
+              onChange={(event) => setCriteria({ ...criteria, country: event.target.value })}
+              className={FIELD}
+            >
+              <option value="">{t('findRaces.anyCountry')}</option>
+              {sortedCountries.map((code) => (
+                <option key={code} value={code}>
+                  {countryName(code, i18n.language)}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
 
         <div>
           <label htmlFor="place" className="block text-sm font-semibold text-foreground">
