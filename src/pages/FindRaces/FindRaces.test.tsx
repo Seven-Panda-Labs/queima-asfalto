@@ -154,3 +154,28 @@ describe('FindRaces without a country list', () => {
     expect(await screen.findByLabelText('País')).toBeInTheDocument()
   })
 })
+
+describe('the country filter order', () => {
+  it('sorts by the name on screen, not by the code behind it', async () => {
+    // The stored list is sorted by ISO code, which in Portuguese reads Andorra,
+    // Emirados Árabes Unidos, Albânia, Armênia: no order at all to a reader.
+    countries = ['AD', 'AE', 'AL', 'AQ', 'AT', 'CH', 'DE', 'PT']
+    render(<FindRaces />)
+
+    const select = await screen.findByLabelText('País')
+    const shown = [...select.querySelectorAll('option')]
+      .map((option) => option.textContent)
+      .slice(1)
+
+    expect(shown).toEqual([
+      'Albânia',
+      'Alemanha',
+      'Andorra',
+      'Antártida',
+      'Áustria',
+      'Emirados Árabes Unidos',
+      'Portugal',
+      'Suíça',
+    ])
+  })
+})

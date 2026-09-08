@@ -71,6 +71,21 @@ function countryName(code: string, language: string): string {
   }
 }
 
+/**
+ * The countries in the order a reader can follow: by the name on screen.
+ *
+ * The stored list is sorted by ISO code, which is the key nobody sees. In
+ * Portuguese that reads Andorra, Emirados Árabes Unidos, Albânia, Armênia,
+ * Antártida, Argentina, and looks like no order at all. The collator is what
+ * puts Áustria under A and Suíça under S.
+ */
+function byName(codes: readonly string[], language: string): string[] {
+  const collator = new Intl.Collator(language, { sensitivity: 'base' })
+  return [...codes].sort((left, right) =>
+    collator.compare(countryName(left, language), countryName(right, language)),
+  )
+}
+
 /** `YYYY-MM-DD`, which is what a native date input wants. */
 function isoDay(date: Date): string {
   return date.toISOString().slice(0, 10)
@@ -375,6 +390,11 @@ export function FindRaces() {
     [anchor, catalog, criteria],
   )
 
+  const sortedCountries = useMemo(
+    () => byName(countries, i18n.language),
+    [countries, i18n.language],
+  )
+
   const disciplineOptions = useMemo(
     () => visibleDisciplines(enabledDisciplines, criteria.disciplines),
     [criteria.disciplines, enabledDisciplines],
@@ -485,7 +505,7 @@ export function FindRaces() {
               className={FIELD}
             >
               <option value="">{t('findRaces.anyCountry')}</option>
-              {countries.map((code) => (
+              {sortedCountries.map((code) => (
                 <option key={code} value={code}>
                   {countryName(code, i18n.language)}
                 </option>
