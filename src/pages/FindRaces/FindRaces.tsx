@@ -469,25 +469,30 @@ export function FindRaces() {
           />
         </div>
 
-        <div>
-          <label htmlFor="country" className="block text-sm font-semibold text-foreground">
-            {t('findRaces.country')}
-          </label>
-          <select
-            id="country"
-            value={criteria.country}
-            onChange={(event) => setCriteria({ ...criteria, country: event.target.value })}
-            className={FIELD}
-            disabled={countries.length === 0}
-          >
-            <option value="">{t('findRaces.anyCountry')}</option>
-            {countries.map((code) => (
-              <option key={code} value={code}>
-                {countryName(code, i18n.language)}
-              </option>
-            ))}
-          </select>
-        </div>
+        {/* No list means no field: a disabled select is a control that does
+            nothing when you click it, which is worse than one that is not
+            there. The list comes from the harvest's status document, so an
+            instance that has not harvested since upgrading has none yet. */}
+        {countries.length > 0 ? (
+          <div>
+            <label htmlFor="country" className="block text-sm font-semibold text-foreground">
+              {t('findRaces.country')}
+            </label>
+            <select
+              id="country"
+              value={criteria.country}
+              onChange={(event) => setCriteria({ ...criteria, country: event.target.value })}
+              className={FIELD}
+            >
+              <option value="">{t('findRaces.anyCountry')}</option>
+              {countries.map((code) => (
+                <option key={code} value={code}>
+                  {countryName(code, i18n.language)}
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : null}
 
         <div>
           <label htmlFor="place" className="block text-sm font-semibold text-foreground">
