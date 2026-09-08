@@ -405,6 +405,21 @@ export async function refreshDiscoveryCatalog(
         skipped,
         deduplicated,
         sources: sourceIds,
+        /**
+         * Every country the catalog holds, for the discovery page's filter.
+         *
+         * The run already reads the whole catalog to find twins, so this costs
+         * nothing, and it saves the page from reading five thousand documents
+         * to learn that it should offer Germany and Portugal.
+         */
+        countries: [
+          ...new Set(
+            catalog
+              .filter((entry) => entry.retired !== true && !entry.duplicateOfCatalogRaceId)
+              .map((entry) => entry.country)
+              .filter(Boolean),
+          ),
+        ].sort(),
         bySource: Object.fromEntries(
           sourceIds.map((id) => [
             id,

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.39.0] - 2026-09-04
+
+### Cambiado
+
+- **Encontrar carreras:** la página pide un filtro antes de mostrar la lista, gana búsqueda por país, y trae los resultados por partes en vez de descargar el catálogo entero al navegador. Con miles de carreras en decenas de países, la lista completa no servía a nadie.
+
+---
+
 ## [1.38.0] - 2026-09-04
 
 ### Corregido

@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.38.0",
+  "version": "1.39.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -21,6 +21,7 @@
     "seed:race-catalog": "tsx scripts/seed-race-catalog.ts",
     "backfill:track-pacing": "tsx scripts/backfill-track-pacing.ts",
     "backfill:races": "tsx scripts/backfill-races.ts",
+    "backfill:catalog-dates": "tsx scripts/backfill-catalog-dates.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
     "scout:podium": "tsx scripts/podium-scout.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.39.0] - 2026-09-04
+
+### Alterado
+
+- **Encontrar provas:** a página passa a pedir um filtro antes de mostrar lista, ganha busca por país, e traz os resultados aos poucos em vez de descarregar o catálogo inteiro para o browser. Com milhares de provas em dezenas de países, a lista completa não servia a ninguém.
+
+---
+
 ## [1.38.0] - 2026-09-04
 
 ### Corrigido

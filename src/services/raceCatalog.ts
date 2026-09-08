@@ -1,4 +1,14 @@
-import { collection, doc, getDoc, getDocs, Timestamp } from 'firebase/firestore'
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  limit as limitTo,
+  orderBy,
+  query,
+  Timestamp,
+  where,
+} from 'firebase/firestore'
 import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
 import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes'
 import { TARGET_MONTHS } from '../utils/targetMonth'
@@ -7,27 +17,59 @@ import { db } from './firebase'
 import { findRaceByName } from '../domain/raceMatching'
 import { createRace, listRaces } from './races'
 
+/** What one search asks the catalog for. Everything optional except the cap. */
+export type CatalogQuery = {
+  /** ISO 3166-1 alpha-2. */
+  country?: string
+  /** One discipline: Firestore allows a single array-contains per query. */
+  discipline?: EventType
+  /** Inclusive ISO days. `from` defaults to today: a past race is not a find. */
+  from?: string
+  to?: string
+  limit: number
+}
+
 /**
- * The instance's catalog.
+ * A page of the catalog, filtered by the server.
  *
- * There is no bundled copy any more: an instance that never seeded one has an
- * empty catalog, and the callers offer nothing rather than pretending.
+ * The catalog was read whole and filtered in the browser, which was honest at
+ * ninety entries and is not at five thousand: every visit to the discovery page
+ * was five thousand document reads and five megabytes to sort through for
+ * twenty rows.
  *
- * Retired entries are filtered here rather than in the query on purpose. A
- * Firestore `!=` filter only matches documents where the field exists, so
- * `where('retired', '!=', true)` would drop every entry that was never retired,
- * which is all of them. The catalog is tens of documents, so reading it whole and
- * filtering in memory is both correct and cheap.
+ * `nextRaceDate` exists for this query, because Firestore cannot filter or
+ * order by a date inside the `editions` array.
+ *
+ * Retired entries and copies are dropped after the query rather than in it: a
+ * second inequality is not allowed beside the date range, and both are rare
+ * enough that overfetching a little covers them.
  */
-export async function loadRaceCatalog(): Promise<RaceCatalogEntry[]> {
-  const snapshot = await getDocs(collection(db, RACE_CATALOG_COLLECTION))
+export async function searchRaceCatalog(
+  criteria: CatalogQuery,
+  today = new Date(),
+): Promise<RaceCatalogEntry[]> {
+  const from = criteria.from ?? today.toISOString().slice(0, 10)
+  const constraints = [
+    where('nextRaceDate', '>=', from),
+    ...(criteria.to ? [where('nextRaceDate', '<=', criteria.to)] : []),
+    ...(criteria.country ? [where('country', '==', criteria.country.toUpperCase())] : []),
+    ...(criteria.discipline
+      ? [where('disciplines', 'array-contains', criteria.discipline)]
+      : []),
+    orderBy('nextRaceDate'),
+    // Room for the retired and the copies, which the query cannot exclude.
+    limitTo(criteria.limit + OVERFETCH),
+  ]
+
+  const snapshot = await getDocs(query(collection(db, RACE_CATALOG_COLLECTION), ...constraints))
   return snapshot.docs
     .map((document) => document.data() as RaceCatalogEntry)
-    .filter((race) => race.retired !== true)
-    // A second copy of a race the catalog already holds shows as one row, and
-    // the survivor is the one it points at.
-    .filter((race) => !race.duplicateOfCatalogRaceId)
+    .filter((race) => race.retired !== true && !race.duplicateOfCatalogRaceId)
+    .slice(0, criteria.limit)
 }
+
+/** Slack for the two things the query cannot filter out. */
+const OVERFETCH = 20
 
 /**
  * When the harvest last ran, or `null` on an instance that never harvests.
@@ -35,16 +77,23 @@ export async function loadRaceCatalog(): Promise<RaceCatalogEntry[]> {
  * The page shows it rather than implying live data: a catalog refreshed weekly
  * is honest about being a catalog.
  */
-export async function loadHarvestSyncedAt(): Promise<Date | null> {
+export type HarvestStatus = {
+  syncedAt: Date | null
+  /** Every country the catalog holds, for the discovery filter. */
+  countries: string[]
+}
+
+export async function loadHarvestStatus(): Promise<HarvestStatus> {
   try {
     const snapshot = await getDoc(doc(db, 'raceCatalogHarvest', 'status'))
-    if (!snapshot.exists()) return null
+    if (!snapshot.exists()) return { syncedAt: null, countries: [] }
     const syncedAt = snapshot.get('syncedAt') as Timestamp | undefined
-    return syncedAt?.toDate() ?? null
+    const countries = snapshot.get('countries') as string[] | undefined
+    return { syncedAt: syncedAt?.toDate() ?? null, countries: countries ?? [] }
   } catch {
     // A missing document is the normal case, and a denied read means the
     // instance does not harvest. Neither is worth an error on the page.
-    return null
+    return { syncedAt: null, countries: [] }
   }
 }
 

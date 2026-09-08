@@ -4,6 +4,14 @@
 
 ---
 
+## [1.39.0] - 2026-09-04
+
+### Modifié
+
+- **Trouver des courses :** la page demande un filtre avant d'afficher une liste, gagne une recherche par pays, et ramène les résultats page par page au lieu de télécharger tout le catalogue dans le navigateur. Avec des milliers de courses dans des dizaines de pays, la liste entière ne servait personne.
+
+---
+
 ## [1.38.0] - 2026-09-04
 
 ### Corrigé

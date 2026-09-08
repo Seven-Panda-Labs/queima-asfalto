@@ -1,3 +1,4 @@
+import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
 import { catalogId } from './identity.js'
@@ -65,6 +66,7 @@ export function toCatalogEntry(
     officialUrl: race.sourceUrl,
     typicalRaceMonth: Number(day.slice(5, 7)),
     editions: Number.isFinite(year) ? [edition] : undefined,
+    nextRaceDate: nextRaceDateOf([edition], provenance.harvestedAt),
     review: 'unreviewed',
     source: provenance.source,
     producer: 'harvest',
@@ -89,9 +91,11 @@ export function mergeIntoCatalog(
     const editions = existing.editions ?? []
     const incoming = harvested.editions?.[0]
     if (!incoming || editions.some((edition) => edition.year === incoming.year)) return null
+    const merged = [...editions, incoming].sort((left, right) => left.year - right.year)
     return compact({
       ...existing,
-      editions: [...editions, incoming].sort((left, right) => left.year - right.year),
+      editions: merged,
+      nextRaceDate: nextRaceDateOf(merged, harvested.updatedAt ?? ''),
       updatedAt: harvested.updatedAt,
       updatedBy: harvested.updatedBy,
     })
@@ -107,9 +111,11 @@ export function mergeIntoCatalog(
 
   // The harvest overwrites the entry whole, so anything an operator decided
   // about it has to be carried across by hand or next week undoes it.
+  const sorted = editions.sort((left, right) => left.year - right.year)
   return compact({
     ...harvested,
-    editions: editions.sort((left, right) => left.year - right.year),
+    editions: sorted,
+    nextRaceDate: nextRaceDateOf(sorted, harvested.updatedAt ?? ''),
     retired: existing.retired,
     duplicateOfCatalogRaceId: existing.duplicateOfCatalogRaceId,
     notDuplicateOf: existing.notDuplicateOf,
