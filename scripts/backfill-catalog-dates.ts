@@ -12,6 +12,10 @@
  * latest one there is when they are all past. An entry with no dated edition
  * gets nothing, which is what the query should do with it anyway.
  *
+ * It also writes the country list the discovery page's filter reads, for the
+ * same reason: the harvest fills it in now, and until one runs the page has no
+ * list and no country field.
+ *
  * Against the emulator:
  *   FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
  *     npm run backfill:catalog-dates -- --confirm
@@ -75,10 +79,29 @@ async function main(): Promise<void> {
     console.log(`  ${entry.id} -> ${entry.nextRaceDate}`)
   }
 
+  const countries = [
+    ...new Set(
+      snapshot.docs
+        .map((document: { data: () => RaceCatalogEntry }) => document.data())
+        .filter(
+          (entry: RaceCatalogEntry) =>
+            entry.retired !== true && !entry.duplicateOfCatalogRaceId,
+        )
+        .map((entry: RaceCatalogEntry) => entry.country)
+        .filter(Boolean),
+    ),
+  ].sort()
+  console.log(`${countries.length} countries for the discovery filter`)
+
   if (dryRun) {
     console.log('Dry run, nothing written.')
     return
   }
+
+  await db
+    .collection('raceCatalogHarvest')
+    .doc('status')
+    .set({ countries }, { merge: true })
 
   for (let at = 0; at < pending.length; at += BATCH_SIZE) {
     const batch = db.batch()

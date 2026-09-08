@@ -5,11 +5,13 @@ import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { FindRaces } from './FindRaces'
 
 const searchRaceCatalog = vi.fn()
+/** Set per test: the list the harvest's status document carries, or none. */
+let countries: string[] = ['DE', 'PT']
 
 vi.mock('../../services/raceCatalog', () => ({
   searchRaceCatalog: (...args: unknown[]) => searchRaceCatalog(...args),
   loadHarvestStatus: () =>
-    Promise.resolve({ syncedAt: new Date('2026-09-04'), countries: ['DE', 'PT'] }),
+    Promise.resolve({ syncedAt: new Date('2026-09-04'), countries }),
   catalogRaceToBucketListItem: vi.fn(),
   findOrCreateCatalogRaceId: vi.fn(),
 }))
@@ -59,6 +61,7 @@ function race(id: string, overrides: Partial<RaceCatalogEntry> = {}): RaceCatalo
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
+  countries = ['DE', 'PT']
 })
 
 describe('FindRaces', () => {
@@ -129,5 +132,25 @@ describe('FindRaces', () => {
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenCalledWith(expect.objectContaining({ limit: 40 })),
     )
+  })
+})
+
+describe('FindRaces without a country list', () => {
+  it('leaves the field out rather than showing a dead one', async () => {
+    // The list comes from the harvest's status document. An instance that has
+    // not harvested since upgrading has none, and a disabled select is a
+    // control that does nothing when you click it, which is what shipped.
+    countries = []
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    expect(screen.queryByLabelText('País')).not.toBeInTheDocument()
+    // The place field is still there, so the page is not useless without it.
+    expect(screen.getByLabelText('Onde')).toBeInTheDocument()
+  })
+
+  it('shows the field when the list arrives', async () => {
+    render(<FindRaces />)
+    expect(await screen.findByLabelText('País')).toBeInTheDocument()
   })
 })
