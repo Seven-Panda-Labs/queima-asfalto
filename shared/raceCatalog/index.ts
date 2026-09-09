@@ -12,6 +12,14 @@ export {
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
 export {
+  DUPLICATE_VOTES_COLLECTION,
+  duplicateVoteId,
+  duplicateVotePairId,
+  tallyDuplicateVotes,
+  type DuplicateVote,
+  type DuplicateVoteTally,
+} from './duplicateVotes.js'
+export {
   canAssertDates,
   editionForYear,
   editionReviewQueue,

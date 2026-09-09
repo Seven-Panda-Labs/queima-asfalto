@@ -1222,7 +1222,8 @@
       "current": "En orden ({{count}})",
       "retired": "Fuera de circulación ({{count}})",
       "copies": "Copia de otra entrada ({{count}})"
-    }
+    },
+    "duplicatesVotes": "Votos: misma carrera {{same}}, distintas {{different}}."
   },
   "funnel": {
     "groups": {
@@ -1366,7 +1367,12 @@
     "useMyLocation": "Usar mi ubicación",
     "locationRefused": "Sin ubicación. Escribe un lugar en el campo «Dónde» y el radio cuenta desde ahí.",
     "unplaced_one": "{{count}} carrera más que la fuente no situó en el mapa, así que el radio la deja fuera.",
-    "unplaced_other": "{{count}} carreras más que la fuente no situó en el mapa, así que el radio las deja fuera."
+    "unplaced_other": "{{count}} carreras más que la fuente no situó en el mapa, así que el radio las deja fuera.",
+    "duplicateAsk": "«{{left}}» y «{{right}}» parecen la misma carrera. ¿Lo sabes?",
+    "duplicateSame": "Es la misma carrera",
+    "duplicateDifferent": "Son carreras distintas",
+    "duplicateThanks": "Gracias. Pasa a revisión, nada cambia todavía.",
+    "duplicateError": "No se pudo guardar la respuesta."
   },
   "onboarding": {
     "title": "Empezar",

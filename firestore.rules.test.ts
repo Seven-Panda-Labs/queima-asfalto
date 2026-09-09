@@ -1099,6 +1099,89 @@ describe('firestore.rules', () => {
     })
   })
 
+  describe('raceCatalogDuplicateVotes', () => {
+    const pair = { aId: 'de-berlin-generali-5k', bId: 'de-berlin-r5k-tour-finale' }
+    const voteId = (uid: string) => `raceCatalogDuplicateVotes/${pair.aId}__${pair.bId}__${uid}`
+    const vote = { ...pair, same: true, votedAt: '2026-09-09T10:00:00.000Z' }
+
+    it('takes an approved runner s answer about a pair', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc(voteId('user-alice')).set({ ...vote, uid: 'user-alice' }),
+      )
+    })
+
+    it('refuses a vote filed under somebody else', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      // The uid in the document has to be the writer.
+      await assertFails(db.doc(voteId('user-bob')).set({ ...vote, uid: 'user-bob' }))
+      // And the document id has to be the pair plus that uid, so one runner
+      // cannot spread many answers to one question over many documents.
+      await assertFails(
+        db.doc('raceCatalogDuplicateVotes/anything-else').set({ ...vote, uid: 'user-alice' }),
+      )
+    })
+
+    it('refuses a pair written the other way round', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      // Sorted ids are what make a pair one document rather than two.
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc(`raceCatalogDuplicateVotes/${pair.bId}__${pair.aId}__user-alice`)
+          .set({ aId: pair.bId, bId: pair.aId, uid: 'user-alice', same: true, votedAt: vote.votedAt }),
+      )
+    })
+
+    it('refuses a pending account and a signed-out one', async () => {
+      await seedDocument('users/user-pending', { accountStatus: 'pending' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-pending').firestore()
+          .doc(voteId('user-pending')).set({ ...vote, uid: 'user-pending' }),
+      )
+      await assertFails(
+        testEnv.unauthenticatedContext().firestore()
+          .doc(voteId('nobody')).set({ ...vote, uid: 'nobody' }),
+      )
+    })
+
+    it('lets a runner read their own answers and nobody else s', async () => {
+      await seedDocument(voteId('user-alice'), { ...vote, uid: 'user-alice' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore().doc(voteId('user-alice')).get(),
+      )
+      await assertFails(
+        testEnv.authenticatedContext('user-bob').firestore().doc(voteId('user-alice')).get(),
+      )
+    })
+
+    it('lets the admin read every answer, which is what sorts the queue', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      await seedDocument(voteId('user-alice'), { ...vote, uid: 'user-alice' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .collection('raceCatalogDuplicateVotes').get(),
+      )
+    })
+
+    it('never deletes a vote', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      await seedDocument(voteId('user-alice'), { ...vote, uid: 'user-alice' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc(voteId('user-alice')).delete(),
+      )
+    })
+  })
+
   describe('parkrunCatalog', () => {
     const catalogPayload = {
       syncedAt: '2026-08-29',

@@ -1222,7 +1222,8 @@
       "current": "Em ordem ({{count}})",
       "retired": "Fora de circulação ({{count}})",
       "copies": "Cópia de outra entrada ({{count}})"
-    }
+    },
+    "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}."
   },
   "funnel": {
     "groups": {
@@ -1366,7 +1367,12 @@
     "useMyLocation": "Usar a minha localização",
     "locationRefused": "Sem localização. Escreve um lugar no campo «Onde» e o raio conta a partir dele.",
     "unplaced_one": "Mais {{count}} prova que a fonte não situou no mapa, e por isso não entra no raio.",
-    "unplaced_other": "Mais {{count}} provas que a fonte não situou no mapa, e por isso não entram no raio."
+    "unplaced_other": "Mais {{count}} provas que a fonte não situou no mapa, e por isso não entram no raio.",
+    "duplicateAsk": "«{{left}}» e «{{right}}» parecem a mesma prova. Sabes?",
+    "duplicateSame": "É a mesma prova",
+    "duplicateDifferent": "São provas diferentes",
+    "duplicateThanks": "Obrigado. Vai para revisão, nada muda já.",
+    "duplicateError": "Não foi possível guardar a resposta."
   },
   "onboarding": {
     "title": "Começar",

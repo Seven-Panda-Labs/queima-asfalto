@@ -16,6 +16,12 @@ vi.mock('../../services/raceCatalog', () => ({
   findOrCreateCatalogRaceId: vi.fn(),
 }))
 
+const recordDuplicateVote = vi.fn()
+vi.mock('../../services/duplicateVotes', () => ({
+  recordDuplicateVote: (...args: unknown[]) => recordDuplicateVote(...args),
+  loadMyAnsweredPairs: () => Promise.resolve(new Set<string>()),
+}))
+
 vi.mock('../../contexts/AuthContext', () => ({ useAuth: () => ({ user: { uid: 'u1' } }) }))
 vi.mock('../../contexts/ToastContext', () => ({
   useToast: () => ({ success: vi.fn(), error: vi.fn() }),
@@ -177,6 +183,73 @@ describe('the country filter order', () => {
       'Portugal',
       'Suíça',
     ])
+  })
+})
+
+describe('a pair that looks like one race', () => {
+  /**
+   * A real pair from the catalog: same day, same town, same distance, and the
+   * names agree on nothing a rule can use, so no rule merges them.
+   */
+  const pair = [
+    race('de-hamburg-haspa-halbmarathon', {
+      name: 'Haspa Halbmarathon Hamburg',
+      city: 'Hamburg',
+      disciplines: ['km_5'],
+    }),
+    race('de-hamburg-haspa-marathon', {
+      name: 'Haspa Marathon Hamburg',
+      city: 'Hamburg',
+      disciplines: ['km_5'],
+    }),
+  ]
+
+  async function search() {
+    render(<FindRaces />)
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'DE' } })
+  }
+
+  it('asks the runner, under the two rows', async () => {
+    searchRaceCatalog.mockResolvedValue(pair)
+    await search()
+
+    expect(await screen.findByText(/parecem a mesma prova/)).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'É a mesma prova' })).toBeInTheDocument()
+  })
+
+  it('records the answer as a vote and stops asking', async () => {
+    searchRaceCatalog.mockResolvedValue(pair)
+    await search()
+
+    fireEvent.click(await screen.findByRole('button', { name: 'É a mesma prova' }))
+
+    await waitFor(() =>
+      expect(recordDuplicateVote).toHaveBeenCalledWith(
+        'u1',
+        'de-hamburg-haspa-halbmarathon',
+        'de-hamburg-haspa-marathon',
+        true,
+      ),
+    )
+    // Answered once is answered: asking again reads as the answer being lost.
+    await waitFor(() =>
+      expect(screen.queryByText(/parecem a mesma prova/)).not.toBeInTheDocument(),
+    )
+    // And both races are still there. A vote decides nothing on its own.
+    expect(screen.getByText('Haspa Halbmarathon Hamburg')).toBeInTheDocument()
+    expect(screen.getByText('Haspa Marathon Hamburg')).toBeInTheDocument()
+  })
+
+  it('says nothing about two races that only share a town', async () => {
+    searchRaceCatalog.mockResolvedValue([
+      race('de-hamburg-alsterlauf', { name: 'Alsterlauf', city: 'Hamburg' }),
+      race('de-hamburg-hafenlauf', { name: 'Hafenlauf', city: 'Hamburg' }),
+    ])
+    await search()
+
+    await screen.findByText('Alsterlauf')
+    expect(screen.queryByText(/parecem a mesma prova/)).not.toBeInTheDocument()
   })
 })
 

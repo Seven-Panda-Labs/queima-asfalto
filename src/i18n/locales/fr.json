@@ -1222,7 +1222,8 @@
       "current": "Rien à faire ({{count}})",
       "retired": "Hors circulation ({{count}})",
       "copies": "Copie d'une autre entrée ({{count}})"
-    }
+    },
+    "duplicatesVotes": "Votes : même course {{same}}, différentes {{different}}."
   },
   "funnel": {
     "groups": {
@@ -1366,7 +1367,12 @@
     "useMyLocation": "Utiliser ma position",
     "locationRefused": "Pas de position. Tape un lieu dans le champ « Où » et le rayon part de là.",
     "unplaced_one": "{{count}} course de plus que la source n'a pas située sur la carte, donc le rayon la laisse dehors.",
-    "unplaced_other": "{{count}} courses de plus que la source n'a pas situées sur la carte, donc le rayon les laisse dehors."
+    "unplaced_other": "{{count}} courses de plus que la source n'a pas situées sur la carte, donc le rayon les laisse dehors.",
+    "duplicateAsk": "« {{left}} » et « {{right}} » ont l'air d'être la même course. Tu le sais ?",
+    "duplicateSame": "C'est la même course",
+    "duplicateDifferent": "Ce sont deux courses",
+    "duplicateThanks": "Merci. Ça part en révision, rien ne change encore.",
+    "duplicateError": "La réponse n'a pas pu être enregistrée."
   },
   "onboarding": {
     "title": "Commencer",

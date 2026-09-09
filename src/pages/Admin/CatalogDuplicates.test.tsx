@@ -12,6 +12,12 @@ vi.mock('../../services/adminRaceCatalog', () => ({
   separateCatalogRaces: (...args: unknown[]) => separateCatalogRaces(...args),
 }))
 
+/** Set per test: what the runners answered, keyed the way the pair id is built. */
+let tallies = new Map<string, { same: number; different: number }>()
+vi.mock('../../services/duplicateVotes', () => ({
+  loadDuplicateVoteTallies: () => Promise.resolve(tallies),
+}))
+
 function race(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id' | 'name'>): RaceCatalogEntry {
   return {
     country: 'DE',
@@ -38,6 +44,7 @@ const pair = [
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
+  tallies = new Map()
 })
 
 describe('CatalogDuplicates', () => {
@@ -86,5 +93,46 @@ describe('CatalogDuplicates', () => {
 
     expect(await screen.findByText('Não foi possível guardar.')).toBeInTheDocument()
     expect(screen.getByText('Haspa Marathon Hamburg')).toBeInTheDocument()
+  })
+})
+
+describe('what the runners answered', () => {
+  /** Another pair from the queue, and another the rule will not decide. */
+  const other = [
+    race({ id: 'de-saar-sparkassen', name: 'Sparkassen-SAARathon', city: 'Saarbrücken' }),
+    race({
+      id: 'de-saar-weltkulturerbe',
+      name: '3. SAARathon Weltkulturerbe-Marathon',
+      city: 'Saarbrücken',
+    }),
+  ]
+
+  it('shows the count on the pair', async () => {
+    tallies = new Map([
+      ['de-hamburg-haspa-halbmarathon__de-hamburg-haspa-marathon', { same: 3, different: 1 }],
+    ])
+    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+
+    expect(await screen.findByText('Votos: mesma prova 3, diferentes 1.')).toBeInTheDocument()
+  })
+
+  it('puts the pairs runners recognised at the top', async () => {
+    tallies = new Map([['de-saar-sparkassen__de-saar-weltkulturerbe', { same: 2, different: 0 }]])
+    render(
+      <CatalogDuplicates races={[...pair, ...other]} adminUid="admin" onChanged={vi.fn()} />,
+    )
+
+    await screen.findByText(/mesma prova 2/)
+    const shown = [...document.querySelectorAll('li')].map((row) => row.textContent ?? '')
+    // The voted pair first, the unanswered one after it.
+    expect(shown[0]).toContain('SAARathon')
+    expect(shown[1]).toContain('Haspa')
+  })
+
+  it('says nothing when nobody has answered', async () => {
+    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+
+    await screen.findByText('Haspa Marathon Hamburg')
+    expect(screen.queryByText(/^Votos:/)).not.toBeInTheDocument()
   })
 })

@@ -282,6 +282,17 @@ OKC» e «Veterans Voyage OKC» partilham a abreviatura da cidade). Sem esse
 filtro, um sábado de Setembro em Berlim gera dezenas de perguntas absurdas: num
 catálogo de 3062 entradas, a fila passou de 115 pares para 5.
 
+**E também se pergunta aos corredores.** Os mesmos pares aparecem na página de
+busca, numa linha discreta sob as duas linhas, porque quem está a ler as duas
+sabe mais depressa do que qualquer regra, e a lista está ordenada por data, o
+que põe as duas entradas da mesma prova uma ao lado da outra. A resposta de um
+corredor é um voto e não uma decisão: fica em `raceCatalogDuplicateVotes`, um
+documento por par e por votante, e não junta nada. Juntar aponta um id do
+catálogo a outro, e a prova de um corredor já pode referir qualquer dos dois,
+por isso continua a ser decisão de um administrador. O que o voto faz é ordenar
+a fila da administração, para que os pares que alguém já reconheceu cheguem ao
+topo e os outros deixem de se esconder atrás deles.
+
 ### Acrescentar uma fonte
 
 1. Verifica o `robots.txt` e os termos. Se houver dúvida, pede autorização.
@@ -595,6 +606,16 @@ same city, a distance in common, and no name or review to settle it, go to
 - **Same race**, which points the second entry at the first.
 - **Different races**, which is written on both entries (`notDuplicateOf`) so the
   next harvest neither merges them nor asks again.
+
+**And the runners are asked too.** The same pairs appear on the search page, as
+a quiet line under the two rows, because a person reading both knows faster than
+any rule and the list is ordered by date, so the two entries of one race land
+next to each other. A runner's answer is a vote and not a decision: it is stored
+in `raceCatalogDuplicateVotes`, one document per pair and voter, and it merges
+nothing. The merge points one catalog id at another and a runner's own race may
+already reference either, so that stays an admin's call. What a vote does is
+order the admin's queue, so the pairs somebody already recognised reach the top
+and the rest stop hiding behind them.
 
 ### Adding a source
 

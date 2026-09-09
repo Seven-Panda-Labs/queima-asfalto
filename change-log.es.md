@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Añadido
+
+- **Carreras repetidas:** cuando dos filas de la búsqueda son la misma carrera escrita de dos formas, aparece una pregunta discreta debajo. Tu respuesta no une ni borra nada: adelanta el par en la cola de quien revisa el catálogo.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Cambiado

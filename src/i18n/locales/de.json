@@ -1222,7 +1222,8 @@
       "current": "Nichts zu tun ({{count}})",
       "retired": "Außer Betrieb ({{count}})",
       "copies": "Kopie eines anderen Eintrags ({{count}})"
-    }
+    },
+    "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}."
   },
   "funnel": {
     "groups": {
@@ -1366,7 +1367,12 @@
     "useMyLocation": "Meinen Standort verwenden",
     "locationRefused": "Kein Standort. Tippe einen Ort in das Feld „Wo“, dann zählt der Radius von dort.",
     "unplaced_one": "{{count}} weiteres Rennen, das die Quelle nicht verortet hat, also bleibt es außerhalb des Radius.",
-    "unplaced_other": "{{count}} weitere Rennen, die die Quelle nicht verortet hat, also bleiben sie außerhalb des Radius."
+    "unplaced_other": "{{count}} weitere Rennen, die die Quelle nicht verortet hat, also bleiben sie außerhalb des Radius.",
+    "duplicateAsk": "„{{left}}“ und „{{right}}“ sehen nach demselben Rennen aus. Weißt du es?",
+    "duplicateSame": "Dasselbe Rennen",
+    "duplicateDifferent": "Zwei verschiedene Rennen",
+    "duplicateThanks": "Danke. Es geht zur Prüfung, noch ändert sich nichts.",
+    "duplicateError": "Die Antwort konnte nicht gespeichert werden."
   },
   "onboarding": {
     "title": "Loslegen",
