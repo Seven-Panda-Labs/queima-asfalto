@@ -164,9 +164,11 @@ describe('findCatalogDuplicate, once an operator has answered', () => {
 
 describe('catalogDuplicateCandidates', () => {
   // A pair that shares a word without the names agreeing: "rathaus" and
-  // "center" in both, and neither name inside the other.
+  // "center" in both, and neither name inside the other. "City RUN" and
+  // "CityRUN" are one name and the rule merges those on its own, so the second
+  // side here is the one that calls the race something else.
   const one = entry({ id: 'a', name: 'Dessauer Rathaus-Center City RUN', disciplines: ['km_10'] })
-  const two = entry({ id: 'b', name: '27. Rathaus-Center CityRUN', disciplines: ['km_10'] })
+  const two = entry({ id: 'b', name: '27. Rathaus-Center Lauf', disciplines: ['km_10'] })
 
   it('asks about the pair no rule will merge on its own', () => {
     expect(catalogDuplicateCandidates([one, two])).toHaveLength(1)
@@ -182,7 +184,7 @@ describe('catalogDuplicateCandidates', () => {
   it('offers the entry a person stands behind as the survivor', () => {
     const withFee = entry({
       id: 'b',
-      name: '27. Rathaus-Center CityRUN',
+      name: '27. Rathaus-Center Lauf',
       disciplines: ['km_10'],
       editions: [
         {
@@ -227,7 +229,7 @@ describe('catalogDuplicateCandidates', () => {
   })
 
   it('reports each pair once', () => {
-    const three = entry({ id: 'c', name: 'Rathaus-Center Lauf', disciplines: ['km_10'] })
+    const three = entry({ id: 'c', name: 'Rathaus-Center Cross', disciplines: ['km_10'] })
     expect(catalogDuplicateCandidates([one, two, three])).toHaveLength(3)
   })
 })
@@ -290,12 +292,14 @@ describe('the pairs a runner found in the catalog', () => {
     expect(findCatalogDuplicate(quarter, [half])).toBeNull()
   })
 
-  it('leaves the doubtful pair to a person', () => {
-    // Same day, and a town written two ways: "Dessau" and "Dessau-Roßlau".
-    // The queue in the admin area is where this gets decided.
+  it('merges a town written with and without its other half', () => {
+    // "Dessau" and "Dessau-Roßlau" are one place, and this pair sat in the
+    // catalog twice because the rule wanted the two strings to be equal. A
+    // person checked this one and eighteen more like it: see
+    // `verifiedDuplicates.test.ts`.
     const one = real('Dessauer Rathaus-Center City RUN', 'Dessau', '2026-09-13', ['km_5'])
     const two = real('27. Rathaus-Center CityRUN', 'Dessau-Roßlau', '2026-09-13', ['km_5'])
-    expect(findCatalogDuplicate(two, [one])).toBeNull()
+    expect(findCatalogDuplicate(two, [one])).not.toBeNull()
   })
 })
 
@@ -324,7 +328,7 @@ describe('catalogDuplicateCandidates at catalog scale', () => {
   it('still asks when the names share a word of their own', () => {
     const pairs = catalogDuplicateCandidates([
       berlin('Dessauer Rathaus-Center City RUN'),
-      berlin('27. Rathaus-Center CityRUN'),
+      berlin('27. Rathaus-Center Cross'),
     ])
     expect(pairs).toHaveLength(1)
   })
