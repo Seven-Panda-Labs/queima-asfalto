@@ -76,13 +76,21 @@ export function CatalogDuplicates({
     })
   }, [races, tallies])
 
-  const act = async (candidate: DuplicateCandidate, merge: boolean) => {
+  /**
+   * @param survivor which entry the pair collapses into, or none to keep both.
+   *
+   * The suggestion is a guess made from what each entry carries, and an
+   * operator can prefer the other name for reasons no rule has: the organiser
+   * calls it that, or the sponsor in the other name is last year's.
+   */
+  const act = async (candidate: DuplicateCandidate, survivor: RaceCatalogEntry | null) => {
     const key = `${candidate.keep.id}:${candidate.drop.id}`
     setPending(key)
     setError(null)
     try {
-      if (merge) {
-        await mergeCatalogRaces(candidate.keep.id, candidate.drop.id, adminUid)
+      if (survivor) {
+        const dropped = survivor.id === candidate.keep.id ? candidate.drop : candidate.keep
+        await mergeCatalogRaces(survivor.id, dropped.id, adminUid)
       } else {
         await separateCatalogRaces(candidate.keep.id, candidate.drop.id, adminUid)
       }
@@ -130,15 +138,25 @@ export function CatalogDuplicates({
                 <button
                   type="button"
                   disabled={busy}
-                  onClick={() => void act(candidate, true)}
+                  onClick={() => void act(candidate, candidate.keep)}
                   className="rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-50"
                 >
                   {t('admin.duplicatesMerge', { name: candidate.keep.name })}
                 </button>
+                {/* The same answer the other way round, for when the operator
+                    prefers the name the suggestion did not pick. */}
                 <button
                   type="button"
                   disabled={busy}
-                  onClick={() => void act(candidate, false)}
+                  onClick={() => void act(candidate, candidate.drop)}
+                  className="rounded-md border border-primary px-3 py-1.5 text-xs font-semibold text-primary hover:bg-primary/10 disabled:opacity-50"
+                >
+                  {t('admin.duplicatesMergeOther', { name: candidate.drop.name })}
+                </button>
+                <button
+                  type="button"
+                  disabled={busy}
+                  onClick={() => void act(candidate, null)}
                   className="rounded-md border border-border px-3 py-1.5 text-xs font-semibold text-foreground hover:bg-border/40 disabled:opacity-50"
                 >
                   {t('admin.duplicatesSeparate')}

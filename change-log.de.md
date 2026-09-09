@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-09
+
+### Geändert
+
+- **Doppelte Einträge im Katalog:** wer den Katalog prüft, kann ein Paar nun in beide Richtungen zusammenführen und den Namen behalten, den er bevorzugt. Vorher gab es nur den vorgeschlagenen.
+
+---
+
 ## [1.43.0] - 2026-09-09
 
 ### Behoben

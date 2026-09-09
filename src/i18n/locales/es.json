@@ -1210,7 +1210,7 @@
       "unknown": "Desconocida"
     },
     "duplicatesTitle": "Posiblemente la misma carrera ({{count}})",
-    "duplicatesHint": "Mismo día, misma ciudad, misma distancia, y ni el nombre ni una revisión lo deciden. Unir apunta la segunda entrada a la primera sin borrarla; la respuesta queda guardada en cualquier caso.",
+    "duplicatesHint": "Mismo día, mismo pueblo, y ni el nombre ni una revisión lo deciden. Elige con cuál de las dos quedarte: la otra apunta a esa y no se borra. La respuesta se guarda en cualquier caso.",
     "duplicatesKeep": "sugerida",
     "duplicatesMerge": "Misma carrera, quedarse con {{name}}",
     "duplicatesSeparate": "Carreras distintas",
@@ -1223,7 +1223,8 @@
       "retired": "Fuera de circulación ({{count}})",
       "copies": "Copia de otra entrada ({{count}})"
     },
-    "duplicatesVotes": "Votos: misma carrera {{same}}, distintas {{different}}."
+    "duplicatesVotes": "Votos: misma carrera {{same}}, distintas {{different}}.",
+    "duplicatesMergeOther": "O quedarte con {{name}}"
   },
   "funnel": {
     "groups": {

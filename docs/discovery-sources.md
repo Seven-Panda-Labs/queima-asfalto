@@ -714,10 +714,17 @@ can check for references.
 **The rest is a question, not a rule.** Two sources can bring the same race
 under two organiser names that agree on nothing, with nobody having checked
 either entry, and there is no evidence there to merge on. Those pairs, same day,
-same city, a distance in common, and no name or review to settle it, go to
-"Possibly the same race" at the top of the admin catalog, with two answers:
+same town, and no name or review to settle it, go to "Possibly the same race" at
+the top of the admin catalog, with three answers:
 
-- **Same race**, which points the second entry at the first.
+- **Same race, keep this one.** The pair suggests a survivor, by what each entry
+  carries: reviewed or curated first, then a fee or a deadline, then the number
+  of editions.
+- **Same race, keep the other one.** The suggestion is a guess, and an operator
+  can prefer the other name for a reason no rule has: the organiser calls it
+  that, or the sponsor in the suggested name is last year's. Either way the
+  entry that goes points at the one that stays (`duplicateOfCatalogRaceId`) and
+  is never deleted.
 - **Different races**, which is written on both entries (`notDuplicateOf`) so the
   next harvest neither merges them nor asks again.
 

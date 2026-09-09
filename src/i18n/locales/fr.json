@@ -1210,7 +1210,7 @@
       "unknown": "Inconnue"
     },
     "duplicatesTitle": "Peut-être la même course ({{count}})",
-    "duplicatesHint": "Même jour, même ville, même distance, et ni le nom ni une vérification ne tranchent. Fusionner fait pointer la seconde entrée vers la première sans la supprimer, et la réponse est retenue dans les deux cas.",
+    "duplicatesHint": "Même jour, même ville, et ni le nom ni une relecture ne tranchent. Choisis laquelle des deux garder : l'autre pointe vers elle et n'est pas supprimée. La réponse est retenue dans les deux cas.",
     "duplicatesKeep": "proposée",
     "duplicatesMerge": "Même course, garder {{name}}",
     "duplicatesSeparate": "Courses différentes",
@@ -1223,7 +1223,8 @@
       "retired": "Hors circulation ({{count}})",
       "copies": "Copie d'une autre entrée ({{count}})"
     },
-    "duplicatesVotes": "Votes : même course {{same}}, différentes {{different}}."
+    "duplicatesVotes": "Votes : même course {{same}}, différentes {{different}}.",
+    "duplicatesMergeOther": "Ou garder {{name}}"
   },
   "funnel": {
     "groups": {

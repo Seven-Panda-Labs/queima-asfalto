@@ -1210,7 +1210,7 @@
       "unknown": "Unbekannt"
     },
     "duplicatesTitle": "Möglicherweise dasselbe Rennen ({{count}})",
-    "duplicatesHint": "Gleicher Tag, gleiche Stadt, gleiche Distanz, und weder der Name noch eine Prüfung entscheiden es. Zusammenführen verweist den zweiten Eintrag auf den ersten, ohne ihn zu löschen; die Antwort wird in beiden Fällen gespeichert.",
+    "duplicatesHint": "Gleicher Tag, gleicher Ort, und weder der Name noch eine Prüfung entscheidet es. Wähle, welchen der beiden du behältst: der andere zeigt darauf und wird nicht gelöscht. Die Antwort wird in beiden Fällen gespeichert.",
     "duplicatesKeep": "Vorschlag",
     "duplicatesMerge": "Dasselbe Rennen, {{name}} behalten",
     "duplicatesSeparate": "Verschiedene Rennen",
@@ -1223,7 +1223,8 @@
       "retired": "Außer Betrieb ({{count}})",
       "copies": "Kopie eines anderen Eintrags ({{count}})"
     },
-    "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}."
+    "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}.",
+    "duplicatesMergeOther": "Oder {{name}} behalten"
   },
   "funnel": {
     "groups": {

@@ -1210,7 +1210,7 @@
       "unknown": "Unknown"
     },
     "duplicatesTitle": "Possibly the same race ({{count}})",
-    "duplicatesHint": "Same day, same city, same distance, and no name or review to settle it. Merging points the second entry at the first without deleting it; the answer is remembered either way.",
+    "duplicatesHint": "Same day, same town, and no name or review to settle it. Pick which of the two to keep: the other points at it and is not deleted. The answer is remembered either way.",
     "duplicatesKeep": "suggested",
     "duplicatesMerge": "Same race, keep {{name}}",
     "duplicatesSeparate": "Different races",
@@ -1223,7 +1223,8 @@
       "retired": "Out of circulation ({{count}})",
       "copies": "A copy of another entry ({{count}})"
     },
-    "duplicatesVotes": "Votes: same race {{same}}, different {{different}}."
+    "duplicatesVotes": "Votes: same race {{same}}, different {{different}}.",
+    "duplicatesMergeOther": "Or keep {{name}}"
   },
   "funnel": {
     "groups": {
