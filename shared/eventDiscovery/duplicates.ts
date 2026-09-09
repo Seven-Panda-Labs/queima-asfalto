@@ -347,7 +347,11 @@ export function findCatalogDuplicate(
  * "Haspa Marathon" would both come down to "haspa" and merge into one race,
  * and they are two.
  */
-const GENERIC =
+/**
+ * Exported because a name search needs the same judgement: the word worth
+ * asking the server for is the one that is not on every second race.
+ */
+export const GENERIC =
   /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
 
 /**

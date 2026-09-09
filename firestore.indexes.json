@@ -159,6 +159,38 @@
       ]
     },
     {
+      "collectionGroup": "raceCatalog",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "nameTokens",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "nextRaceDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "raceCatalog",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "country",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "nameTokens",
+          "arrayConfig": "CONTAINS"
+        },
+        {
+          "fieldPath": "nextRaceDate",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
       "collectionGroup": "shares",
       "queryScope": "COLLECTION",
       "fields": [

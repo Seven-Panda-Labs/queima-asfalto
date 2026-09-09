@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Added
+
+- **Find a race by name:** the search field now searches the whole catalog instead of only the races already on the page. Typing "Teltowkanal" finds the race, even when it is three thousandth in line.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Added

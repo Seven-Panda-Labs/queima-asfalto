@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Añadido
+
+- **Buscar una carrera por nombre:** el campo de búsqueda ya busca en todo el catálogo, y no solo en las carreras que ya estaban en la página. Escribir «Teltowkanal» encuentra la carrera, aunque sea la tres mil de la lista.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Añadido

@@ -29,7 +29,7 @@ import {
   type Centre,
 } from '../../domain/raceRadius'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
-import { canAssertDates, duplicateVotePairId } from '../../../shared/raceCatalog'
+import { canAssertDates, duplicateVotePairId, searchToken } from '../../../shared/raceCatalog'
 import { catalogDuplicateCandidates } from '../../../shared/eventDiscovery/duplicates'
 import { loadMyAnsweredPairs, recordDuplicateVote } from '../../services/duplicateVotes'
 import { DuplicateHint } from './DuplicateHint'
@@ -432,10 +432,14 @@ export function FindRaces() {
   /**
    * One query per search, filtered by the server.
    *
-   * `place` stays a filter over what came back: Firestore has no substring
-   * match, and a runner typing a town has almost always picked a country too.
+   * What the runner types now reaches it. It used to be a filter over the page
+   * that had already been fetched, which made a race findable by name only if
+   * it happened to be among the next twenty worldwide: the whole word goes to
+   * the server as a `nameTokens` match, and the rest of what was typed still
+   * narrows what comes back.
    */
   const filtered = hasFilter(criteria, anchorRaceId, Boolean(radiusKm && hasCentre))
+  const nameToken = searchToken(criteria.place)
   useEffect(() => {
     if (!filtered) {
       setCatalog(null)
@@ -450,6 +454,7 @@ export function FindRaces() {
         // One array-contains per query is all Firestore allows, so the rest of
         // the picked disciplines narrow what came back.
         discipline: criteria.disciplines[0],
+        nameToken,
         from: criteria.from || undefined,
         to: criteria.to || undefined,
         limit: radiusKm && hasCentre ? pageSize * RADIUS_OVERFETCH : pageSize,
@@ -478,6 +483,7 @@ export function FindRaces() {
     criteria.from,
     criteria.to,
     filtered,
+    nameToken,
     pageSize,
     radiusKm,
   ])

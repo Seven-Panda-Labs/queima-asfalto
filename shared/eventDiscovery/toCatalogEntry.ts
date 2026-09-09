@@ -1,4 +1,5 @@
 import { keepRunnerDate } from '../raceCatalog/editionReports.js'
+import { nameTokensOf } from '../raceCatalog/nameTokens.js'
 import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
@@ -63,6 +64,9 @@ export function toCatalogEntry(
     latitude: race.latitude,
     longitude: race.longitude,
     disciplines: toDisciplines(race.distancesKm),
+    // What a name search matches on, because Firestore cannot look inside a
+    // string.
+    nameTokens: nameTokensOf(race.name, race.city ?? ''),
     // What a listing never says is how you get in. Guessing `first_come`
     // because there is a price would put a lottery race in the wrong funnel.
     entryMethod: 'unknown',

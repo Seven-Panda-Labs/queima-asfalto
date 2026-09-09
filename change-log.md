@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Adicionado
+
+- **Procurar uma prova pelo nome:** o campo de busca passa a procurar em todo o catálogo, e não só nas provas que já estavam na página. Escrever «Teltowkanal» encontra a prova, mesmo que ela seja a três mil na fila.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Adicionado

@@ -116,6 +116,15 @@ export type RaceCatalogEntry = {
    */
   nextRaceDate?: string
   /**
+   * The words the entry can be found by, from its name and its town.
+   *
+   * Firestore cannot search inside a string, so a search by name is only
+   * possible as `array-contains` over this. Written by whatever writes the
+   * entry; an entry from before the field answers no name search until the
+   * backfill or the next harvest of its source.
+   */
+  nameTokens?: string[]
+  /**
    * Where the race is, for a search by radius.
    *
    * Present only where a source published it. A missing pair means the entry
