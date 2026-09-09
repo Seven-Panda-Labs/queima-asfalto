@@ -35,6 +35,9 @@ function report(overrides: Partial<EditionReport> = {}): EditionReport {
   }
 }
 
+/** The listing with a fee on it, for the cases about overruling one. */
+
+
 const listing = {
   year: 2026,
   raceDate: '2026-10-10',
@@ -185,6 +188,97 @@ describe('applyEditionReports', () => {
     // Two runners know the day they ran. They cannot vouch for a deadline that
     // has not happened, and `canAssertDates` is what reads this.
     expect(updated?.review).toBe('unreviewed')
+  })
+})
+
+describe('a fee, which no source we read publishes', () => {
+  it('takes one runner s word where the catalog has none', () => {
+    // Nothing published is being contradicted, and the alternative is a
+    // catalog that holds a fee for about one entry in fifty.
+    const updated = applyEditionReports(
+      entry({ editions: [listing] }),
+      [report({ uid: 'u1', raceDate: undefined, fee: 45, feeCurrency: 'EUR' })],
+      TODAY,
+    )
+
+    expect(updated?.editions?.[0]).toMatchObject({ typicalFee: 45, feeCurrency: 'EUR' })
+  })
+
+  it('needs two to change a fee the catalog already holds', () => {
+    const priced = { ...listing, typicalFee: 40, feeCurrency: 'EUR' }
+    const one = [report({ uid: 'u1', raceDate: undefined, fee: 45, feeCurrency: 'EUR' })]
+
+    expect(applyEditionReports(entry({ editions: [priced] }), one, TODAY)).toBeNull()
+
+    const two = [...one, report({ uid: 'u2', raceDate: undefined, fee: 45, feeCurrency: 'EUR' })]
+    expect(
+      applyEditionReports(entry({ editions: [priced] }), two, TODAY)?.editions?.[0],
+    ).toMatchObject({ typicalFee: 45, feeCurrency: 'EUR' })
+  })
+
+  it('does not read a fee without its currency', () => {
+    expect(
+      applyEditionReports(
+        entry({ editions: [listing] }),
+        [report({ uid: 'u1', raceDate: undefined, fee: 45 })],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('does not call two different currencies agreement', () => {
+    expect(
+      applyEditionReports(
+        entry({ editions: [{ ...listing, typicalFee: 40, feeCurrency: 'EUR' }] }),
+        [
+          report({ uid: 'u1', raceDate: undefined, fee: 45, feeCurrency: 'EUR' }),
+          report({ uid: 'u2', raceDate: undefined, fee: 45, feeCurrency: 'GBP' }),
+        ],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('writes nothing when the runners agree with the catalog', () => {
+    const priced = { ...listing, typicalFee: 45, feeCurrency: 'EUR' }
+    expect(
+      applyEditionReports(
+        entry({ editions: [priced] }),
+        [
+          report({ uid: 'u1', raceDate: undefined, fee: 45, feeCurrency: 'EUR' }),
+          report({ uid: 'u2', raceDate: undefined, fee: 45, feeCurrency: 'EUR' }),
+        ],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('carries a fee into a year the catalog never had', () => {
+    const updated = applyEditionReports(
+      entry({ editions: [listing] }),
+      [report({ uid: 'u1', year: 2024, raceDate: '2024-10-13', fee: 38, feeCurrency: 'EUR' })],
+      TODAY,
+    )
+
+    expect(updated?.editions?.[0]).toMatchObject({
+      year: 2024,
+      raceDate: '2024-10-13',
+      typicalFee: 38,
+      feeCurrency: 'EUR',
+      source: 'runners',
+    })
+  })
+
+  it('does not mark the date when only the fee changed', () => {
+    const updated = applyEditionReports(
+      entry({ editions: [listing] }),
+      [report({ uid: 'u1', raceDate: undefined, fee: 45, feeCurrency: 'EUR' })],
+      TODAY,
+    )
+
+    // `runnerConfirmedAt` is about the day, and no runner overruled one here.
+    expect(updated?.editions?.[0]?.runnerConfirmedAt).toBeUndefined()
+    expect(updated?.editions?.[0]?.raceDate).toBe('2026-10-10')
   })
 })
 

@@ -11,6 +11,7 @@
 - **Doppelte Einträge im Katalog:** jedes Rennen in der Prüfliste hat jetzt einen Link zu seiner Quelle, damit sich die beiden auf den Seiten unterscheiden lassen, von denen sie kommen.
 - **Die Anmeldung kommt schon ausgefüllt:** wer ein Rennen plant, das der Katalog kennt, findet Termine, Fristen und Gebühr bereits im Formular, mit der Quelle sichtbar. Solange niemand den Eintrag geprüft hat, bleiben sie ein Vorschlag, und das Datum gilt nicht als bestätigt.
 - **Dein offizielles Ergebnis verbessert den Katalog:** mit einem verifizierten Ergebnis sagst du dem Katalog, an welchem Tag das Rennen lief. Ein Jahr, das er nicht hatte, kommt sofort hinein; ein Datum zu korrigieren, das er schon hatte, braucht zwei Läufer, die übereinstimmen. Nur der Tag reist mit, nie der Absender, und es löst weiter keine Erinnerungen aus.
+- **Was es gekostet hat, für die Nächsten:** wenn du eine Anmeldung als erledigt markierst, landet die von dir bezahlte Gebühr im Katalog. Keiner der Kalender, die wir lesen, veröffentlicht Gebühren, das gibt es also nur, weil Läufer es sagen. Eine Gebühr zu ändern, die der Katalog schon hat, braucht zwei Läufer, die übereinstimmen.
 
 ---
 

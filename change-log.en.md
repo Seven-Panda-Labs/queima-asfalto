@@ -11,6 +11,7 @@
 - **Duplicates in the catalog:** each race in the review queue now carries a link to its source, so the two can be told apart on the pages they came from.
 - **Your entry arrives filled in:** planning a race the catalog knows brings its dates, gates and fee already in the form, with the source in plain sight. Until somebody has checked the entry they stay a suggestion, and the date does not count as confirmed.
 - **Your official result improves the catalog:** importing a verified result tells the catalog which day the race was run. A year it did not have goes in at once; correcting a date it already had takes two runners agreeing. Only the day travels, never who sent it, and it still fires no reminders.
+- **What it cost, for whoever comes next:** marking an entry as done puts the fee you paid into the catalog. None of the calendars we read publish fees, so this only exists because runners say so. Changing a fee the catalog already holds takes two runners agreeing.
 
 ---
 

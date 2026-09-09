@@ -11,6 +11,7 @@
 - **Duplicados no catálogo:** cada prova da fila de revisão traz agora o link para a fonte, para confirmar nas páginas de origem qual das duas é qual.
 - **A inscrição já vem preenchida:** ao planear uma prova que o catálogo conhece, as datas, os prazos e o preço aparecem preenchidos, com a fonte à vista. Enquanto ninguém tiver verificado a entrada, ficam como sugestão e a data não conta como confirmada.
 - **O teu resultado oficial melhora o catálogo:** ao importar um resultado verificado, dizes ao catálogo em que dia a prova se correu. Um ano que o catálogo não tinha entra logo; corrigir uma data que ele já tinha precisa de dois corredores a concordar. Vai só o dia, nunca quem o enviou, e continua a não disparar avisos.
+- **Quanto custou, para quem vier depois:** ao marcares uma inscrição como feita, o preço que pagaste passa a ficar no catálogo. Nenhum dos calendários que lemos publica preços, portanto isto só existe porque os corredores o dizem. Mudar um preço que o catálogo já tem exige dois corredores a concordar.
 
 ---
 

@@ -41,7 +41,18 @@ export type EditionReport = {
   year: number
   uid: string
   /** ISO day, `YYYY-MM-DD`, from the event the runner had verified. */
-  raceDate: string
+  raceDate?: string
+  /**
+   * What the runner paid to enter, in major units.
+   *
+   * From an entry they marked `registered`, which is the runner saying they
+   * got in. No source we read publishes a fee at all: runme.de puts it behind
+   * a subscription and running.life and kilometerliebe publish none, which is
+   * why the catalog holds one for about a hundred of five thousand entries.
+   */
+  fee?: number
+  /** ISO 4217, required whenever `fee` is set. */
+  feeCurrency?: string
   /** ISO day the report was written. */
   reportedAt: string
 }
@@ -62,18 +73,58 @@ export const RUNNER_SOURCE = 'runners'
  */
 const CORROBORATION = 2
 
-/** Reported days for one year, and how many different runners said each. */
-function votesByDay(reports: readonly EditionReport[], id: string) {
+/**
+ * Reported values for one year, and which runners said each.
+ *
+ * By runner and not by report, so nobody corroborates themselves. The document
+ * id already holds them to one report per race and year, and this does not
+ * depend on that.
+ */
+function votesByValue(
+  reports: readonly EditionReport[],
+  id: string,
+  valueOf: (report: EditionReport) => string | undefined,
+) {
   const years = new Map<number, Map<string, Set<string>>>()
   for (const report of reports) {
-    if (report.catalogRaceId !== id || !report.raceDate) continue
-    const days = years.get(report.year) ?? new Map<string, Set<string>>()
-    const voters = days.get(report.raceDate) ?? new Set<string>()
+    if (report.catalogRaceId !== id) continue
+    const value = valueOf(report)
+    if (!value) continue
+    const values = years.get(report.year) ?? new Map<string, Set<string>>()
+    const voters = values.get(value) ?? new Set<string>()
     voters.add(report.uid)
-    days.set(report.raceDate, voters)
-    years.set(report.year, days)
+    values.set(value, voters)
+    years.set(report.year, values)
   }
   return years
+}
+
+/** A fee is a number and a currency, and only agrees when both do. */
+function feeOf(report: EditionReport): string | undefined {
+  if (report.fee === undefined || !report.feeCurrency) return undefined
+  return `${report.fee} ${report.feeCurrency.toUpperCase()}`
+}
+
+/** Back into the fields an edition uses, where the fee is `typicalFee`. */
+function parseFee(value: string): { typicalFee: number; feeCurrency: string } {
+  const [amount, currency] = value.split(' ')
+  return { typicalFee: Number(amount), feeCurrency: currency! }
+}
+
+/**
+ * The value enough runners agree on that the catalog does not already hold.
+ *
+ * Undefined for agreement, which is not information, and for a single voice
+ * against something published.
+ */
+function corroborated(
+  values: Map<string, Set<string>>,
+  held: string | undefined,
+): string | undefined {
+  return [...values.keys()]
+    .sort()
+    .filter((value) => value !== held)
+    .find((value) => (values.get(value)?.size ?? 0) >= CORROBORATION)
 }
 
 /**
@@ -93,24 +144,31 @@ export function applyEditionReports(
   reports: readonly EditionReport[],
   today: string,
 ): RaceCatalogEntry | null {
-  const years = votesByDay(reports, entry.id)
+  const days = votesByValue(reports, entry.id, (report) => report.raceDate)
+  const fees = votesByValue(reports, entry.id, feeOf)
+  const years = new Set([...days.keys(), ...fees.keys()])
   if (years.size === 0) return null
 
   const editions = [...(entry.editions ?? [])]
   let changed = false
 
-  for (const [year, days] of years) {
+  for (const year of years) {
     const at = editions.findIndex((edition) => edition.year === year)
-    const reported = [...days.keys()].sort()
+    const reportedDays = [...(days.get(year)?.keys() ?? [])].sort()
+    const reportedFees = fees.get(year)
 
     if (at < 0) {
       // A year the catalog never had, and the harvest never will: it only ever
       // writes the edition still ahead. One runner is enough, because the
-      // alternative is no date, and it stays unmarked so that a source
+      // alternative is nothing, and it stays unmarked so that a source
       // publishing this year later is free to overwrite it.
+      const day = reportedDays[0]
+      const fee = [...(reportedFees?.keys() ?? [])].sort()[0]
+      if (!day && !fee) continue
       editions.push({
         year,
-        raceDate: reported[0]!,
+        ...(day ? { raceDate: day } : {}),
+        ...(fee ? parseFee(fee) : {}),
         source: RUNNER_SOURCE,
         confirmedAt: today,
       })
@@ -119,15 +177,27 @@ export function applyEditionReports(
     }
 
     const edition = editions[at]!
-    // Agreement is not news, and marking it would only launder the listing's
-    // own date into something that then outlives the listing.
-    const disagreeing = reported.filter((day) => day !== edition.raceDate)
-    const corroborated = disagreeing.find(
-      (day) => (days.get(day)?.size ?? 0) >= CORROBORATION,
-    )
-    if (!corroborated || edition.raceDate === corroborated) continue
+    let updated = edition
 
-    editions[at] = { ...edition, raceDate: corroborated, runnerConfirmedAt: today }
+    const day = days.get(year)
+    if (day) {
+      const better = corroborated(day, edition.raceDate)
+      if (better) updated = { ...updated, raceDate: better, runnerConfirmedAt: today }
+    }
+
+    if (reportedFees) {
+      const held =
+        edition.typicalFee !== undefined && edition.feeCurrency
+          ? `${edition.typicalFee} ${edition.feeCurrency.toUpperCase()}`
+          : undefined
+      // Nothing published to contradict, so one runner who paid it is enough.
+      const only = [...reportedFees.keys()].sort()[0]
+      const better = held === undefined ? only : corroborated(reportedFees, held)
+      if (better && better !== held) updated = { ...updated, ...parseFee(better) }
+    }
+
+    if (updated === edition) continue
+    editions[at] = updated
     changed = true
   }
 

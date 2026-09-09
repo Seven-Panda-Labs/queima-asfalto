@@ -1140,6 +1140,51 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes a fee with no day yet, because registering comes first', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore().doc(path('user-alice')).set({
+          catalogRaceId: raceId,
+          year: 2026,
+          uid: 'user-alice',
+          fee: 45,
+          feeCurrency: 'EUR',
+          reportedAt: '2026-01-20',
+        }),
+      )
+    })
+
+    it('refuses a report that says nothing at all', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore().doc(path('user-alice')).set({
+          catalogRaceId: raceId,
+          year: 2026,
+          uid: 'user-alice',
+          reportedAt: '2026-01-20',
+        }),
+      )
+    })
+
+    it('refuses a fee without a currency, and one that is not money', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+      const base = { catalogRaceId: raceId, year: 2026, uid: 'user-alice', reportedAt: '2026-01-20' }
+
+      await assertFails(db.doc(path('user-alice')).set({ ...base, fee: 45 }))
+      await assertFails(
+        db.doc(path('user-alice')).set({ ...base, fee: 45, feeCurrency: 'EUROS' }),
+      )
+      await assertFails(
+        db.doc(path('user-alice')).set({ ...base, fee: 0, feeCurrency: 'EUR' }),
+      )
+      await assertFails(
+        db.doc(path('user-alice')).set({ ...base, fee: '45', feeCurrency: 'EUR' }),
+      )
+    })
+
     it('refuses a day that is not a day, and a year that is not one', async () => {
       await seedDocument('users/user-alice', { accountStatus: 'approved' })
       const db = testEnv.authenticatedContext('user-alice').firestore()

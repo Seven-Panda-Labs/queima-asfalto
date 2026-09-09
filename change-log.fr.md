@@ -11,6 +11,7 @@
 - **Doublons dans le catalogue :** chaque course de la file de relecture porte maintenant un lien vers sa source, pour distinguer les deux sur les pages d'où elles viennent.
 - **L'inscription arrive déjà remplie :** planifier une course que le catalogue connaît amène ses dates, ses échéances et son tarif déjà dans le formulaire, avec la source en clair. Tant que personne n'a vérifié la fiche, ils restent une suggestion et la date ne compte pas comme confirmée.
 - **Ton résultat officiel améliore le catalogue :** en important un résultat vérifié, tu dis au catalogue quel jour la course a eu lieu. Une année qu'il n'avait pas entre tout de suite ; corriger une date qu'il avait déjà demande deux coureurs d'accord. Seul le jour voyage, jamais son auteur, et cela ne déclenche toujours aucun rappel.
+- **Ce que ça a coûté, pour les suivants :** marquer une inscription comme faite met le tarif que tu as payé dans le catalogue. Aucun des calendriers que nous lisons ne publie de tarif, donc cela n'existe que parce que les coureurs le disent. Changer un tarif que le catalogue a déjà demande deux coureurs d'accord.
 
 ---
 

@@ -24,29 +24,77 @@ export async function reportEditionDate(
   raceId: string,
   date: Date,
 ): Promise<void> {
-  try {
-    const race = await getRace(raceId)
-    const catalogRaceId = race?.catalogRaceId
-    if (!catalogRaceId) return
+  const race = await safely(() => getRace(raceId))
+  if (!race?.catalogRaceId) return
 
-    const raceDate = toIsoDay(date)
-    const year = Number(raceDate.slice(0, 4))
-    const report: EditionReport = {
-      catalogRaceId,
-      year,
-      uid,
-      raceDate,
-      reportedAt: toIsoDay(new Date()),
-    }
+  const raceDate = toIsoDay(date)
+  await write(race.catalogRaceId, Number(raceDate.slice(0, 4)), uid, { raceDate })
+}
 
-    await setDoc(
+/**
+ * Tells the catalog what entering this edition cost.
+ *
+ * From an entry the runner marked `registered`, which is them saying they got
+ * in: a fee they were quoted and never paid is not a fee. No source we read
+ * publishes one at all, so the runners are the only source there is.
+ *
+ * The caller passes the catalog id because it already has the entry in hand,
+ * which saves a read on the path that saves an entry.
+ */
+export async function reportEditionFee(
+  uid: string,
+  catalogRaceId: string,
+  year: number,
+  fee: number,
+  feeCurrency: string,
+): Promise<void> {
+  if (!Number.isFinite(fee) || fee <= 0 || !feeCurrency.trim()) return
+  await write(catalogRaceId, year, uid, {
+    fee,
+    feeCurrency: feeCurrency.trim().toUpperCase(),
+  })
+}
+
+/**
+ * One document per race, year and runner, merged rather than replaced.
+ *
+ * A runner registers months before they run, so the fee and the day arrive
+ * separately and both belong to the same report.
+ */
+async function write(
+  catalogRaceId: string,
+  year: number,
+  uid: string,
+  what: Partial<EditionReport>,
+): Promise<void> {
+  const report: EditionReport = {
+    catalogRaceId,
+    year,
+    uid,
+    reportedAt: toIsoDay(new Date()),
+    ...what,
+  }
+
+  await safely(() =>
+    setDoc(
       doc(db, EDITION_REPORTS_COLLECTION, editionReportId(catalogRaceId, year, uid)),
       report,
-    )
+      { merge: true },
+    ),
+  )
+}
+
+/**
+ * Never in the way.
+ *
+ * These are side effects of saving something the runner asked for, and an
+ * instance whose catalog cannot be written has to cost them nothing.
+ */
+async function safely<T>(action: () => Promise<T>): Promise<T | null> {
+  try {
+    return await action()
   } catch {
-    // The result is saved either way. Nothing the runner asked for is lost by
-    // the catalog not hearing about it, and the next verified result tries
-    // again.
+    return null
   }
 }
 

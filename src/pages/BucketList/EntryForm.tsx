@@ -10,6 +10,7 @@ import { useRaces } from '../../hooks/useRaces'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { createEvent } from '../../services/events'
+import { reportEditionFee } from '../../services/editionReports'
 import { loadCatalogRace } from '../../services/raceCatalog'
 import { findOrCreateRaceId } from '../../services/races'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
@@ -254,6 +255,24 @@ export function EntryForm() {
       } else {
         await addEntry(withEvent)
       }
+      // No source we read publishes a fee, so a runner who got in is the only
+      // one who can tell the catalog what it costs. `registered` is the runner
+      // saying they are in: a fee they were quoted and never paid is not one.
+      if (
+        form.entryStatus === 'registered' &&
+        catalogRaceId &&
+        payload.fee !== undefined &&
+        payload.feeCurrency
+      ) {
+        await reportEditionFee(
+          user.uid,
+          catalogRaceId,
+          parsedYear,
+          payload.fee,
+          payload.feeCurrency,
+        )
+      }
+
       toast.success(eventId && !existing?.eventId ? t('entry.savedWithEvent') : t('entry.saved'))
       navigate('/bucket-list')
     } catch {
