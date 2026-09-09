@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Changed
+
+- **Distance search:** races whose calendar only names the distance in the description now answer the filter. About one in ten gains its own, and the ones measured in time or in laps still carry none, rather than carrying a wrong one.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Added

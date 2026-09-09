@@ -99,7 +99,7 @@ function latestValidThrough(offers: readonly Offer[]): string | undefined {
 const PROSE_MIN_KM = 2
 
 function fromProse(labels: readonly string[]): number[] {
-  return parseDistancesKm(labels).filter((km) => km >= PROSE_MIN_KM)
+  return parseDistancesKm(labels, { prose: true }).filter((km) => km >= PROSE_MIN_KM)
 }
 
 /**

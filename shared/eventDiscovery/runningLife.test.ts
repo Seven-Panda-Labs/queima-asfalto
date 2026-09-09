@@ -61,6 +61,73 @@ describe('a distance read out of prose', () => {
     expect(readRacesFromHtml(page)[0]?.distancesKm).toEqual([10])
   })
 
+  /**
+   * Every description here is a real one from a September calendar page, and
+   * every one of them was reaching the catalog with no distance at all.
+   */
+  it('reads the distances the description does publish', () => {
+    const page = (name: string, description: string) =>
+      `<script type="application/ld+json">${JSON.stringify({
+        '@type': 'SportsEvent',
+        name,
+        url: 'https://running.life/de/termine/x',
+        startDate: '2026-09-11',
+        description,
+        location: { '@type': 'Place', address: { addressLocality: 'X', addressCountry: 'DE' } },
+      })}</script>`
+    const distances = (name: string, description: string) =>
+      readRacesFromHtml(page(name, description))[0]?.distancesKm
+
+    // The unit written as a word.
+    expect(
+      distances(
+        'Emder Sparkassen Delftlauf',
+        'Angeboten werden 6 Kilometer Walking, 6 Kilometer Laufen und 10 Kilometer.',
+      ),
+    ).toEqual([6, 10])
+    // A charity's name was deleting the two measured races beside it.
+    expect(
+      distances(
+        'Citylauf Xanten',
+        'Citylauf mit Kinder- und Jugendläufen sowie amtlich vermessenen 5 km und 10 km.',
+      ),
+    ).toEqual([5, 10])
+    // A single lap is how a company run publishes its distance.
+    expect(
+      distances('fem.RUN', 'Ein frauenorientierter Lauf am Maschsee mit einer 6 km Runde, Yoga und Zeitmessung.'),
+    ).toEqual([6])
+    // And the run of a triathlon is the only leg of it that is a run.
+    expect(
+      distances(
+        'Ironman 5150 Erkner',
+        'Triathlon über die olympische Distanz mit 1,5 km Schwimmen, 40 km Radfahren und 10 km Laufen.',
+      ),
+    ).toEqual([10])
+  })
+
+  it('files nothing for a race the description does not measure', () => {
+    const page = (name: string, description: string) =>
+      `<script type="application/ld+json">${JSON.stringify({
+        '@type': 'SportsEvent',
+        name,
+        url: 'https://running.life/de/termine/y',
+        startDate: '2026-09-11',
+        description,
+        location: { '@type': 'Place', address: { addressLocality: 'X', addressCountry: 'DE' } },
+      })}</script>`
+    const distances = (name: string, description: string) =>
+      readRacesFromHtml(page(name, description))[0]?.distancesKm
+
+    // Six hours of running on a 7,5 km loop is not a 7,5 km race.
+    expect(
+      distances('6-Stunden-Lauf Werl', '6 Stunden Lauf in Werl: 7,5 km Runde durch den Stadtwald.'),
+    ).toEqual([])
+    // Nor is a relay leg a race anybody enters.
+    expect(
+      distances('FI Fun Run', 'Ein Staffellauf über 4 mal 3 Kilometer rund um den FI-Standort.'),
+    ).toEqual([])
+  })
+
   it('still trusts a distance an offer names, however short', () => {
     const page = `<script type="application/ld+json">${JSON.stringify({
       '@type': 'SportsEvent',

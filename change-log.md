@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Alterado
+
+- **Busca por distância:** as provas cujo calendário só diz a distância na descrição passam a entrar no filtro. Cerca de uma em dez ganha a sua, e as que se medem em tempo ou em voltas continuam sem nenhuma, em vez de ganharem uma errada.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Adicionado

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Cambiado
+
+- **Búsqueda por distancia:** las carreras cuyo calendario solo dice la distancia en la descripción ya entran en el filtro. Cerca de una de cada diez gana la suya, y las que se miden en tiempo o en vueltas siguen sin ninguna, en vez de ganar una equivocada.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Añadido
