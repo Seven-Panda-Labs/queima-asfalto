@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Adicionado
+
+- **Duplicados no catálogo:** cada prova da fila de revisão traz agora o link para a fonte, para confirmar nas páginas de origem qual das duas é qual.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Adicionado

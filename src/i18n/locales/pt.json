@@ -1224,7 +1224,8 @@
       "copies": "Cópia de outra entrada ({{count}})"
     },
     "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}.",
-    "duplicatesMergeOther": "Ou ficar com {{name}}"
+    "duplicatesMergeOther": "Ou ficar com {{name}}",
+    "duplicatesOpenSource": "Abrir a origem em {{source}}"
   },
   "funnel": {
     "groups": {

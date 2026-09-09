@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Hinzugefügt
+
+- **Doppelte Einträge im Katalog:** jedes Rennen in der Prüfliste hat jetzt einen Link zu seiner Quelle, damit sich die beiden auf den Seiten unterscheiden lassen, von denen sie kommen.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Hinzugefügt

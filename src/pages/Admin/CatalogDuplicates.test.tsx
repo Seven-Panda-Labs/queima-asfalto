@@ -37,8 +37,18 @@ function race(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id'
  * neither name is inside the other, so no rule merges them on its own.
  */
 const pair = [
-  race({ id: 'de-hamburg-haspa-halbmarathon', name: 'Haspa Halbmarathon Hamburg', city: 'Hamburg' }),
-  race({ id: 'de-hamburg-haspa-marathon', name: 'Haspa Marathon Hamburg', city: 'Hamburg' }),
+  race({
+    id: 'de-hamburg-haspa-halbmarathon',
+    name: 'Haspa Halbmarathon Hamburg',
+    city: 'Hamburg',
+    officialUrl: 'https://scc-events.com/haspa-halbmarathon',
+  }),
+  race({
+    id: 'de-hamburg-haspa-marathon',
+    name: 'Haspa Marathon Hamburg',
+    city: 'Hamburg',
+    officialUrl: 'https://scc-events.com/haspa-marathon',
+  }),
 ]
 
 afterEach(() => {
@@ -53,6 +63,31 @@ describe('CatalogDuplicates', () => {
       <CatalogDuplicates races={[pair[0]]} adminUid="admin" onChanged={vi.fn()} />,
     )
     expect(container).toBeEmptyDOMElement()
+  })
+
+  it('links each side to the source, so the answer can be checked there', () => {
+    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+
+    const links = screen.getAllByRole('link', { name: /Abrir a origem/ })
+    expect(links).toHaveLength(2)
+    expect(links[0]).toHaveAttribute('href', 'https://scc-events.com/haspa-halbmarathon')
+    // A new tab, because the operator is mid decision on this page.
+    expect(links[0]).toHaveAttribute('target', '_blank')
+    expect(links[0]).toHaveAttribute('rel', 'noopener noreferrer')
+  })
+
+  it('leaves out the link when no source page was recorded', () => {
+    const noUrl = pair.map(({ officialUrl, ...rest }) => rest as RaceCatalogEntry)
+    render(<CatalogDuplicates races={noUrl} adminUid="admin" onChanged={vi.fn()} />)
+
+    expect(screen.queryByRole('link', { name: /Abrir a origem/ })).not.toBeInTheDocument()
+  })
+
+  it('names the source beside each entry', () => {
+    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+
+    // Which source said what is half of why two names disagree.
+    expect(screen.getAllByText(/scc-events\.com/).length).toBeGreaterThan(0)
   })
 
   it('merges into the suggested survivor and reloads', async () => {

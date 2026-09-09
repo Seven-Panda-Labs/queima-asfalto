@@ -1224,7 +1224,8 @@
       "copies": "Kopie eines anderen Eintrags ({{count}})"
     },
     "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}.",
-    "duplicatesMergeOther": "Oder {{name}} behalten"
+    "duplicatesMergeOther": "Oder {{name}} behalten",
+    "duplicatesOpenSource": "Die Quelle bei {{source}} öffnen"
   },
   "funnel": {
     "groups": {

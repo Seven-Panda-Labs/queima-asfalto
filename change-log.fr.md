@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Ajouté
+
+- **Doublons dans le catalogue :** chaque course de la file de relecture porte maintenant un lien vers sa source, pour distinguer les deux sur les pages d'où elles viennent.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Ajouté
