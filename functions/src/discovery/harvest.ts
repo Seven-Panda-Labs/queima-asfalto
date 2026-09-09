@@ -25,6 +25,7 @@ import {
 import { parseSitemap, rotatePages, selectEventUrls } from '../shared/eventDiscovery/sitemap.js'
 import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCatalogEntry.js'
 import { sourceForRun } from '../shared/eventDiscovery/sources.js'
+import { applyPendingEditionReports } from './editionReports.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
 import { DELAY_BETWEEN_PAGES_MS, delay, fetchPage } from './fetchPage.js'
@@ -441,6 +442,20 @@ export const harvestRaceCatalog = onSchedule(
     if (!source) {
       console.log('discovery harvest did not publish: no_sources_enabled')
       return
+    }
+
+    // Before the harvest, so a date a runner corrected is the one it compares
+    // with when it looks for duplicates.
+    try {
+      const reports = await applyPendingEditionReports(now)
+      if (reports.races > 0) {
+        console.log(
+          `edition reports: ${reports.races} races updated from ${reports.reports} reports`,
+        )
+      }
+    } catch (error) {
+      // What the runners said can wait a day. The harvest is the job.
+      console.error('edition reports failed', error)
     }
 
     const result = await refreshDiscoveryCatalog(now, [source])

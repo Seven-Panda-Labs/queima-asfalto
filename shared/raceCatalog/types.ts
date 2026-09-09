@@ -58,6 +58,20 @@ export type RaceCatalogEdition = {
   source: string
   /** `YYYY-MM-DD`, the day someone last read them off that source. */
   confirmedAt: string
+  /**
+   * The day a runner who ran this edition confirmed its date, `YYYY-MM-DD`.
+   *
+   * Written from an event with a verified official result, which only ever
+   * comes from the official import: if the organiser's own results page lists
+   * somebody finishing that day, the date is not a scrape any more.
+   *
+   * It says nothing about the gates, and it does not make the entry
+   * `reviewed`: `canAssertDates()` is still what decides whether anything may
+   * fire on a date, and a runner cannot vouch for a deadline that has not
+   * happened yet. What it does buy is that the next harvest keeps this date
+   * instead of overwriting it with the listing's.
+   */
+  runnerConfirmedAt?: string
 }
 
 /**

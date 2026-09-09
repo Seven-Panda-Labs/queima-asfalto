@@ -10,6 +10,7 @@
 
 - **Duplicates in the catalog:** each race in the review queue now carries a link to its source, so the two can be told apart on the pages they came from.
 - **Your entry arrives filled in:** planning a race the catalog knows brings its dates, gates and fee already in the form, with the source in plain sight. Until somebody has checked the entry they stay a suggestion, and the date does not count as confirmed.
+- **Your official result improves the catalog:** when you import a verified result, the day the race was actually run corrects the date the catalog had, for everybody. Only the day travels, never who sent it, and it still fires no reminders: that needs somebody to have checked the race.
 
 ---
 

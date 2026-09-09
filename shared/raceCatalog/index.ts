@@ -12,6 +12,14 @@ export {
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
 export {
+  applyEditionReports,
+  EDITION_REPORTS_COLLECTION,
+  editionReportId,
+  keepRunnerDate,
+  RUNNER_SOURCE,
+  type EditionReport,
+} from './editionReports.js'
+export {
   DUPLICATE_VOTES_COLLECTION,
   duplicateVoteId,
   duplicateVotePairId,
