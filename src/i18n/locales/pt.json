@@ -1357,7 +1357,16 @@
     "fitsAnchor_one": "encaixa, 1 semana antes",
     "fitsAnchor_other": "encaixa, {{count}} semanas antes",
     "distanceUnknown": "distância não publicada",
-    "addWithDistance": "Adicionar com…"
+    "addWithDistance": "Adicionar com…",
+    "radius": "Raio",
+    "anyDistance": "Qualquer distância",
+    "radiusOption": "Até {{km}} km",
+    "radiusFrom": "A contar de {{place}}.",
+    "here": "onde estás",
+    "useMyLocation": "Usar a minha localização",
+    "locationRefused": "Sem localização. Escreve um lugar no campo «Onde» e o raio conta a partir dele.",
+    "unplaced_one": "Mais {{count}} prova que a fonte não situou no mapa, e por isso não entra no raio.",
+    "unplaced_other": "Mais {{count}} provas que a fonte não situou no mapa, e por isso não entram no raio."
   },
   "onboarding": {
     "title": "Começar",

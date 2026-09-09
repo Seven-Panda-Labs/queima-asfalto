@@ -4,6 +4,14 @@
 
 ---
 
+## [1.40.0] - 2026-09-09
+
+### Adicionado
+
+- **Provas perto de ti:** a busca ganha um raio, de 10 a 250 km, a contar da tua localização ou da terra que escreveres. As provas que a fonte não situou no mapa ficam contadas à parte, em vez de desaparecerem sem explicação.
+
+---
+
 ## [1.39.0] - 2026-09-04
 
 ### Alterado

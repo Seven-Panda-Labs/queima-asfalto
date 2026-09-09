@@ -164,6 +164,23 @@ Home 83647»), com letras em Andorra e na Argentina; e uma competição que só 
 marcha («5 km-W», «1 Meilen-W») não é distância de prova, enquanto uma que diz
 as duas coisas («5 km-Laufen & Walking») fica.
 
+### As coordenadas, e o que o raio pode prometer
+
+O `schema.org` de algumas fontes traz um nó `geo`, e nós passamos a guardá-lo
+(`latitude` e `longitude` na entrada). É o que a busca por raio precisa, e é
+guardado como a fonte o publica em vez de deduzido da terra.
+
+Só algumas o dão: a running.life dá-o em todos os eventos, e a maioria das
+outras dá terra e país. Por isso o raio conta quantas provas **não conseguiu
+situar** e diz na página, em vez de as tratar como longe: uma prova que a fonte
+não colocou no mapa pode ser a da tua rua.
+
+O círculo é aplicado depois da consulta, no browser, porque o Firestore não
+responde a «a 40 km daqui» sem geohashes. A consulta traz dez vezes as linhas
+que mostra para o círculo ter o que filtrar, e o centro vem da localização do
+browser ou da terra escrita, resolvida contra o próprio catálogo: se uma prova
+naquela terra tem coordenadas, aquela terra tem coordenadas. Sem geocoder.
+
 ### O que a colheita faz
 
 `harvestRaceCatalog` corre **uma vez por dia e lê uma fonte**, escolhida pelo
@@ -436,6 +453,24 @@ before the town in Germany and after it in the United States ("Mountain Home
 83647"), with letters in Andorra and Argentina; and a competition that is only a
 walk ("5 km-W", "1 Meilen-W") is not a race distance, while one that says both
 ("5 km-Laufen & Walking") stays.
+
+### The coordinates, and what a radius can promise
+
+Some sources publish a `geo` node in their `schema.org`, and it is now stored
+(`latitude` and `longitude` on the entry). It is what a radius search needs, and
+it is kept as the source published it rather than derived from the town.
+
+Only some give it: running.life gives it on every event, and most of the others
+give a town and a country. So the radius **counts the races it could not place**
+and says so on the page, rather than treating them as far away: a race the
+source never placed may be the one in your street.
+
+The circle is applied after the query, in the browser, because Firestore cannot
+answer "within 40 km" without geohashes. The query brings ten times the rows it
+shows so the circle has something to keep, and the centre comes from the
+browser's location or from the town typed, resolved against the catalog itself:
+if a race in that town carries coordinates, that town has coordinates. No
+geocoder.
 
 ### What the harvest does
 

@@ -73,3 +73,32 @@ describe('a distance read out of prose', () => {
     expect(readRacesFromHtml(page)[0]?.distancesKm).toEqual([1.5])
   })
 })
+
+describe('the coordinates a source publishes', () => {
+  it('reads the geo node, which is what a radius search needs', () => {
+    const hamm = races.find((race) => race.name === 'Firmenlauf Hamm')
+    expect(hamm).toMatchObject({ latitude: 51.6738583, longitude: 7.8159816 })
+  })
+
+  it('refuses a pair that cannot be a place', () => {
+    const page = (geo: unknown) =>
+      `<script type="application/ld+json">${JSON.stringify({
+        '@type': 'SportsEvent',
+        name: 'Lauf',
+        url: 'https://example.test/x',
+        startDate: '2026-09-04',
+        offers: [{ '@type': 'Offer', name: '10 km' }],
+        location: { '@type': 'Place', address: { addressCountry: 'DE', addressLocality: 'X' }, geo },
+      })}</script>`
+
+    // An empty field serialises to zero, which is the Atlantic.
+    expect(readRacesFromHtml(page({ latitude: 0, longitude: 0 }))[0]?.latitude).toBeUndefined()
+    expect(readRacesFromHtml(page({ latitude: 91, longitude: 7 }))[0]?.latitude).toBeUndefined()
+    expect(readRacesFromHtml(page({ latitude: 'x', longitude: 7 }))[0]?.latitude).toBeUndefined()
+    // Strings that are numbers are numbers.
+    expect(readRacesFromHtml(page({ latitude: '51.5', longitude: '7.1' }))[0]).toMatchObject({
+      latitude: 51.5,
+      longitude: 7.1,
+    })
+  })
+})

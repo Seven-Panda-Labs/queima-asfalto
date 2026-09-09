@@ -4,6 +4,14 @@
 
 ---
 
+## [1.40.0] - 2026-09-09
+
+### Hinzugefügt
+
+- **Rennen in deiner Nähe:** die Suche bekommt einen Radius, 10 bis 250 km, gemessen von deinem Standort oder von dem Ort, den du eintippst. Rennen, die die Quelle nicht verortet hat, werden getrennt gezählt, statt ohne Erklärung zu verschwinden.
+
+---
+
 ## [1.39.0] - 2026-09-04
 
 ### Geändert

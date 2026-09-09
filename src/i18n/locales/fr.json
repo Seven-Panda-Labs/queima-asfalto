@@ -1357,7 +1357,16 @@
     "fitsAnchor_one": "convient, 1 semaine avant",
     "fitsAnchor_other": "convient, {{count}} semaines avant",
     "distanceUnknown": "distance non publiée",
-    "addWithDistance": "Ajouter comme…"
+    "addWithDistance": "Ajouter comme…",
+    "radius": "Rayon",
+    "anyDistance": "N'importe quelle distance",
+    "radiusOption": "Jusqu'à {{km}} km",
+    "radiusFrom": "Mesuré depuis {{place}}.",
+    "here": "où tu es",
+    "useMyLocation": "Utiliser ma position",
+    "locationRefused": "Pas de position. Tape un lieu dans le champ « Où » et le rayon part de là.",
+    "unplaced_one": "{{count}} course de plus que la source n'a pas située sur la carte, donc le rayon la laisse dehors.",
+    "unplaced_other": "{{count}} courses de plus que la source n'a pas situées sur la carte, donc le rayon les laisse dehors."
   },
   "onboarding": {
     "title": "Commencer",

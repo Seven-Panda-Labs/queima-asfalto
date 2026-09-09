@@ -1357,7 +1357,16 @@
     "fitsAnchor_one": "encaja, 1 semana antes",
     "fitsAnchor_other": "encaja, {{count}} semanas antes",
     "distanceUnknown": "distancia no publicada",
-    "addWithDistance": "Añadir como…"
+    "addWithDistance": "Añadir como…",
+    "radius": "Radio",
+    "anyDistance": "Cualquier distancia",
+    "radiusOption": "Hasta {{km}} km",
+    "radiusFrom": "Contando desde {{place}}.",
+    "here": "donde estás",
+    "useMyLocation": "Usar mi ubicación",
+    "locationRefused": "Sin ubicación. Escribe un lugar en el campo «Dónde» y el radio cuenta desde ahí.",
+    "unplaced_one": "{{count}} carrera más que la fuente no situó en el mapa, así que el radio la deja fuera.",
+    "unplaced_other": "{{count}} carreras más que la fuente no situó en el mapa, así que el radio las deja fuera."
   },
   "onboarding": {
     "title": "Empezar",

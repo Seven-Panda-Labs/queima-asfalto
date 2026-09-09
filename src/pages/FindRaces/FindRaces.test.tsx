@@ -179,3 +179,68 @@ describe('the country filter order', () => {
     ])
   })
 })
+
+describe('the radius', () => {
+  /** Berlin, and the browser agreeing to say so. */
+  function grantLocation(lat = 52.52, lng = 13.405) {
+    Object.defineProperty(navigator, 'geolocation', {
+      configurable: true,
+      value: {
+        getCurrentPosition: (ok: (position: { coords: { latitude: number; longitude: number } }) => void) =>
+          ok({ coords: { latitude: lat, longitude: lng } }),
+      },
+    })
+  }
+
+  const near = [
+    race('berlin', { city: 'Berlin', latitude: 52.52, longitude: 13.405 }),
+    race('potsdam', { city: 'Potsdam', latitude: 52.4, longitude: 13.066 }),
+    race('hamburg', { city: 'Hamburg', latitude: 53.55, longitude: 9.993 }),
+    race('nowhere', { city: 'Kleinkleckersdorf' }),
+  ]
+
+  it('asks for a location when there is a radius and no centre', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('Raio'), { target: { value: '50' } })
+
+    expect(
+      await screen.findByRole('button', { name: 'Usar a minha localização' }),
+    ).toBeInTheDocument()
+  })
+
+  it('keeps what is inside the circle and counts what it could not place', async () => {
+    grantLocation()
+    searchRaceCatalog.mockResolvedValue(near)
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('Raio'), { target: { value: '50' } })
+    fireEvent.click(await screen.findByRole('button', { name: 'Usar a minha localização' }))
+
+    // Berlin and Potsdam (26 km out) are in, Hamburg (255 km) is not.
+    expect(await screen.findByText('berlin')).toBeInTheDocument()
+    expect(screen.getByText('potsdam')).toBeInTheDocument()
+    expect(screen.queryByText('hamburg')).not.toBeInTheDocument()
+    // And the one the source never placed is counted, not hidden.
+    expect(screen.getByText(/1 prova que a fonte não situou/)).toBeInTheDocument()
+  })
+
+  it('asks the server for more rows when a circle is going to cut them down', async () => {
+    grantLocation()
+    searchRaceCatalog.mockResolvedValue(near)
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('Raio'), { target: { value: '50' } })
+    fireEvent.click(await screen.findByRole('button', { name: 'Usar a minha localização' }))
+
+    // The circle is applied after the query, so the query has to bring
+    // candidates for it to keep.
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenCalledWith(expect.objectContaining({ limit: 200 })),
+    )
+  })
+})

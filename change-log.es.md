@@ -4,6 +4,14 @@
 
 ---
 
+## [1.40.0] - 2026-09-09
+
+### Añadido
+
+- **Carreras cerca de ti:** la búsqueda gana un radio, de 10 a 250 km, contando desde tu ubicación o desde el pueblo que escribas. Las carreras que la fuente no situó en el mapa se cuentan aparte, en vez de desaparecer sin explicación.
+
+---
+
 ## [1.39.0] - 2026-09-04
 
 ### Cambiado

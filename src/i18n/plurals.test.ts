@@ -34,6 +34,7 @@ const PLURALISED = [
   ['season', 'beforeAnchor'],
   ['findRaces', 'fitsAnchor'],
   ['season.warnings', 'crowded_month'],
+  ['findRaces', 'unplaced'],
 ] as const
 
 /** Enough counts to reach every category any of these languages defines. */
