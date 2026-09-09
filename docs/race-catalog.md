@@ -34,7 +34,28 @@ Cada entrada tem um campo `review`, e é este o ponto do formato:
 - **`unreviewed`**: a entrada foi montada a partir de listagens públicas e ninguém a confirmou junto do organizador. Pode **sugerir**, ou seja preencher um campo que o corredor vê e corrige. Não pode **afirmar**: nenhum lembrete de prazo, nenhuma contagem, nada que esteja errado em silêncio.
 - **`reviewed`**: alguém verificou a entrada na fonte oficial.
 
-`canAssertDates()` é a função que separa as duas, e um teste garante que uma entrada não revista não tem `editions`. Uma data de inscrição errada é pior do que não haver aviso nenhum.
+`canAssertDates()` é a função que separa as duas. Uma data de inscrição errada é pior do que não haver aviso nenhum.
+
+Um detalhe que vale a pena não confundir: o teste que garante que uma entrada não revista não tem `editions` é sobre o **ficheiro de seed** curado. Uma entrada colhida traz a data que leu e continua `unreviewed`, e é o `canAssertDates()` que a impede de disparar o que quer que seja, não a ausência de edições.
+
+### Edições, e o que é uma edição
+
+Uma edição é **um ano de uma prova anual**: a data, os prazos de inscrição, o sorteio, o preço. É identificada pelo `year`, e o elo entre um evento e a sua edição é derivado do ano da data do evento. Não há campo nenhum no evento a apontar para a edição, de propósito: a edição já é definida pelo ano, o evento já tem a data, e um ponteiro seria uma segunda fonte de verdade a poder discordar da primeira.
+
+Isto só serve provas que acontecem uma vez por ano, e é assumido. **Um evento recorrente não tem edições**: um parkrun acontece todos os sábados, as suas ocorrências derivam de uma regra e não de uma lista, e o que se ignora sobre uma prova anual (a data, o preço, o link dos resultados) é derivável para um parkrun a partir do slug. Os dois modelos divergem porque precisam de coisas diferentes.
+
+### O que um corredor pode devolver ao catálogo
+
+A qualidade dos dados partilhados pode subir com o que os corredores já sabem, e a fronteira é entre o passado e o futuro:
+
+- **O passado confirma-se.** Um evento `completed` com `resultsVerified` é uma testemunha de outra qualidade: o `resultsVerified` só vem da importação oficial, portanto se a página oficial lista o corredor a terminar naquele dia, a data daquela edição não é um palpite. A data e o link dos resultados são factos sobre a prova e podem entrar sozinhos.
+- **O futuro pergunta-se.** O preço e os prazos de inscrição vão para a fila de revisão. São o que dispara lembretes, e um prazo errado está errado em silêncio: é exactamente o que a regra da revisão protege, e o `canAssertDates()` não muda.
+
+O que nunca sai da conta: o tempo, o ritmo, a classificação, as notas, a media, o traçado, e se o corredor entrou ou não.
+
+Uma contribuição segue a forma dos votos de duplicados: colecção própria, um documento por (prova, ano, utilizador) para que uma pessoa seja uma voz, e o que chega à edição partilhada são valores e contagens, nunca a identidade de quem contribuiu.
+
+Isto é o desenho decidido, não o que está construído: nada disto existe ainda, e a edição nem tem campo para o link de resultados. Ver [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Revisar uma entrada
 
@@ -100,7 +121,28 @@ Every entry carries a `review` field, and this is the point of the format:
 - **`unreviewed`**: the entry was assembled from public listings and nobody has confirmed it with the organiser. It may **suggest**, meaning fill in a field the runner sees and can correct. It may never **assert**: no deadline reminder, no countdown, nothing that would be wrong in silence.
 - **`reviewed`**: somebody checked the entry against the official source.
 
-`canAssertDates()` is the function that separates them, and a test enforces that an unreviewed entry carries no `editions`. A wrong registration date is worse than no warning at all.
+`canAssertDates()` is the function that separates them. A wrong registration date is worse than no warning at all.
+
+One detail worth not confusing: the test enforcing that an unreviewed entry carries no `editions` is about the curated **seed file**. A harvested entry carries the date it read and stays `unreviewed`, and it is `canAssertDates()` that keeps it from firing anything, not the absence of editions.
+
+### Editions, and what an edition is
+
+An edition is **one year of an annual race**: the date, the entry gates, the draw, the fee. It is identified by its `year`, and the link between an event and its edition is derived from the year of the event's date. There is deliberately no field on the event pointing at an edition: the edition is already defined by the year, the event already has the date, and a pointer would be a second source of truth free to disagree with the first.
+
+This only serves races that happen once a year, and that is assumed. **A recurring event has no editions**: a parkrun happens every Saturday, its occurrences follow from a rule rather than a list, and what is unknown about an annual race (the date, the fee, the results link) is derivable for a parkrun from its slug. The two models diverge because they need different things.
+
+### What a runner can give back to the catalog
+
+The quality of the shared data can rise on what runners already know, and the boundary runs between the past and the future:
+
+- **The past confirms itself.** A `completed` event with `resultsVerified` is a witness of a different order: `resultsVerified` only ever comes from the official import, so if the official page lists the runner finishing that day, the date of that edition is not a guess. The date and the results link are facts about the race and can land on their own.
+- **The future gets asked.** The fee and the entry gates go to the review queue. They are what fires reminders, and a wrong deadline is wrong in silence: that is exactly what the review rule protects, and `canAssertDates()` does not change.
+
+What never leaves the account: the time, the pace, the classification, the notes, the media, the track, and whether the runner got in.
+
+A contribution follows the shape of the duplicate votes: a collection of its own, one document per (race, year, user) so one person is one voice, and what reaches the shared edition is values and counts, never the identity of whoever contributed.
+
+This is the decided design, not what is built: none of it exists yet, and the edition has no field for a results link. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Reviewing an entry
 

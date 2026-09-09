@@ -59,6 +59,49 @@ A PWA fala **directamente** com Firestore e Storage (com regras de segurança no
 | Backend | `functions/src/` | Callables, agendador, conectores de timing |
 | Regras | `firestore.rules`, `storage.rules` | Isolamento por `userId`, validação de paths |
 
+### Como se relacionam: duas identidades
+
+Há duas metades, e tocam-se num ponto só.
+
+```
+      metade privada (por utilizador)                 metade partilhada
+   ┌────────────────────────────────────┐      ┌─────────────────────────┐
+   │  bucketListItems ──raceId──┐       │      │  raceCatalog/{id}       │
+   │  raceEntries ────raceId──► races ──┼──────┼─► editions[], review    │
+   │  events ─────────raceId────┘       │ cat. │                         │
+   │     ├── media/{id}                 │ Race │  parkrunCatalog (slug)  │
+   │     └── track/{id}                 │  Id  │                         │
+   └────────────────────────────────────┘      └─────────────────────────┘
+```
+
+O único ponto de contacto é `races.catalogRaceId`. **Um evento nunca aponta para
+o catálogo directamente**: chega lá pela corrida. É isso que permite que duas
+contas concordem sobre qual prova é, mantendo privado tudo o que cada uma fez
+nela.
+
+Cada entidade existe porque tem um tempo de vida diferente:
+
+| Entidade | Guarda | Vive |
+|----------|--------|------|
+| `races` | o que a prova é | para sempre |
+| `bucketListItems` | que a quero correr | até ser agendada |
+| `raceEntries` | uma tentativa de entrar, num ano | um ano |
+| `events` | uma corrida: data, resultado, media, traçado | uma edição |
+| `raceCatalog.editions[]` | um ano da prova, publicamente | por ano, partilhado |
+
+**Um resultado não é uma entidade.** São campos no evento (`time`, `pace`,
+`classification`, `resultsUrl`, `resultsPlatform`, `resultsVerified`,
+`outcomeReason`), mais as subcolecções `media` e `track`. O
+`trackPacingDriftSeconds` está desnormalizado no evento de propósito: a página
+de Análise lê os eventos numa consulta, e ir a uma subcolecção por evento
+crescia com cada prova já corrida.
+
+**O parkrun não passa por aqui.** Planear um parkrun cria o evento
+directamente, sem `raceId` e sem entrada no `raceCatalog`: a identidade viaja
+como `parkrunEventSlug` no evento, e o substrato partilhado é o
+`parkrunCatalog`. É deliberado, e as razões estão em
+[`race-lifecycle.md`](./race-lifecycle.md).
+
 ### Fluxo: importação de resultados oficiais
 
 ```mermaid
@@ -134,7 +177,12 @@ Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcio
 | `bucketListItems/{id}` | `userId` | Bucket list |
 | `races/{id}` | `userId` | Identidade de uma prova, o que se mantém de ano para ano |
 | `raceEntries/{id}` | `userId` | Uma tentativa de entrar numa prova: prazos, sorteio, estado |
+| `events/{id}/track/{id}` | mesmo `userId` | O GPX/TCX carregado: splits, percurso, ritmo |
 | `shares/{id}` | participantes | Convites e permissões de partilha |
+| `raceCatalog/{id}` | ninguém | Identidade pública de uma prova, com as suas edições. Só admin e colheita escrevem |
+| `raceCatalogHarvest/status` | ninguém | Quando a colheita correu, por fonte, e a lista de países |
+| `raceCatalogDuplicateVotes/{id}` | `uid` no doc | O que um corredor disse sobre um par possivelmente duplicado |
+| `parkrunCatalog/{id}` | ninguém | Os parkruns do mundo, por slug. Só o servidor escreve |
 
 Índices compostos: `firestore.indexes.json`. Testes de regras: `firestore.rules.test.ts`.
 
@@ -245,6 +293,49 @@ The PWA talks **directly** to Firestore and Storage (with security rules on the 
 | Backend | `functions/src/` | Callables, scheduler, timing connectors |
 | Rules | `firestore.rules`, `storage.rules` | `userId` isolation, path validation |
 
+### How they relate: two identities
+
+There are two halves, and they meet at one point.
+
+```
+      private half (per user)                        shared half
+   ┌────────────────────────────────────┐      ┌─────────────────────────┐
+   │  bucketListItems ──raceId──┐       │      │  raceCatalog/{id}       │
+   │  raceEntries ────raceId──► races ──┼──────┼─► editions[], review    │
+   │  events ─────────raceId────┘       │ cat. │                         │
+   │     ├── media/{id}                 │ Race │  parkrunCatalog (slug)  │
+   │     └── track/{id}                 │  Id  │                         │
+   └────────────────────────────────────┘      └─────────────────────────┘
+```
+
+The only point of contact is `races.catalogRaceId`. **An event never points at
+the catalog directly**: it gets there through the race. That is what lets two
+accounts agree on which race it is while everything each of them did in it
+stays private.
+
+Each entity exists because it has a different lifetime:
+
+| Entity | Holds | Lives |
+|--------|-------|-------|
+| `races` | what the race is | forever |
+| `bucketListItems` | that I want to run it | until it is scheduled |
+| `raceEntries` | one year's attempt at getting in | one year |
+| `events` | one running: date, result, media, track | one edition |
+| `raceCatalog.editions[]` | one year of the race, publicly | per year, shared |
+
+**A result is not an entity.** It is fields on the event (`time`, `pace`,
+`classification`, `resultsUrl`, `resultsPlatform`, `resultsVerified`,
+`outcomeReason`) plus the `media` and `track` subcollections.
+`trackPacingDriftSeconds` is denormalised onto the event on purpose: the
+Analysis page reads events with one query, and fanning out to a subcollection
+per event would grow with every race ever run.
+
+**parkrun does not go through any of this.** Planning a parkrun creates the
+event directly, with no `raceId` and no `raceCatalog` entry: the identity
+travels as `parkrunEventSlug` on the event, and the shared substrate is
+`parkrunCatalog`. That is deliberate, and the reasons are in
+[`race-lifecycle.md`](./race-lifecycle.md).
+
 ### Flow: official results import
 
 ```mermaid
@@ -320,7 +411,12 @@ Scheduling logic in `shared/reminders/`; optional local queue in `src/services/r
 | `bucketListItems/{id}` | `userId` | Bucket list |
 | `races/{id}` | `userId` | Race identity, what stays true from year to year |
 | `raceEntries/{id}` | `userId` | One attempt at getting into a race: deadlines, draw, status |
+| `events/{id}/track/{id}` | same `userId` | The uploaded GPX/TCX: splits, route, pace |
 | `shares/{id}` | participants | Share invites and permissions |
+| `raceCatalog/{id}` | nobody | A race's public identity, with its editions. Written only by an admin and the harvest |
+| `raceCatalogHarvest/status` | nobody | When the harvest ran, per source, and the list of countries |
+| `raceCatalogDuplicateVotes/{id}` | `uid` on doc | What a runner said about a possibly duplicate pair |
+| `parkrunCatalog/{id}` | nobody | The world's parkruns, by slug. Written only by the server |
 
 Composite indexes: `firestore.indexes.json`. Rules tests: `firestore.rules.test.ts`.
 
