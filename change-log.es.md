@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Cambiado
-
-- **Duplicados en el catálogo:** quien revisa el catálogo ya puede unir el par en los dos sentidos, quedándose con el nombre que prefiera. Antes solo estaba el sugerido.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Corregido
-
-- **La misma carrera dos veces:** el catálogo reconoce ahora el mismo pueblo escrito con más o menos detalle («Dessau» y «Dessau-Roßlau», «Freiburg» y «Freiburg im Breisgau»), la misma palabra en otro idioma («Maratona» y «Marathon»), y un evento de varios días que cada fuente fecha a su manera. También dejó de exigir que dos fuentes anuncien las mismas distancias para que la carrera sea la misma. De veinticinco pares repetidos que un lector encontró a mano, veintiuno se detectan ya.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Añadido
-
-- **Carreras repetidas:** cuando dos filas de la búsqueda son la misma carrera escrita de dos formas, aparece una pregunta discreta debajo. Tu respuesta no une ni borra nada: adelanta el par en la cola de quien revisa el catálogo.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Cambiado
-
-- **Búsqueda por distancia:** las carreras cuyo calendario solo dice la distancia en la descripción ya entran en el filtro. Cerca de una de cada diez gana la suya, y las que se miden en tiempo o en vueltas siguen sin ninguna, en vez de ganar una equivocada.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Añadido
 
-- **Carreras cerca de ti:** la búsqueda gana un radio, de 10 a 250 km, contando desde tu ubicación o desde el pueblo que escribas. Las carreras que la fuente no situó en el mapa se cuentan aparte, en vez de desaparecer sin explicación.
+- **Carreras cerca de ti:** la búsqueda gana un radio, de 10 a 250 km, contando desde tu ubicación o desde el pueblo que escribas.
+- **Carreras repetidas:** cuando dos filas de la búsqueda son la misma carrera escrita de dos formas, puedes decírnoslo con un toque.
+
+### Cambiado
+
+- **Búsqueda por distancia:** las carreras cuyo calendario solo dice la distancia en la descripción ya entran en el filtro.
+
+### Corregido
+
+- **La misma carrera dos veces:** muchas menos repeticiones en la lista, cuando las fuentes escriben el pueblo, la fecha o el idioma de otra manera.
 
 ---
 
@@ -48,7 +25,7 @@
 
 ### Cambiado
 
-- **Encontrar carreras:** la página pide un filtro antes de mostrar la lista, gana búsqueda por país, y trae los resultados por partes en vez de descargar el catálogo entero al navegador. Con miles de carreras en decenas de países, la lista completa no servía a nadie.
+- **Encontrar carreras:** la página pide un filtro antes de mostrar la lista, gana búsqueda por país, y trae los resultados por partes en vez de descargar el catálogo entero al navegador.
 
 ---
 
@@ -56,7 +33,7 @@
 
 ### Corregido
 
-- **Carreras repetidas en el catálogo:** la misma carrera ya no entra dos veces cuando dos fuentes le dan nombres algo distintos, cuando una no publica la distancia, o cuando el nombre del pueblo cambia de sitio. Y la cola de casos dudosos en la administración solo pregunta lo que vale la pena preguntar.
+- **Carreras repetidas en el catálogo:** la misma carrera ya no entra dos veces cuando dos fuentes le dan nombres algo distintos, cuando una no publica la distancia, o cuando el nombre del pueblo cambia de sitio.
 
 ---
 
@@ -84,7 +61,7 @@
 
 ### Cambiado
 
-- **El catálogo se actualiza por partes:** la cosecha corre a diario y lee una fuente cada vez, en lugar de todas una vez por semana. Cada fuente sigue leyéndose una vez por semana, y una que esté caída ya no arruina la ejecución de las demás.
+- **El catálogo se actualiza por partes:** el catálogo se actualiza cada día, una fuente por vez, y una fuente caída ya no retrasa a las demás.
 
 ### Corregido
 
@@ -114,7 +91,7 @@
 ### Corregido
 
 - **Distancias con decimales:** ya se puede guardar 42,195 km.
-- **Carreras repetidas en el catálogo:** la misma carrera deja de aparecer dos veces con nombres distintos. Los casos dudosos pasan a una cola en la administración.
+- **Carreras repetidas en el catálogo:** la misma carrera deja de aparecer dos veces con nombres distintos.
 
 ---
 
@@ -122,16 +99,16 @@
 
 ### Añadido
 
-- **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada. Con avisos por notificación antes de cada plazo, que se activan en Ajustes.
-- **La temporada alrededor de las carreras ancla:** marca las una a tres carreras que fijan tu año, en la página de la propia carrera. A partir de ellas la app sugiere la ventana donde encaja una carrera de preparación, avisa cuando algo cae en el afinamiento o el mes se llena, y muestra el tiempo previsto para el ancla a partir de tu última carrera.
+- **Planificación de inscripciones:** la bucket list se agrupa por lo que falta hacer, y cada carrera puede llevar su inscripción: cuándo abre, cuándo cierra, el sorteo y el plazo para asegurar una plaza ya ganada. Con aviso antes de cada plazo.
+- **La temporada alrededor de las carreras ancla:** marca las carreras que fijan tu año y la app sugiere dónde encaja una de preparación, avisa cuando algo cae en el afinamiento y muestra el tiempo previsto para el ancla.
 - **Cuando falla:** una carrera que pasa sin resultado pregunta qué ocurrió en vez de decir que la perdiste, un abandono cuenta como carrera empezada, y un botón crea el intento de la próxima temporada.
-- **Encontrar carreras:** una página nueva busca en el catálogo de la instancia por mes, distancia y lugar, y añade una carrera a la lista en un clic. Elegir el ancla pone delante las que encajan en la ventana. Incluye los parkruns cerca de ti, que no salen en ningún calendario.
+- **Encontrar carreras:** una página nueva busca en el catálogo por mes, distancia y lugar, y añade una carrera a la lista en un clic. Incluye los parkruns cerca de ti.
 - **Primeros pasos:** el dashboard de una cuenta nueva abre con cuatro pasos, cada uno explicando qué hace la app con eso. Desaparece al completarlos.
 
 ### Cambiado
 
 - **Cuentas esperando aprobación:** el login se rechaza con el motivo, en vez de entrar en una app donde no se podía escribir nada.
-- **Self-hosting:** la cosecha de carreras puede leer dos fuentes nuevas, y sigue desactivada hasta que la actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Self-hosting:** dos fuentes nuevas para el catálogo, apagadas hasta que las actives. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
@@ -146,7 +123,7 @@
 ### Cambiado
 
 - **Elegir disciplinas es más compacto:** las 13 distancias ahora son pastillas agrupadas en pista, ruta y ultra.
-- **Self-hosting:** el administrador ya no es la variable `ADMIN_EMAIL` sino un usuario con `admin: true`, definido una vez en la consola. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
+- **Self-hosting:** el administrador pasa a ser un usuario marcado como tal, en vez de una variable de entorno. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
@@ -154,7 +131,7 @@
 
 ### Eliminado
 
-- **Se eliminan el import y el export de Excel:** la copia completa en `.zip` cubre lo mismo con más precisión, incluidas fotos, vídeos, archivos de actividad y objetivos, y lo restaura todo con los mismos identificadores. La hoja de cálculo deja de ser una vía de entrada: las carreras se añaden en la app o se restauran desde una copia.
+- **Se eliminan el import y el export de Excel:** la copia completa en `.zip` cubre lo mismo con más precisión, incluidas fotos, vídeos, archivos de actividad y objetivos, y lo restaura todo con los mismos identificadores. La hoja de cálculo deja de ser una vía de entrada.
 
 ---
 
@@ -193,7 +170,7 @@
 
 ### Añadido
 
-- **Archivos de actividad en los eventos:** sube el GPX o TCX de tu reloj y la carrera gana parciales por kilómetro, el recorrido dibujado en el mapa, un gráfico de ritmo y altitud y, si el archivo los trae, la frecuencia cardiaca. El tiempo medido se ofrece para rellenar el resultado, y nunca sustituye lo que ya está sin tu confirmación: el cronometraje oficial es el que cuenta. Los archivos entran y salen en las copias de seguridad.
+- **Archivos de actividad en los eventos:** sube el GPX o TCX de tu reloj y la carrera gana parciales por kilómetro, el recorrido en el mapa, ritmo, altitud y pulsaciones. El tiempo medido se ofrece para rellenar el resultado, nunca se impone: el cronometraje oficial es el que cuenta.
 
 ---
 
@@ -209,7 +186,7 @@
 
 ### Añadido
 
-- **Elige las disciplinas que quieres ver:** en Ajustes > App puedes desactivar las distancias que no corres. Dejan de aparecer en los filtros y en los selectores. No se pierde nada: las carreras, objetivos y récords que ya tienes en una disciplina desactivada siguen a la vista.
+- **Elige las disciplinas que quieres ver:** en Ajustes > App puedes desactivar las distancias que no corres. Dejan de aparecer en los filtros y en los selectores. No se pierde nada de lo que ya tienes.
 
 ---
 
@@ -217,8 +194,8 @@
 
 ### Cambiado
 
-- **La página de Resultados pasa a ser la de Análisis:** ya no repite la lista de Eventos. Responde a tres preguntas, que se eligen arriba: cómo va esta temporada, cómo está frente a las anteriores y qué ha cambiado desde siempre. La ruta pasó a `/analise`, y los enlaces antiguos siguen funcionando.
-- **Curva de forma:** cada carrera se convierte a su equivalente en tu distancia más corrida, así que un 5K y un maratón se comparan en la misma línea. También estima tiempos en las otras distancias a partir de tu mejor marca de los últimos 12 meses.
+- **La página de Resultados pasa a ser la de Análisis:** responde a tres preguntas, con un selector arriba: cómo va esta temporada, cómo está frente a las anteriores y qué ha cambiado desde siempre. Los enlaces antiguos siguen funcionando.
+- **Curva de forma:** cada carrera se convierte a su equivalente en tu distancia más corrida, así que un 5K y un maratón se comparan en la misma línea. Con previsión de tiempos para las otras distancias.
 - **Nuevas lecturas:** posición en el pelotón a lo largo del tiempo, progresión de cada récord, km acumulados frente a temporadas anteriores, los meses fuertes y flojos del año, y una cuadrícula de constancia por carreras o por kilómetros.
 - **Ritmo medio del año corregido:** ahora está ponderado por la distancia. Antes un 5K pesaba lo mismo que un maratón.
 
@@ -236,7 +213,7 @@
 
 ### Cambiado
 
-- **El catálogo de parkrun se actualiza solo:** las pruebas parkrun nuevas aparecen a los pocos días de abrir, sin esperar a una actualización de la aplicación. La lista tampoco se descarga cuando ya está al día, lo que aligera el arranque.
+- **El catálogo de parkrun se actualiza solo:** las pruebas parkrun nuevas aparecen a los pocos días de abrir, sin esperar a una actualización de la aplicación.
 
 ---
 
@@ -244,7 +221,7 @@
 
 ### Cambiado
 
-- **El resto de la app con el aspecto de Inicio:** los objetivos se agrupan por estado, con los cumplidos destacados, los filtros y los selectores de vista son iguales en todas las páginas, y la página de un evento encabeza con el nombre de la carrera y su resultado.
+- **El resto de la app con el aspecto de Inicio:** los objetivos se agrupan por estado, los filtros son iguales en todas las páginas, y la página de un evento lleva el nombre de la carrera como título.
 
 ---
 
@@ -260,7 +237,7 @@
 
 ### Añadido
 
-- **Nuevo idioma, Árabe (primera versión):** la aplicación, las notas de versión, el aviso de resultados oficiales, la política de privacidad, los correos de cuenta y los recordatorios push ya están disponibles en árabe, con diseño de derecha a izquierda (RTL). Selecciónalo en Ajustes → Idioma.
+- **Nuevo idioma, Árabe (primera versión):** la app está ahora disponible en árabe, con diseño de derecha a izquierda. Selecciónalo en Ajustes → Idioma.
 
 ---
 
@@ -296,7 +273,7 @@
 
 ### Corregido
 
-- **Estado de los eventos:** un evento con resultado oficial ya no puede quedar marcado como «Perdido». Existía una condición de carrera entre la transición automática a «Perdido» y el guardado del resultado. Si la transición automática ganaba la carrera, el estado quedaba mal aunque el resultado estuviera guardado.
+- **Estado de los eventos:** un evento con resultado oficial ya no puede quedar marcado como «Perdido».
 
 ---
 
@@ -313,7 +290,7 @@
 
 ### Corregido
 
-- **Seguridad:** las reglas de Firestore tratan ahora los campos de aprobación de cuenta como inmutables desde el cliente. Antes, una cuenta pendiente o rechazada podía borrar su propio `accountStatus` en una sola escritura y obtener acceso total.
+- **Seguridad:** una cuenta pendiente o rechazada ya no puede darse acceso total a sí misma.
 - **Ajustes:** en instancias con la aprobación de cuentas activada, vuelve a guardarse el idioma, las preferencias de notificaciones y el perfil de resultados. Todas las escrituras se rechazaban una vez aprobada la cuenta.
 
 ---
@@ -348,7 +325,7 @@
 
 ### Añadido
 
-- **Self-hosting:** aprobación manual de cuentas nuevas (opcional): pantallas pendiente/rechazado, email al administrador con enlaces aprobar/rechazar (Resend), notificación al usuario, reglas Firestore/Storage y funciones blocking Auth; ver `docs/configuration.md` y `docs/self-hosting.md`.
+- **Self-hosting:** puedes exigir aprobación manual de las cuentas nuevas: email al administrador para aprobar o rechazar, y aviso al usuario. Opcional. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Changed
-
-- **Duplicates in the catalog:** whoever reviews the catalog can now merge a pair in either direction, keeping whichever name they prefer. Before, only the suggested one was on offer.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Fixed
-
-- **The same race listed twice:** the catalog now recognises one town written with more or less detail ("Dessau" and "Dessau-Rosslau", "Freiburg" and "Freiburg im Breisgau"), the same word in another language ("Maratona" and "Marathon"), and an event over several days that each source dates its own way. It also stopped asking two sources to announce the same distances before the race can be the same one. Of twenty five duplicate pairs a reader found by hand, twenty one are now caught.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Added
-
-- **Races listed twice:** when two rows in the search are one race written two ways, a quiet question appears under them. Your answer merges nothing and deletes nothing: it moves the pair up the queue of whoever reviews the catalog.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Changed
-
-- **Distance search:** races whose calendar only names the distance in the description now answer the filter. About one in ten gains its own, and the ones measured in time or in laps still carry none, rather than carrying a wrong one.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Added
 
-- **Races near you:** the search gains a radius, 10 to 250 km, measured from your location or from the town you type. Races the source never placed on the map are counted separately instead of vanishing without explanation.
+- **Races near you:** the race search gains a radius, 10 to 250 km, measured from your location or from a town you type.
+- **Races listed twice:** when two rows in the search are one race written two ways, you can tell us with one tap.
+
+### Changed
+
+- **Distance search:** races whose calendar only names the distance in a description now answer the filter.
+
+### Fixed
+
+- **The same race listed twice:** far fewer repeats in the list, where sources write the town, the date or the language differently.
 
 ---
 
@@ -48,7 +25,7 @@
 
 ### Changed
 
-- **Find races:** the page now asks for a filter before it shows a list, gains a country search, and brings results a page at a time instead of downloading the whole catalog into the browser. With thousands of races across dozens of countries, the full list served nobody.
+- **Find races:** the page now asks for a filter before it shows a list, gains a country search, and brings results a page at a time instead of downloading the whole catalog into the browser.
 
 ---
 
@@ -56,7 +33,7 @@
 
 ### Fixed
 
-- **Races twice in the catalog:** the same race no longer enters twice when two sources name it slightly differently, when one of them publishes no distance, or when the town's name moves around in the name. And the queue of doubtful cases in the admin area now asks only what is worth asking.
+- **Races twice in the catalog:** the same race no longer enters twice when two sources name it slightly differently, when one of them publishes no distance, or when the town's name moves around in the name.
 
 ---
 
@@ -84,7 +61,7 @@
 
 ### Changed
 
-- **The catalog updates a source at a time:** the harvest now runs daily and reads one source, instead of all of them once a week. Each source is still read weekly, and one that is down no longer spoils the others' run.
+- **The catalog updates a source at a time:** the catalog is updated every day, one source at a time, and a source that is down no longer holds up the others.
 
 ### Fixed
 
@@ -114,7 +91,7 @@
 ### Fixed
 
 - **Distances with decimals:** 42.195 km can be saved now.
-- **Races twice in the catalog:** the same race no longer shows up twice under different names. The doubtful pairs go to a queue in the admin area.
+- **Races twice in the catalog:** the same race no longer shows up twice under different names.
 
 ---
 
@@ -122,16 +99,16 @@
 
 ### Added
 
-- **Entry planning:** the bucket list is now grouped by what is left to do, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won. With a notification before each deadline, switched on in Settings.
-- **A season around the anchor races:** mark the one to three races that fix your year, on the race's own page. From those the app suggests the window a build-up race fits in, warns when something lands in the taper or a month gets crowded, and shows the time predicted for the anchor from your latest race.
+- **Entry planning:** the bucket list is now grouped by what is left to do, and each race can carry its entry: when it opens, when it closes, the draw, and the deadline to secure a place you have already won. With a reminder before each deadline.
+- **A season around the anchor races:** mark the races that fix your year and the app suggests where a tune-up fits, warns when something lands in the taper, and shows the time it expects for the anchor.
 - **When it fails:** a race that passes with no result asks what happened instead of saying you missed it, a DNF counts as a race started, and one button creates next season's attempt.
-- **Find races:** a new page searches the instance catalog by month, distance and place, and adds a race to the list in one click. Picking the anchor puts the ones that fit the window first. Parkruns near you are in there too, and they appear in no race calendar.
+- **Find races:** a new page searches the catalog by month, distance and place, and adds a race to your list in one click. It includes the parkruns near you.
 - **Getting started:** a new account's dashboard opens with four steps, each saying what the app does with it. It goes when they are done.
 
 ### Changed
 
 - **Accounts waiting for approval:** sign-in is now refused with the reason, instead of letting the account into an app where nothing could be written.
-- **Self-hosting:** the race harvest can read two new sources, and stays off until you enable it. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Self-hosting:** two new sources for the catalog, off until you turn them on. See [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
@@ -146,7 +123,7 @@
 ### Changed
 
 - **Picking disciplines got compact:** the 13 distances are now pills grouped into track, road and ultra.
-- **Self-hosting:** the administrator is no longer the `ADMIN_EMAIL` variable but a user with `admin: true`, set once in the console. See [`docs/self-hosting.md`](docs/self-hosting.md).
+- **Self-hosting:** the admin is now a user marked as one, instead of an environment variable. See [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
@@ -154,7 +131,7 @@
 
 ### Removed
 
-- **Excel import and export are gone:** the full `.zip` backup covers the same ground more precisely, photos, videos, activity files and goals included, and restores everything under the same identifiers. A spreadsheet is no longer a way in: races are added in the app, or restored from a backup.
+- **Excel import and export are gone:** the full `.zip` backup covers the same ground more precisely, photos, videos, activity files and goals included, and restores everything under the same identifiers. A spreadsheet is no longer a way in.
 
 ---
 
@@ -193,7 +170,7 @@
 
 ### Added
 
-- **Activity files on events:** upload the GPX or TCX from your watch and a race gains per kilometre splits, its route drawn on the map, a pace and elevation chart and, when the file carries them, heart rate figures. The measured time is offered to fill in the result, and never replaces what is already there without your confirmation: the official timing is the one that counts. The files travel in and out of backups.
+- **Activity files on events:** upload the GPX or TCX from your watch and the race gains kilometre splits, the route on a map, pace, elevation and heart rate. The measured time is offered to fill the result in, never imposed: the official timing is the one that counts.
 
 ---
 
@@ -209,7 +186,7 @@
 
 ### Added
 
-- **Pick the disciplines you want to see:** in Settings > App you can turn off the distances you do not race. They stop showing in filters and pickers. Nothing is lost: the races, goals and records you already have in a disabled discipline stay in view.
+- **Pick the disciplines you want to see:** in Settings > App you can turn off the distances you do not race. They stop showing in filters and pickers. Nothing you already have is lost.
 
 ---
 
@@ -217,8 +194,8 @@
 
 ### Changed
 
-- **The Results page is now the Analysis page:** it no longer repeats the Events list. It answers three questions, chosen at the top: how this season is going, how it compares with the ones before, and what has changed over the whole history. The route moved to `/analise`, and old links still work.
-- **Form curve:** every race is converted to its equivalent at your most-raced distance, so a 5K and a marathon compare on one line. It also predicts times at the other distances from your best result of the last 12 months.
+- **The Results page is now the Analysis page:** it answers three questions, with a selector at the top: how this season is going, how it compares with the ones before, and what has changed over all time. Old links still work.
+- **Form curve:** every race is converted to its equivalent at your most-raced distance, so a 5K and a marathon compare on one line. With predicted times for the other distances.
 - **New readings:** placing in the field over time, how each record fell, cumulative km against previous seasons, the strong and weak months of the year, and a consistency grid by races or by kilometres.
 - **Average pace for the year fixed:** it is now weighted by distance. A 5K used to count as much as a marathon.
 
@@ -236,7 +213,7 @@
 
 ### Changed
 
-- **The parkrun catalog now updates itself:** new parkrun events show up within days of opening, without waiting for an app release. The list is also no longer downloaded when it is already current, which makes startup lighter.
+- **The parkrun catalog now updates itself:** new parkrun events show up within days of opening, without waiting for an app release.
 
 ---
 
@@ -244,7 +221,7 @@
 
 ### Changed
 
-- **The rest of the app catches up with Home:** goals group by state with the fulfilled ones up front, filters and view switches look the same on every page, and an event's page leads with the race name and its result.
+- **The rest of the app catches up with Home:** goals are grouped by state, the filters look the same on every page, and an event page now carries the race name as its title.
 
 ---
 
@@ -260,7 +237,7 @@
 
 ### Added
 
-- **New language, Arabic (first version):** the app, release notes, official-results notice, privacy policy, account emails and push reminders are now available in Arabic, with a right-to-left (RTL) layout. Pick it in Settings → Language.
+- **New language, Arabic (first version):** the app is now available in Arabic, with a right to left layout. Pick it in Settings → Language.
 
 ---
 
@@ -296,7 +273,7 @@
 
 ### Fixed
 
-- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result. If the automatic transition won the race, the status ended up wrong even though the result was saved.
+- **Event status:** an event with an official result can no longer end up marked as “Missed.” There was a race condition between the automatic transition to “Missed” and saving the result.
 
 ---
 
@@ -313,7 +290,7 @@
 
 ### Fixed
 
-- **Security:** Firestore rules now treat the account approval fields as immutable from the client. A pending or rejected account could previously strip its own `accountStatus` in a single write and gain full access.
+- **Security:** a pending or rejected account can no longer give itself full access.
 - **Settings:** on instances with account approval enabled, saving language, notification preferences and results profile works again. Every write was denied once the account had been approved.
 
 ---
@@ -348,7 +325,7 @@
 
 ### Added
 
-- **Self-hosting:** optional manual approval for new accounts: pending/rejected screens, admin email with approve/reject links (Resend), user notification, Firestore/Storage rules and blocking Auth functions; see `docs/configuration.md` and `docs/self-hosting.md`.
+- **Self-hosting:** you can require new accounts to be approved by hand: an email to the admin to approve or reject, and a notice to the user. Optional. See [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

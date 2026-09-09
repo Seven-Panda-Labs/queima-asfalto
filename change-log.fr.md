@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Modifié
-
-- **Doublons dans le catalogue :** qui relit le catalogue peut désormais fusionner une paire dans les deux sens, en gardant le nom qu'il préfère. Avant, seul le nom suggéré était proposé.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Corrigé
-
-- **La même course deux fois :** le catalogue reconnaît maintenant une même ville écrite avec plus ou moins de détail (« Dessau » et « Dessau-Roßlau », « Freiburg » et « Freiburg im Breisgau »), le même mot dans une autre langue (« Maratona » et « Marathon »), et un événement sur plusieurs jours que chaque source date à sa façon. Il n'exige plus non plus que deux sources annoncent les mêmes distances pour que la course soit la même. Sur vingt-cinq paires en double trouvées à la main par un lecteur, vingt et une sont désormais détectées.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Ajouté
-
-- **Des courses en double :** quand deux lignes de la recherche sont une seule course écrite de deux façons, une question discrète apparaît en dessous. Ta réponse ne fusionne rien et ne supprime rien : elle fait remonter la paire dans la file de qui relit le catalogue.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Modifié
-
-- **Recherche par distance :** les courses dont le calendrier ne donne la distance que dans la description entrent enfin dans le filtre. Environ une sur dix gagne la sienne, et celles qui se mesurent en temps ou en tours n'en portent toujours aucune, plutôt qu'une fausse.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Ajouté
 
-- **Des courses près de toi :** la recherche gagne un rayon, de 10 à 250 km, mesuré depuis ta position ou depuis la ville que tu tapes. Les courses que la source n'a pas situées sur la carte sont comptées à part, au lieu de disparaître sans explication.
+- **Des courses près de toi :** la recherche gagne un rayon, de 10 à 250 km, mesuré depuis ta position ou depuis la ville que tu tapes.
+- **Des courses en double :** quand deux lignes de la recherche sont une seule course écrite de deux façons, tu peux nous le dire d'un geste.
+
+### Modifié
+
+- **Recherche par distance :** les courses dont le calendrier ne donne la distance que dans la description entrent enfin dans le filtre.
+
+### Corrigé
+
+- **La même course deux fois :** beaucoup moins de doublons dans la liste, quand les sources écrivent la ville, la date ou la langue autrement.
 
 ---
 
@@ -48,7 +25,7 @@
 
 ### Modifié
 
-- **Trouver des courses :** la page demande un filtre avant d'afficher une liste, gagne une recherche par pays, et ramène les résultats page par page au lieu de télécharger tout le catalogue dans le navigateur. Avec des milliers de courses dans des dizaines de pays, la liste entière ne servait personne.
+- **Trouver des courses :** la page demande un filtre avant d'afficher une liste, gagne une recherche par pays, et ramène les résultats page par page au lieu de télécharger tout le catalogue dans le navigateur.
 
 ---
 
@@ -56,7 +33,7 @@
 
 ### Corrigé
 
-- **Courses en double dans le catalogue :** la même course n'y entre plus deux fois quand deux sources la nomment un peu différemment, quand l'une ne publie pas la distance, ou quand le nom de la ville change de place dans le nom. Et la file des cas douteux dans l'espace d'administration ne demande plus que ce qui vaut la peine.
+- **Courses en double dans le catalogue :** la même course n'y entre plus deux fois quand deux sources la nomment un peu différemment, quand l'une ne publie pas la distance, ou quand le nom de la ville change de place dans le nom.
 
 ---
 
@@ -84,7 +61,7 @@
 
 ### Modifié
 
-- **Le catalogue se met à jour source par source :** la récolte tourne chaque jour et lit une source, au lieu de toutes une fois par semaine. Chaque source est toujours lue une fois par semaine, et une source en panne ne gâche plus la récolte des autres.
+- **Le catalogue se met à jour source par source :** le catalogue est mis à jour chaque jour, une source à la fois, et une source en panne ne bloque plus les autres.
 
 ### Corrigé
 
@@ -114,7 +91,7 @@
 ### Corrigé
 
 - **Distances à décimales :** 42,195 km s'enregistre enfin.
-- **Courses en double dans le catalogue :** la même course n'y figure plus deux fois sous des noms différents. Les cas douteux passent dans une file de l'espace d'administration.
+- **Courses en double dans le catalogue :** la même course n'y figure plus deux fois sous des noms différents.
 
 ---
 
@@ -122,16 +99,16 @@
 
 ### Ajouté
 
-- **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée. Avec une notification avant chaque échéance, à activer dans Réglages.
-- **Une saison autour des courses pivots :** marque les une à trois courses qui fixent ton année, sur la page de la course elle-même. À partir d'elles, l'app suggère la fenêtre où tient une course de préparation, alerte quand quelque chose tombe dans l'affûtage ou quand un mois est trop chargé, et affiche le temps prévu pour le pivot à partir de ta dernière course.
+- **Planification des inscriptions :** la bucket list est désormais groupée par ce qu'il reste à faire, et chaque course peut porter son inscription : quand elle ouvre, quand elle ferme, le tirage, et le délai pour sécuriser une place déjà gagnée. Avec un rappel avant chaque échéance.
+- **Une saison autour des courses pivots :** marque les courses qui fixent ton année et l'app suggère où placer une course de préparation, prévient quand quelque chose tombe dans l'affûtage, et montre le temps prévu pour la course pivot.
 - **Quand ça échoue :** une course passée sans résultat demande ce qui s'est passé au lieu de dire que tu l'as manquée, un abandon compte comme une course commencée, et un bouton crée la tentative de la saison prochaine.
-- **Trouver des courses :** une nouvelle page cherche dans le catalogue de l'instance par mois, distance et lieu, et ajoute une course à la liste en un clic. Choisir le pivot met devant celles qui tiennent dans la fenêtre. Les parkruns près de toi y sont aussi, eux qui ne figurent dans aucun calendrier.
+- **Trouver des courses :** une nouvelle page cherche dans le catalogue par mois, distance et lieu, et ajoute une course à la liste en un clic. Les parkruns près de toi sont inclus.
 - **Premiers pas :** le dashboard d'un nouveau compte s'ouvre sur quatre étapes, chacune disant ce que l'app en fait. Il disparaît quand elles sont faites.
 
 ### Modifié
 
 - **Comptes en attente de validation :** la connexion est désormais refusée avec le motif, au lieu de laisser entrer dans une app où rien ne pouvait être écrit.
-- **Self-hosting :** la récolte de courses peut lire deux nouvelles sources, et reste éteinte jusqu'à ce que tu l'actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Self-hosting :** deux nouvelles sources pour le catalogue, désactivées jusqu'à ce que tu les actives. Voir [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
@@ -146,7 +123,7 @@
 ### Modifié
 
 - **Choisir les disciplines devient compact :** les 13 distances sont désormais des pastilles groupées en piste, route et ultra.
-- **Self-hosting :** l'administrateur n'est plus la variable `ADMIN_EMAIL` mais un utilisateur avec `admin: true`, défini une fois dans la console. Voir [`docs/self-hosting.md`](docs/self-hosting.md).
+- **Self-hosting :** l'administrateur est désormais un utilisateur marqué comme tel, au lieu d'une variable d'environnement. Voir [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
@@ -154,7 +131,7 @@
 
 ### Supprimé
 
-- **L'import et l'export Excel sont supprimés :** la sauvegarde complète en `.zip` couvre la même chose avec plus de précision, photos, vidéos, fichiers d'activité et objectifs compris, et restaure tout avec les mêmes identifiants. Le tableur n'est plus une porte d'entrée : les courses s'ajoutent dans l'app, ou se restaurent depuis une sauvegarde.
+- **L'import et l'export Excel sont supprimés :** la sauvegarde complète en `.zip` couvre la même chose avec plus de précision, photos, vidéos, fichiers d'activité et objectifs compris, et restaure tout avec les mêmes identifiants. Le tableur n'est plus une voie d'entrée.
 
 ---
 
@@ -193,7 +170,7 @@
 
 ### Ajouté
 
-- **Fichiers d'activité sur les événements :** importe le GPX ou TCX de ta montre et la course gagne des splits au kilomètre, son parcours tracé sur la carte, un graphique d'allure et de dénivelé et, si le fichier les porte, la fréquence cardiaque. Le temps mesuré est proposé pour remplir le résultat, et ne remplace jamais ce qui existe sans ta confirmation : c'est le chronométrage officiel qui compte. Les fichiers voyagent dans les sauvegardes.
+- **Fichiers d'activité sur les événements :** charge le GPX ou le TCX de ta montre et la course gagne des splits au kilomètre, le parcours sur la carte, l'allure, l'altitude et la fréquence cardiaque. Le temps mesuré est proposé pour remplir le résultat, jamais imposé : c'est le chronométrage officiel qui compte.
 
 ---
 
@@ -209,7 +186,7 @@
 
 ### Ajouté
 
-- **Choisis les disciplines que tu veux voir :** dans Réglages > App, tu peux désactiver les distances que tu ne cours pas. Elles disparaissent des filtres et des sélecteurs. Rien n'est perdu : les courses, objectifs et records déjà enregistrés dans une discipline désactivée restent visibles.
+- **Choisis les disciplines que tu veux voir :** dans Réglages > App, tu peux désactiver les distances que tu ne cours pas. Elles disparaissent des filtres et des sélecteurs. Rien de ce que tu as déjà n'est perdu.
 
 ---
 
@@ -217,8 +194,8 @@
 
 ### Modifié
 
-- **La page Résultats devient la page Analyse :** elle ne répète plus la liste des événements. Elle répond à trois questions, choisies en haut : comment va cette saison, comment elle se compare aux précédentes, et ce qui a changé depuis toujours. La route est passée à `/analise`, et les anciens liens fonctionnent toujours.
-- **Courbe de forme :** chaque course est convertie en son équivalent sur ta distance la plus courue, si bien qu'un 5K et un marathon se comparent sur une même ligne. Elle estime aussi tes temps sur les autres distances, d'après ta meilleure marque des 12 derniers mois.
+- **La page Résultats devient la page Analyse :** elle répond à trois questions, avec un sélecteur en haut : comment va cette saison, comment elle se compare aux précédentes, et ce qui a changé depuis toujours. Les anciens liens fonctionnent toujours.
+- **Courbe de forme :** chaque course est convertie en son équivalent sur ta distance la plus courue, si bien qu'un 5K et un marathon se comparent sur une même ligne. Avec des temps prévus pour les autres distances.
 - **Nouvelles lectures :** place dans le peloton au fil du temps, progression de chaque record, km cumulés face aux saisons précédentes, mois forts et faibles de l'année, et une grille de régularité par courses ou par kilomètres.
 - **Allure moyenne de l'année corrigée :** elle est désormais pondérée par la distance. Auparavant un 5K pesait autant qu'un marathon.
 
@@ -236,7 +213,7 @@
 
 ### Modifié
 
-- **Le catalogue parkrun se met à jour tout seul :** les nouvelles courses parkrun apparaissent quelques jours après leur ouverture, sans attendre une mise à jour de l'application. La liste n'est plus non plus téléchargée lorsqu'elle est déjà à jour, ce qui allège le démarrage.
+- **Le catalogue parkrun se met à jour tout seul :** les nouvelles courses parkrun apparaissent quelques jours après leur ouverture, sans attendre une mise à jour de l'application.
 
 ---
 
@@ -244,7 +221,7 @@
 
 ### Modifié
 
-- **Le reste de l'app rejoint l'Accueil :** les objectifs se regroupent par état, les atteints en tête, les filtres et les sélecteurs de vue sont identiques sur toutes les pages, et la page d'un événement s'ouvre sur le nom de la course et son résultat.
+- **Le reste de l'app rejoint l'Accueil :** les objectifs sont groupés par état, les filtres sont identiques sur toutes les pages, et la page d'un événement porte le nom de la course comme titre.
 
 ---
 
@@ -260,7 +237,7 @@
 
 ### Ajouté
 
-- **Nouvelle langue, arabe (première version) :** l'application, les notes de version, l'avis sur les résultats officiels, la politique de confidentialité, les e-mails de compte et les rappels push sont désormais disponibles en arabe, avec une mise en page de droite à gauche (RTL). Choisis-le dans Paramètres → Langue.
+- **Nouvelle langue, arabe (première version) :** l'app est maintenant disponible en arabe, avec une mise en page de droite à gauche. Choisis-le dans Réglages → Langue.
 
 ---
 
@@ -296,7 +273,7 @@
 
 ### Corrigé
 
-- **Statut d'événement :** un événement avec un résultat officiel ne peut plus se retrouver marqué « Manqué ». Il y avait une condition de concurrence entre la transition automatique vers « Manqué » et l'enregistrement du résultat. Si la transition automatique gagnait, le statut était faux alors que le résultat avait bien été enregistré.
+- **Statut d'événement :** un événement avec un résultat officiel ne peut plus se retrouver marqué « Manqué ».
 
 ---
 
@@ -313,7 +290,7 @@
 
 ### Corrigé
 
-- **Sécurité :** les règles Firestore traitent désormais les champs d'approbation de compte comme immuables côté client. Un compte en attente ou refusé pouvait auparavant supprimer son propre `accountStatus` en une seule écriture et obtenir un accès complet.
+- **Sécurité :** un compte en attente ou refusé ne peut plus s'accorder un accès complet.
 - **Paramètres :** sur les instances avec approbation de compte activée, l'enregistrement de la langue, des préférences de notification et du profil de résultats fonctionne de nouveau. Toute écriture était refusée une fois le compte approuvé.
 
 ---
@@ -348,7 +325,7 @@
 
 ### Ajouté
 
-- **Auto-hébergement :** approbation manuelle optionnelle des nouveaux comptes : écrans en attente/refusé, e-mail admin avec liens approuver/refuser (Resend), notification de l'utilisateur, règles Firestore/Storage et fonctions Auth bloquantes ; voir `docs/configuration.md` et `docs/self-hosting.md`.
+- **Auto-hébergement :** tu peux exiger une approbation manuelle des nouveaux comptes : un email à l'administrateur pour approuver ou refuser, et un avis à l'utilisateur. Optionnel. Voir [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 

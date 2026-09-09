@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Geändert
-
-- **Doppelte Einträge im Katalog:** wer den Katalog prüft, kann ein Paar nun in beide Richtungen zusammenführen und den Namen behalten, den er bevorzugt. Vorher gab es nur den vorgeschlagenen.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Behoben
-
-- **Dasselbe Rennen zweimal:** der Katalog erkennt jetzt denselben Ort in mehr oder weniger Detail („Dessau“ und „Dessau-Roßlau“, „Freiburg“ und „Freiburg im Breisgau“), dasselbe Wort in einer anderen Sprache („Maratona“ und „Marathon“) und eine Veranstaltung über mehrere Tage, die jede Quelle anders datiert. Er verlangt auch nicht mehr, dass zwei Quellen dieselben Distanzen nennen, damit es dasselbe Rennen ist. Von fünfundzwanzig doppelten Paaren, die ein Leser von Hand fand, werden nun einundzwanzig erkannt.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Hinzugefügt
-
-- **Doppelt gelistete Rennen:** wenn zwei Zeilen der Suche dasselbe Rennen in zwei Schreibweisen sind, erscheint darunter eine leise Frage. Deine Antwort führt nichts zusammen und löscht nichts: sie zieht das Paar in der Warteschlange derer nach vorn, die den Katalog prüfen.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Geändert
-
-- **Suche nach Distanz:** Rennen, deren Kalender die Distanz nur in der Beschreibung nennt, antworten jetzt auf den Filter. Etwa eines von zehn bekommt seine, und die nach Zeit oder in Runden gemessenen behalten weiter keine, statt eine falsche zu bekommen.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Hinzugefügt
 
-- **Rennen in deiner Nähe:** die Suche bekommt einen Radius, 10 bis 250 km, gemessen von deinem Standort oder von dem Ort, den du eintippst. Rennen, die die Quelle nicht verortet hat, werden getrennt gezählt, statt ohne Erklärung zu verschwinden.
+- **Rennen in deiner Nähe:** die Rennsuche bekommt einen Radius, 10 bis 250 km, gemessen von deinem Standort oder von dem Ort, den du eintippst.
+- **Doppelt gelistete Rennen:** wenn zwei Zeilen der Suche dasselbe Rennen in zwei Schreibweisen sind, kannst du es uns mit einem Tipp sagen.
+
+### Geändert
+
+- **Suche nach Distanz:** Rennen, deren Kalender die Distanz nur in der Beschreibung nennt, antworten jetzt auf den Filter.
+
+### Behoben
+
+- **Dasselbe Rennen zweimal:** deutlich weniger Wiederholungen in der Liste, wenn Quellen den Ort, das Datum oder die Sprache anders schreiben.
 
 ---
 
@@ -48,7 +25,7 @@
 
 ### Geändert
 
-- **Rennen finden:** die Seite fragt jetzt nach einem Filter, bevor sie eine Liste zeigt, bekommt eine Suche nach Land, und holt die Ergebnisse seitenweise statt den ganzen Katalog in den Browser zu laden. Bei tausenden Rennen in dutzenden Ländern half die ganze Liste niemandem.
+- **Rennen finden:** die Seite fragt jetzt nach einem Filter, bevor sie eine Liste zeigt, bekommt eine Suche nach Land, und holt die Ergebnisse seitenweise statt den ganzen Katalog in den Browser zu laden.
 
 ---
 
@@ -56,7 +33,7 @@
 
 ### Behoben
 
-- **Rennen doppelt im Katalog:** dasselbe Rennen landet nicht mehr zweimal darin, wenn zwei Quellen es leicht anders nennen, wenn eine keine Distanz veröffentlicht oder wenn der Ortsname im Namen die Stelle wechselt. Und die Liste der Zweifelsfälle im Adminbereich fragt nur noch, was zu fragen lohnt.
+- **Rennen doppelt im Katalog:** dasselbe Rennen landet nicht mehr zweimal darin, wenn zwei Quellen es leicht anders nennen, wenn eine keine Distanz veröffentlicht oder wenn der Ortsname im Namen die Stelle wechselt.
 
 ---
 
@@ -84,7 +61,7 @@
 
 ### Geändert
 
-- **Der Katalog wird stückweise aktualisiert:** die Ernte läuft täglich und liest eine Quelle, statt alle einmal pro Woche. Jede Quelle wird weiterhin wöchentlich gelesen, und eine ausgefallene verdirbt den Lauf der anderen nicht mehr.
+- **Der Katalog wird stückweise aktualisiert:** der Katalog wird jeden Tag aktualisiert, eine Quelle auf einmal, und eine ausgefallene Quelle hält die anderen nicht mehr auf.
 
 ### Behoben
 
@@ -114,7 +91,7 @@
 ### Behoben
 
 - **Distanzen mit Dezimalstellen:** 42,195 km lassen sich jetzt speichern.
-- **Rennen doppelt im Katalog:** dasselbe Rennen steht nicht mehr zweimal unter verschiedenen Namen darin. Die Zweifelsfälle landen in einer Liste im Adminbereich.
+- **Rennen doppelt im Katalog:** dasselbe Rennen steht nicht mehr zweimal unter verschiedenen Namen darin.
 
 ---
 
@@ -122,16 +99,16 @@
 
 ### Hinzugefügt
 
-- **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern. Mit einer Benachrichtigung vor jeder Frist, einzuschalten in den Einstellungen.
-- **Eine Saison um die Ankerrennen:** markiere die ein bis drei Rennen, die dein Jahr festlegen, auf der Seite des Rennens selbst. Daraus schlägt die App das Fenster für ein Vorbereitungsrennen vor, warnt, wenn etwas in das Tapering fällt oder ein Monat zu voll wird, und zeigt die prognostizierte Zeit für den Anker aus deinem letzten Rennen.
+- **Anmeldeplanung:** die Bucket List ist jetzt danach gruppiert, was noch zu tun ist, und jedes Rennen kann seine Anmeldung tragen: wann sie öffnet, wann sie schließt, die Ziehung, und die Frist, einen gewonnenen Platz zu sichern. Mit Erinnerung vor jeder Frist.
+- **Eine Saison um die Ankerrennen:** markiere die Rennen, die dein Jahr festlegen, und die App schlägt vor, wo ein Aufbaurennen passt, warnt, wenn etwas ins Tapering fällt, und zeigt die erwartete Zeit für das Ankerrennen.
 - **Wenn es schiefgeht:** ein Rennen, das ohne Ergebnis vorbeigeht, fragt, was passiert ist, statt zu sagen, du hättest es verpasst, ein DNF zählt als gestartetes Rennen, und ein Knopf legt den Versuch der nächsten Saison an.
-- **Rennen finden:** eine neue Seite durchsucht den Katalog der Instanz nach Monat, Distanz und Ort und legt ein Rennen mit einem Klick auf die Liste. Ein Anker stellt die passenden nach vorne. Auch die parkruns in deiner Nähe sind dabei, die in keinem Rennkalender stehen.
+- **Rennen finden:** eine neue Seite sucht im Katalog nach Monat, Distanz und Ort und fügt ein Rennen mit einem Klick zur Liste hinzu. Die parkruns in deiner Nähe sind dabei.
 - **Erste Schritte:** das Dashboard eines neuen Kontos beginnt mit vier Schritten, jeder sagt, was die App damit macht. Es verschwindet, wenn sie erledigt sind.
 
 ### Geändert
 
 - **Konten, die auf Freigabe warten:** die Anmeldung wird jetzt mit dem Grund abgelehnt, statt das Konto in eine App zu lassen, in der nichts geschrieben werden konnte.
-- **Self-hosting:** die Rennernte kann zwei neue Quellen lesen und bleibt aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Self-hosting:** zwei neue Quellen für den Katalog, aus, bis du sie einschaltest. Siehe [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
@@ -146,7 +123,7 @@
 ### Geändert
 
 - **Disziplinen wählen wurde kompakt:** die 13 Distanzen sind jetzt Chips, gruppiert in Bahn, Straße und Ultra.
-- **Self-Hosting:** der Administrator ist nicht mehr die Variable `ADMIN_EMAIL`, sondern ein Benutzer mit `admin: true`, einmal in der Konsole gesetzt. Siehe [`docs/self-hosting.md`](docs/self-hosting.md).
+- **Self-Hosting:** der Administrator ist jetzt ein so markierter Benutzer statt einer Umgebungsvariablen. Siehe [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
@@ -154,7 +131,7 @@
 
 ### Entfernt
 
-- **Excel-Import und -Export sind entfernt:** Das vollständige `.zip`-Backup deckt dasselbe genauer ab, inklusive Fotos, Videos, Aktivitätsdateien und Ziele, und stellt alles mit denselben Kennungen wieder her. Eine Tabelle ist kein Weg mehr hinein: Rennen werden in der App angelegt oder aus einem Backup wiederhergestellt.
+- **Excel-Import und -Export sind entfernt:** Das vollständige `.zip`-Backup deckt dasselbe genauer ab, inklusive Fotos, Videos, Aktivitätsdateien und Ziele, und stellt alles mit denselben Kennungen wieder her. Eine Tabelle ist kein Weg hinein mehr.
 
 ---
 
@@ -193,7 +170,7 @@
 
 ### Hinzugefügt
 
-- **Aktivitätsdateien bei Events:** Lade die GPX oder TCX deiner Uhr hoch, und ein Rennen bekommt Splits pro Kilometer, die Strecke auf der Karte, ein Pace und Höhendiagramm und, sofern die Datei sie enthält, Herzfrequenzwerte. Die gemessene Zeit wird zum Ausfüllen des Ergebnisses angeboten und ersetzt Vorhandenes nie ohne deine Bestätigung: es zählt die offizielle Zeitmessung. Die Dateien wandern in Backups mit.
+- **Aktivitätsdateien bei Events:** lade die GPX- oder TCX-Datei deiner Uhr hoch, und das Rennen bekommt Kilometer-Splits, die Strecke auf der Karte, Tempo, Höhe und Herzfrequenz. Die gemessene Zeit wird zum Ausfüllen angeboten, nie aufgezwungen: es zählt die offizielle Zeitnahme.
 
 ---
 
@@ -209,7 +186,7 @@
 
 ### Hinzugefügt
 
-- **Wähle die Disziplinen, die du sehen willst:** unter Einstellungen > App kannst du Distanzen abschalten, die du nicht läufst. Sie verschwinden aus Filtern und Auswahllisten. Nichts geht verloren: Rennen, Ziele und Rekorde in einer abgeschalteten Disziplin bleiben sichtbar.
+- **Wähle die Disziplinen, die du sehen willst:** unter Einstellungen > App kannst du Distanzen abschalten, die du nicht läufst. Sie verschwinden aus Filtern und Auswahllisten. Nichts von dem, was du schon hast, geht verloren.
 
 ---
 
@@ -217,8 +194,8 @@
 
 ### Geändert
 
-- **Aus der Ergebnisseite wird die Analyseseite:** Sie wiederholt die Eventliste nicht mehr. Sie beantwortet drei Fragen, oben auswählbar: wie diese Saison läuft, wie sie gegen die früheren steht und was sich seit jeher verändert hat. Die Route heißt jetzt `/analise`, alte Links funktionieren weiter.
-- **Formkurve:** Jedes Rennen wird auf seinen Wert bei deiner meistgelaufenen Distanz umgerechnet, sodass 5K und Marathon auf einer Linie vergleichbar werden. Dazu kommen Zeitprognosen für die anderen Distanzen, aus deiner besten Leistung der letzten 12 Monate.
+- **Aus der Ergebnisseite wird die Analyseseite:** sie beantwortet drei Fragen, mit einem Auswahlfeld oben: wie diese Saison läuft, wie sie gegen die früheren steht und was sich über die ganze Zeit verändert hat. Alte Links funktionieren weiter.
+- **Formkurve:** Jedes Rennen wird auf seinen Wert bei deiner meistgelaufenen Distanz umgerechnet, sodass 5K und Marathon auf einer Linie vergleichbar werden. Mit Zeitprognosen für die anderen Distanzen.
 - **Neue Auswertungen:** Platzierung im Feld über die Zeit, Entwicklung jedes Rekords, kumulierte Kilometer gegen frühere Saisons, starke und schwache Monate im Jahr und ein Beständigkeitsraster nach Rennen oder Kilometern.
 - **Durchschnittstempo des Jahres korrigiert:** Es ist jetzt nach Distanz gewichtet. Bisher zählte ein 5K so viel wie ein Marathon.
 
@@ -236,7 +213,7 @@
 
 ### Geändert
 
-- **Der parkrun-Katalog aktualisiert sich selbst:** neue parkrun-Veranstaltungen erscheinen wenige Tage nach ihrer Eröffnung, ohne auf ein App-Update zu warten. Die Liste wird zudem nicht mehr heruntergeladen, wenn sie bereits aktuell ist, was den Start leichter macht.
+- **Der parkrun-Katalog aktualisiert sich selbst:** neue parkrun-Veranstaltungen erscheinen wenige Tage nach ihrer Eröffnung, ohne auf ein App-Update zu warten.
 
 ---
 
@@ -244,7 +221,7 @@
 
 ### Geändert
 
-- **Der Rest der App zieht mit dem Start nach:** Ziele gruppieren sich nach Status, die erreichten zuerst, Filter und Ansichtsumschalter sehen auf jeder Seite gleich aus, und die Seite einer Veranstaltung beginnt mit dem Namen des Rennens und seinem Ergebnis.
+- **Der Rest der App zieht mit dem Start nach:** Ziele werden nach Zustand gruppiert, die Filter sehen auf jeder Seite gleich aus, und eine Event-Seite trägt jetzt den Rennnamen als Titel.
 
 ---
 
@@ -260,7 +237,7 @@
 
 ### Hinzugefügt
 
-- **Neue Sprache: Arabisch (erste Version):** App, Versionshinweise, Hinweis zu offiziellen Ergebnissen, Datenschutzerklärung, Konto-E-Mails und Push-Erinnerungen sind jetzt auf Arabisch verfügbar, mit Rechts-nach-links-Layout (RTL). Auswahl unter Einstellungen → Sprache.
+- **Neue Sprache: Arabisch (erste Version):** die App ist jetzt auf Arabisch verfügbar, mit Layout von rechts nach links. Wähle es unter Einstellungen → Sprache.
 
 ---
 
@@ -296,7 +273,7 @@
 
 ### Behoben
 
-- **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden. Es gab eine Race Condition zwischen dem automatischen Übergang zu „Verpasst“ und dem Speichern des Ergebnisses. Gewann der automatische Übergang das Rennen, war der Status falsch, obwohl das Ergebnis gespeichert war.
+- **Veranstaltungsstatus:** Eine Veranstaltung mit offiziellem Ergebnis kann nicht mehr als „Verpasst“ markiert werden.
 
 ---
 
@@ -313,7 +290,7 @@
 
 ### Behoben
 
-- **Sicherheit:** Die Firestore-Regeln behandeln die Felder zur Kontofreigabe jetzt als clientseitig unveränderlich. Ein wartendes oder abgelehntes Konto konnte zuvor mit einem einzigen Schreibvorgang sein eigenes `accountStatus` entfernen und volle Zugriffsrechte erhalten.
+- **Sicherheit:** ein wartendes oder abgelehntes Konto kann sich nicht mehr selbst Vollzugriff geben.
 - **Einstellungen:** Auf Instanzen mit aktivierter Kontofreigabe lassen sich Sprache, Benachrichtigungseinstellungen und Ergebnisprofil wieder speichern. Bisher wurde jeder Schreibvorgang abgelehnt, sobald das Konto freigegeben war.
 
 ---
@@ -348,7 +325,7 @@
 
 ### Hinzugefügt
 
-- **Self-Hosting:** optionale manuelle Freigabe neuer Konten: Bildschirme „ausstehend“/„abgelehnt“, Admin-E-Mail mit Freigabe-/Ablehnungslinks (Resend), Benutzerbenachrichtigung, Firestore-/Storage-Regeln und Blocking-Auth-Funktionen; siehe `docs/configuration.md` und `docs/self-hosting.md`.
+- **Self-Hosting:** du kannst neue Konten von Hand freigeben lassen: eine E-Mail an den Administrator zum Freigeben oder Ablehnen und eine Nachricht an den Benutzer. Optional. Siehe [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
