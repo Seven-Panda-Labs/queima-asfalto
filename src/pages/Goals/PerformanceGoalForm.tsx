@@ -61,6 +61,16 @@ export function PerformanceGoalForm() {
   const [loadingGoal, setLoadingGoal] = useState(isEditing)
   const [readOnly, setReadOnly] = useState(false)
   const [submitting, setSubmitting] = useState(false)
+  /**
+   * The message as a key, translated when it is rendered.
+   *
+   * The effect below loads a document once, and closing over the translator
+   * made it a dependency: re-running on a language change would refetch and
+   * throw away whatever was being edited. A key has no identity to depend on,
+   * and the message now follows a language switch instead of staying in the
+   * one it was written in. A raw message from a thrown error passes through,
+   * because i18next renders a missing key as itself.
+   */
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
@@ -106,7 +116,7 @@ export function PerformanceGoalForm() {
         const goal = await getPerformanceGoal(id!)
         if (cancelled) return
         if (!goal) {
-          setError(t('errors.performanceGoalNotFound'))
+          setError('errors.performanceGoalNotFound')
           return
         }
         const paceParts = splitPace(goal.targetPace ?? '')
@@ -125,7 +135,7 @@ export function PerformanceGoalForm() {
         })
         setReadOnly(goal.year < currentYear())
       } catch {
-        if (!cancelled) setError(t('errors.performanceGoalLoadError'))
+        if (!cancelled) setError('errors.performanceGoalLoadError')
       } finally {
         if (!cancelled) setLoadingGoal(false)
       }
@@ -194,7 +204,7 @@ export function PerformanceGoalForm() {
       if (submitError instanceof DuplicatePerformanceGoalError) {
         setError(submitError.message)
       } else {
-        setError(t('errors.performanceGoalSaveError'))
+        setError('errors.performanceGoalSaveError')
       }
     } finally {
       setSubmitting(false)
@@ -407,7 +417,9 @@ export function PerformanceGoalForm() {
           />
         </div>
 
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? (
+          <p className="text-sm text-danger">{t(error, { defaultValue: error })}</p>
+        ) : null}
         {fieldErrors.type ? <p className="text-sm text-danger">{fieldErrors.type}</p> : null}
 
         <div className="flex flex-wrap gap-3">

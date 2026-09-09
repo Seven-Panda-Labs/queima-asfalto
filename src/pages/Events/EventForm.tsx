@@ -97,6 +97,16 @@ export function EventForm() {
   const [bucketListRaceId, setBucketListRaceId] = useState<string | null>(null)
   const [loadingEvent, setLoadingEvent] = useState(isEditing)
   const [submitting, setSubmitting] = useState(false)
+  /**
+   * The message as a key, translated when it is rendered.
+   *
+   * The effect below loads a document once, and closing over the translator
+   * made it a dependency: re-running on a language change would refetch and
+   * throw away whatever was being edited. A key has no identity to depend on,
+   * and the message now follows a language switch instead of staying in the
+   * one it was written in. A raw message from a thrown error passes through,
+   * because i18next renders a missing key as itself.
+   */
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
   const [statusAdjustment, setStatusAdjustment] = useState<{
@@ -194,7 +204,7 @@ export function EventForm() {
         const event = await getEvent(id!)
         if (cancelled) return
         if (!event) {
-          setError(t('eventDetail.notFound'))
+          setError('eventDetail.notFound')
           return
         }
         setForm({
@@ -223,7 +233,7 @@ export function EventForm() {
           setStatusAdjustment(null)
         }
       } catch {
-        if (!cancelled) setError(t('eventDetail.loadError'))
+        if (!cancelled) setError('eventDetail.loadError')
       } finally {
         if (!cancelled) setLoadingEvent(false)
       }
@@ -445,7 +455,7 @@ export function EventForm() {
     try {
       await persistEvent(payload)
     } catch {
-      setError(t('errors.eventSaveError'))
+      setError('errors.eventSaveError')
     } finally {
       setSubmitting(false)
     }
@@ -484,7 +494,7 @@ export function EventForm() {
       await persistEvent(pendingPayload)
       setPendingPayload(null)
     } catch {
-      setError(t('errors.eventSaveError'))
+      setError('errors.eventSaveError')
     } finally {
       setSubmitting(false)
     }
@@ -763,7 +773,9 @@ export function EventForm() {
           />
         </div>
 
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? (
+          <p className="text-sm text-danger">{t(error, { defaultValue: error })}</p>
+        ) : null}
 
         <div className="flex flex-wrap gap-3">
           <button
