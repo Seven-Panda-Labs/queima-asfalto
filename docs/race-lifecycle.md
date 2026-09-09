@@ -124,6 +124,10 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 | Navegação | A bucket list cresce, sem rota nova de planeamento | #246 |
 | Integrações Strava/Garmin | Fora da v1. O parser de GPX/TCX serve qualquer integração futura | #226 |
 | Um traçado não é verificação | `resultsVerified` continua a vir só da importação oficial | #226 |
+| O que é uma edição | Um ano de uma prova anual. Um evento recorrente tem ocorrências de uma regra, não edições | [`race-catalog.md`](./race-catalog.md) |
+| Elo entre evento e edição | Derivado do ano da data do evento. Nenhum campo novo no evento | [`race-catalog.md`](./race-catalog.md) |
+| Identidade do parkrun | Fica sem `races/{id}`: entra num toque, sem inscrição nem prazos. Agrupa por nome | este documento |
+| Contribuir para o catálogo | O passado confirma-se (data e link de resultados, com resultado oficial verificado), o futuro pergunta-se (preço e prazos vão à fila) | [`race-catalog.md`](./race-catalog.md) |
 
 ### Perguntas abertas
 
@@ -267,6 +271,10 @@ They live in the issues or in the interviews, and should not be reopened in pass
 | Navigation | The bucket list grows, no new planning route | #246 |
 | Strava/Garmin integrations | Out of v1. The GPX/TCX parser serves any future integration | #226 |
 | A track is not a verification | `resultsVerified` still comes only from the official lookup | #226 |
+| What an edition is | One year of an annual race. A recurring event has occurrences from a rule, not editions | [`race-catalog.md`](./race-catalog.md) |
+| Event to edition link | Derived from the year of the event's date. No new field on the event | [`race-catalog.md`](./race-catalog.md) |
+| parkrun identity | Stays without a `races/{id}`: one tap to add, no entry and no deadlines. Groups by name | this document |
+| Contributing to the catalog | The past confirms itself (date and results link, with a verified official result), the future gets asked (fee and gates go to the queue) | [`race-catalog.md`](./race-catalog.md) |
 
 ### Open questions
 
