@@ -26,6 +26,7 @@ import { parseSitemap, rotatePages, selectEventUrls } from '../shared/eventDisco
 import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCatalogEntry.js'
 import { sourceForRun } from '../shared/eventDiscovery/sources.js'
 import { applyPendingEditionReports } from './editionReports.js'
+import { applyPendingProposals } from './proposals.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
 import { DELAY_BETWEEN_PAGES_MS, delay, fetchPage } from './fetchPage.js'
@@ -456,6 +457,18 @@ export const harvestRaceCatalog = onSchedule(
     } catch (error) {
       // What the runners said can wait a day. The harvest is the job.
       console.error('edition reports failed', error)
+    }
+
+    try {
+      const proposals = await applyPendingProposals(now)
+      if (proposals.pending > 0) {
+        console.log(
+          `catalog proposals: ${proposals.created} created, ${proposals.refused} answered ` +
+            `by an entry that already existed, from ${proposals.pending} pending`,
+        )
+      }
+    } catch (error) {
+      console.error('catalog proposals failed', error)
     }
 
     const result = await refreshDiscoveryCatalog(now, [source])

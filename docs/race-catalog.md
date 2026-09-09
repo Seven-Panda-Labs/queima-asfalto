@@ -14,7 +14,7 @@ Não há catálogo commitado no repo. Cada instância mantém o seu, editado na 
 
 Para começar com as provas já revistas, `npm run seed:race-catalog -- --confirm` escreve as 14 que existiam quando o catálogo mudou de casa. Corre uma vez, nunca sobrepõe o que já lá está, e a lista está em [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). É um arranque, não um catálogo.
 
-### Uma colecção, dois produtores
+### Uma colecção, três produtores
 
 | Produtor | O que escreve | Estado |
 |----------|---------------|--------|
@@ -57,6 +57,8 @@ O que nunca sai da conta: o tempo, o ritmo, a classificação, as notas, a media
 Uma contribuição segue a forma dos votos de duplicados: colecção própria, um documento por (prova, ano, utilizador) para que uma pessoa seja uma voz, e o que chega à edição partilhada são valores e contagens, nunca a identidade de quem contribuiu.
 
 Do que está acima, o **dia** já está construído. Quando um resultado volta verificado, o cliente escreve o relatório em `raceCatalogEditionReports`, e a colheita diária aplica a política acima: um relatório é uma observação, e a decisão de o aceitar vive no `applyEditionReports`. Um dia corroborado por dois corredores fica marcado com `runnerConfirmedAt`, e a colheita seguinte dessa fonte mantém-no em vez de o substituir pelo da listagem.
+
+**E uma prova que o catálogo não tem pode entrar.** Nenhum dos nove calendários publica tudo, e uma prova que nenhum publica não tinha forma de entrar por muita gente que a corresse. Na página de um evento, quem não encontra a prova no catálogo pode propô-la: o corredor escreve a proposta em `raceCatalogProposals` e a colheita diária transforma-a numa entrada, com `producer: 'runner'`, `unreviewed`, e passando pelo mesmo piso e pela mesma regra de duplicados que a colheita aplica. Uma proposta que seja uma prova já no catálogo é respondida com essa entrada em vez de criar uma segunda.
 
 O **preço** segue o mesmo caminho, escrito quando uma inscrição passa a `registered`: é o corredor a dizer que entrou, e um preço que lhe foi cotado e nunca pago não é um preço.
 
@@ -106,7 +108,7 @@ There is no committed catalog in the repo. Each instance keeps its own, edited i
 
 To start with the races already reviewed, `npm run seed:race-catalog -- --confirm` writes the 14 that existed when the catalog moved. It runs once, never overwrites what is already there, and the list is in [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). A bootstrap, not a catalog.
 
-### One collection, two producers
+### One collection, three producers
 
 | Producer | What it writes | State |
 |----------|----------------|-------|
@@ -149,6 +151,8 @@ What never leaves the account: the time, the pace, the classification, the notes
 A contribution follows the shape of the duplicate votes: a collection of its own, one document per (race, year, user) so one person is one voice, and what reaches the shared edition is values and counts, never the identity of whoever contributed.
 
 Of the above, the **day** is built. When a result comes back verified, the client writes a report to `raceCatalogEditionReports`, and the daily harvest applies the policy above: a report is an observation, and the decision to accept it lives in `applyEditionReports`. A day two runners corroborate is marked with `runnerConfirmedAt`, and the next harvest of that source keeps it instead of replacing it with the listing's.
+
+**And a race the catalog does not hold can get in.** None of the nine calendars publishes everything, and a race none of them publishes had no way in however many people ran it. On an event's page, a runner who cannot find their race in the catalog can propose it: the proposal goes to `raceCatalogProposals` and the daily harvest turns it into an entry, with `producer: 'runner'`, `unreviewed`, and through the same floor and the same duplicate rule the harvest applies. A proposal that turns out to be a race already in the catalog is answered with that entry rather than creating a second one.
 
 The **fee** takes the same path, written when an entry becomes `registered`: that is the runner saying they got in, and a fee they were quoted and never paid is not a fee.
 

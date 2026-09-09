@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchToken, type RaceCatalogEntry } from '../../../shared/raceCatalog'
+import { toIsoCountry } from '../../../shared/eventDiscovery/countries'
+import { proposeCatalogRace } from '../../services/catalogProposals'
 import { formatDatePt } from '../../utils/date'
 import { searchRaceCatalog } from '../../services/raceCatalog'
 import { identifyRaceInCatalog } from '../../services/raceIdentity'
@@ -11,6 +13,13 @@ import type { Event } from '../../types/Event'
  * type a better word, not to scroll.
  */
 const LIMIT = 6
+
+/** The local day, because the day a race was run is a calendar fact. */
+function toIsoDay(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
+}
 
 /**
  * A date early enough to find an entry whose next edition has already passed.
@@ -50,8 +59,38 @@ export function IdentifyInCatalog({
   const [searching, setSearching] = useState(false)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [proposing, setProposing] = useState(false)
+  const [proposed, setProposed] = useState(false)
+  /** "Brandenburger Tor, Berlim" is a location and not a town and a country. */
+  const [city, setCity] = useState(() => event.location.split(',')[0]?.trim() ?? '')
+  const [country, setCountry] = useState('')
 
   if (linked) return null
+
+  const propose = async () => {
+    const iso = toIsoCountry(country)
+    if (!iso) {
+      setError(t('identifyInCatalog.countryError'))
+      return
+    }
+    setSaving(true)
+    setError(null)
+    try {
+      await proposeCatalogRace(userId, {
+        name: event.name,
+        city,
+        country: iso,
+        raceDate: toIsoDay(event.date),
+        disciplines: [event.eventType],
+      })
+      setProposing(false)
+      setProposed(true)
+    } catch {
+      setError(t('identifyInCatalog.saveError'))
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const search = async (typed: string) => {
     const nameToken = searchToken(typed)
@@ -176,10 +215,57 @@ export function IdentifyInCatalog({
           {t('common.cancel')}
         </button>
         {/* The catalog holds five thousand races and not every race anybody has
-            run. Proposing a new entry is the other half of this and is not
-            built yet, so this says so rather than pretending. */}
-        <span className="text-xs text-muted">{t('identifyInCatalog.notThere')}</span>
+            run. A race no calendar publishes has no other way in. */}
+        {proposing ? null : (
+          <button
+            type="button"
+            onClick={() => setProposing(true)}
+            className="text-xs font-semibold text-primary hover:underline"
+          >
+            {t('identifyInCatalog.propose')}
+          </button>
+        )}
       </div>
+
+      {proposing ? (
+        <form
+          className="mt-3 space-y-3 border-t border-border pt-3"
+          onSubmit={(submit) => {
+            submit.preventDefault()
+            void propose()
+          }}
+        >
+          <p className="text-xs text-muted">{t('identifyInCatalog.proposeWhy')}</p>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="text-xs font-semibold text-foreground">
+              {t('identifyInCatalog.town')}
+              <input
+                value={city}
+                onChange={(change) => setCity(change.target.value)}
+                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </label>
+            <label className="text-xs font-semibold text-foreground">
+              {t('identifyInCatalog.country')}
+              <input
+                value={country}
+                onChange={(change) => setCountry(change.target.value)}
+                placeholder={t('identifyInCatalog.countryHint')}
+                className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            disabled={saving}
+            className="rounded-md bg-primary px-4 py-2 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-50"
+          >
+            {t('identifyInCatalog.proposeSubmit')}
+          </button>
+        </form>
+      ) : null}
+
+      {proposed ? <p className="mt-3 text-xs text-primary">{t('identifyInCatalog.proposed')}</p> : null}
     </section>
   )
 }

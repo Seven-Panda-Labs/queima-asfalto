@@ -1099,6 +1099,92 @@ describe('firestore.rules', () => {
     })
   })
 
+  describe('raceCatalogProposals', () => {
+    const proposal = {
+      name: 'Teltowkanal Halbmarathon',
+      city: 'Teltow',
+      country: 'DE',
+      raceDate: '2026-05-10',
+      disciplines: ['km_21_1'],
+      proposedAt: '2026-09-09',
+    }
+
+    it('takes a proposal from an approved runner', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .collection('raceCatalogProposals').add({ ...proposal, uid: 'user-alice' }),
+      )
+    })
+
+    it('refuses one filed under somebody else', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .collection('raceCatalogProposals').add({ ...proposal, uid: 'user-bob' }),
+      )
+    })
+
+    it('refuses a runner claiming their own proposal was applied', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      // The job's answer, and a runner who could write it could point their
+      // race at any entry, or mark a proposal as refused.
+      await assertFails(
+        db.collection('raceCatalogProposals')
+          .add({ ...proposal, uid: 'user-alice', catalogRaceId: 'de-berlin-berlin-marathon' }),
+      )
+      await assertFails(
+        db.collection('raceCatalogProposals')
+          .add({ ...proposal, uid: 'user-alice', refusedReason: 'not_enough' }),
+      )
+    })
+
+    it('refuses a proposal missing what the catalog needs', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+      const uid = 'user-alice'
+
+      await assertFails(db.collection('raceCatalogProposals').add({ ...proposal, uid, name: '' }))
+      await assertFails(db.collection('raceCatalogProposals').add({ ...proposal, uid, city: '' }))
+      // The catalog stores XX for a missing country and dedup compares it first.
+      await assertFails(
+        db.collection('raceCatalogProposals').add({ ...proposal, uid, country: 'Alemanha' }),
+      )
+      await assertFails(
+        db.collection('raceCatalogProposals').add({ ...proposal, uid, raceDate: '2026-05' }),
+      )
+    })
+
+    it('never lets a browser edit or delete one, its own included', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      await seedDocument('raceCatalogProposals/p1', { ...proposal, uid: 'user-alice' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      await assertFails(db.doc('raceCatalogProposals/p1').set({ ...proposal, uid: 'user-alice', name: 'Other' }))
+      await assertFails(db.doc('raceCatalogProposals/p1').delete())
+    })
+
+    it('lets a runner read their own and the admin read them all', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      await seedDocument('raceCatalogProposals/p1', { ...proposal, uid: 'user-alice' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore().doc('raceCatalogProposals/p1').get(),
+      )
+      await assertFails(
+        testEnv.authenticatedContext('user-bob').firestore().doc('raceCatalogProposals/p1').get(),
+      )
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-admin').firestore()
+          .collection('raceCatalogProposals').get(),
+      )
+    })
+  })
+
   describe('raceCatalogEditionReports', () => {
     const raceId = 'pt-lisboa-maratona-de-lisboa'
     const path = (uid: string, year = 2026) =>

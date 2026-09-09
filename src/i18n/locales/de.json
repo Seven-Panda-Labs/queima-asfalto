@@ -1433,8 +1433,15 @@
     "search": "Nach Namen suchen",
     "pick": "Dieses",
     "noneFound": "Nichts im Katalog mit diesem Wort. Versuche ein anderes Wort aus dem Namen, oder den Ort.",
-    "notThere": "Wenn es nicht im Katalog ist, gibt es noch keinen Weg, es hinzuzufügen.",
     "searchError": "Die Suche war nicht möglich.",
-    "saveError": "Das Verknüpfen war nicht möglich."
+    "saveError": "Das Verknüpfen war nicht möglich.",
+    "propose": "Nicht im Katalog. Dieses Rennen vorschlagen.",
+    "proposeWhy": "Es kommt ungeprüft in den Katalog, damit andere es finden. Es fehlen nur Ort und Land, die der Ortsname nicht trennt.",
+    "town": "Ort",
+    "country": "Land",
+    "countryHint": "Deutschland, Germany oder DE",
+    "countryError": "Dieses Land konnten wir nicht lesen. Schreibe den Namen oder die zwei Buchstaben.",
+    "proposeSubmit": "Dem Katalog vorschlagen",
+    "proposed": "Vorschlag gespeichert. Er kommt bei der nächsten Aktualisierung in den Katalog, oder wird mit dem Rennen verknüpft, das schon dort ist."
   }
 }

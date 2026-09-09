@@ -14,6 +14,10 @@ vi.mock('../../services/raceCatalog', () => ({
 vi.mock('../../services/raceIdentity', () => ({
   identifyRaceInCatalog: (...args: unknown[]) => identifyRaceInCatalog(...args),
 }))
+const proposeCatalogRace = vi.fn()
+vi.mock('../../services/catalogProposals', () => ({
+  proposeCatalogRace: (...args: unknown[]) => proposeCatalogRace(...args),
+}))
 
 const event = {
   id: 'event-1',
@@ -126,5 +130,55 @@ describe('IdentifyInCatalog', () => {
     fireEvent.click(await screen.findByRole('button', { name: 'É esta' }))
 
     expect(await screen.findByText('Não foi possível ligar.')).toBeInTheDocument()
+  })
+})
+
+describe('a race the catalog does not hold', () => {
+  async function openProposal() {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /Propor esta prova/ }))
+  }
+
+  it('asks only for what the event does not already say', async () => {
+    await openProposal()
+
+    // The town comes off the location, which is one free-text field: the event
+    // says "Brandenburger Tor, Berlim" and the catalog needs them apart.
+    expect(screen.getByLabelText('Terra')).toHaveValue('Brandenburger Tor')
+    expect(screen.getByLabelText('País')).toHaveValue('')
+  })
+
+  it('proposes the race with the day and distance the event already knows', async () => {
+    await openProposal()
+
+    fireEvent.change(screen.getByLabelText('Terra'), { target: { value: 'Berlin' } })
+    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'Alemanha' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Propor ao catálogo' }))
+
+    // The country is read the way the sources are read, so a name works.
+    await waitFor(() =>
+      expect(proposeCatalogRace).toHaveBeenCalledWith('u1', {
+        name: 'Generali Berliner Halbmarathon',
+        city: 'Berlin',
+        country: 'DE',
+        raceDate: '2026-04-06',
+        disciplines: ['km_21_1'],
+      }),
+    )
+    expect(await screen.findByText(/Proposta guardada/)).toBeInTheDocument()
+  })
+
+  it('refuses a country it cannot read, rather than filing XX', async () => {
+    await openProposal()
+
+    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'Freedonia' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Propor ao catálogo' }))
+
+    // The catalog stores XX for a missing country and dedup compares it first,
+    // so two XX races in a town called Porto would merge into one.
+    expect(await screen.findByText(/Não conseguimos ler esse país/)).toBeInTheDocument()
+    expect(proposeCatalogRace).not.toHaveBeenCalled()
   })
 })

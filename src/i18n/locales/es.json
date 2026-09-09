@@ -1433,8 +1433,15 @@
     "search": "Buscar por nombre",
     "pick": "Es esta",
     "noneFound": "Nada en el catálogo con esa palabra. Prueba otra palabra del nombre, o el pueblo.",
-    "notThere": "Si no está en el catálogo, todavía no hay forma de añadirla.",
     "searchError": "No se pudo buscar.",
-    "saveError": "No se pudo vincular."
+    "saveError": "No se pudo vincular.",
+    "propose": "No está en el catálogo. Proponer esta carrera.",
+    "proposeWhy": "Entra en el catálogo sin verificar, para que otros la encuentren. Solo falta el pueblo y el país, que el lugar no separa.",
+    "town": "Pueblo",
+    "country": "País",
+    "countryHint": "Alemania, Germany o DE",
+    "countryError": "No pudimos leer ese país. Escribe el nombre o las dos letras.",
+    "proposeSubmit": "Proponer al catálogo",
+    "proposed": "Propuesta guardada. Entra en el catálogo en la próxima actualización, o se vincula a la carrera que ya esté allí."
   }
 }

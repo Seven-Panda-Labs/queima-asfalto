@@ -642,6 +642,43 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    /**
+     * A race somebody ran that the catalog does not hold.
+     *
+     * The catalog is fed by nine sources and by an operator, so a race no
+     * calendar publishes has no way in however many people run it. A runner
+     * writes the proposal here and the scheduled job turns it into an entry,
+     * applying the same floor and the same duplicate rule the harvest does.
+     *
+     * `catalogRaceId` and `refusedReason` are the job's answer and are refused
+     * from a browser: a runner who could write them could claim their proposal
+     * was already applied, or mark somebody else's as refused.
+     */
+    match /raceCatalogProposals/{proposalId} {
+      allow read: if isSignedIn()
+        && (isAdmin(request.auth.uid) || resource.data.uid == request.auth.uid);
+      allow create: if isSignedIn()
+        && isApprovedUser(request.auth.uid)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.name is string
+        && request.resource.data.name.size() > 0
+        && request.resource.data.name.size() <= 200
+        && request.resource.data.city is string
+        && request.resource.data.city.size() > 0
+        && request.resource.data.country is string
+        && request.resource.data.country.size() == 2
+        && request.resource.data.raceDate is string
+        && request.resource.data.raceDate.size() == 10
+        && request.resource.data.disciplines is list
+        && request.resource.data.disciplines.size() <= 12
+        && request.resource.data.proposedAt is string
+        && !('catalogRaceId' in request.resource.data)
+        && !('refusedReason' in request.resource.data);
+      // Answered by the job, through the admin SDK, which these rules do not
+      // apply to. A browser never edits a proposal, its own included.
+      allow update, delete: if false;
+    }
+
     match /raceCatalogHarvest/{docId} {
       allow read: if isSignedIn();
       allow write: if false;
