@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Modifié
-
-- **Doublons dans le catalogue :** qui relit le catalogue peut désormais fusionner une paire dans les deux sens, en gardant le nom qu'il préfère. Avant, seul le nom suggéré était proposé.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Corrigé
-
-- **La même course deux fois :** le catalogue reconnaît maintenant une même ville écrite avec plus ou moins de détail (« Dessau » et « Dessau-Roßlau », « Freiburg » et « Freiburg im Breisgau »), le même mot dans une autre langue (« Maratona » et « Marathon »), et un événement sur plusieurs jours que chaque source date à sa façon. Il n'exige plus non plus que deux sources annoncent les mêmes distances pour que la course soit la même. Sur vingt-cinq paires en double trouvées à la main par un lecteur, vingt et une sont désormais détectées.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Ajouté
-
-- **Des courses en double :** quand deux lignes de la recherche sont une seule course écrite de deux façons, une question discrète apparaît en dessous. Ta réponse ne fusionne rien et ne supprime rien : elle fait remonter la paire dans la file de qui relit le catalogue.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Modifié
-
-- **Recherche par distance :** les courses dont le calendrier ne donne la distance que dans la description entrent enfin dans le filtre. Environ une sur dix gagne la sienne, et celles qui se mesurent en temps ou en tours n'en portent toujours aucune, plutôt qu'une fausse.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Ajouté
 
-- **Des courses près de toi :** la recherche gagne un rayon, de 10 à 250 km, mesuré depuis ta position ou depuis la ville que tu tapes. Les courses que la source n'a pas situées sur la carte sont comptées à part, au lieu de disparaître sans explication.
+- **Des courses près de toi :** la recherche gagne un rayon, de 10 à 250 km, mesuré depuis ta position ou depuis la ville que tu tapes.
+- **Des courses en double :** quand deux lignes de la recherche sont une seule course écrite de deux façons, tu peux nous le dire d'un geste.
+
+### Modifié
+
+- **Recherche par distance :** les courses dont le calendrier ne donne la distance que dans la description entrent enfin dans le filtre.
+
+### Corrigé
+
+- **La même course deux fois :** beaucoup moins de doublons dans la liste, quand les sources écrivent la ville, la date ou la langue autrement.
 
 ---
 

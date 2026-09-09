@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Alterado
-
-- **Duplicados no catálogo:** quem revê o catálogo passa a poder juntar o par nos dois sentidos, ficando com o nome que preferir. Antes só havia o sugerido.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Corrigido
-
-- **A mesma prova duas vezes:** o catálogo passa a reconhecer a mesma terra escrita com mais ou menos detalhe («Dessau» e «Dessau-Roßlau», «Freiburg» e «Freiburg im Breisgau»), a mesma palavra noutra língua («Maratona» e «Marathon»), e um evento de vários dias que cada fonte data à sua maneira. Também deixou de exigir que duas fontes anunciem as mesmas distâncias para a prova ser a mesma. De vinte e cinco pares repetidos que um leitor encontrou à mão, vinte e um passam a ser detectados.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Adicionado
-
-- **Provas repetidas:** quando duas linhas da busca são a mesma prova escrita de duas maneiras, aparece uma pergunta discreta debaixo delas. A tua resposta não junta nem apaga nada: põe o par à frente na fila de quem revê o catálogo.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Alterado
-
-- **Busca por distância:** as provas cujo calendário só diz a distância na descrição passam a entrar no filtro. Cerca de uma em dez ganha a sua, e as que se medem em tempo ou em voltas continuam sem nenhuma, em vez de ganharem uma errada.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Adicionado
 
-- **Provas perto de ti:** a busca ganha um raio, de 10 a 250 km, a contar da tua localização ou da terra que escreveres. As provas que a fonte não situou no mapa ficam contadas à parte, em vez de desaparecerem sem explicação.
+- **Provas perto de ti:** a busca de provas ganha um raio, de 10 a 250 km, a contar da tua localização ou da terra que escreveres.
+- **Provas repetidas:** quando duas linhas da busca são a mesma prova escrita de duas maneiras, podes dizer-nos com um toque.
+
+### Alterado
+
+- **Busca por distância:** as provas cujo calendário só diz a distância na descrição passam a entrar no filtro.
+
+### Corrigido
+
+- **A mesma prova duas vezes:** muito menos repetições na lista, quando as fontes escrevem a terra, a data ou a língua de outra maneira.
 
 ---
 

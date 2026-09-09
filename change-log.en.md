@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Changed
-
-- **Duplicates in the catalog:** whoever reviews the catalog can now merge a pair in either direction, keeping whichever name they prefer. Before, only the suggested one was on offer.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Fixed
-
-- **The same race listed twice:** the catalog now recognises one town written with more or less detail ("Dessau" and "Dessau-Rosslau", "Freiburg" and "Freiburg im Breisgau"), the same word in another language ("Maratona" and "Marathon"), and an event over several days that each source dates its own way. It also stopped asking two sources to announce the same distances before the race can be the same one. Of twenty five duplicate pairs a reader found by hand, twenty one are now caught.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Added
-
-- **Races listed twice:** when two rows in the search are one race written two ways, a quiet question appears under them. Your answer merges nothing and deletes nothing: it moves the pair up the queue of whoever reviews the catalog.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Changed
-
-- **Distance search:** races whose calendar only names the distance in the description now answer the filter. About one in ten gains its own, and the ones measured in time or in laps still carry none, rather than carrying a wrong one.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Added
 
-- **Races near you:** the search gains a radius, 10 to 250 km, measured from your location or from the town you type. Races the source never placed on the map are counted separately instead of vanishing without explanation.
+- **Races near you:** the race search gains a radius, 10 to 250 km, measured from your location or from a town you type.
+- **Races listed twice:** when two rows in the search are one race written two ways, you can tell us with one tap.
+
+### Changed
+
+- **Distance search:** races whose calendar only names the distance in a description now answer the filter.
+
+### Fixed
+
+- **The same race listed twice:** far fewer repeats in the list, where sources write the town, the date or the language differently.
 
 ---
 

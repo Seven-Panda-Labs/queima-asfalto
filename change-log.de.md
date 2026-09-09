@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Geändert
-
-- **Doppelte Einträge im Katalog:** wer den Katalog prüft, kann ein Paar nun in beide Richtungen zusammenführen und den Namen behalten, den er bevorzugt. Vorher gab es nur den vorgeschlagenen.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Behoben
-
-- **Dasselbe Rennen zweimal:** der Katalog erkennt jetzt denselben Ort in mehr oder weniger Detail („Dessau“ und „Dessau-Roßlau“, „Freiburg“ und „Freiburg im Breisgau“), dasselbe Wort in einer anderen Sprache („Maratona“ und „Marathon“) und eine Veranstaltung über mehrere Tage, die jede Quelle anders datiert. Er verlangt auch nicht mehr, dass zwei Quellen dieselben Distanzen nennen, damit es dasselbe Rennen ist. Von fünfundzwanzig doppelten Paaren, die ein Leser von Hand fand, werden nun einundzwanzig erkannt.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Hinzugefügt
-
-- **Doppelt gelistete Rennen:** wenn zwei Zeilen der Suche dasselbe Rennen in zwei Schreibweisen sind, erscheint darunter eine leise Frage. Deine Antwort führt nichts zusammen und löscht nichts: sie zieht das Paar in der Warteschlange derer nach vorn, die den Katalog prüfen.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Geändert
-
-- **Suche nach Distanz:** Rennen, deren Kalender die Distanz nur in der Beschreibung nennt, antworten jetzt auf den Filter. Etwa eines von zehn bekommt seine, und die nach Zeit oder in Runden gemessenen behalten weiter keine, statt eine falsche zu bekommen.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Hinzugefügt
 
-- **Rennen in deiner Nähe:** die Suche bekommt einen Radius, 10 bis 250 km, gemessen von deinem Standort oder von dem Ort, den du eintippst. Rennen, die die Quelle nicht verortet hat, werden getrennt gezählt, statt ohne Erklärung zu verschwinden.
+- **Rennen in deiner Nähe:** die Rennsuche bekommt einen Radius, 10 bis 250 km, gemessen von deinem Standort oder von dem Ort, den du eintippst.
+- **Doppelt gelistete Rennen:** wenn zwei Zeilen der Suche dasselbe Rennen in zwei Schreibweisen sind, kannst du es uns mit einem Tipp sagen.
+
+### Geändert
+
+- **Suche nach Distanz:** Rennen, deren Kalender die Distanz nur in der Beschreibung nennt, antworten jetzt auf den Filter.
+
+### Behoben
+
+- **Dasselbe Rennen zweimal:** deutlich weniger Wiederholungen in der Liste, wenn Quellen den Ort, das Datum oder die Sprache anders schreiben.
 
 ---
 

@@ -4,43 +4,20 @@
 
 ---
 
-## [1.44.0] - 2026-09-09
-
-### Cambiado
-
-- **Duplicados en el catálogo:** quien revisa el catálogo ya puede unir el par en los dos sentidos, quedándose con el nombre que prefiera. Antes solo estaba el sugerido.
-
----
-
-## [1.43.0] - 2026-09-09
-
-### Corregido
-
-- **La misma carrera dos veces:** el catálogo reconoce ahora el mismo pueblo escrito con más o menos detalle («Dessau» y «Dessau-Roßlau», «Freiburg» y «Freiburg im Breisgau»), la misma palabra en otro idioma («Maratona» y «Marathon»), y un evento de varios días que cada fuente fecha a su manera. También dejó de exigir que dos fuentes anuncien las mismas distancias para que la carrera sea la misma. De veinticinco pares repetidos que un lector encontró a mano, veintiuno se detectan ya.
-
----
-
-## [1.42.0] - 2026-09-09
-
-### Añadido
-
-- **Carreras repetidas:** cuando dos filas de la búsqueda son la misma carrera escrita de dos formas, aparece una pregunta discreta debajo. Tu respuesta no une ni borra nada: adelanta el par en la cola de quien revisa el catálogo.
-
----
-
-## [1.41.0] - 2026-09-09
-
-### Cambiado
-
-- **Búsqueda por distancia:** las carreras cuyo calendario solo dice la distancia en la descripción ya entran en el filtro. Cerca de una de cada diez gana la suya, y las que se miden en tiempo o en vueltas siguen sin ninguna, en vez de ganar una equivocada.
-
----
-
 ## [1.40.0] - 2026-09-09
 
 ### Añadido
 
-- **Carreras cerca de ti:** la búsqueda gana un radio, de 10 a 250 km, contando desde tu ubicación o desde el pueblo que escribas. Las carreras que la fuente no situó en el mapa se cuentan aparte, en vez de desaparecer sin explicación.
+- **Carreras cerca de ti:** la búsqueda gana un radio, de 10 a 250 km, contando desde tu ubicación o desde el pueblo que escribas.
+- **Carreras repetidas:** cuando dos filas de la búsqueda son la misma carrera escrita de dos formas, puedes decírnoslo con un toque.
+
+### Cambiado
+
+- **Búsqueda por distancia:** las carreras cuyo calendario solo dice la distancia en la descripción ya entran en el filtro.
+
+### Corregido
+
+- **La misma carrera dos veces:** muchas menos repeticiones en la lista, cuando las fuentes escriben el pueblo, la fecha o el idioma de otra manera.
 
 ---
 
