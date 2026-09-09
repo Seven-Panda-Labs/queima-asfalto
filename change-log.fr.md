@@ -10,7 +10,7 @@
 
 - **Doublons dans le catalogue :** chaque course de la file de relecture porte maintenant un lien vers sa source, pour distinguer les deux sur les pages d'où elles viennent.
 - **L'inscription arrive déjà remplie :** planifier une course que le catalogue connaît amène ses dates, ses échéances et son tarif déjà dans le formulaire, avec la source en clair. Tant que personne n'a vérifié la fiche, ils restent une suggestion et la date ne compte pas comme confirmée.
-- **Ton résultat officiel améliore le catalogue :** quand tu importes un résultat vérifié, le jour où la course a réellement eu lieu corrige la date qu'avait le catalogue, pour tout le monde. Seul le jour voyage, jamais son auteur, et cela ne déclenche toujours aucun rappel : pour ça, il faut que quelqu'un ait vérifié la course.
+- **Ton résultat officiel améliore le catalogue :** en important un résultat vérifié, tu dis au catalogue quel jour la course a eu lieu. Une année qu'il n'avait pas entre tout de suite ; corriger une date qu'il avait déjà demande deux coureurs d'accord. Seul le jour voyage, jamais son auteur, et cela ne déclenche toujours aucun rappel.
 
 ---
 

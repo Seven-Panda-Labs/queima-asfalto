@@ -48,14 +48,14 @@ Isto só serve provas que acontecem uma vez por ano, e é assumido. **Um evento 
 
 A qualidade dos dados partilhados pode subir com o que os corredores já sabem, e a fronteira é entre o passado e o futuro:
 
-- **O passado confirma-se.** Um evento `completed` com `resultsVerified` é uma testemunha de outra qualidade: o `resultsVerified` só vem da importação oficial, portanto se a página oficial lista o corredor a terminar naquele dia, a data daquela edição não é um palpite. A data e o link dos resultados são factos sobre a prova e podem entrar sozinhos.
+- **O passado confirma-se, mas só até onde a prova alcança.** Um evento `completed` com `resultsVerified` é uma testemunha de outra qualidade, porque o `resultsVerified` só vem da importação oficial. Mas prova menos do que parece: os conectores escolhem a edição **pelo ano** e nenhum candidato traz dia nenhum. Portanto um resultado verificado prova que aquele corredor correu aquela prova naquele ano, e não prova o dia. O dia vem do evento, que desde o preenchimento automático pode ser o próprio palpite do catálogo a voltar. Daí a política: um ano que o catálogo não tinha entra com um corredor e fica sem marca; um dia que discorda do catálogo precisa de dois corredores a concordar; e um dia que concorda não escreve nada, porque concordância não é informação e marcá-la transformaria um palpite em facto.
 - **O futuro pergunta-se.** O preço e os prazos de inscrição vão para a fila de revisão. São o que dispara lembretes, e um prazo errado está errado em silêncio: é exactamente o que a regra da revisão protege, e o `canAssertDates()` não muda.
 
 O que nunca sai da conta: o tempo, o ritmo, a classificação, as notas, a media, o traçado, e se o corredor entrou ou não.
 
 Uma contribuição segue a forma dos votos de duplicados: colecção própria, um documento por (prova, ano, utilizador) para que uma pessoa seja uma voz, e o que chega à edição partilhada são valores e contagens, nunca a identidade de quem contribuiu.
 
-Do que está acima, o **dia** já está construído. Quando um resultado volta verificado da importação oficial, o cliente escreve o relatório em `raceCatalogEditionReports`, e a colheita diária dobra-o na edição: corrige o dia que a listagem tinha errado, marca-o com `runnerConfirmedAt`, e acrescenta uma edição para um ano que o catálogo nunca teve, que é como ele ganha história. A colheita seguinte dessa fonte mantém essa data em vez de a substituir pela da listagem.
+Do que está acima, o **dia** já está construído. Quando um resultado volta verificado, o cliente escreve o relatório em `raceCatalogEditionReports`, e a colheita diária aplica a política acima: um relatório é uma observação, e a decisão de o aceitar vive no `applyEditionReports`. Um dia corroborado por dois corredores fica marcado com `runnerConfirmedAt`, e a colheita seguinte dessa fonte mantém-no em vez de o substituir pelo da listagem.
 
 O que **não** está construído: o preço e os prazos, que vão precisar de fila de revisão, e o link dos resultados, que não tem hoje campo na edição nem sítio onde apareça. Ver [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
@@ -137,14 +137,14 @@ This only serves races that happen once a year, and that is assumed. **A recurri
 
 The quality of the shared data can rise on what runners already know, and the boundary runs between the past and the future:
 
-- **The past confirms itself.** A `completed` event with `resultsVerified` is a witness of a different order: `resultsVerified` only ever comes from the official import, so if the official page lists the runner finishing that day, the date of that edition is not a guess. The date and the results link are facts about the race and can land on their own.
+- **The past confirms itself, but only as far as the evidence reaches.** A `completed` event with `resultsVerified` is a witness of a different order, because `resultsVerified` only ever comes from the official import. It proves less than it looks like, though: the connectors pick the edition **by year** and no candidate carries a day at all. So a verified result proves that this runner ran this race that year, and proves nothing about the day. The day comes from the event, which since the prefill may be the catalog's own guess coming back around. Hence the policy: a year the catalog did not have goes in on one runner and stays unmarked; a day that disagrees with the catalog needs two runners agreeing; and a day that agrees writes nothing, because agreement is not information and marking it would turn a guess into a fact.
 - **The future gets asked.** The fee and the entry gates go to the review queue. They are what fires reminders, and a wrong deadline is wrong in silence: that is exactly what the review rule protects, and `canAssertDates()` does not change.
 
 What never leaves the account: the time, the pace, the classification, the notes, the media, the track, and whether the runner got in.
 
 A contribution follows the shape of the duplicate votes: a collection of its own, one document per (race, year, user) so one person is one voice, and what reaches the shared edition is values and counts, never the identity of whoever contributed.
 
-Of the above, the **day** is built. When a result comes back verified from the official import, the client writes a report to `raceCatalogEditionReports`, and the daily harvest folds it into the edition: it corrects a day the listing had wrong, marks it with `runnerConfirmedAt`, and adds an edition for a year the catalog never had, which is how it gains a history. The next harvest of that source keeps that date instead of replacing it with the listing's.
+Of the above, the **day** is built. When a result comes back verified, the client writes a report to `raceCatalogEditionReports`, and the daily harvest applies the policy above: a report is an observation, and the decision to accept it lives in `applyEditionReports`. A day two runners corroborate is marked with `runnerConfirmedAt`, and the next harvest of that source keeps it instead of replacing it with the listing's.
 
 What is **not** built: the fee and the gates, which will need the review queue, and the results link, which has neither a field on the edition nor anywhere to appear. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 

@@ -4,15 +4,31 @@ import type { RaceCatalogEdition, RaceCatalogEntry } from './types.js'
 /**
  * A runner saying which day they ran an edition.
  *
- * The catalog's dates are read off listings, and the runners who were there
- * know better. What makes this worth trusting without a person in the loop is
- * where it comes from: an event with `resultsVerified`, which only ever comes
- * from the official results import. If the organiser's own results page lists
- * somebody finishing that day, the date is a fact.
+ * A report is an observation and this file is the policy, which matters
+ * because a verified result proves less than it looks like it does. The
+ * official import finds the runner's name and time on the results page for an
+ * edition, and the connectors pick that edition **by year**: nothing in a
+ * candidate carries a day. So a verified result is evidence that this runner
+ * ran this race that year, and no evidence at all about the day.
  *
- * The boundary is the past. A day already run can be confirmed like this; when
- * entries open or close cannot, because that is what fires reminders and a
- * wrong deadline is wrong in silence. Those go to a person.
+ * The day in the report comes from the event, and since the entry form began
+ * prefilling from the catalog, that day may be the catalog's own scrape coming
+ * back around. Marking it confirmed would launder a guess into a fact, and
+ * then defend it against the listing correcting itself.
+ *
+ * Hence three cases, and only the middle one is generous:
+ *
+ * 1. **A year the catalog never had.** Taken, because the alternative is no
+ *    date at all, and left unmarked so a source that publishes one later wins.
+ * 2. **A day that disagrees with the catalog, from two runners or more.** Taken
+ *    and marked, because two people who were there and did not get the day
+ *    from us is the strongest thing available.
+ * 3. **A day that agrees, or one runner disagreeing.** Nothing. Agreement adds
+ *    no information, and one runner against a published listing is one voice.
+ *
+ * The boundary is still the past: when entries open or close never comes from
+ * here, because that is what fires reminders and a wrong deadline is wrong in
+ * silence.
  *
  * One document per race, year and runner, so one person is one voice, and what
  * lands on the shared edition is the date and nothing about who sent it.
@@ -38,45 +54,80 @@ export function editionReportId(catalogRaceId: string, year: number, uid: string
 export const RUNNER_SOURCE = 'runners'
 
 /**
- * The entry with what the runners reported folded in, or null if it already
- * said the same thing.
+ * How many runners have to agree on a day the catalog disagrees with.
+ *
+ * One is not enough against a published listing: the runner's own event may
+ * have taken its date from that very listing, and a typo would otherwise be
+ * defended against the source correcting itself.
+ */
+const CORROBORATION = 2
+
+/** Reported days for one year, and how many different runners said each. */
+function votesByDay(reports: readonly EditionReport[], id: string) {
+  const years = new Map<number, Map<string, Set<string>>>()
+  for (const report of reports) {
+    if (report.catalogRaceId !== id || !report.raceDate) continue
+    const days = years.get(report.year) ?? new Map<string, Set<string>>()
+    const voters = days.get(report.raceDate) ?? new Set<string>()
+    voters.add(report.uid)
+    days.set(report.raceDate, voters)
+    years.set(report.year, days)
+  }
+  return years
+}
+
+/**
+ * The entry with what the runners reported folded in, or null when there is
+ * nothing to write.
  *
  * Null rather than an unchanged copy so the caller can skip the write: this
  * runs over every race that has a report, every day, and most of them will
  * already be right.
  *
- * Two runners can disagree when an event runs over a weekend, and the earliest
- * day wins, which is how the harvest already reads a date range.
+ * Where several days are reported for one year, the earliest wins, which is
+ * how the harvest already reads a date range: an event over a weekend starts
+ * on the first day.
  */
 export function applyEditionReports(
   entry: RaceCatalogEntry,
   reports: readonly EditionReport[],
   today: string,
 ): RaceCatalogEntry | null {
-  const byYear = new Map<number, string>()
-  for (const report of reports) {
-    if (report.catalogRaceId !== entry.id) continue
-    const known = byYear.get(report.year)
-    if (!known || report.raceDate < known) byYear.set(report.year, report.raceDate)
-  }
-  if (byYear.size === 0) return null
+  const years = votesByDay(reports, entry.id)
+  if (years.size === 0) return null
 
   const editions = [...(entry.editions ?? [])]
   let changed = false
 
-  for (const [year, raceDate] of byYear) {
+  for (const [year, days] of years) {
     const at = editions.findIndex((edition) => edition.year === year)
+    const reported = [...days.keys()].sort()
+
     if (at < 0) {
-      // A year the catalog never had. Runners are how it gains a history: the
-      // harvest only ever writes the edition that is still ahead.
-      editions.push({ year, raceDate, source: RUNNER_SOURCE, confirmedAt: today, runnerConfirmedAt: today })
+      // A year the catalog never had, and the harvest never will: it only ever
+      // writes the edition still ahead. One runner is enough, because the
+      // alternative is no date, and it stays unmarked so that a source
+      // publishing this year later is free to overwrite it.
+      editions.push({
+        year,
+        raceDate: reported[0]!,
+        source: RUNNER_SOURCE,
+        confirmedAt: today,
+      })
       changed = true
       continue
     }
 
     const edition = editions[at]!
-    if (edition.raceDate === raceDate && edition.runnerConfirmedAt) continue
-    editions[at] = { ...edition, raceDate, runnerConfirmedAt: today }
+    // Agreement is not news, and marking it would only launder the listing's
+    // own date into something that then outlives the listing.
+    const disagreeing = reported.filter((day) => day !== edition.raceDate)
+    const corroborated = disagreeing.find(
+      (day) => (days.get(day)?.size ?? 0) >= CORROBORATION,
+    )
+    if (!corroborated || edition.raceDate === corroborated) continue
+
+    editions[at] = { ...edition, raceDate: corroborated, runnerConfirmedAt: today }
     changed = true
   }
 

@@ -56,10 +56,10 @@ describe('editionReportId', () => {
 })
 
 describe('applyEditionReports', () => {
-  it('corrects the day the listing got wrong', () => {
+  it('takes a day two runners agree on against the listing', () => {
     const updated = applyEditionReports(
       entry({ editions: [listing] }),
-      [report({ raceDate: '2026-10-11' })],
+      [report({ uid: 'u1', raceDate: '2026-10-11' }), report({ uid: 'u2', raceDate: '2026-10-11' })],
       TODAY,
     )
 
@@ -72,9 +72,48 @@ describe('applyEditionReports', () => {
     })
   })
 
-  it('gives the catalog a year it never had', () => {
+  it('does not take one runner s word against a published listing', () => {
+    // A verified result proves this runner ran that year, and says nothing
+    // about the day: the connectors pick the edition by year. The day in the
+    // report came from their event, which may have been prefilled from this
+    // very entry.
+    expect(
+      applyEditionReports(
+        entry({ editions: [listing] }),
+        [report({ uid: 'u1', raceDate: '2026-10-11' })],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('counts runners and not reports', () => {
+    // One person cannot corroborate themselves by reporting twice, which the
+    // document id already prevents, and this does not depend on that.
+    expect(
+      applyEditionReports(
+        entry({ editions: [listing] }),
+        [report({ uid: 'u1', raceDate: '2026-10-11' }), report({ uid: 'u1', raceDate: '2026-10-11' })],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('writes nothing when the runners agree with the catalog', () => {
+    // Marking it confirmed would launder the listing's own date into something
+    // that then outlives the listing correcting itself.
+    expect(
+      applyEditionReports(
+        entry({ editions: [listing] }),
+        [report({ uid: 'u1', raceDate: '2026-10-10' }), report({ uid: 'u2', raceDate: '2026-10-10' })],
+        TODAY,
+      ),
+    ).toBeNull()
+  })
+
+  it('gives the catalog a year it never had, on one runner s word', () => {
     // The harvest only ever writes the edition still ahead, so a runner is the
-    // only way the catalog learns about the ones already run.
+    // only way the catalog learns about the ones already run, and no listing
+    // is being contradicted.
     const updated = applyEditionReports(
       entry({ editions: [listing] }),
       [report({ year: 2024, raceDate: '2024-10-13' })],
@@ -89,10 +128,22 @@ describe('applyEditionReports', () => {
     })
   })
 
+  it('leaves a year it filled in open to the source publishing one', () => {
+    const updated = applyEditionReports(
+      entry({ editions: [] }),
+      [report({ year: 2024, raceDate: '2024-10-13' })],
+      TODAY,
+    )
+
+    // Unmarked, so `keepRunnerDate` does not defend it: nothing was
+    // contradicted, so nothing needs protecting.
+    expect(updated?.editions?.[0]?.runnerConfirmedAt).toBeUndefined()
+  })
+
   it('keeps nextRaceDate true to the editions it just changed', () => {
     const updated = applyEditionReports(
       entry({ editions: [listing], nextRaceDate: '2026-10-10' }),
-      [report({ raceDate: '2026-10-11' })],
+      [report({ uid: 'u1', raceDate: '2026-10-11' }), report({ uid: 'u2', raceDate: '2026-10-11' })],
       TODAY,
     )
 
@@ -102,28 +153,16 @@ describe('applyEditionReports', () => {
   it('takes the earliest day when an event runs over a weekend', () => {
     const updated = applyEditionReports(
       entry({ editions: [listing] }),
-      [report({ uid: 'u1', raceDate: '2026-10-11' }), report({ uid: 'u2', raceDate: '2026-10-10' })],
+      [
+        report({ uid: 'u1', raceDate: '2026-10-12' }),
+        report({ uid: 'u2', raceDate: '2026-10-12' }),
+        report({ uid: 'u3', raceDate: '2026-10-11' }),
+        report({ uid: 'u4', raceDate: '2026-10-11' }),
+      ],
       TODAY,
     )
 
-    expect(updated?.editions?.[0]?.raceDate).toBe('2026-10-10')
-  })
-
-  it('has nothing to write when the catalog already says so', () => {
-    const confirmed = { ...listing, runnerConfirmedAt: '2026-09-01' }
-    expect(
-      applyEditionReports(entry({ editions: [confirmed] }), [report({ raceDate: '2026-10-10' })], TODAY),
-    ).toBeNull()
-  })
-
-  it('confirms a date the listing had right, so the next harvest keeps it', () => {
-    const updated = applyEditionReports(
-      entry({ editions: [listing] }),
-      [report({ raceDate: '2026-10-10' })],
-      TODAY,
-    )
-
-    expect(updated?.editions?.[0]?.runnerConfirmedAt).toBe(TODAY)
+    expect(updated?.editions?.[0]?.raceDate).toBe('2026-10-11')
   })
 
   it('ignores a report about another race', () => {
@@ -139,11 +178,11 @@ describe('applyEditionReports', () => {
   it('never promotes the entry to reviewed', () => {
     const updated = applyEditionReports(
       entry({ editions: [listing] }),
-      [report({ raceDate: '2026-10-11' })],
+      [report({ uid: 'u1', raceDate: '2026-10-11' }), report({ uid: 'u2', raceDate: '2026-10-11' })],
       TODAY,
     )
 
-    // A runner knows the day they ran. They cannot vouch for a deadline that
+    // Two runners know the day they ran. They cannot vouch for a deadline that
     // has not happened, and `canAssertDates` is what reads this.
     expect(updated?.review).toBe('unreviewed')
   })
