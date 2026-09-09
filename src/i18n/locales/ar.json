@@ -1301,7 +1301,9 @@
     },
     "registeredNeedsDate": "للتسجيل، حدّد تاريخ السباق: سيذهب إلى التقويم.",
     "registeredNeedsDiscipline": "حدّد المسافة التي ستركضها.",
-    "savedWithEvent": "تم حفظ التسجيل، والسباق في التقويم."
+    "savedWithEvent": "تم حفظ التسجيل، والسباق في التقويم.",
+    "prefilled": "مُعبّأ من الفهرس، بما ينشره {{source}}. تحقّق قبل أن تعتمد على هذه المواعيد.",
+    "prefilledReviewed": "مُعبّأ من الفهرس، ومُتحقَّق منه على {{source}}."
   },
   "season": {
     "tuneUpWindow": "اختبار بنحو {{distance}} كم بين {{from}} و{{to}}",

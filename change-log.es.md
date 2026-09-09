@@ -9,6 +9,7 @@
 ### Añadido
 
 - **Duplicados en el catálogo:** cada carrera de la cola de revisión lleva ahora el enlace a su fuente, para distinguir las dos en las páginas de origen.
+- **La inscripción ya viene rellenada:** al planificar una carrera que el catálogo conoce, las fechas, los plazos y el precio aparecen rellenados, con la fuente a la vista. Mientras nadie haya verificado la entrada, quedan como sugerencia y la fecha no cuenta como confirmada.
 
 ---
 

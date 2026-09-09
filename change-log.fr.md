@@ -9,6 +9,7 @@
 ### Ajouté
 
 - **Doublons dans le catalogue :** chaque course de la file de relecture porte maintenant un lien vers sa source, pour distinguer les deux sur les pages d'où elles viennent.
+- **L'inscription arrive déjà remplie :** planifier une course que le catalogue connaît amène ses dates, ses échéances et son tarif déjà dans le formulaire, avec la source en clair. Tant que personne n'a vérifié la fiche, ils restent une suggestion et la date ne compte pas comme confirmée.
 
 ---
 

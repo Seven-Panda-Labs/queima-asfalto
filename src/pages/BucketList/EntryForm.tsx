@@ -6,9 +6,13 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { useRaces } from '../../hooks/useRaces'
 import { formatEventTypeLabel } from '../../i18n/formatters'
+import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { createEvent } from '../../services/events'
+import { loadCatalogRace } from '../../services/raceCatalog'
 import { findOrCreateRaceId } from '../../services/races'
+import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import type { EventType } from '../../types/Event'
 import {
   ENTRY_METHODS,
@@ -49,21 +53,38 @@ type FormState = {
   notes: string
 }
 
-function toFormState(entry: RaceEntry | null): FormState {
+/**
+ * @param offer what the catalog knows, and only ever for a new attempt.
+ *
+ * The call site passes nothing for an entry that already exists: a field the
+ * runner cleared on purpose is an answer, and a suggestion has no business
+ * overwriting it a week later.
+ */
+function toFormState(entry: RaceEntry | null, offer: EntryPrefill | null = null): FormState {
   return {
-    year: String(entry?.year ?? new Date().getFullYear() + 1),
+    year: String(entry?.year ?? offer?.year ?? new Date().getFullYear() + 1),
     discipline: entry?.discipline ?? '',
-    entryMethod: entry?.entryMethod ?? 'unknown',
+    entryMethod: entry?.entryMethod ?? offer?.entryMethod ?? 'unknown',
     entryStatus: entry?.entryStatus ?? 'watching',
-    raceDate: toInputDate(entry?.raceDate),
-    raceDateConfirmed: entry?.raceDateConfirmed ?? false,
-    registrationOpensAt: toInputDate(entry?.registrationOpensAt),
-    registrationClosesAt: toInputDate(entry?.registrationClosesAt),
-    lotteryDrawAt: toInputDate(entry?.lotteryDrawAt),
+    raceDate: toInputDate(entry?.raceDate) || (offer?.raceDate ?? ''),
+    // A date read off a listing nobody checked is a suggestion, never a settled
+    // date. Only a reviewed entry may say it is confirmed.
+    raceDateConfirmed:
+      entry?.raceDateConfirmed ?? Boolean(offer?.raceDate && offer.assertable),
+    registrationOpensAt:
+      toInputDate(entry?.registrationOpensAt) || (offer?.registrationOpensAt ?? ''),
+    registrationClosesAt:
+      toInputDate(entry?.registrationClosesAt) || (offer?.registrationClosesAt ?? ''),
+    lotteryDrawAt: toInputDate(entry?.lotteryDrawAt) || (offer?.lotteryDrawAt ?? ''),
     placeConfirmByAt: toInputDate(entry?.placeConfirmByAt),
-    registrationUrl: entry?.registrationUrl ?? '',
-    fee: entry?.fee !== undefined ? String(entry.fee) : '',
-    feeCurrency: entry?.feeCurrency ?? '',
+    registrationUrl: entry?.registrationUrl ?? offer?.registrationUrl ?? '',
+    fee:
+      entry?.fee !== undefined
+        ? String(entry.fee)
+        : offer?.fee !== undefined
+          ? String(offer.fee)
+          : '',
+    feeCurrency: entry?.feeCurrency ?? offer?.feeCurrency ?? '',
     notes: entry?.notes ?? '',
   }
 }
@@ -103,12 +124,42 @@ export function EntryForm() {
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
 
+  /** The shared entry this race is, when it is one the catalog covers. */
+  const { races } = useRaces()
+  const catalogRaceId = races.find((race) => race.id === item?.raceId)?.catalogRaceId
+  const [catalogRace, setCatalogRace] = useState<RaceCatalogEntry | null>(null)
+  const [catalogSettled, setCatalogSettled] = useState(false)
+
   useEffect(() => {
-    if (hydrated || itemsLoading || entriesLoading) return
-    setForm(toFormState(existing))
+    if (itemsLoading) return
+    if (!catalogRaceId) {
+      setCatalogSettled(true)
+      return
+    }
+    void loadCatalogRace(catalogRaceId).then((entry) => {
+      setCatalogRace(entry)
+      setCatalogSettled(true)
+    })
+  }, [catalogRaceId, itemsLoading])
+
+  /**
+   * What the catalog can fill in, for a year with no attempt recorded yet.
+   *
+   * Nothing for an attempt that exists: this is the form opening, not a sync.
+   */
+  const offer = useMemo(
+    () => (existing ? null : prefillFromCatalog(catalogRace)),
+    [catalogRace, existing],
+  )
+
+  useEffect(() => {
+    // The catalog has to have settled first, or the form hydrates empty and the
+    // suggestion arrives too late to be in it.
+    if (hydrated || itemsLoading || entriesLoading || !catalogSettled) return
+    setForm(toFormState(existing, offer))
     setYear(existing?.year ?? null)
     setHydrated(true)
-  }, [hydrated, itemsLoading, entriesLoading, existing])
+  }, [hydrated, itemsLoading, entriesLoading, existing, offer, catalogSettled])
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -166,6 +217,9 @@ export function EntryForm() {
         raceDate,
         raceDateConfirmed: form.raceDateConfirmed,
         registrationOpensAt: opens,
+        // The zone belongs to the opening time: a reminder has to print the
+        // hour the organiser meant, not the runner's.
+        ...(opens && offer?.timezone ? { registrationOpensTimezone: offer.timezone } : {}),
         registrationClosesAt: closes,
         lotteryDrawAt: fromInputDate(form.lotteryDrawAt),
         placeConfirmByAt: fromInputDate(form.placeConfirmByAt),
@@ -236,6 +290,17 @@ export function EntryForm() {
   return (
     <PageShell title={item.name}>
       <p className="mt-2 text-sm text-muted">{t('entry.subtitle')}</p>
+
+      {/* An unreviewed entry may fill a field the runner can see and correct,
+          and may never assert. Saying where the values came from is what makes
+          the difference visible. */}
+      {offer && !existing ? (
+        <p className="mt-3 rounded-md border border-border bg-surface px-4 py-2 text-xs text-muted">
+          {t(offer.assertable ? 'entry.prefilledReviewed' : 'entry.prefilled', {
+            source: offer.source.split(',')[0]?.trim() ?? offer.source,
+          })}
+        </p>
+      ) : null}
 
       <form onSubmit={(event) => void handleSubmit(event)} className="mt-6 space-y-6">
         <section className="rounded-lg border border-border bg-surface p-6">

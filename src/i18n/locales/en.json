@@ -1289,7 +1289,9 @@
     },
     "registeredNeedsDate": "To be registered, give the race date: it goes on the calendar.",
     "registeredNeedsDiscipline": "Say which distance you are running.",
-    "savedWithEvent": "Entry saved, and the race is on the calendar."
+    "savedWithEvent": "Entry saved, and the race is on the calendar.",
+    "prefilled": "Filled in from the catalog, from what {{source}} publishes. Check it before you count on these dates.",
+    "prefilledReviewed": "Filled in from the catalog, checked against {{source}}."
   },
   "season": {
     "tuneUpWindow": "tune-up of ~{{distance}} km between {{from}} and {{to}}",

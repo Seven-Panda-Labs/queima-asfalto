@@ -1289,7 +1289,9 @@
     },
     "registeredNeedsDate": "Für eine Anmeldung braucht es den Renntag: er geht in den Kalender.",
     "registeredNeedsDiscipline": "Sag, welche Distanz du läufst.",
-    "savedWithEvent": "Anmeldung gespeichert, und das Rennen steht im Kalender."
+    "savedWithEvent": "Anmeldung gespeichert, und das Rennen steht im Kalender.",
+    "prefilled": "Aus dem Katalog ausgefüllt, mit dem, was {{source}} veröffentlicht. Prüfe es, bevor du auf diese Termine baust.",
+    "prefilledReviewed": "Aus dem Katalog ausgefüllt, gegen {{source}} geprüft."
   },
   "season": {
     "tuneUpWindow": "Test über ~{{distance}} km zwischen {{from}} und {{to}}",

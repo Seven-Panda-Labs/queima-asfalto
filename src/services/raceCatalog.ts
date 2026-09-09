@@ -72,6 +72,25 @@ export async function searchRaceCatalog(
 const OVERFETCH = 20
 
 /**
+ * One entry, by the id a race points at.
+ *
+ * For the planner: a runner filling in an entry should not retype dates the
+ * catalog already holds. Read by id rather than through the search, because
+ * `races.catalogRaceId` is exactly this id and the search cannot find a race
+ * whose next edition has already passed.
+ */
+export async function loadCatalogRace(id: string): Promise<RaceCatalogEntry | null> {
+  try {
+    const snapshot = await getDoc(doc(db, RACE_CATALOG_COLLECTION, id))
+    return snapshot.exists() ? (snapshot.data() as RaceCatalogEntry) : null
+  } catch {
+    // An instance with no catalog, or a denied read. The form opens empty,
+    // which is what it did before this existed.
+    return null
+  }
+}
+
+/**
  * When the harvest last ran, or `null` on an instance that never harvests.
  *
  * The page shows it rather than implying live data: a catalog refreshed weekly
