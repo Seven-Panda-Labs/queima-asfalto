@@ -45,6 +45,16 @@ export function GoalForm() {
   const [form, setForm] = useState<FormState>(emptyForm)
   const [loadingGoal, setLoadingGoal] = useState(isEditing)
   const [submitting, setSubmitting] = useState(false)
+  /**
+   * The message as a key, translated when it is rendered.
+   *
+   * The effect below loads a document once, and closing over the translator
+   * made it a dependency: re-running on a language change would refetch and
+   * throw away whatever was being edited. A key has no identity to depend on,
+   * and the message now follows a language switch instead of staying in the
+   * one it was written in. A raw message from a thrown error passes through,
+   * because i18next renders a missing key as itself.
+   */
   const [error, setError] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
@@ -90,7 +100,7 @@ export function GoalForm() {
         const goal = await getGoal(id!)
         if (cancelled) return
         if (!goal) {
-          setError(t('errors.goalNotFound'))
+          setError('errors.goalNotFound')
           return
         }
         setForm({
@@ -101,7 +111,7 @@ export function GoalForm() {
           notes: goal.notes ?? '',
         })
       } catch {
-        if (!cancelled) setError(t('errors.goalLoadError'))
+        if (!cancelled) setError('errors.goalLoadError')
       } finally {
         if (!cancelled) setLoadingGoal(false)
       }
@@ -172,7 +182,7 @@ export function GoalForm() {
       if (submitError instanceof DuplicateGoalError) {
         setError(submitError.message)
       } else {
-        setError(t('errors.goalSaveError'))
+        setError('errors.goalSaveError')
       }
     } finally {
       setSubmitting(false)
@@ -277,7 +287,9 @@ export function GoalForm() {
           />
         </div>
 
-        {error ? <p className="text-sm text-danger">{error}</p> : null}
+        {error ? (
+          <p className="text-sm text-danger">{t(error, { defaultValue: error })}</p>
+        ) : null}
 
         <div className="flex flex-wrap gap-3">
           <button

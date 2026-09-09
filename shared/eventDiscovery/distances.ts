@@ -62,13 +62,13 @@ const MAX_KM = 250
  * exists at all.
  */
 const SHARED_UNIT =
-  /(\d{1,3}(?:[.,]\d{1,3})?(?:\s*[\/&+]\s*\d{1,3}(?:[.,]\d{1,3})?)+)\s*(km|m)\b/giu
+  /(\d{1,3}(?:[.,]\d{1,3})?(?:\s*[/&+]\s*\d{1,3}(?:[.,]\d{1,3})?)+)\s*(km|m)\b/giu
 
 function sharedUnitDistances(label: string): string[] {
   const expanded: string[] = []
   for (const match of label.matchAll(SHARED_UNIT)) {
     const unit = match[2]!
-    for (const number of match[1]!.split(/[\/&+]/)) expanded.push(`${number.trim()} ${unit}`)
+    for (const number of match[1]!.split(/[/&+]/)) expanded.push(`${number.trim()} ${unit}`)
   }
   return expanded
 }

@@ -3,6 +3,12 @@
   "plugins": ["react", "typescript", "oxc"],
   "rules": {
     "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
+    // Off, and deliberately. It wants a file to export components and nothing
+    // else, which would split every context into a provider and a hook and
+    // move `statusDotColor` away from the badge it colours. What it buys is a
+    // faster hot reload in development; what it costs is the shape of the code
+    // everywhere a context is used. The pattern here is the provider and its
+    // hook together, in one file, on purpose.
+    "react/only-export-components": "off"
   }
 }
