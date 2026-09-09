@@ -380,10 +380,19 @@ export function FindRaces() {
    * catalog is the gazetteer. A place nothing matches has no centre, and the
    * page says so rather than pretending the circle applied.
    */
-  const centre = useMemo(
-    () => located ?? centreFromEntries(catalog ?? [], criteria.place),
-    [catalog, criteria.place, located],
+  const placeCentre = useMemo(
+    () => centreFromEntries(catalog ?? [], criteria.place),
+    [catalog, criteria.place],
   )
+  /**
+   * As two numbers, so nothing downstream depends on an object's identity.
+   *
+   * The centre is derived from the results, so a fresh object on every answer
+   * would re-run the query that produced it. Numbers cannot.
+   */
+  const centreLat = located?.lat ?? placeCentre?.lat
+  const centreLng = located?.lng ?? placeCentre?.lng
+  const hasCentre = centreLat !== undefined && centreLng !== undefined
 
   function askForLocation() {
     if (!navigator.geolocation) {
@@ -412,7 +421,7 @@ export function FindRaces() {
    * `place` stays a filter over what came back: Firestore has no substring
    * match, and a runner typing a town has almost always picked a country too.
    */
-  const filtered = hasFilter(criteria, anchorRaceId, Boolean(radiusKm && centre))
+  const filtered = hasFilter(criteria, anchorRaceId, Boolean(radiusKm && hasCentre))
   useEffect(() => {
     if (!filtered) {
       setCatalog(null)
@@ -429,7 +438,7 @@ export function FindRaces() {
         discipline: criteria.disciplines[0],
         from: criteria.from || undefined,
         to: criteria.to || undefined,
-        limit: radiusKm && centre ? pageSize * RADIUS_OVERFETCH : pageSize,
+        limit: radiusKm && hasCentre ? pageSize * RADIUS_OVERFETCH : pageSize,
       })
         .then((races) => {
           if (!cancelled) setCatalog(races)
@@ -447,10 +456,9 @@ export function FindRaces() {
       clearTimeout(timer)
     }
   }, [
-    // The centre by value: it is derived from the results, and depending on the
-    // object would re-run this on every answer.
-    centre?.lat,
-    centre?.lng,
+    centreLat,
+    centreLng,
+    hasCentre,
     criteria.country,
     criteria.disciplines,
     criteria.from,
@@ -468,9 +476,11 @@ export function FindRaces() {
    * place may be the one next door.
    */
   const circled = useMemo(() => {
-    if (!catalog || !radiusKm || !centre) return { entries: catalog ?? [], unplaced: 0 }
-    return withinRadius(catalog, centre, radiusKm)
-  }, [catalog, centre, radiusKm])
+    if (!catalog || !radiusKm || centreLat === undefined || centreLng === undefined) {
+      return { entries: catalog ?? [], unplaced: 0 }
+    }
+    return withinRadius(catalog, { lat: centreLat, lng: centreLng }, radiusKm)
+  }, [catalog, centreLat, centreLng, radiusKm])
 
   const candidates = useMemo(
     () => findCandidates(circled.entries, criteria, { anchor }),
@@ -634,7 +644,7 @@ export function FindRaces() {
           </select>
           {radiusKm ? (
             <p className="mt-1 text-xs text-muted">
-              {centre ? (
+              {hasCentre ? (
                 t('findRaces.radiusFrom', {
                   place: located ? t('findRaces.here') : criteria.place,
                 })
@@ -702,7 +712,7 @@ export function FindRaces() {
         </ul>
       )}
 
-      {radiusKm && centre && circled.unplaced > 0 ? (
+      {radiusKm && hasCentre && circled.unplaced > 0 ? (
         <p className="mt-3 text-xs text-muted">
           {t('findRaces.unplaced', { count: circled.unplaced })}
         </p>
