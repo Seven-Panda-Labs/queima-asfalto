@@ -1236,7 +1236,8 @@
       "copies": "نسخة من مدخل آخر ({{count}})"
     },
     "duplicatesVotes": "الأصوات: السباق نفسه {{same}}، مختلفان {{different}}.",
-    "duplicatesMergeOther": "أو الإبقاء على {{name}}"
+    "duplicatesMergeOther": "أو الإبقاء على {{name}}",
+    "duplicatesOpenSource": "فتح المصدر على {{source}}"
   },
   "funnel": {
     "groups": {

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Añadido
+
+- **Duplicados en el catálogo:** cada carrera de la cola de revisión lleva ahora el enlace a su fuente, para distinguir las dos en las páginas de origen.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Añadido

@@ -22,19 +22,47 @@ function firstDate(race: RaceCatalogEntry): string | null {
   return dated.sort()[0] ?? null
 }
 
+/**
+ * The source, named the way an operator would go and check.
+ *
+ * A curated entry records how it was checked as well as where ("nyrr.org,
+ * supplied in review 2026-09-01"), and only the host is worth a line here.
+ */
+function host(source: string): string {
+  return source.split(',')[0]?.trim() ?? source
+}
+
 function Side({ race, label }: { race: RaceCatalogEntry; label?: string }) {
+  const { t } = useTranslation()
+
   return (
     <div className="min-w-0 flex-1">
-      <p className="truncate font-semibold text-foreground">
-        {race.name}
+      <p className="flex min-w-0 items-center gap-2">
+        <span className="truncate font-semibold text-foreground">{race.name}</span>
+        {/* The two names are what the operator is deciding between, and the
+            source page is the only place the answer actually lives. */}
+        {race.officialUrl ? (
+          <a
+            href={race.officialUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={race.officialUrl}
+            aria-label={t('admin.duplicatesOpenSource', { source: host(race.source) })}
+            className="shrink-0 rounded px-1 text-primary hover:bg-primary/10"
+          >
+            🔗
+          </a>
+        ) : null}
         {label ? (
-          <span className="ml-2 rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
+          <span className="shrink-0 rounded bg-primary/10 px-1.5 py-0.5 text-xs font-medium text-primary">
             {label}
           </span>
         ) : null}
       </p>
       <p className="text-xs text-muted">
-        {[race.city, race.country, firstDate(race), race.id].filter(Boolean).join(' · ')}
+        {[race.city, race.country, firstDate(race), host(race.source), race.id]
+          .filter(Boolean)
+          .join(' · ')}
       </p>
     </div>
   )

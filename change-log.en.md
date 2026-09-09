@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Added
+
+- **Duplicates in the catalog:** each race in the review queue now carries a link to its source, so the two can be told apart on the pages they came from.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Added
