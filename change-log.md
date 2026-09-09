@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Adicionado
+
+- **Provas repetidas:** quando duas linhas da busca são a mesma prova escrita de duas maneiras, aparece uma pergunta discreta debaixo delas. A tua resposta não junta nem apaga nada: põe o par à frente na fila de quem revê o catálogo.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Alterado

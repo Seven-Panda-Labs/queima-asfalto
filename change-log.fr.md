@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Ajouté
+
+- **Des courses en double :** quand deux lignes de la recherche sont une seule course écrite de deux façons, une question discrète apparaît en dessous. Ta réponse ne fusionne rien et ne supprime rien : elle fait remonter la paire dans la file de qui relit le catalogue.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Modifié

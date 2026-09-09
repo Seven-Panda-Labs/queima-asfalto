@@ -563,6 +563,38 @@ service cloud.firestore {
      * anyone signed in, because the page that searches the catalog has to be
      * able to say when it was last refreshed rather than implying live data.
      */
+    /**
+     * What a runner said about a pair the harvest could not decide.
+     *
+     * A vote never merges anything: the merge points one catalog id at another
+     * and a runner's race may already reference either, so that stays an
+     * admin's decision. A vote only orders the admin's queue, which is why this
+     * collection is safe to let a signed-in runner write.
+     *
+     * The document id carries the pair and the voter, so one runner has one
+     * answer per pair and cannot stuff the count by writing many documents.
+     */
+    match /raceCatalogDuplicateVotes/{voteId} {
+      // The runner reads their own answers, so the page stops asking. The admin
+      // reads all of them, which is what the queue is sorted by.
+      allow read: if isSignedIn()
+        && (isAdmin(request.auth.uid) || resource.data.uid == request.auth.uid);
+      allow create, update: if isSignedIn()
+        && isApprovedUser(request.auth.uid)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.aId is string
+        && request.resource.data.bId is string
+        && request.resource.data.aId.size() > 0
+        && request.resource.data.bId.size() > 0
+        // Sorted, so the same pair is always the same document.
+        && request.resource.data.aId < request.resource.data.bId
+        && voteId == request.resource.data.aId + '__' + request.resource.data.bId
+          + '__' + request.auth.uid
+        && request.resource.data.same is bool
+        && request.resource.data.votedAt is string;
+      allow delete: if false;
+    }
+
     match /raceCatalogHarvest/{docId} {
       allow read: if isSignedIn();
       allow write: if false;

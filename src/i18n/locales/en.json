@@ -1222,7 +1222,8 @@
       "current": "Nothing to do ({{count}})",
       "retired": "Out of circulation ({{count}})",
       "copies": "A copy of another entry ({{count}})"
-    }
+    },
+    "duplicatesVotes": "Votes: same race {{same}}, different {{different}}."
   },
   "funnel": {
     "groups": {
@@ -1366,7 +1367,12 @@
     "useMyLocation": "Use my location",
     "locationRefused": "No location. Type a place in the \"Where\" box and the radius measures from there.",
     "unplaced_one": "{{count}} more race the source did not put on the map, so the radius leaves it out.",
-    "unplaced_other": "{{count}} more races the source did not put on the map, so the radius leaves them out."
+    "unplaced_other": "{{count}} more races the source did not put on the map, so the radius leaves them out.",
+    "duplicateAsk": "\"{{left}}\" and \"{{right}}\" look like the same race. Do you know?",
+    "duplicateSame": "Same race",
+    "duplicateDifferent": "Different races",
+    "duplicateThanks": "Thank you. It goes for review, nothing changes yet.",
+    "duplicateError": "Could not save the answer."
   },
   "onboarding": {
     "title": "Getting started",

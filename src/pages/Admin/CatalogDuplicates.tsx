@@ -1,11 +1,13 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import {
   catalogDuplicateCandidates,
   type DuplicateCandidate,
 } from '../../../shared/eventDiscovery/duplicates'
-import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
+import type { DuplicateVoteTally, RaceCatalogEntry } from '../../../shared/raceCatalog'
+import { duplicateVotePairId } from '../../../shared/raceCatalog'
 import { mergeCatalogRaces, separateCatalogRaces } from '../../services/adminRaceCatalog'
+import { loadDuplicateVoteTallies } from '../../services/duplicateVotes'
 
 /**
  * The pairs the harvest refuses to decide.
@@ -50,7 +52,29 @@ export function CatalogDuplicates({
   const { t } = useTranslation()
   const [pending, setPending] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const candidates = useMemo(() => catalogDuplicateCandidates(races), [races])
+  const [tallies, setTallies] = useState<Map<string, DuplicateVoteTally>>(new Map())
+
+  useEffect(() => {
+    void loadDuplicateVoteTallies().then(setTallies)
+  }, [])
+
+  /**
+   * The pairs, the ones runners recognised first.
+   *
+   * A vote decides nothing here, it only says which question somebody already
+   * knows the answer to, so those stop hiding behind the rest of the queue.
+   */
+  const candidates = useMemo(() => {
+    const votes = (candidate: DuplicateCandidate) =>
+      tallies.get(duplicateVotePairId(candidate.keep.id, candidate.drop.id))
+    return catalogDuplicateCandidates(races).sort((left, right) => {
+      const count = (candidate: DuplicateCandidate) => {
+        const tally = votes(candidate)
+        return (tally?.same ?? 0) + (tally?.different ?? 0)
+      }
+      return count(right) - count(left)
+    })
+  }, [races, tallies])
 
   const act = async (candidate: DuplicateCandidate, merge: boolean) => {
     const key = `${candidate.keep.id}:${candidate.drop.id}`
@@ -90,6 +114,18 @@ export function CatalogDuplicates({
                 <Side race={candidate.keep} label={t('admin.duplicatesKeep')} />
                 <Side race={candidate.drop} />
               </div>
+              {(() => {
+                const tally = tallies.get(duplicateVotePairId(candidate.keep.id, candidate.drop.id))
+                if (!tally) return null
+                return (
+                  <p className="mt-1 text-xs font-semibold text-primary">
+                    {t('admin.duplicatesVotes', {
+                      same: tally.same,
+                      different: tally.different,
+                    })}
+                  </p>
+                )
+              })()}
               <div className="mt-2 flex flex-wrap gap-2">
                 <button
                   type="button"

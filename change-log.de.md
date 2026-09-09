@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Hinzugefügt
+
+- **Doppelt gelistete Rennen:** wenn zwei Zeilen der Suche dasselbe Rennen in zwei Schreibweisen sind, erscheint darunter eine leise Frage. Deine Antwort führt nichts zusammen und löscht nichts: sie zieht das Paar in der Warteschlange derer nach vorn, die den Katalog prüfen.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Geändert

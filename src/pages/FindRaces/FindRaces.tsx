@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
@@ -29,7 +29,10 @@ import {
   type Centre,
 } from '../../domain/raceRadius'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
-import { canAssertDates } from '../../../shared/raceCatalog'
+import { canAssertDates, duplicateVotePairId } from '../../../shared/raceCatalog'
+import { catalogDuplicateCandidates } from '../../../shared/eventDiscovery/duplicates'
+import { loadMyAnsweredPairs, recordDuplicateVote } from '../../services/duplicateVotes'
+import { DuplicateHint } from './DuplicateHint'
 import {
   catalogRaceToBucketListItem,
   findOrCreateCatalogRaceId,
@@ -311,6 +314,8 @@ export function FindRaces() {
   const [adding, setAdding] = useState<string | null>(null)
   const [addedIds, setAddedIds] = useState<string[]>([])
   const [watchedParkruns, setWatchedParkruns] = useState<string[]>([])
+  /** Pairs this runner has already answered, so the question is asked once. */
+  const [answeredPairs, setAnsweredPairs] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     void loadHarvestStatus().then((status) => {
@@ -318,6 +323,15 @@ export function FindRaces() {
       setCountries(status.countries)
     })
   }, [])
+
+  // The uid and not the user: a context handing back a fresh object on every
+  // render would reload this on every render, and an answer just given would
+  // be overwritten by the read that started before it.
+  const uid = user?.uid
+  useEffect(() => {
+    if (!uid) return
+    void loadMyAnsweredPairs(uid).then(setAnsweredPairs)
+  }, [uid])
 
   /**
    * The anchors a window can come from: still ahead, and with a date.
@@ -487,6 +501,28 @@ export function FindRaces() {
     [anchor, circled.entries, criteria],
   )
 
+  /**
+   * The pairs on screen that look like one race, keyed by the lower row.
+   *
+   * Computed over the rows shown and not over the catalog: a runner can only
+   * answer about what is in front of them, and because the list is ordered by
+   * date, the two entries of one race land next to each other. Once answered
+   * the pair drops out, so the question is asked once.
+   */
+  const duplicatePairs = useMemo(() => {
+    const shown = candidates.map((candidate) => candidate.entry)
+    const byLowerRow = new Map<string, [RaceCatalogEntry, RaceCatalogEntry]>()
+    for (const pair of catalogDuplicateCandidates(shown)) {
+      if (answeredPairs.has(duplicateVotePairId(pair.keep.id, pair.drop.id))) continue
+      const at = Math.max(
+        shown.findIndex((entry) => entry.id === pair.keep.id),
+        shown.findIndex((entry) => entry.id === pair.drop.id),
+      )
+      byLowerRow.set(shown[at]!.id, [pair.keep, pair.drop])
+    }
+    return byLowerRow
+  }, [answeredPairs, candidates])
+
   const sortedCountries = useMemo(
     () => byName(countries, i18n.language),
     [countries, i18n.language],
@@ -496,6 +532,30 @@ export function FindRaces() {
     () => visibleDisciplines(enabledDisciplines, criteria.disciplines),
     [criteria.disciplines, enabledDisciplines],
   )
+
+  /**
+   * A runner's answer about a pair, which is a vote and not a decision.
+   *
+   * It merges nothing: the merge points one catalog id at another and a
+   * runner's own race may already reference either. What it does is move the
+   * pair up the queue an operator works through.
+   */
+  async function answerDuplicate(
+    left: RaceCatalogEntry,
+    right: RaceCatalogEntry,
+    same: boolean,
+  ) {
+    if (!user) return
+    try {
+      await recordDuplicateVote(user.uid, left.id, right.id, same)
+      setAnsweredPairs((current) =>
+        new Set(current).add(duplicateVotePairId(left.id, right.id)),
+      )
+      toast.success(t('findRaces.duplicateThanks'))
+    } catch {
+      toast.error(t('findRaces.duplicateError'))
+    }
+  }
 
   async function handleAdd(entry: RaceCatalogEntry, discipline?: EventType) {
     if (!user) return
@@ -699,16 +759,27 @@ export function FindRaces() {
         </p>
       ) : (
         <ul className="mt-6 rounded-xl border border-border bg-surface">
-          {candidates.map((candidate) => (
-            <Candidate
-              key={candidate.entry.id}
-              candidate={candidate}
-              added={addedIds.includes(candidate.entry.id)}
-              adding={adding === candidate.entry.id}
-              disciplineOptions={disciplineOptions}
-              onAdd={(discipline) => void handleAdd(candidate.entry, discipline)}
-            />
-          ))}
+          {candidates.map((candidate) => {
+            const pair = duplicatePairs.get(candidate.entry.id)
+            return (
+              <Fragment key={candidate.entry.id}>
+                <Candidate
+                  candidate={candidate}
+                  added={addedIds.includes(candidate.entry.id)}
+                  adding={adding === candidate.entry.id}
+                  disciplineOptions={disciplineOptions}
+                  onAdd={(discipline) => void handleAdd(candidate.entry, discipline)}
+                />
+                {pair ? (
+                  <DuplicateHint
+                    left={pair[0]}
+                    right={pair[1]}
+                    onAnswer={(same) => answerDuplicate(pair[0], pair[1], same)}
+                  />
+                ) : null}
+              </Fragment>
+            )
+          })}
         </ul>
       )}
 

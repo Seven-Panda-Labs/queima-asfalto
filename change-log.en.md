@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Added
+
+- **Races listed twice:** when two rows in the search are one race written two ways, a quiet question appears under them. Your answer merges nothing and deletes nothing: it moves the pair up the queue of whoever reviews the catalog.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Changed
