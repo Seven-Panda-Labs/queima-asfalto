@@ -122,7 +122,16 @@ Três coisas que ela nos ensinou, e as três são partilhadas:
 - **A distância só existe na descrição**, e em prosa um número pequeno não é uma
   prova: «na pista de 400 m» é o comprimento da volta e «de 400 m a 10 km» é a
   prova das crianças. Abaixo de 2 km, um número em prosa não conta. Numa oferta
-  com nome («1500 m») conta sempre.
+  com nome («1500 m») conta sempre. Em prosa, quem qualifica um número vem
+  depois dele e só até ao número seguinte: «1,5 km natação, 40 km ciclismo e
+  10 km corrida» dá uma prova de 10 km e nenhuma de 40, e em «5 km, 10 km e 1 km
+  Kids Run» a prova das crianças é o 1 km e mais nada. Apagam um número as
+  crianças, as pernas de um triatlo que não são a corrida, o desnível e uma
+  estafeta («4 mal 3 Kilometer»: ninguém se inscreve nos 3 km). Uma volta só é
+  distância se a descrição não disser nada mais longo, porque «uma volta de
+  6,8 km com cronometragem» é a prova e «100 km num circuito plano de 5 km» não
+  é uma prova de 5 km. E uma prova medida em tempo (um Stundenlauf, um backyard)
+  não fica com distância nenhuma: a volta é tudo o que a descrição dá.
 
 As meias maratonas fora da Alemanha vêm de um segundo conjunto de páginas do
 mesmo site, uma por país (`/halbmarathons/spanien`, `/half-marathons/portugal`,
@@ -411,7 +420,17 @@ Three things it taught us, and all three are shared:
 - **The distance only exists in the description**, and in prose a small number
   is not a race: "auf der 400 m Bahn" is the lap of a track and "von 400 m bis
   10 km" is the children's dash. Under 2 km, a number in prose does not count.
-  In a named offer ("1500 m") it always does.
+  In a named offer ("1500 m") it always does. In prose a number is qualified by
+  what follows it, and only up to the next number: "1,5 km Schwimmen, 40 km
+  Radfahren und 10 km Laufen" gives a 10 km race and no 40 km one, and in "5 km,
+  10 km und 1 km Kids Run" the children's race is the 1 km and nothing else. A
+  number is deleted by children, by the legs of a triathlon that are not the
+  run, by elevation, and by a relay ("4 mal 3 Kilometer": nobody enters the
+  3 km). A lap counts as a distance only when the description names nothing
+  longer, because "eine 6,8 km Runde mit Zeitnahme" is the race while "100 km
+  auf einem flachen 5 km Rundkurs" is not a 5 km race. And a race measured in
+  time (a Stundenlauf, a backyard) keeps no distance at all: the lap is all the
+  description gives.
 
 The half marathons outside Germany come from a second set of pages on the same
 site, one per country (`/halbmarathons/spanien`, `/half-marathons/portugal`,

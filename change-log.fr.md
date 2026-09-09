@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Modifié
+
+- **Recherche par distance :** les courses dont le calendrier ne donne la distance que dans la description entrent enfin dans le filtre. Environ une sur dix gagne la sienne, et celles qui se mesurent en temps ou en tours n'en portent toujours aucune, plutôt qu'une fausse.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Ajouté

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.41.0] - 2026-09-09
+
+### Geändert
+
+- **Suche nach Distanz:** Rennen, deren Kalender die Distanz nur in der Beschreibung nennt, antworten jetzt auf den Filter. Etwa eines von zehn bekommt seine, und die nach Zeit oder in Runden gemessenen behalten weiter keine, statt eine falsche zu bekommen.
+
+---
+
 ## [1.40.0] - 2026-09-09
 
 ### Hinzugefügt

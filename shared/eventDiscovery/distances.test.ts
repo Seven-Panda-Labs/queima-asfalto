@@ -153,3 +153,116 @@ describe('numbers that share one unit', () => {
     expect(parseDistancesKm(['Halbmarathon 21,0975 km'])).toEqual([21.0975])
   })
 })
+
+/**
+ * A calendar that sells nothing publishes its distances in a sentence, so the
+ * parser reads prose there. Every description below is a real one from
+ * running.life, and each one was filing a wrong distance or none at all.
+ */
+describe('parseDistancesKm over prose', () => {
+  const prose = { prose: true } as const
+
+  it('lets a children s word apply only to the number beside it', () => {
+    expect(
+      parseDistancesKm(
+        [
+          'Citylauf mit Kinder- und Jugendläufen sowie amtlich vermessenen 5 km und 10 km',
+        ],
+        prose,
+      ),
+    ).toEqual([5, 10])
+    // A charity in the last sentence was deleting the races in the first.
+    expect(
+      parseDistancesKm(
+        ['Der Lauf sammelt Spenden auf einer 2,4 km Strecke. Erlöse gehen an die Deutsche Kinderhilfe.'],
+        prose,
+      ),
+    ).toEqual([2.4])
+  })
+
+  it('gives a qualifier to the number it follows, and no other', () => {
+    // The children's race here is the 1 km, and it used to take the 10 with it.
+    expect(
+      parseDistancesKm(['Lauf in Köln mit 5 km, 10 km und 1 km Kids Run, Zeitmessung'], prose),
+    ).toEqual([5, 10])
+  })
+
+  it('does not read the ground going up as a distance', () => {
+    expect(parseDistancesKm(['Berglauf mit 2000 m Höhenunterschied und 30 km'], prose)).toEqual([
+      30,
+    ])
+    expect(parseDistancesKm(['Start auf 2500 Metern Höhe'], prose)).toEqual([])
+    expect(parseDistancesKm(['Trail über 30 km und 1200 m Aufstieg'], prose)).toEqual([30])
+    // A Höhenweg is a path, and a 10 km along one is a 10 km.
+    expect(parseDistancesKm(['10 km auf dem Höhenweg über den Kamm'], prose)).toEqual([10])
+  })
+
+  it('reads the unit written out as a word', () => {
+    expect(parseDistancesKm(['Du kannst 5 Kilometer laufen.'], prose)).toEqual([5])
+    expect(
+      parseDistancesKm(['Angeboten werden 6 Kilometer Walking und 10 Kilometer Laufen'], prose),
+    ).toEqual([6, 10])
+  })
+
+  it('reads a range as both of its ends', () => {
+    expect(
+      parseDistancesKm(['Du kannst Laufstrecken von 21 bis 42 Kilometer laufen.'], prose),
+    ).toEqual([21, 42])
+  })
+
+  it('files no distance for a relay leg', () => {
+    // Nobody enters a 3 km here: it is a team running twelve in threes.
+    expect(
+      parseDistancesKm(['Ein Staffellauf über 4 mal 3 Kilometer rund um den Standort.'], prose),
+    ).toEqual([])
+  })
+
+  it('files no distance for a race measured in time', () => {
+    expect(
+      parseDistancesKm(['6 Stunden Lauf in Werl: 7,5 km Runde durch den Stadtwald'], prose),
+    ).toEqual([])
+    expect(
+      parseDistancesKm(['Der 24 Stunden Lauf sammelt Spenden auf einer 2,4 km Runde'], prose),
+    ).toEqual([])
+    expect(parseDistancesKm(['Backyard Ultra mit 6,706 km Runden alle 60 Minuten'], prose)).toEqual(
+      [],
+    )
+    // Not a marathon that closes its finish line after six hours.
+    expect(
+      parseDistancesKm(['Marathon in Berlin, Zielschluss nach 6 Stunden'], prose),
+    ).toEqual([42.195])
+  })
+
+  it('drops a lap when the race announces something longer', () => {
+    expect(
+      parseDistancesKm(['Ultramarathon Meisterschaften 100 km auf einem flachen 5 km Rundkurs'], prose),
+    ).toEqual([100])
+    expect(
+      parseDistancesKm(['Nicht wettkampforientierter Marathon mit 2,583 km-Runden'], prose),
+    ).toEqual([42.195])
+  })
+
+  it('keeps the lap when the lap is the whole race', () => {
+    // A company run publishes its distance exactly this way.
+    expect(
+      parseDistancesKm(['Firmenlauf am Hengsteysee: eine 6,8 km Runde mit Zeitnahme'], prose),
+    ).toEqual([6.8])
+    expect(parseDistancesKm(['rund 5 km Rundkurs mit Zieleinlauf ins Stadion'], prose)).toEqual([5])
+  })
+
+  it('reads only the running leg of a triathlon', () => {
+    expect(
+      parseDistancesKm(
+        ['Triathlon über die olympische Distanz mit 1,5 km Schwimmen, 40 km Radfahren und 10 km Laufen'],
+        prose,
+      ),
+    ).toEqual([10])
+  })
+
+  it('leaves an offer name reading exactly as it did', () => {
+    // The window is for sentences. A product name still disqualifies whole.
+    expect(parseDistancesKm(['Kinderlauf 2 km'])).toEqual([])
+    expect(parseDistancesKm(['Stundenlauf'])).toEqual([])
+    expect(parseDistancesKm(['5 km Runde'])).toEqual([5])
+  })
+})
