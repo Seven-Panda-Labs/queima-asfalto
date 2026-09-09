@@ -65,6 +65,17 @@ describe('searchToken', () => {
     expect(searchToken('  BERLIN  ')).toBe('berlin')
   })
 
+  it('skips the sponsor, which is the word that differs between two names', () => {
+    // Both "generali" and "berliner" are distinctive and the same length, and
+    // the sponsor is exactly what one source has and another does not.
+    expect(searchToken('Generali Berliner Halbmarathon')).toBe('berliner')
+    expect(searchToken('BMW BERLIN-MARATHON')).toBe('berlin')
+  })
+
+  it('falls back to the longest when every word is generic or a sponsor', () => {
+    expect(searchToken('BMW Marathon')).toBe('marathon')
+  })
+
   it('has nothing to ask for when nothing typed is long enough', () => {
     expect(searchToken('')).toBeUndefined()
     expect(searchToken('de')).toBeUndefined()

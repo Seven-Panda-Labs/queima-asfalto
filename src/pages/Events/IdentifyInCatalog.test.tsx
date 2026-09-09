@@ -1,0 +1,130 @@
+import '@testing-library/jest-dom/vitest'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterEach, describe, expect, it, vi } from 'vitest'
+import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
+import type { Event } from '../../types/Event'
+import { IdentifyInCatalog } from './IdentifyInCatalog'
+
+const searchRaceCatalog = vi.fn()
+const identifyRaceInCatalog = vi.fn()
+
+vi.mock('../../services/raceCatalog', () => ({
+  searchRaceCatalog: (...args: unknown[]) => searchRaceCatalog(...args),
+}))
+vi.mock('../../services/raceIdentity', () => ({
+  identifyRaceInCatalog: (...args: unknown[]) => identifyRaceInCatalog(...args),
+}))
+
+const event = {
+  id: 'event-1',
+  userId: 'u1',
+  name: 'Generali Berliner Halbmarathon',
+  date: new Date('2026-04-06'),
+  realDistance: 21.0975,
+  eventType: 'km_21_1',
+  location: 'Brandenburger Tor, Berlim',
+  status: 'completed',
+  createdAt: new Date('2026-04-07'),
+  updatedAt: new Date('2026-04-07'),
+} as Event
+
+function entry(overrides: Partial<RaceCatalogEntry> = {}): RaceCatalogEntry {
+  return {
+    id: 'de-berlin-generali-berliner-halbmarathon',
+    name: 'GENERALI BERLINER HALBMARATHON',
+    country: 'DE',
+    city: 'Berlin',
+    disciplines: ['km_21_1'],
+    entryMethod: 'unknown',
+    review: 'reviewed',
+    source: 'generali-berliner-halbmarathon.de',
+    nextRaceDate: '2027-04-11',
+    ...overrides,
+  }
+}
+
+afterEach(() => {
+  cleanup()
+  vi.clearAllMocks()
+})
+
+describe('IdentifyInCatalog', () => {
+  it('says nothing about a race already linked', () => {
+    const { container } = render(<IdentifyInCatalog event={event} userId="u1" linked />)
+    expect(container).toBeEmptyDOMElement()
+  })
+
+  it('searches on the event s own name when opened', async () => {
+    searchRaceCatalog.mockResolvedValue([entry()])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+
+    // "berliner" over "halbmarathon": the distinctive word, not the longest.
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenCalledWith(
+        expect.objectContaining({ nameToken: 'berliner' }),
+      ),
+    )
+    expect(await screen.findByText('GENERALI BERLINER HALBMARATHON')).toBeInTheDocument()
+  })
+
+  it('looks past the next edition, because identity is not a date', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+
+    // The discovery search skips an entry with no date ahead. A race being
+    // identified is wanted whether or not its next edition is known.
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenCalledWith(
+        expect.objectContaining({ from: '1000-01-01' }),
+      ),
+    )
+  })
+
+  it('links only what the runner picked', async () => {
+    searchRaceCatalog.mockResolvedValue([entry(), entry({ id: 'de-berlin-other', name: 'Berliner Neujahrslauf' })])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    await screen.findByText('Berliner Neujahrslauf')
+    // The second candidate, to prove it is the choice and not the first row.
+    fireEvent.click(screen.getAllByRole('button', { name: 'É esta' })[1]!)
+
+    await waitFor(() =>
+      expect(identifyRaceInCatalog).toHaveBeenCalledWith('u1', event, 'de-berlin-other'),
+    )
+  })
+
+  it('lets the runner search for another word', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    await screen.findByText(/Nada no catálogo/)
+
+    fireEvent.change(screen.getByLabelText(/Procurar pelo nome/), {
+      target: { value: 'Teltowkanal' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Procurar pelo nome' }))
+
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenLastCalledWith(
+        expect.objectContaining({ nameToken: 'teltowkanal' }),
+      ),
+    )
+  })
+
+  it('says so when the link could not be written', async () => {
+    searchRaceCatalog.mockResolvedValue([entry()])
+    identifyRaceInCatalog.mockRejectedValueOnce(new Error('denied'))
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'É esta' }))
+
+    expect(await screen.findByText('Não foi possível ligar.')).toBeInTheDocument()
+  })
+})

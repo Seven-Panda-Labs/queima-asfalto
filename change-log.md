@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Procurar uma prova pelo nome:** o campo de busca passa a procurar em todo o catálogo, e não só nas provas que já estavam na página. Escrever «Teltowkanal» encontra a prova, mesmo que ela seja a três mil na fila.
+- **Dizer qual é a prova:** na página de um evento, se a prova não estiver ligada ao catálogo partilhado, podes procurá-la pelo nome e dizer qual é. A partir daí o catálogo preenche sozinho as datas e o preço da próxima edição, e o teu resultado oficial passa a corrigir a data para todos.
 
 ---
 

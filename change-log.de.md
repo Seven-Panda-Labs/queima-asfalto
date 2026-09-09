@@ -9,6 +9,7 @@
 ### Hinzugefügt
 
 - **Ein Rennen nach Namen finden:** das Suchfeld sucht jetzt im ganzen Katalog und nicht mehr nur in den Rennen, die schon auf der Seite waren. „Teltowkanal“ zu tippen findet das Rennen, auch wenn es das dreitausendste in der Reihe ist.
+- **Sagen, welches Rennen es ist:** auf der Seite eines Events kannst du das Rennen, wenn es nicht mit dem geteilten Katalog verknüpft ist, nach Namen suchen und sagen, welches es ist. Danach füllt der Katalog Termine und Gebühr der nächsten Ausgabe selbst aus, und dein offizielles Ergebnis korrigiert das Datum für alle.
 
 ---
 

@@ -1425,5 +1425,16 @@
     "planned": "\"{{name}}\" is on the calendar for Saturday.",
     "planError": "Could not put this parkrun on the calendar.",
     "farAway": "The nearest is {{km}} km away. parkrun does not run in every country, so this is for when you travel."
+  },
+  "identifyInCatalog": {
+    "offer": "This race is not linked to the shared catalog. Say which one it is?",
+    "title": "Which race in the catalog is this?",
+    "why": "Linked, the catalog fills in next edition's dates and fee on its own, and your official result starts correcting the date for everybody.",
+    "search": "Search by name",
+    "pick": "This one",
+    "noneFound": "Nothing in the catalog with that word. Try another word from the name, or the town.",
+    "notThere": "If it is not in the catalog, there is no way to add it yet.",
+    "searchError": "Could not search.",
+    "saveError": "Could not link it."
   }
 }
