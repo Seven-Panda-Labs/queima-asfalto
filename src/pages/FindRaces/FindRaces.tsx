@@ -22,6 +22,12 @@ import {
 import type { SeasonRace } from '../../domain/seasonRules'
 import { tuneUpWindowFor } from '../../domain/seasonRules'
 import { isAnchorFor } from '../../domain/seasonAnchors'
+import {
+  centreFromEntries,
+  RADIUS_OPTIONS,
+  withinRadius,
+  type Centre,
+} from '../../domain/raceRadius'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { canAssertDates } from '../../../shared/raceCatalog'
 import {
@@ -50,16 +56,42 @@ const PARKRUN_DISTANCE_KM = 5
 const PAGE_SIZE = 20
 
 /**
+ * How many rows a radius search asks for per row it shows.
+ *
+ * The circle is applied after the query, because Firestore cannot answer "within
+ * 40 km" without a geohash, so the query has to bring enough candidates for the
+ * circle to have something to keep. Ten is a country's worth of a given month
+ * for the countries that carry coordinates.
+ */
+const RADIUS_OVERFETCH = 10
+
+/**
  * A search needs something to narrow it beyond the date.
  *
  * Without this the page opens on "every race in the world, soonest first",
  * which is the list that made this change necessary. A country, a distance, a
  * place or an anchor is enough.
  */
-function hasFilter(criteria: DiscoveryCriteria, anchorRaceId: string): boolean {
+function hasFilter(
+  criteria: DiscoveryCriteria,
+  anchorRaceId: string,
+  hasCircle: boolean,
+): boolean {
   return Boolean(
-    criteria.country || criteria.place.trim() || criteria.disciplines.length > 0 || anchorRaceId,
+    criteria.country ||
+      criteria.place.trim() ||
+      criteria.disciplines.length > 0 ||
+      anchorRaceId ||
+      // "Races within 50 km of me" is a filter, and the most natural question
+      // on the page. A radius with nothing to measure from is not.
+      hasCircle,
   )
+}
+
+/** Kilometres, or nothing, from the select's string value. */
+function readRadius(value: string): number | null {
+  const km = Number(value)
+  return Number.isFinite(km) && km > 0 ? km : null
 }
 
 /** The country's own name in the reader's language, with the code as a fallback. */
@@ -268,6 +300,11 @@ export function FindRaces() {
   const [searching, setSearching] = useState(false)
   const [pageSize, setPageSize] = useState(PAGE_SIZE)
   const [countries, setCountries] = useState<string[]>([])
+  const [radiusKm, setRadiusKm] = useState<number | null>(null)
+  /** The browser's answer, when the runner asked it. */
+  const [located, setLocated] = useState<Centre | null>(null)
+  const [locating, setLocating] = useState(false)
+  const [locationRefused, setLocationRefused] = useState(false)
   const [syncedAt, setSyncedAt] = useState<Date | null>(null)
   const [criteria, setCriteria] = useState<DiscoveryCriteria>(EMPTY_CRITERIA)
   const [anchorRaceId, setAnchorRaceId] = useState('')
@@ -337,12 +374,45 @@ export function FindRaces() {
   }
 
   /**
+   * Where to measure from: what the browser said, else the town typed.
+   *
+   * No geocoder: a race in that town carries the town's coordinates, so the
+   * catalog is the gazetteer. A place nothing matches has no centre, and the
+   * page says so rather than pretending the circle applied.
+   */
+  const centre = useMemo(
+    () => located ?? centreFromEntries(catalog ?? [], criteria.place),
+    [catalog, criteria.place, located],
+  )
+
+  function askForLocation() {
+    if (!navigator.geolocation) {
+      setLocationRefused(true)
+      return
+    }
+    setLocating(true)
+    setLocationRefused(false)
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLocated({ lat: position.coords.latitude, lng: position.coords.longitude })
+        setLocating(false)
+      },
+      () => {
+        // Refusing is an answer, and the place box still works.
+        setLocationRefused(true)
+        setLocating(false)
+      },
+      { timeout: 10_000, maximumAge: 600_000 },
+    )
+  }
+
+  /**
    * One query per search, filtered by the server.
    *
    * `place` stays a filter over what came back: Firestore has no substring
    * match, and a runner typing a town has almost always picked a country too.
    */
-  const filtered = hasFilter(criteria, anchorRaceId)
+  const filtered = hasFilter(criteria, anchorRaceId, Boolean(radiusKm && centre))
   useEffect(() => {
     if (!filtered) {
       setCatalog(null)
@@ -359,7 +429,7 @@ export function FindRaces() {
         discipline: criteria.disciplines[0],
         from: criteria.from || undefined,
         to: criteria.to || undefined,
-        limit: pageSize,
+        limit: radiusKm && centre ? pageSize * RADIUS_OVERFETCH : pageSize,
       })
         .then((races) => {
           if (!cancelled) setCatalog(races)
@@ -377,17 +447,34 @@ export function FindRaces() {
       clearTimeout(timer)
     }
   }, [
+    // The centre by value: it is derived from the results, and depending on the
+    // object would re-run this on every answer.
+    centre?.lat,
+    centre?.lng,
     criteria.country,
     criteria.disciplines,
     criteria.from,
     criteria.to,
     filtered,
     pageSize,
+    radiusKm,
   ])
 
+  /**
+   * The circle, applied to what the query brought back.
+   *
+   * After the query and before the ranking: the entries with no coordinates are
+   * counted rather than dropped quietly, because a race the source did not
+   * place may be the one next door.
+   */
+  const circled = useMemo(() => {
+    if (!catalog || !radiusKm || !centre) return { entries: catalog ?? [], unplaced: 0 }
+    return withinRadius(catalog, centre, radiusKm)
+  }, [catalog, centre, radiusKm])
+
   const candidates = useMemo(
-    () => (catalog ? findCandidates(catalog, criteria, { anchor }) : []),
-    [anchor, catalog, criteria],
+    () => findCandidates(circled.entries, criteria, { anchor }),
+    [anchor, circled.entries, criteria],
   )
 
   const sortedCountries = useMemo(
@@ -527,6 +614,46 @@ export function FindRaces() {
             className={FIELD}
           />
         </div>
+
+        <div>
+          <label htmlFor="radius" className="block text-sm font-semibold text-foreground">
+            {t('findRaces.radius')}
+          </label>
+          <select
+            id="radius"
+            value={radiusKm ?? ''}
+            onChange={(event) => setRadiusKm(readRadius(event.target.value))}
+            className={FIELD}
+          >
+            <option value="">{t('findRaces.anyDistance')}</option>
+            {RADIUS_OPTIONS.map((km) => (
+              <option key={km} value={km}>
+                {t('findRaces.radiusOption', { km })}
+              </option>
+            ))}
+          </select>
+          {radiusKm ? (
+            <p className="mt-1 text-xs text-muted">
+              {centre ? (
+                t('findRaces.radiusFrom', {
+                  place: located ? t('findRaces.here') : criteria.place,
+                })
+              ) : (
+                <button
+                  type="button"
+                  onClick={askForLocation}
+                  disabled={locating}
+                  className="font-semibold text-primary hover:underline disabled:opacity-50"
+                >
+                  {locating ? t('common.loading') : t('findRaces.useMyLocation')}
+                </button>
+              )}
+            </p>
+          ) : null}
+          {locationRefused ? (
+            <p className="mt-1 text-xs text-muted">{t('findRaces.locationRefused')}</p>
+          ) : null}
+        </div>
       </div>
 
       <div className="mt-4">
@@ -574,6 +701,12 @@ export function FindRaces() {
           ))}
         </ul>
       )}
+
+      {radiusKm && centre && circled.unplaced > 0 ? (
+        <p className="mt-3 text-xs text-muted">
+          {t('findRaces.unplaced', { count: circled.unplaced })}
+        </p>
+      ) : null}
 
       {/* A full page means there is probably more behind it. */}
       {filtered && catalog !== null && catalog.length >= pageSize ? (

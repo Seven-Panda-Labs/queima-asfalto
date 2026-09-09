@@ -101,6 +101,15 @@ export type RaceCatalogEntry = {
    * was a field that lies less often and a query that cannot order by date.
    */
   nextRaceDate?: string
+  /**
+   * Where the race is, for a search by radius.
+   *
+   * Present only where a source published it. A missing pair means the entry
+   * cannot answer "within 40 km of here", which is why the filter says how many
+   * of its results it could place.
+   */
+  latitude?: number
+  longitude?: number
   review: CatalogReviewState
   /** Where the entry came from, so a reviewer knows what to check against. */
   source: string

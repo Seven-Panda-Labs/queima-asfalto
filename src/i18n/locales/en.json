@@ -1357,7 +1357,16 @@
     "fitsAnchor_one": "fits, 1 week out",
     "fitsAnchor_other": "fits, {{count}} weeks out",
     "distanceUnknown": "distance not published",
-    "addWithDistance": "Add as…"
+    "addWithDistance": "Add as…",
+    "radius": "Radius",
+    "anyDistance": "Any distance",
+    "radiusOption": "Within {{km}} km",
+    "radiusFrom": "Measured from {{place}}.",
+    "here": "where you are",
+    "useMyLocation": "Use my location",
+    "locationRefused": "No location. Type a place in the \"Where\" box and the radius measures from there.",
+    "unplaced_one": "{{count}} more race the source did not put on the map, so the radius leaves it out.",
+    "unplaced_other": "{{count}} more races the source did not put on the map, so the radius leaves them out."
   },
   "onboarding": {
     "title": "Getting started",

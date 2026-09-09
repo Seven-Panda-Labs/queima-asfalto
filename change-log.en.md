@@ -4,6 +4,14 @@
 
 ---
 
+## [1.40.0] - 2026-09-09
+
+### Added
+
+- **Races near you:** the search gains a radius, 10 to 250 km, measured from your location or from the town you type. Races the source never placed on the map are counted separately instead of vanishing without explanation.
+
+---
+
 ## [1.39.0] - 2026-09-04
 
 ### Changed

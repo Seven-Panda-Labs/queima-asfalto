@@ -4,6 +4,14 @@
 
 ---
 
+## [1.40.0] - 2026-09-09
+
+### Ajouté
+
+- **Des courses près de toi :** la recherche gagne un rayon, de 10 à 250 km, mesuré depuis ta position ou depuis la ville que tu tapes. Les courses que la source n'a pas situées sur la carte sont comptées à part, au lieu de disparaître sans explication.
+
+---
+
 ## [1.39.0] - 2026-09-04
 
 ### Modifié

@@ -59,6 +59,8 @@ export function toCatalogEntry(
     name: race.name,
     country: race.country ?? 'XX',
     city: race.city ?? '',
+    latitude: race.latitude,
+    longitude: race.longitude,
     disciplines: toDisciplines(race.distancesKm),
     // What a listing never says is how you get in. Guessing `first_come`
     // because there is a price would put a lottery race in the wrong funnel.
@@ -114,6 +116,9 @@ export function mergeIntoCatalog(
   const sorted = editions.sort((left, right) => left.year - right.year)
   return compact({
     ...harvested,
+    // A place a person put there outlives a scrape that publishes none.
+    latitude: harvested.latitude ?? existing.latitude,
+    longitude: harvested.longitude ?? existing.longitude,
     editions: sorted,
     nextRaceDate: nextRaceDateOf(sorted, harvested.updatedAt ?? ''),
     retired: existing.retired,

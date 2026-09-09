@@ -102,6 +102,28 @@ function fromProse(labels: readonly string[]): number[] {
   return parseDistancesKm(labels).filter((km) => km >= PROSE_MIN_KM)
 }
 
+/**
+ * A `GeoCoordinates` node, when it holds two numbers that could be a place.
+ *
+ * Published as numbers by some sources and as strings by others, and 0,0 is the
+ * Atlantic rather than a race, which is what an empty field serialises to.
+ */
+function coordinates(geo: Record<string, unknown> | undefined): {
+  latitude?: number
+  longitude?: number
+} {
+  const read = (value: unknown): number | undefined => {
+    const parsed = typeof value === 'string' ? Number(value) : value
+    return typeof parsed === 'number' && Number.isFinite(parsed) ? parsed : undefined
+  }
+  const latitude = read(geo?.latitude)
+  const longitude = read(geo?.longitude)
+  if (latitude === undefined || longitude === undefined) return {}
+  if (Math.abs(latitude) > 90 || Math.abs(longitude) > 180) return {}
+  if (latitude === 0 && longitude === 0) return {}
+  return { latitude, longitude }
+}
+
 export function readEventNode(node: Record<string, unknown>): DiscoveredRace | null {
   if (!isEventNode(node)) return null
 
@@ -112,6 +134,7 @@ export function readEventNode(node: Record<string, unknown>): DiscoveredRace | n
 
   const location = isRecord(node.location) ? node.location : undefined
   const address = location && isRecord(location.address) ? location.address : undefined
+  const geo = location && isRecord(location.geo) ? location.geo : undefined
 
   const offers = offersOf(node)
   const aggregate = offers.find((offer) => offer['@type'] === 'AggregateOffer')
@@ -130,6 +153,7 @@ export function readEventNode(node: Record<string, unknown>): DiscoveredRace | n
     city: text(address?.addressLocality),
     region: text(address?.addressRegion),
     country,
+    ...coordinates(geo),
     // The offers name the distances when there are offers. Otherwise the name
     // and the description are all there is, and a calendar that sells nothing
     // on the page ("Teamlauf über 5,5 km") says it there or nowhere.

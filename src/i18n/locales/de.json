@@ -1357,7 +1357,16 @@
     "fitsAnchor_one": "passt, 1 Woche vorher",
     "fitsAnchor_other": "passt, {{count}} Wochen vorher",
     "distanceUnknown": "Distanz nicht veröffentlicht",
-    "addWithDistance": "Hinzufügen als…"
+    "addWithDistance": "Hinzufügen als…",
+    "radius": "Radius",
+    "anyDistance": "Beliebige Entfernung",
+    "radiusOption": "Bis {{km}} km",
+    "radiusFrom": "Gemessen ab {{place}}.",
+    "here": "wo du bist",
+    "useMyLocation": "Meinen Standort verwenden",
+    "locationRefused": "Kein Standort. Tippe einen Ort in das Feld „Wo“, dann zählt der Radius von dort.",
+    "unplaced_one": "{{count}} weiteres Rennen, das die Quelle nicht verortet hat, also bleibt es außerhalb des Radius.",
+    "unplaced_other": "{{count}} weitere Rennen, die die Quelle nicht verortet hat, also bleiben sie außerhalb des Radius."
   },
   "onboarding": {
     "title": "Loslegen",

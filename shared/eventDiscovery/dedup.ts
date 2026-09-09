@@ -29,6 +29,10 @@ export function dedupeRaces(races: readonly DiscoveredRace[]): DiscoveredRace[] 
       city: current.city ?? race.city,
       region: current.region ?? race.region,
       country: current.country ?? race.country,
+      // One source publishes coordinates and the others do not, which is
+      // exactly the case this merge exists for.
+      latitude: current.latitude ?? race.latitude,
+      longitude: current.longitude ?? race.longitude,
       distancesKm: [...new Set([...current.distancesKm, ...race.distancesKm])].sort(
         (left, right) => left - right,
       ),
