@@ -13,6 +13,11 @@ export {
 export { nextRaceDateOf } from './schedule.js'
 export { nameTokensOf, normalizeToken, searchToken } from './nameTokens.js'
 export {
+  CATALOG_PROPOSALS_COLLECTION,
+  isProposalComplete,
+  type CatalogProposal,
+} from './proposals.js'
+export {
   applyEditionReports,
   EDITION_REPORTS_COLLECTION,
   editionReportId,

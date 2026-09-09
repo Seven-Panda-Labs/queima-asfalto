@@ -1433,8 +1433,15 @@
     "search": "Procurar pelo nome",
     "pick": "É esta",
     "noneFound": "Nada no catálogo com essa palavra. Tenta outra palavra do nome, ou a terra.",
-    "notThere": "Se não estiver no catálogo, ainda não há forma de a acrescentar.",
     "searchError": "Não foi possível procurar.",
-    "saveError": "Não foi possível ligar."
+    "saveError": "Não foi possível ligar.",
+    "propose": "Não está no catálogo. Propor esta prova.",
+    "proposeWhy": "Entra no catálogo como não verificada, para que outros a encontrem. Só falta a terra e o país, que o nome do local não separa.",
+    "town": "Terra",
+    "country": "País",
+    "countryHint": "Alemanha, Germany ou DE",
+    "countryError": "Não conseguimos ler esse país. Escreve o nome ou as duas letras.",
+    "proposeSubmit": "Propor ao catálogo",
+    "proposed": "Proposta guardada. Entra no catálogo na próxima actualização, ou fica ligada à prova que já lá estiver."
   }
 }

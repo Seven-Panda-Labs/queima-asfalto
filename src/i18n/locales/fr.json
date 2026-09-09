@@ -1433,8 +1433,15 @@
     "search": "Chercher par nom",
     "pick": "C'est celle-ci",
     "noneFound": "Rien dans le catalogue avec ce mot. Essaie un autre mot du nom, ou la ville.",
-    "notThere": "Si elle n'est pas au catalogue, il n'y a pas encore de moyen de l'ajouter.",
     "searchError": "La recherche a échoué.",
-    "saveError": "La liaison a échoué."
+    "saveError": "La liaison a échoué.",
+    "propose": "Pas au catalogue. Proposer cette course.",
+    "proposeWhy": "Elle entre au catalogue non vérifiée, pour que d'autres la trouvent. Il ne manque que la ville et le pays, que le lieu ne sépare pas.",
+    "town": "Ville",
+    "country": "Pays",
+    "countryHint": "Allemagne, Germany ou DE",
+    "countryError": "Nous n'avons pas pu lire ce pays. Écris le nom ou les deux lettres.",
+    "proposeSubmit": "Proposer au catalogue",
+    "proposed": "Proposition enregistrée. Elle entre au catalogue à la prochaine mise à jour, ou sera liée à la course déjà présente."
   }
 }

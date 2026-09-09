@@ -1433,8 +1433,15 @@
     "search": "Search by name",
     "pick": "This one",
     "noneFound": "Nothing in the catalog with that word. Try another word from the name, or the town.",
-    "notThere": "If it is not in the catalog, there is no way to add it yet.",
     "searchError": "Could not search.",
-    "saveError": "Could not link it."
+    "saveError": "Could not link it.",
+    "propose": "Not in the catalog. Propose this race.",
+    "proposeWhy": "It enters the catalog unreviewed, so other people can find it. All it needs is the town and the country, which the location does not separate.",
+    "town": "Town",
+    "country": "Country",
+    "countryHint": "Germany, Alemanha or DE",
+    "countryError": "We could not read that country. Write the name or the two letters.",
+    "proposeSubmit": "Propose to the catalog",
+    "proposed": "Proposal saved. It enters the catalog on the next update, or gets linked to the race already there."
   }
 }

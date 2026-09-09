@@ -80,8 +80,13 @@ export type RaceCatalogEdition = {
  * Curated and harvested entries share one collection, so the queue that asks
  * "what needs a human" is one query, and a harvest never has to guess whether it
  * is about to overwrite something a person checked.
+ *
+ * `runner` is a race somebody ran and the catalog did not hold. It enters
+ * exactly as a harvested one does, `unreviewed` and through the same duplicate
+ * rule, because a person who was there is at least as good a witness as a
+ * listing, and lands in the same review queue an operator already works.
  */
-export const CATALOG_PRODUCERS = ['curated', 'harvest'] as const
+export const CATALOG_PRODUCERS = ['curated', 'harvest', 'runner'] as const
 
 export type CatalogProducer = (typeof CATALOG_PRODUCERS)[number]
 
