@@ -1210,7 +1210,7 @@
       "unknown": "Desconhecida"
     },
     "duplicatesTitle": "Possivelmente a mesma prova ({{count}})",
-    "duplicatesHint": "Mesmo dia, mesma cidade, mesma distância, e nem o nome nem uma revisão o decidem. Juntar aponta a segunda entrada à primeira sem a apagar; a resposta fica guardada em qualquer dos casos.",
+    "duplicatesHint": "Mesmo dia, mesma terra, e nem o nome nem uma revisão o decidem. Escolhe com qual das duas ficar: a outra passa a apontar para essa e não é apagada. A resposta fica guardada em qualquer dos casos.",
     "duplicatesKeep": "sugerida",
     "duplicatesMerge": "Mesma prova, ficar com {{name}}",
     "duplicatesSeparate": "Provas diferentes",
@@ -1223,7 +1223,8 @@
       "retired": "Fora de circulação ({{count}})",
       "copies": "Cópia de outra entrada ({{count}})"
     },
-    "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}."
+    "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}.",
+    "duplicatesMergeOther": "Ou ficar com {{name}}"
   },
   "funnel": {
     "groups": {

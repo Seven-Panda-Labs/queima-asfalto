@@ -59,7 +59,7 @@ describe('CatalogDuplicates', () => {
     const onChanged = vi.fn()
     render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={onChanged} />)
 
-    fireEvent.click(screen.getByRole('button', { name: /mesma prova/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
 
     await waitFor(() =>
       expect(mergeCatalogRaces).toHaveBeenCalledWith(
@@ -69,6 +69,22 @@ describe('CatalogDuplicates', () => {
       ),
     )
     expect(onChanged).toHaveBeenCalled()
+  })
+
+  it('merges the other way when the operator prefers the other name', async () => {
+    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+
+    // The suggestion is a guess, and the operator may know the organiser calls
+    // the race by the name it did not pick.
+    fireEvent.click(screen.getByRole('button', { name: /Haspa Marathon Hamburg/ }))
+
+    await waitFor(() =>
+      expect(mergeCatalogRaces).toHaveBeenCalledWith(
+        'de-hamburg-haspa-marathon',
+        'de-hamburg-haspa-halbmarathon',
+        'admin',
+      ),
+    )
   })
 
   it('records a no, so the next harvest does not ask again', async () => {
@@ -89,7 +105,7 @@ describe('CatalogDuplicates', () => {
     mergeCatalogRaces.mockRejectedValueOnce(new Error('denied'))
     render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
 
-    fireEvent.click(screen.getByRole('button', { name: /mesma prova/i }))
+    fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
 
     expect(await screen.findByText('Não foi possível guardar.')).toBeInTheDocument()
     expect(screen.getByText('Haspa Marathon Hamburg')).toBeInTheDocument()

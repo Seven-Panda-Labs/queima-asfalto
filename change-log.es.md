@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-09
+
+### Cambiado
+
+- **Duplicados en el catálogo:** quien revisa el catálogo ya puede unir el par en los dos sentidos, quedándose con el nombre que prefiera. Antes solo estaba el sugerido.
+
+---
+
 ## [1.43.0] - 2026-09-09
 
 ### Corregido

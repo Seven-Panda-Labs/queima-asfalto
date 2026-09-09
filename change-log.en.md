@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-09
+
+### Changed
+
+- **Duplicates in the catalog:** whoever reviews the catalog can now merge a pair in either direction, keeping whichever name they prefer. Before, only the suggested one was on offer.
+
+---
+
 ## [1.43.0] - 2026-09-09
 
 ### Fixed

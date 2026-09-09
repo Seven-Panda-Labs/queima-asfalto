@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-09
+
+### Modifié
+
+- **Doublons dans le catalogue :** qui relit le catalogue peut désormais fusionner une paire dans les deux sens, en gardant le nom qu'il préfère. Avant, seul le nom suggéré était proposé.
+
+---
+
 ## [1.43.0] - 2026-09-09
 
 ### Corrigé

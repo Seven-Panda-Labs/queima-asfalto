@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-09
+
+### Alterado
+
+- **Duplicados no catálogo:** quem revê o catálogo passa a poder juntar o par nos dois sentidos, ficando com o nome que preferir. Antes só havia o sugerido.
+
+---
+
 ## [1.43.0] - 2026-09-09
 
 ### Corrigido
