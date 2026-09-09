@@ -396,6 +396,24 @@ function worth(entry: RaceCatalogEntry): number {
   return (reviewed(entry) ? 8 : 0) + (hasGates ? 4 : 0) + Math.min(editions.length, 3)
 }
 
+/**
+ * The pair with the entry worth keeping first.
+ *
+ * Exported because two callers have to agree on it: the queue, which suggests
+ * a survivor to the operator, and the backfill that applies a changed rule to
+ * what is already stored. A tie goes to the lower id, so the answer does not
+ * depend on which order the pair was read in.
+ */
+export function survivorFirst(
+  left: RaceCatalogEntry,
+  right: RaceCatalogEntry,
+): [RaceCatalogEntry, RaceCatalogEntry] {
+  if (worth(left) === worth(right)) {
+    return left.id < right.id ? [left, right] : [right, left]
+  }
+  return worth(left) > worth(right) ? [left, right] : [right, left]
+}
+
 export type DuplicateCandidate = {
   /** The entry offered as the survivor. */
   keep: RaceCatalogEntry
@@ -431,12 +449,7 @@ export function catalogDuplicateCandidates(
       // And a pair with no word in common is not a question, it is two races.
       if (!sharesAWord(left, right)) continue
 
-      const [keep, drop] =
-        worth(left) === worth(right)
-          ? [left, right].sort((a, b) => (a.id < b.id ? -1 : 1))
-          : worth(left) > worth(right)
-            ? [left, right]
-            : [right, left]
+      const [keep, drop] = survivorFirst(left, right)
       candidates.push({ keep, drop })
     }
   }

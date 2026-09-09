@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { RaceCatalogEntry } from '../raceCatalog/types'
-import { catalogDuplicateCandidates, findCatalogDuplicate } from './duplicates'
+import { catalogDuplicateCandidates, findCatalogDuplicate, survivorFirst } from './duplicates'
 
 function entry(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id' | 'name'>): RaceCatalogEntry {
   return {
@@ -300,6 +300,22 @@ describe('the pairs a runner found in the catalog', () => {
     const one = real('Dessauer Rathaus-Center City RUN', 'Dessau', '2026-09-13', ['km_5'])
     const two = real('27. Rathaus-Center CityRUN', 'Dessau-Roßlau', '2026-09-13', ['km_5'])
     expect(findCatalogDuplicate(two, [one])).not.toBeNull()
+  })
+})
+
+describe('survivorFirst', () => {
+  const plain = entry({ id: 'b-plain', name: 'Stadtlauf', disciplines: ['km_10'] })
+
+  it('keeps the entry a person stands behind', () => {
+    const checked = entry({ id: 'a-checked', name: 'Stadtlauf', review: 'reviewed' })
+    expect(survivorFirst(plain, checked)[0].id).toBe('a-checked')
+    expect(survivorFirst(checked, plain)[0].id).toBe('a-checked')
+  })
+
+  it('breaks a tie by id, so the answer does not depend on the reading order', () => {
+    const twin = entry({ id: 'a-twin', name: 'Stadtlauf', disciplines: ['km_10'] })
+    expect(survivorFirst(plain, twin)[0].id).toBe('a-twin')
+    expect(survivorFirst(twin, plain)[0].id).toBe('a-twin')
   })
 })
 
