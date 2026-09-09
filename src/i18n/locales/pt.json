@@ -1289,7 +1289,9 @@
     },
     "registeredNeedsDate": "Para ficar inscrito, diz a data da prova: ela vai para o calendário.",
     "registeredNeedsDiscipline": "Diz que distância vais correr.",
-    "savedWithEvent": "Inscrição guardada, e a prova foi para o calendário."
+    "savedWithEvent": "Inscrição guardada, e a prova foi para o calendário.",
+    "prefilled": "Preenchido a partir do catálogo, do que a {{source}} publica. Confirma antes de contares com estas datas.",
+    "prefilledReviewed": "Preenchido a partir do catálogo, verificado na {{source}}."
   },
   "season": {
     "tuneUpWindow": "teste de ~{{distance}} km entre {{from}} e {{to}}",

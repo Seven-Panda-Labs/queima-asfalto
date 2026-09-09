@@ -1289,7 +1289,9 @@
     },
     "registeredNeedsDate": "Para quedar inscrito, indica la fecha de la carrera: va al calendario.",
     "registeredNeedsDiscipline": "Indica qué distancia vas a correr.",
-    "savedWithEvent": "Inscripción guardada, y la carrera fue al calendario."
+    "savedWithEvent": "Inscripción guardada, y la carrera fue al calendario.",
+    "prefilled": "Rellenado desde el catálogo, con lo que publica {{source}}. Confírmalo antes de contar con estas fechas.",
+    "prefilledReviewed": "Rellenado desde el catálogo, verificado en {{source}}."
   },
   "season": {
     "tuneUpWindow": "test de ~{{distance}} km entre {{from}} y {{to}}",

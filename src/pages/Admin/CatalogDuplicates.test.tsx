@@ -77,7 +77,7 @@ describe('CatalogDuplicates', () => {
   })
 
   it('leaves out the link when no source page was recorded', () => {
-    const noUrl = pair.map(({ officialUrl, ...rest }) => rest as RaceCatalogEntry)
+    const noUrl: RaceCatalogEntry[] = pair.map((race) => ({ ...race, officialUrl: undefined }))
     render(<CatalogDuplicates races={noUrl} adminUid="admin" onChanged={vi.fn()} />)
 
     expect(screen.queryByRole('link', { name: /Abrir a origem/ })).not.toBeInTheDocument()

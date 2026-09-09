@@ -9,6 +9,7 @@
 ### Added
 
 - **Duplicates in the catalog:** each race in the review queue now carries a link to its source, so the two can be told apart on the pages they came from.
+- **Your entry arrives filled in:** planning a race the catalog knows brings its dates, gates and fee already in the form, with the source in plain sight. Until somebody has checked the entry they stay a suggestion, and the date does not count as confirmed.
 
 ---
 

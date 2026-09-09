@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Duplicados no catálogo:** cada prova da fila de revisão traz agora o link para a fonte, para confirmar nas páginas de origem qual das duas é qual.
+- **A inscrição já vem preenchida:** ao planear uma prova que o catálogo conhece, as datas, os prazos e o preço aparecem preenchidos, com a fonte à vista. Enquanto ninguém tiver verificado a entrada, ficam como sugestão e a data não conta como confirmada.
 
 ---
 
