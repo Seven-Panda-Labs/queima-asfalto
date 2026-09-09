@@ -10,7 +10,7 @@
 
 - **Duplicados en el catálogo:** cada carrera de la cola de revisión lleva ahora el enlace a su fuente, para distinguir las dos en las páginas de origen.
 - **La inscripción ya viene rellenada:** al planificar una carrera que el catálogo conoce, las fechas, los plazos y el precio aparecen rellenados, con la fuente a la vista. Mientras nadie haya verificado la entrada, quedan como sugerencia y la fecha no cuenta como confirmada.
-- **Tu resultado oficial mejora el catálogo:** al importar un resultado verificado, el día en que se corrió la carrera corrige la fecha que tenía el catálogo, para todos. Viaja solo el día, nunca quién lo envió, y sigue sin disparar avisos: para eso alguien tiene que haber verificado la carrera.
+- **Tu resultado oficial mejora el catálogo:** al importar un resultado verificado, le dices al catálogo qué día se corrió la carrera. Un año que no tenía entra de inmediato; corregir una fecha que ya tenía requiere que dos corredores coincidan. Viaja solo el día, nunca quién lo envió, y sigue sin disparar avisos.
 
 ---
 
