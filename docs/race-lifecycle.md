@@ -127,7 +127,7 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 | O que é uma edição | Um ano de uma prova anual. Um evento recorrente tem ocorrências de uma regra, não edições | [`race-catalog.md`](./race-catalog.md) |
 | Elo entre evento e edição | Derivado do ano da data do evento. Nenhum campo novo no evento | [`race-catalog.md`](./race-catalog.md) |
 | Identidade do parkrun | Fica sem `races/{id}`: entra num toque, sem inscrição nem prazos. Agrupa por nome | este documento |
-| Contribuir para o catálogo | O passado confirma-se (data e link de resultados, com resultado oficial verificado), o futuro pergunta-se (preço e prazos vão à fila) | [`race-catalog.md`](./race-catalog.md) |
+| Contribuir para o catálogo | Corroboração ou nada: um valor que o catálogo não tem entra com um corredor, mudar um que ele já tem exige dois a concordar. Os prazos de inscrição vão sempre a uma pessoa | [`race-catalog.md`](./race-catalog.md) |
 
 ### Perguntas abertas
 
@@ -274,7 +274,7 @@ They live in the issues or in the interviews, and should not be reopened in pass
 | What an edition is | One year of an annual race. A recurring event has occurrences from a rule, not editions | [`race-catalog.md`](./race-catalog.md) |
 | Event to edition link | Derived from the year of the event's date. No new field on the event | [`race-catalog.md`](./race-catalog.md) |
 | parkrun identity | Stays without a `races/{id}`: one tap to add, no entry and no deadlines. Groups by name | this document |
-| Contributing to the catalog | The past confirms itself (date and results link, with a verified official result), the future gets asked (fee and gates go to the queue) | [`race-catalog.md`](./race-catalog.md) |
+| Contributing to the catalog | Corroboration or nothing: a value the catalog does not have goes in on one runner, changing one it already has takes two agreeing. The entry gates always go to a person | [`race-catalog.md`](./race-catalog.md) |
 
 ### Open questions
 

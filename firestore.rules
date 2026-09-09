@@ -603,9 +603,13 @@ service cloud.firestore {
      * scheduled harvest folds it into the catalog, and nothing about who sent
      * it ever reaches the shared entry.
      *
-     * Only a date, and only the past. When entries open or close is what fires
-     * reminders, and a wrong deadline is wrong in silence, so that stays a
-     * question for a person.
+     * A day or a fee, and only the past. When entries open or close is what
+     * fires reminders, and a wrong deadline is wrong in silence, so that stays
+     * a question for a person.
+     *
+     * Nothing here is authority. Overruling something the catalog already
+     * holds takes two runners agreeing, which is decided where the entry is in
+     * hand rather than here.
      */
     match /raceCatalogEditionReports/{reportId} {
       // The runner reads their own reports; the admin reads them all.
@@ -622,8 +626,18 @@ service cloud.firestore {
         // One document per race, year and runner, so one person is one voice.
         && reportId == request.resource.data.catalogRaceId + '__'
           + string(request.resource.data.year) + '__' + request.auth.uid
-        && request.resource.data.raceDate is string
-        && request.resource.data.raceDate.size() == 10
+        // A day, a fee, or both: a runner registers months before they run, so
+        // the two arrive separately into one merged report.
+        && (('raceDate' in request.resource.data) || ('fee' in request.resource.data))
+        && (!('raceDate' in request.resource.data)
+          || (request.resource.data.raceDate is string
+            && request.resource.data.raceDate.size() == 10))
+        && (!('fee' in request.resource.data)
+          || (request.resource.data.fee is number
+            && request.resource.data.fee > 0
+            && request.resource.data.fee < 100000
+            && request.resource.data.feeCurrency is string
+            && request.resource.data.feeCurrency.size() == 3))
         && request.resource.data.reportedAt is string;
       allow delete: if false;
     }

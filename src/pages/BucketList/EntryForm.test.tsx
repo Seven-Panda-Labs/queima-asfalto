@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -15,6 +15,10 @@ vi.mock('../../services/raceCatalog', () => ({
   loadCatalogRace: () => Promise.resolve(catalogRace),
 }))
 vi.mock('../../services/races', () => ({ findOrCreateRaceId: vi.fn() }))
+const reportEditionFee = vi.fn()
+vi.mock('../../services/editionReports', () => ({
+  reportEditionFee: (...args: unknown[]) => reportEditionFee(...args),
+}))
 vi.mock('../../services/events', () => ({ createEvent: vi.fn() }))
 
 vi.mock('react-router-dom', () => ({
@@ -44,8 +48,14 @@ const wish: BucketListItem = {
 vi.mock('../../hooks/useBucketList', () => ({
   useBucketList: () => ({ items: [wish], loading: false }),
 }))
+const addEntry = vi.fn((_data: unknown) => Promise.resolve('entry-new'))
 vi.mock('../../hooks/useRaceEntries', () => ({
-  useRaceEntries: () => ({ entries, loading: false, addEntry: vi.fn(), editEntry: vi.fn() }),
+  useRaceEntries: () => ({
+    entries,
+    loading: false,
+    addEntry: (data: unknown) => addEntry(data),
+    editEntry: vi.fn(),
+  }),
 }))
 vi.mock('../../hooks/useRaces', () => ({
   useRaces: () => ({
@@ -86,6 +96,48 @@ afterEach(() => {
   vi.clearAllMocks()
   catalogRace = null
   entries = []
+})
+
+describe('what the runner tells the catalog back', () => {
+  /** Fills in what saving a registered entry needs, then saves. */
+  async function registerAndSave() {
+    await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
+    fireEvent.change(screen.getByLabelText(/Distância/), { target: { value: 'km_42_2' } })
+    fireEvent.change(screen.getByLabelText(/Estado/), { target: { value: 'registered' } })
+    fireEvent.click(screen.getByRole('button', { name: /Guardar/ }))
+  }
+
+  it('reports the fee it cost once the runner is in', async () => {
+    catalogRace = catalog()
+    render(<EntryForm />)
+    await registerAndSave()
+
+    // No source we read publishes a fee, so a runner who paid one is the only
+    // one who can say.
+    await waitFor(() =>
+      expect(reportEditionFee).toHaveBeenCalledWith(
+        'u1',
+        'pt-lisboa-maratona-de-lisboa',
+        2099,
+        45,
+        'EUR',
+      ),
+    )
+  })
+
+  it('says nothing while the runner is only watching', async () => {
+    catalogRace = catalog()
+    render(<EntryForm />)
+
+    await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
+    fireEvent.change(screen.getByLabelText(/Distância/), { target: { value: 'km_42_2' } })
+    fireEvent.click(screen.getByRole('button', { name: /Guardar/ }))
+
+    // Wait for the save itself, so this is not passing on a race.
+    await waitFor(() => expect(addEntry).toHaveBeenCalled())
+    // A fee they were quoted and never paid is not a fee.
+    expect(reportEditionFee).not.toHaveBeenCalled()
+  })
 })
 
 describe('EntryForm and what the catalog already knows', () => {
