@@ -24,8 +24,24 @@ import { slugify, stripEdition } from './identity.js'
  */
 
 /** Sponsors and connectives, which is most of what differs between two names. */
-const NOISE =
-  /\b(bmw|generali|adidas|garmin|volvo|tcs|bnp|paribas|edp|nn|virgin|money|asics|brooks|hoka|puma|nike|presented|powered|by|im|rahmen|des|beim|der|die|das|le|la|el)\b/giu
+const NOISE_WORDS =
+  'bmw|generali|adidas|garmin|volvo|tcs|bnp|paribas|edp|nn|virgin|money|asics|brooks|hoka|puma|nike|presented|powered|by|im|rahmen|des|beim|der|die|das|le|la|el'
+
+const NOISE = new RegExp(String.raw`\b(${NOISE_WORDS})\b`, 'giu')
+
+/**
+ * The same words, one at a time.
+ *
+ * A name search needs this as much as the dedup rule does: the word worth
+ * asking the server for is neither the sponsor nor the connective, because the
+ * sponsor is exactly what differs between the name a runner kept and the one a
+ * source published.
+ */
+const NOISE_WORD = new RegExp(`^(?:${NOISE_WORDS})$`, 'iu')
+
+export function isNoiseWord(word: string): boolean {
+  return NOISE_WORD.test(word)
+}
 
 /** "24h-Lauf" and "24-Stunden-Lauf" are one race, written by two sources. */
 const HOURS = /(\d{1,3})\s*h\b/giu

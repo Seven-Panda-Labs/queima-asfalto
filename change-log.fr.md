@@ -9,6 +9,7 @@
 ### Ajouté
 
 - **Trouver une course par son nom :** le champ de recherche cherche maintenant dans tout le catalogue, et non plus seulement dans les courses déjà affichées. Taper « Teltowkanal » trouve la course, même si elle est la trois millième de la file.
+- **Dire quelle course c'est :** sur la page d'un événement, si la course n'est pas liée au catalogue partagé, tu peux la chercher par son nom et dire laquelle c'est. Dès lors le catalogue remplit tout seul les dates et le tarif de la prochaine édition, et ton résultat officiel corrige la date pour tout le monde.
 
 ---
 

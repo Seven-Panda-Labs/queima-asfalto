@@ -1425,5 +1425,16 @@
     "planned": "« {{name}} » est au calendrier, samedi.",
     "planError": "Impossible de mettre ce parkrun au calendrier.",
     "farAway": "Le plus proche est à {{km}} km. parkrun n'existe pas dans tous les pays, donc c'est pour quand tu voyages."
+  },
+  "identifyInCatalog": {
+    "offer": "Cette course n'est pas liée au catalogue partagé. Dire laquelle c'est ?",
+    "title": "Quelle course du catalogue est-ce ?",
+    "why": "Liée, le catalogue remplit tout seul les dates et le tarif de la prochaine édition, et ton résultat officiel corrige la date pour tout le monde.",
+    "search": "Chercher par nom",
+    "pick": "C'est celle-ci",
+    "noneFound": "Rien dans le catalogue avec ce mot. Essaie un autre mot du nom, ou la ville.",
+    "notThere": "Si elle n'est pas au catalogue, il n'y a pas encore de moyen de l'ajouter.",
+    "searchError": "La recherche a échoué.",
+    "saveError": "La liaison a échoué."
   }
 }

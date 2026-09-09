@@ -17,7 +17,7 @@
  * the ones called Berlin something.
  */
 
-import { GENERIC } from '../eventDiscovery/duplicates.js'
+import { GENERIC, isNoiseWord } from '../eventDiscovery/duplicates.js'
 
 /** Anything shorter is noise: "5k", "de", "am", and every roman numeral. */
 const MIN_LENGTH = 3
@@ -59,8 +59,13 @@ export function nameTokensOf(name: string, city = ''): string[] {
  * "halbmarathon" is on hundreds of entries and "teltowkanal" on one, and it is
  * the longer of the two, which is why length alone is the wrong test.
  *
+ * A sponsor is skipped for the same reason, and it matters more than it
+ * sounds: "Generali Berliner Halbmarathon" has two words that are not generic,
+ * and the sponsor is the one that differs between the name a runner kept and
+ * the one the source published.
+ *
  * The longest is the tie-break among words that are all distinctive, and the
- * fallback when every word typed is a generic one.
+ * fallback when every word typed is generic or a sponsor.
  */
 export function searchToken(typed: string): string | undefined {
   const words = normalizeToken(typed)
@@ -68,7 +73,7 @@ export function searchToken(typed: string): string | undefined {
     .filter((word) => word.length >= MIN_LENGTH)
   if (words.length === 0) return undefined
 
-  const distinctive = words.filter((word) => !GENERIC.test(word))
+  const distinctive = words.filter((word) => !GENERIC.test(word) && !isNoiseWord(word))
   const longest = (list: string[]) =>
     list.reduce((best, word) => (word.length > best.length ? word : best))
   return longest(distinctive.length > 0 ? distinctive : words)

@@ -1425,5 +1425,16 @@
     "planned": "\"{{name}}\" steht für Samstag im Kalender.",
     "planError": "Dieser parkrun konnte nicht in den Kalender.",
     "farAway": "Der nächste ist {{km}} km entfernt. parkrun gibt es nicht in jedem Land, das hier ist also für Reisen."
+  },
+  "identifyInCatalog": {
+    "offer": "Dieses Rennen ist nicht mit dem geteilten Katalog verknüpft. Sagen, welches es ist?",
+    "title": "Welches Rennen im Katalog ist das?",
+    "why": "Verknüpft füllt der Katalog Termine und Gebühr der nächsten Ausgabe selbst aus, und dein offizielles Ergebnis korrigiert das Datum für alle.",
+    "search": "Nach Namen suchen",
+    "pick": "Dieses",
+    "noneFound": "Nichts im Katalog mit diesem Wort. Versuche ein anderes Wort aus dem Namen, oder den Ort.",
+    "notThere": "Wenn es nicht im Katalog ist, gibt es noch keinen Weg, es hinzuzufügen.",
+    "searchError": "Die Suche war nicht möglich.",
+    "saveError": "Das Verknüpfen war nicht möglich."
   }
 }

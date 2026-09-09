@@ -27,6 +27,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaces } from '../../hooks/useRaces'
+import { IdentifyInCatalog } from './IdentifyInCatalog'
 import { useEventMedia } from '../../hooks/useEventMedia'
 import { useEventTrack } from '../../hooks/useEventTrack'
 import { useEvents } from '../../hooks/useEvents'
@@ -567,6 +568,19 @@ export function EventDetail() {
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <SeasonNotes season={season} />
           </div>
+        ) : null}
+
+        {/* Only on the runner's own event, and only where the chain is broken:
+            without it the catalog cannot fill in next year and this event's
+            verified result cannot correct the day for anybody. */}
+        {!isSharedView && user ? (
+          <IdentifyInCatalog
+            event={event}
+            userId={user.uid}
+            linked={Boolean(
+              races.find((candidate) => candidate.id === event.raceId)?.catalogRaceId,
+            )}
+          />
         ) : null}
 
         {projection ? <RaceProjection projection={projection} /> : null}
