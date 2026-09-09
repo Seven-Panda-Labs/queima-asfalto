@@ -4,6 +4,14 @@
 
 ---
 
+## [1.43.0] - 2026-09-09
+
+### Behoben
+
+- **Dasselbe Rennen zweimal:** der Katalog erkennt jetzt denselben Ort in mehr oder weniger Detail („Dessau“ und „Dessau-Roßlau“, „Freiburg“ und „Freiburg im Breisgau“), dasselbe Wort in einer anderen Sprache („Maratona“ und „Marathon“) und eine Veranstaltung über mehrere Tage, die jede Quelle anders datiert. Er verlangt auch nicht mehr, dass zwei Quellen dieselben Distanzen nennen, damit es dasselbe Rennen ist. Von fünfundzwanzig doppelten Paaren, die ein Leser von Hand fand, werden nun einundzwanzig erkannt.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Hinzugefügt

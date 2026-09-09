@@ -4,6 +4,14 @@
 
 ---
 
+## [1.43.0] - 2026-09-09
+
+### Corrigé
+
+- **La même course deux fois :** le catalogue reconnaît maintenant une même ville écrite avec plus ou moins de détail (« Dessau » et « Dessau-Roßlau », « Freiburg » et « Freiburg im Breisgau »), le même mot dans une autre langue (« Maratona » et « Marathon »), et un événement sur plusieurs jours que chaque source date à sa façon. Il n'exige plus non plus que deux sources annoncent les mêmes distances pour que la course soit la même. Sur vingt-cinq paires en double trouvées à la main par un lecteur, vingt et une sont désormais détectées.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Ajouté

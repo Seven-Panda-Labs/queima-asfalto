@@ -4,6 +4,14 @@
 
 ---
 
+## [1.43.0] - 2026-09-09
+
+### Corrigido
+
+- **A mesma prova duas vezes:** o catálogo passa a reconhecer a mesma terra escrita com mais ou menos detalhe («Dessau» e «Dessau-Roßlau», «Freiburg» e «Freiburg im Breisgau»), a mesma palavra noutra língua («Maratona» e «Marathon»), e um evento de vários dias que cada fonte data à sua maneira. Também deixou de exigir que duas fontes anunciem as mesmas distâncias para a prova ser a mesma. De vinte e cinco pares repetidos que um leitor encontrou à mão, vinte e um passam a ser detectados.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Adicionado

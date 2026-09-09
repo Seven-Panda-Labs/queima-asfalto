@@ -27,12 +27,75 @@ import { slugify, stripEdition } from './identity.js'
 const NOISE =
   /\b(bmw|generali|adidas|garmin|volvo|tcs|bnp|paribas|edp|nn|virgin|money|asics|brooks|hoka|puma|nike|presented|powered|by|im|rahmen|des|beim|der|die|das|le|la|el)\b/giu
 
+/** "24h-Lauf" and "24-Stunden-Lauf" are one race, written by two sources. */
+const HOURS = /(\d{1,3})\s*h\b/giu
+
 function normalizeName(name: string): string {
-  return slugify(stripEdition(name).replace(NOISE, ' ')).replace(/-+/g, '-')
+  return slugify(stripEdition(name).replace(HOURS, '$1 stunden').replace(NOISE, ' ')).replace(
+    /-+/g,
+    '-',
+  )
+}
+
+/**
+ * The word for a race, stuck to the end of what the race is about.
+ *
+ * German compounds it: "Kannenstieglauf" is a run at the Kannenstieg and
+ * "Herbstlauf" is one in autumn, and the same event is written "Lauf in den
+ * Herbst" by the next source. Comparing the stem is what makes those the same
+ * two words. Only when a stem is left: "Lauf" on its own stays "Lauf", and
+ * "Marathon" stays a marathon while "Halbmarathon" becomes "halb".
+ */
+const RACE_WORD = /(?:lauf|laufen|run|running|marathon|maraton|corrida|trail|race)$/iu
+
+/**
+ * The same distance, in the languages the sources publish it in.
+ *
+ * "13. EDP Maratona de Lisboa" and "Lissabon Marathon" are one race, and a
+ * German calendar naming a Portuguese one is the normal case rather than the
+ * exception. A half stays a half: "Halbmarathon" reduces to "half" and
+ * "Marathon" to "marathon", so the two never meet.
+ */
+const MARATHON = /^(?:marathons?|maratona|maraton|marat[oó]n)$/iu
+const HALF = /^(?:halb|half|meia|media|mezza|semi|halv)$/iu
+
+function stem(token: string): string {
+  const stripped = token.replace(RACE_WORD, '')
+  const root = stripped.length >= 4 ? stripped : token
+  if (HALF.test(root)) return 'half'
+  return MARATHON.test(root) ? 'marathon' : root
+}
+
+/**
+ * The numbers a name carries, once the edition is off the front.
+ *
+ * Two names that are otherwise the same and disagree on a number are two
+ * things: "Die Bergischen 5 Etappe 1" and "Etappe 2" are two stages of a stage
+ * race, "Ironman 5150" and "Ironman 70.3" are two formats, and "Berlin 5K" is
+ * not "Berlin 10K". The stage number is one character, so every filter that
+ * works on word length drops it and the names come out identical.
+ *
+ * One side with no number says nothing: "Neckarsteiglauf" and
+ * "Neckarsteiglauf 126K" are one race, and a source that leaves the distance
+ * out of the name has not disagreed about it.
+ */
+function numbersIn(name: string): Set<string> {
+  return new Set(normalizeName(name).match(/\d+/g) ?? [])
+}
+
+function numbersRuleOut(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  const here = numbersIn(left.name)
+  const there = numbersIn(right.name)
+  if (here.size === 0 || there.size === 0) return false
+  if (here.size !== there.size) return true
+  return [...here].some((number) => !there.has(number))
 }
 
 function tokens(name: string): string[] {
-  return normalizeName(name).split('-').filter((token) => token.length > 2)
+  return normalizeName(name)
+    .split('-')
+    .filter((token) => token.length > 2)
+    .map(stem)
 }
 
 /**
@@ -72,36 +135,119 @@ function namesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
   return shorter.every((token) => longer.includes(token))
 }
 
+function daysOf(entry: RaceCatalogEntry): string[] {
+  const days = (entry.editions ?? [])
+    .map((edition) => edition.raceDate)
+    .filter((day): day is string => Boolean(day))
+  return [...new Set(days)]
+}
+
 function sameDay(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
-  const days = (entry: RaceCatalogEntry) =>
-    new Set((entry.editions ?? []).map((edition) => edition.raceDate).filter(Boolean))
-  const leftDays = days(left)
+  const leftDays = new Set(daysOf(left))
   if (leftDays.size === 0) return false
-  return [...days(right)].some((day) => leftDays.has(day))
+  return daysOf(right).some((day) => leftDays.has(day))
+}
+
+/**
+ * How far apart two sources may date one event.
+ *
+ * An event that runs over a weekend has no single day, and each source picks
+ * one: the Gerês Extreme Marathon runs from the 27th to the 29th of November
+ * with its distances spread across the three, and one calendar dates it the
+ * 27th while the other dates the 42 km the 29th. The Maratona da Europa is the
+ * 24th to one source and the 25th to the other.
+ *
+ * Two days, and only where the names agree. A week apart is a different edition
+ * of a series, and where the name is not the evidence the day stays exact: see
+ * `findCatalogDuplicate`.
+ */
+const SPREAD_DAYS = 2
+
+function daysAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  const here = daysOf(left)
+  const there = daysOf(right)
+  if (here.length === 0 || there.length === 0) return false
+
+  const day = (value: string) => Date.parse(`${value}T00:00:00Z`)
+  return here.some((one) =>
+    there.some((other) => {
+      const apart = Math.abs(day(one) - day(other))
+      return Number.isFinite(apart) && apart <= SPREAD_DAYS * 86400000
+    }),
+  )
+}
+
+/**
+ * Words that qualify a town rather than name one.
+ *
+ * German writes the same town a dozen ways and each source picks one: "Freiburg
+ * im Breisgau", "Neuenstadt am Kocher", "Hermsdorf/Thueringen". What is left
+ * after these is the name.
+ */
+const PLACE_NOISE = /\b(?:im|am|an|auf|bei|der|den|dem|des|die|das|ob|vor|in|bad)\b/giu
+
+/**
+ * A town's name as tokens, with everything that only qualifies it removed.
+ *
+ * A parenthetical is a qualifier too ("Dabendorf (Zossen)", "Bernburg
+ * (Saale)"), and so is an abbreviation a source could not be bothered to
+ * expand ("Neuenstadt A.k."), which is why anything under three letters goes.
+ */
+function placeTokens(city: string): string[] {
+  return slugify(city.replace(/\(.*?\)/g, ' ').replace(PLACE_NOISE, ' '))
+    .split('-')
+    .filter((token) => token.length >= 3)
+}
+
+/**
+ * The same town, however much of its name a source wrote.
+ *
+ * Equality was too strict, and every pair a person checked by hand says so:
+ * "Dabendorf" and "Dabendorf (Zossen)", "Freiburg" and "Freiburg im Breisgau",
+ * "Dessau" and "Dessau-Rosslau", "Goslar-Hahnenklee" and "Hahnenklee". One name
+ * inside the other is the same place named at two levels of detail, which is
+ * what a district, a merged municipality and a disambiguator all look like.
+ *
+ * It does let "Frankfurt" match "Frankfurt (Oder)", which are two cities. What
+ * keeps that from becoming a merge is everything else the pair still has to
+ * agree on: the same day, and a name that agrees or a word worth asking about.
+ */
+/**
+ * The same town with one letter more, which is how languages spell it.
+ *
+ * "Night Marathon Luxembourg" in Luxembourg and "ING Night Marathon
+ * Luxembourg" in Luxemburg are one race, and a German calendar spelling a
+ * foreign city its own way is the normal case here.
+ *
+ * A letter added or removed only, never one swapped, and never under seven of
+ * them. That is the difference between Luxembourg and Luxemburg on one hand and
+ * Freiburg and Freiberg on the other, which are two cities four hundred
+ * kilometres apart.
+ */
+function oneLetterApart(here: string, there: string): boolean {
+  const [shorter, longer] = here.length <= there.length ? [here, there] : [there, here]
+  if (shorter.length < 7 || longer.length !== shorter.length + 1) return false
+
+  let at = 0
+  for (let index = 0; index < longer.length; index += 1) {
+    if (shorter[at] === longer[index]) at += 1
+  }
+  return at === shorter.length
+}
+
+function sameTown(here: string, there: string): boolean {
+  return here === there || oneLetterApart(here, there)
 }
 
 function samePlace(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
   if (left.country.toUpperCase() !== right.country.toUpperCase()) return false
-  const city = (entry: RaceCatalogEntry) => slugify(entry.city)
-  return Boolean(city(left)) && city(left) === city(right)
-}
 
-/**
- * The distances do not rule the pair out.
- *
- * An overlap where both sides publish one, and a free pass where either side
- * publishes none: not knowing a distance is not the same as knowing a different
- * one, and half the sources leave it out. "Birkenfelder Firmenlauf" with no
- * distance and "Birkenfelder Firmenlauf - Die Wirtschaft läuft" over 5 km sat
- * side by side in the catalog for exactly this reason.
- *
- * The day, the city and the name still have to agree, which is what keeps this
- * from merging the two different 5 km of the Berlin marathon weekend.
- */
-function distancesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
-  if (left.disciplines.length === 0 || right.disciplines.length === 0) return true
-  const mine = new Set(left.disciplines)
-  return right.disciplines.some((discipline) => mine.has(discipline))
+  const here = placeTokens(left.city)
+  const there = placeTokens(right.city)
+  if (here.length === 0 || there.length === 0) return false
+
+  const [shorter, longer] = here.length <= there.length ? [here, there] : [there, here]
+  return shorter.every((token) => longer.some((other) => sameTown(token, other)))
 }
 
 function reviewed(entry: RaceCatalogEntry): boolean {
@@ -116,7 +262,29 @@ function keptApart(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
 }
 
 /**
- * As far as the day, the place and the distance can tell, one race.
+ * The distances do not rule the pair out.
+ *
+ * An overlap where both sides publish one, and a free pass where either side
+ * publishes none: not knowing a distance is not the same as knowing a different
+ * one, and half the sources leave it out. "Birkenfelder Firmenlauf" with no
+ * distance and "Birkenfelder Firmenlauf - Die Wirtschaft läuft" over 5 km sat
+ * side by side in the catalog for exactly this reason.
+ *
+ * Only the reviewed anchor asks for this now. When the names plainly agree it
+ * is dropped, because two sources reading one event publish different subsets
+ * of what it sells and the subsets can be disjoint: one has the "wep Marathon"
+ * and the other the "wep-Strom Lauf" over 5, 10 and 21 km. Where the only
+ * evidence is that a person checked one side, the distance is what keeps a
+ * charity 5 km out of the New York marathon it happens to share a Sunday with.
+ */
+function distancesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  if (left.disciplines.length === 0 || right.disciplines.length === 0) return true
+  const mine = new Set(left.disciplines)
+  return right.disciplines.some((discipline) => mine.has(discipline))
+}
+
+/**
+ * As far as the day and the place can tell, one race.
  *
  * Necessary and nowhere near sufficient: the Berlin weekend has two different
  * 5 km in the same city on the same day. What the two callers do with it is
@@ -130,9 +298,14 @@ function couldBeTheSameRace(left: RaceCatalogEntry, right: RaceCatalogEntry): bo
     !left.duplicateOfCatalogRaceId &&
     !right.duplicateOfCatalogRaceId &&
     !keptApart(left, right) &&
-    sameDay(left, right) &&
-    samePlace(left, right) &&
-    distancesAgree(left, right)
+    daysAgree(left, right) &&
+    // Two sources dating one event differently is the weakest ground there is,
+    // so it asks for the distances back: the Berlin marathon weekend puts a
+    // 5 km on the Saturday and the marathon on the Sunday, and the two names
+    // come down to "marathon" either way.
+    (sameDay(left, right) || distancesAgree(left, right)) &&
+    !numbersRuleOut(left, right) &&
+    samePlace(left, right)
   )
 }
 
@@ -150,8 +323,17 @@ export function findCatalogDuplicate(
     if (!couldBeTheSameRace(entry, harvested)) continue
 
     // A person checked this one, so the harvest is describing it, not finding
-    // something new.
-    if (reviewed(entry) && !reviewed(harvested)) return entry
+    // something new. The distance has to agree here: the name is not the
+    // evidence on this branch, and without it the "BT5K - New York City"
+    // merged into the New York City Marathon it shares a Sunday with.
+    if (
+      reviewed(entry) &&
+      !reviewed(harvested) &&
+      sameDay(entry, harvested) &&
+      distancesAgree(entry, harvested)
+    ) {
+      return entry
+    }
     if (namesAgree(entry, harvested)) return entry
   }
 

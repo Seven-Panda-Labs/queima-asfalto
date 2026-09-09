@@ -1,0 +1,512 @@
+{
+  "note": "Pairs a person checked by hand and confirmed are one race. Each was invisible to the rule when it was collected: not merged, and not even asked about. Append to this list rather than describing a case in prose, and the test says what the rule does with it. A side carries a day only when the two sources disagree about it.",
+  "pairs": [
+    {
+      "left": {
+        "name": "33. Dabendorfer Herbstlauf",
+        "city": "Dabendorf",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_15"
+        ]
+      },
+      "right": {
+        "name": "33. Dabendorfer Herbstlauf",
+        "city": "Dabendorf (Zossen)",
+        "disciplines": [
+          "m_1500",
+          "km_5",
+          "km_10",
+          "km_15"
+        ]
+      },
+      "expect": "merged",
+      "why": "the town with its district in brackets",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "11. Unstrutlauf",
+        "city": "Dingelstädt",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "right": {
+        "name": "Unstrutlauf Dingelstädt",
+        "city": "Dingelstädt",
+        "disciplines": [
+          "m_1500"
+        ]
+      },
+      "expect": "merged",
+      "why": "one source published a single distance the other does not list",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Charity Walk & Run in Freiburg",
+        "city": "Freiburg",
+        "disciplines": [
+          "km_5",
+          "km_10"
+        ]
+      },
+      "right": {
+        "name": "Charity Walk & Run - Freiburg",
+        "city": "Freiburg im Breisgau",
+        "disciplines": [
+          "km_10"
+        ]
+      },
+      "expect": "merged",
+      "why": "the town with its qualifier",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "10-Teiche-Marathon",
+        "city": "Goslar",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "13. 10 Teiche Marathon Hahnenklee im Oberharz",
+        "city": "Goslar-Hahnenklee",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "expect": "merged",
+      "why": "the town and its district, hyphenated",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "13. 10 Teiche Marathon Hahnenklee im Oberharz",
+        "city": "Goslar-Hahnenklee",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "10 Teiche Marathon",
+        "city": "Hahnenklee",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "expect": "merged",
+      "why": "the district on its own, and disjoint distances for one event",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Holzlandlauf",
+        "city": "Hermsdorf",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "right": {
+        "name": "Holzlandlauf",
+        "city": "Hermsdorf/Thüringen",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "expect": "merged",
+      "why": "the town with its state after a slash",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Kindelsberglauf Eichen",
+        "city": "Kreuztal-Eichen",
+        "disciplines": [
+          "km_5",
+          "km_10"
+        ]
+      },
+      "right": {
+        "name": "Eichener Kindelsberglauf",
+        "city": "Kreuztal",
+        "disciplines": [
+          "km_10"
+        ]
+      },
+      "expect": "merged",
+      "why": "the district in the name of one and the city of the other",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Motorman Run",
+        "city": "Neuenstadt A.k.",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "mi_10"
+        ]
+      },
+      "right": {
+        "name": "Motorman Run",
+        "city": "Neuenstadt am Kocher",
+        "disciplines": []
+      },
+      "expect": "merged",
+      "why": "the qualifier abbreviated to two initials",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Oldenburger Hospizlauf",
+        "city": "Oldenburg in Holstein",
+        "disciplines": [
+          "m_1500",
+          "mi_50"
+        ]
+      },
+      "right": {
+        "name": "Oldenburger Hospizlauf",
+        "city": "Oldenburg",
+        "disciplines": [
+          "mi_50"
+        ]
+      },
+      "expect": "merged",
+      "why": "the town that needs a qualifier to tell it from the other Oldenburg",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "20. Lauf in den Herbst",
+        "city": "Putzbrunn",
+        "disciplines": [
+          "km_5",
+          "km_10"
+        ]
+      },
+      "right": {
+        "name": "Putzbrunner Herbstlauf",
+        "city": "Putzbrunn",
+        "disciplines": [
+          "km_10"
+        ]
+      },
+      "expect": "merged",
+      "why": "German compounds what the other source writes as a phrase",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "24-Stunden-Lauf Rodgau",
+        "city": "Rodgau",
+        "disciplines": []
+      },
+      "right": {
+        "name": "24h-Lauf Rodgau",
+        "city": "Rodgau",
+        "disciplines": []
+      },
+      "expect": "merged",
+      "why": "the hours written as a word and as an h",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Dessauer Rathaus-Center City RUN",
+        "city": "Dessau",
+        "disciplines": [
+          "m_1500",
+          "km_5",
+          "km_10"
+        ]
+      },
+      "right": {
+        "name": "Dessauer Rathaus-Center City RUN",
+        "city": "Dessau-Roßlau",
+        "disciplines": []
+      },
+      "expect": "merged",
+      "why": "a merged municipality",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Friedberger Halbmarathon",
+        "city": "Friedberg",
+        "disciplines": [
+          "km_21_1"
+        ]
+      },
+      "right": {
+        "name": "Friedberger Halbmarathon",
+        "city": "Friedberg i.Bayern",
+        "disciplines": [
+          "km_21_1"
+        ]
+      },
+      "expect": "merged",
+      "why": "the state abbreviated onto the town",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "12. Cross against Cancer",
+        "city": "Homburg",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "mi_10"
+        ]
+      },
+      "right": {
+        "name": "Cross Against Cancer - Homburg",
+        "city": "Homburg",
+        "disciplines": [
+          "km_21_1"
+        ]
+      },
+      "expect": "merged",
+      "why": "two sources publishing disjoint halves of what one event sells",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "9. Bernburger Halbmarathon",
+        "city": "Bernburg",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "right": {
+        "name": "Bernburger Halbmarathon",
+        "city": "Bernburg (Saale)",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "expect": "merged",
+      "why": "the river in brackets",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Kannenstieglauf MLV einheit",
+        "city": "Magdeburg",
+        "disciplines": [
+          "m_1500",
+          "m_3000",
+          "km_5"
+        ]
+      },
+      "right": {
+        "name": "Stadtteillauf im Kannenstieg",
+        "city": "Magdeburg",
+        "disciplines": []
+      },
+      "expect": "queued",
+      "why": "the district is all the two names share, and one calls the race by the district and the other by what it is",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Neue Presse Firmenlauf",
+        "city": "Bad Rodach",
+        "disciplines": []
+      },
+      "right": {
+        "name": "Neue Presse Firmenlauf 2026",
+        "city": "Gemünda",
+        "disciplines": []
+      },
+      "expect": "invisible",
+      "why": "two towns five kilometres apart whose names have nothing in common. Only coordinates could reach this one, and one of the two sources publishes none",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "17. wep Marathon",
+        "city": "Hückelhoven",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "wep-Strom Lauf",
+        "city": "Hückelhoven",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1"
+        ]
+      },
+      "expect": "invisible",
+      "why": "all the names share is the sponsor \"wep\", three letters, and the queue asks for four. Turkey Trails OKC and Veterans Voyage OKC are why",
+      "country": "DE"
+    },
+    {
+      "left": {
+        "name": "Night Marathon Luxembourg",
+        "city": "Luxembourg",
+        "disciplines": [
+          "km_21_1",
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "ING Night Marathon Luxembourg",
+        "city": "Luxemburg",
+        "disciplines": [
+          "km_5",
+          "km_21_1",
+          "km_42_2"
+        ]
+      },
+      "country": "LU",
+      "expect": "merged",
+      "why": "the city spelled with one letter more, which is what the next language does"
+    },
+    {
+      "left": {
+        "name": "13. EDP Maratona de Lisboa",
+        "city": "Lissabon",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "Lissabon Marathon",
+        "city": "Lissabon",
+        "disciplines": [
+          "km_10",
+          "km_21_1",
+          "km_42_2"
+        ]
+      },
+      "country": "PT",
+      "expect": "merged",
+      "why": "\"Maratona\" and \"Marathon\" are the same word, and a German calendar names a Portuguese race"
+    },
+    {
+      "left": {
+        "name": "Maratona da Europa – Aveiro",
+        "city": "Aveiro",
+        "day": "2027-04-24",
+        "disciplines": [
+          "km_5",
+          "km_10",
+          "km_21_1",
+          "km_42_2"
+        ]
+      },
+      "right": {
+        "name": "7. Maratona da Europa",
+        "city": "Aveiro",
+        "day": "2027-04-25",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "country": "PT",
+      "expect": "merged",
+      "why": "an event over a weekend, dated the Saturday by one source and the Sunday by the other"
+    },
+    {
+      "left": {
+        "name": "Gerês Extreme Marathon",
+        "city": "Campo do Gerês",
+        "day": "2026-11-27",
+        "disciplines": [
+          "km_15",
+          "km_21_1",
+          "km_42_2",
+          "km_100"
+        ]
+      },
+      "right": {
+        "name": "12. Geres Extreme Marathon 42 km",
+        "city": "Geres",
+        "day": "2026-11-29",
+        "disciplines": [
+          "km_42_2"
+        ]
+      },
+      "country": "PT",
+      "expect": "merged",
+      "why": "three days, 27 to 29 November, with the distances spread across them: one source dates the event and the other dates the 42 km"
+    },
+    {
+      "left": {
+        "name": "Trail Vitoriano",
+        "city": "Ermidas do Sado",
+        "disciplines": []
+      },
+      "right": {
+        "name": "X TRAIL VITORIANO",
+        "city": "Ermidas-Sado",
+        "disciplines": [
+          "km_10",
+          "km_15",
+          "km_21_1"
+        ]
+      },
+      "country": "PT",
+      "expect": "merged",
+      "why": "the same town with and without its preposition"
+    },
+    {
+      "left": {
+        "name": "Lisbon Half Marathon",
+        "city": "Lisbon",
+        "disciplines": [
+          "km_21_1"
+        ]
+      },
+      "right": {
+        "name": "Meia Maratona de Lisboa",
+        "city": "Alfama",
+        "disciplines": [
+          "km_21_1"
+        ]
+      },
+      "country": "PT",
+      "expect": "invisible",
+      "why": "one source gives the city and the other the neighbourhood the start is in. Alfama and Lisbon share no letters, and only a gazetteer or coordinates could say one contains the other"
+    },
+    {
+      "left": {
+        "name": "Trail Vicentino Noturno",
+        "city": "Fenais da Luz",
+        "disciplines": []
+      },
+      "right": {
+        "name": "V Trail Vicentino Noturno by Oliveira Pneus",
+        "city": "Ponta Delgada",
+        "disciplines": [
+          "km_10",
+          "km_21_1",
+          "km_30"
+        ]
+      },
+      "country": "PT",
+      "expect": "invisible",
+      "why": "the parish against its municipality, the same shape as Alfama and Lisbon: the names agree and the places cannot be compared as text"
+    }
+  ]
+}

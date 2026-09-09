@@ -4,6 +4,14 @@
 
 ---
 
+## [1.43.0] - 2026-09-09
+
+### Corregido
+
+- **La misma carrera dos veces:** el catálogo reconoce ahora el mismo pueblo escrito con más o menos detalle («Dessau» y «Dessau-Roßlau», «Freiburg» y «Freiburg im Breisgau»), la misma palabra en otro idioma («Maratona» y «Marathon»), y un evento de varios días que cada fuente fecha a su manera. También dejó de exigir que dos fuentes anuncien las mismas distancias para que la carrera sea la misma. De veinticinco pares repetidos que un lector encontró a mano, veintiuno se detectan ya.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Añadido

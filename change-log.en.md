@@ -4,6 +4,14 @@
 
 ---
 
+## [1.43.0] - 2026-09-09
+
+### Fixed
+
+- **The same race listed twice:** the catalog now recognises one town written with more or less detail ("Dessau" and "Dessau-Rosslau", "Freiburg" and "Freiburg im Breisgau"), the same word in another language ("Maratona" and "Marathon"), and an event over several days that each source dates its own way. It also stopped asking two sources to announce the same distances before the race can be the same one. Of twenty five duplicate pairs a reader found by hand, twenty one are now caught.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Added

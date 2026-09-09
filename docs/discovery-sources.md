@@ -267,8 +267,64 @@ cidade:
 E a distância deixou de poder impedir: se um dos lados não publica nenhuma, não
 sabemos a distância, não é que saibamos que é outra. Metade das fontes não a
 publica, e o «Birkenfelder Firmenlauf» esteve ao lado do «Birkenfelder
-Firmenlauf - Die Wirtschaft läuft» só por isso. Quando os dois lados publicam,
-continua a exigir-se uma em comum.
+Firmenlauf - Die Wirtschaft läuft» só por isso. Depois de dezoito pares
+verificados à mão, deixou de impedir também quando os dois lados publicam: duas
+fontes a ler o mesmo evento publicam subconjuntos diferentes do que ele vende, e
+os subconjuntos podem ser disjuntos (uma tem a «wep Marathon», a outra a
+«wep-Strom Lauf» de 5, 10 e 21 km). A distância continua a ser exigida num
+único sítio, o da entrada verificada por uma pessoa, onde o nome não é a prova:
+sem ela, a «BT5K - New York City» entrava na maratona de Nova Iorque com quem
+partilha o domingo.
+
+**A cidade é a mesma se um nome estiver dentro do outro.** A igualdade era
+estrita demais e todos os pares verificados o dizem: «Dabendorf» e «Dabendorf
+(Zossen)», «Freiburg» e «Freiburg im Breisgau», «Dessau» e «Dessau-Roßlau»,
+«Neuenstadt A.k.» e «Neuenstadt am Kocher», «Goslar-Hahnenklee» e «Hahnenklee».
+Tira-se o que está entre parênteses, o que só qualifica («im», «am», «bad») e o
+que tem menos de três letras, e um nome dentro do outro é a mesma terra escrita
+com dois níveis de detalhe: um bairro, um município fundido, um desambiguador.
+Deixa «Frankfurt» casar com «Frankfurt (Oder)», que são duas cidades, e o que
+impede que isso vire fusão é tudo o resto que o par continua a ter de cumprir.
+
+**E o alemão cola a palavra «Lauf» ao que a prova é.** «Kannenstieglauf» é uma
+corrida no Kannenstieg e «Herbstlauf» é a mesma prova que a fonte seguinte
+escreve «Lauf in den Herbst», por isso compara-se o radical. Só quando fica
+radical: «Lauf» sozinho continua «Lauf», e «Halbmarathon» fica «halb» enquanto
+«Marathon» continua uma maratona. Pela mesma razão, «24h» lê-se «24 Stunden».
+
+**O dia pode diferir em dois, e só quando os nomes concordam.** Um evento que
+corre num fim de semana não tem um dia só, e cada fonte escolhe um: a Gerês
+Extreme Marathon corre de 27 a 29 de Novembro com as distâncias espalhadas pelos
+três dias, e um calendário datou o evento a 27 enquanto o outro datou os 42 km a
+29. A Maratona da Europa é 24 para uma fonte e 25 para a outra. Uma semana de
+diferença é outra edição, e onde o nome não é a prova o dia continua exacto.
+
+Duas fontes a datar o mesmo evento de forma diferente é o terreno mais fraco que
+temos, por isso aí volta a exigir-se a distância: o fim de semana da maratona de
+Berlim põe uns 5 km no sábado e a maratona no domingo, e os dois nomes reduzem-se
+a «marathon» de qualquer maneira.
+
+**Um número que separa dois nomes separa duas provas.** «Die Bergischen 5 Etappe
+1» e «Etappe 2» são duas etapas, «Ironman 5150» e «Ironman 70.3» são dois
+formatos, e uns «Berlin 5K» não são uns «Berlin 10K». O número da etapa tem um
+carácter, portanto todos os filtros por comprimento o deitam fora e os nomes
+saem iguais. Um lado sem número não diz nada: o «Neckarsteiglauf» e o
+«Neckarsteiglauf 126K» são a mesma prova.
+
+**As palavras da distância contam-se em qualquer língua.** «Maratona»,
+«Maraton» e «Marathon» são a mesma palavra, e «meia», «half», «halb», «media» e
+«mezza» também. A meia continua a não ser a maratona: «Halbmarathon» reduz-se a
+«half» e «Marathon» a «marathon».
+
+**E a cidade admite uma letra de diferença**, acrescentada ou tirada, nunca
+trocada, e nunca com menos de sete letras. É a diferença entre «Luxembourg» e
+«Luxemburg» de um lado e «Freiburg» e «Freiberg» do outro, que são duas cidades
+a quatrocentos quilómetros uma da outra.
+
+Os pares verificados por uma pessoa estão em
+[`fixtures/verified-duplicates.json`](../shared/eventDiscovery/fixtures/verified-duplicates.json),
+e o `verifiedDuplicates.test.ts` diz o que a regra faz com cada um. Acrescenta
+lá o par, em vez de o descrever em prosa.
 
 Fora disso ficam duas provas, como a «GENERALI 5K im Rahmen des BMW
 BERLIN-MARATHON» e a «R5K Tour Finale»: ambas 5 km, ambas em Berlim, ambas a
@@ -578,8 +634,66 @@ Two shapes count as the same race, and both need the same day and the same city:
 And the distance can no longer block a merge: if either side publishes none, we
 do not know the distance, which is not the same as knowing a different one. Half
 the sources leave it out, and "Birkenfelder Firmenlauf" sat beside "Birkenfelder
-Firmenlauf - Die Wirtschaft läuft" for that reason alone. When both sides
-publish one, an overlap is still required.
+Firmenlauf - Die Wirtschaft läuft" for that reason alone. After eighteen pairs
+checked by hand it stopped blocking one when both sides publish, too: two
+sources reading one event publish different subsets of what it sells, and the
+subsets can be disjoint (one has the "wep Marathon", the other the "wep-Strom
+Lauf" over 5, 10 and 21 km). The distance is still asked for in one place, the
+entry a person checked, where the name is not the evidence: without it the
+"BT5K - New York City" merged into the New York City Marathon it shares a Sunday
+with.
+
+**The city is the same if one name is inside the other.** Equality was too
+strict and every verified pair says so: "Dabendorf" and "Dabendorf (Zossen)",
+"Freiburg" and "Freiburg im Breisgau", "Dessau" and "Dessau-Rosslau",
+"Neuenstadt A.k." and "Neuenstadt am Kocher", "Goslar-Hahnenklee" and
+"Hahnenklee". Drop what is in brackets, what only qualifies ("im", "am", "bad")
+and anything under three letters, and one name inside the other is the same
+place named at two levels of detail: a district, a merged municipality, a
+disambiguator. It does let "Frankfurt" match "Frankfurt (Oder)", which are two
+cities, and what keeps that from becoming a merge is everything else the pair
+still has to satisfy.
+
+**And German sticks the word "Lauf" onto what the race is about.**
+"Kannenstieglauf" is a run at the Kannenstieg, and "Herbstlauf" is the race the
+next source writes as "Lauf in den Herbst", so the stem is what gets compared.
+Only where a stem is left: "Lauf" on its own stays "Lauf", and "Halbmarathon"
+becomes "halb" while "Marathon" stays a marathon. For the same reason "24h"
+reads as "24 Stunden".
+
+**The day may differ by two, and only where the names agree.** An event that
+runs over a weekend has no single day and each source picks one: the Geres
+Extreme Marathon runs from 27 to 29 November with its distances spread across
+the three, and one calendar dated the event the 27th while the other dated the
+42 km the 29th. The Maratona da Europa is the 24th to one source and the 25th to
+the other. A week apart is a different edition, and where the name is not the
+evidence the day stays exact.
+
+Two sources dating one event differently is the weakest ground there is, so it
+asks for the distances back: the Berlin marathon weekend puts a 5 km on the
+Saturday and the marathon on the Sunday, and both names come down to "marathon".
+
+**A number that separates two names separates two races.** "Die Bergischen 5
+Etappe 1" and "Etappe 2" are two stages, "Ironman 5150" and "Ironman 70.3" are
+two formats, and "Berlin 5K" is not "Berlin 10K". The stage number is one
+character, so every filter that works on word length drops it and the names come
+out identical. One side with no number says nothing: "Neckarsteiglauf" and
+"Neckarsteiglauf 126K" are one race.
+
+**The distance words count in any language.** "Maratona", "Maraton" and
+"Marathon" are one word, and so are "meia", "half", "halb", "media" and
+"mezza". A half is still not a marathon: "Halbmarathon" reduces to "half" and
+"Marathon" to "marathon".
+
+**And the city takes one letter of difference**, added or removed, never
+swapped, and never under seven letters. That is the difference between
+"Luxembourg" and "Luxemburg" on one hand and "Freiburg" and "Freiberg" on the
+other, two cities four hundred kilometres apart.
+
+The pairs a person verified live in
+[`fixtures/verified-duplicates.json`](../shared/eventDiscovery/fixtures/verified-duplicates.json),
+and `verifiedDuplicates.test.ts` says what the rule does with each. Add a pair
+there rather than describing it in prose.
 
 **The queue in the admin area asks about the rest, and only what is worth
 asking.** A pair reaches it when, beyond the day and the city, the names share a
