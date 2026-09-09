@@ -55,7 +55,9 @@ O que nunca sai da conta: o tempo, o ritmo, a classificação, as notas, a media
 
 Uma contribuição segue a forma dos votos de duplicados: colecção própria, um documento por (prova, ano, utilizador) para que uma pessoa seja uma voz, e o que chega à edição partilhada são valores e contagens, nunca a identidade de quem contribuiu.
 
-Isto é o desenho decidido, não o que está construído: nada disto existe ainda, e a edição nem tem campo para o link de resultados. Ver [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
+Do que está acima, o **dia** já está construído. Quando um resultado volta verificado da importação oficial, o cliente escreve o relatório em `raceCatalogEditionReports`, e a colheita diária dobra-o na edição: corrige o dia que a listagem tinha errado, marca-o com `runnerConfirmedAt`, e acrescenta uma edição para um ano que o catálogo nunca teve, que é como ele ganha história. A colheita seguinte dessa fonte mantém essa data em vez de a substituir pela da listagem.
+
+O que **não** está construído: o preço e os prazos, que vão precisar de fila de revisão, e o link dos resultados, que não tem hoje campo na edição nem sítio onde apareça. Ver [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Revisar uma entrada
 
@@ -142,7 +144,9 @@ What never leaves the account: the time, the pace, the classification, the notes
 
 A contribution follows the shape of the duplicate votes: a collection of its own, one document per (race, year, user) so one person is one voice, and what reaches the shared edition is values and counts, never the identity of whoever contributed.
 
-This is the decided design, not what is built: none of it exists yet, and the edition has no field for a results link. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
+Of the above, the **day** is built. When a result comes back verified from the official import, the client writes a report to `raceCatalogEditionReports`, and the daily harvest folds it into the edition: it corrects a day the listing had wrong, marks it with `runnerConfirmedAt`, and adds an edition for a year the catalog never had, which is how it gains a history. The next harvest of that source keeps that date instead of replacing it with the listing's.
+
+What is **not** built: the fee and the gates, which will need the review queue, and the results link, which has neither a field on the edition nor anywhere to appear. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Reviewing an entry
 

@@ -595,6 +595,39 @@ service cloud.firestore {
       allow delete: if false;
     }
 
+    /**
+     * A runner saying which day they ran an edition.
+     *
+     * Trusted without a person in the loop, and only because of where it comes
+     * from: an event with a verified official result. The client writes it, the
+     * scheduled harvest folds it into the catalog, and nothing about who sent
+     * it ever reaches the shared entry.
+     *
+     * Only a date, and only the past. When entries open or close is what fires
+     * reminders, and a wrong deadline is wrong in silence, so that stays a
+     * question for a person.
+     */
+    match /raceCatalogEditionReports/{reportId} {
+      // The runner reads their own reports; the admin reads them all.
+      allow read: if isSignedIn()
+        && (isAdmin(request.auth.uid) || resource.data.uid == request.auth.uid);
+      allow create, update: if isSignedIn()
+        && isApprovedUser(request.auth.uid)
+        && request.resource.data.uid == request.auth.uid
+        && request.resource.data.catalogRaceId is string
+        && request.resource.data.catalogRaceId.size() > 0
+        && request.resource.data.year is int
+        && request.resource.data.year >= 2000
+        && request.resource.data.year <= 2100
+        // One document per race, year and runner, so one person is one voice.
+        && reportId == request.resource.data.catalogRaceId + '__'
+          + string(request.resource.data.year) + '__' + request.auth.uid
+        && request.resource.data.raceDate is string
+        && request.resource.data.raceDate.size() == 10
+        && request.resource.data.reportedAt is string;
+      allow delete: if false;
+    }
+
     match /raceCatalogHarvest/{docId} {
       allow read: if isSignedIn();
       allow write: if false;

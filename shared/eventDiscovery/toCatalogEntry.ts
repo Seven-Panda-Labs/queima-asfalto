@@ -1,3 +1,4 @@
+import { keepRunnerDate } from '../raceCatalog/editionReports.js'
 import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
@@ -107,7 +108,9 @@ export function mergeIntoCatalog(
   const incoming = harvested.editions?.[0]
   if (incoming) {
     const at = editions.findIndex((edition) => edition.year === incoming.year)
-    if (at >= 0) editions[at] = incoming
+    // A date a runner who was there confirmed outlives the listing's, which is
+    // otherwise overwritten whole on the next run of that source.
+    if (at >= 0) editions[at] = keepRunnerDate(incoming, editions[at])
     else editions.push(incoming)
   }
 

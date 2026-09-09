@@ -24,6 +24,7 @@ Consoante as funcionalidades activadas, a instância pode tratar:
 | **Conteúdo da app** | Eventos, metas, resultados, notas, localizações, coordenadas GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
 | **Media** | Fotos e vídeos de eventos | Firebase Storage |
 | **Partilhas** | Email do convidado, permissões, dados redigidos partilhados | Firestore `shares`, Cloud Functions |
+| **Contribuições para o catálogo** | O par que marcaste como a mesma prova, e o dia em que corriste uma prova que o catálogo conhece, ligados ao teu UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. O catálogo partilhado recebe o valor, nunca quem o enviou |
 | **Notificações** (se activadas) | Tokens FCM, preferências de lembrete, idioma, offset de fuso horário | Firestore `users/{uid}` |
 | **Preferências locais** | Tema, idioma, modos de vista | `localStorage` do browser (prefixo por utilizador) |
 | **Analytics** (se activado) | Visualizações de página, metadados do browser | Google Analytics via Firebase (`measurementId`) |
@@ -120,6 +121,7 @@ Depending on enabled features, the instance may process:
 | **App content** | Events, goals, results, notes, locations, GPS coordinates | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
 | **Media** | Event photos and videos | Firebase Storage |
 | **Sharing** | Invitee email, permissions, redacted shared data | Firestore `shares`, Cloud Functions |
+| **Contributions to the catalog** | The pair you marked as one race, and the day you ran a race the catalog knows, tied to your UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. The shared catalog receives the value, never who sent it |
 | **Notifications** (if enabled) | FCM tokens, reminder prefs, language, timezone offset | Firestore `users/{uid}` |
 | **Local preferences** | Theme, language, view modes | Browser `localStorage` (per-user prefix) |
 | **Analytics** (if enabled) | Page views, browser metadata | Google Analytics via Firebase (`measurementId`) |
@@ -216,6 +218,7 @@ Según las funcionalidades activadas, la instancia puede tratar:
 | **Contenido de la app** | Eventos, metas, resultados, notas, ubicaciones, coordenadas GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
 | **Multimedia** | Fotos y vídeos de eventos | Firebase Storage |
 | **Compartidos** | Email del invitado, permisos, datos compartidos redactados | Firestore `shares`, Cloud Functions |
+| **Contribuciones al catálogo** | El par que marcaste como la misma carrera, y el día en que corriste una carrera que el catálogo conoce, ligados a tu UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. El catálogo compartido recibe el valor, nunca quién lo envió |
 | **Notificaciones** (si están activadas) | Tokens FCM, preferencias de recordatorio, idioma, desplazamiento de zona horaria | Firestore `users/{uid}` |
 | **Preferencias locales** | Tema, idioma, modos de vista | `localStorage` del navegador (prefijo por usuario) |
 | **Analytics** (si está activado) | Vistas de página, metadatos del navegador | Google Analytics vía Firebase (`measurementId`) |
@@ -312,6 +315,7 @@ Je nach aktivierten Funktionen kann die Instanz Folgendes verarbeiten:
 | **App-Inhalte** | Events, Ziele, Ergebnisse, Notizen, Orte, GPS-Koordinaten | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
 | **Medien** | Event-Fotos und -Videos | Firebase Storage |
 | **Freigaben** | E-Mail des Eingeladenen, Berechtigungen, redigierte geteilte Daten | Firestore `shares`, Cloud Functions |
+| **Beiträge zum Katalog** | Das Paar, das du als dasselbe Rennen markiert hast, und der Tag, an dem du ein Rennen gelaufen bist, das der Katalog kennt, mit deiner UID verknüpft | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. Der geteilte Katalog erhält den Wert, nie den Absender |
 | **Benachrichtigungen** (falls aktiviert) | FCM-Tokens, Erinnerungseinstellungen, Sprache, Zeitzonenversatz | Firestore `users/{uid}` |
 | **Lokale Einstellungen** | Theme, Sprache, Ansichtsmodi | Browser-`localStorage` (präfix pro Nutzer) |
 | **Analytics** (falls aktiviert) | Seitenaufrufe, Browser-Metadaten | Google Analytics über Firebase (`measurementId`) |
@@ -408,6 +412,7 @@ Selon les fonctionnalités activées, l'instance peut traiter :
 | **Contenu de l'application** | Événements, objectifs, résultats, notes, lieux, coordonnées GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
 | **Médias** | Photos et vidéos d'événements | Firebase Storage |
 | **Partage** | E-mail de l'invité, permissions, données partagées expurgées | Firestore `shares`, Cloud Functions |
+| **Contributions au catalogue** | La paire que tu as marquée comme une seule course, et le jour où tu as couru une course que le catalogue connaît, liés à ton UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. Le catalogue partagé reçoit la valeur, jamais son auteur |
 | **Notifications** (si activées) | Jetons FCM, préférences de rappel, langue, décalage horaire | Firestore `users/{uid}` |
 | **Préférences locales** | Thème, langue, modes d'affichage | `localStorage` du navigateur (préfixe par utilisateur) |
 | **Analytique** (si activée) | Pages vues, métadonnées du navigateur | Google Analytics via Firebase (`measurementId`) |
@@ -503,6 +508,7 @@ Instance : {{HOSTING_URL}}
 | **محتوى التطبيق** | الفعاليات، الأهداف، النتائج، الملاحظات، المواقع، إحداثيات GPS | Firestore (`events`، `goals`، `performanceGoals`، `bucketListItems`، …) |
 | **الوسائط** | صور ومقاطع فيديو الفعاليات | Firebase Storage |
 | **المشاركة** | بريد المدعو الإلكتروني، الأذونات، البيانات المشتركة بعد الحجب الجزئي | Firestore `shares`، Cloud Functions |
+| **المساهمات في الفهرس** | الزوج الذي حدّدته كسباق واحد، واليوم الذي جريت فيه سباقا يعرفه الفهرس، مرتبطان بمعرّفك UID | Firestore `raceCatalogDuplicateVotes`، `raceCatalogEditionReports`. يستقبل الفهرس المشترك القيمة لا صاحبها |
 | **الإشعارات** (إذا كانت مفعّلة) | رموز FCM، تفضيلات التذكير، اللغة، فرق المنطقة الزمنية | Firestore `users/{uid}` |
 | **التفضيلات المحلية** | السمة، اللغة، أوضاع العرض | `localStorage` في المتصفح (ببادئة لكل مستخدم) |
 | **التحليلات** (إذا كانت مفعّلة) | مشاهدات الصفحات، بيانات وصفية للمتصفح | Google Analytics عبر Firebase (`measurementId`) |

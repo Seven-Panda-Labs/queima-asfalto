@@ -10,6 +10,7 @@
 
 - **Duplicados no catálogo:** cada prova da fila de revisão traz agora o link para a fonte, para confirmar nas páginas de origem qual das duas é qual.
 - **A inscrição já vem preenchida:** ao planear uma prova que o catálogo conhece, as datas, os prazos e o preço aparecem preenchidos, com a fonte à vista. Enquanto ninguém tiver verificado a entrada, ficam como sugestão e a data não conta como confirmada.
+- **O teu resultado oficial melhora o catálogo:** quando importas um resultado verificado, o dia em que a prova se correu passa a corrigir a data que o catálogo tinha, para todos. Vai só o dia, nunca quem o enviou, e continua a não disparar avisos: para isso, alguém tem de verificar a prova.
 
 ---
 

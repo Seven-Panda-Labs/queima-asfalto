@@ -182,6 +182,7 @@ Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcio
 | `raceCatalog/{id}` | ninguém | Identidade pública de uma prova, com as suas edições. Só admin e colheita escrevem |
 | `raceCatalogHarvest/status` | ninguém | Quando a colheita correu, por fonte, e a lista de países |
 | `raceCatalogDuplicateVotes/{id}` | `uid` no doc | O que um corredor disse sobre um par possivelmente duplicado |
+| `raceCatalogEditionReports/{id}` | `uid` no doc | O dia em que um corredor correu uma edição, de um resultado oficial verificado |
 | `parkrunCatalog/{id}` | ninguém | Os parkruns do mundo, por slug. Só o servidor escreve |
 
 Índices compostos: `firestore.indexes.json`. Testes de regras: `firestore.rules.test.ts`.
@@ -416,6 +417,7 @@ Scheduling logic in `shared/reminders/`; optional local queue in `src/services/r
 | `raceCatalog/{id}` | nobody | A race's public identity, with its editions. Written only by an admin and the harvest |
 | `raceCatalogHarvest/status` | nobody | When the harvest ran, per source, and the list of countries |
 | `raceCatalogDuplicateVotes/{id}` | `uid` on doc | What a runner said about a possibly duplicate pair |
+| `raceCatalogEditionReports/{id}` | `uid` on doc | The day a runner ran an edition, from a verified official result |
 | `parkrunCatalog/{id}` | nobody | The world's parkruns, by slug. Written only by the server |
 
 Composite indexes: `firestore.indexes.json`. Rules tests: `firestore.rules.test.ts`.

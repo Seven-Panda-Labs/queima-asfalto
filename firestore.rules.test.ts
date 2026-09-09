@@ -1099,6 +1099,94 @@ describe('firestore.rules', () => {
     })
   })
 
+  describe('raceCatalogEditionReports', () => {
+    const raceId = 'pt-lisboa-maratona-de-lisboa'
+    const path = (uid: string, year = 2026) =>
+      `raceCatalogEditionReports/${raceId}__${year}__${uid}`
+    const report = { catalogRaceId: raceId, year: 2026, raceDate: '2026-10-11', reportedAt: '2026-10-12' }
+
+    it('takes an approved runner s report about a day they ran', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore()
+          .doc(path('user-alice')).set({ ...report, uid: 'user-alice' }),
+      )
+    })
+
+    it('takes one report per year from the same runner', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      await assertSucceeds(db.doc(path('user-alice', 2026)).set({ ...report, uid: 'user-alice' }))
+      await assertSucceeds(
+        db.doc(path('user-alice', 2027))
+          .set({ ...report, uid: 'user-alice', year: 2027, raceDate: '2027-10-10' }),
+      )
+    })
+
+    it('refuses a report filed under somebody else or at another id', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      await assertFails(db.doc(path('user-bob')).set({ ...report, uid: 'user-bob' }))
+      // The id has to be the race, the year and the writer, so one runner
+      // cannot spread many answers about one edition over many documents.
+      await assertFails(
+        db.doc('raceCatalogEditionReports/anything').set({ ...report, uid: 'user-alice' }),
+      )
+      await assertFails(
+        db.doc(path('user-alice', 2027)).set({ ...report, uid: 'user-alice' }),
+      )
+    })
+
+    it('refuses a day that is not a day, and a year that is not one', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      await assertFails(
+        db.doc(path('user-alice')).set({ ...report, uid: 'user-alice', raceDate: '2026-10' }),
+      )
+      await assertFails(
+        db.doc(`raceCatalogEditionReports/${raceId}__1980__user-alice`)
+          .set({ ...report, uid: 'user-alice', year: 1980 }),
+      )
+    })
+
+    it('refuses a pending account and a signed-out one', async () => {
+      await seedDocument('users/user-pending', { accountStatus: 'pending' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-pending').firestore()
+          .doc(path('user-pending')).set({ ...report, uid: 'user-pending' }),
+      )
+      await assertFails(
+        testEnv.unauthenticatedContext().firestore()
+          .doc(path('nobody')).set({ ...report, uid: 'nobody' }),
+      )
+    })
+
+    it('lets a runner read their own reports and nobody else s', async () => {
+      await seedDocument(path('user-alice'), { ...report, uid: 'user-alice' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore().doc(path('user-alice')).get(),
+      )
+      await assertFails(
+        testEnv.authenticatedContext('user-bob').firestore().doc(path('user-alice')).get(),
+      )
+    })
+
+    it('never deletes a report', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      await seedDocument(path('user-alice'), { ...report, uid: 'user-alice' })
+
+      await assertFails(
+        testEnv.authenticatedContext('user-alice').firestore().doc(path('user-alice')).delete(),
+      )
+    })
+  })
+
   describe('raceCatalogDuplicateVotes', () => {
     const pair = { aId: 'de-berlin-generali-5k', bId: 'de-berlin-r5k-tour-finale' }
     const voteId = (uid: string) => `raceCatalogDuplicateVotes/${pair.aId}__${pair.bId}__${uid}`
