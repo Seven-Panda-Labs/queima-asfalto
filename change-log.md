@@ -25,7 +25,7 @@
 
 ### Alterado
 
-- **Encontrar provas:** a página passa a pedir um filtro antes de mostrar lista, ganha busca por país, e traz os resultados aos poucos em vez de descarregar o catálogo inteiro para o browser. Com milhares de provas em dezenas de países, a lista completa não servia a ninguém.
+- **Encontrar provas:** a página passa a pedir um filtro antes de mostrar lista, ganha busca por país, e traz os resultados aos poucos em vez de descarregar o catálogo inteiro para o browser.
 
 ---
 
@@ -33,7 +33,7 @@
 
 ### Corrigido
 
-- **Provas repetidas no catálogo:** a mesma prova deixa de entrar duas vezes quando duas fontes lhe dão nomes ligeiramente diferentes, quando uma delas não publica a distância, ou quando o nome da terra muda de lugar. E a fila de casos duvidosos na administração passou a perguntar só o que vale perguntar.
+- **Provas repetidas no catálogo:** a mesma prova deixa de entrar duas vezes quando duas fontes lhe dão nomes ligeiramente diferentes, quando uma delas não publica a distância, ou quando o nome da terra muda de lugar.
 
 ---
 
@@ -61,7 +61,7 @@
 
 ### Alterado
 
-- **Catálogo actualizado aos poucos:** a colheita passa a correr todos os dias e a ler uma fonte de cada vez, em vez de todas de uma vez por semana. Cada fonte continua a ser lida uma vez por semana, e uma que esteja em baixo já não estraga a corrida das outras.
+- **Catálogo actualizado aos poucos:** o catálogo passa a ser actualizado todos os dias, uma fonte de cada vez, e uma fonte em baixo já não atrasa as outras.
 
 ### Corrigido
 
@@ -91,7 +91,7 @@
 ### Corrigido
 
 - **Distâncias com decimais:** já é possível guardar 42,195 km.
-- **Provas repetidas no catálogo:** a mesma prova deixa de aparecer duas vezes com nomes diferentes. Os casos duvidosos vão para uma fila na administração.
+- **Provas repetidas no catálogo:** a mesma prova deixa de aparecer duas vezes com nomes diferentes.
 
 ---
 
@@ -99,16 +99,16 @@
 
 ### Adicionado
 
-- **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho. Com avisos por notificação antes de cada prazo, que se ligam em Definições.
-- **A temporada em volta das provas âncora:** marca as uma a três provas que fixam o teu ano, na página da própria prova. A partir delas a app sugere a janela onde encaixa uma prova de preparação, avisa quando algo cai no afinamento ou quando o mês fica cheio, e mostra o tempo previsto para a âncora a partir da tua última prova.
+- **Planeamento de inscrições:** a bucket list passa a estar agrupada pelo que falta fazer, e cada prova pode ter a sua inscrição: quando abre, quando fecha, o sorteio, e o prazo para garantir um lugar já ganho. Com aviso antes de cada prazo.
+- **A temporada em volta das provas âncora:** marca as provas que fixam o teu ano e a app sugere onde encaixa uma prova de preparação, avisa quando algo cai no afinamento, e mostra o tempo previsto para a âncora.
 - **Quando falha:** uma prova que passa sem resultado pergunta o que aconteceu em vez de dizer que faltaste, uma desistência passa a contar como prova começada, e um botão cria a tentativa da próxima temporada.
-- **Encontrar provas:** uma página nova procura no catálogo da instância por mês, distância e local, e acrescenta uma prova à lista num clique. Escolher a âncora põe à frente as que encaixam na janela. Inclui os parkruns perto de ti, que não aparecem em calendário nenhum.
+- **Encontrar provas:** uma página nova procura no catálogo por mês, distância e local, e acrescenta uma prova à lista num clique. Inclui os parkruns perto de ti.
 - **Primeiros passos:** o dashboard de uma conta nova abre com quatro passos, cada um a explicar o que a app faz com aquilo. Desaparece quando estiverem feitos.
 
 ### Alterado
 
 - **Contas à espera de aprovação:** o login passa a ser recusado com a razão, em vez de deixar entrar numa app onde nada podia ser escrito.
-- **Self-hosting:** a colheita de provas pode ler duas fontes novas, e continua desligada até a activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
+- **Self-hosting:** duas fontes novas para o catálogo, desligadas até as activares. Ver [`docs/discovery-sources.md`](docs/discovery-sources.md).
 
 ---
 
@@ -123,7 +123,7 @@
 ### Alterado
 
 - **Escolher disciplinas ficou compacto:** as 13 distâncias passam a pastilhas agrupadas em pista, estrada e ultra.
-- **Self-hosting:** o administrador deixa de ser a variável `ADMIN_EMAIL` e passa a ser um utilizador com `admin: true`, dado uma vez na consola. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
+- **Self-hosting:** o administrador passa a ser um utilizador marcado como tal, em vez de uma variável de ambiente. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
@@ -131,7 +131,7 @@
 
 ### Removido
 
-- **Import e export de Excel saíram:** o backup completo em `.zip` cobre o mesmo com mais precisão, incluindo fotos, vídeos, ficheiros de actividade e objectivos, e restaura tudo com os mesmos identificadores. A folha de cálculo deixa de ser caminho de entrada: as provas passam a entrar na app, ou por restauro de um backup.
+- **Import e export de Excel saíram:** o backup completo em `.zip` cobre o mesmo com mais precisão, incluindo fotos, vídeos, ficheiros de actividade e objectivos, e restaura tudo com os mesmos identificadores. A folha de cálculo deixa de ser caminho de entrada.
 
 ---
 
@@ -170,7 +170,7 @@
 
 ### Adicionado
 
-- **Ficheiros de atividade nos eventos:** carrega o GPX ou TCX do teu relógio e a prova ganha splits por quilómetro, o percurso desenhado no mapa, um gráfico de ritmo e altitude e, se o ficheiro os trouxer, os batimentos cardíacos. O tempo medido é oferecido para preencher o resultado, e nunca substitui o que já lá está sem confirmares: a cronometragem oficial é a que conta. Os ficheiros entram e saem nos backups.
+- **Ficheiros de atividade nos eventos:** carrega o GPX ou TCX do teu relógio e a prova ganha splits por quilómetro, o percurso no mapa, ritmo, altitude e batimentos. O tempo medido é oferecido para preencher o resultado, nunca imposto: a cronometragem oficial é a que conta.
 
 ---
 
@@ -186,7 +186,7 @@
 
 ### Adicionado
 
-- **Escolhe as disciplinas que queres ver:** em Definições > App podes desligar as distâncias que não corres. Deixam de aparecer nos filtros e nas listas de escolha. Nada se perde: as provas, objetivos e recordes que já tens numa disciplina desligada continuam à vista.
+- **Escolhe as disciplinas que queres ver:** em Definições > App podes desligar as distâncias que não corres. Deixam de aparecer nos filtros e nas listas de escolha. Nada se perde do que já tens.
 
 ---
 
@@ -194,8 +194,8 @@
 
 ### Alterado
 
-- **A página de Resultados passou a ser a de Análise:** deixou de repetir a lista de Eventos. Passa a responder a três perguntas, com um selector no topo: como vai esta época, como está face às anteriores, e o que mudou desde sempre. A rota mudou para `/analise`, e os links antigos continuam a funcionar.
-- **Curva de forma:** cada prova é convertida para o equivalente na tua distância mais corrida, por isso um 5K e uma maratona passam a comparar-se na mesma linha. Traz também previsão de tempos para as outras distâncias, a partir da tua melhor marca dos últimos 12 meses.
+- **A página de Resultados passou a ser a de Análise:** responde a três perguntas, com um selector no topo: como vai esta época, como está face às anteriores, e o que mudou desde sempre. Os links antigos continuam a funcionar.
+- **Curva de forma:** cada prova é convertida para o equivalente na tua distância mais corrida, por isso um 5K e uma maratona passam a comparar-se na mesma linha. Com previsão de tempos para as outras distâncias.
 - **Novas leituras:** posição no pelotão ao longo do tempo, progressão de cada recorde, km acumulados contra as épocas anteriores, meses fortes e fracos do ano, e uma grelha de consistência por provas ou por quilómetros.
 - **Ritmo médio do ano corrigido:** passa a ser ponderado pela distância. Antes um 5K pesava o mesmo que uma maratona.
 
@@ -213,7 +213,7 @@
 
 ### Alterado
 
-- **O catálogo parkrun actualiza-se sozinho:** as provas parkrun novas passam a aparecer poucos dias depois de abrirem, sem esperar por uma actualização da aplicação. A lista também deixou de ser descarregada quando já está em dia, o que torna o arranque mais leve.
+- **O catálogo parkrun actualiza-se sozinho:** as provas parkrun novas passam a aparecer poucos dias depois de abrirem, sem esperar por uma actualização da aplicação.
 
 ---
 
@@ -221,7 +221,7 @@
 
 ### Alterado
 
-- **O resto da app com o visual do Início:** os objetivos passaram a agrupar-se por estado, com os cumpridos em destaque, os filtros e os seletores de vista ficaram iguais em todas as páginas, e a página de um evento passa a ter o nome da prova como título e o resultado em destaque.
+- **O resto da app com o visual do Início:** os objetivos agrupam-se por estado, os filtros ficaram iguais em todas as páginas, e a página de um evento passa a ter o nome da prova como título.
 
 ---
 
@@ -237,7 +237,7 @@
 
 ### Adicionado
 
-- **Novo idioma, Árabe (primeira versão):** a aplicação, as notas de versão, o aviso de resultados oficiais, a política de privacidade, os emails de conta e os lembretes push estão agora disponíveis em árabe, com layout da direita para a esquerda (RTL). Selecciona-o em Definições → Idioma.
+- **Novo idioma, Árabe (primeira versão):** a app está agora disponível em árabe, com layout da direita para a esquerda. Selecciona-o em Definições → Idioma.
 
 ---
 
@@ -273,7 +273,7 @@
 
 ### Corrigido
 
-- **Estado dos eventos:** um evento com resultado oficial já não pode ficar marcado como «Faltou». Havia uma condição de corrida entre a transição automática para «Faltou» e a gravação do resultado. Se a transição automática ganhasse a corrida, o estado ficava errado apesar de o resultado estar guardado.
+- **Estado dos eventos:** um evento com resultado oficial já não pode ficar marcado como «Faltou».
 
 ---
 
@@ -290,7 +290,7 @@
 
 ### Corrigido
 
-- **Segurança:** as regras do Firestore passam a tratar os campos de aprovação de conta como imutáveis do lado do cliente. Antes, uma conta pendente ou rejeitada conseguia remover o próprio `accountStatus` numa escrita e ficar com acesso total.
+- **Segurança:** uma conta pendente ou rejeitada já não consegue dar acesso total a si mesma.
 - **Definições:** em instâncias com aprovação de contas activada, voltar a gravar idioma, preferências de notificações e perfil de resultados. As escritas eram todas recusadas depois de a conta ser aprovada.
 
 ---
@@ -325,7 +325,7 @@
 
 ### Adicionado
 
-- **Self-hosting:** aprovação manual de contas novas (opcional): ecrã de pendente/rejeitado, email ao administrador com links aprovar/rejeitar (Resend), notificação ao utilizador, regras Firestore/Storage e funções de blocking Auth; ver `docs/configuration.md` e `docs/self-hosting.md`.
+- **Self-hosting:** podes exigir aprovação manual das contas novas: email ao administrador para aprovar ou rejeitar, e aviso ao utilizador. Opcional. Ver [`docs/self-hosting.md`](docs/self-hosting.md).
 
 ---
 
