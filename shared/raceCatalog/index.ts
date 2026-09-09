@@ -11,6 +11,7 @@ export {
   type RaceEntryMethod,
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
+export { nameTokensOf, normalizeToken, searchToken } from './nameTokens.js'
 export {
   applyEditionReports,
   EDITION_REPORTS_COLLECTION,

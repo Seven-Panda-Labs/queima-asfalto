@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Ajouté
+
+- **Trouver une course par son nom :** le champ de recherche cherche maintenant dans tout le catalogue, et non plus seulement dans les courses déjà affichées. Taper « Teltowkanal » trouve la course, même si elle est la trois millième de la file.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Ajouté

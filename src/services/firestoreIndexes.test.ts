@@ -120,8 +120,8 @@ describe('firestore indexes', () => {
  * The discovery query builds its filters from what the runner asked for, so a
  * regular expression cannot enumerate its shapes. This asserts them from the
  * function's own contract instead: `searchRaceCatalog` orders by
- * `nextRaceDate` and adds `country` and one `disciplines` filter when it has
- * them, which is four shapes and three composite indexes.
+ * `nextRaceDate` and adds `country`, and one array-contains that is either a
+ * name word or a discipline, which is six shapes and five composite indexes.
  */
 describe('the discovery query', () => {
   const SHAPES: { name: string; fields: { fieldPath: string; order?: string; arrayConfig?: string }[] }[] = [
@@ -129,6 +129,21 @@ describe('the discovery query', () => {
       name: 'country and date',
       fields: [
         { fieldPath: 'country', order: 'ASCENDING' },
+        { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
+      ],
+    },
+    {
+      name: 'a name word and date',
+      fields: [
+        { fieldPath: 'nameTokens', arrayConfig: 'CONTAINS' },
+        { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
+      ],
+    },
+    {
+      name: 'country, a name word and date',
+      fields: [
+        { fieldPath: 'country', order: 'ASCENDING' },
+        { fieldPath: 'nameTokens', arrayConfig: 'CONTAINS' },
         { fieldPath: 'nextRaceDate', order: 'ASCENDING' },
       ],
     },

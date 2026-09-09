@@ -4,6 +4,14 @@
 
 ---
 
+## [1.42.0] - 2026-09-09
+
+### Hinzugefügt
+
+- **Ein Rennen nach Namen finden:** das Suchfeld sucht jetzt im ganzen Katalog und nicht mehr nur in den Rennen, die schon auf der Seite waren. „Teltowkanal“ zu tippen findet das Rennen, auch wenn es das dreitausendste in der Reihe ist.
+
+---
+
 ## [1.41.0] - 2026-09-09
 
 ### Hinzugefügt

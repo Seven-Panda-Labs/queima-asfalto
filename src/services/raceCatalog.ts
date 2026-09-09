@@ -23,6 +23,14 @@ export type CatalogQuery = {
   country?: string
   /** One discipline: Firestore allows a single array-contains per query. */
   discipline?: EventType
+  /**
+   * One word from the name or the town, already normalised.
+   *
+   * Takes the array-contains slot when it is set, so the discipline is left to
+   * the page filter: Firestore allows one per query, and a name is the more
+   * selective of the two by a wide margin.
+   */
+  nameToken?: string
   /** Inclusive ISO days. `from` defaults to today: a past race is not a find. */
   from?: string
   to?: string
@@ -38,7 +46,8 @@ export type CatalogQuery = {
  * twenty rows.
  *
  * `nextRaceDate` exists for this query, because Firestore cannot filter or
- * order by a date inside the `editions` array.
+ * order by a date inside the `editions` array, and `nameTokens` exists for the
+ * same reason: Firestore cannot search inside a string.
  *
  * Retired entries and copies are dropped after the query rather than in it: a
  * second inequality is not allowed beside the date range, and both are rare
@@ -53,9 +62,13 @@ export async function searchRaceCatalog(
     where('nextRaceDate', '>=', from),
     ...(criteria.to ? [where('nextRaceDate', '<=', criteria.to)] : []),
     ...(criteria.country ? [where('country', '==', criteria.country.toUpperCase())] : []),
-    ...(criteria.discipline
-      ? [where('disciplines', 'array-contains', criteria.discipline)]
-      : []),
+    // One array-contains per query, and the name wins: the discipline narrows
+    // a page of twenty and a name narrows five thousand entries to a handful.
+    ...(criteria.nameToken
+      ? [where('nameTokens', 'array-contains', criteria.nameToken)]
+      : criteria.discipline
+        ? [where('disciplines', 'array-contains', criteria.discipline)]
+        : []),
     orderBy('nextRaceDate'),
     // Room for the retired and the copies, which the query cannot exclude.
     limitTo(criteria.limit + OVERFETCH),

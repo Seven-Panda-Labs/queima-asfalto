@@ -99,6 +99,40 @@ describe('FindRaces', () => {
     expect(await screen.findByText('berlin-10k')).toBeInTheDocument()
   })
 
+  it('asks the server for the word that was typed', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('Onde'), { target: { value: 'Teltowkanal' } })
+
+    // It used to filter the page it had already fetched, which found a race by
+    // name only if it was among the next twenty worldwide.
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenCalledWith(
+        expect.objectContaining({ nameToken: 'teltowkanal' }),
+      ),
+    )
+  })
+
+  it('asks for the distinctive word, not the one every race carries', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(<FindRaces />)
+
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('Onde'), {
+      target: { value: 'Teltowkanal Halbmarathon' },
+    })
+
+    // Firestore takes one array-contains, and "halbmarathon" is on hundreds of
+    // entries while "teltowkanal" is on one.
+    await waitFor(() =>
+      expect(searchRaceCatalog).toHaveBeenCalledWith(
+        expect.objectContaining({ nameToken: 'teltowkanal' }),
+      ),
+    )
+  })
+
   it('sends one discipline to the query, because Firestore takes one', async () => {
     searchRaceCatalog.mockResolvedValue([])
     render(<FindRaces />)
