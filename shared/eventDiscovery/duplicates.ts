@@ -14,13 +14,18 @@ import { slugify, stripEdition } from './identity.js'
  * Finale" are both 5 km, both in Berlin, both on 26/09/2026, and they are two
  * different races.
  *
- * So it takes both, in one of two shapes:
+ * So a merge takes **names that plainly agree**: the same day, the same city,
+ * and one name containing the other once the sponsors, the edition and the town
+ * are gone.
  *
- * 1. **A person's entry as the anchor.** Same day, same city, same distance, and
- *    exactly one side reviewed or curated. Somebody checked that entry, and a
- *    harvest turning up with the organiser's own name for it is not news.
- * 2. **Names that plainly agree.** Same day, same city, same distance, and one
- *    name contains the other once the sponsors and the edition are gone.
+ * A person's entry used to be enough on its own, on the theory that a harvest
+ * turning up on its day with the organiser's own name for it was not news. It
+ * was, and measurably: of the 160 folds in one instance only six had a checked
+ * entry as the survivor and the names carried all six anyway, while the same
+ * branch offered to fold a triathlon, a 5 km club run and a lake swim into the
+ * Tierparklauf they share the 12th of September with. A checked entry is a
+ * better survivor, not better evidence, so that pair is now a question for the
+ * queue and no longer a merge.
  */
 
 /** Sponsors and connectives, which is most of what differs between two names. */
@@ -198,7 +203,17 @@ function daysAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
  * im Breisgau", "Neuenstadt am Kocher", "Hermsdorf/Thueringen". What is left
  * after these is the name.
  */
-const PLACE_NOISE = /\b(?:im|am|an|auf|bei|der|den|dem|des|die|das|ob|vor|in|bad)\b/giu
+const PLACE_NOISE = /\b(?:im|am|an|auf|der|den|dem|des|die|das|ob|vor|in|bad)\b/giu
+
+/**
+ * A town named by what it is near is not that town.
+ *
+ * "Rüdersdorf bei Berlin" is a town twenty kilometres outside Berlin, and
+ * dropping "bei" as a qualifier left the tokens Rüdersdorf and Berlin, so
+ * "Berlin" was a subset of it and the two places agreed. What follows the word
+ * is the landmark; the town is what comes before it.
+ */
+const NEAR = /\s(?:bei|beim|near|nr\.?|próximo\s+de|proximo\s+de|cerca\s+de|pres\s+de)\s/iu
 
 /**
  * A town's name as tokens, with everything that only qualifies it removed.
@@ -208,7 +223,8 @@ const PLACE_NOISE = /\b(?:im|am|an|auf|bei|der|den|dem|des|die|das|ob|vor|in|bad
  * expand ("Neuenstadt A.k."), which is why anything under three letters goes.
  */
 function placeTokens(city: string): string[] {
-  return slugify(city.replace(/\(.*?\)/g, ' ').replace(PLACE_NOISE, ' '))
+  const town = city.split(NEAR)[0] ?? city
+  return slugify(town.replace(/\(.*?\)/g, ' ').replace(PLACE_NOISE, ' '))
     .split('-')
     .filter((token) => token.length >= 3)
 }
@@ -414,19 +430,6 @@ export function findCatalogDuplicate(
 ): RaceCatalogEntry | null {
   for (const entry of catalog) {
     if (!couldBeTheSameRace(entry, harvested)) continue
-
-    // A person checked this one, so the harvest is describing it, not finding
-    // something new. The distance has to agree here: the name is not the
-    // evidence on this branch, and without it the "BT5K - New York City"
-    // merged into the New York City Marathon it shares a Sunday with.
-    if (
-      reviewed(entry) &&
-      !reviewed(harvested) &&
-      sameDay(entry, harvested) &&
-      distancesAgree(entry, harvested)
-    ) {
-      return entry
-    }
     if (namesAgree(entry, harvested)) return entry
   }
 

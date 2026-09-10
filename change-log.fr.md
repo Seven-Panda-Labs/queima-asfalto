@@ -4,6 +4,14 @@
 
 ---
 
+## [1.46.0] - 2026-09-10
+
+### Corrigé
+
+- **Des courses différentes ne sont plus fusionnées parce qu'elles partagent un jour :** partager le jour, la ville et la distance avec une course déjà vérifiée n'en fait pas la même course, et elle était traitée comme une copie. Désormais seuls les noms fusionnent deux entrées, et une course dans une commune voisine ("Rüdersdorf bei Berlin", par exemple) ne compte plus comme étant dans la grande ville.
+
+---
+
 ## [1.45.0] - 2026-09-10
 
 ### Corrigé

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.46.0] - 2026-09-10
+
+### Behoben
+
+- **Verschiedene Rennen werden nicht mehr wegen eines gemeinsamen Tages zusammengelegt:** denselben Tag, dieselbe Stadt und dieselbe Distanz wie ein schon geprüftes Rennen zu haben macht es nicht zum selben Rennen, es wurde aber als Kopie behandelt. Jetzt legen nur die Namen zwei Einträge zusammen, und ein Rennen im Nachbarort (etwa "Rüdersdorf bei Berlin") zählt nicht mehr als in der großen Stadt.
+
+---
+
 ## [1.45.0] - 2026-09-10
 
 ### Behoben
