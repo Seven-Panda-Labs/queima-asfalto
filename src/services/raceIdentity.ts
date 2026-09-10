@@ -1,4 +1,6 @@
+import { shareableResultsUrl } from '../../shared/officialResults'
 import type { Event } from '../types/Event'
+import { proposeCatalogRace } from './catalogProposals'
 import { reportEditionDates } from './editionReports'
 import { listEvents, updateEvent } from './events'
 import { findOrCreateRaceId, updateRace } from './races'
@@ -73,4 +75,58 @@ async function reportPastEditions(
   } catch {
     // Nothing to tell the runner: the link they asked for is already written.
   }
+}
+
+/**
+ * Proposes this event's race to the catalog, with a way back to the runner.
+ *
+ * The proposal used to be a name, a town and a day, and the entry the job
+ * created had nobody attached to it: the runner who asked for it stayed
+ * unlinked, so nothing they knew reached it and their own event went on
+ * offering to say which race it was. Measured after the first five proposals
+ * were applied: five entries created, no race pointing at any of them and not
+ * one report.
+ *
+ * So it carries the race, which the job links, and the results page of the
+ * edition they ran, which nothing else can carry: a report cannot name an
+ * entry that does not exist yet.
+ */
+export async function proposeRaceForEvent(
+  userId: string,
+  event: Event,
+  where: { city: string; country: string },
+): Promise<void> {
+  // Same as identifying: an event from before the races collection has no
+  // identity, and the job needs one to link.
+  const raceId =
+    event.raceId ??
+    (await findOrCreateRaceId(userId, {
+      name: event.name,
+      location: event.location,
+      locationLat: event.locationLat,
+      locationLng: event.locationLng,
+    }))
+
+  await proposeCatalogRace(userId, {
+    name: event.name,
+    city: where.city,
+    country: where.country,
+    raceDate: toIsoDay(event.date),
+    disciplines: [event.eventType],
+    ...(raceId ? { raceId } : {}),
+    // Only from a verified result, the same floor a report has: the day and
+    // the page both come from the organiser's own results.
+    ...(event.resultsVerified === true
+      ? { resultsUrl: shareableResultsUrl(event.resultsUrl) }
+      : {}),
+  })
+
+  if (raceId && !event.raceId) await updateEvent(event.id, { raceId })
+}
+
+/** The local day, because the day a race was run is a calendar fact. */
+function toIsoDay(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${date.getFullYear()}-${month}-${day}`
 }

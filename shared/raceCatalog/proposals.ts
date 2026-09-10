@@ -28,6 +28,21 @@ export type CatalogProposal = {
   /** ISO day the proposal was written. */
   proposedAt: string
   /**
+   * The runner's own race, so the job can link it to the entry this becomes.
+   *
+   * Without it a proposal was a gift with no return address: the entry was
+   * created and the runner who asked for it stayed unlinked, so nothing they
+   * knew reached it and their event went on saying it was not in the catalog.
+   */
+  raceId?: string
+  /**
+   * The edition's results page, already through `shareableResultsUrl`.
+   *
+   * Carried here because the entry is created from the proposal and from
+   * nothing else: a report cannot name an entry that does not exist yet.
+   */
+  resultsUrl?: string
+  /**
    * The entry it became, once the job created one.
    *
    * Written by the job and never by the runner, so it is also the guard that

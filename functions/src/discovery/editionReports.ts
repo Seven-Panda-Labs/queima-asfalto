@@ -40,7 +40,11 @@ export async function applyPendingEditionReports(
   const byRace = new Map<string, EditionReport[]>()
   for (const document of snapshot.docs) {
     const report = document.data() as EditionReport
-    if (!report.catalogRaceId || !report.raceDate) continue
+    // A report may carry a day, a fee, a results page, or several: a runner
+    // registers months before they run. Requiring a day dropped the ones that
+    // only have a link.
+    if (!report.catalogRaceId) continue
+    if (!report.raceDate && report.fee === undefined && !report.resultsUrl) continue
     byRace.set(report.catalogRaceId, [...(byRace.get(report.catalogRaceId) ?? []), report])
   }
 

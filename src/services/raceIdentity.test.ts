@@ -6,6 +6,7 @@ const listEvents = vi.fn()
 const updateRace = vi.fn()
 const findOrCreateRaceId = vi.fn()
 const reportEditionDates = vi.fn()
+const proposeCatalogRace = vi.fn()
 
 vi.mock('./events', () => ({
   updateEvent: (...args: unknown[]) => updateEvent(...args),
@@ -18,8 +19,11 @@ vi.mock('./races', () => ({
 vi.mock('./editionReports', () => ({
   reportEditionDates: (...args: unknown[]) => reportEditionDates(...args),
 }))
+vi.mock('./catalogProposals', () => ({
+  proposeCatalogRace: (...args: unknown[]) => proposeCatalogRace(...args),
+}))
 
-const { identifyRaceInCatalog } = await import('./raceIdentity')
+const { identifyRaceInCatalog, proposeRaceForEvent } = await import('./raceIdentity')
 
 function event(overrides: Partial<Event> = {}): Event {
   return {
@@ -123,5 +127,68 @@ describe('identifyRaceInCatalog', () => {
     expect(updateRace).toHaveBeenCalledWith('race-1', {
       catalogRaceId: 'de-berlin-tierparklauf-berlin',
     })
+  })
+})
+
+describe('proposeRaceForEvent', () => {
+  it('carries the race, so the job can link what it creates', async () => {
+    // Measured after the first five proposals were applied: five entries
+    // created, no race pointing at any of them, not one report.
+    await proposeRaceForEvent('u1', event(), { city: 'Berlin', country: 'DE' })
+
+    expect(proposeCatalogRace).toHaveBeenCalledWith(
+      'u1',
+      expect.objectContaining({
+        name: 'Tierparklauf',
+        city: 'Berlin',
+        country: 'DE',
+        raceDate: '2024-09-08',
+        disciplines: ['km_5'],
+        raceId: 'race-1',
+      }),
+    )
+  })
+
+  it('gives an event with no race one, and says so on the event', async () => {
+    findOrCreateRaceId.mockResolvedValue('race-new')
+
+    await proposeRaceForEvent('u1', event({ raceId: undefined }), { city: 'Berlin', country: 'DE' })
+
+    expect(proposeCatalogRace).toHaveBeenCalledWith(
+      'u1',
+      expect.objectContaining({ raceId: 'race-new' }),
+    )
+    expect(updateEvent).toHaveBeenCalledWith('event-2024', { raceId: 'race-new' })
+  })
+
+  it('carries the results page, stripped of what named the runner', async () => {
+    await proposeRaceForEvent(
+      'u1',
+      event({
+        resultsUrl:
+          'https://www.davengo.com/event/result/volvo-tierparklauf-2024/search?term=neves',
+      }),
+      { city: 'Berlin', country: 'DE' },
+    )
+
+    // Nothing else can carry it: a report cannot name an entry that does not
+    // exist yet.
+    expect(proposeCatalogRace).toHaveBeenCalledWith(
+      'u1',
+      expect.objectContaining({
+        resultsUrl: 'https://www.davengo.com/event/result/volvo-tierparklauf-2024/search',
+      }),
+    )
+  })
+
+  it('leaves out a results page nobody verified', async () => {
+    await proposeRaceForEvent(
+      'u1',
+      event({ resultsVerified: false, resultsUrl: 'https://timing.example/results' }),
+      { city: 'Berlin', country: 'DE' },
+    )
+
+    const [, race] = proposeCatalogRace.mock.calls[0] as [string, Record<string, unknown>]
+    expect(race.resultsUrl).toBeUndefined()
   })
 })

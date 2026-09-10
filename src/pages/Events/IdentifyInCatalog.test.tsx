@@ -13,11 +13,9 @@ vi.mock('../../services/raceCatalog', () => ({
 }))
 vi.mock('../../services/raceIdentity', () => ({
   identifyRaceInCatalog: (...args: unknown[]) => identifyRaceInCatalog(...args),
+  proposeRaceForEvent: (...args: unknown[]) => proposeRaceForEvent(...args),
 }))
-const proposeCatalogRace = vi.fn()
-vi.mock('../../services/catalogProposals', () => ({
-  proposeCatalogRace: (...args: unknown[]) => proposeCatalogRace(...args),
-}))
+const proposeRaceForEvent = vi.fn()
 
 const event = {
   id: 'event-1',
@@ -204,15 +202,13 @@ describe('a race the catalog does not hold', () => {
     fireEvent.change(screen.getByLabelText('País'), { target: { value: 'DE' } })
     fireEvent.click(screen.getByRole('button', { name: 'Propor ao catálogo' }))
 
-    // The country is picked from a list, so it arrives as the code the catalog
-    // stores and there is nothing to read.
+    // The event itself, because the proposal carries the runner's race and the
+    // results page of the edition they ran. The country is picked from a list,
+    // so it arrives as the code the catalog stores.
     await waitFor(() =>
-      expect(proposeCatalogRace).toHaveBeenCalledWith('u1', {
-        name: 'Generali Berliner Halbmarathon',
+      expect(proposeRaceForEvent).toHaveBeenCalledWith('u1', event, {
         city: 'Berlin',
         country: 'DE',
-        raceDate: '2026-04-06',
-        disciplines: ['km_21_1'],
       }),
     )
     // The search closes: a proposal ends this, and leaving it open read as
@@ -229,6 +225,6 @@ describe('a race the catalog does not hold', () => {
     // The catalog stores XX for a missing country and dedup compares it first,
     // so two XX races in a town called Porto would merge into one.
     expect(await screen.findByText('Escolhe o país da lista.')).toBeInTheDocument()
-    expect(proposeCatalogRace).not.toHaveBeenCalled()
+    expect(proposeRaceForEvent).not.toHaveBeenCalled()
   })
 })

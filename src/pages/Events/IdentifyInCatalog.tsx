@@ -2,10 +2,9 @@ import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchTokens, type RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
-import { proposeCatalogRace } from '../../services/catalogProposals'
 import { formatDatePt } from '../../utils/date'
 import { searchRaceCatalog } from '../../services/raceCatalog'
-import { identifyRaceInCatalog } from '../../services/raceIdentity'
+import { identifyRaceInCatalog, proposeRaceForEvent } from '../../services/raceIdentity'
 import type { Event } from '../../types/Event'
 
 /**
@@ -13,13 +12,6 @@ import type { Event } from '../../types/Event'
  * type a better word, not to scroll.
  */
 const LIMIT = 6
-
-/** The local day, because the day a race was run is a calendar fact. */
-function toIsoDay(date: Date): string {
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${date.getFullYear()}-${month}-${day}`
-}
 
 /**
  * A date early enough to find an entry whose next edition has already passed.
@@ -97,13 +89,10 @@ export function IdentifyInCatalog({
     setSaving(true)
     setError(null)
     try {
-      await proposeCatalogRace(userId, {
-        name: event.name,
-        city,
-        country,
-        raceDate: toIsoDay(event.date),
-        disciplines: [event.eventType],
-      })
+      // The event, not just its name: the proposal carries the runner's race
+      // so the job can link it to the entry, and the results page of the
+      // edition they ran.
+      await proposeRaceForEvent(userId, event, { city, country })
       setProposing(false)
       setProposed(true)
     } catch {
