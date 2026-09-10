@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import type { RaceCatalogEntry } from '../raceCatalog/types'
-import { catalogDuplicateCandidates, findCatalogDuplicate, survivorFirst } from './duplicates'
+import {
+  catalogDuplicateCandidates,
+  findCatalogDuplicate,
+  sameAnnualRace,
+  survivorFirst,
+} from './duplicates'
 
 function entry(overrides: Partial<RaceCatalogEntry> & Pick<RaceCatalogEntry, 'id' | 'name'>): RaceCatalogEntry {
   return {
@@ -453,5 +458,111 @@ describe('what counts as evidence for the queue', () => {
     const half = named('Haspa Halbmarathon Hamburg', 'Hamburg')
     const full = named('Haspa Marathon Hamburg', 'Hamburg')
     expect(findCatalogDuplicate(full, [half])).toBeNull()
+  })
+})
+
+describe('one race written down twice, in two years', () => {
+  // Both real, from the instance: the queue showed neither, because every
+  // comparison in this file was built around the day.
+  const copenhagen2026 = entry({
+    id: 'dk-copenhagen-copenhagen-half-marathon',
+    name: 'Copenhagen Half Marathon',
+    country: 'DK',
+    city: 'Copenhagen',
+    disciplines: ['km_21_1'],
+    editions: [{ year: 2026, raceDate: '2026-09-19', source: 's', confirmedAt: '2026-09-01' }],
+  })
+  const copenhagen2027 = entry({
+    id: 'dk-kobenhavn-copenhagen-half-marathon',
+    name: 'Copenhagen Half Marathon',
+    country: 'DK',
+    city: 'Copenhagen',
+    disciplines: ['km_21_1'],
+    editions: [{ year: 2027, raceDate: '2027-09-17', source: 't', confirmedAt: '2026-09-01' }],
+  })
+
+  it('is one race, whatever the days say', () => {
+    expect(sameAnnualRace(copenhagen2026, copenhagen2027)).toBe(true)
+  })
+
+  it('reaches the queue, since no rule merges it on its own', () => {
+    const pairs = catalogDuplicateCandidates([copenhagen2026, copenhagen2027])
+
+    expect(pairs).toHaveLength(1)
+    expect(findCatalogDuplicate(copenhagen2027, [copenhagen2026])).toBeNull()
+  })
+
+  it('keeps a spring race away from an autumn one with the same name', () => {
+    const spring = entry({
+      id: 'de-berlin-volkslauf-spring',
+      name: 'Volkslauf',
+      editions: [{ year: 2026, raceDate: '2026-04-12', source: 's', confirmedAt: '2026-01-01' }],
+    })
+    const autumn = entry({
+      id: 'de-berlin-volkslauf-autumn',
+      name: 'Volkslauf',
+      editions: [{ year: 2027, raceDate: '2027-10-10', source: 's', confirmedAt: '2026-01-01' }],
+    })
+
+    expect(sameAnnualRace(spring, autumn)).toBe(false)
+  })
+
+  it('reads the turn of the year as two days apart', () => {
+    const silvester = entry({
+      id: 'de-berlin-silvesterlauf',
+      name: 'Berliner Silvesterlauf',
+      editions: [{ year: 2026, raceDate: '2026-12-31', source: 's', confirmedAt: '2026-01-01' }],
+    })
+    const neujahr = entry({
+      id: 'de-berlin-silvesterlauf-2',
+      name: 'Berliner Silvesterlauf',
+      editions: [{ year: 2027, raceDate: '2027-01-02', source: 's', confirmedAt: '2026-01-01' }],
+    })
+
+    expect(sameAnnualRace(silvester, neujahr)).toBe(true)
+  })
+
+  it('still refuses two races an operator kept apart', () => {
+    const kept = { ...copenhagen2026, notDuplicateOf: [copenhagen2027.id] }
+
+    expect(sameAnnualRace(kept, copenhagen2027)).toBe(false)
+  })
+})
+
+describe('a year in a name', () => {
+  it('is the edition and not a number that tells two races apart', () => {
+    // "S 25 Berlin" against "S 25 Berlin 2027" came out as two races, so a
+    // runner proposing the edition they ran made a third entry.
+    const listing = entry({
+      id: 'de-krems-wachaumarathon-2027',
+      name: 'WACHAUmarathon 2027',
+      city: 'Krems an der Donau',
+      editions: [{ year: 2027, raceDate: '2027-09-12', source: 's', confirmedAt: '2026-09-01' }],
+    })
+    const same = entry({
+      id: 'de-krems-wachaumarathon',
+      name: 'WACHAUmarathon',
+      city: 'Krems an der Donau',
+      editions: [{ year: 2026, raceDate: '2026-09-13', source: 't', confirmedAt: '2026-09-01' }],
+    })
+
+    expect(sameAnnualRace(listing, same)).toBe(true)
+  })
+
+  it('does not excuse a real number: a 5K is not a 10K', () => {
+    const five = entry({
+      id: 'de-berlin-berlin-5k',
+      name: 'Berlin 5K 2026',
+      disciplines: ['km_5'],
+      editions: [{ year: 2026, raceDate: '2026-06-06', source: 's', confirmedAt: '2026-01-01' }],
+    })
+    const ten = entry({
+      id: 'de-berlin-berlin-10k',
+      name: 'Berlin 10K 2027',
+      disciplines: ['km_10'],
+      editions: [{ year: 2027, raceDate: '2027-06-05', source: 's', confirmedAt: '2026-01-01' }],
+    })
+
+    expect(sameAnnualRace(five, ten)).toBe(false)
   })
 })

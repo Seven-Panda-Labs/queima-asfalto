@@ -9,6 +9,7 @@
 ### Fixed
 
 - **Proposing a race links you to it:** the race you propose now ends up linked to your event, with the day and the results page you already had. Before, the entry was created and you were left out of it.
+- **Fewer repeated races:** the same race stored twice for different years is now recognised, and proposing a race the catalog already has under another year links you to that one instead of creating a second. A proposal's town now comes from the end of the location (the city) rather than the start (the park).
 
 ---
 

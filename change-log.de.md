@@ -9,6 +9,7 @@
 ### Behoben
 
 - **Ein Rennen vorzuschlagen verknüpft dich damit:** das vorgeschlagene Rennen ist jetzt mit deinem Event verknüpft, mit dem Tag und der Ergebnisseite, die du schon hattest. Vorher entstand der Eintrag und du bliebst außen vor.
+- **Weniger doppelte Rennen:** dasselbe Rennen zweimal für verschiedene Jahre gespeichert wird jetzt erkannt, und ein Rennen vorzuschlagen, das der Katalog schon für ein anderes Jahr hat, verknüpft dich damit statt ein zweites anzulegen. Der Ort eines Vorschlags kommt jetzt vom Ende der Angabe (die Stadt) statt vom Anfang (der Park).
 
 ---
 

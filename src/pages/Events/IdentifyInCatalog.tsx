@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchTokens, type RaceCatalogEntry } from '../../../shared/raceCatalog'
+import { toIsoCountry } from '../../../shared/eventDiscovery/countries'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { formatDatePt } from '../../utils/date'
 import { searchRaceCatalog } from '../../services/raceCatalog'
@@ -21,6 +22,39 @@ const LIMIT = 6
  * the entry is wanted whether or not its next edition is known.
  */
 const ANY_DATE = '1000-01-01'
+
+/**
+ * The town in a location, which is one free-text field.
+ *
+ * The last part and not the first: a runner writes where they were, and where
+ * they were is a place in a town. "Brandenburger Tor, Berlim" and "Tegeler
+ * Forst (nördl. Teil), Berlim" both end in the town, and taking the first part
+ * filed three proposals under a park and a stadium. Measured on a real
+ * instance: 35 of 70 locations carry a comma, and in every one of them the
+ * town is last, or last before the country.
+ *
+ * A location with no comma is left whole. "Berlin Tierpark" is a town and a
+ * park with nothing to separate them, and guessing which word is which would
+ * be worse than what the runner can correct in the field.
+ */
+function townIn(location: string): string {
+  const parts = location
+    .split(',')
+    .map((part) => part.trim())
+    .filter(Boolean)
+  if (parts.length === 0) return ''
+
+  const last = parts[parts.length - 1]!
+  // "Valência, Espanha" ends in a country, and then the town is before it.
+  if (parts.length > 1 && toIsoCountry(last)) return parts[parts.length - 2]!
+  return last
+}
+
+/** The country, when the location happens to name one. */
+function countryIn(location: string): string {
+  const last = location.split(',').pop()?.trim()
+  return (last && toIsoCountry(last)) || ''
+}
 
 /**
  * Says which race in the shared catalog this event is a running of.
@@ -65,9 +99,8 @@ export function IdentifyInCatalog({
   const [error, setError] = useState<string | null>(null)
   const [proposing, setProposing] = useState(false)
   const [proposed, setProposed] = useState(false)
-  /** "Brandenburger Tor, Berlim" is a location and not a town and a country. */
-  const [city, setCity] = useState(() => event.location.split(',')[0]?.trim() ?? '')
-  const [country, setCountry] = useState('')
+  const [city, setCity] = useState(() => townIn(event.location))
+  const [country, setCountry] = useState(() => countryIn(event.location))
 
   if (linked || justLinked) return null
 
