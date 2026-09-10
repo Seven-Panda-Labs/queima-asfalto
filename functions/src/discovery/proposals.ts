@@ -10,7 +10,7 @@ import {
   type EditionReport,
   type RaceCatalogEntry,
 } from '../shared/raceCatalog/index.js'
-import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
+import { findCatalogDuplicate, sameAnnualRace } from '../shared/eventDiscovery/duplicates.js'
 import { catalogId } from '../shared/eventDiscovery/identity.js'
 
 /**
@@ -61,7 +61,15 @@ export async function applyPendingProposals(
     // A race the catalog already holds under another name is answered, not
     // created: the runner searched by one word and the rule reads day, town
     // and name together.
-    const twin = findCatalogDuplicate(entry, catalog)
+    //
+    // And a proposal is almost always for an edition that has been run, while
+    // the catalog lists the one still ahead, so the day cannot be the test:
+    // `sameAnnualRace` is the same judgement without it. Without this a runner
+    // proposing the 2026 running of a race the catalog knows for 2027 creates
+    // a second entry for it, which is what happened to S 25 Berlin.
+    const twin =
+      findCatalogDuplicate(entry, catalog) ??
+      catalog.find((candidate) => sameAnnualRace(entry, candidate))
     if (twin) {
       // Answered, not refused, and the runner is linked to the entry that
       // answered it: they asked to be part of this race, and which entry it

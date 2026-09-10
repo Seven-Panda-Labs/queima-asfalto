@@ -9,6 +9,7 @@
 ### Corregido
 
 - **Proponer una carrera te vincula a ella:** la carrera que propones queda vinculada a tu evento, con el día y la página de resultados que ya tenías. Antes se creaba la entrada y tú quedabas fuera.
+- **Menos carreras repetidas:** la misma carrera guardada dos veces para años distintos ya se reconoce, y proponer una carrera que el catálogo ya tiene en otro año te vincula a esa en vez de crear otra. La localidad de una propuesta ahora viene del final de la ubicación (la ciudad), no del principio (el parque).
 
 ---
 

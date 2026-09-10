@@ -83,8 +83,18 @@ function stem(token: string): string {
  * "Neckarsteiglauf 126K" are one race, and a source that leaves the distance
  * out of the name has not disagreed about it.
  */
+/**
+ * A four-digit year in a name is the edition, not the race.
+ *
+ * "S 25 Berlin" and "S 25 Berlin 2027" came out as two races because one side
+ * had the number 2027 and the other did not, so a runner proposing the edition
+ * they ran created a third entry for a race the catalog already held twice.
+ */
+const YEAR_IN_NAME = /^(?:19|20)\d\d$/
+
 function numbersIn(name: string): Set<string> {
-  return new Set(normalizeName(name).match(/\d+/g) ?? [])
+  const found = normalizeName(name).match(/\d+/g) ?? []
+  return new Set(found.filter((number) => !YEAR_IN_NAME.test(number)))
 }
 
 function numbersRuleOut(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
@@ -314,6 +324,85 @@ function couldBeTheSameRace(left: RaceCatalogEntry, right: RaceCatalogEntry): bo
 }
 
 /**
+ * How far an annual race may drift and still be the same race.
+ *
+ * The Copenhagen Half Marathon is the 19th of September in 2026 and the 17th in
+ * 2027, and a race pinned to the third Sunday moves by up to six days a year.
+ * Three weeks is generous enough for that and short enough to keep a spring
+ * race away from an autumn one with the same name.
+ */
+const DRIFT_DAYS = 21
+
+/** The day within the year, so two dates in different years can be compared. */
+function dayOfYear(day: string): number | null {
+  const at = Date.parse(`${day}T00:00:00Z`)
+  if (!Number.isFinite(at)) return null
+  const date = new Date(at)
+  const start = Date.UTC(date.getUTCFullYear(), 0, 1)
+  return Math.round((at - start) / 86400000)
+}
+
+/**
+ * The same time of year, whatever the year.
+ *
+ * Falls back to the month a race usually falls in, because an entry whose
+ * editions carry no day at all still says that much.
+ */
+function sameTimeOfYear(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  const here = daysOf(left).map(dayOfYear).filter((day): day is number => day !== null)
+  const there = daysOf(right).map(dayOfYear).filter((day): day is number => day !== null)
+
+  if (here.length > 0 && there.length > 0) {
+    return here.some((one) =>
+      there.some((other) => {
+        const apart = Math.abs(one - other)
+        // Around the turn of the year, the 31st of December and the 2nd of
+        // January are two days apart and not three hundred and sixty three.
+        return Math.min(apart, 365 - apart) <= DRIFT_DAYS
+      }),
+    )
+  }
+
+  const month = left.typicalRaceMonth
+  return Boolean(month && month === right.typicalRaceMonth)
+}
+
+/**
+ * One race, written down twice for two different years.
+ *
+ * An entry is a race and its editions are the years, so two entries for the
+ * same race are duplicates however far apart their days are. The rest of this
+ * file compares days because it was built for the harvest, where two sources
+ * describe the same edition still ahead. That leaves the case this covers:
+ * "Copenhagen Half Marathon" for the 19th of September 2026 and "Copenhagen
+ * Half Marathon" for the 17th of September 2027, which no day-based rule can
+ * ever bring together, and a runner proposing the edition they ran in 2026
+ * against a catalog that only lists 2027.
+ *
+ * The day being useless here is why everything else has to hold: the names
+ * agree once the sponsors, the edition and the town are gone, the place agrees,
+ * no number contradicts, and it is the same time of year.
+ *
+ * What this cannot bridge is a town written in two languages. "Berlim" and
+ * "Berlin" are one place and `sameTown` reads them as two, so a proposal from a
+ * Portuguese phone still lands beside the German listings.
+ */
+export function sameAnnualRace(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
+  return (
+    left.id !== right.id &&
+    left.retired !== true &&
+    right.retired !== true &&
+    !left.duplicateOfCatalogRaceId &&
+    !right.duplicateOfCatalogRaceId &&
+    !keptApart(left, right) &&
+    samePlace(left, right) &&
+    !numbersRuleOut(left, right) &&
+    namesAgree(left, right) &&
+    sameTimeOfYear(left, right)
+  )
+}
+
+/**
  * The entry a harvested race belongs to, or nothing.
  *
  * Nothing is the safe answer and the common one: two races nobody has checked,
@@ -450,12 +539,16 @@ export function catalogDuplicateCandidates(
     for (let other = index + 1; other < catalog.length; other += 1) {
       const left = catalog[index]
       const right = catalog[other]
-      if (!couldBeTheSameRace(left, right)) continue
+      // Two entries for one race in two different years belong here too. No
+      // day-based rule can see them, and nothing merges them on its own: what
+      // a person answers is which of the two the editions should live on.
+      const acrossYears = sameAnnualRace(left, right)
+      if (!acrossYears && !couldBeTheSameRace(left, right)) continue
       // Whatever the rule would have merged is already merged, so anything left
       // needing a decision is by definition what it declined.
       if (findCatalogDuplicate(right, [left])) continue
       // And a pair with no word in common is not a question, it is two races.
-      if (!sharesAWord(left, right)) continue
+      if (!acrossYears && !sharesAWord(left, right)) continue
 
       const [keep, drop] = survivorFirst(left, right)
       candidates.push({ keep, drop })

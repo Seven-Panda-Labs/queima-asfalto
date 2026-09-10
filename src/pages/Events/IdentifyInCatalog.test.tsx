@@ -186,13 +186,29 @@ describe('a race the catalog does not hold', () => {
     fireEvent.click(await screen.findByRole('button', { name: /Propor esta prova/ }))
   }
 
-  it('asks only for what the event does not already say', async () => {
+  it('reads the town off the end of the location, not the start', async () => {
     await openProposal()
 
-    // The town comes off the location, which is one free-text field: the event
-    // says "Brandenburger Tor, Berlim" and the catalog needs them apart.
-    expect(screen.getByLabelText('Terra')).toHaveValue('Brandenburger Tor')
+    // "Brandenburger Tor, Berlim" is a place in a town, and taking the first
+    // part filed proposals under a park and a stadium.
+    expect(screen.getByLabelText('Terra')).toHaveValue('Berlim')
     expect(screen.getByLabelText('País')).toHaveValue('')
+  })
+
+  it('takes the country when the location names one', async () => {
+    searchRaceCatalog.mockResolvedValue([])
+    render(
+      <IdentifyInCatalog
+        event={{ ...event, location: 'Parque Florestal de Monsanto, Lisboa, Portugal' } as Event}
+        userId="u1"
+        linked={false}
+      />,
+    )
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    fireEvent.click(await screen.findByRole('button', { name: /Propor esta prova/ }))
+
+    expect(screen.getByLabelText('Terra')).toHaveValue('Lisboa')
+    expect(screen.getByLabelText('País')).toHaveValue('PT')
   })
 
   it('proposes the race with the day and distance the event already knows', async () => {

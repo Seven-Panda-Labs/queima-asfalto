@@ -9,6 +9,7 @@
 ### Corrigido
 
 - **Propor uma prova liga-te a ela:** a prova que propões passa a ficar ligada ao teu evento, com o dia e a página de resultados que já tinhas. Antes a entrada era criada e ficavas de fora dela.
+- **Menos provas repetidas:** a mesma prova guardada duas vezes para anos diferentes passa a ser reconhecida, e propor uma prova que o catálogo já tem noutro ano liga-te à que lá está em vez de criar outra. A terra de uma proposta passa a vir do fim da localização (a cidade), não do início (o parque).
 
 ---
 

@@ -9,6 +9,7 @@
 ### Corrigé
 
 - **Proposer une course te relie à elle :** la course que tu proposes est désormais reliée à ton événement, avec le jour et la page de résultats que tu avais déjà. Avant, l'entrée était créée et tu restais dehors.
+- **Moins de courses en double :** la même course enregistrée deux fois pour des années différentes est maintenant reconnue, et proposer une course que le catalogue a déjà pour une autre année te relie à celle-là au lieu d'en créer une seconde. La ville d'une proposition vient désormais de la fin du lieu (la ville) et non du début (le parc).
 
 ---
 
