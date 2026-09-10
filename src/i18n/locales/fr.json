@@ -1227,7 +1227,13 @@
     "duplicatesMergeOther": "Ou garder {{name}}",
     "duplicatesOpenSource": "Ouvrir la source sur {{source}}",
     "proposalsTitle": "Propositions de coureurs ({{count}})",
-    "proposalsHint": "Des courses que les coureurs signalent comme manquantes. La mise à jour quotidienne fait de chacune une fiche non vérifiée, ou la lie à la course que le catalogue avait déjà. Rien à décider ici."
+    "proposalsHint": "Des courses que les coureurs signalent comme manquantes. La mise à jour quotidienne fait de chacune une fiche non vérifiée, ou la lie à la course que le catalogue avait déjà. Rien à décider ici.",
+    "catalogStaleCount": "{{count}} courses attendent une nouvelle saison",
+    "catalogStaleHint": "Des courses dont la dernière date connue est passée. Relever la saison suivante à la source officielle, voilà le travail.",
+    "catalogNothingStale": "Rien en attente. Chaque course du catalogue a une date devant elle.",
+    "catalogSearchTitle": "Chercher dans le catalogue",
+    "catalogSearchLabel": "Chercher par nom",
+    "catalogSearchEmpty": "Rien avec ce mot. Essaie un autre mot du nom, ou la ville."
   },
   "funnel": {
     "groups": {

@@ -27,6 +27,7 @@ import { mergeIntoCatalog, toCatalogEntry } from '../shared/eventDiscovery/toCat
 import { sourceForRun } from '../shared/eventDiscovery/sources.js'
 import { applyPendingEditionReports } from './editionReports.js'
 import { applyPendingProposals } from './proposals.js'
+import { writeDuplicateQueue } from './duplicateQueue.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
 import { DELAY_BETWEEN_PAGES_MS, delay, fetchPage } from './fetchPage.js'
@@ -481,5 +482,16 @@ export const harvestRaceCatalog = onSchedule(
       `discovery harvest: ${result.written} written, ${result.skipped} left alone, ` +
         `${result.deduplicated ?? 0} recognised as copies, from ${result.sources.join(', ')}`,
     )
+
+    // After the harvest, so the queue reflects what this run wrote, and here
+    // rather than in a browser: the rule compares every pair against every
+    // other, which is the whole catalog downloaded on every visit to the admin
+    // screen.
+    try {
+      const queue = await writeDuplicateQueue()
+      console.log(`duplicate queue: ${queue.pairs} pairs for a person to decide`)
+    } catch (error) {
+      console.error('duplicate queue failed', error)
+    }
   },
 )

@@ -1227,7 +1227,13 @@
     "duplicatesMergeOther": "Ou ficar com {{name}}",
     "duplicatesOpenSource": "Abrir a origem em {{source}}",
     "proposalsTitle": "Propostas de utilizadores ({{count}})",
-    "proposalsHint": "Provas que os corredores dizem faltar. A actualização diária transforma cada uma numa entrada não confirmada, ou liga-a à prova que o catálogo já tinha. Nada para decidir aqui."
+    "proposalsHint": "Provas que os corredores dizem faltar. A actualização diária transforma cada uma numa entrada não confirmada, ou liga-a à prova que o catálogo já tinha. Nada para decidir aqui.",
+    "catalogStaleCount": "{{count}} provas à espera de uma temporada nova",
+    "catalogStaleHint": "Provas cuja última data conhecida já passou. Ler a temporada seguinte na fonte oficial é o trabalho.",
+    "catalogNothingStale": "Nada à espera. Todas as provas do catálogo têm uma data à frente.",
+    "catalogSearchTitle": "Procurar no catálogo",
+    "catalogSearchLabel": "Procurar pelo nome",
+    "catalogSearchEmpty": "Nada com essa palavra. Tenta outra palavra do nome, ou a terra."
   },
   "funnel": {
     "groups": {

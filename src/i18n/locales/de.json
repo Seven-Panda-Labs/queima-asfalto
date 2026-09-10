@@ -1227,7 +1227,13 @@
     "duplicatesMergeOther": "Oder {{name}} behalten",
     "duplicatesOpenSource": "Die Quelle bei {{source}} öffnen",
     "proposalsTitle": "Vorschläge von Läufern ({{count}})",
-    "proposalsHint": "Rennen, die Läufer als fehlend melden. Die tägliche Aktualisierung macht aus jedem einen ungeprüften Eintrag, oder verknüpft es mit dem Rennen, das der Katalog schon hatte. Hier ist nichts zu entscheiden."
+    "proposalsHint": "Rennen, die Läufer als fehlend melden. Die tägliche Aktualisierung macht aus jedem einen ungeprüften Eintrag, oder verknüpft es mit dem Rennen, das der Katalog schon hatte. Hier ist nichts zu entscheiden.",
+    "catalogStaleCount": "{{count}} Rennen warten auf eine neue Saison",
+    "catalogStaleHint": "Rennen, deren letztes bekanntes Datum vorbei ist. Die nächste Saison an der offiziellen Quelle nachzulesen ist die Arbeit.",
+    "catalogNothingStale": "Nichts wartet. Jedes Rennen im Katalog hat ein Datum vor sich.",
+    "catalogSearchTitle": "Im Katalog suchen",
+    "catalogSearchLabel": "Nach Namen suchen",
+    "catalogSearchEmpty": "Nichts mit diesem Wort. Versuche ein anderes Wort aus dem Namen, oder den Ort."
   },
   "funnel": {
     "groups": {
