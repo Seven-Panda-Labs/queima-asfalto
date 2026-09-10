@@ -14,6 +14,10 @@
 
 - **Le fuseau horaire se choisit dans une liste :** par région et avec l'heure de chacun, au lieu de taper le nom IANA.
 
+### Corrigé
+
+- **Après avoir dit quelle course c'est, la boîte disparaît :** avant, elle redemandait la même chose jusqu'au rechargement de la page.
+
 ---
 
 ## [1.43.0] - 2026-09-10

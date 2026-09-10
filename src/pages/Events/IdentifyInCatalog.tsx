@@ -46,14 +46,26 @@ export function IdentifyInCatalog({
   event,
   userId,
   linked,
+  onLinked,
 }: {
   event: Event
   userId: string
   /** True once the event's race points at a catalog entry. */
   linked: boolean
+  /** Called after the link is written, for the page to read the event again. */
+  onLinked?: () => void
 }) {
   const { t } = useTranslation()
   const [open, setOpen] = useState(false)
+  /**
+   * That this runner has just said which race it is.
+   *
+   * `linked` is derived from the event's race, and the event on the page was
+   * loaded once: an event that had no race until this ran keeps its stale
+   * `raceId`, so the offer to say which race it is came back after saying it.
+   * They just answered, and asking again is wrong whatever the page knows yet.
+   */
+  const [justLinked, setJustLinked] = useState(false)
   const [term, setTerm] = useState(event.name)
   const [candidates, setCandidates] = useState<RaceCatalogEntry[] | null>(null)
   const [searching, setSearching] = useState(false)
@@ -65,7 +77,7 @@ export function IdentifyInCatalog({
   const [city, setCity] = useState(() => event.location.split(',')[0]?.trim() ?? '')
   const [country, setCountry] = useState('')
 
-  if (linked) return null
+  if (linked || justLinked) return null
 
   // A proposal is the end of this, not a step in it: leaving the search open
   // read as though something else was still expected.
@@ -130,7 +142,9 @@ export function IdentifyInCatalog({
     setError(null)
     try {
       await identifyRaceInCatalog(userId, event, entry.id)
+      setJustLinked(true)
       setOpen(false)
+      onLinked?.()
     } catch {
       setError(t('identifyInCatalog.saveError'))
     } finally {

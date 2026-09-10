@@ -137,6 +137,37 @@ describe('IdentifyInCatalog', () => {
     )
   })
 
+  it('stops asking once the runner has said which race it is', async () => {
+    // The page loads the event once, so an event that had no race until now
+    // keeps its stale raceId and `linked` stays false: the offer came back
+    // after answering it, and only a reload cleared it.
+    searchRaceCatalog.mockResolvedValue([entry()])
+    const onLinked = vi.fn()
+    const { container } = render(
+      <IdentifyInCatalog event={event} userId="u1" linked={false} onLinked={onLinked} />,
+    )
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'É esta' }))
+
+    await waitFor(() => expect(container).toBeEmptyDOMElement())
+    // And the page is told, so everything else on it reads the event again.
+    expect(onLinked).toHaveBeenCalled()
+  })
+
+  it('keeps asking when the link failed, because nothing was written', async () => {
+    searchRaceCatalog.mockResolvedValue([entry()])
+    identifyRaceInCatalog.mockRejectedValueOnce(new Error('denied'))
+    const onLinked = vi.fn()
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} onLinked={onLinked} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    fireEvent.click(await screen.findByRole('button', { name: 'É esta' }))
+
+    expect(await screen.findByText('Não foi possível ligar.')).toBeInTheDocument()
+    expect(onLinked).not.toHaveBeenCalled()
+  })
+
   it('says so when the link could not be written', async () => {
     searchRaceCatalog.mockResolvedValue([entry()])
     identifyRaceInCatalog.mockRejectedValueOnce(new Error('denied'))

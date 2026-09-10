@@ -580,6 +580,7 @@ export function EventDetail() {
             linked={Boolean(
               races.find((candidate) => candidate.id === event.raceId)?.catalogRaceId,
             )}
+            onLinked={reloadEvent}
           />
         ) : null}
 

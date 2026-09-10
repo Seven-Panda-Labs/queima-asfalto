@@ -14,6 +14,10 @@
 
 - **Die Zeitzone kommt aus einer Liste:** nach Region und mit der jeweiligen Uhrzeit, statt den IANA-Namen zu tippen.
 
+### Behoben
+
+- **Nach dem Sagen, welches Rennen es ist, verschwindet der Kasten:** vorher fragte er dasselbe weiter, bis die Seite neu geladen wurde.
+
 ---
 
 ## [1.43.0] - 2026-09-10

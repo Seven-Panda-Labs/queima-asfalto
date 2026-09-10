@@ -14,6 +14,10 @@
 
 - **La zona horaria se elige de una lista:** por región y con la hora de cada una, en vez de escribir el nombre IANA a mano.
 
+### Corregido
+
+- **Después de decir cuál es la carrera, la caja desaparece:** antes seguía pidiendo lo mismo hasta recargar la página.
+
 ---
 
 ## [1.43.0] - 2026-09-10
