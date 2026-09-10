@@ -10,6 +10,7 @@
 
 - **Relier une course au catalogue rapporte ce que tu as déjà couru :** les éditions courues avec un résultat vérifié arrivent maintenant au catalogue, pas seulement celles à venir.
 - **Les résultats de chaque édition au catalogue :** en important un résultat vérifié, la page de résultats de cette année arrive au catalogue, sans rien qui t'identifie (une recherche à ton nom, ou ta ligne du tableau, restent dehors).
+- **Les résultats que quelqu'un a déjà trouvés :** sur un événement sans lien de résultats, le catalogue propose la page de cette année, et l'utiliser est ton clic.
 
 ### Modifié
 

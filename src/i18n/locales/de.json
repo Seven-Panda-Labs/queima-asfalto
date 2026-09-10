@@ -1453,5 +1453,10 @@
     "countryError": "Wähle das Land aus der Liste.",
     "proposeSubmit": "Dem Katalog vorschlagen",
     "proposed": "Vorschlag gesendet, mehr ist nicht zu tun. Das Rennen kommt bei der Aktualisierung morgen früh in den Katalog, oder wird mit dem verknüpft, das schon unter anderem Namen dort ist."
+  },
+  "catalogResults": {
+    "offer": "Der Katalog hat die Ergebnisseite dieses Rennens von {{year}}.",
+    "use": "Diesen Link nutzen",
+    "error": "Dieser Link konnte nicht genutzt werden."
   }
 }

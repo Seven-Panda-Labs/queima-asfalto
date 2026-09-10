@@ -1,5 +1,6 @@
 import { useMemo, useState, type FormEvent } from 'react'
 import { useTranslation } from 'react-i18next'
+import { CatalogResultsLink } from '../CatalogResultsLink/CatalogResultsLink'
 import { EventResultsUrlField } from '../EventResultsUrlField'
 import { OfficialResultsLookup } from '../OfficialResultsLookup/OfficialResultsLookup'
 import { TrackResultSuggestion } from '../TrackResultSuggestion'
@@ -230,7 +231,12 @@ export function EventResultEditor({
           {event.resultsUrl || event.resultsPlatform ? (
             <OfficialResultsLookup event={event} onApplied={onSaved} layout="inline" />
           ) : (
-            <EventResultsUrlField event={event} onSaved={onEventChanged} />
+            <>
+              {/* The link somebody who ran this edition already found, before
+                  asking this runner to find it again. */}
+              <CatalogResultsLink event={event} onUsed={onEventChanged} />
+              <EventResultsUrlField event={event} onSaved={onEventChanged} />
+            </>
           )}
         </div>
       ) : null}

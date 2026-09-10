@@ -10,6 +10,7 @@
 
 - **Vincular una carrera al catálogo cuenta lo que ya corriste:** las ediciones que corriste con resultado verificado ya llegan al catálogo, y no solo las próximas.
 - **Los resultados de cada edición en el catálogo:** al importar un resultado verificado, el enlace a la página de resultados de ese año queda en el catálogo, sin nada que te identifique (una búsqueda por tu nombre o tu fila de la tabla se quedan fuera).
+- **Los resultados que otros ya encontraron:** en un evento sin enlace de resultados, el catálogo ofrece la página de ese año, y usarla es un clic tuyo.
 
 ### Cambiado
 
