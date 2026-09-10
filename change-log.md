@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-10
+
+### Alterado
+
+- **O fuso horário escolhe-se de uma lista:** por região e com a hora de cada uma, em vez de escrever o nome IANA à mão.
+
+---
+
 ## [1.43.0] - 2026-09-10
 
 ### Adicionado

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-10
+
+### Geändert
+
+- **Die Zeitzone kommt aus einer Liste:** nach Region und mit der jeweiligen Uhrzeit, statt den IANA-Namen zu tippen.
+
+---
+
 ## [1.43.0] - 2026-09-10
 
 ### Hinzugefügt

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-10
+
+### Changed
+
+- **The time zone comes from a list:** by region, with each one's current time, instead of typing the IANA name.
+
+---
+
 ## [1.43.0] - 2026-09-10
 
 ### Added

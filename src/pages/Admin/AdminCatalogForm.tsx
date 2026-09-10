@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { TimezoneSelect } from '../../components/TimezoneSelect/TimezoneSelect'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { EVENT_TYPES, type EventType } from '../../domain/eventCodes'
@@ -366,14 +367,15 @@ export function AdminCatalogForm() {
                       className={inputClass}
                     />
                   </label>
-                  <label className="text-xs font-semibold text-muted">
+                  <label
+                    className="text-xs font-semibold text-muted"
+                    htmlFor={`edition-timezone-${index}`}
+                  >
                     {t('admin.catalogTimezone')}
-                    <input
+                    <TimezoneSelect
+                      id={`edition-timezone-${index}`}
                       value={edition.timezone ?? ''}
-                      placeholder="Europe/Lisbon"
-                      onChange={(event) =>
-                        setEdition(index, { timezone: event.target.value || undefined })
-                      }
+                      onChange={(zone) => setEdition(index, { timezone: zone || undefined })}
                       className={inputClass}
                     />
                   </label>

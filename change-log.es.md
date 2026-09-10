@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-10
+
+### Cambiado
+
+- **La zona horaria se elige de una lista:** por región y con la hora de cada una, en vez de escribir el nombre IANA a mano.
+
+---
+
 ## [1.43.0] - 2026-09-10
 
 ### Añadido

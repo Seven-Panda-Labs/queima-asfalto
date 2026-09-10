@@ -1193,7 +1193,7 @@
     "catalogNoEditions": "Sin ediciones. Añade una cuando el organizador publique fechas.",
     "catalogEditionYear": "Año",
     "catalogRaceDate": "Fecha de la carrera",
-    "catalogTimezone": "Zona horaria (IANA)",
+    "catalogTimezone": "Zona horaria",
     "catalogOpensAt": "Apertura",
     "catalogClosesAt": "Cierre",
     "catalogDrawAt": "Sorteo",

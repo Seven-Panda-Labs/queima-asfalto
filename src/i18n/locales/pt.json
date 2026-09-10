@@ -1193,7 +1193,7 @@
     "catalogNoEditions": "Sem edições. Acrescenta uma quando o organizador publicar datas.",
     "catalogEditionYear": "Ano",
     "catalogRaceDate": "Data da prova",
-    "catalogTimezone": "Fuso (IANA)",
+    "catalogTimezone": "Fuso horário",
     "catalogOpensAt": "Abertura",
     "catalogClosesAt": "Fecho",
     "catalogDrawAt": "Sorteio",
