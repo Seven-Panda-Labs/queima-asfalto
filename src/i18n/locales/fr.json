@@ -1225,7 +1225,9 @@
     },
     "duplicatesVotes": "Votes : même course {{same}}, différentes {{different}}.",
     "duplicatesMergeOther": "Ou garder {{name}}",
-    "duplicatesOpenSource": "Ouvrir la source sur {{source}}"
+    "duplicatesOpenSource": "Ouvrir la source sur {{source}}",
+    "proposalsTitle": "Propositions de coureurs ({{count}})",
+    "proposalsHint": "Des courses que les coureurs signalent comme manquantes. La mise à jour quotidienne fait de chacune une fiche non vérifiée, ou la lie à la course que le catalogue avait déjà. Rien à décider ici."
   },
   "funnel": {
     "groups": {
@@ -1442,6 +1444,6 @@
     "countryHint": "Allemagne, Germany ou DE",
     "countryError": "Nous n'avons pas pu lire ce pays. Écris le nom ou les deux lettres.",
     "proposeSubmit": "Proposer au catalogue",
-    "proposed": "Proposition enregistrée. Elle entre au catalogue à la prochaine mise à jour, ou sera liée à la course déjà présente."
+    "proposed": "Proposition envoyée, rien d'autre à faire. La course entre au catalogue à la mise à jour de demain matin, ou sera liée à celle qui y est déjà sous un autre nom."
   }
 }

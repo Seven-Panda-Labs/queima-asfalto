@@ -1,4 +1,4 @@
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, getDocs } from 'firebase/firestore'
 import {
   CATALOG_PROPOSALS_COLLECTION,
   type CatalogProposal,
@@ -32,4 +32,25 @@ export async function proposeCatalogRace(
     proposedAt: new Date().toISOString().slice(0, 10),
   }
   await addDoc(collection(db, CATALOG_PROPOSALS_COLLECTION), proposal)
+}
+
+/**
+ * The proposals still waiting for the job that turns them into entries.
+ *
+ * Admin only, and it exists because a proposal was invisible between being
+ * written and the next daily run: the runner was told it was saved and nobody,
+ * the operator included, could see it anywhere.
+ */
+export async function loadPendingProposals(): Promise<CatalogProposal[]> {
+  try {
+    // The whole collection, filtered here. `where('catalogRaceId', '==', null)`
+    // would look right and match nothing: Firestore's null only finds a field
+    // that exists and is null, and an unanswered proposal has no such field.
+    const snapshot = await getDocs(collection(db, CATALOG_PROPOSALS_COLLECTION))
+    return snapshot.docs
+      .map((document) => document.data() as CatalogProposal)
+      .filter((proposal) => !proposal.catalogRaceId && !proposal.refusedReason)
+  } catch {
+    return []
+  }
 }

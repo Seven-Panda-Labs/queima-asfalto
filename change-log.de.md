@@ -11,6 +11,7 @@
 - **Ein Rennen nach Namen finden:** das Suchfeld sucht jetzt im ganzen Katalog und nicht mehr nur in den Rennen, die schon auf der Seite waren. Es nutzt jedes Wort, das du tippst, und stellt die treffendsten voran statt der nächstliegenden Termine. Es findet das Rennen auch, wenn der Katalog es unter einem anderen Namen oder in einer anderen Sprache führt.
 - **Sagen, welches Rennen es ist:** auf der Seite eines Events kannst du das Rennen, wenn es nicht mit dem geteilten Katalog verknüpft ist, nach Namen suchen und sagen, welches es ist. Danach füllt der Katalog Termine und Gebühr der nächsten Ausgabe selbst aus, und dein offizielles Ergebnis korrigiert das Datum für alle.
 - **Ein fehlendes Rennen vorschlagen:** wenn das Rennen, das du läufst, nicht im Katalog ist, kannst du es auf der Event-Seite vorschlagen. Es kommt ungeprüft hinein, damit andere es finden, und wenn es schon unter anderem Namen dort ist, wird es damit verknüpft statt ein zweites anzulegen.
+- **Ein Rennen vorschlagen sagt, was folgt:** die Suche schließt sich und die Meldung sagt, dass nichts weiter nötig ist und wann das Rennen erscheint. Wer den Katalog pflegt, sieht jetzt auch die wartenden Vorschläge, statt dass sie bis zur nächsten Aktualisierung unsichtbar bleiben.
 
 ---
 

@@ -7,6 +7,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { listCatalogForAdmin, unmergeCatalogRace } from '../../services/adminRaceCatalog'
 import { AdminTabs } from './AdminTabs'
 import { CatalogDuplicates } from './CatalogDuplicates'
+import { CatalogProposals } from './CatalogProposals'
 
 type Group = {
   key: 'unreviewed' | 'stale' | 'current' | 'retired' | 'copies'
@@ -101,6 +102,8 @@ export function AdminCatalog() {
       </div>
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
+
+      <CatalogProposals />
 
       {user ? (
         <CatalogDuplicates races={races} adminUid={user.uid} onChanged={load} />
