@@ -1193,7 +1193,7 @@
     "catalogNoEditions": "Keine Ausgaben. Füge eine hinzu, sobald der Veranstalter Termine veröffentlicht.",
     "catalogEditionYear": "Jahr",
     "catalogRaceDate": "Renntag",
-    "catalogTimezone": "Zeitzone (IANA)",
+    "catalogTimezone": "Zeitzone",
     "catalogOpensAt": "Öffnet",
     "catalogClosesAt": "Schließt",
     "catalogDrawAt": "Ziehung",

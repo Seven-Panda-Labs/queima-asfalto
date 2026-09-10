@@ -1193,7 +1193,7 @@
     "catalogNoEditions": "Aucune édition. Ajoute-en une quand l'organisateur publie les dates.",
     "catalogEditionYear": "Année",
     "catalogRaceDate": "Date de la course",
-    "catalogTimezone": "Fuseau (IANA)",
+    "catalogTimezone": "Fuseau horaire",
     "catalogOpensAt": "Ouverture",
     "catalogClosesAt": "Fermeture",
     "catalogDrawAt": "Tirage",

@@ -1193,7 +1193,7 @@
     "catalogNoEditions": "No editions. Add one when the organiser publishes dates.",
     "catalogEditionYear": "Year",
     "catalogRaceDate": "Race date",
-    "catalogTimezone": "Time zone (IANA)",
+    "catalogTimezone": "Time zone",
     "catalogOpensAt": "Opens",
     "catalogClosesAt": "Closes",
     "catalogDrawAt": "Draw",

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.44.0] - 2026-09-10
+
+### Modifié
+
+- **Le fuseau horaire se choisit dans une liste :** par région et avec l'heure de chacun, au lieu de taper le nom IANA.
+
+---
+
 ## [1.43.0] - 2026-09-10
 
 ### Ajouté

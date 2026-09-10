@@ -1205,7 +1205,7 @@
     "catalogNoEditions": "لا نسخ. أضف واحدة عندما ينشر المنظّم التواريخ.",
     "catalogEditionYear": "السنة",
     "catalogRaceDate": "تاريخ السباق",
-    "catalogTimezone": "المنطقة الزمنية (IANA)",
+    "catalogTimezone": "المنطقة الزمنية",
     "catalogOpensAt": "الفتح",
     "catalogClosesAt": "الإغلاق",
     "catalogDrawAt": "القرعة",
