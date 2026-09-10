@@ -54,6 +54,16 @@ export type RaceCatalogEdition = {
   typicalFee?: number
   /** ISO 4217, required whenever `typicalFee` is set. */
   feeCurrency?: string
+  /**
+   * The edition's own results page.
+   *
+   * Per edition and not per entry, because that is where it lives: a results
+   * page is one year's finishers, and the link a runner has for 2024 says
+   * nothing about 2026. It arrives from runners who imported a verified
+   * result, stripped of anything that named them, and the harvest never writes
+   * it: none of the nine calendars publishes one.
+   */
+  resultsUrl?: string
   /** Where these dates came from. */
   source: string
   /** `YYYY-MM-DD`, the day someone last read them off that source. */

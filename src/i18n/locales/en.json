@@ -1201,6 +1201,8 @@
     "catalogCurrency": "Currency",
     "catalogConfirmedAt": "Confirmed on",
     "catalogEditionSource": "Source for this edition",
+    "catalogResultsUrl": "Results for this edition",
+    "catalogResultsUrlHint": "That year's results page. Shared, so nothing that identifies a runner.",
     "catalogEditionSourceError": "Every edition needs its own source.",
     "entryMethod": {
       "lottery": "Lottery",

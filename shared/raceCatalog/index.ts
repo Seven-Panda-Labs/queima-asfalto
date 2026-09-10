@@ -27,7 +27,7 @@ export {
   applyEditionReports,
   EDITION_REPORTS_COLLECTION,
   editionReportId,
-  keepRunnerDate,
+  keepRunnerFacts,
   RUNNER_SOURCE,
   type EditionReport,
 } from './editionReports.js'

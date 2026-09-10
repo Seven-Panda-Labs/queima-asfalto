@@ -53,6 +53,15 @@ export type EditionReport = {
   fee?: number
   /** ISO 4217, required whenever `fee` is set. */
   feeCurrency?: string
+  /**
+   * The edition's results page, from the event the runner had verified.
+   *
+   * Already through `shareableResultsUrl`, which drops the parts that named
+   * the runner: a saved link can be a search for their own surname or one row
+   * of a results table. The catalog holds the edition's page, never a person's
+   * result.
+   */
+  resultsUrl?: string
   /** ISO day the report was written. */
   reportedAt: string
 }
@@ -146,7 +155,8 @@ export function applyEditionReports(
 ): RaceCatalogEntry | null {
   const days = votesByValue(reports, entry.id, (report) => report.raceDate)
   const fees = votesByValue(reports, entry.id, feeOf)
-  const years = new Set([...days.keys(), ...fees.keys()])
+  const links = votesByValue(reports, entry.id, (report) => report.resultsUrl)
+  const years = new Set([...days.keys(), ...fees.keys(), ...links.keys()])
   if (years.size === 0) return null
 
   const editions = [...(entry.editions ?? [])]
@@ -156,6 +166,7 @@ export function applyEditionReports(
     const at = editions.findIndex((edition) => edition.year === year)
     const reportedDays = [...(days.get(year)?.keys() ?? [])].sort()
     const reportedFees = fees.get(year)
+    const reportedLinks = links.get(year)
 
     if (at < 0) {
       // A year the catalog never had, and the harvest never will: it only ever
@@ -164,11 +175,13 @@ export function applyEditionReports(
       // publishing this year later is free to overwrite it.
       const day = reportedDays[0]
       const fee = [...(reportedFees?.keys() ?? [])].sort()[0]
-      if (!day && !fee) continue
+      const link = [...(reportedLinks?.keys() ?? [])].sort()[0]
+      if (!day && !fee && !link) continue
       editions.push({
         year,
         ...(day ? { raceDate: day } : {}),
         ...(fee ? parseFee(fee) : {}),
+        ...(link ? { resultsUrl: link } : {}),
         source: RUNNER_SOURCE,
         confirmedAt: today,
       })
@@ -196,6 +209,16 @@ export function applyEditionReports(
       if (better && better !== held) updated = { ...updated, ...parseFee(better) }
     }
 
+    if (reportedLinks) {
+      // Nothing published to contradict: no source we read gives a results
+      // page at all, so the first runner who has one is the only offer there
+      // is. Replacing one the catalog holds still takes two.
+      const only = [...reportedLinks.keys()].sort()[0]
+      const better =
+        edition.resultsUrl === undefined ? only : corroborated(reportedLinks, edition.resultsUrl)
+      if (better && better !== edition.resultsUrl) updated = { ...updated, resultsUrl: better }
+    }
+
     if (updated === edition) continue
     editions[at] = updated
     changed = true
@@ -210,15 +233,24 @@ export function applyEditionReports(
 /**
  * The edition to keep when a harvest brings a fresh one for the same year.
  *
- * The harvest replaces an edition whole, which is what would undo a runner's
- * date on the next run of that source. So the date and its marker are carried
- * across, and everything else is the listing's: a fee or a deadline published
- * since is news, and the day is not.
+ * The harvest replaces an edition whole, which is what would undo what a
+ * runner gave on the next run of that source. So the corroborated date, its
+ * marker and the results page are carried across, and everything else is the
+ * listing's: a fee or a deadline published since is news, and the day is not.
  */
-export function keepRunnerDate(
+export function keepRunnerFacts(
   incoming: RaceCatalogEdition,
   existing: RaceCatalogEdition | undefined,
 ): RaceCatalogEdition {
-  if (!existing?.runnerConfirmedAt || !existing.raceDate) return incoming
-  return { ...incoming, raceDate: existing.raceDate, runnerConfirmedAt: existing.runnerConfirmedAt }
+  // The results page came from a runner and no source publishes one, so a
+  // fresh listing would only ever drop it.
+  const withLink = existing?.resultsUrl
+    ? { ...incoming, resultsUrl: existing.resultsUrl }
+    : incoming
+  if (!existing?.runnerConfirmedAt || !existing.raceDate) return withLink
+  return {
+    ...withLink,
+    raceDate: existing.raceDate,
+    runnerConfirmedAt: existing.runnerConfirmedAt,
+  }
 }

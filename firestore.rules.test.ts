@@ -1241,6 +1241,31 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes a results page for the edition, with or without a day', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+
+      await assertSucceeds(
+        testEnv.authenticatedContext('user-alice').firestore().doc(path('user-alice')).set({
+          catalogRaceId: raceId,
+          year: 2026,
+          uid: 'user-alice',
+          resultsUrl: 'https://my.raceresult.com/301234/results',
+          reportedAt: '2026-10-12',
+        }),
+      )
+    })
+
+    it('refuses a results page that is not a link to open', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+      const base = { catalogRaceId: raceId, year: 2026, uid: 'user-alice', reportedAt: '2026-10-12' }
+
+      await assertFails(db.doc(path('user-alice')).set({ ...base, resultsUrl: 'resultados.pdf' }))
+      await assertFails(
+        db.doc(path('user-alice')).set({ ...base, resultsUrl: 'javascript:alert(1)' }),
+      )
+    })
+
     it('refuses a report that says nothing at all', async () => {
       await seedDocument('users/user-alice', { accountStatus: 'approved' })
 

@@ -66,10 +66,10 @@ async function reportPastEditions(
 ): Promise<void> {
   try {
     const events = await listEvents(userId)
-    const days = events
+    const ran = events
       .filter((event) => event.raceId === raceId && event.resultsVerified === true)
-      .map((event) => event.date)
-    if (days.length > 0) await reportEditionDates(userId, catalogRaceId, days)
+      .map((event) => ({ date: event.date, resultsUrl: event.resultsUrl }))
+    if (ran.length > 0) await reportEditionDates(userId, catalogRaceId, ran)
   } catch {
     // Nothing to tell the runner: the link they asked for is already written.
   }

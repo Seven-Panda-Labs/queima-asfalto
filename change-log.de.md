@@ -9,6 +9,7 @@
 ### Hinzugefügt
 
 - **Ein Rennen zu verknüpfen meldet, was du schon gelaufen bist:** die Ausgaben, die du mit geprüftem Ergebnis gelaufen bist, kommen jetzt in den Katalog, nicht nur die kommenden.
+- **Die Ergebnisse jeder Ausgabe im Katalog:** beim Import eines geprüften Ergebnisses kommt die Ergebnisseite jenes Jahres in den Katalog, ohne alles, was dich identifiziert (eine Suche nach deinem Namen oder deine Zeile der Tabelle bleiben draußen).
 
 ### Geändert
 

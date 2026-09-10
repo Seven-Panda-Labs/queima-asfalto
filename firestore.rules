@@ -626,9 +626,10 @@ service cloud.firestore {
         // One document per race, year and runner, so one person is one voice.
         && reportId == request.resource.data.catalogRaceId + '__'
           + string(request.resource.data.year) + '__' + request.auth.uid
-        // A day, a fee, or both: a runner registers months before they run, so
-        // the two arrive separately into one merged report.
-        && (('raceDate' in request.resource.data) || ('fee' in request.resource.data))
+        // A day, a fee, a results page, or several: a runner registers months
+        // before they run, so they arrive separately into one merged report.
+        && (('raceDate' in request.resource.data) || ('fee' in request.resource.data)
+          || ('resultsUrl' in request.resource.data))
         && (!('raceDate' in request.resource.data)
           || (request.resource.data.raceDate is string
             && request.resource.data.raceDate.size() == 10))
@@ -638,6 +639,13 @@ service cloud.firestore {
             && request.resource.data.fee < 100000
             && request.resource.data.feeCurrency is string
             && request.resource.data.feeCurrency.size() == 3))
+        // A link to open, and nothing longer than a results page needs. What
+        // it may not carry is enforced by `shareableResultsUrl`, which rules
+        // cannot express.
+        && (!('resultsUrl' in request.resource.data)
+          || (request.resource.data.resultsUrl is string
+            && request.resource.data.resultsUrl.matches('^https?://.+')
+            && request.resource.data.resultsUrl.size() < 2000))
         && request.resource.data.reportedAt is string;
       allow delete: if false;
     }
