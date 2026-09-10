@@ -4,16 +4,24 @@
 
 ---
 
+## [1.43.0] - 2026-09-10
+
+### Adicionado
+
+- **A busca por nome acerta mais:** usa todas as palavras que escreves e põe à frente as provas que mais correspondem, não as mais próximas.
+- **Propor uma prova diz o que se segue:** a mensagem deixa claro que não falta fazer nada, e quem mantém o catálogo passa a ver as propostas à espera.
+- **Administração do catálogo mais rápida:** o painel mostra as provas que precisam de trabalho, cinquenta a cinquenta, em vez de descarregar as cinco mil.
+- **O país escolhe-se de uma lista:** com os nomes na tua língua, em vez do código de duas letras.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Adicionado
 
-- **Procurar uma prova pelo nome:** o campo de busca passa a procurar em todo o catálogo, e não só nas provas que já estavam na página. Usa todas as palavras que escreves e põe à frente as provas que mais correspondem, em vez das que acontecem mais cedo. Encontra a prova mesmo quando o catálogo a guarda noutro nome ou noutra língua.
-- **Dizer qual é a prova:** na página de um evento, se a prova não estiver ligada ao catálogo partilhado, podes procurá-la pelo nome e dizer qual é. A partir daí o catálogo preenche sozinho as datas e o preço da próxima edição, e o teu resultado oficial passa a corrigir a data para todos.
-- **Propor uma prova que falta:** se a prova que corres não estiver no catálogo, podes propô-la na página do evento. Entra como não verificada para os outros a encontrarem, e se já lá estiver com outro nome fica ligada a essa em vez de criar uma segunda.
-- **Propor uma prova diz-te o que se segue:** a busca fecha e a mensagem diz que já não é preciso fazer nada e quando a prova aparece. Quem mantém o catálogo passa também a ver as propostas à espera, em vez de elas ficarem invisíveis até à actualização seguinte.
-- **Administrar o catálogo:** o painel deixa de descarregar as cinco mil provas de cada vez que abre. Passa a mostrar o trabalho, as provas à espera de uma temporada nova, cinquenta a cinquenta, e procurar uma prova qualquer é uma busca à parte, só quando é preciso.
-- **O país escolhe-se de uma lista:** ao propor uma prova, o país passa a ser uma lista com os nomes na tua língua, em vez de um campo onde era preciso escrever o código de duas letras. Uma prova deixa de poder ficar arquivada no país errado.
+- **Procurar uma prova pelo nome:** a busca passa a procurar em todo o catálogo, e não só nas provas que já estavam na página.
+- **Dizer qual é a prova:** liga a prova do teu evento ao catálogo partilhado, e as datas e o preço da próxima edição passam a vir preenchidos.
+- **Propor uma prova que falta:** se a prova que corres não está no catálogo, podes propô-la na página do evento.
 
 ---
 

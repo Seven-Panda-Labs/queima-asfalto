@@ -4,16 +4,24 @@
 
 ---
 
+## [1.43.0] - 2026-09-10
+
+### Hinzugefügt
+
+- **Die Namenssuche trifft besser:** sie nutzt jedes Wort, das du tippst, und stellt die treffendsten voran, nicht die nächsten Termine.
+- **Ein Rennen vorschlagen sagt, was folgt:** die Meldung macht klar, dass nichts weiter nötig ist, und wer den Katalog pflegt, sieht die wartenden Vorschläge.
+- **Schnelleres Katalog-Panel:** es zeigt die Rennen, die Arbeit brauchen, fünfzig auf einmal, statt alle fünftausend zu laden.
+- **Das Land kommt aus einer Liste:** mit den Namen in deiner Sprache, statt des zweibuchstabigen Codes.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Hinzugefügt
 
-- **Ein Rennen nach Namen finden:** das Suchfeld sucht jetzt im ganzen Katalog und nicht mehr nur in den Rennen, die schon auf der Seite waren. Es nutzt jedes Wort, das du tippst, und stellt die treffendsten voran statt der nächstliegenden Termine. Es findet das Rennen auch, wenn der Katalog es unter einem anderen Namen oder in einer anderen Sprache führt.
-- **Sagen, welches Rennen es ist:** auf der Seite eines Events kannst du das Rennen, wenn es nicht mit dem geteilten Katalog verknüpft ist, nach Namen suchen und sagen, welches es ist. Danach füllt der Katalog Termine und Gebühr der nächsten Ausgabe selbst aus, und dein offizielles Ergebnis korrigiert das Datum für alle.
-- **Ein fehlendes Rennen vorschlagen:** wenn das Rennen, das du läufst, nicht im Katalog ist, kannst du es auf der Event-Seite vorschlagen. Es kommt ungeprüft hinein, damit andere es finden, und wenn es schon unter anderem Namen dort ist, wird es damit verknüpft statt ein zweites anzulegen.
-- **Ein Rennen vorschlagen sagt, was folgt:** die Suche schließt sich und die Meldung sagt, dass nichts weiter nötig ist und wann das Rennen erscheint. Wer den Katalog pflegt, sieht jetzt auch die wartenden Vorschläge, statt dass sie bis zur nächsten Aktualisierung unsichtbar bleiben.
-- **Den Katalog verwalten:** das Panel lädt nicht mehr bei jedem Öffnen alle fünftausend Rennen. Es zeigt die Arbeit, die Rennen, die auf eine neue Saison warten, fünfzig auf einmal, und ein beliebiges Rennen zu suchen ist eine eigene Suche, nur wenn sie gebraucht wird.
-- **Das Land kommt aus einer Liste:** beim Vorschlagen eines Laufs ist das Land jetzt eine Liste mit den Namen in deiner Sprache, statt eines Feldes, das den zweibuchstabigen Code verlangt. Ein Lauf kann nicht mehr im falschen Land landen.
+- **Ein Rennen nach Namen finden:** das Suchfeld sucht im ganzen Katalog, nicht nur in den Rennen, die schon auf der Seite waren.
+- **Sagen, welches Rennen es ist:** verknüpfe das Rennen deines Events mit dem geteilten Katalog, dann kommen Termine und Gebühr der nächsten Ausgabe ausgefüllt.
+- **Ein fehlendes Rennen vorschlagen:** wenn das Rennen, das du läufst, nicht im Katalog ist, kannst du es auf der Event-Seite vorschlagen.
 
 ---
 
