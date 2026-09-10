@@ -15,6 +15,10 @@
 
 - **O fuso horário escolhe-se de uma lista:** por região e com a hora de cada uma, em vez de escrever o nome IANA à mão.
 
+### Corrigido
+
+- **Depois de dizer qual é a prova, a caixa desaparece:** antes ficava a pedir o mesmo até recarregar a página.
+
 ---
 
 ## [1.43.0] - 2026-09-10

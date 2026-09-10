@@ -15,6 +15,10 @@
 
 - **The time zone comes from a list:** by region, with each one's current time, instead of typing the IANA name.
 
+### Fixed
+
+- **After saying which race it is, the box goes away:** it used to keep asking the same thing until the page was reloaded.
+
 ---
 
 ## [1.43.0] - 2026-09-10
