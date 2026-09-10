@@ -4,6 +4,14 @@
 
 ---
 
+## [1.45.0] - 2026-09-10
+
+### Behoben
+
+- **Ein Rennen vorzuschlagen verknüpft dich damit:** das vorgeschlagene Rennen ist jetzt mit deinem Event verknüpft, mit dem Tag und der Ergebnisseite, die du schon hattest. Vorher entstand der Eintrag und du bliebst außen vor.
+
+---
+
 ## [1.44.0] - 2026-09-10
 
 ### Hinzugefügt

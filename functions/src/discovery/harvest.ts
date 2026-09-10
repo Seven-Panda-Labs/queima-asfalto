@@ -446,20 +446,8 @@ export const harvestRaceCatalog = onSchedule(
       return
     }
 
-    // Before the harvest, so a date a runner corrected is the one it compares
-    // with when it looks for duplicates.
-    try {
-      const reports = await applyPendingEditionReports(now)
-      if (reports.races > 0) {
-        console.log(
-          `edition reports: ${reports.races} races updated from ${reports.reports} reports`,
-        )
-      }
-    } catch (error) {
-      // What the runners said can wait a day. The harvest is the job.
-      console.error('edition reports failed', error)
-    }
-
+    // First, because an entry a proposal creates is what the report it writes
+    // names, and because it is the runner's own race being linked.
     try {
       const proposals = await applyPendingProposals(now)
       if (proposals.pending > 0) {
@@ -470,6 +458,21 @@ export const harvestRaceCatalog = onSchedule(
       }
     } catch (error) {
       console.error('catalog proposals failed', error)
+    }
+
+    // After the proposals and before the harvest: a proposal writes a report
+    // of its own, so this order lands it in the same run, and the harvest
+    // deduplicates against dates the runners have already corrected.
+    try {
+      const reports = await applyPendingEditionReports(now)
+      if (reports.races > 0) {
+        console.log(
+          `edition reports: ${reports.races} races updated from ${reports.reports} reports`,
+        )
+      }
+    } catch (error) {
+      // What the runners said can wait a day. The harvest is the job.
+      console.error('edition reports failed', error)
     }
 
     const result = await refreshDiscoveryCatalog(now, [source])

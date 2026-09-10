@@ -1,10 +1,13 @@
 import { getFirestore } from 'firebase-admin/firestore'
 import {
   CATALOG_PROPOSALS_COLLECTION,
+  EDITION_REPORTS_COLLECTION,
+  editionReportId,
   isProposalComplete,
   nameTokensOf,
   RACE_CATALOG_COLLECTION,
   type CatalogProposal,
+  type EditionReport,
   type RaceCatalogEntry,
 } from '../shared/raceCatalog/index.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
@@ -60,6 +63,10 @@ export async function applyPendingProposals(
     // and name together.
     const twin = findCatalogDuplicate(entry, catalog)
     if (twin) {
+      // Answered, not refused, and the runner is linked to the entry that
+      // answered it: they asked to be part of this race, and which entry it
+      // turned out to be is our bookkeeping, not their problem.
+      await link(proposal, twin.id, today)
       await document.ref.update({ catalogRaceId: twin.id, refusedReason: 'already_in_catalog' })
       refused += 1
       continue
@@ -70,6 +77,7 @@ export async function applyPendingProposals(
     // first: the id is derived from the country, the town and the name.
     const existing = await db.collection(RACE_CATALOG_COLLECTION).doc(entry.id).get()
     if (existing.exists) {
+      await link(proposal, entry.id, today)
       await document.ref.update({ catalogRaceId: entry.id, refusedReason: 'already_in_catalog' })
       refused += 1
       continue
@@ -77,6 +85,7 @@ export async function applyPendingProposals(
 
     await db.collection(RACE_CATALOG_COLLECTION).doc(entry.id).set(entry)
     catalog.push(entry)
+    await link(proposal, entry.id, today)
     await document.ref.update({ catalogRaceId: entry.id })
     created += 1
   }
@@ -106,12 +115,62 @@ function toEntry(proposal: CatalogProposal, today: string): RaceCatalogEntry {
     nameTokens: nameTokensOf(proposal.name, proposal.city),
     entryMethod: 'unknown',
     typicalRaceMonth: Number(proposal.raceDate.slice(5, 7)),
-    editions: [{ year, raceDate: proposal.raceDate, source: 'runners', confirmedAt: today }],
+    editions: [
+      {
+        year,
+        raceDate: proposal.raceDate,
+        ...(proposal.resultsUrl ? { resultsUrl: proposal.resultsUrl } : {}),
+        source: 'runners',
+        confirmedAt: today,
+      },
+    ],
     nextRaceDate: proposal.raceDate,
     review: 'unreviewed',
     source: 'runners',
     producer: 'runner',
     updatedAt: today,
     updatedBy: 'proposals',
+  }
+}
+
+/**
+ * Ties the runner who proposed a race to the entry it turned out to be.
+ *
+ * Two writes, and both are the point of a proposal rather than a nicety. The
+ * race gets `catalogRaceId`, which is the whole chain from their event to the
+ * shared entry: without it their event goes on offering to say which race it
+ * is, the race they asked for. And a report carries what they know to the
+ * entry through the normal policy, which matters most when the proposal was
+ * answered by an entry that already existed: the day they ran and the results
+ * page of that edition are new to it.
+ *
+ * Best effort, per proposal. A race that has since been deleted, or one that
+ * is not theirs, is not a reason to leave the entry uncreated.
+ */
+async function link(proposal: CatalogProposal, catalogRaceId: string, today: string): Promise<void> {
+  const db = getFirestore()
+  if (!proposal.raceId) return
+
+  try {
+    const race = await db.collection('races').doc(proposal.raceId).get()
+    // Their own race and nothing else: the id came from a browser.
+    if (!race.exists || race.data()?.userId !== proposal.uid) return
+    await race.ref.update({ catalogRaceId })
+
+    const year = Number(proposal.raceDate.slice(0, 4))
+    const report: EditionReport = {
+      catalogRaceId,
+      year,
+      uid: proposal.uid,
+      raceDate: proposal.raceDate,
+      ...(proposal.resultsUrl ? { resultsUrl: proposal.resultsUrl } : {}),
+      reportedAt: today,
+    }
+    await db
+      .collection(EDITION_REPORTS_COLLECTION)
+      .doc(editionReportId(catalogRaceId, year, proposal.uid))
+      .set(report, { merge: true })
+  } catch (error) {
+    console.error(`could not link the race that proposed ${catalogRaceId}`, error)
   }
 }

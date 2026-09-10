@@ -4,6 +4,14 @@
 
 ---
 
+## [1.45.0] - 2026-09-10
+
+### Corrigido
+
+- **Propor uma prova liga-te a ela:** a prova que propões passa a ficar ligada ao teu evento, com o dia e a página de resultados que já tinhas. Antes a entrada era criada e ficavas de fora dela.
+
+---
+
 ## [1.44.0] - 2026-09-10
 
 ### Adicionado

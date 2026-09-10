@@ -20,7 +20,17 @@ import { db } from './firebase'
  */
 export async function proposeCatalogRace(
   uid: string,
-  race: { name: string; city: string; country: string; raceDate: string; disciplines: EventType[] },
+  race: {
+    name: string
+    city: string
+    country: string
+    raceDate: string
+    disciplines: EventType[]
+    /** The runner's race, for the job to link to the entry it creates. */
+    raceId?: string
+    /** The edition's results page, already through `shareableResultsUrl`. */
+    resultsUrl?: string
+  },
 ): Promise<void> {
   const proposal: CatalogProposal = {
     uid,
@@ -30,6 +40,8 @@ export async function proposeCatalogRace(
     raceDate: race.raceDate,
     disciplines: race.disciplines,
     proposedAt: new Date().toISOString().slice(0, 10),
+    ...(race.raceId ? { raceId: race.raceId } : {}),
+    ...(race.resultsUrl ? { resultsUrl: race.resultsUrl } : {}),
   }
   await addDoc(collection(db, CATALOG_PROPOSALS_COLLECTION), proposal)
 }

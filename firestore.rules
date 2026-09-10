@@ -680,6 +680,18 @@ service cloud.firestore {
         && request.resource.data.disciplines is list
         && request.resource.data.disciplines.size() <= 12
         && request.resource.data.proposedAt is string
+        // The runner's own race, for the job to link, and the edition's
+        // results page. Both optional: an event from before the races
+        // collection has no race, and a race with no verified result has no
+        // page to give.
+        && (!('raceId' in request.resource.data)
+          || (request.resource.data.raceId is string
+            && request.resource.data.raceId.size() > 0
+            && request.resource.data.raceId.size() < 200))
+        && (!('resultsUrl' in request.resource.data)
+          || (request.resource.data.resultsUrl is string
+            && request.resource.data.resultsUrl.matches('^https?://.+')
+            && request.resource.data.resultsUrl.size() < 2000))
         && !('catalogRaceId' in request.resource.data)
         && !('refusedReason' in request.resource.data);
       // Answered by the job, through the admin SDK, which these rules do not

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.45.0] - 2026-09-10
+
+### Corrigé
+
+- **Proposer une course te relie à elle :** la course que tu proposes est désormais reliée à ton événement, avec le jour et la page de résultats que tu avais déjà. Avant, l'entrée était créée et tu restais dehors.
+
+---
+
 ## [1.44.0] - 2026-09-10
 
 ### Ajouté

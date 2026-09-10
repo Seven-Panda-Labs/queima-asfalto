@@ -1159,6 +1159,25 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes the race and the results page the job needs to link back', async () => {
+      await seedDocument('users/user-alice', { accountStatus: 'approved' })
+      const db = testEnv.authenticatedContext('user-alice').firestore()
+
+      await assertSucceeds(
+        db.collection('raceCatalogProposals').add({
+          ...proposal,
+          uid: 'user-alice',
+          raceId: 'race-1',
+          resultsUrl: 'https://my.raceresult.com/301234/results',
+        }),
+      )
+      // And nothing that is not a link to open.
+      await assertFails(
+        db.collection('raceCatalogProposals')
+          .add({ ...proposal, uid: 'user-alice', resultsUrl: 'resultados.pdf' }),
+      )
+    })
+
     it('never lets a browser edit or delete one, its own included', async () => {
       await seedDocument('users/user-alice', { accountStatus: 'approved' })
       await seedDocument('raceCatalogProposals/p1', { ...proposal, uid: 'user-alice' })

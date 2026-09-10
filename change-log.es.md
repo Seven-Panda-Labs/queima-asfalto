@@ -4,6 +4,14 @@
 
 ---
 
+## [1.45.0] - 2026-09-10
+
+### Corregido
+
+- **Proponer una carrera te vincula a ella:** la carrera que propones queda vinculada a tu evento, con el día y la página de resultados que ya tenías. Antes se creaba la entrada y tú quedabas fuera.
+
+---
+
 ## [1.44.0] - 2026-09-10
 
 ### Añadido

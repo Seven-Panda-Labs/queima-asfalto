@@ -4,6 +4,14 @@
 
 ---
 
+## [1.45.0] - 2026-09-10
+
+### Fixed
+
+- **Proposing a race links you to it:** the race you propose now ends up linked to your event, with the day and the results page you already had. Before, the entry was created and you were left out of it.
+
+---
+
 ## [1.44.0] - 2026-09-10
 
 ### Added
