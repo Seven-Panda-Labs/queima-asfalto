@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  catalogDuplicateCandidates,
-  type DuplicateCandidate,
-} from '../../../shared/eventDiscovery/duplicates'
+import type { DuplicateCandidate } from '../../../shared/eventDiscovery/duplicates'
 import type { DuplicateVoteTally, RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { duplicateVotePairId } from '../../../shared/raceCatalog'
-import { mergeCatalogRaces, separateCatalogRaces } from '../../services/adminRaceCatalog'
+import {
+  loadDuplicateQueue,
+  mergeCatalogRaces,
+  separateCatalogRaces,
+} from '../../services/adminRaceCatalog'
 import { loadDuplicateVoteTallies } from '../../services/duplicateVotes'
 
 /**
@@ -69,11 +70,9 @@ function Side({ race, label }: { race: RaceCatalogEntry; label?: string }) {
 }
 
 export function CatalogDuplicates({
-  races,
   adminUid,
   onChanged,
 }: {
-  races: RaceCatalogEntry[]
   adminUid: string
   onChanged: () => Promise<void> | void
 }) {
@@ -81,10 +80,20 @@ export function CatalogDuplicates({
   const [pending, setPending] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [tallies, setTallies] = useState<Map<string, DuplicateVoteTally>>(new Map())
+  const [pairs, setPairs] = useState<[RaceCatalogEntry, RaceCatalogEntry][]>([])
 
   useEffect(() => {
     void loadDuplicateVoteTallies().then(setTallies)
   }, [])
+
+  // The pairs come from the daily job rather than from the whole catalog: the
+  // rule compares every pair against every other, and working that out here
+  // meant downloading five thousand entries to find a dozen.
+  const reload = useCallback(() => {
+    void loadDuplicateQueue().then(setPairs)
+  }, [])
+
+  useEffect(reload, [reload])
 
   /**
    * The pairs, the ones runners recognised first.
@@ -95,14 +104,14 @@ export function CatalogDuplicates({
   const candidates = useMemo(() => {
     const votes = (candidate: DuplicateCandidate) =>
       tallies.get(duplicateVotePairId(candidate.keep.id, candidate.drop.id))
-    return catalogDuplicateCandidates(races).sort((left, right) => {
-      const count = (candidate: DuplicateCandidate) => {
-        const tally = votes(candidate)
-        return (tally?.same ?? 0) + (tally?.different ?? 0)
-      }
-      return count(right) - count(left)
-    })
-  }, [races, tallies])
+    const count = (candidate: DuplicateCandidate) => {
+      const tally = votes(candidate)
+      return (tally?.same ?? 0) + (tally?.different ?? 0)
+    }
+    return pairs
+      .map(([keep, drop]) => ({ keep, drop }))
+      .sort((left, right) => count(right) - count(left))
+  }, [pairs, tallies])
 
   /**
    * @param survivor which entry the pair collapses into, or none to keep both.
@@ -122,6 +131,7 @@ export function CatalogDuplicates({
       } else {
         await separateCatalogRaces(candidate.keep.id, candidate.drop.id, adminUid)
       }
+      reload()
       await onChanged()
     } catch {
       setError(t('admin.duplicatesError'))

@@ -1227,7 +1227,13 @@
     "duplicatesMergeOther": "Or keep {{name}}",
     "duplicatesOpenSource": "Open the source at {{source}}",
     "proposalsTitle": "Proposals from runners ({{count}})",
-    "proposalsHint": "Races runners say are missing. The daily update turns each into an unreviewed entry, or links it to the race the catalog already had. Nothing to decide here."
+    "proposalsHint": "Races runners say are missing. The daily update turns each into an unreviewed entry, or links it to the race the catalog already had. Nothing to decide here.",
+    "catalogStaleCount": "{{count}} races waiting for a new season",
+    "catalogStaleHint": "Races whose last known date has passed. Reading the next season off the official source is the work.",
+    "catalogNothingStale": "Nothing waiting. Every race in the catalog has a date ahead of it.",
+    "catalogSearchTitle": "Search the catalog",
+    "catalogSearchLabel": "Search by name",
+    "catalogSearchEmpty": "Nothing with that word. Try another word from the name, or the town."
   },
   "funnel": {
     "groups": {

@@ -12,6 +12,7 @@
 - **Dizer qual é a prova:** na página de um evento, se a prova não estiver ligada ao catálogo partilhado, podes procurá-la pelo nome e dizer qual é. A partir daí o catálogo preenche sozinho as datas e o preço da próxima edição, e o teu resultado oficial passa a corrigir a data para todos.
 - **Propor uma prova que falta:** se a prova que corres não estiver no catálogo, podes propô-la na página do evento. Entra como não verificada para os outros a encontrarem, e se já lá estiver com outro nome fica ligada a essa em vez de criar uma segunda.
 - **Propor uma prova diz-te o que se segue:** a busca fecha e a mensagem diz que já não é preciso fazer nada e quando a prova aparece. Quem mantém o catálogo passa também a ver as propostas à espera, em vez de elas ficarem invisíveis até à actualização seguinte.
+- **Administrar o catálogo:** o painel deixa de descarregar as cinco mil provas de cada vez que abre. Passa a mostrar o trabalho, as provas à espera de uma temporada nova, cinquenta a cinquenta, e procurar uma prova qualquer é uma busca à parte, só quando é preciso.
 
 ---
 

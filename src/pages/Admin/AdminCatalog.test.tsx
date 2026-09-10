@@ -1,17 +1,27 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { AdminCatalog } from './AdminCatalog'
 
-const listCatalogForAdmin = vi.fn()
+const listStaleForAdmin = vi.fn()
+const searchCatalogForAdmin = vi.fn()
 const unmergeCatalogRace = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
-  listCatalogForAdmin: () => listCatalogForAdmin(),
+  listStaleForAdmin: (...args: unknown[]) => listStaleForAdmin(...args),
+  searchCatalogForAdmin: (...args: unknown[]) => searchCatalogForAdmin(...args),
+  loadDuplicateQueue: () => Promise.resolve([]),
   mergeCatalogRaces: vi.fn(),
   separateCatalogRaces: vi.fn(),
   unmergeCatalogRace: (...args: unknown[]) => unmergeCatalogRace(...args),
+}))
+
+vi.mock('../../services/catalogProposals', () => ({
+  loadPendingProposals: () => Promise.resolve([]),
+}))
+vi.mock('../../services/duplicateVotes', () => ({
+  loadDuplicateVoteTallies: () => Promise.resolve(new Map()),
 }))
 
 vi.mock('../../contexts/AuthContext', () => ({
@@ -45,58 +55,68 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-describe('AdminCatalog', () => {
-  it('shows work before it shows a catalog', async () => {
-    listCatalogForAdmin.mockResolvedValue([
-      race({
-        id: 'current-race',
-        editions: [{ year: 2099, raceDate: '2099-05-01', source: 's', confirmedAt: '2026-09-01' }],
-      }),
-      race({ id: 'never-checked', review: 'unreviewed' }),
-      race({ id: 'out-of-editions' }),
-    ])
-
+describe('AdminCatalog, which no longer downloads the catalog', () => {
+  it('opens on the work, a page at a time', async () => {
+    listStaleForAdmin.mockResolvedValue({
+      races: [race({ id: 'out-of-editions' })],
+      nextCursor: '2026-01-01',
+    })
     render(<AdminCatalog />)
 
-    await waitFor(() => expect(screen.getByText('never-checked')).toBeInTheDocument())
-    const headings = screen.getAllByRole('heading', { level: 2 }).map((node) => node.textContent)
-    expect(headings[0]).toContain('Nunca confirmadas')
-    expect(headings[1]).toContain('sem edição futura')
-    expect(headings[2]).toContain('Em ordem')
+    expect(await screen.findByText('out-of-editions')).toBeInTheDocument()
+    // Fifty at a time, and never the whole collection.
+    expect(listStaleForAdmin).toHaveBeenCalledWith(50, undefined)
   })
 
-  it('keeps a retired race out of the working groups', async () => {
-    listCatalogForAdmin.mockResolvedValue([
-      race({ id: 'retired-race', retired: true }),
-      race({ id: 'never-checked', review: 'unreviewed' }),
-    ])
-
+  it('asks for the next page from where the last one ended', async () => {
+    listStaleForAdmin.mockResolvedValue({
+      races: [race({ id: 'out-of-editions' })],
+      nextCursor: '2026-01-01',
+    })
     render(<AdminCatalog />)
 
-    await waitFor(() => expect(screen.getByText('retired-race')).toBeInTheDocument())
-    const headings = screen.getAllByRole('heading', { level: 2 }).map((node) => node.textContent)
-    expect(headings).toHaveLength(2)
-    expect(headings[1]).toContain('Fora de circulação')
+    fireEvent.click(await screen.findByRole('button', { name: 'Mostrar mais' }))
+
+    await waitFor(() => expect(listStaleForAdmin).toHaveBeenCalledWith(50, '2026-01-01'))
   })
 
-  it('tells an operator how to fill an empty catalog', async () => {
-    listCatalogForAdmin.mockResolvedValue([])
-
+  it('offers no next page when the queue ends', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [race({ id: 'only-one' })] })
     render(<AdminCatalog />)
 
-    await waitFor(() =>
-      expect(screen.getByText('O catálogo desta instância está vazio.')).toBeInTheDocument(),
-    )
-    expect(screen.getByText(/seed:race-catalog/)).toBeInTheDocument()
+    await screen.findByText('only-one')
+    expect(screen.queryByRole('button', { name: 'Mostrar mais' })).not.toBeInTheDocument()
+  })
+
+  it('searches the whole catalog only when asked', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [] })
+    searchCatalogForAdmin.mockResolvedValue([race({ id: 'found-race' })])
+    render(<AdminCatalog />)
+
+    await screen.findByText(/Nada à espera/)
+    // The other flow: nothing is searched until an operator asks.
+    expect(searchCatalogForAdmin).not.toHaveBeenCalled()
+
+    fireEvent.change(screen.getByLabelText('Procurar pelo nome'), {
+      target: { value: 'Teltowkanal' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Procurar pelo nome' }))
+
+    expect(await screen.findByText('found-race')).toBeInTheDocument()
+    expect(searchCatalogForAdmin).toHaveBeenCalledWith('Teltowkanal', 50)
+  })
+
+  it('says so when nothing needs a new season', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [] })
+    render(<AdminCatalog />)
+
+    expect(await screen.findByText(/Nada à espera/)).toBeInTheDocument()
   })
 
   it('says so when the load fails', async () => {
-    listCatalogForAdmin.mockRejectedValue(new Error('nope'))
-
+    listStaleForAdmin.mockRejectedValue(new Error('denied'))
     render(<AdminCatalog />)
 
-    await waitFor(() =>
-      expect(screen.getByText('Não foi possível carregar o catálogo.')).toBeInTheDocument(),
-    )
+    expect(await screen.findByText(/Não foi possível carregar/)).toBeInTheDocument()
   })
 })

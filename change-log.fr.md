@@ -12,6 +12,7 @@
 - **Dire quelle course c'est :** sur la page d'un événement, si la course n'est pas liée au catalogue partagé, tu peux la chercher par son nom et dire laquelle c'est. Dès lors le catalogue remplit tout seul les dates et le tarif de la prochaine édition, et ton résultat officiel corrige la date pour tout le monde.
 - **Proposer une course qui manque :** si la course que tu cours n'est pas au catalogue, tu peux la proposer depuis la page de l'événement. Elle entre non vérifiée pour que d'autres la trouvent, et si elle y est déjà sous un autre nom elle sera liée à celle-là au lieu d'en créer une seconde.
 - **Proposer une course dit ce qui suit :** la recherche se ferme et le message dit que rien d'autre n'est nécessaire et quand la course apparaît. Qui tient le catalogue voit aussi les propositions en attente, au lieu qu'elles restent invisibles jusqu'à la mise à jour suivante.
+- **Administrer le catalogue :** le panneau ne télécharge plus les cinq mille courses chaque fois qu'il s'ouvre. Il montre le travail, les courses qui attendent une nouvelle saison, cinquante à la fois, et chercher n'importe quelle course est une recherche à part, seulement quand c'est nécessaire.
 
 ---
 

@@ -7,9 +7,12 @@ import { CatalogDuplicates } from './CatalogDuplicates'
 const mergeCatalogRaces = vi.fn()
 const separateCatalogRaces = vi.fn()
 
+/** Set per test: the pairs the daily job left for a person to decide. */
+let queue: RaceCatalogEntry[][] = []
 vi.mock('../../services/adminRaceCatalog', () => ({
   mergeCatalogRaces: (...args: unknown[]) => mergeCatalogRaces(...args),
   separateCatalogRaces: (...args: unknown[]) => separateCatalogRaces(...args),
+  loadDuplicateQueue: () => Promise.resolve(queue),
 }))
 
 /** Set per test: what the runners answered, keyed the way the pair id is built. */
@@ -51,23 +54,32 @@ const pair = [
   }),
 ]
 
+/** The queue as the job stores it: pairs, already decided to be worth asking. */
+function pairsOf(races: RaceCatalogEntry[]): RaceCatalogEntry[][] {
+  const out: RaceCatalogEntry[][] = []
+  for (let at = 0; at + 1 < races.length; at += 2) out.push([races[at]!, races[at + 1]!])
+  return out
+}
+
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
   tallies = new Map()
+  queue = []
 })
 
 describe('CatalogDuplicates', () => {
   it('shows nothing when there is nothing to decide', () => {
-    const { container } = render(
-      <CatalogDuplicates races={[pair[0]]} adminUid="admin" onChanged={vi.fn()} />,
-    )
+    // The job leaves nothing when the rule decided everything.
+    const { container } = render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
     expect(container).toBeEmptyDOMElement()
   })
 
-  it('links each side to the source, so the answer can be checked there', () => {
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+  it('links each side to the source, so the answer can be checked there', async () => {
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     const links = screen.getAllByRole('link', { name: /Abrir a origem/ })
     expect(links).toHaveLength(2)
     expect(links[0]).toHaveAttribute('href', 'https://scc-events.com/haspa-halbmarathon')
@@ -76,24 +88,30 @@ describe('CatalogDuplicates', () => {
     expect(links[0]).toHaveAttribute('rel', 'noopener noreferrer')
   })
 
-  it('leaves out the link when no source page was recorded', () => {
+  it('leaves out the link when no source page was recorded', async () => {
     const noUrl: RaceCatalogEntry[] = pair.map((race) => ({ ...race, officialUrl: undefined }))
-    render(<CatalogDuplicates races={noUrl} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(noUrl)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     expect(screen.queryByRole('link', { name: /Abrir a origem/ })).not.toBeInTheDocument()
   })
 
-  it('names the source beside each entry', () => {
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+  it('names the source beside each entry', async () => {
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     // Which source said what is half of why two names disagree.
     expect(screen.getAllByText(/scc-events\.com/).length).toBeGreaterThan(0)
   })
 
   it('merges into the suggested survivor and reloads', async () => {
     const onChanged = vi.fn()
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={onChanged} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={onChanged} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
 
     await waitFor(() =>
@@ -107,8 +125,10 @@ describe('CatalogDuplicates', () => {
   })
 
   it('merges the other way when the operator prefers the other name', async () => {
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     // The suggestion is a guess, and the operator may know the organiser calls
     // the race by the name it did not pick.
     fireEvent.click(screen.getByRole('button', { name: /Haspa Marathon Hamburg/ }))
@@ -123,8 +143,10 @@ describe('CatalogDuplicates', () => {
   })
 
   it('records a no, so the next harvest does not ask again', async () => {
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     fireEvent.click(screen.getByRole('button', { name: 'Provas diferentes' }))
 
     await waitFor(() =>
@@ -138,8 +160,10 @@ describe('CatalogDuplicates', () => {
 
   it('says so when the write fails, and keeps the pair', async () => {
     mergeCatalogRaces.mockRejectedValueOnce(new Error('denied'))
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
+    await screen.findByText('Haspa Marathon Hamburg')
     fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
 
     expect(await screen.findByText('Não foi possível guardar.')).toBeInTheDocument()
@@ -162,16 +186,16 @@ describe('what the runners answered', () => {
     tallies = new Map([
       ['de-hamburg-haspa-halbmarathon__de-hamburg-haspa-marathon', { same: 3, different: 1 }],
     ])
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
     expect(await screen.findByText('Votos: mesma prova 3, diferentes 1.')).toBeInTheDocument()
   })
 
   it('puts the pairs runners recognised at the top', async () => {
     tallies = new Map([['de-saar-sparkassen__de-saar-weltkulturerbe', { same: 2, different: 0 }]])
-    render(
-      <CatalogDuplicates races={[...pair, ...other]} adminUid="admin" onChanged={vi.fn()} />,
-    )
+    queue = pairsOf([...pair, ...other])
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
     await screen.findByText(/mesma prova 2/)
     const shown = [...document.querySelectorAll('li')].map((row) => row.textContent ?? '')
@@ -181,7 +205,8 @@ describe('what the runners answered', () => {
   })
 
   it('says nothing when nobody has answered', async () => {
-    render(<CatalogDuplicates races={pair} adminUid="admin" onChanged={vi.fn()} />)
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
     await screen.findByText('Haspa Marathon Hamburg')
     expect(screen.queryByText(/^Votos:/)).not.toBeInTheDocument()

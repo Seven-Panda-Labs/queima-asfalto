@@ -95,6 +95,12 @@ describe('firestore indexes', () => {
         })),
       ]
 
+      // A range and an order on the same single field needs no composite
+      // index: Firestore indexes every field on its own. The regex cannot see
+      // that, so it would ask for an index that cannot be created.
+      const fields = new Set(wanted.map((field) => field.fieldPath))
+      if (fields.size === 1) return
+
       const match = declaredIndexes().find(
         (index) =>
           index.collectionGroup === collection &&

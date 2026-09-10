@@ -1227,7 +1227,13 @@
     "duplicatesMergeOther": "O quedarte con {{name}}",
     "duplicatesOpenSource": "Abrir el origen en {{source}}",
     "proposalsTitle": "Propuestas de usuarios ({{count}})",
-    "proposalsHint": "Carreras que los corredores dicen que faltan. La actualización diaria convierte cada una en una entrada sin verificar, o la vincula a la carrera que el catálogo ya tenía. Nada que decidir aquí."
+    "proposalsHint": "Carreras que los corredores dicen que faltan. La actualización diaria convierte cada una en una entrada sin verificar, o la vincula a la carrera que el catálogo ya tenía. Nada que decidir aquí.",
+    "catalogStaleCount": "{{count}} carreras esperando una temporada nueva",
+    "catalogStaleHint": "Carreras cuya última fecha conocida ya pasó. Leer la temporada siguiente en la fuente oficial es el trabajo.",
+    "catalogNothingStale": "Nada en espera. Todas las carreras del catálogo tienen una fecha por delante.",
+    "catalogSearchTitle": "Buscar en el catálogo",
+    "catalogSearchLabel": "Buscar por nombre",
+    "catalogSearchEmpty": "Nada con esa palabra. Prueba otra palabra del nombre, o el pueblo."
   },
   "funnel": {
     "groups": {
