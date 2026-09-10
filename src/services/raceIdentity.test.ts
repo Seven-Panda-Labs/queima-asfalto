@@ -67,8 +67,8 @@ describe('identifyRaceInCatalog', () => {
     await identifyRaceInCatalog('u1', event(), 'de-berlin-tierparklauf-berlin')
 
     expect(reportEditionDates).toHaveBeenCalledWith('u1', 'de-berlin-tierparklauf-berlin', [
-      new Date('2022-09-11T09:00:00'),
-      new Date('2024-09-08T09:00:00'),
+      { date: new Date('2022-09-11T09:00:00'), resultsUrl: undefined },
+      { date: new Date('2024-09-08T09:00:00'), resultsUrl: undefined },
     ])
   })
 
@@ -81,8 +81,29 @@ describe('identifyRaceInCatalog', () => {
 
     await identifyRaceInCatalog('u1', event(), 'de-berlin-tierparklauf-berlin')
 
-    const [, , days] = reportEditionDates.mock.calls[0] as [string, string, Date[]]
-    expect(days).toHaveLength(1)
+    const [, , ran] = reportEditionDates.mock.calls[0] as [string, string, unknown[]]
+    expect(ran).toHaveLength(1)
+  })
+
+  it('sends the results page along, which is the edition s and not the runner s', async () => {
+    listEvents.mockResolvedValue([
+      event({
+        resultsUrl:
+          'https://www.davengo.com/event/result/volvo-tierparklauf-2024/search?term=neves',
+      }),
+    ])
+
+    await identifyRaceInCatalog('u1', event(), 'de-berlin-tierparklauf-berlin')
+
+    // Raw here, and stripped of the surname by the report itself: this is what
+    // the event holds.
+    expect(reportEditionDates).toHaveBeenCalledWith('u1', 'de-berlin-tierparklauf-berlin', [
+      {
+        date: new Date('2024-09-08T09:00:00'),
+        resultsUrl:
+          'https://www.davengo.com/event/result/volvo-tierparklauf-2024/search?term=neves',
+      },
+    ])
   })
 
   it('says nothing when there is nothing verified to report', async () => {

@@ -258,7 +258,7 @@ export async function saveResults(eventId: string, data: SaveResultsInput): Prom
   // race knows better. Only for a verified result, because that is the one
   // thing that makes the day a fact rather than a claim.
   if (data.verified === true && event.raceId) {
-    await reportEditionDate(event.userId, event.raceId, event.date)
+    await reportEditionDate(event.userId, event.raceId, event.date, event.resultsUrl)
   }
 }
 

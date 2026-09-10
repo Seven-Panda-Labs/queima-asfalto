@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Ligar uma prova ao catálogo conta o que já correste:** as edições que corriste com resultado verificado passam a entrar no catálogo, e não só as próximas.
+- **Os resultados de cada edição no catálogo:** ao importar um resultado verificado, o link da página de resultados desse ano passa a ficar no catálogo, sem nada que te identifique (uma busca pelo teu nome ou a tua linha da tabela ficam de fora).
 
 ### Alterado
 

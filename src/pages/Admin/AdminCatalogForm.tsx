@@ -444,6 +444,18 @@ export function AdminCatalogForm() {
                     />
                   </label>
                   <label className="text-xs font-semibold text-muted sm:col-span-3">
+                    {t('admin.catalogResultsUrl')}
+                    <input
+                      value={edition.resultsUrl ?? ''}
+                      placeholder="https://"
+                      onChange={(event) =>
+                        setEdition(index, { resultsUrl: event.target.value || undefined })
+                      }
+                      className={inputClass}
+                    />
+                    <span className="text-xs text-muted">{t('admin.catalogResultsUrlHint')}</span>
+                  </label>
+                  <label className="text-xs font-semibold text-muted sm:col-span-3">
                     {t('admin.catalogEditionSource')}
                     <input
                       value={edition.source}

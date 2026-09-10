@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import {
   applyEditionReports,
   editionReportId,
-  keepRunnerDate,
+  keepRunnerFacts,
   type EditionReport,
 } from './editionReports'
 import type { RaceCatalogEntry } from './types'
@@ -138,7 +138,7 @@ describe('applyEditionReports', () => {
       TODAY,
     )
 
-    // Unmarked, so `keepRunnerDate` does not defend it: nothing was
+    // Unmarked, so `keepRunnerFacts` does not defend it: nothing was
     // contradicted, so nothing needs protecting.
     expect(updated?.editions?.[0]?.runnerConfirmedAt).toBeUndefined()
   })
@@ -282,10 +282,10 @@ describe('a fee, which no source we read publishes', () => {
   })
 })
 
-describe('keepRunnerDate', () => {
+describe('keepRunnerFacts', () => {
   it('carries a confirmed date across a harvest that would overwrite it', () => {
     const existing = { ...listing, raceDate: '2026-10-11', runnerConfirmedAt: TODAY }
-    const kept = keepRunnerDate({ ...listing, registrationClosesAt: '2026-10-01' }, existing)
+    const kept = keepRunnerFacts({ ...listing, registrationClosesAt: '2026-10-01' }, existing)
 
     expect(kept.raceDate).toBe('2026-10-11')
     expect(kept.runnerConfirmedAt).toBe(TODAY)
@@ -294,7 +294,78 @@ describe('keepRunnerDate', () => {
   })
 
   it('leaves the listing alone when no runner confirmed anything', () => {
-    expect(keepRunnerDate(listing, listing).raceDate).toBe('2026-10-10')
-    expect(keepRunnerDate(listing, undefined).raceDate).toBe('2026-10-10')
+    expect(keepRunnerFacts(listing, listing).raceDate).toBe('2026-10-10')
+    expect(keepRunnerFacts(listing, undefined).raceDate).toBe('2026-10-10')
+  })
+})
+
+describe('the results page an edition holds', () => {
+  const page = 'https://www.davengo.com/event/result/volvo-tierparklauf-2024/search'
+  const other = 'https://timing.example/2024/results'
+  /** A link and nothing else, so the day does not vote at the same time. */
+  const linkReport = (resultsUrl: string, uid = 'u1') =>
+    report({ year: 2024, raceDate: undefined, resultsUrl, uid })
+
+  it('takes the first runner s link, because no source publishes one', () => {
+    const held = entry({
+      editions: [
+        { year: 2024, raceDate: '2024-09-08', source: 'acorrer.pt', confirmedAt: '2024-01-01' },
+      ],
+    })
+
+    const applied = applyEditionReports(held, [linkReport(page)], TODAY)
+
+    expect(applied?.editions?.[0]?.resultsUrl).toBe(page)
+  })
+
+  it('needs two to replace a link the catalog already holds', () => {
+    const held = entry({
+      editions: [
+        {
+          year: 2024,
+          raceDate: '2024-09-08',
+          resultsUrl: page,
+          source: 'acorrer.pt',
+          confirmedAt: '2024-01-01',
+        },
+      ],
+    })
+
+    expect(applyEditionReports(held, [linkReport(other)], TODAY)).toBeNull()
+
+    const two = applyEditionReports(
+      held,
+      [linkReport(other, 'u1'), linkReport(other, 'u2')],
+      TODAY,
+    )
+    expect(two?.editions?.[0]?.resultsUrl).toBe(other)
+  })
+
+  it('carries a link into a year the catalog never had', () => {
+    const applied = applyEditionReports(entry(), [linkReport(page)], TODAY)
+
+    expect(applied?.editions?.[0]).toMatchObject({
+      year: 2024,
+      resultsUrl: page,
+      source: 'runners',
+    })
+  })
+
+  it('survives the next harvest of the listing', () => {
+    // The harvest replaces an edition whole and no listing has a results page,
+    // so without this the link would last until the source is read again.
+    const kept = keepRunnerFacts(
+      { year: 2024, raceDate: '2024-09-08', source: 'acorrer.pt', confirmedAt: '2026-09-10' },
+      {
+        year: 2024,
+        raceDate: '2024-09-08',
+        resultsUrl: page,
+        source: 'runners',
+        confirmedAt: '2024-09-09',
+      },
+    )
+
+    expect(kept.resultsUrl).toBe(page)
+    expect(kept.source).toBe('acorrer.pt')
   })
 })

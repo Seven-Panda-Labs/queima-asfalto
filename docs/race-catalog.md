@@ -144,6 +144,7 @@ The quality of the shared data can rise on what runners already know, and the bo
 
 - **The past confirms itself, but only as far as the evidence reaches.** A `completed` event with `resultsVerified` is a witness of a different order, because `resultsVerified` only ever comes from the official import. It proves less than it looks like, though: the connectors pick the edition **by year** and no candidate carries a day at all. So a verified result proves that this runner ran this race that year, and proves nothing about the day. The day comes from the event, which since the prefill may be the catalog's own guess coming back around. Hence the policy: a year the catalog did not have goes in on one runner and stays unmarked; a day that disagrees with the catalog needs two runners agreeing; and a day that agrees writes nothing, because agreement is not information and marking it would turn a guess into a fact.
 - **The gates get asked.** When entries open and close goes to a person. They are what fires reminders, and a wrong deadline is wrong in silence: that is exactly what the review rule protects, and `canAssertDates()` does not change.
+- **The results page belongs to the edition.** A results page is one year's finishers, so the link a runner has for 2024 says nothing about 2026, and none of the nine calendars publishes one at all. It comes from the event a runner had verified, stripped of whatever named them: measured on a real instance, of 39 saved links three carried the runner, one as a search for their own surname and two as a single result row. What the catalog holds is the edition's page, and where it holds none, one runner is enough.
 - **The fee follows the same corroboration as the day.** It sat in the review queue while the boundary was "the past confirms itself, the future gets asked", and a fee already paid is past: it is a fact about the race, and no source we read publishes one. Where the catalog holds no fee, one registered runner is enough; to change a fee it already holds, two have to agree on the same amount and the same currency.
 
 What never leaves the account: the time, the pace, the classification, the notes, the media, the track, and whether the runner got in.
@@ -158,7 +159,9 @@ Of the above, the **day** is built. When a result comes back verified, the clien
 
 The **fee** takes the same path, written when an entry becomes `registered`: that is the runner saying they got in, and a fee they were quoted and never paid is not a fee.
 
-What is **not** built: the entry gates, which will need a person, and the results link, which has neither a field on the edition nor anywhere to appear. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
+The **results page** travels with the day, from the same verified result, through `shareableResultsUrl`. That function is the privacy boundary and it is a denylist: a query parameter that names a person is dropped, a path that is one person's result is refused outright, and everything else, the event id, the category, the language, is what makes the link work. A denylist because a new timing platform's parameter cannot be known in advance, and the cost of guessing wrong on an allowlist is a link that works for nobody. `keepRunnerFacts` carries it across a harvest, since a fresh listing has no results page to replace it with.
+
+What is **not** built: the entry gates, which will need a person, and showing a runner the results page the catalog holds. The field is on the edition and an operator can read and correct it; offering it on an event whose own link is missing is the next step. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Reviewing an entry
 

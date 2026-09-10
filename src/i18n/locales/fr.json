@@ -1201,6 +1201,8 @@
     "catalogCurrency": "Devise",
     "catalogConfirmedAt": "Confirmé le",
     "catalogEditionSource": "Source de cette édition",
+    "catalogResultsUrl": "Résultats de cette édition",
+    "catalogResultsUrlHint": "La page de résultats de l'année. Partagée, donc rien qui identifie un coureur.",
     "catalogEditionSourceError": "Chaque édition a besoin de sa propre source.",
     "entryMethod": {
       "lottery": "Tirage au sort",

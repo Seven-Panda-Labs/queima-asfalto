@@ -9,6 +9,7 @@
 ### Added
 
 - **Linking a race to the catalog reports what you already ran:** the editions you ran with a verified result now reach the catalog, not only the ones still to come.
+- **Each edition's results in the catalog:** importing a verified result now puts that year's results page in the catalog, with nothing that identifies you (a search for your name, or your row of the table, is left out).
 
 ### Changed
 

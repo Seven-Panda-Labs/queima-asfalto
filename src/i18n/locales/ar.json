@@ -1213,6 +1213,8 @@
     "catalogCurrency": "العملة",
     "catalogConfirmedAt": "أُكِّد في",
     "catalogEditionSource": "مصدر هذه النسخة",
+    "catalogResultsUrl": "نتائج هذه النسخة",
+    "catalogResultsUrlHint": "صفحة نتائج تلك السنة. مشتركة، فلا شيء فيها يُعرّف عدّاءً.",
     "catalogEditionSourceError": "كل نسخة تحتاج مصدرها.",
     "entryMethod": {
       "lottery": "قرعة",

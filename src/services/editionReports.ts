@@ -4,6 +4,7 @@ import {
   editionReportId,
   type EditionReport,
 } from '../../shared/raceCatalog'
+import { shareableResultsUrl } from '../../shared/officialResults'
 import { getRace } from './races'
 import { db } from './firebase'
 
@@ -23,12 +24,19 @@ export async function reportEditionDate(
   uid: string,
   raceId: string,
   date: Date,
+  resultsUrl?: string,
 ): Promise<void> {
   const race = await safely(() => getRace(raceId))
   if (!race?.catalogRaceId) return
 
   const raceDate = toIsoDay(date)
-  await write(race.catalogRaceId, Number(raceDate.slice(0, 4)), uid, { raceDate })
+  await write(race.catalogRaceId, Number(raceDate.slice(0, 4)), uid, {
+    raceDate,
+    // The page this result was read off is the edition's, once what named the
+    // runner is out of it. The catalog has no other way to a results link:
+    // none of the calendars publishes one.
+    ...withLink(resultsUrl),
+  })
 }
 
 /**
@@ -50,20 +58,27 @@ export async function reportEditionDate(
 export async function reportEditionDates(
   uid: string,
   catalogRaceId: string,
-  dates: readonly Date[],
+  editions: readonly { date: Date; resultsUrl?: string }[],
 ): Promise<number> {
-  const earliest = new Map<number, string>()
-  for (const date of dates) {
-    const day = toIsoDay(date)
-    const year = Number(day.slice(0, 4))
+  const earliest = new Map<number, { raceDate: string; resultsUrl?: string }>()
+  for (const edition of editions) {
+    const raceDate = toIsoDay(edition.date)
+    const year = Number(raceDate.slice(0, 4))
     const held = earliest.get(year)
-    if (!held || day < held) earliest.set(year, day)
+    if (held && held.raceDate <= raceDate) continue
+    earliest.set(year, { raceDate, ...withLink(edition.resultsUrl) })
   }
 
-  for (const [year, raceDate] of earliest) {
-    await write(catalogRaceId, year, uid, { raceDate })
+  for (const [year, what] of earliest) {
+    await write(catalogRaceId, year, uid, what)
   }
   return earliest.size
+}
+
+/** The results page, or nothing, when it cannot be shared as it stands. */
+function withLink(resultsUrl: string | undefined): { resultsUrl?: string } {
+  const shareable = shareableResultsUrl(resultsUrl)
+  return shareable ? { resultsUrl: shareable } : {}
 }
 
 /**

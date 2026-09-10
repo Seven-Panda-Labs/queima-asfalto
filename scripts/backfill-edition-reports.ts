@@ -10,8 +10,10 @@
  * the links already made do not have them.
  *
  * Same policy as the client, and it has to be: one report per race, year and
- * runner, the earliest day when a year has several, only verified results, and
- * the day read off the calendar rather than off `toISOString`. What lands on
+ * runner, the earliest day when a year has several, only verified results, the
+ * day read off the calendar rather than off `toISOString`, and the results
+ * page only through `shareableResultsUrl`, which drops whatever named the
+ * runner in it. What lands on
  * the shared edition is still decided by `applyEditionReports` in the daily
  * pass, which takes a year the catalog never had and needs two runners to
  * overrule one it holds.
@@ -27,6 +29,7 @@
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
 import { editionReportId, type EditionReport } from '../shared/raceCatalog/editionReports.js'
+import { shareableResultsUrl } from '../shared/officialResults/shareableResultsUrl.js'
 
 const require = createRequire(resolve(import.meta.dirname, '../functions/package.json'))
 const { initializeApp } = require('firebase-admin/app')
@@ -79,6 +82,8 @@ async function main(): Promise<void> {
     const year = Number(raceDate.slice(0, 4))
     const id = editionReportId(catalogRaceId, year, event.userId)
 
+    const resultsUrl = shareableResultsUrl(event.resultsUrl)
+
     const held = reports.get(id)
     if (held?.raceDate && held.raceDate <= raceDate) continue
     reports.set(id, {
@@ -86,6 +91,7 @@ async function main(): Promise<void> {
       year,
       uid: event.userId,
       raceDate,
+      ...(resultsUrl ? { resultsUrl } : {}),
       reportedAt: today,
     })
   }
@@ -94,8 +100,10 @@ async function main(): Promise<void> {
     `${catalogIdOf.size} races point at the catalog, ${linked} events on them, ` +
       `${reports.size} editions to report`,
   )
+  const withLink = [...reports.values()].filter((report) => report.resultsUrl).length
+  console.log(`${withLink} of them carry a results page`)
   for (const [id, report] of [...reports].slice(0, 10)) {
-    console.log(`  ${id.replace(/__[^_]+$/, '__<uid>')} -> ${report.raceDate}`)
+    console.log(`  ${id.replace(/__[^_]+$/, '__<uid>')} -> ${report.raceDate} ${report.resultsUrl ?? ''}`)
   }
 
   if (dryRun) {
