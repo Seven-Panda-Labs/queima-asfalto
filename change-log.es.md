@@ -9,6 +9,7 @@
 ### Corregido
 
 - **Una fecha mal escrita ya no deja la página en blanco:** una carrera del catálogo con una fecha imposible tumbaba toda la página del evento. Ahora aparece un guion, y la administración usa un selector de fecha que no acepta fechas inválidas.
+- **Responder "carreras distintas" quita el par de la lista:** la respuesta se guardaba pero el par seguía en el panel hasta el día siguiente, como si el botón no hiciera nada.
 
 ---
 

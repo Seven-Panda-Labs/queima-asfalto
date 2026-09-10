@@ -158,6 +158,20 @@ describe('CatalogDuplicates', () => {
     )
   })
 
+  it('takes the answered pair off the list', async () => {
+    // The queue is a document the daily pass writes, so it still names the
+    // pair: what had to change is that an answered pair is filtered out when
+    // it is read. Without that the row stayed and the button read as dead.
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
+
+    await screen.findByText('Haspa Marathon Hamburg')
+    queue = []
+    fireEvent.click(screen.getByRole('button', { name: 'Provas diferentes' }))
+
+    await waitFor(() => expect(screen.queryByText('Haspa Marathon Hamburg')).toBeNull())
+  })
+
   it('says so when the write fails, and keeps the pair', async () => {
     mergeCatalogRaces.mockRejectedValueOnce(new Error('denied'))
     queue = pairsOf(pair)
