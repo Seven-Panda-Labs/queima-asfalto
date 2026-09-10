@@ -99,7 +99,7 @@ describe('FindRaces', () => {
     expect(await screen.findByText('berlin-10k')).toBeInTheDocument()
   })
 
-  it('asks the server for the word that was typed', async () => {
+  it('asks the server for the words that were typed', async () => {
     searchRaceCatalog.mockResolvedValue([])
     render(<FindRaces />)
 
@@ -110,12 +110,12 @@ describe('FindRaces', () => {
     // name only if it was among the next twenty worldwide.
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenCalledWith(
-        expect.objectContaining({ nameToken: 'teltowkanal' }),
+        expect.objectContaining({ nameTokens: ['teltowkanal'] }),
       ),
     )
   })
 
-  it('asks for the distinctive word, not the one every race carries', async () => {
+  it('sends every word, and the generic one last', async () => {
     searchRaceCatalog.mockResolvedValue([])
     render(<FindRaces />)
 
@@ -124,11 +124,11 @@ describe('FindRaces', () => {
       target: { value: 'Teltowkanal Halbmarathon' },
     })
 
-    // Firestore takes one array-contains, and "halbmarathon" is on hundreds of
-    // entries while "teltowkanal" is on one.
+    // One word was not enough: "maratona" alone answered the Meia Maratona de
+    // Lisboa with Castro Marim, Parma and Vilnius.
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenCalledWith(
-        expect.objectContaining({ nameToken: 'teltowkanal' }),
+        expect.objectContaining({ nameTokens: ['teltowkanal', 'halbmarathon'] }),
       ),
     )
   })

@@ -9,7 +9,11 @@ import {
   Timestamp,
   where,
 } from 'firebase/firestore'
-import { RACE_CATALOG_COLLECTION, type RaceCatalogEntry } from '../../shared/raceCatalog'
+import {
+  rankByName,
+  RACE_CATALOG_COLLECTION,
+  type RaceCatalogEntry,
+} from '../../shared/raceCatalog'
 import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes'
 import { TARGET_MONTHS } from '../utils/targetMonth'
 import type { BucketListItemCreate } from '../types/BucketListItem'
@@ -24,13 +28,15 @@ export type CatalogQuery = {
   /** One discipline: Firestore allows a single array-contains per query. */
   discipline?: EventType
   /**
-   * One word from the name or the town, already normalised.
+   * What was typed, as words, already normalised.
    *
-   * Takes the array-contains slot when it is set, so the discipline is left to
-   * the page filter: Firestore allows one per query, and a name is the more
-   * selective of the two by a wide margin.
+   * Firestore allows one `array-contains` per query, so each word is a query
+   * of its own and the results are merged: one word was not enough, and
+   * "Meia Maratona de Lisboa" is why, because `maratona` alone returns
+   * hundreds of entries ordered by date. The array-contains slot means the
+   * discipline is left to the page filter.
    */
-  nameToken?: string
+  nameTokens?: string[]
   /** Inclusive ISO days. `from` defaults to today: a past race is not a find. */
   from?: string
   to?: string
@@ -57,6 +63,71 @@ export async function searchRaceCatalog(
   criteria: CatalogQuery,
   today = new Date(),
 ): Promise<RaceCatalogEntry[]> {
+  const words = criteria.nameTokens ?? []
+  if (words.length <= 1) return onePage(criteria, words[0], today)
+
+  // Only the most selective few are worth a query, and every word is worth
+  // scoring: "meia" is on hundreds of entries and is still the only thing
+  // between the Meia Maratona de Lisboa and the Maratona de Lisboa.
+  const asked = words.slice(0, MAX_QUERIES)
+
+  // A query per word, because Firestore matches one array element at a time,
+  // and then every candidate is ranked against everything that was typed. The
+  // word that returns least is what makes this work: "lisboa" brings a handful
+  // and the right entry is in it, where "maratona" brings hundreds and it is
+  // not.
+  const pools = await Promise.all(
+    asked.map((word) => onePage(criteria, word, today, { keepCopies: true })),
+  )
+  const byId = new Map<string, RaceCatalogEntry>()
+  for (const pool of pools) {
+    for (const race of pool) byId.set(race.id, race)
+  }
+
+  return resolveCopies(rankByName([...byId.values()], words.join(' ')), byId, criteria.limit)
+}
+
+/**
+ * A copy is an alias, which is the whole reason one is kept rather than
+ * deleted.
+ *
+ * The Berlin half is in the catalog twice: "Berlin Half Marathon", which a
+ * person checked and which survives, and "GENERALI BERLINER HALBMARATHON",
+ * which is pointed at it. Typing what the organiser calls it matches only the
+ * copy, and dropping copies from the search made the race unfindable by its
+ * own name. So they are searched and then followed.
+ */
+async function resolveCopies(
+  ranked: readonly RaceCatalogEntry[],
+  fetched: Map<string, RaceCatalogEntry>,
+  limit: number,
+): Promise<RaceCatalogEntry[]> {
+  const out: RaceCatalogEntry[] = []
+  const seen = new Set<string>()
+
+  for (const race of ranked) {
+    if (out.length >= limit) break
+    const survivingId = race.duplicateOfCatalogRaceId ?? race.id
+    if (seen.has(survivingId)) continue
+    seen.add(survivingId)
+
+    const survivor = race.duplicateOfCatalogRaceId
+      ? (fetched.get(survivingId) ?? (await loadCatalogRace(survivingId)))
+      : race
+    // A copy pointing at nothing, or at something retired, is not an answer.
+    if (!survivor || survivor.retired === true) continue
+    out.push(survivor)
+  }
+
+  return out
+}
+
+async function onePage(
+  criteria: CatalogQuery,
+  word: string | undefined,
+  today: Date,
+  options: { keepCopies?: boolean } = {},
+): Promise<RaceCatalogEntry[]> {
   const from = criteria.from ?? today.toISOString().slice(0, 10)
   const constraints = [
     where('nextRaceDate', '>=', from),
@@ -64,8 +135,8 @@ export async function searchRaceCatalog(
     ...(criteria.country ? [where('country', '==', criteria.country.toUpperCase())] : []),
     // One array-contains per query, and the name wins: the discipline narrows
     // a page of twenty and a name narrows five thousand entries to a handful.
-    ...(criteria.nameToken
-      ? [where('nameTokens', 'array-contains', criteria.nameToken)]
+    ...(word
+      ? [where('nameTokens', 'array-contains', word)]
       : criteria.discipline
         ? [where('disciplines', 'array-contains', criteria.discipline)]
         : []),
@@ -77,12 +148,23 @@ export async function searchRaceCatalog(
   const snapshot = await getDocs(query(collection(db, RACE_CATALOG_COLLECTION), ...constraints))
   return snapshot.docs
     .map((document) => document.data() as RaceCatalogEntry)
-    .filter((race) => race.retired !== true && !race.duplicateOfCatalogRaceId)
-    .slice(0, criteria.limit)
+    .filter(
+      (race) =>
+        race.retired !== true && (options.keepCopies || !race.duplicateOfCatalogRaceId),
+    )
 }
 
 /** Slack for the two things the query cannot filter out. */
 const OVERFETCH = 20
+
+/**
+ * How many words get a query of their own.
+ *
+ * Firestore takes one `array-contains` per query, so matching every word means
+ * one query per word, and three is where that stops paying: the words are
+ * ordered by how much they narrow, and by the third the pool is already small.
+ */
+const MAX_QUERIES = 3
 
 /**
  * One entry, by the id a race points at.

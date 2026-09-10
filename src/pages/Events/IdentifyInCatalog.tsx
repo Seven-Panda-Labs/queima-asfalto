@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { searchToken, type RaceCatalogEntry } from '../../../shared/raceCatalog'
+import { searchTokens, type RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { toIsoCountry } from '../../../shared/eventDiscovery/countries'
 import { proposeCatalogRace } from '../../services/catalogProposals'
 import { formatDatePt } from '../../utils/date'
@@ -93,16 +93,22 @@ export function IdentifyInCatalog({
   }
 
   const search = async (typed: string) => {
-    const nameToken = searchToken(typed)
-    if (!nameToken) {
+    const nameTokens = searchTokens(typed)
+    if (nameTokens.length === 0) {
       setCandidates([])
       return
     }
     setSearching(true)
     setError(null)
     try {
-      const found = await searchRaceCatalog({ nameToken, from: ANY_DATE, limit: LIMIT })
-      setCandidates(found)
+      const found = await searchRaceCatalog({ nameTokens, from: ANY_DATE, limit: LIMIT })
+      // The distance breaks a tie the name cannot. "Maratona de Lisboa" and
+      // "Meia Maratona de Lisboa" agree on every word but one, and this event
+      // knows which of the two it ran. Stable, so the name ranking survives
+      // inside each half.
+      const offersThis = (entry: RaceCatalogEntry) =>
+        Number(entry.disciplines.includes(event.eventType))
+      setCandidates([...found].sort((left, right) => offersThis(right) - offersThis(left)))
     } catch {
       setError(t('identifyInCatalog.searchError'))
     } finally {

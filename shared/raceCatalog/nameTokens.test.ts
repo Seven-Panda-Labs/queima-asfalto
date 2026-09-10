@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { nameTokensOf, searchToken } from './nameTokens'
+import { nameMatchScore, nameTokensOf, rankByName, searchTokens } from './nameTokens'
 
 describe('nameTokensOf', () => {
   it('takes the words of the name and the town', () => {
@@ -53,38 +53,107 @@ describe('nameTokensOf', () => {
   })
 })
 
-describe('searchToken', () => {
-  it('picks the most selective word typed', () => {
-    // Firestore takes one array-contains, and "teltowkanal" is on one entry
-    // while "halbmarathon" is on hundreds.
-    expect(searchToken('teltowkanal halbmarathon')).toBe('teltowkanal')
+describe('searchTokens', () => {
+  it('asks for every word, and the most selective first', () => {
+    // One word was not enough. Typing this asked for "maratona", which is on
+    // hundreds of entries, and answered with Castro Marim, Parma and Vilnius.
+    expect(searchTokens('EDP Meia Maratona de Lisboa')).toEqual([
+      'edp',
+      'lisboa',
+      'meia',
+      'maratona',
+    ])
+  })
+
+  it('keeps a sponsor, which narrows harder than a place', () => {
+    // Excluded while this picked one word, because a sponsor is what differs
+    // between two namings. With a pool per word the ranking sorts that out.
+    expect(searchTokens('BMW BERLIN-MARATHON')).toEqual(['bmw', 'berlin', 'marathon'])
+  })
+
+  it('puts a generic word last, not out', () => {
+    // Last, because a pool has to come from somewhere when everything typed is
+    // generic, and out only when there is something better to ask for.
+    expect(searchTokens('BMW Marathon')).toEqual(['bmw', 'marathon'])
+    expect(searchTokens('Teltowkanal Halbmarathon')).toEqual(['teltowkanal', 'halbmarathon'])
+  })
+
+  it('returns every word, and leaves the querying budget to the caller', () => {
+    // A word left out of the scoring is a word that cannot tell two races
+    // apart: only "meia" separates the Meia Maratona de Lisboa from the
+    // Maratona de Lisboa, and it is a word worth scoring and not querying.
+    expect(searchTokens('Corrida da Ponte 25 de Abril Lisboa Portugal')).toEqual([
+      'ponte',
+      'abril',
+      'lisboa',
+      'portugal',
+      'corrida',
+    ])
   })
 
   it('normalises what was typed the way the tokens were', () => {
-    expect(searchToken('Gerês')).toBe('geres')
-    expect(searchToken('  BERLIN  ')).toBe('berlin')
+    expect(searchTokens('Gerês')).toEqual(['geres'])
+    expect(searchTokens('  BERLIN  ')).toEqual(['berlin'])
   })
 
-  it('skips the sponsor, which is the word that differs between two names', () => {
-    // Both "generali" and "berliner" are distinctive and the same length, and
-    // the sponsor is exactly what one source has and another does not.
-    expect(searchToken('Generali Berliner Halbmarathon')).toBe('berliner')
-    expect(searchToken('BMW BERLIN-MARATHON')).toBe('berlin')
-  })
-
-  it('falls back to the longest when every word is generic or a sponsor', () => {
-    expect(searchToken('BMW Marathon')).toBe('marathon')
+  it('says each word once', () => {
+    expect(searchTokens('Berlin Berlin Marathon')).toEqual(['berlin', 'marathon'])
   })
 
   it('has nothing to ask for when nothing typed is long enough', () => {
-    expect(searchToken('')).toBeUndefined()
-    expect(searchToken('de')).toBeUndefined()
-    expect(searchToken('5k')).toBeUndefined()
+    expect(searchTokens('')).toEqual([])
+    expect(searchTokens('de 5k')).toEqual([])
+  })
+})
+
+describe('nameMatchScore', () => {
+  const lisbon = nameTokensOf('Meia Maratona de Lisboa', 'Alfama')
+
+  it('counts how much of what was typed an entry accounts for', () => {
+    expect(nameMatchScore(lisbon, 'EDP Meia Maratona de Lisboa')).toBe(3)
+    // Castro Marim agrees on the distance and not on the place.
+    expect(nameMatchScore(nameTokensOf('Meia Maratona do Concelho de Castro Marim', 'Castro Marim'), 'EDP Meia Maratona de Lisboa')).toBe(2)
+    expect(nameMatchScore(nameTokensOf('Parma Mezza Maratona', 'Parma'), 'EDP Meia Maratona de Lisboa')).toBe(1)
   })
 
-  it('matches the tokens it will be compared against', () => {
-    const tokens = nameTokensOf('Teltowkanal Halbmarathon', 'Teltow')
-    expect(tokens).toContain(searchToken('teltowkanal'))
-    expect(tokens).toContain(searchToken('Teltow'))
+  it('forgives the ending German puts on a place', () => {
+    // "Berliner Firmenlauf" against "Firmenlauf Berlin" is one race.
+    expect(nameMatchScore(nameTokensOf('Firmenlauf', 'Berlin'), 'Berliner Firmenlauf')).toBe(2)
+  })
+
+  it('is zero for an entry that shares nothing', () => {
+    expect(nameMatchScore(lisbon, 'Tierparklauf')).toBe(0)
+    expect(nameMatchScore([], 'anything')).toBe(0)
+  })
+})
+
+describe('rankByName, on the rows the search actually returned', () => {
+  /** Exactly what typing the Meia Maratona de Lisboa answered with. */
+  const returned = [
+    ['Meia Maratona do Concelho de Castro Marim', 'Castro Marim', '2026-09-12'],
+    ['Meia Maratona de S. João das Lampas', 'União das freguesias de São João das Lampas', '2026-09-12'],
+    ['Parma Mezza Maratona', 'Parma', '2026-09-13'],
+    ['Maratona Alzheimer', 'Pisignano', '2026-09-13'],
+    ['23. Swedbank Vilniaus Maratona', 'Vilnius', '2026-09-13'],
+    ['Meia Maratona de Benedita', 'Benedita', '2026-09-13'],
+    ['Meia Maratona de Lisboa', 'Alfama', '2027-03-07'],
+  ].map(([name, city, nextRaceDate]) => ({
+    name,
+    nameTokens: nameTokensOf(name!, city!),
+    nextRaceDate,
+  }))
+
+  it('puts the race that was typed first, not the soonest one', () => {
+    const ranked = rankByName(returned, 'EDP Meia Maratona de Lisboa')
+
+    // Ordered by date it came seventh, behind six races it is not.
+    expect(ranked[0]?.name).toBe('Meia Maratona de Lisboa')
+  })
+
+  it('breaks a tie on the date, so the list still reads as a calendar', () => {
+    const ranked = rankByName(returned, 'Meia Maratona')
+
+    // Six of these account for both words, and among those the soonest wins.
+    expect(ranked[0]?.nextRaceDate).toBe('2026-09-12')
   })
 })

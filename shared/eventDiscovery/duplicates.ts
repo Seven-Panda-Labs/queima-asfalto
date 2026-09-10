@@ -29,19 +29,7 @@ const NOISE_WORDS =
 
 const NOISE = new RegExp(String.raw`\b(${NOISE_WORDS})\b`, 'giu')
 
-/**
- * The same words, one at a time.
- *
- * A name search needs this as much as the dedup rule does: the word worth
- * asking the server for is neither the sponsor nor the connective, because the
- * sponsor is exactly what differs between the name a runner kept and the one a
- * source published.
- */
-const NOISE_WORD = new RegExp(`^(?:${NOISE_WORDS})$`, 'iu')
 
-export function isNoiseWord(word: string): boolean {
-  return NOISE_WORD.test(word)
-}
 
 /** "24h-Lauf" and "24-Stunden-Lauf" are one race, written by two sources. */
 const HOURS = /(\d{1,3})\s*h\b/giu
@@ -368,7 +356,7 @@ export function findCatalogDuplicate(
  * asking the server for is the one that is not on every second race.
  */
 export const GENERIC =
-  /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
+  /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|halb|halv|semi|maraton|maratona|maratonina|marathons|meia|mezza|media|corrida|carrera|course|cursa|prova|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
 
 /**
  * The names share a word that means something.

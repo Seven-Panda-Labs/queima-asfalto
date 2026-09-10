@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Buscar una carrera por nombre:** el campo de búsqueda ya busca en todo el catálogo, y no solo en las carreras que ya estaban en la página. Escribir «Teltowkanal» encuentra la carrera, aunque sea la tres mil de la lista.
+- **Buscar una carrera por nombre:** el campo de búsqueda ya busca en todo el catálogo, y no solo en las carreras que ya estaban en la página. Usa todas las palabras que escribes y pone delante las que más coinciden, en vez de las que ocurren antes. Encuentra la carrera aunque el catálogo la guarde con otro nombre o en otro idioma.
 - **Decir cuál es la carrera:** en la página de un evento, si la carrera no está vinculada al catálogo compartido, puedes buscarla por nombre y decir cuál es. Desde entonces el catálogo rellena solo las fechas y el precio de la próxima edición, y tu resultado oficial pasa a corregir la fecha para todos.
 - **Proponer una carrera que falta:** si la carrera que corres no está en el catálogo, puedes proponerla en la página del evento. Entra sin verificar para que otros la encuentren, y si ya está con otro nombre queda vinculada a esa en vez de crear una segunda.
 

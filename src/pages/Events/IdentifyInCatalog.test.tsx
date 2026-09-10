@@ -64,13 +64,29 @@ describe('IdentifyInCatalog', () => {
 
     fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
 
-    // "berliner" over "halbmarathon": the distinctive word, not the longest.
+    // Every word, the generic one last, and the ranking decides what shows.
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenCalledWith(
-        expect.objectContaining({ nameToken: 'berliner' }),
+        expect.objectContaining({ nameTokens: ['generali', 'berliner', 'halbmarathon'] }),
       ),
     )
     expect(await screen.findByText('GENERALI BERLINER HALBMARATHON')).toBeInTheDocument()
+  })
+
+  it('prefers the entry that offers the distance this event was', async () => {
+    // The name cannot separate the Maratona de Lisboa from the Meia Maratona
+    // de Lisboa, and the event knows which one it ran.
+    searchRaceCatalog.mockResolvedValue([
+      entry({ id: 'pt-lisboa-maratona', name: 'Maratona de Lisboa', disciplines: ['km_42_2'] }),
+      entry({ id: 'pt-lisboa-meia', name: 'Meia Maratona de Lisboa', disciplines: ['km_21_1'] }),
+    ])
+    render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)
+
+    fireEvent.click(screen.getByRole('button', { name: /não está ligada/ }))
+    await screen.findByText('Meia Maratona de Lisboa')
+
+    const shown = [...document.querySelectorAll('li')].map((row) => row.textContent ?? '')
+    expect(shown[0]).toContain('Meia Maratona de Lisboa')
   })
 
   it('looks past the next edition, because identity is not a date', async () => {
@@ -116,7 +132,7 @@ describe('IdentifyInCatalog', () => {
 
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenLastCalledWith(
-        expect.objectContaining({ nameToken: 'teltowkanal' }),
+        expect.objectContaining({ nameTokens: ['teltowkanal'] }),
       ),
     )
   })
