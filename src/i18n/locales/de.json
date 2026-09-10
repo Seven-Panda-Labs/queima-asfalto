@@ -1225,7 +1225,9 @@
     },
     "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}.",
     "duplicatesMergeOther": "Oder {{name}} behalten",
-    "duplicatesOpenSource": "Die Quelle bei {{source}} öffnen"
+    "duplicatesOpenSource": "Die Quelle bei {{source}} öffnen",
+    "proposalsTitle": "Vorschläge von Läufern ({{count}})",
+    "proposalsHint": "Rennen, die Läufer als fehlend melden. Die tägliche Aktualisierung macht aus jedem einen ungeprüften Eintrag, oder verknüpft es mit dem Rennen, das der Katalog schon hatte. Hier ist nichts zu entscheiden."
   },
   "funnel": {
     "groups": {
@@ -1442,6 +1444,6 @@
     "countryHint": "Deutschland, Germany oder DE",
     "countryError": "Dieses Land konnten wir nicht lesen. Schreibe den Namen oder die zwei Buchstaben.",
     "proposeSubmit": "Dem Katalog vorschlagen",
-    "proposed": "Vorschlag gespeichert. Er kommt bei der nächsten Aktualisierung in den Katalog, oder wird mit dem Rennen verknüpft, das schon dort ist."
+    "proposed": "Vorschlag gesendet, mehr ist nicht zu tun. Das Rennen kommt bei der Aktualisierung morgen früh in den Katalog, oder wird mit dem verknüpft, das schon unter anderem Namen dort ist."
   }
 }

@@ -1225,7 +1225,9 @@
     },
     "duplicatesVotes": "Votos: misma carrera {{same}}, distintas {{different}}.",
     "duplicatesMergeOther": "O quedarte con {{name}}",
-    "duplicatesOpenSource": "Abrir el origen en {{source}}"
+    "duplicatesOpenSource": "Abrir el origen en {{source}}",
+    "proposalsTitle": "Propuestas de usuarios ({{count}})",
+    "proposalsHint": "Carreras que los corredores dicen que faltan. La actualización diaria convierte cada una en una entrada sin verificar, o la vincula a la carrera que el catálogo ya tenía. Nada que decidir aquí."
   },
   "funnel": {
     "groups": {
@@ -1442,6 +1444,6 @@
     "countryHint": "Alemania, Germany o DE",
     "countryError": "No pudimos leer ese país. Escribe el nombre o las dos letras.",
     "proposeSubmit": "Proponer al catálogo",
-    "proposed": "Propuesta guardada. Entra en el catálogo en la próxima actualización, o se vincula a la carrera que ya esté allí."
+    "proposed": "Propuesta enviada, no hace falta nada más. La carrera entra en el catálogo en la actualización de mañana por la mañana, o queda vinculada a la que ya esté con otro nombre."
   }
 }

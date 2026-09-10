@@ -183,7 +183,10 @@ describe('a race the catalog does not hold', () => {
         disciplines: ['km_21_1'],
       }),
     )
-    expect(await screen.findByText(/Proposta guardada/)).toBeInTheDocument()
+    // The search closes: a proposal ends this, and leaving it open read as
+    // though something else was still expected.
+    expect(await screen.findByText(/Proposta enviada/)).toBeInTheDocument()
+    expect(screen.queryByRole('button', { name: 'Propor ao catálogo' })).not.toBeInTheDocument()
   })
 
   it('refuses a country it cannot read, rather than filing XX', async () => {

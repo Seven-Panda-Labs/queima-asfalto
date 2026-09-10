@@ -11,6 +11,7 @@
 - **Procurar uma prova pelo nome:** o campo de busca passa a procurar em todo o catálogo, e não só nas provas que já estavam na página. Usa todas as palavras que escreves e põe à frente as provas que mais correspondem, em vez das que acontecem mais cedo. Encontra a prova mesmo quando o catálogo a guarda noutro nome ou noutra língua.
 - **Dizer qual é a prova:** na página de um evento, se a prova não estiver ligada ao catálogo partilhado, podes procurá-la pelo nome e dizer qual é. A partir daí o catálogo preenche sozinho as datas e o preço da próxima edição, e o teu resultado oficial passa a corrigir a data para todos.
 - **Propor uma prova que falta:** se a prova que corres não estiver no catálogo, podes propô-la na página do evento. Entra como não verificada para os outros a encontrarem, e se já lá estiver com outro nome fica ligada a essa em vez de criar uma segunda.
+- **Propor uma prova diz-te o que se segue:** a busca fecha e a mensagem diz que já não é preciso fazer nada e quando a prova aparece. Quem mantém o catálogo passa também a ver as propostas à espera, em vez de elas ficarem invisíveis até à actualização seguinte.
 
 ---
 

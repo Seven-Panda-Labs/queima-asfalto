@@ -67,6 +67,16 @@ export function IdentifyInCatalog({
 
   if (linked) return null
 
+  // A proposal is the end of this, not a step in it: leaving the search open
+  // read as though something else was still expected.
+  if (proposed) {
+    return (
+      <p className="mt-4 rounded-lg border border-border bg-surface px-4 py-3 text-xs text-muted">
+        {t('identifyInCatalog.proposed')}
+      </p>
+    )
+  }
+
   const propose = async () => {
     const iso = toIsoCountry(country)
     if (!iso) {
@@ -271,7 +281,6 @@ export function IdentifyInCatalog({
         </form>
       ) : null}
 
-      {proposed ? <p className="mt-3 text-xs text-primary">{t('identifyInCatalog.proposed')}</p> : null}
     </section>
   )
 }

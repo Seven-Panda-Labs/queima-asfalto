@@ -1225,7 +1225,9 @@
     },
     "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}.",
     "duplicatesMergeOther": "Ou ficar com {{name}}",
-    "duplicatesOpenSource": "Abrir a origem em {{source}}"
+    "duplicatesOpenSource": "Abrir a origem em {{source}}",
+    "proposalsTitle": "Propostas de utilizadores ({{count}})",
+    "proposalsHint": "Provas que os corredores dizem faltar. A actualização diária transforma cada uma numa entrada não confirmada, ou liga-a à prova que o catálogo já tinha. Nada para decidir aqui."
   },
   "funnel": {
     "groups": {
@@ -1442,6 +1444,6 @@
     "countryHint": "Alemanha, Germany ou DE",
     "countryError": "Não conseguimos ler esse país. Escreve o nome ou as duas letras.",
     "proposeSubmit": "Propor ao catálogo",
-    "proposed": "Proposta guardada. Entra no catálogo na próxima actualização, ou fica ligada à prova que já lá estiver."
+    "proposed": "Proposta enviada, não é preciso fazer mais nada. A prova entra no catálogo na actualização de amanhã de manhã, ou fica ligada à que já lá estiver com outro nome."
   }
 }
