@@ -4,15 +4,24 @@
 
 ---
 
+## [1.43.0] - 2026-09-10
+
+### Added
+
+- **Sharper search by name:** it uses every word you type and puts the closest matches first, not the soonest races.
+- **Proposing a race says what happens next:** the message makes clear that nothing else is needed, and whoever maintains the catalog now sees the proposals waiting.
+- **A faster catalog panel:** it shows the races that need work, fifty at a time, instead of downloading all five thousand.
+- **The country comes from a list:** names in your own language, instead of the two-letter code.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Added
 
-- **Find a race by name:** the search field now searches the whole catalog instead of only the races already on the page. It uses every word you type and puts the closest matches first rather than the soonest races. It finds the race even when the catalog keeps it under another name or in another language.
-- **Say which race it is:** on an event's page, if the race is not linked to the shared catalog, you can search it by name and say which one it is. From then on the catalog fills in the next edition's dates and fee on its own, and your official result starts correcting the date for everybody.
-- **Propose a race that is missing:** if the race you ran is not in the catalog, you can propose it from the event's page. It enters unreviewed for other people to find, and if it is already there under another name it gets linked to that one instead of creating a second.
-- **Proposing a race says what happens next:** the search closes and the message says that nothing else is needed and when the race appears. Whoever maintains the catalog now also sees the proposals waiting, instead of them being invisible until the next update.
-- **Administering the catalog:** the panel no longer downloads all five thousand races every time it opens. It shows the work, the races waiting for a new season, fifty at a time, and searching for any race at all is a separate search, only when it is needed.
+- **Find a race by name:** the search field searches the whole catalog, not only the races already on the page.
+- **Say which race it is:** link your event's race to the shared catalog, and the next edition's dates and fee arrive filled in.
+- **Propose a race that is missing:** if the race you ran is not in the catalog, you can propose it from the event's page.
 
 ---
 

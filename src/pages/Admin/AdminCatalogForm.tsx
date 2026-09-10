@@ -1,6 +1,7 @@
 import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
@@ -179,12 +180,12 @@ export function AdminCatalogForm() {
               {errors.city ? <span className="text-xs text-danger">{errors.city}</span> : null}
             </label>
 
-            <label className="text-sm font-semibold text-foreground">
+            <label className="text-sm font-semibold text-foreground" htmlFor="catalog-country">
               {t('admin.catalogCountry')}
-              <input
+              <CountrySelect
+                id="catalog-country"
                 value={race.country}
-                maxLength={2}
-                onChange={(event) => set('country', event.target.value.toUpperCase())}
+                onChange={(iso) => set('country', iso)}
                 className={inputClass}
               />
               {errors.country ? <span className="text-xs text-danger">{errors.country}</span> : null}

@@ -4,15 +4,24 @@
 
 ---
 
+## [1.43.0] - 2026-09-10
+
+### Ajouté
+
+- **La recherche par nom tombe plus juste :** elle utilise chaque mot que tu tapes et place devant celles qui correspondent le mieux, pas les plus proches dans le temps.
+- **Proposer une course dit ce qui suit :** le message précise que rien d'autre n'est nécessaire, et qui tient le catalogue voit les propositions en attente.
+- **Panneau du catalogue plus rapide :** il montre les courses qui demandent du travail, cinquante à la fois, au lieu de télécharger les cinq mille.
+- **Le pays se choisit dans une liste :** avec les noms dans ta langue, au lieu du code à deux lettres.
+
+---
+
 ## [1.42.0] - 2026-09-09
 
 ### Ajouté
 
-- **Trouver une course par son nom :** le champ de recherche cherche maintenant dans tout le catalogue, et non plus seulement dans les courses déjà affichées. Il utilise chaque mot que tu tapes et place devant celles qui correspondent le mieux, plutôt que les plus proches dans le temps. Il trouve la course même si le catalogue la garde sous un autre nom ou dans une autre langue.
-- **Dire quelle course c'est :** sur la page d'un événement, si la course n'est pas liée au catalogue partagé, tu peux la chercher par son nom et dire laquelle c'est. Dès lors le catalogue remplit tout seul les dates et le tarif de la prochaine édition, et ton résultat officiel corrige la date pour tout le monde.
-- **Proposer une course qui manque :** si la course que tu cours n'est pas au catalogue, tu peux la proposer depuis la page de l'événement. Elle entre non vérifiée pour que d'autres la trouvent, et si elle y est déjà sous un autre nom elle sera liée à celle-là au lieu d'en créer une seconde.
-- **Proposer une course dit ce qui suit :** la recherche se ferme et le message dit que rien d'autre n'est nécessaire et quand la course apparaît. Qui tient le catalogue voit aussi les propositions en attente, au lieu qu'elles restent invisibles jusqu'à la mise à jour suivante.
-- **Administrer le catalogue :** le panneau ne télécharge plus les cinq mille courses chaque fois qu'il s'ouvre. Il montre le travail, les courses qui attendent une nouvelle saison, cinquante à la fois, et chercher n'importe quelle course est une recherche à part, seulement quand c'est nécessaire.
+- **Trouver une course par son nom :** le champ de recherche cherche dans tout le catalogue, et non plus seulement dans les courses déjà affichées.
+- **Dire quelle course c'est :** relie la course de ton événement au catalogue partagé, et les dates et le tarif de la prochaine édition arrivent remplis.
+- **Proposer une course qui manque :** si la course que tu cours n'est pas au catalogue, tu peux la proposer depuis la page de l'événement.
 
 ---
 

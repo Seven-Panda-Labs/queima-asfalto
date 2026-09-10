@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "Retirer"
+    "remove": "Retirer",
+    "pickCountry": "Choisis le pays"
   },
   "nav": {
     "dashboard": "Tableau de bord",
@@ -1171,8 +1172,8 @@
     "catalogIdError": "Uniquement minuscules, chiffres et tirets.",
     "catalogIdTaken": "Une course avec cet identifiant existe déjà.",
     "catalogCity": "Ville",
-    "catalogCountry": "Pays (ISO, 2 lettres)",
-    "catalogCountryError": "Deux lettres majuscules, comme FR ou PT.",
+    "catalogCountry": "Pays",
+    "catalogCountryError": "Choisis le pays dans la liste.",
     "catalogEntryMethod": "Mode d'inscription",
     "catalogMonth": "Mois habituel",
     "catalogOfficialUrl": "URL officielle",
@@ -1447,8 +1448,7 @@
     "proposeWhy": "Elle entre au catalogue non vérifiée, pour que d'autres la trouvent. Il ne manque que la ville et le pays, que le lieu ne sépare pas.",
     "town": "Ville",
     "country": "Pays",
-    "countryHint": "Allemagne, Germany ou DE",
-    "countryError": "Nous n'avons pas pu lire ce pays. Écris le nom ou les deux lettres.",
+    "countryError": "Choisis le pays dans la liste.",
     "proposeSubmit": "Proposer au catalogue",
     "proposed": "Proposition envoyée, rien d'autre à faire. La course entre au catalogue à la mise à jour de demain matin, ou sera liée à celle qui y est déjà sous un autre nom."
   }

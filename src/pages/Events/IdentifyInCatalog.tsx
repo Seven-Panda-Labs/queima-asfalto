@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { searchTokens, type RaceCatalogEntry } from '../../../shared/raceCatalog'
-import { toIsoCountry } from '../../../shared/eventDiscovery/countries'
+import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { proposeCatalogRace } from '../../services/catalogProposals'
 import { formatDatePt } from '../../utils/date'
 import { searchRaceCatalog } from '../../services/raceCatalog'
@@ -78,8 +78,7 @@ export function IdentifyInCatalog({
   }
 
   const propose = async () => {
-    const iso = toIsoCountry(country)
-    if (!iso) {
+    if (!country) {
       setError(t('identifyInCatalog.countryError'))
       return
     }
@@ -89,7 +88,7 @@ export function IdentifyInCatalog({
       await proposeCatalogRace(userId, {
         name: event.name,
         city,
-        country: iso,
+        country,
         raceDate: toIsoDay(event.date),
         disciplines: [event.eventType],
       })
@@ -261,12 +260,12 @@ export function IdentifyInCatalog({
                 className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
               />
             </label>
-            <label className="text-xs font-semibold text-foreground">
+            <label className="text-xs font-semibold text-foreground" htmlFor="propose-country">
               {t('identifyInCatalog.country')}
-              <input
+              <CountrySelect
+                id="propose-country"
                 value={country}
-                onChange={(change) => setCountry(change.target.value)}
-                placeholder={t('identifyInCatalog.countryHint')}
+                onChange={setCountry}
                 className="mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
               />
             </label>

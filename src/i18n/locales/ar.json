@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "إزالة"
+    "remove": "إزالة",
+    "pickCountry": "اختر البلد"
   },
   "nav": {
     "dashboard": "لوحة التحكم",
@@ -1183,8 +1184,8 @@
     "catalogIdError": "حروف صغيرة وأرقام وشرطات فقط.",
     "catalogIdTaken": "يوجد سباق بهذا المعرّف.",
     "catalogCity": "المدينة",
-    "catalogCountry": "البلد (ISO، حرفان)",
-    "catalogCountryError": "حرفان كبيران، مثل PT أو DE.",
+    "catalogCountry": "البلد",
+    "catalogCountryError": "اختر البلد من القائمة.",
     "catalogEntryMethod": "طريقة التسجيل",
     "catalogMonth": "الشهر المعتاد",
     "catalogOfficialUrl": "الرابط الرسمي",
@@ -1479,8 +1480,7 @@
     "proposeWhy": "يدخل الفهرس غير مُتحقَّق منه ليجده الآخرون. ولا ينقص سوى البلدة والبلد، وهما ما لا يفصله اسم المكان.",
     "town": "البلدة",
     "country": "البلد",
-    "countryHint": "ألمانيا، Germany أو DE",
-    "countryError": "لم نتمكن من قراءة هذا البلد. اكتب الاسم أو الحرفين.",
+    "countryError": "اختر البلد من القائمة.",
     "proposeSubmit": "اقترحه على الفهرس",
     "proposed": "أُرسل الاقتراح، ولا شيء آخر عليك فعله. يدخل السباق الفهرس في تحديث صباح الغد، أو يُربط بالسباق الموجود فيه أصلا باسم آخر."
   }

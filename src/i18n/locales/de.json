@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "Entfernen"
+    "remove": "Entfernen",
+    "pickCountry": "Land wählen"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1171,8 +1172,8 @@
     "catalogIdError": "Nur Kleinbuchstaben, Zahlen und Bindestriche.",
     "catalogIdTaken": "Ein Rennen mit dieser Kennung existiert schon.",
     "catalogCity": "Stadt",
-    "catalogCountry": "Land (ISO, 2 Buchstaben)",
-    "catalogCountryError": "Zwei Großbuchstaben, etwa DE oder PT.",
+    "catalogCountry": "Land",
+    "catalogCountryError": "Wähle das Land aus der Liste.",
     "catalogEntryMethod": "Zugang zum Start",
     "catalogMonth": "Typischer Monat",
     "catalogOfficialUrl": "Offizielle URL",
@@ -1447,8 +1448,7 @@
     "proposeWhy": "Es kommt ungeprüft in den Katalog, damit andere es finden. Es fehlen nur Ort und Land, die der Ortsname nicht trennt.",
     "town": "Ort",
     "country": "Land",
-    "countryHint": "Deutschland, Germany oder DE",
-    "countryError": "Dieses Land konnten wir nicht lesen. Schreibe den Namen oder die zwei Buchstaben.",
+    "countryError": "Wähle das Land aus der Liste.",
     "proposeSubmit": "Dem Katalog vorschlagen",
     "proposed": "Vorschlag gesendet, mehr ist nicht zu tun. Das Rennen kommt bei der Aktualisierung morgen früh in den Katalog, oder wird mit dem verknüpft, das schon unter anderem Namen dort ist."
   }

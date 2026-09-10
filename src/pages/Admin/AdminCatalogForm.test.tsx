@@ -45,7 +45,7 @@ describe('AdminCatalogForm', () => {
 
     fill('Nome', 'Maratona do Porto')
     fill('Cidade', 'Porto')
-    fill('País', 'PT')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
     fill('Fonte', 'maratonadoporto.com, confirmado 2026-09-01')
     fireEvent.click(screen.getByText('Maratona'))
     fireEvent.click(screen.getByText('Guardar'))
@@ -58,18 +58,19 @@ describe('AdminCatalogForm', () => {
     expect(saved.disciplines).toEqual(['km_42_2'])
   })
 
-  it('refuses a country that is not two letters', async () => {
+  it('refuses an entry with no country chosen', async () => {
     render(<AdminCatalogForm />)
 
     fill('Nome', 'Maratona do Porto')
     fill('Cidade', 'Porto')
-    fill('País', 'Portugal')
     fill('Fonte', 'x')
     fireEvent.click(screen.getByText('Maratona'))
     fireEvent.click(screen.getByText('Guardar'))
 
+    // The country is the first field the duplicate rule compares, so an entry
+    // without one can never merge with its own other listing.
     await waitFor(() =>
-      expect(screen.getByText('Duas letras maiúsculas, como PT ou DE.')).toBeInTheDocument(),
+      expect(screen.getByText('Escolhe o país da lista.')).toBeInTheDocument(),
     )
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
   })
@@ -79,7 +80,7 @@ describe('AdminCatalogForm', () => {
 
     fill('Nome', 'Maratona do Porto')
     fill('Cidade', 'Porto')
-    fill('País', 'PT')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
     fill('Fonte', 'x')
     fireEvent.click(screen.getByText('Maratona'))
     fireEvent.click(screen.getByText('Acrescentar edição'))
@@ -99,7 +100,7 @@ describe('AdminCatalogForm', () => {
 
     fill('Nome', 'Maratona do Porto')
     fill('Cidade', 'Porto')
-    fill('País', 'PT')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
     fill('Fonte', 'x')
     fireEvent.click(screen.getByText('Maratona'))
     fireEvent.click(screen.getByText('Guardar'))

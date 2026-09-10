@@ -170,10 +170,11 @@ describe('a race the catalog does not hold', () => {
     await openProposal()
 
     fireEvent.change(screen.getByLabelText('Terra'), { target: { value: 'Berlin' } })
-    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'Alemanha' } })
+    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'DE' } })
     fireEvent.click(screen.getByRole('button', { name: 'Propor ao catálogo' }))
 
-    // The country is read the way the sources are read, so a name works.
+    // The country is picked from a list, so it arrives as the code the catalog
+    // stores and there is nothing to read.
     await waitFor(() =>
       expect(proposeCatalogRace).toHaveBeenCalledWith('u1', {
         name: 'Generali Berliner Halbmarathon',
@@ -189,15 +190,14 @@ describe('a race the catalog does not hold', () => {
     expect(screen.queryByRole('button', { name: 'Propor ao catálogo' })).not.toBeInTheDocument()
   })
 
-  it('refuses a country it cannot read, rather than filing XX', async () => {
+  it('refuses a proposal with no country picked', async () => {
     await openProposal()
 
-    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'Freedonia' } })
     fireEvent.click(screen.getByRole('button', { name: 'Propor ao catálogo' }))
 
     // The catalog stores XX for a missing country and dedup compares it first,
     // so two XX races in a town called Porto would merge into one.
-    expect(await screen.findByText(/Não conseguimos ler esse país/)).toBeInTheDocument()
+    expect(await screen.findByText('Escolhe o país da lista.')).toBeInTheDocument()
     expect(proposeCatalogRace).not.toHaveBeenCalled()
   })
 })

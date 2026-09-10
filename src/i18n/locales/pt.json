@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "Remover"
+    "remove": "Remover",
+    "pickCountry": "Escolhe o país"
   },
   "nav": {
     "dashboard": "Início",
@@ -1171,8 +1172,8 @@
     "catalogIdError": "Só minúsculas, números e hífenes.",
     "catalogIdTaken": "Já existe uma prova com este identificador.",
     "catalogCity": "Cidade",
-    "catalogCountry": "País (ISO, 2 letras)",
-    "catalogCountryError": "Duas letras maiúsculas, como PT ou DE.",
+    "catalogCountry": "País",
+    "catalogCountryError": "Escolhe o país da lista.",
     "catalogEntryMethod": "Forma de inscrição",
     "catalogMonth": "Mês típico",
     "catalogOfficialUrl": "URL oficial",
@@ -1447,8 +1448,7 @@
     "proposeWhy": "Entra no catálogo como não verificada, para que outros a encontrem. Só falta a terra e o país, que o nome do local não separa.",
     "town": "Terra",
     "country": "País",
-    "countryHint": "Alemanha, Germany ou DE",
-    "countryError": "Não conseguimos ler esse país. Escreve o nome ou as duas letras.",
+    "countryError": "Escolhe o país da lista.",
     "proposeSubmit": "Propor ao catálogo",
     "proposed": "Proposta enviada, não é preciso fazer mais nada. A prova entra no catálogo na actualização de amanhã de manhã, ou fica ligada à que já lá estiver com outro nome."
   }
