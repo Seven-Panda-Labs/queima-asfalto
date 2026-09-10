@@ -8,7 +8,7 @@
 
 ### Added
 
-- **Find a race by name:** the search field now searches the whole catalog instead of only the races already on the page. Typing "Teltowkanal" finds the race, even when it is three thousandth in line.
+- **Find a race by name:** the search field now searches the whole catalog instead of only the races already on the page. It uses every word you type and puts the closest matches first rather than the soonest races. It finds the race even when the catalog keeps it under another name or in another language.
 - **Say which race it is:** on an event's page, if the race is not linked to the shared catalog, you can search it by name and say which one it is. From then on the catalog fills in the next edition's dates and fee on its own, and your official result starts correcting the date for everybody.
 - **Propose a race that is missing:** if the race you ran is not in the catalog, you can propose it from the event's page. It enters unreviewed for other people to find, and if it is already there under another name it gets linked to that one instead of creating a second.
 

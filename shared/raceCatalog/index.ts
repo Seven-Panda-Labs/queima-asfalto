@@ -11,7 +11,13 @@ export {
   type RaceEntryMethod,
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
-export { nameTokensOf, normalizeToken, searchToken } from './nameTokens.js'
+export {
+  nameMatchScore,
+  nameTokensOf,
+  normalizeToken,
+  rankByName,
+  searchTokens,
+} from './nameTokens.js'
 export {
   CATALOG_PROPOSALS_COLLECTION,
   isProposalComplete,
