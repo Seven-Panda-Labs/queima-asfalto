@@ -4,6 +4,14 @@
 
 ---
 
+## [1.47.0] - 2026-09-10
+
+### Corregido
+
+- **Una fecha mal escrita ya no deja la página en blanco:** una carrera del catálogo con una fecha imposible tumbaba toda la página del evento. Ahora aparece un guion, y la administración usa un selector de fecha que no acepta fechas inválidas.
+
+---
+
 ## [1.46.0] - 2026-09-10
 
 ### Corregido

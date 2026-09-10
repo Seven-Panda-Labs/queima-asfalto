@@ -1204,6 +1204,8 @@
     "catalogResultsUrl": "Resultados de esta edición",
     "catalogResultsUrlHint": "La página de resultados del año. Compartida, así que sin nada que identifique a un corredor.",
     "catalogEditionSourceError": "Cada edición necesita su propia fuente.",
+    "catalogDateError": "Fecha inválida. Usa el selector, en formato AAAA-MM-DD.",
+    "catalogGateDateError": "Plazo inválido. Usa AAAA-MM-DD, o AAAA-MM-DDTHH:MM:SSZ cuando la hora importa.",
     "entryMethod": {
       "lottery": "Sorteo",
       "first_come": "Por orden de llegada",

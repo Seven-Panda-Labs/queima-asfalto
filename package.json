@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.46.0",
+  "version": "1.47.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -25,6 +25,7 @@
     "backfill:catalog-duplicates": "tsx scripts/backfill-catalog-duplicates.ts",
     "backfill:catalog-name-tokens": "tsx scripts/backfill-catalog-name-tokens.ts",
     "backfill:edition-reports": "tsx scripts/backfill-edition-reports.ts",
+    "fix:catalog-days": "tsx scripts/fix-malformed-catalog-days.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
     "scout:podium": "tsx scripts/podium-scout.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",

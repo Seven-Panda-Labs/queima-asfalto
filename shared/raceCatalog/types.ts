@@ -187,3 +187,33 @@ export type RaceCatalog = {
   updatedAt: string
   races: RaceCatalogEntry[]
 }
+
+/**
+ * A day the catalog can store, `YYYY-MM-DD`.
+ *
+ * The shape and not just the parse, because `new Date('2026-08.-23')` is
+ * invalid while `new Date('2026-8-3')` is not, and a day stored in a shape
+ * nothing else reads is the same problem one step later. Every day in an entry
+ * goes through here: they are compared as strings by the duplicate rule and
+ * formatted by `Intl`, which throws on an invalid one.
+ */
+export function isIsoDay(value: string | undefined): boolean {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false
+  const at = new Date(`${value}T00:00:00Z`)
+  if (Number.isNaN(at.getTime())) return false
+  // The 31st of February parses, as the 3rd of March. The round trip is what
+  // catches a day that does not exist.
+  return at.toISOString().slice(0, 10) === value
+}
+
+/**
+ * A day, or the instant a gate opens or closes.
+ *
+ * The gates take an instant when the organiser publishes a time and a plain
+ * day when only the day is known, so both shapes are legal here.
+ */
+export function isIsoDayOrInstant(value: string | undefined): boolean {
+  if (!value) return false
+  if (isIsoDay(value)) return true
+  return /^\d{4}-\d{2}-\d{2}T/.test(value) && !Number.isNaN(new Date(value).getTime())
+}

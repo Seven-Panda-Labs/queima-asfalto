@@ -5,7 +5,16 @@ function getIntlLocale(): string {
   return resolveIntlLocale(i18n.language)
 }
 
+/**
+ * A date nobody can read renders as a dash, never as a crash.
+ *
+ * `Intl` throws `RangeError: Invalid time value` on an invalid date, and this
+ * is called from thirty places with no error boundary above most of them: one
+ * malformed day in the shared catalog ("2026-08.-23", typed into the admin
+ * form) took the whole event page to a white screen.
+ */
 export function formatDatePt(date: Date): string {
+  if (Number.isNaN(date.getTime())) return '-'
   return new Intl.DateTimeFormat(getIntlLocale(), {
     day: '2-digit',
     month: '2-digit',

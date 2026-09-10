@@ -1204,6 +1204,8 @@
     "catalogResultsUrl": "Ergebnisse dieser Ausgabe",
     "catalogResultsUrlHint": "Die Ergebnisseite des Jahres. Geteilt, also nichts, was einen Läufer identifiziert.",
     "catalogEditionSourceError": "Jede Ausgabe braucht ihre eigene Quelle.",
+    "catalogDateError": "Ungültiges Datum. Nutze die Auswahl, im Format JJJJ-MM-TT.",
+    "catalogGateDateError": "Ungültige Frist. Nutze JJJJ-MM-TT, oder JJJJ-MM-TTTHH:MM:SSZ, wenn die Uhrzeit zählt.",
     "entryMethod": {
       "lottery": "Losverfahren",
       "first_come": "Nach Anmeldung",

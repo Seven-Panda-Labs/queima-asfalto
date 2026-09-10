@@ -1204,6 +1204,8 @@
     "catalogResultsUrl": "Résultats de cette édition",
     "catalogResultsUrlHint": "La page de résultats de l'année. Partagée, donc rien qui identifie un coureur.",
     "catalogEditionSourceError": "Chaque édition a besoin de sa propre source.",
+    "catalogDateError": "Date invalide. Utilise le sélecteur, au format AAAA-MM-JJ.",
+    "catalogGateDateError": "Échéance invalide. Utilise AAAA-MM-JJ, ou AAAA-MM-JJTHH:MM:SSZ quand l'heure compte.",
     "entryMethod": {
       "lottery": "Tirage au sort",
       "first_come": "Premier arrivé",

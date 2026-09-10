@@ -1216,6 +1216,8 @@
     "catalogResultsUrl": "نتائج هذه النسخة",
     "catalogResultsUrlHint": "صفحة نتائج تلك السنة. مشتركة، فلا شيء فيها يُعرّف عدّاءً.",
     "catalogEditionSourceError": "كل نسخة تحتاج مصدرها.",
+    "catalogDateError": "تاريخ غير صالح. استخدم المُنتقي بصيغة سنة-شهر-يوم.",
+    "catalogGateDateError": "موعد غير صالح. استخدم صيغة سنة-شهر-يوم، أو مع الساعة عند أهميتها.",
     "entryMethod": {
       "lottery": "قرعة",
       "first_come": "حسب الأسبقية",

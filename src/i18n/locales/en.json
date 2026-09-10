@@ -1204,6 +1204,8 @@
     "catalogResultsUrl": "Results for this edition",
     "catalogResultsUrlHint": "That year's results page. Shared, so nothing that identifies a runner.",
     "catalogEditionSourceError": "Every edition needs its own source.",
+    "catalogDateError": "Invalid date. Use the picker, in YYYY-MM-DD.",
+    "catalogGateDateError": "Invalid deadline. Use YYYY-MM-DD, or YYYY-MM-DDTHH:MM:SSZ when the hour matters.",
     "entryMethod": {
       "lottery": "Lottery",
       "first_come": "First come",
