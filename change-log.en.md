@@ -4,6 +4,14 @@
 
 ---
 
+## [1.46.0] - 2026-09-10
+
+### Fixed
+
+- **Different races are no longer merged for sharing a day:** sharing a day, a city and a distance with an already checked race did not make it the same race, yet it was treated as a copy. Now only the names merge two entries, and a race in a neighbouring town (say "Rüdersdorf bei Berlin") no longer counts as being in the big city.
+
+---
+
 ## [1.45.0] - 2026-09-10
 
 ### Fixed

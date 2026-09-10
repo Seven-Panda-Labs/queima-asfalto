@@ -4,6 +4,14 @@
 
 ---
 
+## [1.46.0] - 2026-09-10
+
+### Corrigido
+
+- **Provas diferentes deixam de ser juntadas por partilharem o dia:** partilhar o dia, a cidade e a distância com uma prova já verificada não a torna a mesma prova, e passava a ser tratada como cópia. Agora só os nomes juntam duas entradas, e uma prova numa terra vizinha (por exemplo "Rüdersdorf bei Berlin") já não conta como sendo na cidade grande.
+
+---
+
 ## [1.45.0] - 2026-09-10
 
 ### Corrigido

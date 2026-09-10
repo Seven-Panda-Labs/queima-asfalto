@@ -4,6 +4,14 @@
 
 ---
 
+## [1.46.0] - 2026-09-10
+
+### Corregido
+
+- **Carreras distintas ya no se fusionan por compartir el día:** compartir día, ciudad y distancia con una carrera ya verificada no la convierte en la misma, y se trataba como copia. Ahora solo los nombres fusionan dos entradas, y una carrera en un pueblo vecino (por ejemplo "Rüdersdorf bei Berlin") ya no cuenta como en la ciudad grande.
+
+---
+
 ## [1.45.0] - 2026-09-10
 
 ### Corregido

@@ -566,3 +566,98 @@ describe('a year in a name', () => {
     expect(sameAnnualRace(five, ten)).toBe(false)
   })
 })
+
+describe('a checked entry is a better survivor, not better evidence', () => {
+  // All three real, all three on the 12th of September 2026 in Berlin, all
+  // three offered as copies of the Tierparklauf by the rule this replaces.
+  const tierparklauf = entry({
+    id: 'de-berlin-tierparklauf-berlin',
+    name: 'Tierparklauf',
+    disciplines: ['km_5', 'km_10'],
+    review: 'reviewed',
+    editions: [
+      { year: 2022, raceDate: '2022-09-10', source: 'runners', confirmedAt: '2026-09-10' },
+      { year: 2026, raceDate: '2026-09-12', source: 'davengo.com', confirmedAt: '2026-09-05' },
+    ],
+  })
+  const sameDayEdition = [
+    { year: 2026, raceDate: '2026-09-12', source: 'running.life', confirmedAt: '2026-09-05' },
+  ]
+
+  it('does not absorb a race that only shares its day, town and distance', () => {
+    const club = entry({
+      id: 'de-berlin-tus-li-5k-lauf',
+      name: 'TuS Li 5K-Lauf',
+      disciplines: ['km_5'],
+      editions: sameDayEdition,
+    })
+
+    expect(findCatalogDuplicate(club, [tierparklauf])).toBeNull()
+  })
+
+  it('does not absorb a race that declares no distance at all', () => {
+    const triathlon = entry({
+      id: 'de-berlin-oranke-open-triathlon',
+      name: 'Oranke Open Triathlon',
+      disciplines: [],
+      editions: sameDayEdition,
+    })
+
+    expect(findCatalogDuplicate(triathlon, [tierparklauf])).toBeNull()
+  })
+
+  it('still merges what the names carry, whoever checked it', () => {
+    const sameRace = entry({
+      id: 'de-berlin-volvo-tierparklauf',
+      name: 'Volvo Tierparklauf',
+      disciplines: ['km_5', 'km_10'],
+      editions: sameDayEdition,
+    })
+
+    expect(findCatalogDuplicate(sameRace, [tierparklauf])?.id).toBe('de-berlin-tierparklauf-berlin')
+  })
+
+  it('leaves the pair out of the queue when the names say nothing either', () => {
+    const triathlon = entry({
+      id: 'de-berlin-oranke-open-triathlon',
+      name: 'Oranke Open Triathlon',
+      disciplines: [],
+      editions: sameDayEdition,
+    })
+
+    // Every race in Berlin shares a day with some other race in Berlin, and
+    // pairing them all is the flood the queue exists to avoid.
+    expect(catalogDuplicateCandidates([tierparklauf, triathlon])).toHaveLength(0)
+  })
+})
+
+describe('a town named by what it is near', () => {
+  it('is not that town', () => {
+    const rudersdorf = entry({
+      id: 'de-rudersdorf-bei-berlin-stienitzsee-open',
+      name: 'Stienitzsee Open',
+      city: 'Rüdersdorf bei Berlin',
+      editions: [
+        { year: 2026, raceDate: '2026-09-12', source: 'running.life', confirmedAt: '2026-09-05' },
+      ],
+    })
+    const berlin = entry({
+      id: 'de-berlin-tierparklauf-berlin',
+      name: 'Stienitzsee Open',
+      city: 'Berlin',
+      editions: [
+        { year: 2026, raceDate: '2026-09-12', source: 'davengo.com', confirmedAt: '2026-09-05' },
+      ],
+    })
+
+    // Same name and same day: only the town keeps these apart, and it should.
+    expect(findCatalogDuplicate(rudersdorf, [berlin])).toBeNull()
+  })
+
+  it('still reads a town written at two levels of detail as one', () => {
+    const long = entry({ id: 'de-freiburg-im-breisgau-lauf', name: 'Stadtlauf', city: 'Freiburg im Breisgau' })
+    const short = entry({ id: 'de-freiburg-lauf', name: 'Stadtlauf', city: 'Freiburg' })
+
+    expect(findCatalogDuplicate(long, [short])?.id).toBe('de-freiburg-lauf')
+  })
+})
