@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Juntar duas provas do catálogo à mão:** na administração, escolhes a repetida, procuras a que fica e juntas. Antes só a fila de duplicados juntava provas, e há nomes que nenhuma regra consegue comparar.
+- **Encontrar uma prova cujo nome é quase todo números:** escrever "S25" ou "S 25" passa a encontrar a prova, que antes só aparecia se procurasses por "Berlin", entre centenas.
 
 ---
 

@@ -51,6 +51,19 @@ describe('nameTokensOf', () => {
   it('survives a name with nothing searchable in it', () => {
     expect(nameTokensOf('5K', '')).toEqual([])
   })
+
+  it('glues a single letter to the number after it', () => {
+    // "S25 Berlin" and "S 25 Berlin" are one race, and the catalog held the
+    // second: both the "s" and the "25" were dropped, leaving only "berlin".
+    expect(nameTokensOf('S 25 Berlin', 'Berlin')).toEqual(['s25', 'berlin'])
+    expect(nameTokensOf('S25 Berlin', 'Berlin')).toEqual(['s25', 'berlin'])
+  })
+
+  it('leaves an edition number out, and does not glue a fraction', () => {
+    // "26. WACHAUmarathon" is one race and "26" is on a thousand others.
+    expect(nameTokensOf('26. WACHAUmarathon', 'Krems')).toEqual(['wachaumarathon', 'krems'])
+    expect(nameTokensOf('Kaiserwinkl 1/2 Marathon', '')).toEqual(['kaiserwinkl', 'marathon'])
+  })
 })
 
 describe('searchTokens', () => {
@@ -103,6 +116,11 @@ describe('searchTokens', () => {
   it('has nothing to ask for when nothing typed is long enough', () => {
     expect(searchTokens('')).toEqual([])
     expect(searchTokens('de 5k')).toEqual([])
+  })
+
+  it('asks for the same word whether S25 or S 25 was typed', () => {
+    expect(searchTokens('S25')).toEqual(['s25'])
+    expect(searchTokens('S 25 Berlin')).toEqual(['s25', 'berlin'])
   })
 })
 

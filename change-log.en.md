@@ -9,6 +9,7 @@
 ### Added
 
 - **Join two catalog races by hand:** in the admin area, pick the repeated one, search for the one that stays, and join them. Before, only the duplicates queue could merge races, and some names no rule can compare.
+- **Find a race whose name is mostly numbers:** typing "S25" or "S 25" now finds the race, which before only turned up if you searched "Berlin", among hundreds.
 
 ---
 

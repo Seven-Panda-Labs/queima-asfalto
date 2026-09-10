@@ -9,6 +9,7 @@
 ### Hinzugefügt
 
 - **Zwei Katalogrennen von Hand zusammenlegen:** in der Verwaltung das doppelte auswählen, das bleibende suchen, zusammenlegen. Vorher legte nur die Duplikate-Liste Rennen zusammen, und manche Namen kann keine Regel vergleichen.
+- **Ein Rennen finden, dessen Name fast nur Zahlen ist:** "S25" oder "S 25" zu tippen findet das Rennen jetzt, das vorher nur unter "Berlin" auftauchte, zwischen hunderten.
 
 ---
 
