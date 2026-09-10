@@ -4,6 +4,14 @@
 
 ---
 
+## [1.47.0] - 2026-09-10
+
+### Corrigé
+
+- **Une date mal écrite ne vide plus la page :** une course du catalogue avec une date impossible faisait tomber toute la page de l'événement. Un tiret s'affiche désormais, et l'administration utilise un sélecteur de date qui refuse une date invalide.
+
+---
+
 ## [1.46.0] - 2026-09-10
 
 ### Corrigé

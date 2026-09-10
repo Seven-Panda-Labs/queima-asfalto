@@ -5,17 +5,20 @@ import { AdminCatalogForm } from './AdminCatalogForm'
 
 const saveCatalogRaceForAdmin = vi.fn(async (_race: unknown, _uid: string) => {})
 const catalogRaceIdExists = vi.fn(async (_id: string) => false)
+const getCatalogRaceForAdmin = vi.fn(async (_id: string) => null as unknown)
 const navigate = vi.fn()
+/** The route's own params, so a test can open an entry that already exists. */
+let params: { id?: string } = {}
 
 vi.mock('../../services/adminRaceCatalog', () => ({
-  getCatalogRaceForAdmin: vi.fn(async () => null),
+  getCatalogRaceForAdmin: (id: string) => getCatalogRaceForAdmin(id),
   saveCatalogRaceForAdmin: (race: unknown, uid: string) => saveCatalogRaceForAdmin(race, uid),
   catalogRaceIdExists: (id: string) => catalogRaceIdExists(id),
 }))
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => navigate,
-  useParams: () => ({}),
+  useParams: () => params,
 }))
 
 vi.mock('../../contexts/AuthContext', () => ({
@@ -33,6 +36,8 @@ vi.mock('../../components/PageShell/PageShell', () => ({
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
+  params = {}
+  getCatalogRaceForAdmin.mockResolvedValue(null)
 })
 
 function fill(label: string, value: string) {
@@ -91,6 +96,58 @@ describe('AdminCatalogForm', () => {
         screen.getByText('Uma entrada não confirmada não pode ter edições com datas.'),
       ).toBeInTheDocument(),
     )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
+  it('refuses to save an entry whose stored date is malformed', async () => {
+    // Real, and typed into this form when it was free text: "2026-08.-23"
+    // took the event page to a white screen, because `Intl` throws on it.
+    params = { id: 'de-berlin-steglitz-die-generalprobe' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'de-berlin-steglitz-die-generalprobe',
+      name: 'Die Generalprobe',
+      country: 'DE',
+      city: 'Berlin',
+      disciplines: ['km_21_1'],
+      entryMethod: 'unknown',
+      review: 'reviewed',
+      source: 'berliner-generalprobe.de',
+      editions: [
+        {
+          year: 2026,
+          raceDate: '2026-08.-23',
+          source: 'berliner-generalprobe.de',
+          confirmedAt: '2026-09-10',
+        },
+      ],
+    })
+    render(<AdminCatalogForm />)
+
+    fireEvent.click(await screen.findByText('Guardar'))
+
+    await waitFor(() =>
+      expect(
+        screen.getByText('Data inválida. Usa o selector, no formato AAAA-MM-DD.'),
+      ).toBeInTheDocument(),
+    )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
+  it('refuses a deadline that is neither a day nor an instant', async () => {
+    render(<AdminCatalogForm />)
+
+    fill('Nome', 'Maratona do Porto')
+    fill('Cidade', 'Porto')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fill('Fonte', 'x')
+    fireEvent.click(screen.getByText('Maratona'))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Confirmada/ }))
+    fireEvent.click(screen.getByText('Acrescentar edição'))
+    fill('Fonte desta edição', 'maratonadoporto.com')
+    fireEvent.change(screen.getByLabelText(/Fecho/), { target: { value: 'daqui a duas semanas' } })
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() => expect(screen.getByText(/Prazo inválido/)).toBeInTheDocument())
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
   })
 

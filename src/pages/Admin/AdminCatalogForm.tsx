@@ -9,6 +9,8 @@ import { useToast } from '../../contexts/ToastContext'
 import { EVENT_TYPES, type EventType } from '../../domain/eventCodes'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import {
+  isIsoDay,
+  isIsoDayOrInstant,
   RACE_ENTRY_METHODS,
   type RaceCatalogEdition,
   type RaceCatalogEntry,
@@ -112,6 +114,21 @@ export function AdminCatalogForm() {
     }
     for (const edition of race.editions ?? []) {
       if (!edition.source.trim()) next.editions = t('admin.catalogEditionSourceError')
+      // A day in the wrong shape is stored, compared as a string by the
+      // duplicate rule and handed to `Intl`, which throws on it.
+      if (edition.raceDate !== undefined && !isIsoDay(edition.raceDate)) {
+        next.editions = t('admin.catalogDateError')
+      }
+      if (!isIsoDay(edition.confirmedAt)) next.editions = t('admin.catalogDateError')
+      for (const gate of [
+        edition.registrationOpensAt,
+        edition.registrationClosesAt,
+        edition.lotteryDrawAt,
+      ]) {
+        if (gate !== undefined && !isIsoDayOrInstant(gate)) {
+          next.editions = t('admin.catalogGateDateError')
+        }
+      }
     }
 
     setErrors(next)
@@ -359,8 +376,8 @@ export function AdminCatalogForm() {
                   <label className="text-xs font-semibold text-muted">
                     {t('admin.catalogRaceDate')}
                     <input
+                      type="date"
                       value={edition.raceDate ?? ''}
-                      placeholder="2027-03-07"
                       onChange={(event) =>
                         setEdition(index, { raceDate: event.target.value || undefined })
                       }
@@ -438,6 +455,7 @@ export function AdminCatalogForm() {
                   <label className="text-xs font-semibold text-muted">
                     {t('admin.catalogConfirmedAt')}
                     <input
+                      type="date"
                       value={edition.confirmedAt}
                       onChange={(event) => setEdition(index, { confirmedAt: event.target.value })}
                       className={inputClass}

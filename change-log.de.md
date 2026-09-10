@@ -4,6 +4,14 @@
 
 ---
 
+## [1.47.0] - 2026-09-10
+
+### Behoben
+
+- **Ein fehlerhaftes Datum macht die Seite nicht mehr weiß:** ein Katalogrennen mit einem unmöglichen Datum riss die ganze Event-Seite mit. Jetzt steht dort ein Strich, und die Verwaltung nutzt eine Datumsauswahl, die kein ungültiges Datum annimmt.
+
+---
+
 ## [1.46.0] - 2026-09-10
 
 ### Behoben

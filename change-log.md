@@ -4,6 +4,14 @@
 
 ---
 
+## [1.47.0] - 2026-09-10
+
+### Corrigido
+
+- **Uma data mal escrita já não deixa a página em branco:** uma prova do catálogo com uma data impossível fazia a página do evento falhar por inteiro. Agora aparece um traço, e a administração passa a usar um selector de data que não aceita datas inválidas.
+
+---
+
 ## [1.46.0] - 2026-09-10
 
 ### Corrigido

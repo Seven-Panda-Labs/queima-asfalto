@@ -2,6 +2,8 @@ export { RACE_CATALOG_COLLECTION } from './collection.js'
 export {
   CATALOG_PRODUCERS,
   CATALOG_REVIEW_STATES,
+  isIsoDay,
+  isIsoDayOrInstant,
   RACE_ENTRY_METHODS,
   type CatalogProducer,
   type CatalogReviewState,

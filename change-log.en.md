@@ -4,6 +4,14 @@
 
 ---
 
+## [1.47.0] - 2026-09-10
+
+### Fixed
+
+- **A malformed date no longer blanks the page:** a catalog race with an impossible date took the whole event page down. Now it shows a dash, and the admin form uses a date picker that will not take an invalid one.
+
+---
+
 ## [1.46.0] - 2026-09-10
 
 ### Fixed
