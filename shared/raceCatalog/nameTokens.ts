@@ -19,7 +19,7 @@
 
 import { GENERIC } from '../eventDiscovery/duplicates.js'
 
-/** Anything shorter is noise: "5k", "de", "am", and every roman numeral. */
+/** Anything shorter is noise: "de", "am", and every roman numeral. */
 const MIN_LENGTH = 3
 
 /**
@@ -39,11 +39,44 @@ export function normalizeToken(value: string): string {
     .trim()
 }
 
+/**
+ * A name's words, with a single letter glued to the number after it.
+ *
+ * Half the world writes "S25 Berlin" and the other half "S 25 Berlin", and the
+ * catalog held it the second way: the "s" and the "25" were both dropped as
+ * too short, so the race was findable only by "berlin" among five hundred
+ * others. Three entries for one race and no way to see it from the search.
+ */
+function wordsOf(value: string): string[] {
+  const words = normalizeToken(value).split(' ').filter(Boolean)
+  const out: string[] = []
+  for (let at = 0; at < words.length; at += 1) {
+    const word = words[at]!
+    const next = words[at + 1]
+    // A letter, never a digit: "1/2 Marathon" must not become "12", and an
+    // edition number is not part of the name either.
+    if (/^[a-z]$/.test(word) && next && /^\d{1,3}$/.test(next)) out.push(`${word}${next}`)
+    out.push(word)
+  }
+  return out
+}
+
+/**
+ * Whether a word is worth indexing or asking about.
+ *
+ * Only the glued ones get in under the length: "r5" is what a race is called
+ * and "am" is what a language needs. A bare number stays out, because in this
+ * catalog it is almost always the edition ("26. WACHAUmarathon"), and
+ * indexing those put a thousand unrelated races in a pool called "10".
+ */
+function meaningful(word: string): boolean {
+  return word.length >= MIN_LENGTH || /^[a-z]\d{1,3}$/.test(word)
+}
+
 export function nameTokensOf(name: string, city = ''): string[] {
-  const words = normalizeToken(`${name} ${city}`).split(' ')
   const tokens = new Set<string>()
-  for (const word of words) {
-    if (word.length < MIN_LENGTH) continue
+  for (const word of wordsOf(`${name} ${city}`)) {
+    if (!meaningful(word)) continue
     tokens.add(word)
     if (tokens.size >= MAX_TOKENS) break
   }
@@ -65,13 +98,7 @@ export function nameTokensOf(name: string, city = ''): string[] {
  * pool that misses is a pool the others cover.
  */
 export function searchTokens(typed: string): string[] {
-  const words = [
-    ...new Set(
-      normalizeToken(typed)
-        .split(' ')
-        .filter((word) => word.length >= MIN_LENGTH),
-    ),
-  ]
+  const words = [...new Set(wordsOf(typed).filter(meaningful))]
   if (words.length === 0) return []
 
   // Shortest first within each half: a short word that is not generic is
@@ -80,8 +107,14 @@ export function searchTokens(typed: string): string[] {
   // queries the first few and scores against all of them, and a word left out
   // of the scoring is a word that cannot tell two races apart.
   const byLength = (list: string[]) => [...list].sort((a, b) => a.length - b.length)
+  // A bare number is a weak pool whatever its length: "25" is on every race
+  // that ran on the 25th of something, while "s25" is on one. So the shortest
+  // word first, except that numbers go after the words.
+  const number = (word: string) => /^\d+$/.test(word)
+  const own = words.filter((word) => !GENERIC.test(word))
   return [
-    ...byLength(words.filter((word) => !GENERIC.test(word))),
+    ...byLength(own.filter((word) => !number(word))),
+    ...byLength(own.filter(number)),
     ...byLength(words.filter((word) => GENERIC.test(word))),
   ]
 }
@@ -96,9 +129,7 @@ export function searchTokens(typed: string): string[] {
  * rule already gives a town.
  */
 export function nameMatchScore(entryTokens: readonly string[] = [], typed: string): number {
-  const words = normalizeToken(typed)
-    .split(' ')
-    .filter((word) => word.length >= MIN_LENGTH)
+  const words = wordsOf(typed).filter(meaningful)
   if (words.length === 0) return 0
 
   return words.filter((word) =>

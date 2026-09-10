@@ -9,6 +9,7 @@
 ### Añadido
 
 - **Unir dos carreras del catálogo a mano:** en la administración, eliges la repetida, buscas la que se queda y las unes. Antes solo la cola de duplicados unía carreras, y hay nombres que ninguna regla puede comparar.
+- **Encontrar una carrera cuyo nombre es casi todo números:** escribir "S25" o "S 25" ya encuentra la carrera, que antes solo aparecía si buscabas "Berlin", entre cientos.
 
 ---
 

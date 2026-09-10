@@ -9,6 +9,7 @@
 ### Ajouté
 
 - **Fusionner deux courses du catalogue à la main :** dans l'administration, choisis la course en double, cherche celle qui reste, et fusionne. Avant, seule la file des doublons fusionnait des courses, et certains noms sont incomparables pour n'importe quelle règle.
+- **Trouver une course dont le nom est presque tout en chiffres :** taper « S25 » ou « S 25 » trouve maintenant la course, qui n'apparaissait avant qu'en cherchant « Berlin », parmi des centaines.
 
 ---
 
