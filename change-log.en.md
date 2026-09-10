@@ -6,6 +6,10 @@
 
 ## [1.44.0] - 2026-09-10
 
+### Added
+
+- **Linking a race to the catalog reports what you already ran:** the editions you ran with a verified result now reach the catalog, not only the ones still to come.
+
 ### Changed
 
 - **The time zone comes from a list:** by region, with each one's current time, instead of typing the IANA name.

@@ -32,6 +32,41 @@ export async function reportEditionDate(
 }
 
 /**
+ * Tells the catalog the days of every edition this runner already has a
+ * verified result for.
+ *
+ * Reporting a day only happened at the moment a result was saved, and until
+ * then `race.catalogRaceId` was almost never set: the link is made afterwards,
+ * on the event's page, and years of verified results were already sitting
+ * there when it was. So a runner who identified a race the catalog knew only
+ * one edition of contributed nothing, and the edition they ran stayed missing.
+ * Measured on a real instance: thirteen editions across nine races, and the
+ * reports collection empty.
+ *
+ * One report per year, keeping the earliest day, because the document id holds
+ * one report per race, year and runner, and the earliest is what the policy
+ * takes when several are reported for one year anyway.
+ */
+export async function reportEditionDates(
+  uid: string,
+  catalogRaceId: string,
+  dates: readonly Date[],
+): Promise<number> {
+  const earliest = new Map<number, string>()
+  for (const date of dates) {
+    const day = toIsoDay(date)
+    const year = Number(day.slice(0, 4))
+    const held = earliest.get(year)
+    if (!held || day < held) earliest.set(year, day)
+  }
+
+  for (const [year, raceDate] of earliest) {
+    await write(catalogRaceId, year, uid, { raceDate })
+  }
+  return earliest.size
+}
+
+/**
  * Tells the catalog what entering this edition cost.
  *
  * From an entry the runner marked `registered`, which is them saying they got

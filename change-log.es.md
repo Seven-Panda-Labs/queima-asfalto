@@ -6,6 +6,10 @@
 
 ## [1.44.0] - 2026-09-10
 
+### Añadido
+
+- **Vincular una carrera al catálogo cuenta lo que ya corriste:** las ediciones que corriste con resultado verificado ya llegan al catálogo, y no solo las próximas.
+
 ### Cambiado
 
 - **La zona horaria se elige de una lista:** por región y con la hora de cada una, en vez de escribir el nombre IANA a mano.

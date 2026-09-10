@@ -6,6 +6,10 @@
 
 ## [1.44.0] - 2026-09-10
 
+### Ajouté
+
+- **Relier une course au catalogue rapporte ce que tu as déjà couru :** les éditions courues avec un résultat vérifié arrivent maintenant au catalogue, pas seulement celles à venir.
+
 ### Modifié
 
 - **Le fuseau horaire se choisit dans une liste :** par région et avec l'heure de chacun, au lieu de taper le nom IANA.
