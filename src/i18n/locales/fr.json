@@ -1238,7 +1238,12 @@
     "catalogNothingStale": "Rien en attente. Chaque course du catalogue a une date devant elle.",
     "catalogSearchTitle": "Chercher dans le catalogue",
     "catalogSearchLabel": "Chercher par nom",
-    "catalogSearchEmpty": "Rien avec ce mot. Essaie un autre mot du nom, ou la ville."
+    "catalogSearchEmpty": "Rien avec ce mot. Essaie un autre mot du nom, ou la ville.",
+    "catalogJoin": "Fusionner avec une autre",
+    "catalogJoinBanner": "Fusion de « {{name}} ». Cherche et choisis la course qui reste.",
+    "catalogJoinHere": "C'est celle-ci qui reste",
+    "catalogJoinCopy": "Cette course est déjà une copie de {{name}}. Choisis l'originale.",
+    "catalogJoined": "« {{drop}} » pointe désormais vers « {{keep}} »."
   },
   "funnel": {
     "groups": {

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.48.0] - 2026-09-10
+
+### Added
+
+- **Join two catalog races by hand:** in the admin area, pick the repeated one, search for the one that stays, and join them. Before, only the duplicates queue could merge races, and some names no rule can compare.
+
+---
+
 ## [1.47.0] - 2026-09-10
 
 ### Fixed

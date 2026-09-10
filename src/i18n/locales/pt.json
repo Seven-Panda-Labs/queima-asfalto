@@ -1238,7 +1238,12 @@
     "catalogNothingStale": "Nada à espera. Todas as provas do catálogo têm uma data à frente.",
     "catalogSearchTitle": "Procurar no catálogo",
     "catalogSearchLabel": "Procurar pelo nome",
-    "catalogSearchEmpty": "Nada com essa palavra. Tenta outra palavra do nome, ou a terra."
+    "catalogSearchEmpty": "Nada com essa palavra. Tenta outra palavra do nome, ou a terra.",
+    "catalogJoin": "Juntar a outra",
+    "catalogJoinBanner": "A juntar «{{name}}». Procura e escolhe a prova que fica.",
+    "catalogJoinHere": "Fica esta",
+    "catalogJoinCopy": "Essa prova já é uma cópia de {{name}}. Escolhe a original.",
+    "catalogJoined": "«{{drop}}» passa a apontar para «{{keep}}»."
   },
   "funnel": {
     "groups": {

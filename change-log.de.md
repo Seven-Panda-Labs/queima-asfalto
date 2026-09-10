@@ -4,6 +4,14 @@
 
 ---
 
+## [1.48.0] - 2026-09-10
+
+### Hinzugefügt
+
+- **Zwei Katalogrennen von Hand zusammenlegen:** in der Verwaltung das doppelte auswählen, das bleibende suchen, zusammenlegen. Vorher legte nur die Duplikate-Liste Rennen zusammen, und manche Namen kann keine Regel vergleichen.
+
+---
+
 ## [1.47.0] - 2026-09-10
 
 ### Behoben
