@@ -1453,5 +1453,10 @@
     "countryError": "Elige el país de la lista.",
     "proposeSubmit": "Proponer al catálogo",
     "proposed": "Propuesta enviada, no hace falta nada más. La carrera entra en el catálogo en la actualización de mañana por la mañana, o queda vinculada a la que ya esté con otro nombre."
+  },
+  "catalogResults": {
+    "offer": "El catálogo tiene la página de resultados de {{year}} de esta carrera.",
+    "use": "Usar este enlace",
+    "error": "No se pudo usar este enlace."
   }
 }

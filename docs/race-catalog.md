@@ -161,7 +161,9 @@ The **fee** takes the same path, written when an entry becomes `registered`: tha
 
 The **results page** travels with the day, from the same verified result, through `shareableResultsUrl`. That function is the privacy boundary and it is a denylist: a query parameter that names a person is dropped, a path that is one person's result is refused outright, and everything else, the event id, the category, the language, is what makes the link work. A denylist because a new timing platform's parameter cannot be known in advance, and the cost of guessing wrong on an allowlist is a link that works for nobody. `keepRunnerFacts` carries it across a harvest, since a fresh listing has no results page to replace it with.
 
-What is **not** built: the entry gates, which will need a person, and showing a runner the results page the catalog holds. The field is on the edition and an operator can read and correct it; offering it on an event whose own link is missing is the next step. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
+The results page also comes **back**: on an event with no link of its own, the result editor offers the one the catalog holds for that year, and applying it is the runner's click. That closes the loop the contribution exists for, since a link only one person can see is worth nothing, and it is what unlocks the automatic lookup for the next runner instead of making them find the timing company's page again.
+
+What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
 ### Reviewing an entry
 

@@ -1453,5 +1453,10 @@
     "countryError": "Choisis le pays dans la liste.",
     "proposeSubmit": "Proposer au catalogue",
     "proposed": "Proposition envoyée, rien d'autre à faire. La course entre au catalogue à la mise à jour de demain matin, ou sera liée à celle qui y est déjà sous un autre nom."
+  },
+  "catalogResults": {
+    "offer": "Le catalogue a la page de résultats {{year}} de cette course.",
+    "use": "Utiliser ce lien",
+    "error": "Impossible d'utiliser ce lien."
   }
 }

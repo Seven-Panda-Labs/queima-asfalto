@@ -1453,5 +1453,10 @@
     "countryError": "Escolhe o país da lista.",
     "proposeSubmit": "Propor ao catálogo",
     "proposed": "Proposta enviada, não é preciso fazer mais nada. A prova entra no catálogo na actualização de amanhã de manhã, ou fica ligada à que já lá estiver com outro nome."
+  },
+  "catalogResults": {
+    "offer": "O catálogo tem a página de resultados de {{year}} desta prova.",
+    "use": "Usar este link",
+    "error": "Não foi possível usar este link."
   }
 }

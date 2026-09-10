@@ -1453,5 +1453,10 @@
     "countryError": "Pick the country from the list.",
     "proposeSubmit": "Propose to the catalog",
     "proposed": "Proposal sent, nothing else to do. The race enters the catalog in tomorrow morning\\u2019s update, or gets linked to the one already there under another name."
+  },
+  "catalogResults": {
+    "offer": "The catalog has this race's {{year}} results page.",
+    "use": "Use this link",
+    "error": "Could not use this link."
   }
 }
