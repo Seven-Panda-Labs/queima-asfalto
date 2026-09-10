@@ -1238,7 +1238,12 @@
     "catalogNothingStale": "Nothing waiting. Every race in the catalog has a date ahead of it.",
     "catalogSearchTitle": "Search the catalog",
     "catalogSearchLabel": "Search by name",
-    "catalogSearchEmpty": "Nothing with that word. Try another word from the name, or the town."
+    "catalogSearchEmpty": "Nothing with that word. Try another word from the name, or the town.",
+    "catalogJoin": "Join to another",
+    "catalogJoinBanner": "Joining \"{{name}}\". Search and pick the race that stays.",
+    "catalogJoinHere": "This one stays",
+    "catalogJoinCopy": "That race is already a copy of {{name}}. Pick the original.",
+    "catalogJoined": "\"{{drop}}\" now points at \"{{keep}}\"."
   },
   "funnel": {
     "groups": {

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.48.0] - 2026-09-10
+
+### Adicionado
+
+- **Juntar duas provas do catálogo à mão:** na administração, escolhes a repetida, procuras a que fica e juntas. Antes só a fila de duplicados juntava provas, e há nomes que nenhuma regra consegue comparar.
+
+---
+
 ## [1.47.0] - 2026-09-10
 
 ### Corrigido

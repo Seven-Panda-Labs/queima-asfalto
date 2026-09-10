@@ -1238,7 +1238,12 @@
     "catalogNothingStale": "Nichts wartet. Jedes Rennen im Katalog hat ein Datum vor sich.",
     "catalogSearchTitle": "Im Katalog suchen",
     "catalogSearchLabel": "Nach Namen suchen",
-    "catalogSearchEmpty": "Nichts mit diesem Wort. Versuche ein anderes Wort aus dem Namen, oder den Ort."
+    "catalogSearchEmpty": "Nichts mit diesem Wort. Versuche ein anderes Wort aus dem Namen, oder den Ort.",
+    "catalogJoin": "Mit einem anderen zusammenlegen",
+    "catalogJoinBanner": "„{{name}}“ wird zusammengelegt. Suche das Rennen, das bleibt.",
+    "catalogJoinHere": "Dieses bleibt",
+    "catalogJoinCopy": "Dieses Rennen ist schon eine Kopie von {{name}}. Wähle das Original.",
+    "catalogJoined": "„{{drop}}“ zeigt jetzt auf „{{keep}}“."
   },
   "funnel": {
     "groups": {

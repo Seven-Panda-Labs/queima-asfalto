@@ -1238,7 +1238,12 @@
     "catalogNothingStale": "Nada en espera. Todas las carreras del catálogo tienen una fecha por delante.",
     "catalogSearchTitle": "Buscar en el catálogo",
     "catalogSearchLabel": "Buscar por nombre",
-    "catalogSearchEmpty": "Nada con esa palabra. Prueba otra palabra del nombre, o el pueblo."
+    "catalogSearchEmpty": "Nada con esa palabra. Prueba otra palabra del nombre, o el pueblo.",
+    "catalogJoin": "Unir a otra",
+    "catalogJoinBanner": "Uniendo «{{name}}». Busca y elige la carrera que se queda.",
+    "catalogJoinHere": "Se queda esta",
+    "catalogJoinCopy": "Esa carrera ya es una copia de {{name}}. Elige la original.",
+    "catalogJoined": "«{{drop}}» ahora apunta a «{{keep}}»."
   },
   "funnel": {
     "groups": {

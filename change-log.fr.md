@@ -4,6 +4,14 @@
 
 ---
 
+## [1.48.0] - 2026-09-10
+
+### Ajouté
+
+- **Fusionner deux courses du catalogue à la main :** dans l'administration, choisis la course en double, cherche celle qui reste, et fusionne. Avant, seule la file des doublons fusionnait des courses, et certains noms sont incomparables pour n'importe quelle règle.
+
+---
+
 ## [1.47.0] - 2026-09-10
 
 ### Corrigé

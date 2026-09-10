@@ -1250,7 +1250,12 @@
     "catalogNothingStale": "لا شيء في الانتظار. كل سباق في الفهرس له تاريخ أمامه.",
     "catalogSearchTitle": "البحث في الفهرس",
     "catalogSearchLabel": "ابحث بالاسم",
-    "catalogSearchEmpty": "لا شيء بهذه الكلمة. جرّب كلمة أخرى من الاسم، أو البلدة."
+    "catalogSearchEmpty": "لا شيء بهذه الكلمة. جرّب كلمة أخرى من الاسم، أو البلدة.",
+    "catalogJoin": "دمج مع سباق آخر",
+    "catalogJoinBanner": "دمج «{{name}}». ابحث واختر السباق الذي يبقى.",
+    "catalogJoinHere": "هذا يبقى",
+    "catalogJoinCopy": "هذا السباق نسخة من {{name}} أصلا. اختر الأصل.",
+    "catalogJoined": "«{{drop}}» يشير الآن إلى «{{keep}}»."
   },
   "funnel": {
     "groups": {

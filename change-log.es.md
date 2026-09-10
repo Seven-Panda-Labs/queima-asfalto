@@ -4,6 +4,14 @@
 
 ---
 
+## [1.48.0] - 2026-09-10
+
+### Añadido
+
+- **Unir dos carreras del catálogo a mano:** en la administración, eliges la repetida, buscas la que se queda y las unes. Antes solo la cola de duplicados unía carreras, y hay nombres que ninguna regla puede comparar.
+
+---
+
 ## [1.47.0] - 2026-09-10
 
 ### Corregido

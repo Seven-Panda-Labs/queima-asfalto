@@ -6,6 +6,7 @@ import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { useAuth } from '../../contexts/AuthContext'
 import {
   listStaleForAdmin,
+  mergeCatalogRaces,
   searchCatalogForAdmin,
   unmergeCatalogRace,
 } from '../../services/adminRaceCatalog'
@@ -41,6 +42,17 @@ export function AdminCatalog() {
   const [term, setTerm] = useState('')
   const [found, setFound] = useState<RaceCatalogEntry[] | null>(null)
   const [searching, setSearching] = useState(false)
+  /**
+   * The entry an operator has picked as the repeated one.
+   *
+   * Two clicks and not one, because the two entries are hardly ever in the
+   * same list: "S 25 Berlin" is found by the word Olympiastadion and "S 25
+   * Berlin 2027" by the year, so the pick has to survive the next search. Until
+   * now nothing merged two entries by hand at all: the queue was the only way,
+   * and it cannot see a pair whose name has no word left once the town is out.
+   */
+  const [joining, setJoining] = useState<RaceCatalogEntry | null>(null)
+  const [joined, setJoined] = useState<string | null>(null)
 
   const load = useCallback(
     async (after?: string) => {
@@ -84,6 +96,29 @@ export function AdminCatalog() {
 
   const more = cursors[cursors.length - 1]
 
+  /** Points the picked entry at this one, which is the survivor. */
+  const join = async (survivor: RaceCatalogEntry) => {
+    const dropped = joining
+    if (!dropped || !user) return
+    // A copy of a copy answers no question: the chain has to end somewhere.
+    if (survivor.duplicateOfCatalogRaceId) {
+      setError(t('admin.catalogJoinCopy', { name: survivor.duplicateOfCatalogRaceId }))
+      return
+    }
+    setError(null)
+    try {
+      await mergeCatalogRaces(survivor.id, dropped.id, user.uid)
+      setJoining(null)
+      setJoined(t('admin.catalogJoined', { drop: dropped.name, keep: survivor.name }))
+      if (found) void search()
+      setStale([])
+      setCursors([])
+      await load()
+    } catch {
+      setError(t('admin.duplicatesError'))
+    }
+  }
+
   /** One row, shared by the queue and the search: the same entry, two ways in. */
   const row = (race: RaceCatalogEntry) => (
     <li key={race.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
@@ -105,6 +140,27 @@ export function AdminCatalog() {
       <span className="ml-auto text-xs tabular-nums text-muted">
         {nextEdition(race) ?? t('admin.catalogNoEdition')}
       </span>
+      {user && !race.duplicateOfCatalogRaceId && !joining ? (
+        <button
+          type="button"
+          onClick={() => {
+            setJoined(null)
+            setJoining(race)
+          }}
+          className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
+        >
+          {t('admin.catalogJoin')}
+        </button>
+      ) : null}
+      {user && joining && joining.id !== race.id ? (
+        <button
+          type="button"
+          onClick={() => void join(race)}
+          className="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10"
+        >
+          {t('admin.catalogJoinHere')}
+        </button>
+      ) : null}
       {race.duplicateOfCatalogRaceId && user ? (
         <button
           type="button"
@@ -138,6 +194,22 @@ export function AdminCatalog() {
       </div>
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
+      {joined ? <p className="mt-4 text-sm text-primary">{joined}</p> : null}
+
+      {joining ? (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-primary bg-primary/5 px-4 py-3">
+          <p className="text-sm text-foreground">
+            {t('admin.catalogJoinBanner', { name: joining.name })}
+          </p>
+          <button
+            type="button"
+            onClick={() => setJoining(null)}
+            className="ml-auto text-xs font-semibold text-muted hover:text-foreground"
+          >
+            {t('common.cancel')}
+          </button>
+        </div>
+      ) : null}
 
       <CatalogProposals />
 
