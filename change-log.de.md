@@ -6,6 +6,10 @@
 
 ## [1.44.0] - 2026-09-10
 
+### Hinzugefügt
+
+- **Ein Rennen zu verknüpfen meldet, was du schon gelaufen bist:** die Ausgaben, die du mit geprüftem Ergebnis gelaufen bist, kommen jetzt in den Katalog, nicht nur die kommenden.
+
 ### Geändert
 
 - **Die Zeitzone kommt aus einer Liste:** nach Region und mit der jeweiligen Uhrzeit, statt den IANA-Namen zu tippen.

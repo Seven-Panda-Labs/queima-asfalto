@@ -1,5 +1,6 @@
 import type { Event } from '../types/Event'
-import { updateEvent } from './events'
+import { reportEditionDates } from './editionReports'
+import { listEvents, updateEvent } from './events'
 import { findOrCreateRaceId, updateRace } from './races'
 
 /**
@@ -38,4 +39,38 @@ export async function identifyRaceInCatalog(
 
   await updateRace(raceId, { catalogRaceId })
   if (!event.raceId) await updateEvent(event.id, { raceId })
+
+  await reportPastEditions(userId, raceId, catalogRaceId)
+}
+
+/**
+ * What this runner's verified results already say about the race they just
+ * identified.
+ *
+ * The link is not only about the next edition. Somebody who has run a race
+ * five times has five days the catalog does not hold, and the harvest never
+ * will: it only ever writes the edition still ahead. A year the catalog never
+ * had is taken from a single runner, so this fills the history in on the next
+ * pass.
+ *
+ * Only verified results, which is the same floor as saving one: the
+ * organiser's own results page listed somebody finishing that day.
+ *
+ * Best effort. It is a side effect of the link, and the link is what the
+ * runner asked for.
+ */
+async function reportPastEditions(
+  userId: string,
+  raceId: string,
+  catalogRaceId: string,
+): Promise<void> {
+  try {
+    const events = await listEvents(userId)
+    const days = events
+      .filter((event) => event.raceId === raceId && event.resultsVerified === true)
+      .map((event) => event.date)
+    if (days.length > 0) await reportEditionDates(userId, catalogRaceId, days)
+  } catch {
+    // Nothing to tell the runner: the link they asked for is already written.
+  }
 }

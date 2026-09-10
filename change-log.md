@@ -6,6 +6,10 @@
 
 ## [1.44.0] - 2026-09-10
 
+### Adicionado
+
+- **Ligar uma prova ao catálogo conta o que já correste:** as edições que corriste com resultado verificado passam a entrar no catálogo, e não só as próximas.
+
 ### Alterado
 
 - **O fuso horário escolhe-se de uma lista:** por região e com a hora de cada uma, em vez de escrever o nome IANA à mão.
