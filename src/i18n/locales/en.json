@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "Remove"
+    "remove": "Remove",
+    "pickCountry": "Pick a country"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -1171,8 +1172,8 @@
     "catalogIdError": "Lowercase letters, numbers and hyphens only.",
     "catalogIdTaken": "A race with this identifier already exists.",
     "catalogCity": "City",
-    "catalogCountry": "Country (ISO, 2 letters)",
-    "catalogCountryError": "Two uppercase letters, like PT or DE.",
+    "catalogCountry": "Country",
+    "catalogCountryError": "Pick the country from the list.",
     "catalogEntryMethod": "How you get in",
     "catalogMonth": "Typical month",
     "catalogOfficialUrl": "Official URL",
@@ -1447,8 +1448,7 @@
     "proposeWhy": "It enters the catalog unreviewed, so other people can find it. All it needs is the town and the country, which the location does not separate.",
     "town": "Town",
     "country": "Country",
-    "countryHint": "Germany, Alemanha or DE",
-    "countryError": "We could not read that country. Write the name or the two letters.",
+    "countryError": "Pick the country from the list.",
     "proposeSubmit": "Propose to the catalog",
     "proposed": "Proposal sent, nothing else to do. The race enters the catalog in tomorrow morning\\u2019s update, or gets linked to the one already there under another name."
   }

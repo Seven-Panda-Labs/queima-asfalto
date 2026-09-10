@@ -13,6 +13,7 @@
 - **Propose a race that is missing:** if the race you ran is not in the catalog, you can propose it from the event's page. It enters unreviewed for other people to find, and if it is already there under another name it gets linked to that one instead of creating a second.
 - **Proposing a race says what happens next:** the search closes and the message says that nothing else is needed and when the race appears. Whoever maintains the catalog now also sees the proposals waiting, instead of them being invisible until the next update.
 - **Administering the catalog:** the panel no longer downloads all five thousand races every time it opens. It shows the work, the races waiting for a new season, fifty at a time, and searching for any race at all is a separate search, only when it is needed.
+- **The country comes from a list:** when proposing a race, the country is now a list of names in your own language instead of a field asking for the two-letter code. A race can no longer end up filed under the wrong country.
 
 ---
 

@@ -13,6 +13,7 @@
 - **Ein fehlendes Rennen vorschlagen:** wenn das Rennen, das du läufst, nicht im Katalog ist, kannst du es auf der Event-Seite vorschlagen. Es kommt ungeprüft hinein, damit andere es finden, und wenn es schon unter anderem Namen dort ist, wird es damit verknüpft statt ein zweites anzulegen.
 - **Ein Rennen vorschlagen sagt, was folgt:** die Suche schließt sich und die Meldung sagt, dass nichts weiter nötig ist und wann das Rennen erscheint. Wer den Katalog pflegt, sieht jetzt auch die wartenden Vorschläge, statt dass sie bis zur nächsten Aktualisierung unsichtbar bleiben.
 - **Den Katalog verwalten:** das Panel lädt nicht mehr bei jedem Öffnen alle fünftausend Rennen. Es zeigt die Arbeit, die Rennen, die auf eine neue Saison warten, fünfzig auf einmal, und ein beliebiges Rennen zu suchen ist eine eigene Suche, nur wenn sie gebraucht wird.
+- **Das Land kommt aus einer Liste:** beim Vorschlagen eines Laufs ist das Land jetzt eine Liste mit den Namen in deiner Sprache, statt eines Feldes, das den zweibuchstabigen Code verlangt. Ein Lauf kann nicht mehr im falschen Land landen.
 
 ---
 

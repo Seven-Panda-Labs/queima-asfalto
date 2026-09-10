@@ -13,6 +13,7 @@
 - **Proponer una carrera que falta:** si la carrera que corres no está en el catálogo, puedes proponerla en la página del evento. Entra sin verificar para que otros la encuentren, y si ya está con otro nombre queda vinculada a esa en vez de crear una segunda.
 - **Proponer una carrera dice qué sigue:** la búsqueda se cierra y el mensaje dice que ya no hace falta nada y cuándo aparece la carrera. Quien mantiene el catálogo ve además las propuestas en espera, en vez de quedar invisibles hasta la siguiente actualización.
 - **Administrar el catálogo:** el panel ya no descarga las cinco mil carreras cada vez que se abre. Muestra el trabajo, las carreras que esperan una temporada nueva, cincuenta a la vez, y buscar cualquier carrera es una búsqueda aparte, solo cuando hace falta.
+- **El país se elige de una lista:** al proponer una carrera, el país ya es una lista con los nombres en tu idioma, en vez de un campo donde había que escribir el código de dos letras. Una carrera ya no puede quedar archivada en el país equivocado.
 
 ---
 

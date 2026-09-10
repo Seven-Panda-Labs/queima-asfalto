@@ -38,7 +38,8 @@
     "languageDe": "Deutsch",
     "languageFr": "Français",
     "languageAr": "العربية",
-    "remove": "Quitar"
+    "remove": "Quitar",
+    "pickCountry": "Elige el país"
   },
   "nav": {
     "dashboard": "Inicio",
@@ -1171,8 +1172,8 @@
     "catalogIdError": "Solo minúsculas, números y guiones.",
     "catalogIdTaken": "Ya existe una carrera con este identificador.",
     "catalogCity": "Ciudad",
-    "catalogCountry": "País (ISO, 2 letras)",
-    "catalogCountryError": "Dos letras mayúsculas, como ES o DE.",
+    "catalogCountry": "País",
+    "catalogCountryError": "Elige el país de la lista.",
     "catalogEntryMethod": "Forma de inscripción",
     "catalogMonth": "Mes típico",
     "catalogOfficialUrl": "URL oficial",
@@ -1447,8 +1448,7 @@
     "proposeWhy": "Entra en el catálogo sin verificar, para que otros la encuentren. Solo falta el pueblo y el país, que el lugar no separa.",
     "town": "Pueblo",
     "country": "País",
-    "countryHint": "Alemania, Germany o DE",
-    "countryError": "No pudimos leer ese país. Escribe el nombre o las dos letras.",
+    "countryError": "Elige el país de la lista.",
     "proposeSubmit": "Proponer al catálogo",
     "proposed": "Propuesta enviada, no hace falta nada más. La carrera entra en el catálogo en la actualización de mañana por la mañana, o queda vinculada a la que ya esté con otro nombre."
   }
