@@ -9,6 +9,7 @@
 ### Corrigido
 
 - **Uma data mal escrita já não deixa a página em branco:** uma prova do catálogo com uma data impossível fazia a página do evento falhar por inteiro. Agora aparece um traço, e a administração passa a usar um selector de data que não aceita datas inválidas.
+- **Responder "provas diferentes" tira o par da lista:** a resposta ficava guardada mas o par continuava no painel até ao dia seguinte, como se o botão não fizesse nada.
 
 ---
 

@@ -9,6 +9,7 @@
 ### Fixed
 
 - **A malformed date no longer blanks the page:** a catalog race with an impossible date took the whole event page down. Now it shows a dash, and the admin form uses a date picker that will not take an invalid one.
+- **Answering "different races" takes the pair off the list:** the answer was saved but the pair stayed in the panel until the next day, as though the button did nothing.
 
 ---
 

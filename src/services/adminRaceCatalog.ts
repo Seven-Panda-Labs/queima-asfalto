@@ -18,6 +18,7 @@ import {
   searchTokens,
   type RaceCatalogEntry,
 } from '../../shared/raceCatalog'
+import { pairAlreadyAnswered } from '../../shared/eventDiscovery/duplicates'
 import { db } from './firebase'
 
 /**
@@ -121,8 +122,10 @@ export async function loadDuplicateQueue(): Promise<[RaceCatalogEntry, RaceCatal
   for (const pair of pairs) {
     const keep = entries.get(pair.keep)
     const drop = entries.get(pair.drop)
-    // A pair whose entry has since been merged or retired is answered.
-    if (!keep || !drop || keep.retired || drop.retired || drop.duplicateOfCatalogRaceId) continue
+    if (!keep || !drop) continue
+    // The queue is a day old, and an answer is an answer: merged either way
+    // round, retired, or kept apart on purpose.
+    if (pairAlreadyAnswered(keep, drop)) continue
     found.push([keep, drop])
   }
   return found

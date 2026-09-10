@@ -9,6 +9,7 @@
 ### Behoben
 
 - **Ein fehlerhaftes Datum macht die Seite nicht mehr weiß:** ein Katalogrennen mit einem unmöglichen Datum riss die ganze Event-Seite mit. Jetzt steht dort ein Strich, und die Verwaltung nutzt eine Datumsauswahl, die kein ungültiges Datum annimmt.
+- **"Verschiedene Rennen" nimmt das Paar von der Liste:** die Antwort wurde gespeichert, das Paar blieb aber bis zum nächsten Tag im Panel, als täte der Knopf nichts.
 
 ---
 

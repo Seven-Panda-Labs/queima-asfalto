@@ -3,6 +3,7 @@ import type { RaceCatalogEntry } from '../raceCatalog/types'
 import {
   catalogDuplicateCandidates,
   findCatalogDuplicate,
+  pairAlreadyAnswered,
   sameAnnualRace,
   survivorFirst,
 } from './duplicates'
@@ -659,5 +660,27 @@ describe('a town named by what it is near', () => {
     const short = entry({ id: 'de-freiburg-lauf', name: 'Stadtlauf', city: 'Freiburg' })
 
     expect(findCatalogDuplicate(long, [short])?.id).toBe('de-freiburg-lauf')
+  })
+})
+
+describe('a pair that has already been answered', () => {
+  const left = entry({ id: 'de-berlin-one', name: 'Berliner Neujahrslauf' })
+  const right = entry({ id: 'de-berlin-two', name: 'Neujahrslauf Berlin' })
+
+  it('is not a question any more, whichever way it was merged', () => {
+    expect(pairAlreadyAnswered({ ...left, duplicateOfCatalogRaceId: right.id }, right)).toBe(true)
+    expect(pairAlreadyAnswered(left, { ...right, duplicateOfCatalogRaceId: left.id })).toBe(true)
+  })
+
+  it('counts an operator saying they are two races', () => {
+    // The stored queue is a day old, so without this the row stayed on screen
+    // and the button read as doing nothing.
+    expect(pairAlreadyAnswered({ ...left, notDuplicateOf: [right.id] }, right)).toBe(true)
+    expect(pairAlreadyAnswered(left, { ...right, notDuplicateOf: [left.id] })).toBe(true)
+  })
+
+  it('counts a retired entry, and leaves a live pair alone', () => {
+    expect(pairAlreadyAnswered({ ...left, retired: true }, right)).toBe(true)
+    expect(pairAlreadyAnswered(left, right)).toBe(false)
   })
 })

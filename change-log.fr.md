@@ -9,6 +9,7 @@
 ### Corrigé
 
 - **Une date mal écrite ne vide plus la page :** une course du catalogue avec une date impossible faisait tomber toute la page de l'événement. Un tiret s'affiche désormais, et l'administration utilise un sélecteur de date qui refuse une date invalide.
+- **Répondre \u00ab courses différentes \u00bb retire la paire de la liste :** la réponse était enregistrée mais la paire restait dans le panneau jusqu'au lendemain, comme si le bouton ne faisait rien.
 
 ---
 

@@ -292,6 +292,28 @@ function keptApart(left: RaceCatalogEntry, right: RaceCatalogEntry): boolean {
 }
 
 /**
+ * Whether this pair has already been answered, either way.
+ *
+ * The queue an operator works through is a document the daily pass writes, so
+ * it is up to a day old, and it kept asking about pairs that had just been
+ * answered: pressing "different races" wrote the answer and the row stayed on
+ * screen, which reads as a button that does nothing. Merged counts too, and in
+ * either direction, since the operator picks which name survives.
+ */
+export function pairAlreadyAnswered(
+  left: RaceCatalogEntry,
+  right: RaceCatalogEntry,
+): boolean {
+  return Boolean(
+    left.retired ||
+      right.retired ||
+      left.duplicateOfCatalogRaceId ||
+      right.duplicateOfCatalogRaceId ||
+      keptApart(left, right),
+  )
+}
+
+/**
  * The distances do not rule the pair out.
  *
  * An overlap where both sides publish one, and a free pass where either side
