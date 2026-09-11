@@ -1,4 +1,5 @@
 export { RACE_CATALOG_COLLECTION } from './collection.js'
+export { absorb } from './absorb.js'
 export {
   CATALOG_PRODUCERS,
   CATALOG_REVIEW_STATES,

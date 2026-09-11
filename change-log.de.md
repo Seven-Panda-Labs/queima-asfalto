@@ -4,6 +4,14 @@
 
 ---
 
+## [1.49.0] - 2026-09-11
+
+### Behoben
+
+- **Zwei Rennen zusammenzulegen behält jetzt, was beide wussten:** das bleibende Rennen übernimmt Ausgaben, Termine, Gebühren, Ergebnislinks, offizielle Seite und Distanzen des anderen. Vorher zeigte es nur darauf, und die Informationen verschwanden aus dem Blick.
+
+---
+
 ## [1.48.0] - 2026-09-10
 
 ### Hinzugefügt

@@ -12,6 +12,7 @@ import {
   where,
 } from 'firebase/firestore'
 import {
+  absorb,
   nextRaceDateOf,
   RACE_CATALOG_COLLECTION,
   rankByName,
@@ -171,15 +172,65 @@ export async function catalogRaceIdExists(id: string): Promise<boolean> {
  * keeps every field it had, because `races.catalogRaceId` may already point at
  * it and because being wrong about this has to be undoable.
  */
+/**
+ * Points one entry at another and moves what it knew across.
+ *
+ * A merge used to be the pointer alone, and the information stayed where
+ * nobody could reach it: on one instance four S25 entries were linked into one
+ * that held a single 2023 edition, while three later editions, two results
+ * pages, a fee and the official site sat inside the copies. The harvest has
+ * always folded what it reads into the entry it recognises, and this is the
+ * same act for a merge a person makes.
+ *
+ * Three writes, and each one is a thing that was wrong:
+ *
+ * 1. The survivor, holding what both entries knew.
+ * 2. The entry that goes, pointed at the survivor.
+ * 3. Anything that pointed at that entry, re-pointed at the survivor. A copy
+ *    of a copy is how the S25 mess was built: the rich entry was merged into a
+ *    new one, and the two that already pointed at it were left hanging off a
+ *    copy.
+ */
 export async function mergeCatalogRaces(
   keepId: string,
   dropId: string,
   adminUid: string,
 ): Promise<void> {
+  const updatedAt = new Date().toISOString()
+  const [keep, drop] = await Promise.all([
+    getCatalogRaceForAdmin(keepId),
+    getCatalogRaceForAdmin(dropId),
+  ])
+
+  if (keep && drop) {
+    const merged = absorb(keep, drop, updatedAt.slice(0, 10))
+    await setDoc(doc(db, RACE_CATALOG_COLLECTION, keepId), {
+      ...merged,
+      updatedAt,
+      updatedBy: adminUid,
+    })
+  }
+
   await setDoc(
     doc(db, RACE_CATALOG_COLLECTION, dropId),
-    { duplicateOfCatalogRaceId: keepId, updatedAt: new Date().toISOString(), updatedBy: adminUid },
+    { duplicateOfCatalogRaceId: keepId, updatedAt, updatedBy: adminUid },
     { merge: true },
+  )
+
+  // The copies of what just became a copy, so the chain stays one deep.
+  const hanging = await getDocs(
+    query(collection(db, RACE_CATALOG_COLLECTION), where('duplicateOfCatalogRaceId', '==', dropId)),
+  )
+  await Promise.all(
+    hanging.docs
+      .filter((document) => document.id !== keepId)
+      .map((document) =>
+        setDoc(
+          document.ref,
+          { duplicateOfCatalogRaceId: keepId, updatedAt, updatedBy: adminUid },
+          { merge: true },
+        ),
+      ),
   )
 }
 

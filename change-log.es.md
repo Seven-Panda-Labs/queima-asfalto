@@ -4,6 +4,14 @@
 
 ---
 
+## [1.49.0] - 2026-09-11
+
+### Corregido
+
+- **Unir dos carreras ahora conserva lo que ambas sabían:** la carrera que se queda recibe las ediciones, fechas, precios, enlaces de resultados, sitio oficial y distancias de la otra. Antes solo apuntaba, y la información desaparecía de la vista.
+
+---
+
 ## [1.48.0] - 2026-09-10
 
 ### Añadido

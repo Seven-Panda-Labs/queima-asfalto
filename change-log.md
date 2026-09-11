@@ -4,6 +4,14 @@
 
 ---
 
+## [1.49.0] - 2026-09-11
+
+### Corrigido
+
+- **Juntar duas provas passa a juntar o que ambas sabiam:** a prova que fica recebe as edições, as datas, os preços, os links de resultados, o site oficial e as distâncias da outra. Antes só ficava a apontar, e a informação desaparecia de vista.
+
+---
+
 ## [1.48.0] - 2026-09-10
 
 ### Adicionado

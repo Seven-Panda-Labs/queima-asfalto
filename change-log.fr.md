@@ -4,6 +4,14 @@
 
 ---
 
+## [1.49.0] - 2026-09-11
+
+### Corrigé
+
+- **Fusionner deux courses garde désormais ce que les deux savaient :** la course qui reste récupère les éditions, dates, tarifs, liens de résultats, site officiel et distances de l'autre. Avant, elle ne faisait que pointer, et l'information disparaissait de la vue.
+
+---
+
 ## [1.48.0] - 2026-09-10
 
 ### Ajouté
