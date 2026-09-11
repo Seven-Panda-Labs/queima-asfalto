@@ -122,6 +122,33 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
   })
 })
 
+describe('a row that is a copy', () => {
+  it('reads as the quieter of the two, so the answer is the one that is not', async () => {
+    // Four S25 rows side by side, one of them the catalog's answer and three
+    // of them not, told apart only by reading the button on the right.
+    listStaleForAdmin.mockResolvedValue({
+      races: [
+        race({ id: 'de-berlin-s25-berlin', name: 'S25 Berlin' }),
+        race({
+          id: 'de-berlin-s-25-berlin',
+          name: 'S 25 Berlin 2027',
+          duplicateOfCatalogRaceId: 'de-berlin-s25-berlin',
+        }),
+      ],
+      nextCursor: undefined,
+    })
+    render(<AdminCatalog />)
+
+    await screen.findByText('S 25 Berlin 2027')
+    const rows = screen.getAllByRole('listitem')
+    const visible = rows.find((row) => row.textContent?.includes('S25 Berlin'))!
+    const copy = rows.find((row) => row.textContent?.includes('S 25 Berlin 2027'))!
+
+    expect(copy).toHaveAttribute('data-merged', 'true')
+    expect(visible).not.toHaveAttribute('data-merged')
+  })
+})
+
 describe('joining two entries by hand', () => {
   /** The real case: one entry found by a word, the other by the year. */
   const survivor = race({ id: 'de-berlin-olympiastadion-s-25-berlin', name: 'S 25 Berlin' })

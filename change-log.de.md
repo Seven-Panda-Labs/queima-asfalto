@@ -4,6 +4,14 @@
 
 ---
 
+## [1.50.0] - 2026-09-11
+
+### Geändert
+
+- **Zusammengelegte Rennen sind auf einen Blick zu unterscheiden:** in der Verwaltung bekommt ein Rennen, das auf ein anderes zeigt, einen leiseren Namen und Hintergrund, damit es nicht mit dem verwechselt wird, das der Katalog zeigt.
+
+---
+
 ## [1.49.0] - 2026-09-11
 
 ### Behoben

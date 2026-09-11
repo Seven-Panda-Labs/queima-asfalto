@@ -4,6 +4,14 @@
 
 ---
 
+## [1.50.0] - 2026-09-11
+
+### Cambiado
+
+- **Las carreras unidas se distinguen a simple vista:** en la administración, una carrera que apunta a otra queda con el nombre y el fondo más discretos, para no confundirse con la que el catálogo muestra.
+
+---
+
 ## [1.49.0] - 2026-09-11
 
 ### Corregido

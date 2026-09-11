@@ -4,6 +4,14 @@
 
 ---
 
+## [1.50.0] - 2026-09-11
+
+### Modifié
+
+- **Les courses fusionnées se distinguent d'un coup d'œil :** dans l'administration, une course qui pointe vers une autre a un nom et un fond plus discrets, pour ne pas la confondre avec celle que le catalogue affiche.
+
+---
+
 ## [1.49.0] - 2026-09-11
 
 ### Corrigé
