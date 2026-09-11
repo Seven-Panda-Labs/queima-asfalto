@@ -4,6 +4,14 @@
 
 ---
 
+## [1.53.0] - 2026-09-11
+
+### Adicionado
+
+- **Dizer porque uma prova sai do catálogo:** acabou, não é corrida (triatlo, caminhada, bicicleta), ou não é sequer uma prova. A razão é sempre escolhida por uma pessoa, e o que não é corrida deixa de ser reescrito a cada colheita.
+
+---
+
 ## [1.52.0] - 2026-09-11
 
 ### Corrigido

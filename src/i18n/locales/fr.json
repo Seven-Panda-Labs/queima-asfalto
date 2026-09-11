@@ -1186,6 +1186,14 @@
     "catalogSourceError": "Dis d'où vient l'information.",
     "catalogReviewed": "Confirmée à la source officielle",
     "catalogRetired": "Hors circulation",
+    "catalogRetiredReason": "Pourquoi elle est dehors",
+    "catalogRetiredReasonHint": "Toujours le jugement d'une personne : un nom avec « walk » peut être une course avec une marche à côté.",
+    "catalogRetiredReasonError": "Dis pourquoi elle est hors du catalogue.",
+    "retiredReason": {
+      "over": "La course n'existe plus",
+      "other_sport": "Pas une course à pied (triathlon, marche, vélo)",
+      "not_a_race": "Pas une épreuve (salon, page de liste)"
+    },
     "catalogReviewHint": "Une entrée non confirmée peut suggérer, jamais affirmer : elle n'alimente aucun rappel d'échéance.",
     "catalogUnreviewedEditions": "Une entrée non confirmée ne peut pas porter d'éditions datées.",
     "catalogEditions": "Éditions",

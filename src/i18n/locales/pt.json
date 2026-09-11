@@ -1186,6 +1186,14 @@
     "catalogSourceError": "Diz de onde vem a informação.",
     "catalogReviewed": "Confirmada na fonte oficial",
     "catalogRetired": "Fora de circulação",
+    "catalogRetiredReason": "Porque está fora",
+    "catalogRetiredReasonHint": "Decide sempre uma pessoa: um nome com \"walk\" pode ser uma corrida com caminhada ao lado.",
+    "catalogRetiredReasonError": "Diz porque está fora de circulação.",
+    "retiredReason": {
+      "over": "A prova acabou",
+      "other_sport": "Não é corrida (triatlo, caminhada, bicicleta)",
+      "not_a_race": "Não é uma prova (expo, página de listagem)"
+    },
     "catalogReviewHint": "Uma entrada não confirmada pode sugerir, nunca afirmar: não alimenta lembretes de prazo.",
     "catalogUnreviewedEditions": "Uma entrada não confirmada não pode ter edições com datas.",
     "catalogEditions": "Edições",

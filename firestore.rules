@@ -552,7 +552,11 @@ service cloud.firestore {
           || request.resource.data.duplicateOfCatalogRaceId is string)
         && (!('notDuplicateOf' in request.resource.data)
           || (request.resource.data.notDuplicateOf is list
-            && request.resource.data.notDuplicateOf.size() <= 50));
+            && request.resource.data.notDuplicateOf.size() <= 50))
+        // Why an entry is out, which is one of three answers and never a
+        // free string: it is counted per source to tell a bad one apart.
+        && (!('retiredReason' in request.resource.data)
+          || request.resource.data.retiredReason in ['over', 'other_sport', 'not_a_race']);
       allow delete: if false;
     }
 

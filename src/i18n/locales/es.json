@@ -1186,6 +1186,14 @@
     "catalogSourceError": "Di de dónde viene la información.",
     "catalogReviewed": "Confirmada en la fuente oficial",
     "catalogRetired": "Fuera de circulación",
+    "catalogRetiredReason": "Por qué está fuera",
+    "catalogRetiredReasonHint": "Siempre lo decide una persona: un nombre con \"walk\" puede ser una carrera con marcha al lado.",
+    "catalogRetiredReasonError": "Di por qué está fuera del catálogo.",
+    "retiredReason": {
+      "over": "La carrera terminó",
+      "other_sport": "No es carrera (triatlón, marcha, bici)",
+      "not_a_race": "No es una prueba (expo, página de listado)"
+    },
     "catalogReviewHint": "Una entrada sin confirmar puede sugerir, nunca afirmar: no alimenta avisos de plazo.",
     "catalogUnreviewedEditions": "Una entrada sin confirmar no puede tener ediciones con fechas.",
     "catalogEditions": "Ediciones",

@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.52.0",
+  "version": "1.53.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -28,6 +28,7 @@
     "fix:catalog-days": "tsx scripts/fix-malformed-catalog-days.ts",
     "fold:catalog-copies": "tsx scripts/fold-catalog-copies.ts",
     "lift:catalog-timezones": "tsx scripts/lift-catalog-timezones.ts",
+    "set:retired-reason": "tsx scripts/set-retired-reason.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
     "scout:podium": "tsx scripts/podium-scout.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",

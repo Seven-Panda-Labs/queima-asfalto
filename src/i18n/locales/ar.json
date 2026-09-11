@@ -1198,6 +1198,14 @@
     "catalogSourceError": "اذكر مصدر المعلومة.",
     "catalogReviewed": "مؤكَّد من المصدر الرسمي",
     "catalogRetired": "خارج الخدمة",
+    "catalogRetiredReason": "لماذا هو خارج",
+    "catalogRetiredReasonHint": "القرار لشخص دائما: اسم فيه \"walk\" قد يكون سباقا بجانبه مشي.",
+    "catalogRetiredReasonError": "قل لماذا هو خارج الفهرس.",
+    "retiredReason": {
+      "over": "انتهى السباق",
+      "other_sport": "ليس سباق جري (ترايثلون، مشي، دراجة)",
+      "not_a_race": "ليس سباقا (معرض، صفحة قائمة)"
+    },
     "catalogReviewHint": "المدخل غير المؤكَّد يقترح ولا يؤكّد: لا يغذّي أي تذكير بمواعيد.",
     "catalogUnreviewedEditions": "المدخل غير المؤكَّد لا يحمل نسخا بتواريخ.",
     "catalogEditions": "النسخ",

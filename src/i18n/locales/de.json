@@ -1186,6 +1186,14 @@
     "catalogSourceError": "Sag, woher die Information kommt.",
     "catalogReviewed": "An der offiziellen Quelle bestätigt",
     "catalogRetired": "Außer Betrieb",
+    "catalogRetiredReason": "Warum draußen",
+    "catalogRetiredReasonHint": "Immer die Entscheidung eines Menschen: ein Name mit „walk“ kann ein Lauf mit Walking daneben sein.",
+    "catalogRetiredReasonError": "Sag, warum es draußen ist.",
+    "retiredReason": {
+      "over": "Das Rennen gibt es nicht mehr",
+      "other_sport": "Kein Lauf (Triathlon, Walking, Rad)",
+      "not_a_race": "Kein Wettkampf (Messe, Listenseite)"
+    },
     "catalogReviewHint": "Ein unbestätigter Eintrag darf vorschlagen, nie behaupten: er speist keine Fristerinnerungen.",
     "catalogUnreviewedEditions": "Ein unbestätigter Eintrag kann keine Ausgaben mit Datum tragen.",
     "catalogEditions": "Ausgaben",

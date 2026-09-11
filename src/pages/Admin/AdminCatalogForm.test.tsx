@@ -269,6 +269,46 @@ describe('AdminCatalogForm', () => {
     expect(screen.getByText(/escolhe primeiro o fuso da prova/)).toBeInTheDocument()
   })
 
+  it('asks why an entry is out, and refuses to save without it', async () => {
+    render(<AdminCatalogForm />)
+
+    fill('Nome', 'Triatlo de Lisboa')
+    fill('Cidade', 'Lisboa')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fill('Fonte', 'x')
+    fireEvent.click(screen.getByText('Maratona'))
+    fireEvent.click(screen.getByRole('checkbox', { name: /Fora de circulação/ }))
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() =>
+      expect(screen.getByText('Diz porque está fora de circulação.')).toBeInTheDocument(),
+    )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+
+    // A name is not evidence, so the reason is a person's answer.
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), {
+      target: { value: 'other_sport' },
+    })
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() => expect(saveCatalogRaceForAdmin).toHaveBeenCalled())
+    const [saved] = saveCatalogRaceForAdmin.mock.calls[0]! as unknown as [
+      { retired: boolean; retiredReason: string },
+    ]
+    expect(saved).toMatchObject({ retired: true, retiredReason: 'other_sport' })
+  })
+
+  it('drops the reason when an entry comes back', async () => {
+    render(<AdminCatalogForm />)
+
+    const box = screen.getByRole('checkbox', { name: /Fora de circulação/ })
+    fireEvent.click(box)
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), { target: { value: 'over' } })
+    fireEvent.click(box)
+
+    expect(screen.queryByLabelText(/Porque está fora/)).toBeNull()
+  })
+
   it('refuses an id that is already taken', async () => {
     catalogRaceIdExists.mockResolvedValue(true)
     render(<AdminCatalogForm />)

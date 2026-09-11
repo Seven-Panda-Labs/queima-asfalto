@@ -1015,6 +1015,28 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes one of the three reasons an entry is out, and nothing else', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+
+      for (const reason of ['over', 'other_sport', 'not_a_race']) {
+        await assertSucceeds(
+          db.collection('raceCatalog').doc(`de-berlin-out-${reason}`).set({
+            ...race,
+            retired: true,
+            retiredReason: reason,
+          }),
+        )
+      }
+      // A free string would make the count per source meaningless.
+      await assertFails(
+        db
+          .collection('raceCatalog')
+          .doc('de-berlin-out-other')
+          .set({ ...race, retired: true, retiredReason: 'nao gosto' }),
+      )
+    })
+
     it('takes an operator saying two entries are different races', async () => {
       await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
       const db = testEnv.authenticatedContext('user-admin').firestore()

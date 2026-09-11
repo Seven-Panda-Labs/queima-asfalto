@@ -4,6 +4,14 @@
 
 ---
 
+## [1.53.0] - 2026-09-11
+
+### Añadido
+
+- **Decir por qué una carrera sale del catálogo:** terminó, no es carrera (triatlón, marcha, bici), o ni siquiera es una prueba. La razón siempre la elige una persona, y lo que no es carrera deja de reescribirse en cada recogida.
+
+---
+
 ## [1.52.0] - 2026-09-11
 
 ### Corregido

@@ -1186,6 +1186,14 @@
     "catalogSourceError": "Say where the information comes from.",
     "catalogReviewed": "Confirmed against the official source",
     "catalogRetired": "Out of circulation",
+    "catalogRetiredReason": "Why it is out",
+    "catalogRetiredReasonHint": "Always a person’s call: a name with \"walk\" in it can be a race with a walk beside it.",
+    "catalogRetiredReasonError": "Say why it is out of the catalog.",
+    "retiredReason": {
+      "over": "The race ended",
+      "other_sport": "Not a running race (triathlon, walk, bike)",
+      "not_a_race": "Not a race (expo, listing page)"
+    },
     "catalogReviewHint": "An unconfirmed entry may suggest, never assert: it feeds no deadline reminders.",
     "catalogUnreviewedEditions": "An unconfirmed entry cannot carry dated editions.",
     "catalogEditions": "Editions",
