@@ -4,6 +4,14 @@
 
 ---
 
+## [1.50.0] - 2026-09-11
+
+### Alterado
+
+- **As provas fundidas distinguem-se à vista:** na administração, uma prova que aponta para outra fica com o nome e o fundo mais discretos, para não se confundir com a que o catálogo mostra.
+
+---
+
 ## [1.49.0] - 2026-09-11
 
 ### Corrigido

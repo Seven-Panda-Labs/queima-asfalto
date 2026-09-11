@@ -4,6 +4,14 @@
 
 ---
 
+## [1.50.0] - 2026-09-11
+
+### Changed
+
+- **Merged races are told apart at a glance:** in the admin area, a race that points at another gets a quieter name and background, so it is not mistaken for the one the catalog shows.
+
+---
+
 ## [1.49.0] - 2026-09-11
 
 ### Fixed

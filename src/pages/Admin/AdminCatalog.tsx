@@ -119,64 +119,78 @@ export function AdminCatalog() {
     }
   }
 
-  /** One row, shared by the queue and the search: the same entry, two ways in. */
-  const row = (race: RaceCatalogEntry) => (
-    <li key={race.id} className="flex flex-wrap items-center gap-3 px-4 py-3">
-      <Link
-        to={`/admin/catalogo/${race.id}`}
-        className="font-semibold text-foreground hover:text-primary"
+  /**
+   * One row, shared by the queue and the search: the same entry, two ways in.
+   *
+   * A copy looks quieter than the entry it points at. Four S25 rows sat side
+   * by side, one of them the catalog's answer and three of them not, and the
+   * only thing that said which was the button on the right. The name and the
+   * background go muted rather than transparent, so the buttons stay legible.
+   */
+  const row = (race: RaceCatalogEntry) => {
+    const merged = Boolean(race.duplicateOfCatalogRaceId)
+    return (
+      <li
+        key={race.id}
+        data-merged={merged ? 'true' : undefined}
+        className={`flex flex-wrap items-center gap-3 px-4 py-3${merged ? ' bg-border/20' : ''}`}
       >
-        {race.name}
-      </Link>
-      <span className="text-xs text-muted">
-        {race.city}, {race.country}
-      </span>
-      <span className="text-xs text-muted">{t(`admin.entryMethod.${race.entryMethod}`)}</span>
-      {race.retired ? (
-        <span className="rounded bg-border px-1.5 py-0.5 text-xs text-muted">
-          {t('admin.catalogGroup.retired', { count: 1 })}
+        <Link
+          to={`/admin/catalogo/${race.id}`}
+          className={`font-semibold hover:text-primary ${merged ? 'text-muted' : 'text-foreground'}`}
+        >
+          {race.name}
+        </Link>
+        <span className="text-xs text-muted">
+          {race.city}, {race.country}
         </span>
-      ) : null}
-      <span className="ml-auto text-xs tabular-nums text-muted">
-        {nextEdition(race) ?? t('admin.catalogNoEdition')}
-      </span>
-      {user && !race.duplicateOfCatalogRaceId && !joining ? (
-        <button
-          type="button"
-          onClick={() => {
-            setJoined(null)
-            setJoining(race)
-          }}
-          className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
-        >
-          {t('admin.catalogJoin')}
-        </button>
-      ) : null}
-      {user && joining && joining.id !== race.id ? (
-        <button
-          type="button"
-          onClick={() => void join(race)}
-          className="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10"
-        >
-          {t('admin.catalogJoinHere')}
-        </button>
-      ) : null}
-      {race.duplicateOfCatalogRaceId && user ? (
-        <button
-          type="button"
-          onClick={async () => {
-            await unmergeCatalogRace(race.id, user.uid)
-            setStale([])
-            setCursors([])
-            await load()
-          }}
-          className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
-        >
-          {t('admin.duplicatesUndo', { name: race.duplicateOfCatalogRaceId })}
-        </button>
-      ) : null}
-    </li>
-  )
+        <span className="text-xs text-muted">{t(`admin.entryMethod.${race.entryMethod}`)}</span>
+        {race.retired ? (
+          <span className="rounded bg-border px-1.5 py-0.5 text-xs text-muted">
+            {t('admin.catalogGroup.retired', { count: 1 })}
+          </span>
+        ) : null}
+        <span className="ml-auto text-xs tabular-nums text-muted">
+          {nextEdition(race) ?? t('admin.catalogNoEdition')}
+        </span>
+        {user && !race.duplicateOfCatalogRaceId && !joining ? (
+          <button
+            type="button"
+            onClick={() => {
+              setJoined(null)
+              setJoining(race)
+            }}
+            className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
+          >
+            {t('admin.catalogJoin')}
+          </button>
+        ) : null}
+        {user && joining && joining.id !== race.id ? (
+          <button
+            type="button"
+            onClick={() => void join(race)}
+            className="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10"
+          >
+            {t('admin.catalogJoinHere')}
+          </button>
+        ) : null}
+        {race.duplicateOfCatalogRaceId && user ? (
+          <button
+            type="button"
+            onClick={async () => {
+              await unmergeCatalogRace(race.id, user.uid)
+              setStale([])
+              setCursors([])
+              await load()
+            }}
+            className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
+          >
+            {t('admin.duplicatesUndo', { name: race.duplicateOfCatalogRaceId })}
+          </button>
+        ) : null}
+      </li>
+    )
+  }
 
   return (
     <PageShell title={t('admin.catalogTitle')}>
