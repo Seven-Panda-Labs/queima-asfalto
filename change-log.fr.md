@@ -4,6 +4,14 @@
 
 ---
 
+## [1.52.0] - 2026-09-11
+
+### Corrigé
+
+- **Fusionner deux courses fonctionne de nouveau :** quand un champ manquait aux deux (le lien d'inscription, par exemple), la fusion échouait avec « impossible d'enregistrer » et les deux restaient telles quelles.
+
+---
+
 ## [1.51.0] - 2026-09-11
 
 ### Modifié

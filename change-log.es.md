@@ -4,6 +4,14 @@
 
 ---
 
+## [1.52.0] - 2026-09-11
+
+### Corregido
+
+- **Unir dos carreras vuelve a funcionar:** cuando a ambas les faltaba un campo (el enlace de inscripción, por ejemplo), la unión fallaba con "no se pudo guardar" y las dos quedaban como estaban.
+
+---
+
 ## [1.51.0] - 2026-09-11
 
 ### Cambiado

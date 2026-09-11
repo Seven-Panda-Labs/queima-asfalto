@@ -136,6 +136,22 @@ describe('absorb', () => {
     expect(merged.editions?.[0]).toMatchObject({ typicalFee: 30, feeCurrency: 'EUR' })
   })
 
+  it('never holds a key with nothing in it', () => {
+    // Firestore refuses a field whose value is undefined, and both entries in
+    // the real pair lacked a registration link, a note and coordinates: the
+    // merge threw "could not save" and left the two as they were.
+    const bare = entry({ id: 'de-geratal-ruk-lauf-geschwenda', name: 'RuK-Lauf Geschwenda' })
+    const other = entry({
+      id: 'de-geschwenda-ruk-lauf-rund-ums-kickelhahnchen',
+      name: '3. RuK-Lauf (Rund ums Kickelhähnchen)',
+    })
+
+    const merged = absorb(bare, other, TODAY) as Record<string, unknown>
+    expect(Object.entries(merged).filter(([, value]) => value === undefined)).toEqual([])
+    // And nothing is lost: a key that had a value still has it.
+    expect(merged.name).toBe('RuK-Lauf Geschwenda')
+  })
+
   it('keeps both sides answers about other races', () => {
     const merged = absorb(
       { ...thin, notDuplicateOf: ['de-berlin-one'] },

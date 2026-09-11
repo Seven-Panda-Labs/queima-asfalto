@@ -4,6 +4,14 @@
 
 ---
 
+## [1.52.0] - 2026-09-11
+
+### Behoben
+
+- **Zwei Rennen zusammenzulegen funktioniert wieder:** fehlte beiden ein Feld (etwa der Anmeldelink), scheiterte das Zusammenlegen mit „konnte nicht gespeichert werden“ und beide blieben, wie sie waren.
+
+---
+
 ## [1.51.0] - 2026-09-11
 
 ### Geändert

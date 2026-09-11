@@ -36,7 +36,10 @@ export function absorb(
   ]
   const keptApart = [...new Set([...(survivor.notDuplicateOf ?? []), ...(dropped.notDuplicateOf ?? [])])]
 
-  return {
+  // Firestore refuses a field whose value is undefined, and half of these are
+  // optional: a merge of two entries that both lack a registration link threw
+  // "could not save" at the operator, with the two entries left as they were.
+  return compact({
     ...survivor,
     disciplines,
     nameTokens: tokens,
@@ -52,7 +55,12 @@ export function absorb(
     ...(editions.length > 0
       ? { editions, ...(nextRaceDateOf(editions, today) ? { nextRaceDate: nextRaceDateOf(editions, today) } : {}) }
       : {}),
-  }
+  })
+}
+
+/** The same object, without the keys that hold nothing. */
+function compact<T extends Record<string, unknown>>(value: T): T {
+  return Object.fromEntries(Object.entries(value).filter(([, held]) => held !== undefined)) as T
 }
 
 /**
@@ -94,6 +102,6 @@ function mergeEditions(
   }
 
   return [...byYear.values()]
-    .map((edition) => Object.fromEntries(Object.entries(edition).filter(([, value]) => value !== undefined)) as RaceCatalogEdition)
+    .map((edition) => compact(edition as unknown as Record<string, unknown>) as unknown as RaceCatalogEdition)
     .sort((left, right) => left.year - right.year)
 }

@@ -148,7 +148,9 @@ export async function saveCatalogRaceForAdmin(
   adminUid: string,
 ): Promise<void> {
   const today = new Date().toISOString()
-  await setDoc(doc(db, RACE_CATALOG_COLLECTION, race.id), {
+  // A field the form cleared is undefined, and Firestore refuses those rather
+  // than treating them as "no value".
+  await setDoc(doc(db, RACE_CATALOG_COLLECTION, race.id), withoutUndefined({
     ...race,
     producer: race.producer ?? 'curated',
     // The field the discovery query filters and orders by. Derived here so a
@@ -158,7 +160,14 @@ export async function saveCatalogRaceForAdmin(
       : {}),
     updatedAt: today,
     updatedBy: adminUid,
-  })
+  }))
+}
+
+/** Firestore refuses a key whose value is undefined, so those keys go. */
+function withoutUndefined<T extends Record<string, unknown>>(data: T): Partial<T> {
+  return Object.fromEntries(
+    Object.entries(data).filter(([, value]) => value !== undefined),
+  ) as Partial<T>
 }
 
 export async function catalogRaceIdExists(id: string): Promise<boolean> {
@@ -204,11 +213,10 @@ export async function mergeCatalogRaces(
 
   if (keep && drop) {
     const merged = absorb(keep, drop, updatedAt.slice(0, 10))
-    await setDoc(doc(db, RACE_CATALOG_COLLECTION, keepId), {
-      ...merged,
-      updatedAt,
-      updatedBy: adminUid,
-    })
+    await setDoc(
+      doc(db, RACE_CATALOG_COLLECTION, keepId),
+      withoutUndefined({ ...merged, updatedAt, updatedBy: adminUid }),
+    )
   }
 
   await setDoc(
