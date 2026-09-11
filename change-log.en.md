@@ -4,6 +4,14 @@
 
 ---
 
+## [1.51.0] - 2026-09-11
+
+### Changed
+
+- **Retired races read as quietly as merged ones:** in the admin area, anything the catalog does not show a runner is quieter than what it does.
+
+---
+
 ## [1.50.0] - 2026-09-11
 
 ### Changed

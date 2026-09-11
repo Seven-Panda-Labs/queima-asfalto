@@ -4,6 +4,14 @@
 
 ---
 
+## [1.51.0] - 2026-09-11
+
+### Cambiado
+
+- **Las carreras fuera de circulación quedan discretas como las unidas:** en la administración, todo lo que el catálogo no muestra a un corredor se lee más apagado que lo que sí muestra.
+
+---
+
 ## [1.50.0] - 2026-09-11
 
 ### Cambiado

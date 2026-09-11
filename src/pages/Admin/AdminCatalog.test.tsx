@@ -122,10 +122,11 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
   })
 })
 
-describe('a row that is a copy', () => {
-  it('reads as the quieter of the two, so the answer is the one that is not', async () => {
+describe('a row the catalog does not answer with', () => {
+  it('reads quieter than the one it does, and says which kind it is', async () => {
     // Four S25 rows side by side, one of them the catalog's answer and three
-    // of them not, told apart only by reading the button on the right.
+    // of them not, told apart only by reading the button on the right. A
+    // retired entry is the other kind: a runner never sees it either.
     listStaleForAdmin.mockResolvedValue({
       races: [
         race({ id: 'de-berlin-s25-berlin', name: 'S25 Berlin' }),
@@ -134,6 +135,7 @@ describe('a row that is a copy', () => {
           name: 'S 25 Berlin 2027',
           duplicateOfCatalogRaceId: 'de-berlin-s25-berlin',
         }),
+        race({ id: 'de-berlin-gone', name: 'Prova acabada', retired: true }),
       ],
       nextCursor: undefined,
     })
@@ -141,11 +143,11 @@ describe('a row that is a copy', () => {
 
     await screen.findByText('S 25 Berlin 2027')
     const rows = screen.getAllByRole('listitem')
-    const visible = rows.find((row) => row.textContent?.includes('S25 Berlin'))!
-    const copy = rows.find((row) => row.textContent?.includes('S 25 Berlin 2027'))!
+    const find = (name: string) => rows.find((row) => row.textContent?.includes(name))!
 
-    expect(copy).toHaveAttribute('data-merged', 'true')
-    expect(visible).not.toHaveAttribute('data-merged')
+    expect(find('S 25 Berlin 2027')).toHaveAttribute('data-quiet', 'merged')
+    expect(find('Prova acabada')).toHaveAttribute('data-quiet', 'retired')
+    expect(find('S25 Berlin')).not.toHaveAttribute('data-quiet')
   })
 })
 

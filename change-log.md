@@ -4,6 +4,14 @@
 
 ---
 
+## [1.51.0] - 2026-09-11
+
+### Alterado
+
+- **As provas fora de circulação ficam discretas como as fundidas:** na administração, tudo o que o catálogo não mostra a um corredor lê-se mais apagado do que o que mostra.
+
+---
+
 ## [1.50.0] - 2026-09-11
 
 ### Alterado
