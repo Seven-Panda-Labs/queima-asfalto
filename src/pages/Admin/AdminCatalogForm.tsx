@@ -2,6 +2,7 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
+import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { TimezoneSelect } from '../../components/TimezoneSelect/TimezoneSelect'
 import { useAuth } from '../../contexts/AuthContext'
@@ -120,6 +121,9 @@ export function AdminCatalogForm() {
         next.editions = t('admin.catalogDateError')
       }
       if (!isIsoDay(edition.confirmedAt)) next.editions = t('admin.catalogDateError')
+      if (edition.typicalFee !== undefined && !edition.feeCurrency) {
+        next.editions = t('admin.catalogCurrencyError')
+      }
       for (const gate of [
         edition.registrationOpensAt,
         edition.registrationClosesAt,
@@ -439,15 +443,16 @@ export function AdminCatalogForm() {
                       className={inputClass}
                     />
                   </label>
-                  <label className="text-xs font-semibold text-muted">
+                  <label
+                    className="text-xs font-semibold text-muted"
+                    htmlFor={`edition-currency-${index}`}
+                  >
                     {t('admin.catalogCurrency')}
-                    <input
+                    <CurrencySelect
+                      id={`edition-currency-${index}`}
                       value={edition.feeCurrency ?? ''}
-                      maxLength={3}
-                      onChange={(event) =>
-                        setEdition(index, {
-                          feeCurrency: event.target.value.toUpperCase() || undefined,
-                        })
+                      onChange={(currency) =>
+                        setEdition(index, { feeCurrency: currency || undefined })
                       }
                       className={inputClass}
                     />

@@ -1199,6 +1199,7 @@
     "catalogDrawAt": "Draw",
     "catalogFee": "Fee",
     "catalogCurrency": "Currency",
+    "catalogCurrencyError": "A fee needs its currency.",
     "catalogConfirmedAt": "Confirmed on",
     "catalogEditionSource": "Source for this edition",
     "catalogResultsUrl": "Results for this edition",

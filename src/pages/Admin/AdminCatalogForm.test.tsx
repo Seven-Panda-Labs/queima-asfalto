@@ -151,6 +151,36 @@ describe('AdminCatalogForm', () => {
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
   })
 
+  it('refuses a fee with no currency, since a price is both', async () => {
+    params = { id: 'pt-porto-maratona-do-porto' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'pt-porto-maratona-do-porto',
+      name: 'Maratona do Porto',
+      country: 'PT',
+      city: 'Porto',
+      disciplines: ['km_42_2'],
+      entryMethod: 'unknown',
+      review: 'reviewed',
+      source: 'maratonadoporto.com',
+      editions: [
+        {
+          year: 2027,
+          typicalFee: 40,
+          source: 'maratonadoporto.com',
+          confirmedAt: '2026-09-11',
+        },
+      ],
+    })
+    render(<AdminCatalogForm />)
+
+    fireEvent.click(await screen.findByText('Guardar'))
+
+    await waitFor(() =>
+      expect(screen.getByText('Um preço precisa da moeda.')).toBeInTheDocument(),
+    )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
   it('refuses an id that is already taken', async () => {
     catalogRaceIdExists.mockResolvedValue(true)
     render(<AdminCatalogForm />)

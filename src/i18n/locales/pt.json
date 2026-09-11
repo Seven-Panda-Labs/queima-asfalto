@@ -1199,6 +1199,7 @@
     "catalogDrawAt": "Sorteio",
     "catalogFee": "Preço",
     "catalogCurrency": "Moeda",
+    "catalogCurrencyError": "Um preço precisa da moeda.",
     "catalogConfirmedAt": "Confirmado em",
     "catalogEditionSource": "Fonte desta edição",
     "catalogResultsUrl": "Resultados desta edição",
