@@ -149,6 +149,31 @@ describe('a row that is a copy', () => {
   })
 })
 
+describe('the official page', () => {
+  it('opens straight from the list, since that is where the work is', async () => {
+    listStaleForAdmin.mockResolvedValue({
+      races: [
+        race({
+          id: 'de-falkensee-lauf-der-sympathie',
+          name: 'Lauf der Sympathie',
+          officialUrl: 'https://lauf-der-sympathie.de/',
+        }),
+        race({ id: 'de-berlin-no-site', name: 'Sem site' }),
+      ],
+      nextCursor: undefined,
+    })
+    render(<AdminCatalog />)
+
+    const link = await screen.findByRole('link', {
+      name: 'Abrir a página oficial de Lauf der Sympathie',
+    })
+    expect(link).toHaveAttribute('href', 'https://lauf-der-sympathie.de/')
+    expect(link).toHaveAttribute('target', '_blank')
+    // And an entry with no site shows no link, rather than a dead one.
+    expect(screen.queryByRole('link', { name: /Abrir a página oficial de Sem site/ })).toBeNull()
+  })
+})
+
 describe('joining two entries by hand', () => {
   /** The real case: one entry found by a word, the other by the year. */
   const survivor = race({ id: 'de-berlin-olympiastadion-s-25-berlin', name: 'S 25 Berlin' })

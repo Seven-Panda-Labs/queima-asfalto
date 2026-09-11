@@ -1177,6 +1177,7 @@
     "catalogEntryMethod": "How you get in",
     "catalogMonth": "Typical month",
     "catalogOfficialUrl": "Official URL",
+    "catalogOpenOfficial": "Open the official page for {{name}}",
     "catalogRegistrationUrl": "Registration URL",
     "catalogDisciplines": "Distances",
     "catalogWindowNote": "Note about the registration window",
