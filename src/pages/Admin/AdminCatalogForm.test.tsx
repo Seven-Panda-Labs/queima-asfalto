@@ -133,19 +133,31 @@ describe('AdminCatalogForm', () => {
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
   })
 
-  it('refuses a deadline that is neither a day nor an instant', async () => {
+  it('refuses to save a stored deadline that is neither a day nor an instant', async () => {
+    // The form edits a day and an hour now, so this can only arrive from
+    // storage: it still must not be written back.
+    params = { id: 'pt-porto-maratona-do-porto' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'pt-porto-maratona-do-porto',
+      name: 'Maratona do Porto',
+      country: 'PT',
+      city: 'Porto',
+      disciplines: ['km_42_2'],
+      entryMethod: 'unknown',
+      review: 'reviewed',
+      source: 'maratonadoporto.com',
+      editions: [
+        {
+          year: 2027,
+          registrationClosesAt: 'daqui a duas semanas',
+          source: 'maratonadoporto.com',
+          confirmedAt: '2026-09-11',
+        },
+      ],
+    })
     render(<AdminCatalogForm />)
 
-    fill('Nome', 'Maratona do Porto')
-    fill('Cidade', 'Porto')
-    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
-    fill('Fonte', 'x')
-    fireEvent.click(screen.getByText('Maratona'))
-    fireEvent.click(screen.getByRole('checkbox', { name: /Confirmada/ }))
-    fireEvent.click(screen.getByText('Acrescentar edição'))
-    fill('Fonte desta edição', 'maratonadoporto.com')
-    fireEvent.change(screen.getByLabelText(/Fecho/), { target: { value: 'daqui a duas semanas' } })
-    fireEvent.click(screen.getByText('Guardar'))
+    fireEvent.click(await screen.findByText('Guardar'))
 
     await waitFor(() => expect(screen.getByText(/Prazo inválido/)).toBeInTheDocument())
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
@@ -184,22 +196,77 @@ describe('AdminCatalogForm', () => {
       review: 'reviewed',
       source: 'maratonadoporto.com',
       editions: [
-        {
-          year: 2027,
-          typicalFee: 40,
-          source: 'maratonadoporto.com',
-          confirmedAt: '2026-09-11',
-        },
+        { year: 2027, typicalFee: 40, source: 'maratonadoporto.com', confirmedAt: '2026-09-11' },
       ],
     })
     render(<AdminCatalogForm />)
 
     fireEvent.click(await screen.findByText('Guardar'))
 
-    await waitFor(() =>
-      expect(screen.getByText('Um preço precisa da moeda.')).toBeInTheDocument(),
-    )
+    await waitFor(() => expect(screen.getByText('Um preço precisa da moeda.')).toBeInTheDocument())
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
+  it('edits a deadline as a day and an hour in the race s own clock', async () => {
+    // Stored as the instant, shown as what the organiser published: Boston
+    // closes at 21:00 UTC, which is 17:00 where the race is.
+    params = { id: 'us-boston-boston-marathon' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'us-boston-boston-marathon',
+      name: 'Boston Marathon',
+      country: 'US',
+      city: 'Boston',
+      timezone: 'America/New_York',
+      disciplines: ['km_42_2'],
+      entryMethod: 'qualifying',
+      review: 'reviewed',
+      source: 'baa.org',
+      editions: [
+        {
+          year: 2027,
+          registrationClosesAt: '2026-09-18T21:00:00Z',
+          source: 'baa.org',
+          confirmedAt: '2026-09-11',
+        },
+      ],
+    })
+    render(<AdminCatalogForm />)
+
+    const time = await screen.findByLabelText('Hora')
+    expect(time).toHaveValue('17:00')
+    expect(screen.getByText(/hora em America\/New_York/)).toBeInTheDocument()
+
+    fireEvent.change(time, { target: { value: '18:30' } })
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() => expect(saveCatalogRaceForAdmin).toHaveBeenCalled())
+    const [saved] = saveCatalogRaceForAdmin.mock.calls[0]! as unknown as [
+      { editions: { registrationClosesAt: string }[] },
+    ]
+    expect(saved.editions[0]!.registrationClosesAt).toBe('2026-09-18T22:30:00Z')
+  })
+
+  it('will not take an hour it cannot anchor', async () => {
+    // The United States is twenty-nine zones, so until one is picked an hour
+    // is an hour in nobody's day.
+    params = { id: 'us-boston-boston-marathon' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'us-boston-boston-marathon',
+      name: 'Boston Marathon',
+      country: 'US',
+      city: 'Boston',
+      disciplines: ['km_42_2'],
+      entryMethod: 'qualifying',
+      review: 'reviewed',
+      source: 'baa.org',
+      editions: [
+        { year: 2027, registrationClosesAt: '2026-09-18', source: 'baa.org', confirmedAt: '2026-09-11' },
+      ],
+    })
+    render(<AdminCatalogForm />)
+
+    expect(await screen.findByLabelText('Hora')).toBeDisabled()
+    expect(screen.getByText(/escolhe primeiro o fuso da prova/)).toBeInTheDocument()
   })
 
   it('refuses an id that is already taken', async () => {

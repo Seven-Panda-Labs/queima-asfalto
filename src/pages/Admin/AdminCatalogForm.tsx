@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
+import { DayField } from './DayField'
+import { GateField } from './GateField'
 import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { TimezoneSelect } from '../../components/TimezoneSelect/TimezoneSelect'
@@ -76,6 +78,8 @@ export function AdminCatalogForm() {
    */
   const derivedZone = useMemo(() => timezoneFor(race.country), [race.country])
   const countryZones = useMemo(() => zonesForCountry(race.country), [race.country])
+  /** What an hour on a gate means, and whether one can be stored at all. */
+  const raceZone = race.timezone ?? derivedZone
   const [loading, setLoading] = useState(isEditing)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -415,47 +419,37 @@ export function AdminCatalogForm() {
                       className={inputClass}
                     />
                   </label>
-                  <label className="text-xs font-semibold text-muted">
-                    {t('admin.catalogRaceDate')}
-                    <input
-                      type="date"
-                      value={edition.raceDate ?? ''}
-                      onChange={(event) =>
-                        setEdition(index, { raceDate: event.target.value || undefined })
-                      }
-                      className={inputClass}
+                  <div className="text-xs font-semibold text-muted">
+                    <label htmlFor={`edition-race-date-${index}`}>
+                      {t('admin.catalogRaceDate')}
+                    </label>
+                    <DayField
+                      id={`edition-race-date-${index}`}
+                      value={edition.raceDate}
+                      onChange={(day) => setEdition(index, { raceDate: day })}
                     />
-                  </label>
-                  <label className="text-xs font-semibold text-muted">
-                    {t('admin.catalogOpensAt')}
-                    <input
-                      value={edition.registrationOpensAt ?? ''}
-                      onChange={(event) =>
-                        setEdition(index, { registrationOpensAt: event.target.value || undefined })
-                      }
-                      className={inputClass}
-                    />
-                  </label>
-                  <label className="text-xs font-semibold text-muted">
-                    {t('admin.catalogClosesAt')}
-                    <input
-                      value={edition.registrationClosesAt ?? ''}
-                      onChange={(event) =>
-                        setEdition(index, { registrationClosesAt: event.target.value || undefined })
-                      }
-                      className={inputClass}
-                    />
-                  </label>
-                  <label className="text-xs font-semibold text-muted">
-                    {t('admin.catalogDrawAt')}
-                    <input
-                      value={edition.lotteryDrawAt ?? ''}
-                      onChange={(event) =>
-                        setEdition(index, { lotteryDrawAt: event.target.value || undefined })
-                      }
-                      className={inputClass}
-                    />
-                  </label>
+                  </div>
+                  <GateField
+                    id={`edition-registrationopensat-${index}`}
+                    label={t('admin.catalogOpensAt')}
+                    value={edition.registrationOpensAt}
+                    zone={raceZone}
+                    onChange={(value) => setEdition(index, { registrationOpensAt: value })}
+                  />
+                  <GateField
+                    id={`edition-registrationclosesat-${index}`}
+                    label={t('admin.catalogClosesAt')}
+                    value={edition.registrationClosesAt}
+                    zone={raceZone}
+                    onChange={(value) => setEdition(index, { registrationClosesAt: value })}
+                  />
+                  <GateField
+                    id={`edition-lotterydrawat-${index}`}
+                    label={t('admin.catalogDrawAt')}
+                    value={edition.lotteryDrawAt}
+                    zone={raceZone}
+                    onChange={(value) => setEdition(index, { lotteryDrawAt: value })}
+                  />
                   <label className="text-xs font-semibold text-muted">
                     {t('admin.catalogFee')}
                     <input
@@ -483,15 +477,18 @@ export function AdminCatalogForm() {
                       className={inputClass}
                     />
                   </label>
-                  <label className="text-xs font-semibold text-muted">
-                    {t('admin.catalogConfirmedAt')}
-                    <input
-                      type="date"
+                  <div className="text-xs font-semibold text-muted">
+                    <label htmlFor={`edition-confirmed-${index}`}>
+                      {t('admin.catalogConfirmedAt')}
+                    </label>
+                    <DayField
+                      id={`edition-confirmed-${index}`}
                       value={edition.confirmedAt}
-                      onChange={(event) => setEdition(index, { confirmedAt: event.target.value })}
-                      className={inputClass}
+                      onChange={(day) =>
+                        setEdition(index, { confirmedAt: day ?? new Date().toISOString().slice(0, 10) })
+                      }
                     />
-                  </label>
+                  </div>
                   <label className="text-xs font-semibold text-muted sm:col-span-3">
                     {t('admin.catalogResultsUrl')}
                     <input
