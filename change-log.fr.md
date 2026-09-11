@@ -11,6 +11,7 @@
 - **Les courses fusionnées se distinguent d'un coup d'œil :** dans l'administration, une course qui pointe vers une autre a un nom et un fond plus discrets, pour ne pas la confondre avec celle que le catalogue affiche.
 - **La monnaie d'un tarif se choisit dans une liste :** avec le code et le nom dans ta langue, au lieu de trois lettres tapées à la main, et un tarif sans monnaie ne peut plus être enregistré.
 - **Le fuseau horaire n'est plus demandé :** il vient du pays de la course, et ne se choisit que lorsque le pays en a vraiment plusieurs, dans la liste de ce pays seul. C'était un champ répété à chaque édition.
+- **Les dates de l'administration utilisent le calendrier de l'app :** écrites comme ta langue les écrit (11/09/2026) et non comme le système du navigateur, et une échéance est désormais une date plus une heure facultative, à l'heure de la course.
 
 ---
 

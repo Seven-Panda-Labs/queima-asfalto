@@ -175,6 +175,10 @@ The results page also comes **back**: on an event with no link of its own, the r
 
 What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
+### A gate is a day, and sometimes an hour
+
+The three gates take an instant when the organiser publishes a time and a plain day when only the day is known, and both are real: of 63 gate values in one instance, 40 carry an hour and 23 do not. The form edits the two parts rather than the stored string, a day on the app's own calendar and an hour in the race's own clock, and `splitGate`/`joinGate` turn that into what is stored and back. The offset is asked for twice when writing, because an hour on the night the clocks move sits on both sides of the boundary until the instant is known. Without a zone the hour is not offered at all: an hour in nobody's day is not a deadline.
+
 ### The zone a race's deadlines are in
 
 Asked of the country, not of an operator. A zone is a property of the place, and it earns its keep in one line of one reminder: a deadline firing on the day prints the organiser's own hour, because a window that opens at 11:00 in Tokyo opens at 03:00 in Lisbon. It used to be a field on every edition, repeated for each one, and it was filled in on 37 editions of 5327, four of which also had a gate with an hour in it.
