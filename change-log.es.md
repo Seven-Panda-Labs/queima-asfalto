@@ -10,6 +10,7 @@
 
 - **Las carreras unidas se distinguen a simple vista:** en la administración, una carrera que apunta a otra queda con el nombre y el fondo más discretos, para no confundirse con la que el catálogo muestra.
 - **La moneda de un precio se elige de una lista:** con el código y el nombre en tu idioma, en vez de tres letras a mano, y un precio sin moneda ya no puede guardarse.
+- **La zona horaria ya no se pregunta:** viene del país de la carrera, y solo se elige cuando el país tiene de verdad varias, con la lista reducida a ese país. Antes era un campo repetido en cada edición.
 
 ---
 

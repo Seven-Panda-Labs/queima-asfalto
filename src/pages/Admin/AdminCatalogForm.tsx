@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from 'react'
+import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
@@ -13,6 +13,8 @@ import {
   isIsoDay,
   isIsoDayOrInstant,
   RACE_ENTRY_METHODS,
+  timezoneFor,
+  zonesForCountry,
   type RaceCatalogEdition,
   type RaceCatalogEntry,
   type RaceEntryMethod,
@@ -64,6 +66,16 @@ export function AdminCatalogForm() {
   const isEditing = Boolean(id)
 
   const [race, setRace] = useState<RaceCatalogEntry>(EMPTY)
+  /**
+   * What the country says about the zone, and what is left to choose from.
+   *
+   * A zone is a property of the place, so most countries answer on their own
+   * and the field never appears. Where a country is really several, the list
+   * is that country's own: Portugal is three and the United States
+   * twenty-nine, and neither is a text field.
+   */
+  const derivedZone = useMemo(() => timezoneFor(race.country), [race.country])
+  const countryZones = useMemo(() => zonesForCountry(race.country), [race.country])
   const [loading, setLoading] = useState(isEditing)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -211,6 +223,32 @@ export function AdminCatalogForm() {
                 className={inputClass}
               />
               {errors.country ? <span className="text-xs text-danger">{errors.country}</span> : null}
+            </label>
+
+            <label className="text-sm font-semibold text-foreground" htmlFor="catalog-timezone">
+              {t('admin.catalogTimezone')}
+              {derivedZone ? (
+                // The country answered, so there is nothing to ask and nothing
+                // to store: what reads the zone asks the country too.
+                <p className="mt-1 rounded-md border border-border bg-background px-3 py-2 text-sm text-muted">
+                  {t('admin.catalogTimezoneFromCountry', { zone: derivedZone })}
+                </p>
+              ) : (
+                <>
+                  <TimezoneSelect
+                    id="catalog-timezone"
+                    value={race.timezone ?? ''}
+                    onChange={(zone) => set('timezone', zone || undefined)}
+                    zones={countryZones}
+                    className={inputClass}
+                  />
+                  <span className="text-xs text-muted">
+                    {countryZones.length > 0
+                      ? t('admin.catalogTimezoneChoose', { count: countryZones.length })
+                      : t('admin.catalogTimezoneAny')}
+                  </span>
+                </>
+              )}
             </label>
 
             <label className="text-sm font-semibold text-foreground">
@@ -385,18 +423,6 @@ export function AdminCatalogForm() {
                       onChange={(event) =>
                         setEdition(index, { raceDate: event.target.value || undefined })
                       }
-                      className={inputClass}
-                    />
-                  </label>
-                  <label
-                    className="text-xs font-semibold text-muted"
-                    htmlFor={`edition-timezone-${index}`}
-                  >
-                    {t('admin.catalogTimezone')}
-                    <TimezoneSelect
-                      id={`edition-timezone-${index}`}
-                      value={edition.timezone ?? ''}
-                      onChange={(zone) => setEdition(index, { timezone: zone || undefined })}
                       className={inputClass}
                     />
                   </label>

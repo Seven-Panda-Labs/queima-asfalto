@@ -45,6 +45,7 @@ export function absorb(
     registrationUrl: survivor.registrationUrl ?? dropped.registrationUrl,
     typicalRaceMonth: survivor.typicalRaceMonth ?? dropped.typicalRaceMonth,
     typicalWindowNote: survivor.typicalWindowNote ?? dropped.typicalWindowNote,
+    timezone: survivor.timezone ?? dropped.timezone,
     latitude: survivor.latitude ?? dropped.latitude,
     longitude: survivor.longitude ?? dropped.longitude,
     ...(keptApart.length > 0 ? { notDuplicateOf: keptApart } : {}),

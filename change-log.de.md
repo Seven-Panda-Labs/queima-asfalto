@@ -10,6 +10,7 @@
 
 - **Zusammengelegte Rennen sind auf einen Blick zu unterscheiden:** in der Verwaltung bekommt ein Rennen, das auf ein anderes zeigt, einen leiseren Namen und Hintergrund, damit es nicht mit dem verwechselt wird, das der Katalog zeigt.
 - **Die Währung einer Gebühr kommt aus einer Liste:** mit Code und Namen in deiner Sprache statt drei getippter Buchstaben, und eine Gebühr ohne Währung lässt sich nicht mehr speichern.
+- **Die Zeitzone wird nicht mehr abgefragt:** sie kommt aus dem Land des Rennens und wird nur gewählt, wenn das Land wirklich mehrere hat, aus den Zonen dieses Landes. Vorher war es ein Feld, das sich bei jeder Ausgabe wiederholte.
 
 ---
 

@@ -21,15 +21,24 @@ export function TimezoneSelect({
   value,
   onChange,
   className,
+  zones,
 }: {
   id?: string
   /** An IANA name, or an empty string for a zone nobody has said yet. */
   value: string
   onChange: (zone: string) => void
   className?: string
+  /**
+   * The zones worth offering, when something narrower than the world is known.
+   *
+   * A race is in a country, and a country is at most a handful of zones:
+   * asking a person to find Atlantic/Azores among four hundred is asking them
+   * to know the answer before they look it up.
+   */
+  zones?: readonly string[]
 }) {
   const { t } = useTranslation()
-  const regions = useMemo(byRegion, [])
+  const regions = useMemo(() => byRegion(zones), [zones])
 
   return (
     <select
@@ -86,15 +95,17 @@ function offsetOf(zone: string): string {
  * rest it is a dozen each. Computed once: it costs four hundred formatters,
  * around twenty milliseconds, and the offsets only move twice a year.
  */
-function byRegion(): { name: string; zones: { id: string; label: string }[] }[] {
+function byRegion(only?: readonly string[]): { name: string; zones: { id: string; label: string }[] }[] {
   let zones: string[] = []
-  try {
-    zones = Intl.supportedValuesOf('timeZone')
-  } catch {
-    // An engine without the list leaves the field to the fallback option
-    // above, which keeps whatever the entry already had.
-    return []
-  }
+  if (only && only.length > 0) zones = [...only]
+  else
+    try {
+      zones = Intl.supportedValuesOf('timeZone')
+    } catch {
+      // An engine without the list leaves the field to the fallback option
+      // above, which keeps whatever the entry already had.
+      return []
+    }
 
   const grouped = new Map<string, { id: string; label: string }[]>()
   for (const zone of zones) {

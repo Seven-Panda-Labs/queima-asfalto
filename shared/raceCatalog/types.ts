@@ -45,7 +45,13 @@ export type RaceCatalogEdition = {
   registrationOpensAt?: string
   registrationClosesAt?: string
   lotteryDrawAt?: string
-  /** IANA zone, so a reminder can print the local opening time. */
+  /**
+   * IANA zone, when the race's own country does not answer.
+   *
+   * Kept because entries written before the zone was derived carry one, and an
+   * operator can still correct a race the country gets wrong. What reads it is
+   * `raceTimezone`, which asks this, then the entry, then the country.
+   */
   timezone?: string
   /**
    * The headline entry fee, in major units. `typical` because a race usually has
@@ -114,6 +120,16 @@ export type RaceCatalogEntry = {
   /** 1 to 12. What month the race usually falls in, not a promise about a year. */
   typicalRaceMonth?: number
   typicalWindowNote?: string
+  /**
+   * The zone this race's deadlines are published in.
+   *
+   * On the race and not on each edition, because it is a property of the place
+   * and nothing moves between years: no entry in a real instance had editions
+   * that disagreed, and it was asked again on every one of them. Only stored
+   * when the country cannot answer for itself, which is the United States,
+   * Canada, Brazil and the like.
+   */
+  timezone?: string
   editions?: RaceCatalogEdition[]
   /**
    * The soonest edition that had not happened when this was written.

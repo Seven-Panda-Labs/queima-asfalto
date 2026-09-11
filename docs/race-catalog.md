@@ -175,6 +175,12 @@ The results page also comes **back**: on an event with no link of its own, the r
 
 What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
+### The zone a race's deadlines are in
+
+Asked of the country, not of an operator. A zone is a property of the place, and it earns its keep in one line of one reminder: a deadline firing on the day prints the organiser's own hour, because a window that opens at 11:00 in Tokyo opens at 03:00 in Lisbon. It used to be a field on every edition, repeated for each one, and it was filled in on 37 editions of 5327, four of which also had a gate with an hour in it.
+
+`timezoneFor` asks the platform for the country's zones and answers in two cases: one zone, or several that are the same clock under different names (Germany is `Europe/Berlin` and `Europe/Busingen`). Otherwise it says nothing, deliberately: the list comes back alphabetically, so taking the first would file a race in Lisbon under the Azores. Then the form asks, with that country's zones and no others, three for Portugal and twenty-nine for the United States. What gets stored is only what the country cannot say, on the race rather than on each edition, and `raceTimezone` reads the edition's first, then the race's, then the country's.
+
 ### Reviewing an entry
 
 `npm run catalog:review` lists what needs work, reading the instance: never checked, checked but out of editions, and in order. Then, per entry:
