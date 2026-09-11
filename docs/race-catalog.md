@@ -175,6 +175,20 @@ The results page also comes **back**: on an event with no link of its own, the r
 
 What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
+### Taking a race out of the catalog
+
+Nothing is deleted. `races.catalogRaceId` points at an id and no Firestore rule can check for references, so a hard delete would orphan whatever already points here, and an entry the harvest keeps finding would simply be written again on the next run. An entry goes out by being **retired**, which hides it from the discovery list, the name search, the duplicate rule and the operator's own work queue, and the harvest preserves that across a re-read.
+
+What was missing was **why**, and the reason decides what happens next:
+
+| reason | what it means | what follows |
+|---|---|---|
+| `over` | the race is not held any more | history. Whoever ran it keeps their event, and an edition arriving later is worth a person's attention, so the harvest keeps writing to it |
+| `other_sport` | a triathlon, a walk or a bike ride read as a race | the source is wrong and will publish it again every week. The entry stays as a tombstone and the harvest stops writing to it |
+| `not_a_race` | an expo, or a listing page read as a race | the same, counted apart on purpose: twenty of these from one source is the argument for dropping that source |
+
+**Always a person's judgement, never a rule.** A name is not evidence: of 281 live entries whose name reads as another sport or a walk, many are a run with a walk beside it and belong in the catalog exactly as they are.
+
 ### A gate is a day, and sometimes an hour
 
 The three gates take an instant when the organiser publishes a time and a plain day when only the day is known, and both are real: of 63 gate values in one instance, 40 carry an hour and 23 do not. The form edits the two parts rather than the stored string, a day on the app's own calendar and an hour in the race's own clock, and `splitGate`/`joinGate` turn that into what is stored and back. The offset is asked for twice when writing, because an hour on the night the clocks move sits on both sides of the boundary until the instant is known. Without a zone the hour is not offered at all: an hour in nobody's day is not a deadline.

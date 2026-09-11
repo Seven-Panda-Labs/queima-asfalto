@@ -15,11 +15,13 @@ import {
   isIsoDay,
   isIsoDayOrInstant,
   RACE_ENTRY_METHODS,
+  RETIRED_REASONS,
   timezoneFor,
   zonesForCountry,
   type RaceCatalogEdition,
   type RaceCatalogEntry,
   type RaceEntryMethod,
+  type RetiredReason,
 } from '../../../shared/raceCatalog'
 import {
   catalogRaceIdExists,
@@ -121,6 +123,10 @@ export function AdminCatalogForm() {
     if (!/^[A-Z]{2}$/.test(race.country)) next.country = t('admin.catalogCountryError')
     if (race.disciplines.length === 0) next.disciplines = t('validation.disciplinesRequired')
     if (!race.source.trim()) next.source = t('admin.catalogSourceError')
+    // Out of the catalog is a decision, and the decision is the reason.
+    if (race.retired && !race.retiredReason) {
+      next.retiredReason = t('admin.catalogRetiredReasonError')
+    }
     if (!/^[a-z0-9-]+$/.test(id_)) next.id = t('admin.catalogIdError')
     if (!isEditing && (await catalogRaceIdExists(id_))) next.id = t('admin.catalogIdTaken')
 
@@ -378,12 +384,44 @@ export function AdminCatalogForm() {
               <input
                 type="checkbox"
                 checked={race.retired === true}
-                onChange={(event) => set('retired', event.target.checked || undefined)}
+                onChange={(event) => {
+                  const retired = event.target.checked || undefined
+                  setRace((current) => ({
+                    ...current,
+                    retired,
+                    // The reason belongs to being out. Coming back drops it.
+                    retiredReason: retired ? current.retiredReason : undefined,
+                  }))
+                }}
                 className="h-4 w-4 rounded border-border"
               />
               {t('admin.catalogRetired')}
             </label>
           </div>
+          {race.retired ? (
+            <label className="mt-3 block text-sm font-semibold text-foreground" htmlFor="catalog-retired-reason">
+              {t('admin.catalogRetiredReason')}
+              <select
+                id="catalog-retired-reason"
+                value={race.retiredReason ?? ''}
+                onChange={(event) =>
+                  set('retiredReason', (event.target.value || undefined) as RetiredReason | undefined)
+                }
+                className={inputClass}
+              >
+                <option value="">{t('common.dash')}</option>
+                {RETIRED_REASONS.map((reason) => (
+                  <option key={reason} value={reason}>
+                    {t(`admin.retiredReason.${reason}`)}
+                  </option>
+                ))}
+              </select>
+              <span className="text-xs text-muted">{t('admin.catalogRetiredReasonHint')}</span>
+              {errors.retiredReason ? (
+                <span className="block text-xs text-danger">{errors.retiredReason}</span>
+              ) : null}
+            </label>
+          ) : null}
           {errors.review ? <p className="mt-2 text-xs text-danger">{errors.review}</p> : null}
           <p className="mt-2 text-xs text-muted">{t('admin.catalogReviewHint')}</p>
         </section>

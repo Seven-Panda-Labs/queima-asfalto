@@ -4,6 +4,14 @@
 
 ---
 
+## [1.53.0] - 2026-09-11
+
+### Ajouté
+
+- **Dire pourquoi une course quitte le catalogue :** elle a pris fin, ce n'est pas une course à pied (triathlon, marche, vélo), ou ce n'est pas une épreuve du tout. La raison est toujours le choix d'une personne, et ce qui n'est pas une course cesse d'être réécrit à chaque collecte.
+
+---
+
 ## [1.52.0] - 2026-09-11
 
 ### Corrigé

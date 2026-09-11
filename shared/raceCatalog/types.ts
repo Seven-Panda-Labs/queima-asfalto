@@ -102,6 +102,24 @@ export type RaceCatalogEdition = {
  * rule, because a person who was there is at least as good a witness as a
  * listing, and lands in the same review queue an operator already works.
  */
+/**
+ * Why an entry is out of the catalog.
+ *
+ * `over` is history: the race is not held any more, whoever ran it keeps their
+ * event, and an edition arriving later is worth a person's attention.
+ * `other_sport` is a triathlon, a walk or a bike ride read as a race, and
+ * `not_a_race` is an expo or a listing page read as one. Those two are the
+ * source being wrong, and the entry stays only as a tombstone: deleting it
+ * would have the next harvest write it again.
+ *
+ * The last two behave alike and are counted apart on purpose: twenty entries
+ * marked `not_a_race` from one source is the argument for dropping that
+ * source, and without the reason nobody would ever know.
+ */
+export const RETIRED_REASONS = ['over', 'other_sport', 'not_a_race'] as const
+
+export type RetiredReason = (typeof RETIRED_REASONS)[number]
+
 export const CATALOG_PRODUCERS = ['curated', 'harvest', 'runner'] as const
 
 export type CatalogProducer = (typeof CATALOG_PRODUCERS)[number]
@@ -176,6 +194,20 @@ export type RaceCatalogEntry = {
    * references, so a hard delete would orphan whatever already points here.
    */
   retired?: boolean
+  /**
+   * Why it is out, which decides what happens next.
+   *
+   * The switch hides an entry from everything a runner sees, and that much is
+   * the same for a race that ended and for a triathlon that should never have
+   * been read as a race. What differs is the future: a new edition of the
+   * first is news, and of the second is the source repeating itself, so only
+   * the first keeps being written to.
+   *
+   * Always a person's judgement. A name is not evidence: of 281 live entries
+   * whose name reads as another sport or a walk, many are a run with a walk
+   * beside it and belong in the catalog.
+   */
+  retiredReason?: RetiredReason
   /**
    * The entry this one turned out to be a second copy of.
    *

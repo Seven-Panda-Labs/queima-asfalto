@@ -4,6 +4,14 @@
 
 ---
 
+## [1.53.0] - 2026-09-11
+
+### Added
+
+- **Say why a race leaves the catalog:** it ended, it is not a running race (triathlon, walk, bike), or it is not a race at all. The reason is always a person’s call, and what is not a race stops being rewritten on every harvest.
+
+---
+
 ## [1.52.0] - 2026-09-11
 
 ### Fixed

@@ -8,12 +8,14 @@ export {
   isIsoDay,
   isIsoDayOrInstant,
   RACE_ENTRY_METHODS,
+  RETIRED_REASONS,
   type CatalogProducer,
   type CatalogReviewState,
   type RaceCatalog,
   type RaceCatalogEdition,
   type RaceCatalogEntry,
   type RaceEntryMethod,
+  type RetiredReason,
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
 export {

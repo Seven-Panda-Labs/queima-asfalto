@@ -4,6 +4,14 @@
 
 ---
 
+## [1.53.0] - 2026-09-11
+
+### Hinzugefügt
+
+- **Sagen, warum ein Rennen den Katalog verlässt:** es endete, es ist kein Lauf (Triathlon, Walking, Rad) oder gar kein Wettkampf. Die Begründung wählt immer ein Mensch, und was kein Lauf ist, wird nicht mehr bei jeder Ernte neu geschrieben.
+
+---
+
 ## [1.52.0] - 2026-09-11
 
 ### Behoben

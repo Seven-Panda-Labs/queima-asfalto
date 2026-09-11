@@ -94,6 +94,11 @@ export function mergeIntoCatalog(
   harvested: RaceCatalogEntry,
 ): RaceCatalogEntry | null {
   if (!existing) return harvested
+  // A triathlon or an expo that an operator read and threw out: the source
+  // will publish it every week, and writing it every week changes nothing
+  // except the day the entry was last touched. A race that simply ended keeps
+  // being written, because an edition arriving after it ended is news.
+  if (existing.retired && existing.retiredReason && existing.retiredReason !== 'over') return null
   if (existing.producer === 'curated' || existing.review === 'reviewed') {
     const editions = existing.editions ?? []
     const incoming = harvested.editions?.[0]
