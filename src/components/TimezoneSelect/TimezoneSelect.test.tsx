@@ -46,3 +46,26 @@ describe('TimezoneSelect', () => {
     expect(screen.getByRole('combobox')).toHaveValue('Mars/Olympus_Mons')
   })
 })
+
+describe('a list narrowed to one country', () => {
+  it('offers only those zones, so the answer is a glance and not a hunt', () => {
+    render(
+      <TimezoneSelect
+        value=""
+        onChange={vi.fn()}
+        zones={['Atlantic/Azores', 'Atlantic/Madeira', 'Europe/Lisbon']}
+      />,
+    )
+
+    // The empty option plus the three: Portugal is a choice, not a search.
+    expect(screen.getAllByRole('option')).toHaveLength(4)
+    expect(screen.getByRole('option', { name: /^Lisbon/ })).toHaveValue('Europe/Lisbon')
+    expect(screen.queryByRole('option', { name: /^Berlin/ })).toBeNull()
+  })
+
+  it('falls back to the world when nothing narrower is known', () => {
+    render(<TimezoneSelect value="" onChange={vi.fn()} zones={[]} />)
+
+    expect(screen.getByRole('option', { name: /^Berlin/ })).toBeInTheDocument()
+  })
+})

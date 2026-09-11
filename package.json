@@ -27,6 +27,7 @@
     "backfill:edition-reports": "tsx scripts/backfill-edition-reports.ts",
     "fix:catalog-days": "tsx scripts/fix-malformed-catalog-days.ts",
     "fold:catalog-copies": "tsx scripts/fold-catalog-copies.ts",
+    "lift:catalog-timezones": "tsx scripts/lift-catalog-timezones.ts",
     "catalog:review": "tsx scripts/catalog-review.ts",
     "scout:podium": "tsx scripts/podium-scout.ts",
     "admin:grant": "tsx scripts/grant-admin.ts",

@@ -1,6 +1,7 @@
 import {
   canAssertDates,
   editionForYear,
+  raceTimezone,
   type RaceCatalogEntry,
   type RaceEntryMethod,
 } from '../../shared/raceCatalog'
@@ -81,7 +82,8 @@ export function prefillFromCatalog(
     registrationOpensAt: day(edition?.registrationOpensAt),
     registrationClosesAt: day(edition?.registrationClosesAt),
     lotteryDrawAt: day(edition?.lotteryDrawAt),
-    timezone: edition?.timezone,
+    // The edition's own, then the entry's, then whatever the country says.
+    timezone: raceTimezone(race, edition ?? undefined),
     fee: edition?.typicalFee,
     feeCurrency: edition?.typicalFee !== undefined ? edition.feeCurrency : undefined,
     // These two are facts about the race rather than about one year of it, so

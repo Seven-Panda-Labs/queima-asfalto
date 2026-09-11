@@ -10,6 +10,7 @@
 
 - **As provas fundidas distinguem-se à vista:** na administração, uma prova que aponta para outra fica com o nome e o fundo mais discretos, para não se confundir com a que o catálogo mostra.
 - **A moeda de um preço escolhe-se de uma lista:** com o código e o nome na tua língua, em vez de três letras à mão, e um preço sem moeda deixa de poder ser guardado.
+- **O fuso horário deixa de ser perguntado:** vem do país da prova, e só se escolhe quando o país tem mesmo vários fusos, com a lista reduzida a esse país. Antes era um campo repetido em cada edição.
 
 ---
 

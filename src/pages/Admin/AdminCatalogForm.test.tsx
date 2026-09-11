@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AdminCatalogForm } from './AdminCatalogForm'
 
@@ -149,6 +149,27 @@ describe('AdminCatalogForm', () => {
 
     await waitFor(() => expect(screen.getByText(/Prazo inválido/)).toBeInTheDocument())
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
+  it('does not ask for a zone the country already answers', async () => {
+    render(<AdminCatalogForm />)
+
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'DE' } })
+
+    // Germany is Europe/Berlin and Europe/Busingen, one clock under two names.
+    expect(await screen.findByText(/Europe\/Berlin, pelo país/)).toBeInTheDocument()
+    expect(screen.queryByLabelText(/Fuso horário/)).toBeNull()
+  })
+
+  it('asks with that country s zones when the country is really several', async () => {
+    render(<AdminCatalogForm />)
+
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+
+    const zone = await screen.findByLabelText(/Fuso horário/)
+    // The empty option plus the Azores, Madeira and Lisbon.
+    expect(within(zone).getAllByRole('option')).toHaveLength(4)
+    expect(screen.getByText(/Este país tem 3 fusos/)).toBeInTheDocument()
   })
 
   it('refuses a fee with no currency, since a price is both', async () => {
