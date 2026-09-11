@@ -4,6 +4,14 @@
 
 ---
 
+## [1.52.0] - 2026-09-11
+
+### Corrigido
+
+- **Juntar duas provas voltou a funcionar:** quando faltava um campo às duas (o link de inscrição, por exemplo), a junção falhava com "não foi possível guardar" e as duas ficavam como estavam.
+
+---
+
 ## [1.51.0] - 2026-09-11
 
 ### Alterado

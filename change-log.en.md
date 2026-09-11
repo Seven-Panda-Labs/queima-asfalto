@@ -4,6 +4,14 @@
 
 ---
 
+## [1.52.0] - 2026-09-11
+
+### Fixed
+
+- **Merging two races works again:** when both were missing a field (the registration link, say), the merge failed with "could not save" and left the two as they were.
+
+---
+
 ## [1.51.0] - 2026-09-11
 
 ### Changed
