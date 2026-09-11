@@ -4,6 +4,14 @@
 
 ---
 
+## [1.51.0] - 2026-09-11
+
+### Geändert
+
+- **Ausgemusterte Rennen lesen sich so leise wie zusammengelegte:** in der Verwaltung ist alles, was der Katalog einem Läufer nicht zeigt, leiser als das, was er zeigt.
+
+---
+
 ## [1.50.0] - 2026-09-11
 
 ### Geändert

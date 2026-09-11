@@ -128,16 +128,20 @@ export function AdminCatalog() {
    * background go muted rather than transparent, so the buttons stay legible.
    */
   const row = (race: RaceCatalogEntry) => {
-    const merged = Boolean(race.duplicateOfCatalogRaceId)
+    // Neither a copy nor a retired entry is what the catalog answers with, so
+    // neither should read like the row beside it that is. The attribute says
+    // which of the two it is, because the reason is worth knowing and a class
+    // is not a promise.
+    const quiet = race.duplicateOfCatalogRaceId ? 'merged' : race.retired ? 'retired' : undefined
     return (
       <li
         key={race.id}
-        data-merged={merged ? 'true' : undefined}
-        className={`flex flex-wrap items-center gap-3 px-4 py-3${merged ? ' bg-border/20' : ''}`}
+        data-quiet={quiet}
+        className={`flex flex-wrap items-center gap-3 px-4 py-3${quiet ? ' bg-border/20' : ''}`}
       >
         <Link
           to={`/admin/catalogo/${race.id}`}
-          className={`font-semibold hover:text-primary ${merged ? 'text-muted' : 'text-foreground'}`}
+          className={`font-semibold hover:text-primary ${quiet ? 'text-muted' : 'text-foreground'}`}
         >
           {race.name}
         </Link>

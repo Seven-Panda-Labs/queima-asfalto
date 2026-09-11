@@ -4,6 +4,14 @@
 
 ---
 
+## [1.51.0] - 2026-09-11
+
+### Modifié
+
+- **Les courses retirées sont aussi discrètes que les fusionnées :** dans l'administration, tout ce que le catalogue ne montre pas à un coureur est plus effacé que ce qu'il montre.
+
+---
+
 ## [1.50.0] - 2026-09-11
 
 ### Modifié
