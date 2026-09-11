@@ -1199,6 +1199,7 @@
     "catalogDrawAt": "Tirage",
     "catalogFee": "Prix",
     "catalogCurrency": "Devise",
+    "catalogCurrencyError": "Un tarif a besoin de sa monnaie.",
     "catalogConfirmedAt": "Confirmé le",
     "catalogEditionSource": "Source de cette édition",
     "catalogResultsUrl": "Résultats de cette édition",

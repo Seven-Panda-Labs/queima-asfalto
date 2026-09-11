@@ -9,6 +9,7 @@
 ### Changed
 
 - **Merged races are told apart at a glance:** in the admin area, a race that points at another gets a quieter name and background, so it is not mistaken for the one the catalog shows.
+- **A fee's currency comes from a list:** with the code and the name in your language, instead of three letters typed by hand, and a fee with no currency can no longer be saved.
 
 ---
 

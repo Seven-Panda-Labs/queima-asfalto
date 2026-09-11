@@ -1199,6 +1199,7 @@
     "catalogDrawAt": "Ziehung",
     "catalogFee": "Preis",
     "catalogCurrency": "Währung",
+    "catalogCurrencyError": "Eine Gebühr braucht ihre Währung.",
     "catalogConfirmedAt": "Bestätigt am",
     "catalogEditionSource": "Quelle dieser Ausgabe",
     "catalogResultsUrl": "Ergebnisse dieser Ausgabe",

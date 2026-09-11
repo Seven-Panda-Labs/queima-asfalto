@@ -9,6 +9,7 @@
 ### Modifié
 
 - **Les courses fusionnées se distinguent d'un coup d'œil :** dans l'administration, une course qui pointe vers une autre a un nom et un fond plus discrets, pour ne pas la confondre avec celle que le catalogue affiche.
+- **La monnaie d'un tarif se choisit dans une liste :** avec le code et le nom dans ta langue, au lieu de trois lettres tapées à la main, et un tarif sans monnaie ne peut plus être enregistré.
 
 ---
 

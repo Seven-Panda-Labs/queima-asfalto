@@ -1211,6 +1211,7 @@
     "catalogDrawAt": "القرعة",
     "catalogFee": "السعر",
     "catalogCurrency": "العملة",
+    "catalogCurrencyError": "السعر يحتاج عملته.",
     "catalogConfirmedAt": "أُكِّد في",
     "catalogEditionSource": "مصدر هذه النسخة",
     "catalogResultsUrl": "نتائج هذه النسخة",
