@@ -4,6 +4,14 @@
 
 ---
 
+## [1.49.0] - 2026-09-11
+
+### Fixed
+
+- **Merging two races now keeps what both knew:** the race that stays takes the other's editions, dates, fees, results links, official site and distances. Before it only pointed, and the information went out of sight.
+
+---
+
 ## [1.48.0] - 2026-09-10
 
 ### Added
