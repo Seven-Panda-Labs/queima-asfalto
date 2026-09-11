@@ -141,6 +141,21 @@ export function AdminCatalog() {
         >
           {race.name}
         </Link>
+        {/* The work on this list is reading the next season off the
+            organiser's own page, and that was a visit to the form and a copy
+            of the URL. */}
+        {race.officialUrl ? (
+          <a
+            href={race.officialUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            title={race.officialUrl}
+            aria-label={t('admin.catalogOpenOfficial', { name: race.name })}
+            className="shrink-0 rounded px-1 text-primary hover:bg-primary/10"
+          >
+            🔗
+          </a>
+        ) : null}
         <span className="text-xs text-muted">
           {race.city}, {race.country}
         </span>

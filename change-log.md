@@ -12,6 +12,7 @@
 - **A moeda de um preço escolhe-se de uma lista:** com o código e o nome na tua língua, em vez de três letras à mão, e um preço sem moeda deixa de poder ser guardado.
 - **O fuso horário deixa de ser perguntado:** vem do país da prova, e só se escolhe quando o país tem mesmo vários fusos, com a lista reduzida a esse país. Antes era um campo repetido em cada edição.
 - **Datas na administração com o calendário da app:** escritas no formato da tua língua (11/09/2026) e não no do sistema operativo do navegador, e os prazos passam a ser data mais hora opcional, na hora da prova.
+- **A página oficial abre-se da lista:** cada prova na administração passa a ter um 🔗 para a fonte, para verificar a temporada seguinte sem entrar no formulário.
 
 ---
 

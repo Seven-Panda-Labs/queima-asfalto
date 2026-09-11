@@ -12,6 +12,7 @@
 - **A fee's currency comes from a list:** with the code and the name in your language, instead of three letters typed by hand, and a fee with no currency can no longer be saved.
 - **The time zone is no longer asked for:** it comes from the race's country, and is only picked when the country really has several, from that country's zones alone. It used to be a field repeated on every edition.
 - **Dates in the admin area use the app's own calendar:** written the way your language writes them (11/09/2026) rather than the browser's operating system, and a deadline is now a date plus an optional hour, in the race's own clock.
+- **The official page opens from the list:** every race in the admin area now carries a 🔗 to its source, so the next season can be checked without opening the form.
 
 ---
 

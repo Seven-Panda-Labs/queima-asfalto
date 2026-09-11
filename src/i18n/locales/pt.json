@@ -1177,6 +1177,7 @@
     "catalogEntryMethod": "Forma de inscrição",
     "catalogMonth": "Mês típico",
     "catalogOfficialUrl": "URL oficial",
+    "catalogOpenOfficial": "Abrir a página oficial de {{name}}",
     "catalogRegistrationUrl": "URL de inscrição",
     "catalogDisciplines": "Distâncias",
     "catalogWindowNote": "Nota sobre a janela de inscrição",

@@ -12,6 +12,7 @@
 - **La moneda de un precio se elige de una lista:** con el código y el nombre en tu idioma, en vez de tres letras a mano, y un precio sin moneda ya no puede guardarse.
 - **La zona horaria ya no se pregunta:** viene del país de la carrera, y solo se elige cuando el país tiene de verdad varias, con la lista reducida a ese país. Antes era un campo repetido en cada edición.
 - **Fechas en la administración con el calendario de la app:** escritas en el formato de tu idioma (11/09/2026) y no en el del sistema del navegador, y los plazos pasan a ser fecha más hora opcional, en la hora de la carrera.
+- **La página oficial se abre desde la lista:** cada carrera en la administración lleva ahora un 🔗 a su fuente, para comprobar la próxima temporada sin entrar en el formulario.
 
 ---
 
