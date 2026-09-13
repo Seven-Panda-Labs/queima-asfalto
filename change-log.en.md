@@ -4,6 +4,14 @@
 
 ---
 
+## [1.58.0] - 2026-09-13
+
+### Fixed
+
+- **A placing now names the field it was won in:** on RaceResult, an event that publishes an age-group list reported the age group’s size as the field, and left the overall place blank. On mika:timing, events that rank men and women separately reported no field at all. Place and field now always come from the same list.
+
+---
+
 ## [1.57.0] - 2026-09-13
 
 ### Fixed

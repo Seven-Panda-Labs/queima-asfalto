@@ -5,11 +5,11 @@ import {
   buildMikaTimingListFormFields,
   buildMikaTimingSearchFormFields,
   isMikatimingResultsHtml,
+  parseMikaTimingDetailEvent,
   parseMikaTimingDetailResult,
   parseMikaTimingEventFromHtml,
-  parseMikaTimingMaxListPage,
+  parseMikaTimingEventMainGroup,
   parseMikaTimingListParticipantCount,
-  parseMikaTimingMaxOverallPlace,
   parseMikaTimingSearchEventCodesFromHtml,
   parseMikaTimingSearchRows,
   type MikaTimingUrlParts,
@@ -43,7 +43,7 @@ async function fetchMikaTimingHtml(url: string, referer: string, form?: Record<s
 }
 
 type ResolvedMikaTiming = {
-  parts: MikaTimingUrlParts
+  parts: MikaTimingUrlParts & { mainGroup?: string }
   /** Races to try when the url names none. Only the landing page lists them. */
   eventCodes: string[]
 }
@@ -58,30 +58,68 @@ async function resolveMikaTimingParts(resultsUrl: string): Promise<ResolvedMikaT
   if (!isMikatimingResultsHtml(html)) return null
 
   return {
-    parts: { ...parts, event: parseMikaTimingEventFromHtml(html) },
+    parts: {
+      ...parts,
+      event: parseMikaTimingEventFromHtml(html),
+      mainGroup: parseMikaTimingEventMainGroup(html),
+    },
     eventCodes: parseMikaTimingSearchEventCodesFromHtml(html),
   }
 }
 
-async function fetchMikaTimingTotalParticipants(
-  parts: MikaTimingUrlParts,
+/** Page size for the split lists, so the runner's place says which page holds them. */
+const LIST_PAGE_SIZE = 100
+const LIST_SEXES = ['M', 'W']
+
+function fetchMikaTimingListPage(
+  parts: MikaTimingUrlParts & { mainGroup?: string },
   event: string,
+  page: number,
+  numResults: string,
+  sex: string,
+): Promise<string> {
+  return fetchMikaTimingHtml(
+    `${parts.baseUrl}?pid=list&pidp=start&page=${page}`,
+    parts.baseUrl,
+    buildMikaTimingListFormFields({ ...parts, event }, numResults, sex),
+  )
+}
+
+/**
+ * How many finished the race the runner ran.
+ *
+ * Events that rank everyone together publish the count on the list header. The
+ * ones that rank men and women separately answer "> 5000" instead, and their
+ * place is a place within one of those two lists, so the count has to come from
+ * the same list: we jump to the page the runner's place falls on and take the
+ * header only once they are actually on it. A count from the other list, or
+ * from an unfiltered one, would pair a real place with the wrong field.
+ */
+async function fetchMikaTimingTotalParticipants(
+  parts: MikaTimingUrlParts & { mainGroup?: string },
+  event: string,
+  profile: UserResultsProfile,
+  position?: number,
 ): Promise<number | undefined> {
-  const listUrl = `${parts.baseUrl}?pid=list&pidp=start&page=1`
-  const listFields = buildMikaTimingListFormFields({ ...parts, event })
-  const firstPageHtml = await fetchMikaTimingHtml(listUrl, parts.baseUrl, listFields)
-  const fromHeader = parseMikaTimingListParticipantCount(firstPageHtml)
+  const wholeField = await fetchMikaTimingListPage(parts, event, 1, '25', '')
+  const fromHeader = parseMikaTimingListParticipantCount(wholeField)
   if (fromHeader !== undefined) return fromHeader
 
-  const maxPage = parseMikaTimingMaxListPage(firstPageHtml)
+  if (!position || position < 1) return undefined
 
-  const lastPageUrl = `${parts.baseUrl}?pid=list&pidp=start&page=${maxPage}`
-  const lastPageHtml =
-    maxPage === 1
-      ? firstPageHtml
-      : await fetchMikaTimingHtml(lastPageUrl, parts.baseUrl, listFields)
+  const page = Math.ceil(position / LIST_PAGE_SIZE)
+  for (const sex of LIST_SEXES) {
+    const html = await fetchMikaTimingListPage(parts, event, page, String(LIST_PAGE_SIZE), sex)
+    const count = parseMikaTimingListParticipantCount(html)
+    if (count === undefined) continue
 
-  return parseMikaTimingMaxOverallPlace(lastPageHtml)
+    const onThisList = parseMikaTimingSearchRows(html).some(
+      (row) => row.position === position && matchesResultsProfile(profile, row.displayName),
+    )
+    if (onThisList) return count
+  }
+
+  return undefined
 }
 
 async function searchMikaTimingRows(
@@ -126,24 +164,26 @@ export async function lookupMikaTiming(
 
   if (!match) return []
 
-  const event = match.event ?? searchedEvent
+  let event = match.event ?? searchedEvent
 
   // Some events publish a search list with no finish time. The runner's own page has it.
   let { time, position } = match
   if (!time && match.runnerId) {
-    const detail = parseMikaTimingDetailResult(
-      await fetchMikaTimingHtml(
-        buildMikaTimingDetailUrl({ ...parts, event }, match.runnerId),
-        parts.baseUrl,
-      ),
+    const detailHtml = await fetchMikaTimingHtml(
+      buildMikaTimingDetailUrl({ ...parts, event }, match.runnerId),
+      parts.baseUrl,
     )
+    const detail = parseMikaTimingDetailResult(detailHtml)
     time = detail?.time
     position = position ?? detail?.position
+    // The search can find a runner without being told a race, and then only
+    // their own page says which one they ran.
+    event ??= parseMikaTimingDetailEvent(detailHtml, resolved.eventCodes)
   }
   if (!time) return []
 
   const totalParticipants = event
-    ? await fetchMikaTimingTotalParticipants(parts, event).catch(() => undefined)
+    ? await fetchMikaTimingTotalParticipants(parts, event, profile, position).catch(() => undefined)
     : undefined
 
   return [

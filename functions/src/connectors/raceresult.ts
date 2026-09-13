@@ -15,6 +15,7 @@ import {
   raceResultFieldIndexes,
   shouldComputeRaceResultOverallRank,
   totalParticipantsForRaceResultRow,
+  totalParticipantsFromRaceResultData,
   type RaceResultConfig,
   type RaceResultListConfig,
   type RaceResultListResponse,
@@ -95,21 +96,64 @@ async function enrichCandidateWithOverallRank(
     return candidate
   }
 
-  const listUrl = buildRaceResultListUrl({
+  // The matched list ranks a category, so its own group view answers with that
+  // category: on an age-group list, a preview of one age group. The overall
+  // standing has to come from a list that ranks the whole contest.
+  for (const other of config.TabConfig?.Lists ?? []) {
+    if (String(other.Contest) !== String(list.Contest)) continue
+    if (!other.Name || other.ID === list.ID) continue
+
+    const listUrl = buildRaceResultListUrl({
+      eventId,
+      key: config.key,
+      listName: other.Name,
+      contest: String(other.Contest),
+    })
+    const groupResponse = await fetchRaceResultJson<RaceResultListResponse>(listUrl, eventId)
+    if (!isUsableRaceResultList(groupResponse)) continue
+
+    const groupFields = groupResponse.DataFields ?? []
+    const groupIndexes = raceResultFieldIndexes(groupFields)
+    if (!groupIndexes) continue
+    if (shouldComputeRaceResultOverallRank(groupFields, groupIndexes.rank)) continue
+
+    const rows = raceResultDataRows(groupResponse.data)
+    const totalParticipants =
+      totalParticipantsFromRaceResultData(groupResponse.data) ?? candidate.totalParticipants
+
+    // The list publishes the standing, so read it rather than re-deriving it:
+    // sorting by time disagrees wherever a time is missing or annotated.
+    const row = rows.find((entry) =>
+      namesMatchRaceResultDisplay(profile, entry[groupIndexes.name] ?? ''),
+    )
+    const published = row && groupIndexes.rank != null ? parseRank(row[groupIndexes.rank]) : undefined
+    if (published != null) {
+      return { ...candidate, position: published, totalParticipants }
+    }
+
+    const computed = computeRaceResultOverallPosition(rows, groupIndexes, profile, candidate.time)
+    if (computed) {
+      return { ...candidate, position: computed.position, totalParticipants }
+    }
+  }
+
+  // No list ranks the whole contest. The matched one still may: plenty of events
+  // publish a single list whose group view holds every finisher.
+  const ownUrl = buildRaceResultListUrl({
     eventId,
     key: config.key,
     listName: list.Name,
     contest: String(list.Contest),
   })
-  const groupResponse = await fetchRaceResultJson<RaceResultListResponse>(listUrl, eventId)
-  if (!isUsableRaceResultList(groupResponse)) return candidate
+  const ownResponse = await fetchRaceResultJson<RaceResultListResponse>(ownUrl, eventId)
+  if (!isUsableRaceResultList(ownResponse)) return candidate
 
-  const groupIndexes = raceResultFieldIndexes(groupResponse.DataFields ?? [])
-  if (!groupIndexes) return candidate
+  const ownIndexes = raceResultFieldIndexes(ownResponse.DataFields ?? [])
+  if (!ownIndexes) return candidate
 
   const overall = computeRaceResultOverallPosition(
-    raceResultDataRows(groupResponse.data),
-    groupIndexes,
+    raceResultDataRows(ownResponse.data),
+    ownIndexes,
     profile,
     candidate.time,
   )

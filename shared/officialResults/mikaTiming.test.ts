@@ -9,9 +9,12 @@ import { matchesResultsProfile } from './matchName'
 import {
   buildMikaTimingDetailUrl,
   buildMikaTimingSearchFormFields,
+  parseMikaTimingDetailEvent,
   parseMikaTimingDetailResult,
   parseMikaTimingDisplayName,
   parseMikaTimingEventCodesFromSelect,
+  parseMikaTimingEventMainGroup,
+  buildMikaTimingListFormFields,
   parseMikaTimingListParticipantCount,
   parseMikaTimingMaxListPage,
   parseMikaTimingOverallPlaceColumn,
@@ -239,5 +242,47 @@ describe('getSortedResultsPlatforms', () => {
   it('returns platforms sorted alphabetically by label', () => {
     const labels = getSortedResultsPlatforms().map((platform) => resultsPlatformLabel(platform))
     expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'en')))
+  })
+})
+
+describe('parseMikaTimingEventMainGroup', () => {
+  it('reads the group the race picker is paired with', () => {
+    expect(parseMikaTimingEventMainGroup(munichLandingFixture)).toBe('2025')
+  })
+
+  it('returns nothing when the page has no picker', () => {
+    expect(parseMikaTimingEventMainGroup('<form></form>')).toBeUndefined()
+  })
+})
+
+describe('buildMikaTimingListFormFields', () => {
+  it('sends the season group and a sex when the event splits its ranking', () => {
+    expect(
+      buildMikaTimingListFormFields({ lang: 'EN_CAP', event: 'M_QAFIX', mainGroup: '2025' }, '100', 'M'),
+    ).toMatchObject({
+      event_main_group: '2025',
+      event: 'M_QAFIX',
+      'search[sex]': 'M',
+      num_results: '100',
+    })
+  })
+
+  it('falls back to the runner group the older instances use', () => {
+    expect(buildMikaTimingListFormFields({ lang: 'EN_CAP', event: 'CN10' })).toMatchObject({
+      event_main_group: 'runner',
+      'search[sex]': '',
+    })
+  })
+})
+
+describe('parseMikaTimingDetailEvent', () => {
+  it('picks the race the picker offered, not the season', () => {
+    expect(
+      parseMikaTimingDetailEvent(munichDetailFixture, ['M_QAFIX', 'HM_QAFIX']),
+    ).toBe('M_QAFIX')
+  })
+
+  it('returns nothing when no offered race is mentioned', () => {
+    expect(parseMikaTimingDetailEvent(munichDetailFixture, ['CN10'])).toBeUndefined()
   })
 })

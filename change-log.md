@@ -4,6 +4,14 @@
 
 ---
 
+## [1.58.0] - 2026-09-13
+
+### Corrigido
+
+- **A classificação passa a dizer o campo em que foi feita:** no RaceResult, uma prova que publica uma lista por escalão dava o tamanho do escalão como se fosse o total, e ficava sem lugar geral. No mika:timing, as provas que separam a classificação de homens e mulheres ficavam sem total nenhum. Agora o lugar e o total vêm sempre da mesma lista.
+
+---
+
 ## [1.57.0] - 2026-09-13
 
 ### Corrigido

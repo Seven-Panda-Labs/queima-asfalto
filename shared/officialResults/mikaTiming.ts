@@ -419,18 +419,55 @@ export type MikaTimingListFormFields = {
 }
 
 export function buildMikaTimingListFormFields(
-  parts: Pick<MikaTimingUrlParts, 'lang' | 'event'>,
+  parts: Pick<MikaTimingUrlParts, 'lang' | 'event'> & { mainGroup?: string },
   numResults = '25',
+  sex = '',
 ): MikaTimingListFormFields {
   return {
     lang: parts.lang,
     startpage: 'start_responsive',
     startpage_type: 'lists',
-    event_main_group: 'runner',
+    // Older instances group by "runner"; newer ones by season, and sending the
+    // wrong one lists every race on the site instead of this one.
+    event_main_group: parts.mainGroup ?? 'runner',
     event: parts.event ?? 'MAR',
-    'search[sex]': '',
+    'search[sex]': sex,
     'search[age_class]': '%',
     num_results: numResults,
     submit: '',
   }
+}
+
+/**
+ * The race a runner's detail page belongs to.
+ *
+ * The page mentions several `event=` values, only one of which is a race, so the
+ * codes the picker offered decide which. Needed when the search found the runner
+ * without being told a race: nothing else then says which one they ran.
+ */
+export function parseMikaTimingDetailEvent(
+  html: string,
+  knownCodes: string[],
+): string | undefined {
+  const mentioned = new Set<string>()
+  for (const match of html.matchAll(/[?&;]event=([A-Za-z0-9_]+)/g)) {
+    mentioned.add(match[1]!)
+  }
+  return knownCodes.find((code) => mentioned.has(code))
+}
+
+/**
+ * The value the race picker pairs with `event`.
+ *
+ * Reading it beats assuming "runner": with the wrong group the list ignores the
+ * race and counts the whole site.
+ */
+export function parseMikaTimingEventMainGroup(html: string): string | undefined {
+  const select = /<select[^>]*\bname="event_main_group"[^>]*>([\s\S]*?)<\/select>/i.exec(html)
+  if (!select?.[1]) return undefined
+
+  const selected = /<option[^>]*\bvalue="([^"]+)"[^>]*\bselected/i.exec(select[1])
+  if (selected?.[1]) return selected[1].trim()
+
+  return /<option[^>]*\bvalue="([^"]+)"/i.exec(select[1])?.[1]?.trim()
 }

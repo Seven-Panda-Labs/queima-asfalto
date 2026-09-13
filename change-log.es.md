@@ -4,6 +4,14 @@
 
 ---
 
+## [1.58.0] - 2026-09-13
+
+### Corregido
+
+- **La clasificación ahora dice en qué campo se logró:** en RaceResult, una prueba que publica una lista por categoría daba el tamaño de la categoría como si fuera el total, y se quedaba sin puesto general. En mika:timing, las carreras que separan la clasificación de hombres y mujeres no daban total alguno. Ahora el puesto y el total salen siempre de la misma lista.
+
+---
+
 ## [1.57.0] - 2026-09-13
 
 ### Corregido

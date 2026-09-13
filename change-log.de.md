@@ -4,6 +4,14 @@
 
 ---
 
+## [1.58.0] - 2026-09-13
+
+### Behoben
+
+- **Eine Platzierung nennt jetzt das Feld, in dem sie erreicht wurde:** bei RaceResult meldete eine Veranstaltung mit Altersklassenliste die Größe der Altersklasse als Feld und blieb den Gesamtrang schuldig. Bei mika:timing meldeten Läufe mit getrennter Wertung für Frauen und Männer gar kein Feld. Platz und Feld stammen jetzt immer aus derselben Liste.
+
+---
+
 ## [1.57.0] - 2026-09-13
 
 ### Behoben
