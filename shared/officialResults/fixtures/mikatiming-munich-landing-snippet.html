@@ -1,0 +1,20 @@
+<!--
+  The landing page's race picker. Nothing in the markup carries an `event-XXX`
+  class, so the codes are only reachable through this select.
+-->
+<form name="search" method="post">
+  <select name="event_main_group" id="simple-search-event_main_group">
+    <option value="2025" selected="selected">2025</option>
+  </select>
+  <select name="event" id="simple-search-event">
+    <option value="M_QAFIX">Marathon</option>
+    <option value="HM_QAFIX">Halbmarathon</option>
+    <option value="10_QAFIX">10 Kilometer</option>
+    <option value="KR1_QAFIX">Kids Run | 1,5 km</option>
+  </select>
+  <select name="num_results" id="default-lists-num_results">
+    <option value="25" selected="selected">25</option>
+    <option value="50">50</option>
+  </select>
+</form>
+<script src="//results-static.mikatiming.com/stages/blue/lib/static/app.js"></script>

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.57.0] - 2026-09-13
+
+### Corrigé
+
+- **Un lien de résultats imparfait n’empêche plus l’import :** coller la page de son propre résultat sur RaceResult (`/details1?pid=…`) fonctionne désormais comme coller la liste. Sur mika:timing, les courses qui publient la recherche sans temps ni lien ne sont plus laissées de côté : la course est trouvée via le sélecteur et le temps vient de la page du coureur.
+
+---
+
 ## [1.56.0] - 2026-09-13
 
 ### Modifié

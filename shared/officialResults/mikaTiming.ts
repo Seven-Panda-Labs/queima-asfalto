@@ -10,8 +10,16 @@ export type MikaTimingSearchRow = {
   displayName: string
   firstName: string
   lastName: string
-  time: string
+  /** Absent when the event's search list shows no finish time. The detail page has it. */
+  time?: string
   event?: string
+  /** The runner's id on this instance, to open their detail page. */
+  runnerId?: string
+}
+
+export type MikaTimingDetailResult = {
+  time: string
+  position?: number
 }
 
 function stripHtml(value: string): string {
@@ -160,6 +168,28 @@ export function parseMikaTimingSearchEventCodesFromHtml(html: string): string[] 
   for (const match of html.matchAll(/\bevent-([A-Z][A-Z0-9]*)\b/g)) {
     codes.add(match[1]!)
   }
+  for (const code of parseMikaTimingEventCodesFromSelect(html)) {
+    codes.add(code)
+  }
+  return [...codes]
+}
+
+/**
+ * Event codes from the race picker.
+ *
+ * Newer instances put nothing in the class names and offer the codes only as
+ * `<select name="event">` options, so a search with no event finds nobody until
+ * one of these is passed.
+ */
+export function parseMikaTimingEventCodesFromSelect(html: string): string[] {
+  const codes = new Set<string>()
+  for (const select of html.matchAll(/<select[^>]*\bname="event"[^>]*>([\s\S]*?)<\/select>/gi)) {
+    for (const option of (select[1] ?? '').matchAll(/<option[^>]*\bvalue="([^"]+)"/gi)) {
+      const value = option[1]!.trim()
+      // A bare year is the season picker, not a race.
+      if (value && !/^\d{4}$/.test(value)) codes.add(value)
+    }
+  }
   return [...codes]
 }
 
@@ -213,14 +243,14 @@ export function parseMikaTimingSearchRows(html: string): MikaTimingSearchRow[] {
   )) {
     const rowHtml = rowMatch[1] ?? ''
     const position = parseOverallPlaceFromRow(rowHtml, placeColumn)
-    const nameMatch = /<h4 class="[^"]*type-fullname"[^>]*>\s*<a[^>]*href="([^"]*)"[^>]*>([\s\S]*?)<\/a>/i.exec(
-      rowHtml,
-    )
-    if (position === null || !nameMatch?.[2]) continue
+    // The name is a link on most events and plain text on others, so the link is optional.
+    const nameMatch = /<h4 class="[^"]*type-fullname"[^>]*>([\s\S]*?)<\/h4>/i.exec(rowHtml)
+    if (position === null || !nameMatch?.[1]) continue
 
-    const rawName = stripHtml(nameMatch[2])
-    const time = parseFinishTimeFromRow(rowHtml)
-    if (!rawName || !time) continue
+    const nameHtml = nameMatch[1]
+    const href = /<a[^>]*href="([^"]*)"/i.exec(nameHtml)?.[1]
+    const rawName = stripHtml(nameHtml)
+    if (!rawName) continue
 
     const { displayName, firstName, lastName } = parseMikaTimingDisplayName(rawName)
     rows.push({
@@ -228,8 +258,9 @@ export function parseMikaTimingSearchRows(html: string): MikaTimingSearchRow[] {
       displayName,
       firstName,
       lastName,
-      time,
-      event: nameMatch[1] ? parseMikaTimingEventFromHref(nameMatch[1]) : undefined,
+      time: parseFinishTimeFromRow(rowHtml) ?? undefined,
+      event: href ? parseMikaTimingEventFromHref(href) : undefined,
+      runnerId: parseMikaTimingRunnerId(rowHtml, href),
     })
   }
 
@@ -241,6 +272,70 @@ export function decodeMikaTimingSilverQuery(silver: string): string {
     .split(',')
     .map((value) => String.fromCharCode(Number(value)))
     .join('')
+}
+
+/**
+ * The runner's id, to open their detail page.
+ *
+ * Taken from the link on the name where there is one, and otherwise from the
+ * "add to favourites" payload, which carries the same id on the search lists
+ * that link nowhere.
+ */
+export function parseMikaTimingRunnerId(rowHtml: string, href?: string): string | undefined {
+  const fromHref = href ? /[?&]idp=([^&"]+)/i.exec(href.replace(/&amp;/g, '&')) : null
+  if (fromHref?.[1]) return decodeURIComponent(fromHref[1])
+
+  for (const match of rowHtml.matchAll(/data-silver="([0-9,]+)"/gi)) {
+    const decoded = decodeMikaTimingSilverQuery(match[1] ?? '').replace(/&amp;/g, '&')
+    const id = /[?&](?:favorite_add|idp)=([^&"]+)/i.exec(decoded)
+    if (id?.[1]) return decodeURIComponent(id[1])
+  }
+
+  return undefined
+}
+
+export function buildMikaTimingDetailUrl(
+  parts: Pick<MikaTimingUrlParts, 'baseUrl' | 'lang' | 'event'>,
+  runnerId: string,
+): string {
+  const search = new URLSearchParams({
+    content: 'detail',
+    fpid: 'search',
+    pid: 'search',
+    idp: runnerId,
+    lang: parts.lang,
+  })
+  if (parts.event) search.set('event', parts.event)
+  return `${parts.baseUrl}?${search.toString()}`
+}
+
+/** Reads one field out of the detail page's result table, which is keyed by stable classes. */
+function parseDetailField(html: string, field: string): string | undefined {
+  const match = new RegExp(
+    `<td class="[^"]*\\bf-${field}\\b[^"]*"[^>]*>([\\s\\S]*?)</td>`,
+    'i',
+  ).exec(html)
+  const value = match?.[1] ? stripHtml(match[1]) : ''
+  return value || undefined
+}
+
+/**
+ * A runner's result from their own detail page.
+ *
+ * Net time is what the app records, so gun time is only a fallback for events
+ * that publish nothing else.
+ */
+export function parseMikaTimingDetailResult(html: string): MikaTimingDetailResult | null {
+  const time =
+    parseMikaTimingTime(parseDetailField(html, 'time_finish_netto') ?? '') ??
+    parseMikaTimingTime(parseDetailField(html, 'time_finish_brutto') ?? '')
+  if (!time) return null
+
+  const place = Number(parseDetailField(html, 'place_all'))
+  return {
+    time,
+    position: Number.isFinite(place) && place > 0 ? place : undefined,
+  }
 }
 
 export function parseMikaTimingMaxListPage(html: string): number {
