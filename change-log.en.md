@@ -4,6 +4,14 @@
 
 ---
 
+## [1.54.0] - 2026-09-13
+
+### Fixed
+
+- **A race created in the admin area can now be found:** it was saved without the words the search looks for, so it appeared nowhere and the id it held blocked anyone creating it again. The "id already taken" error now links to the race that holds it.
+
+---
+
 ## [1.53.0] - 2026-09-11
 
 ### Added

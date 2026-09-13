@@ -1171,6 +1171,7 @@
     "catalogIdHint": "No cambia nunca: las carreras de los usuarios apuntan a él.",
     "catalogIdError": "Solo minúsculas, números y guiones.",
     "catalogIdTaken": "Ya existe una carrera con este identificador.",
+    "catalogIdTakenOpen": "Abrir «{{id}}»",
     "catalogCity": "Ciudad",
     "catalogCountry": "País",
     "catalogCountryError": "Elige el país de la lista.",

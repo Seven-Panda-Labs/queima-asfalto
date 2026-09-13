@@ -4,6 +4,14 @@
 
 ---
 
+## [1.54.0] - 2026-09-13
+
+### Corregido
+
+- **Una carrera creada en la administración ya se puede encontrar:** se guardaba sin las palabras que busca el buscador, así que no aparecía en ningún sitio y su identificador bloqueaba a quien intentara crearla de nuevo. El error de identificador repetido ahora lleva a la carrera que lo tiene.
+
+---
+
 ## [1.53.0] - 2026-09-11
 
 ### Añadido

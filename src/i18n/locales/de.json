@@ -1171,6 +1171,7 @@
     "catalogIdHint": "Ändert sich nie: die Rennen der Nutzer zeigen darauf.",
     "catalogIdError": "Nur Kleinbuchstaben, Zahlen und Bindestriche.",
     "catalogIdTaken": "Ein Rennen mit dieser Kennung existiert schon.",
+    "catalogIdTakenOpen": "„{{id}}“ öffnen",
     "catalogCity": "Stadt",
     "catalogCountry": "Land",
     "catalogCountryError": "Wähle das Land aus der Liste.",

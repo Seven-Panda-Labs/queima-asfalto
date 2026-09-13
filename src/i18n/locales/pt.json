@@ -1171,6 +1171,7 @@
     "catalogIdHint": "Nunca muda: as corridas dos utilizadores apontam para ele.",
     "catalogIdError": "Só minúsculas, números e hífenes.",
     "catalogIdTaken": "Já existe uma prova com este identificador.",
+    "catalogIdTakenOpen": "Abrir «{{id}}»",
     "catalogCity": "Cidade",
     "catalogCountry": "País",
     "catalogCountryError": "Escolhe o país da lista.",

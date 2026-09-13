@@ -4,6 +4,14 @@
 
 ---
 
+## [1.54.0] - 2026-09-13
+
+### Corrigé
+
+- **Une course créée dans l'administration est enfin trouvable :** elle était enregistrée sans les mots que la recherche interroge, n'apparaissait donc nulle part, et son identifiant bloquait quiconque essayait de la recréer. L'erreur d'identifiant déjà pris mène désormais à la course qui le détient.
+
+---
+
 ## [1.53.0] - 2026-09-11
 
 ### Ajouté

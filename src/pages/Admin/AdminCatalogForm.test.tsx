@@ -19,6 +19,7 @@ vi.mock('../../services/adminRaceCatalog', () => ({
 vi.mock('react-router-dom', () => ({
   useNavigate: () => navigate,
   useParams: () => params,
+  Link: ({ to, children }: { to: string; children: React.ReactNode }) => <a href={to}>{children}</a>,
 }))
 
 vi.mock('../../contexts/AuthContext', () => ({
@@ -309,13 +310,13 @@ describe('AdminCatalogForm', () => {
     expect(screen.queryByLabelText(/Porque está fora/)).toBeNull()
   })
 
-  it('refuses an id that is already taken', async () => {
+  it('refuses an id that is already taken, and says where it is', async () => {
     catalogRaceIdExists.mockResolvedValue(true)
     render(<AdminCatalogForm />)
 
-    fill('Nome', 'Maratona do Porto')
-    fill('Cidade', 'Porto')
-    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fill('Nome', 'Frostwiesen Lauf')
+    fill('Cidade', 'Burg')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'DE' } })
     fill('Fonte', 'x')
     fireEvent.click(screen.getByText('Maratona'))
     fireEvent.click(screen.getByText('Guardar'))
@@ -324,5 +325,11 @@ describe('AdminCatalogForm', () => {
       expect(screen.getByText('Já existe uma prova com este identificador.')).toBeInTheDocument(),
     )
     expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+    // The entry holding it could not be found by any search, which left the
+    // operator with a refusal and nowhere to go.
+    expect(screen.getByRole('link', { name: 'Abrir «frostwiesen-lauf»' })).toHaveAttribute(
+      'href',
+      '/admin/catalogo/frostwiesen-lauf',
+    )
   })
 })

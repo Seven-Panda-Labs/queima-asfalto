@@ -1171,6 +1171,7 @@
     "catalogIdHint": "Ne change jamais : les courses des utilisateurs pointent dessus.",
     "catalogIdError": "Uniquement minuscules, chiffres et tirets.",
     "catalogIdTaken": "Une course avec cet identifiant existe déjà.",
+    "catalogIdTakenOpen": "Ouvrir « {{id}} »",
     "catalogCity": "Ville",
     "catalogCountry": "Pays",
     "catalogCountryError": "Choisis le pays dans la liste.",

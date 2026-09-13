@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { DayField } from './DayField'
@@ -85,6 +85,8 @@ export function AdminCatalogForm() {
   const [loading, setLoading] = useState(isEditing)
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
+  /** The entry already holding the id, so the operator can go and see it. */
+  const [takenBy, setTakenBy] = useState<string | null>(null)
 
   useEffect(() => {
     if (!id) return
@@ -128,7 +130,14 @@ export function AdminCatalogForm() {
       next.retiredReason = t('admin.catalogRetiredReasonError')
     }
     if (!/^[a-z0-9-]+$/.test(id_)) next.id = t('admin.catalogIdError')
-    if (!isEditing && (await catalogRaceIdExists(id_))) next.id = t('admin.catalogIdTaken')
+    // Naming it is the difference between a dead end and a link: an entry a
+    // search could not reach held the id, and there was no way to get to it.
+    if (!isEditing && (await catalogRaceIdExists(id_))) {
+      next.id = t('admin.catalogIdTaken')
+      setTakenBy(id_)
+    } else {
+      setTakenBy(null)
+    }
 
     // The rule the review state exists for: dates nobody checked must not be
     // stored as if somebody had.
@@ -212,6 +221,14 @@ export function AdminCatalogForm() {
               />
               <span className="text-xs text-muted">{t('admin.catalogIdHint')}</span>
               {errors.id ? <span className="block text-xs text-danger">{errors.id}</span> : null}
+              {takenBy ? (
+                <Link
+                  to={`/admin/catalogo/${takenBy}`}
+                  className="block text-xs font-semibold text-primary hover:underline"
+                >
+                  {t('admin.catalogIdTakenOpen', { id: takenBy })}
+                </Link>
+              ) : null}
             </label>
 
             <label className="text-sm font-semibold text-foreground">
