@@ -13,6 +13,7 @@ import {
 } from 'firebase/firestore'
 import {
   absorb,
+  nameTokensOf,
   nextRaceDateOf,
   RACE_CATALOG_COLLECTION,
   rankByName,
@@ -153,6 +154,11 @@ export async function saveCatalogRaceForAdmin(
   await setDoc(doc(db, RACE_CATALOG_COLLECTION, race.id), withoutUndefined({
     ...race,
     producer: race.producer ?? 'curated',
+    // The words a search can reach this by. Derived on every write because a
+    // name typed here would otherwise have none: an entry created in this
+    // form was findable by nothing at all, and renaming one left the old
+    // name's words behind.
+    nameTokens: nameTokensOf(race.name, race.city),
     // The field the discovery query filters and orders by. Derived here so a
     // date edited by hand is searchable without waiting for a harvest.
     ...(nextRaceDateOf(race.editions, today.slice(0, 10))

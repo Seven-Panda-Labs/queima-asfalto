@@ -1171,6 +1171,7 @@
     "catalogIdHint": "Never changes: users' races point at it.",
     "catalogIdError": "Lowercase letters, numbers and hyphens only.",
     "catalogIdTaken": "A race with this identifier already exists.",
+    "catalogIdTakenOpen": "Open \"{{id}}\"",
     "catalogCity": "City",
     "catalogCountry": "Country",
     "catalogCountryError": "Pick the country from the list.",

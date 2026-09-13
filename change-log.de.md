@@ -4,6 +4,14 @@
 
 ---
 
+## [1.54.0] - 2026-09-13
+
+### Behoben
+
+- **Ein in der Verwaltung angelegtes Rennen ist jetzt auffindbar:** es wurde ohne die Wörter gespeichert, nach denen die Suche sucht, tauchte also nirgends auf, und seine Kennung blockierte jeden, der es erneut anlegen wollte. Der Fehler „Kennung vergeben“ führt jetzt zu dem Rennen, das sie hat.
+
+---
+
 ## [1.53.0] - 2026-09-11
 
 ### Hinzugefügt

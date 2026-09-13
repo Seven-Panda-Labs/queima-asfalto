@@ -1183,6 +1183,7 @@
     "catalogIdHint": "لا يتغيّر أبدا: سباقات المستخدمين تشير إليه.",
     "catalogIdError": "حروف صغيرة وأرقام وشرطات فقط.",
     "catalogIdTaken": "يوجد سباق بهذا المعرّف.",
+    "catalogIdTakenOpen": "فتح «{{id}}»",
     "catalogCity": "المدينة",
     "catalogCountry": "البلد",
     "catalogCountryError": "اختر البلد من القائمة.",

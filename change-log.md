@@ -4,6 +4,14 @@
 
 ---
 
+## [1.54.0] - 2026-09-13
+
+### Corrigido
+
+- **Uma prova criada na administração passa a ser encontrável:** ficava sem as palavras por que a busca procura, portanto não aparecia em lado nenhum e o identificador dela bloqueava quem a tentasse criar de novo. O erro de identificador repetido passa também a levar à prova que o tem.
+
+---
+
 ## [1.53.0] - 2026-09-11
 
 ### Adicionado
