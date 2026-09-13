@@ -4,6 +4,14 @@
 
 ---
 
+## [1.58.0] - 2026-09-13
+
+### Corrigé
+
+- **Un classement dit désormais dans quel peloton il a été obtenu :** sur RaceResult, une épreuve publiant une liste par catégorie donnait la taille de la catégorie comme total, sans place au général. Sur mika:timing, les courses qui classent hommes et femmes séparément ne donnaient aucun total. La place et le total viennent maintenant toujours de la même liste.
+
+---
+
 ## [1.57.0] - 2026-09-13
 
 ### Corrigé
