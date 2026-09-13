@@ -179,6 +179,10 @@ What is **not** built: the entry gates, which will need a person. See [#328](htt
 
 Without the edition. A catalog entry is a race and its editions are the years, so "33. Graz Marathon" names the race wrong: the same race is the 34th next year, and every list showing it carries a number that is already out of date. `nameWithoutEdition` drops an ordinal with its dot at the front and a year at the end, and it is deliberately narrower than the `stripEdition` the duplicate rule compares with.
 
+The town goes the same way, when it is the whole appendix after a separator that has room around it and what is left still names a race. A hyphen glued to letters is part of a word, so "Volksbank-Münster Marathon" and "Spartan Race Zell am See-Kaprun" are never cut, and "Halve Marathon - Erpe-Mere" keeps its town because "Halve Marathon" is what every half marathon in the Netherlands is called. Ninety-six names ended in their own town, which a phone shows again in the field beside them.
+
+A sponsor is **not** in this. "BARMER CURREX Alsterlauf Hamburg" reads as a sponsored name to a person and as four words to a rule, and the only way to know is a list of brands. That list exists, as `NOISE_WORDS`, and it is used for comparing two names, where a wrong guess merely makes them look more alike and every other test still has to agree. Rewriting a name on the same guess would be visible to every runner, so a sponsor comes off only when a person takes it off.
+
 What it leaves alone is the interesting half. A **bare** leading number stays, because in almost every one of those the number is the race: measured on 698 names carrying an edition, 24 begin with a bare number and they are "10 Marathon in 10 Tagen", "20 Km de la Forêt de Beloeil", "24 Stunden Jubiläumslauf". A trailing year stays unless it is near enough to now to be an edition: "Mattmark Memorial 1965" is named after the year of the disaster it remembers.
 
 ### Taking a race out of the catalog

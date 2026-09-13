@@ -4,6 +4,14 @@
 
 ---
 
+## [1.56.0] - 2026-09-13
+
+### Geändert
+
+- **Der Name eines Rennens wiederholt nicht mehr seinen Ort:** „Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)“ zeigt nur noch den Namen, mit dem Ort daneben wie immer. Nur wenn der Ort der ganze Schluss des Namens ist und der Rest das Rennen weiter benennt.
+
+---
+
 ## [1.55.0] - 2026-09-13
 
 ### Geändert

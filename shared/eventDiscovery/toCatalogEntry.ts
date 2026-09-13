@@ -3,6 +3,7 @@ import { nameTokensOf } from '../raceCatalog/nameTokens.js'
 import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
+import { nameWithoutTown } from './duplicates.js'
 import { catalogId, nameWithoutEdition } from './identity.js'
 import type { DiscoveredRace } from './types.js'
 
@@ -39,6 +40,12 @@ export type HarvestProvenance = {
  * state a deadline. That rule is the reason the two producers can share one
  * collection at all.
  */
+/** The name as the catalog keeps it, which is neither the edition's nor the town's. */
+function storedName(race: DiscoveredRace, provenance: HarvestProvenance): string {
+  const withoutEdition = nameWithoutEdition(race.name, new Date(provenance.harvestedAt))
+  return nameWithoutTown(withoutEdition, race.city ?? '')
+}
+
 export function toCatalogEntry(
   race: DiscoveredRace,
   provenance: HarvestProvenance,
@@ -58,10 +65,10 @@ export function toCatalogEntry(
 
   return compact({
     id: catalogId(race),
-    // Without the edition: a catalog entry is a race and its editions are the
-    // years, so "33. Graz Marathon" names the race wrong and is out of date
-    // the moment the 34th is announced.
-    name: nameWithoutEdition(race.name, new Date(provenance.harvestedAt)),
+    // Without the edition or the town: a catalog entry is a race and its
+    // editions are the years, so "33. Graz Marathon" is out of date the moment
+    // the 34th is announced, and the town is already the field beside it.
+    name: storedName(race, provenance),
     country: race.country ?? 'XX',
     city: race.city ?? '',
     latitude: race.latitude,
@@ -69,7 +76,7 @@ export function toCatalogEntry(
     disciplines: toDisciplines(race.distancesKm),
     // What a name search matches on, because Firestore cannot look inside a
     // string.
-    nameTokens: nameTokensOf(nameWithoutEdition(race.name, new Date(provenance.harvestedAt)), race.city ?? ''),
+    nameTokens: nameTokensOf(storedName(race, provenance), race.city ?? ''),
     // What a listing never says is how you get in. Guessing `first_come`
     // because there is a price would put a lottery race in the wrong funnel.
     entryMethod: 'unknown',
