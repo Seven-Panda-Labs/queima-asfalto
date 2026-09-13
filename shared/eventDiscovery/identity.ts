@@ -81,3 +81,50 @@ export function catalogId(race: DiscoveredRace): string {
   ].filter(Boolean)
   return parts.join('-')
 }
+
+/**
+ * The edition number written the way only an edition is written: "39." or
+ * "XXXIV." at the front, with the dot that says "the thirty-ninth".
+ *
+ * Stricter than `EDITION_PREFIX`, which also reads a bare leading number.
+ * That is right for comparing two names and wrong for storing one: of 698
+ * catalog names carrying an edition, 24 begin with a bare number and in almost
+ * all of them the number is the race, not the year of it. "10 Marathon in 10
+ * Tagen" is ten marathons, "20 Km de la Forêt de Beloeil" is the distance.
+ */
+const EDITION_ORDINAL = /^\s*(?:\d{1,3}|[ivxlcdm]+)\s*[.)]\s+/i
+
+/** How far ahead a calendar publishes, so a trailing year is this year's. */
+const EDITION_YEARS_AHEAD = 5
+
+/**
+ * The name without the edition, for storing.
+ *
+ * A catalog entry is a race and its editions are the years, so "33. Graz
+ * Marathon" names the race wrong: next year the same race is the 34th, and
+ * every list that shows it carries a number that will be out of date. The same
+ * goes for a year at the end, "Hermannslauf 2027".
+ *
+ * Only what is plainly the edition goes. A trailing year has to be near enough
+ * to now to be one: "Mattmark Memorial 1965" is named after the year of the
+ * disaster it remembers, and no calendar publishes six years ahead.
+ */
+export function nameWithoutEdition(name: string, now = new Date()): string {
+  const year = now.getFullYear()
+  const trailing = /\s*[-–—,]?\s*((?:19|20)\d{2})\s*$/.exec(name)
+  let cleaned = name.trim()
+  if (trailing) {
+    const written = Number(trailing[1])
+    if (written >= year - 1 && written <= year + EDITION_YEARS_AHEAD) {
+      cleaned = cleaned.slice(0, trailing.index).trim()
+    }
+  }
+
+  const ordinal = EDITION_ORDINAL.exec(cleaned)
+  if (ordinal) {
+    const rest = cleaned.slice(ordinal[0].length).trim()
+    // "1." on its own is not a name, and neither is what it leaves behind.
+    if (rest) cleaned = rest
+  }
+  return cleaned || name.trim()
+}

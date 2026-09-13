@@ -3,7 +3,7 @@ import { nameTokensOf } from '../raceCatalog/nameTokens.js'
 import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
-import { catalogId } from './identity.js'
+import { catalogId, nameWithoutEdition } from './identity.js'
 import type { DiscoveredRace } from './types.js'
 
 /** ISO date, `YYYY-MM-DD`, from whatever precision the source published. */
@@ -58,7 +58,10 @@ export function toCatalogEntry(
 
   return compact({
     id: catalogId(race),
-    name: race.name,
+    // Without the edition: a catalog entry is a race and its editions are the
+    // years, so "33. Graz Marathon" names the race wrong and is out of date
+    // the moment the 34th is announced.
+    name: nameWithoutEdition(race.name, new Date(provenance.harvestedAt)),
     country: race.country ?? 'XX',
     city: race.city ?? '',
     latitude: race.latitude,
@@ -66,7 +69,7 @@ export function toCatalogEntry(
     disciplines: toDisciplines(race.distancesKm),
     // What a name search matches on, because Firestore cannot look inside a
     // string.
-    nameTokens: nameTokensOf(race.name, race.city ?? ''),
+    nameTokens: nameTokensOf(nameWithoutEdition(race.name, new Date(provenance.harvestedAt)), race.city ?? ''),
     // What a listing never says is how you get in. Guessing `first_come`
     // because there is a price would put a lottery race in the wrong funnel.
     entryMethod: 'unknown',

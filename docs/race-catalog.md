@@ -175,6 +175,12 @@ The results page also comes **back**: on an event with no link of its own, the r
 
 What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
+### The name an entry is stored under
+
+Without the edition. A catalog entry is a race and its editions are the years, so "33. Graz Marathon" names the race wrong: the same race is the 34th next year, and every list showing it carries a number that is already out of date. `nameWithoutEdition` drops an ordinal with its dot at the front and a year at the end, and it is deliberately narrower than the `stripEdition` the duplicate rule compares with.
+
+What it leaves alone is the interesting half. A **bare** leading number stays, because in almost every one of those the number is the race: measured on 698 names carrying an edition, 24 begin with a bare number and they are "10 Marathon in 10 Tagen", "20 Km de la Forêt de Beloeil", "24 Stunden Jubiläumslauf". A trailing year stays unless it is near enough to now to be an edition: "Mattmark Memorial 1965" is named after the year of the disaster it remembers.
+
 ### Taking a race out of the catalog
 
 Nothing is deleted. `races.catalogRaceId` points at an id and no Firestore rule can check for references, so a hard delete would orphan whatever already points here, and an entry the harvest keeps finding would simply be written again on the next run. An entry goes out by being **retired**, which hides it from the discovery list, the name search, the duplicate rule and the operator's own work queue, and the harvest preserves that across a re-read.

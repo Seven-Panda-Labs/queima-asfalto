@@ -4,6 +4,14 @@
 
 ---
 
+## [1.55.0] - 2026-09-13
+
+### Geändert
+
+- **Rennnamen tragen die Ausgabe nicht mehr:** aus „33. Graz Marathon“ wird „Graz Marathon“, denn das Rennen ist dasselbe und die Zahl ändert sich jedes Jahr. Eine Zahl, die zum Namen gehört („10 Marathon in 10 Tagen“), bleibt.
+
+---
+
 ## [1.54.0] - 2026-09-13
 
 ### Behoben

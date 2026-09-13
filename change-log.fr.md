@@ -4,6 +4,14 @@
 
 ---
 
+## [1.55.0] - 2026-09-13
+
+### Modifié
+
+- **Les noms de courses ne portent plus l'édition :** « 33. Graz Marathon » devient « Graz Marathon », car la course est la même et le numéro change chaque année. Un nombre qui fait partie du nom (« 10 Marathon in 10 Tagen ») reste.
+
+---
+
 ## [1.54.0] - 2026-09-13
 
 ### Corrigé
