@@ -56,6 +56,33 @@ describe('IdentifyInCatalog', () => {
     expect(container).toBeEmptyDOMElement()
   })
 
+  it('says nothing on a parkrun, which this catalog does not hold', async () => {
+    // Weekly occurrences from a slug, not a list of editions: there is no
+    // annual entry to point at.
+    const { container } = render(
+      <IdentifyInCatalog
+        event={{ ...event, name: 'Hasenheide parkrun', parkrunEventSlug: 'hasenheide' } as Event}
+        userId="u1"
+        linked={false}
+      />,
+    )
+
+    expect(container).toBeEmptyDOMElement()
+  })
+
+  it('still offers on a race merely named like a parkrun', async () => {
+    // Nothing links it to a parkrun, so which race it is remains a question.
+    render(
+      <IdentifyInCatalog
+        event={{ ...event, name: 'Parkrun do Porto' } as Event}
+        userId="u1"
+        linked={false}
+      />,
+    )
+
+    expect(screen.getByRole('button', { name: /não está ligada/ })).toBeInTheDocument()
+  })
+
   it('searches on the event s own name when opened', async () => {
     searchRaceCatalog.mockResolvedValue([entry()])
     render(<IdentifyInCatalog event={event} userId="u1" linked={false} />)

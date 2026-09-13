@@ -17,6 +17,7 @@
 ### Geändert
 
 - **Der Name eines Rennens wiederholt nicht mehr seinen Ort:** „Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)“ zeigt nur noch den Namen, mit dem Ort daneben wie immer. Nur wenn der Ort der ganze Schluss des Namens ist und der Rest das Rennen weiter benennt.
+- **Bei einem parkrun erscheint die Einladung zur Katalogverknüpfung nicht mehr:** parkruns leben nicht dort, ihre Termine kommen aus dem parkrun-Event selbst. Ein Rennen, das nur „parkrun“ heißt und mit keinem verknüpft ist, bekommt die Einladung weiter.
 
 ---
 

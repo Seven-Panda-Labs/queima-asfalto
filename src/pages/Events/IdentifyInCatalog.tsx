@@ -102,6 +102,16 @@ export function IdentifyInCatalog({
   const [city, setCity] = useState(() => townIn(event.location))
   const [country, setCountry] = useState(() => countryIn(event.location))
 
+  // A parkrun is not in this catalog and never will be: its occurrences follow
+  // from a rule rather than a list of editions, and what an annual race needs
+  // an entry for (the date, the fee, the results link) comes from its slug
+  // instead. See "the two models diverge" in docs/race-catalog.md.
+  //
+  // Only what says it *is* a known parkrun counts. A race merely named like
+  // one, with nothing linking it, is exactly the case where saying which race
+  // it is still helps.
+  if (event.parkrunEventSlug || event.resultsPlatform === 'parkrun') return null
+
   if (linked || justLinked) return null
 
   // A proposal is the end of this, not a step in it: leaving the search open
