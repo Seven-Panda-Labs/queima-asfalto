@@ -4,6 +4,14 @@
 
 ---
 
+## [1.57.0] - 2026-09-13
+
+### Behoben
+
+- **Ein unvollständiger Ergebnis-Link verhindert den Import nicht mehr:** die eigene Ergebnisseite bei RaceResult (`/details1?pid=…`) einzufügen funktioniert jetzt wie das Einfügen der Liste. Bei mika:timing bleiben Veranstaltungen, deren Suche weder Zeit noch Link zeigt, nicht mehr aussen vor: der Lauf wird über die Laufauswahl gefunden, die Zeit kommt von der Seite der Läuferin oder des Läufers.
+
+---
+
 ## [1.56.0] - 2026-09-13
 
 ### Geändert

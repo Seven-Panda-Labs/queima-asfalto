@@ -112,7 +112,9 @@ export function parseRaceResultUrl(url: string): RaceResultUrlParts | null {
     const hostname = parsed.hostname.toLowerCase()
 
     if (hostname.includes('raceresult.com')) {
-      const match = /^\/(\d+)(?:\/results)?\/?$/i.exec(parsed.pathname)
+      // Anything under the event id works: runners copy `/details1?pid=…` from
+      // their own result as readily as the plain `/results` tab.
+      const match = /^\/(\d+)(?:\/[^/]*)?\/?$/i.exec(parsed.pathname)
       if (!match) return null
 
       const eventId = match[1]!

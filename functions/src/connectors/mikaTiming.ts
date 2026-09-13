@@ -1,9 +1,11 @@
 import type { OfficialResultCandidate, UserResultsProfile } from '../shared/types.js'
 import { matchesResultsProfile } from '../shared/matchName.js'
 import {
+  buildMikaTimingDetailUrl,
   buildMikaTimingListFormFields,
   buildMikaTimingSearchFormFields,
   isMikatimingResultsHtml,
+  parseMikaTimingDetailResult,
   parseMikaTimingEventFromHtml,
   parseMikaTimingMaxListPage,
   parseMikaTimingListParticipantCount,
@@ -40,18 +42,24 @@ async function fetchMikaTimingHtml(url: string, referer: string, form?: Record<s
   return response.text()
 }
 
-async function resolveMikaTimingParts(resultsUrl: string): Promise<MikaTimingUrlParts | null> {
+type ResolvedMikaTiming = {
+  parts: MikaTimingUrlParts
+  /** Races to try when the url names none. Only the landing page lists them. */
+  eventCodes: string[]
+}
+
+async function resolveMikaTimingParts(resultsUrl: string): Promise<ResolvedMikaTiming | null> {
   const parts = parseMikaTimingUrl(resultsUrl)
   if (!parts) return null
 
-  if (parts.event) return parts
+  if (parts.event) return { parts, eventCodes: [] }
 
   const html = await fetchMikaTimingHtml(parts.baseUrl, parts.baseUrl)
   if (!isMikatimingResultsHtml(html)) return null
 
   return {
-    ...parts,
-    event: parseMikaTimingEventFromHtml(html),
+    parts: { ...parts, event: parseMikaTimingEventFromHtml(html) },
+    eventCodes: parseMikaTimingSearchEventCodesFromHtml(html),
   }
 }
 
@@ -91,27 +99,49 @@ export async function lookupMikaTiming(
   resultsUrl: string,
   profile: UserResultsProfile,
 ): Promise<OfficialResultCandidate[]> {
-  const parts = await resolveMikaTimingParts(resultsUrl)
-  if (!parts) return []
+  const resolved = await resolveMikaTimingParts(resultsUrl)
+  if (!resolved) return []
 
+  const { parts } = resolved
   const searchName = buildMikaTimingSearchTerm(profile)
   if (!searchName) return []
 
-  let { html, rows } = await searchMikaTimingRows(parts, searchName, parts.event)
+  const { html, rows } = await searchMikaTimingRows(parts, searchName, parts.event)
   let match = rows.find((row) => matchesResultsProfile(profile, row.displayName))
+  let searchedEvent = parts.event
 
   if (!match && !parts.event) {
-    const eventCodes = parseMikaTimingSearchEventCodesFromHtml(html)
+    const eventCodes = [
+      ...new Set([...parseMikaTimingSearchEventCodesFromHtml(html), ...resolved.eventCodes]),
+    ]
     for (const event of eventCodes) {
       const retry = await searchMikaTimingRows(parts, searchName, event)
       match = retry.rows.find((row) => matchesResultsProfile(profile, row.displayName))
-      if (match) break
+      if (match) {
+        searchedEvent = event
+        break
+      }
     }
   }
 
   if (!match) return []
 
-  const event = match.event ?? parts.event
+  const event = match.event ?? searchedEvent
+
+  // Some events publish a search list with no finish time. The runner's own page has it.
+  let { time, position } = match
+  if (!time && match.runnerId) {
+    const detail = parseMikaTimingDetailResult(
+      await fetchMikaTimingHtml(
+        buildMikaTimingDetailUrl({ ...parts, event }, match.runnerId),
+        parts.baseUrl,
+      ),
+    )
+    time = detail?.time
+    position = position ?? detail?.position
+  }
+  if (!time) return []
+
   const totalParticipants = event
     ? await fetchMikaTimingTotalParticipants(parts, event).catch(() => undefined)
     : undefined
@@ -120,8 +150,8 @@ export async function lookupMikaTiming(
     {
       platform: 'mikatiming',
       matchedName: match.displayName,
-      time: match.time,
-      position: match.position,
+      time,
+      position,
       totalParticipants,
       sourceUrl: parts.pageUrl,
       confidence: 'high',

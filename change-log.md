@@ -4,6 +4,14 @@
 
 ---
 
+## [1.57.0] - 2026-09-13
+
+### Corrigido
+
+- **Um link de resultados imperfeito deixa de impedir a importação:** colar a página do próprio resultado no RaceResult (`/details1?pid=…`) passa a funcionar como colar a lista. No mika:timing, as provas que publicam a pesquisa sem tempo e sem link deixam de ficar por importar: a prova é encontrada pelo selector de provas e o tempo vem da página do corredor.
+
+---
+
 ## [1.56.0] - 2026-09-13
 
 ### Alterado

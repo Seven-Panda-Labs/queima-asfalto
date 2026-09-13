@@ -1,11 +1,17 @@
 import { describe, expect, it } from 'vitest'
 import chicagoFixture from './fixtures/mikatiming-chicago-search-neves.html?raw'
 import cityNightFixture from './fixtures/mikatiming-city-night-search-neves.html?raw'
+import munichDetailFixture from './fixtures/mikatiming-munich-detail-snippet.html?raw'
+import munichLandingFixture from './fixtures/mikatiming-munich-landing-snippet.html?raw'
+import munichSearchFixture from './fixtures/mikatiming-munich-search-snippet.html?raw'
 import { detectPlatformFromUrl } from './detectPlatform'
 import { matchesResultsProfile } from './matchName'
 import {
+  buildMikaTimingDetailUrl,
   buildMikaTimingSearchFormFields,
+  parseMikaTimingDetailResult,
   parseMikaTimingDisplayName,
+  parseMikaTimingEventCodesFromSelect,
   parseMikaTimingListParticipantCount,
   parseMikaTimingMaxListPage,
   parseMikaTimingOverallPlaceColumn,
@@ -80,12 +86,13 @@ describe('parseMikaTimingSearchRows', () => {
       lastName: 'Neves',
       time: '03:25:50',
       event: 'MAR',
+      runnerId: '9TGG96382B8531',
     })
   })
 
   it('parses SCC City Night netto time labels', () => {
     const rows = parseMikaTimingSearchRows(cityNightFixture)
-    expect(rows).toEqual([
+    expect(rows).toMatchObject([
       {
         position: 3273,
         displayName: 'Rodrigo Neves',
@@ -95,6 +102,64 @@ describe('parseMikaTimingSearchRows', () => {
         event: 'CN10',
       },
     ])
+  })
+
+  it('keeps a row whose name is not a link and whose list shows no time', () => {
+    expect(parseMikaTimingSearchRows(munichSearchFixture)).toEqual([
+      {
+        position: 401,
+        displayName: 'Zé Ninguém',
+        firstName: 'Zé',
+        lastName: 'Ninguém',
+        time: undefined,
+        event: undefined,
+        runnerId: 'QAFIX3374',
+      },
+    ])
+  })
+})
+
+describe('parseMikaTimingEventCodesFromSelect', () => {
+  it('reads the race codes the class names do not carry', () => {
+    expect(parseMikaTimingEventCodesFromSelect(munichLandingFixture)).toEqual([
+      'M_QAFIX',
+      'HM_QAFIX',
+      '10_QAFIX',
+      'KR1_QAFIX',
+    ])
+  })
+
+  it('ignores the season picker', () => {
+    expect(parseMikaTimingEventCodesFromSelect(munichLandingFixture)).not.toContain('2025')
+  })
+})
+
+describe('parseMikaTimingDetailResult', () => {
+  it('reads the net time and overall place the search list omitted', () => {
+    expect(parseMikaTimingDetailResult(munichDetailFixture)).toEqual({
+      time: '03:12:23',
+      position: 401,
+    })
+  })
+
+  it('returns null when the page holds no result', () => {
+    expect(parseMikaTimingDetailResult('<div class="detail">Not found</div>')).toBeNull()
+  })
+})
+
+describe('buildMikaTimingDetailUrl', () => {
+  it('addresses the runner on their event', () => {
+    const url = new URL(
+      buildMikaTimingDetailUrl(
+        { baseUrl: 'https://muenchen.r.mikatiming.com/2025/', lang: 'EN_CAP', event: 'M_QAFIX' },
+        'QAFIX3374',
+      ),
+    )
+
+    expect(url.origin + url.pathname).toBe('https://muenchen.r.mikatiming.com/2025/')
+    expect(url.searchParams.get('content')).toBe('detail')
+    expect(url.searchParams.get('idp')).toBe('QAFIX3374')
+    expect(url.searchParams.get('event')).toBe('M_QAFIX')
   })
 })
 

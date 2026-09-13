@@ -23,7 +23,8 @@ export type RaceResultListResponse = {
   error?: string
 }
 
-const NAME_FIELDS = ['FLNAME', 'AnzeigeName', 'NAME', 'Name']
+// `LFNAME` is "Surname, First name", the default on German events.
+const NAME_FIELDS = ['FLNAME', 'LFNAME', 'AnzeigeName', 'NAME', 'Name']
 const NAME_FIELD_PATTERN = /AnzeigeTitel|FLNAME|AnzeigeName/i
 const TIME_FIELDS = ['TIME', 'Ziel.CHIP', 'Ziel', 'Nettozeit', 'Netto', 'Brutto']
 const TIME_FIELD_PATTERN = /ZeitMitStatus|ZeitmitStatus|^TIME$|Nettozeit|Ziel\.CHIP|^Ziel$/i

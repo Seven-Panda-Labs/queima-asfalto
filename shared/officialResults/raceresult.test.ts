@@ -119,6 +119,22 @@ describe('raceResultFieldIndexes', () => {
     })
   })
 
+  it('maps a german list keyed by LFNAME', () => {
+    expect(
+      raceResultFieldIndexes([
+        'BIB',
+        'ID',
+        'MitStatus([GesPlp])',
+        'LFNAME',
+        'YEAR',
+        'GeschlechtMW',
+        'CLUB',
+        'Brutto',
+        'Netto',
+      ]),
+    ).toEqual({ name: 3, time: 8, rank: 2 })
+  })
+
   it('maps sovd formula fields', () => {
     expect(raceResultFieldIndexes(sovdFixture.DataFields)).toEqual({
       name: 4,

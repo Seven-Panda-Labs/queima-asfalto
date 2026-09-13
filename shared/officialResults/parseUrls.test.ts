@@ -97,6 +97,11 @@ describe('parseRaceResultUrl', () => {
     expect(parts?.listId).toBeUndefined()
   })
 
+  it('accepts a participant detail url, which is what a runner copies', () => {
+    const parts = parseRaceResultUrl('https://my.raceresult.com/98517/details1?pid=4120')
+    expect(parts?.eventId).toBe('98517')
+  })
+
   it('accepts short event urls with hash only', () => {
     const parts = parseRaceResultUrl('https://my.raceresult.com/154660/#1_5162DB')
     expect(parts).toEqual({
