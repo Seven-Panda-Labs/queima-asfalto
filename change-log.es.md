@@ -4,6 +4,14 @@
 
 ---
 
+## [1.57.0] - 2026-09-13
+
+### Corregido
+
+- **Un enlace de resultados imperfecto ya no impide la importación:** pegar la página del propio resultado en RaceResult (`/details1?pid=…`) ahora funciona igual que pegar la lista. En mika:timing, las carreras que publican la búsqueda sin tiempo y sin enlace ya no se quedan fuera: la carrera se encuentra por el selector y el tiempo viene de la página del corredor.
+
+---
+
 ## [1.56.0] - 2026-09-13
 
 ### Cambiado

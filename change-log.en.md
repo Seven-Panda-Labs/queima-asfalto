@@ -4,6 +4,14 @@
 
 ---
 
+## [1.57.0] - 2026-09-13
+
+### Fixed
+
+- **An imperfect results link no longer blocks the import:** pasting your own result page on RaceResult (`/details1?pid=…`) now works like pasting the list. On mika:timing, events that publish the search with no time and no link are no longer left out: the race is found through the race picker and the time comes from the runner’s own page.
+
+---
+
 ## [1.56.0] - 2026-09-13
 
 ### Changed
