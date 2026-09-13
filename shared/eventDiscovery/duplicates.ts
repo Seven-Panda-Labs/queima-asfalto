@@ -470,7 +470,7 @@ export function findCatalogDuplicate(
  * asking the server for is the one that is not on every second race.
  */
 export const GENERIC =
-  /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|halb|halv|semi|maraton|maratona|maratonina|marathons|meia|mezza|media|corrida|carrera|course|cursa|prova|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
+  /^(?:run|running|race|races|walk|walking|lauf|laufen|laufe|marathon|halbmarathon|half|halb|halv|halve|semi|maraton|maratona|maratonina|marathons|meia|mezza|media|corrida|carrera|course|cursa|prova|mile|miles|meile|meilen|fun|annual|kids|family|charity|memorial|benefit|benefiz|trail|dash|trot|jog|festival|challenge|classic|city|cup|series|night|day|virtual|sport|sports|team|teams|open|volkslauf|stadtlauf|firmenlauf|\d{1,3}k|\d{1,2}km)$/i
 
 /**
  * The names share a word that means something.
@@ -581,4 +581,59 @@ export function catalogDuplicateCandidates(
   }
 
   return candidates
+}
+
+/**
+ * A separator with room around it, or a parenthesis at the end.
+ *
+ * A hyphen glued to letters is part of a word, not a break: "Volksbank-Münster
+ * Marathon" and "Ascona-Locarno" lose their meaning if it is read as one, and
+ * both are real catalog names.
+ */
+const TRAILING_APPENDIX = /^(.+?)\s+[-–—:,]\s+(.+?)\s*$/
+const TRAILING_PARENTHESIS = /^(.+?)\s*\(([^()]+)\)\s*$/
+
+/** Lower case, unaccented, punctuation as spaces: two spellings of one town. */
+function foldForTown(value: string): string {
+  return value
+    .normalize('NFD')
+    .replace(/\p{M}/gu, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim()
+}
+
+/**
+ * The name without the town it is already filed under.
+ *
+ * "Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)" is sixty-one
+ * characters of which nineteen are the town the entry already carries in its
+ * own field, and a phone shows the name and the town side by side. Ninety-six
+ * names in one catalog end this way.
+ *
+ * Two things hold it back from being a guess. The town has to be the **whole**
+ * appendix after a separator that has room around it, so a compound name is
+ * never cut in half. And what is left has to still name a race: "Halve
+ * Marathon - Erpe-Mere" keeps its town, because "Halve Marathon" is what every
+ * half marathon in the Netherlands is called.
+ */
+export function nameWithoutTown(name: string, city: string): string {
+  const town = foldForTown(city)
+  if (!town) return name.trim()
+
+  const match = TRAILING_APPENDIX.exec(name) ?? TRAILING_PARENTHESIS.exec(name)
+  if (!match) return name.trim()
+
+  const head = match[1]!.trim()
+  const tail = foldForTown(match[2]!)
+  if (!head || !tail) return name.trim()
+  // The whole appendix, not a word of it: "Rhön-Grabfeld-Cup – Hollstadt" goes
+  // and "Spartan Race Zell am See-Kaprun" does not.
+  if (tail !== town && !town.startsWith(tail) && !tail.startsWith(town)) return name.trim()
+
+  const left = foldForTown(head)
+    .split(' ')
+    .filter((word) => word.length > 2)
+  if (left.length === 0 || left.every((word) => GENERIC.test(word))) return name.trim()
+  return head
 }

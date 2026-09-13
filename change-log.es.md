@@ -4,6 +4,14 @@
 
 ---
 
+## [1.56.0] - 2026-09-13
+
+### Cambiado
+
+- **El nombre de una carrera ya no repite su localidad:** "Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)" muestra solo el nombre, con la localidad al lado como siempre. Solo cuando la localidad es todo el final del nombre y lo que queda sigue identificando la carrera.
+
+---
+
 ## [1.55.0] - 2026-09-13
 
 ### Cambiado

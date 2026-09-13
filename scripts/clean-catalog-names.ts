@@ -1,6 +1,6 @@
 #!/usr/bin/env npx tsx
 /**
- * Takes the edition out of the names already stored.
+ * Takes the edition and the town out of the names already stored.
  *
  * A catalog entry is a race and its editions are the years, so "33. Graz
  * Marathon" names the race wrong: next year the same race is the 34th and
@@ -11,6 +11,10 @@
  * decides: an ordinal with its dot at the front, and a year at the end near
  * enough to now to be an edition. A bare leading number stays, because in
  * almost every one of those the number is the race: "10 Marathon in 10 Tagen".
+ *
+ * And the town the entry already carries goes with it, when it is the whole
+ * appendix after a separator and what is left still names a race:
+ * "Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)".
  *
  * The words the search uses are rewritten with the name, and the id is not:
  * `races.catalogRaceId` points at it and ids never change.
@@ -25,6 +29,7 @@
  */
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
+import { nameWithoutTown } from '../shared/eventDiscovery/duplicates.js'
 import { nameWithoutEdition } from '../shared/eventDiscovery/identity.js'
 import { nameTokensOf } from '../shared/raceCatalog/nameTokens.js'
 import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
@@ -54,7 +59,7 @@ async function main(): Promise<void> {
 
   for (const document of snapshot.docs) {
     const entry = document.data() as RaceCatalogEntry
-    const cleaned = nameWithoutEdition(entry.name, now)
+    const cleaned = nameWithoutTown(nameWithoutEdition(entry.name, now), entry.city ?? '')
     if (cleaned === entry.name) continue
     writes.push({
       id: document.id,
@@ -63,7 +68,7 @@ async function main(): Promise<void> {
     })
   }
 
-  console.log(`${snapshot.size} entries, ${writes.length} names carrying an edition`)
+  console.log(`${snapshot.size} entries, ${writes.length} names carrying an edition or their own town`)
   for (const write of writes.slice(0, 15)) console.log(`  ${write.id}: -> "${write.name}"`)
 
   if (dryRun) {
