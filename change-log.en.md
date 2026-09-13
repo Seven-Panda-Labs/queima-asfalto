@@ -9,6 +9,7 @@
 ### Changed
 
 - **A race’s name no longer repeats its town:** "Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)" shows just the name, with the town beside it as it always was. Only when the town is the whole tail of the name and what remains still names the race.
+- **A parkrun no longer offers to be linked to the catalog:** parkruns do not live there, their occurrences come from the parkrun event itself. A race merely named "parkrun", linked to none, still gets the offer.
 
 ---
 

@@ -9,6 +9,7 @@
 ### Alterado
 
 - **O nome de uma prova deixa de repetir a terra:** "Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder)" passa a mostrar só o nome, com a terra ao lado como sempre esteve. Só quando a terra é o fim inteiro do nome e o resto continua a identificar a prova.
+- **Numa parkrun deixa de aparecer o convite para a ligar ao catálogo:** as parkrun não vivem nesse catálogo, as ocorrências vêm do próprio evento parkrun. Numa prova apenas chamada "parkrun", sem ligação a nenhuma, o convite continua.
 
 ---
 

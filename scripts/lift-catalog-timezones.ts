@@ -65,7 +65,7 @@ async function main(): Promise<void> {
     const stored = zones[0]!
     const fromCountry = timezoneFor(entry.country)
     const clean = editions.map((edition) => {
-      const { timezone, ...rest } = edition
+      const { timezone: _dropped, ...rest } = edition
       return rest as RaceCatalogEdition
     })
 

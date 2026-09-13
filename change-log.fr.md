@@ -9,6 +9,7 @@
 ### Modifié
 
 - **Le nom d'une course ne répète plus sa ville :** « Paarlauf im Rahmen des Sportabzeichentages - Frankfurt (Oder) » n'affiche que le nom, la ville restant à côté comme toujours. Seulement quand la ville est toute la fin du nom et que ce qui reste nomme encore la course.
+- **Sur un parkrun, l'invitation à le relier au catalogue disparaît :** les parkruns n'y vivent pas, leurs occurrences viennent de l'événement parkrun lui-même. Une course simplement nommée « parkrun », reliée à aucun, garde l'invitation.
 
 ---
 
