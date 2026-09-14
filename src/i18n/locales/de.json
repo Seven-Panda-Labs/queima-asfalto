@@ -280,6 +280,48 @@
     "rank": "{{rank}}. von {{total}}",
     "paceNote": "Nach Pace verglichen, denn dieselbe Strecke wird nicht immer gleich lang gemessen."
   },
+  "celebration": {
+    "bandTitle": "Was dieses Rennen gesetzt hat",
+    "dismiss": "Schließen",
+    "superseded": "Inzwischen überboten",
+    "supersededBy": "Überboten bei {{name}}",
+    "personalRecord": {
+      "title": "Persönliche Bestzeit · {{distance}}",
+      "improvement": "{{delta}} s/km unter dem alten Rekord",
+      "improvementTiny": "Unter dem alten Rekord, ganz knapp",
+      "first": "Die erste auf dieser Distanz"
+    },
+    "firstAtDistance": {
+      "title": "Premiere über {{distance}}",
+      "detail": "Das erste Mal bleibt"
+    },
+    "courseRecord": {
+      "title": "Streckenbestzeit",
+      "detail": "{{runs}} Läufe hier · {{delta}} s/km schneller",
+      "detailTiny": "{{runs}} Läufe hier, und das war der beste"
+    },
+    "annualGoal": {
+      "title": "Jahresziel",
+      "detail": "Ziel für {{year}} erreicht"
+    },
+    "performanceGoal": {
+      "title": "Leistungsziel",
+      "detail": "Erreicht in {{year}}"
+    },
+    "raceCount": {
+      "title": "Beendete Rennen",
+      "detail": "Eine runde Zahl"
+    },
+    "distanceCount": {
+      "title": "Mal über {{distance}}",
+      "detail": "Das summiert sich"
+    },
+    "seasonDistance": {
+      "title": "Kilometer im Wettkampf",
+      "value": "{{km}} km",
+      "detail": "Gesammelt in {{year}}"
+    }
+  },
   "eventForm": {
     "new": "Neues Event",
     "edit": "Event bearbeiten",
@@ -985,6 +1027,64 @@
       "Los gehts!",
       "Das ist es. Keine Ausreden."
     ],
+    "celebration": {
+      "record": {
+        "primary": [
+          "Deine schnellste Zeit",
+          "Rekord gebrochen",
+          "Neuer Rekord, der alte darf sich ausruhen",
+          "So schnell warst du nie"
+        ],
+        "secondary": [
+          "Das war kein Glück. Das war Training.",
+          "Soll sich der Asphalt beschweren.",
+          "Merk dir die Zeit. Du willst sie schlagen.",
+          "Das Du von vor ein paar Monaten kam nicht mit."
+        ]
+      },
+      "goal": {
+        "primary": [
+          "Ziel erreicht",
+          "Ziel abgehakt",
+          "Erledigt",
+          "Der Jahresplan geht auf"
+        ],
+        "secondary": [
+          "Aufgeschrieben, gelaufen, erledigt.",
+          "Genau das hat gefehlt. Jetzt nicht mehr.",
+          "Das Ziel war deins. Die Arbeit auch.",
+          "Und die Saison ist noch nicht vorbei."
+        ]
+      },
+      "generic": {
+        "primary": [
+          "Bleibt vermerkt",
+          "Eine mehr für die Sammlung",
+          "Das zählt",
+          "Steht auf der Tafel"
+        ],
+        "secondary": [
+          "Nicht jedes Rennen hinterlässt etwas. Dieses schon.",
+          "Kleines Detail, großer Tag.",
+          "Deine Historie sieht jetzt besser aus.",
+          "Weiter so."
+        ]
+      },
+      "past": {
+        "primary": [
+          "Damals war das groß",
+          "Damals ein Rekord",
+          "Dieser Tag zählte",
+          "Bleibt in der Historie"
+        ],
+        "secondary": [
+          "Inzwischen überboten. Das nimmt nichts weg.",
+          "Der Rekord hat den Besitzer gewechselt. Der Tag nicht.",
+          "Du bist seitdem schneller geworden. Umso besser.",
+          "Jeder alte Rekord war mal neu."
+        ]
+      }
+    },
     "loading": {
       "shared": {
         "aria": "Geteilte Daten von {{name}} werden geladen",

@@ -1,11 +1,13 @@
 import type { EventType } from '../../types/Event'
 import { EVENT_TYPES } from '../../types/Event'
+import { beatsRecordPace } from '../../domain/personalRecord'
 import type { AnalysableResult } from './results'
 
 /**
- * Measured by pace, matching `bestPerformances` on the Dashboard. Riegel
- * compares disciplines against each other; using it within one would give the
- * app a second, contradictory definition of "personal record".
+ * Measured by `beatsRecordPace`, the one rule the Dashboard strip and the
+ * performance goals also rank by. Riegel compares disciplines against each
+ * other; using it within one would give the app a second, contradictory
+ * definition of "personal record".
  */
 export type RecordMark = {
   result: AnalysableResult
@@ -32,7 +34,7 @@ export function recordMarksFor(
 
   for (const result of results) {
     if (result.eventType !== eventType) continue
-    if (best !== null && result.paceSeconds >= best.paceSeconds) continue
+    if (best !== null && !beatsRecordPace(result.paceSeconds, best.paceSeconds)) continue
 
     marks.push({
       result,

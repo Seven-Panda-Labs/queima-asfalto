@@ -280,6 +280,48 @@
     "rank": "{{rank}}ª de {{total}}",
     "paceNote": "Comparado por ritmo, porque o mesmo percurso nem sempre é medido com a mesma distância."
   },
+  "celebration": {
+    "bandTitle": "O que esta prova marcou",
+    "dismiss": "Fechar",
+    "superseded": "Entretanto superado",
+    "supersededBy": "Superado em {{name}}",
+    "personalRecord": {
+      "title": "Recorde pessoal · {{distance}}",
+      "improvement": "{{delta}} s/km abaixo do recorde anterior",
+      "improvementTiny": "Abaixo do recorde anterior, à tangente",
+      "first": "O primeiro desta distância"
+    },
+    "firstAtDistance": {
+      "title": "Estreia nos {{distance}}",
+      "detail": "A primeira vez fica sempre"
+    },
+    "courseRecord": {
+      "title": "Recorde do percurso",
+      "detail": "{{runs}} passagens por aqui · {{delta}} s/km mais rápido",
+      "detailTiny": "{{runs}} passagens por aqui, e esta foi a melhor"
+    },
+    "annualGoal": {
+      "title": "Objetivo do ano",
+      "detail": "Meta de {{year}} fechada"
+    },
+    "performanceGoal": {
+      "title": "Meta de performance",
+      "detail": "Cumprida em {{year}}"
+    },
+    "raceCount": {
+      "title": "Provas concluídas",
+      "detail": "Número redondo"
+    },
+    "distanceCount": {
+      "title": "Vezes nos {{distance}}",
+      "detail": "Sempre a somar"
+    },
+    "seasonDistance": {
+      "title": "Quilómetros em prova",
+      "value": "{{km}} Km",
+      "detail": "Acumulados em {{year}}"
+    }
+  },
   "eventForm": {
     "new": "Novo evento",
     "edit": "Editar evento",
@@ -985,6 +1027,64 @@
       "Vamos a isto!",
       "É esta. Sem desculpas."
     ],
+    "celebration": {
+      "record": {
+        "primary": [
+          "O teu melhor de sempre",
+          "Bateste o teu recorde",
+          "Recorde novo, o antigo que descanse",
+          "Nunca correste tão depressa"
+        ],
+        "secondary": [
+          "Isto não foi sorte. Foi treino.",
+          "O asfalto que se queixe.",
+          "Guarda este tempo. Vais querer bater outra vez.",
+          "O teu eu de há uns meses não te apanhava."
+        ]
+      },
+      "goal": {
+        "primary": [
+          "Meta cumprida",
+          "Objetivo fechado",
+          "Está feito",
+          "O plano do ano bate certo"
+        ],
+        "secondary": [
+          "Escreveste, correste, cumpriste.",
+          "Faltava esta. Já não falta.",
+          "A meta era tua. O trabalho também foi.",
+          "E ainda há época pela frente."
+        ]
+      },
+      "generic": {
+        "primary": [
+          "Ficou marcado",
+          "Mais uma para a coleção",
+          "Isto conta",
+          "Está no quadro"
+        ],
+        "secondary": [
+          "Nem todas as provas deixam marca. Esta deixou.",
+          "Pequeno detalhe, grande dia.",
+          "O histórico ficou melhor do que estava.",
+          "Continua."
+        ]
+      },
+      "past": {
+        "primary": [
+          "Foi grande na altura",
+          "Na altura, foi recorde",
+          "Este dia contou",
+          "Ficou na história"
+        ],
+        "secondary": [
+          "Já foi superado. Não apaga nada.",
+          "O recorde mudou de dono. O dia é o mesmo.",
+          "Entretanto ficaste mais rápido. Melhor ainda.",
+          "Cada recorde velho já foi novo."
+        ]
+      }
+    },
     "loading": {
       "shared": {
         "aria": "A carregar dados partilhados de {{name}}",

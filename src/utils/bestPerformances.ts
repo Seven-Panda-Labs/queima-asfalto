@@ -1,38 +1,8 @@
 import type { Event, EventType } from '../types/Event'
 import { EVENT_TYPES } from '../types/Event'
+import { pickFastestEvent } from '../domain/personalRecord'
 import { formatEventTypeLabel } from '../types/Goal'
 import { formatRelativeTimePt } from './date'
-import { parseTime } from './time'
-
-const PACE_PATTERN = /^(\d{1,2}):(\d{2})$/
-
-function parsePaceSeconds(pace: string): number | null {
-  const match = PACE_PATTERN.exec(pace.trim())
-  if (!match) return null
-  const minutes = Number(match[1])
-  const seconds = Number(match[2])
-  if (seconds > 59) return null
-  return minutes * 60 + seconds
-}
-
-/** Negative when candidate is better than current best. */
-function comparePerformanceCandidates(currentBest: Event, candidate: Event): number {
-  const bestPace = parsePaceSeconds(currentBest.pace!)
-  const candidatePace = parsePaceSeconds(candidate.pace!)
-  if (bestPace === null) return -1
-  if (candidatePace === null) return 1
-  if (candidatePace !== bestPace) return candidatePace - bestPace
-
-  if (candidate.realDistance === currentBest.realDistance) {
-    const bestTime = parseTime(currentBest.time!)
-    const candidateTime = parseTime(candidate.time!)
-    if (bestTime !== null && candidateTime !== null) {
-      return candidateTime - bestTime
-    }
-  }
-
-  return 0
-}
 
 export type BestPerformance = {
   eventId: string
@@ -46,6 +16,8 @@ export type BestPerformance = {
 }
 
 export function computeBestPerformances(events: Event[]): BestPerformance[] {
+  // Both fields are required for the strip to have something to print, even
+  // though ranking only ever needs the time.
   const completed = events.filter(
     (event) => event.status === 'completed' && event.pace && event.time,
   )
@@ -53,12 +25,8 @@ export function computeBestPerformances(events: Event[]): BestPerformance[] {
   const results: BestPerformance[] = []
 
   for (const eventType of EVENT_TYPES) {
-    const candidates = completed.filter((event) => event.eventType === eventType)
-    if (candidates.length === 0) continue
-
-    const best = candidates.reduce((currentBest, candidate) =>
-      comparePerformanceCandidates(currentBest, candidate) < 0 ? candidate : currentBest,
-    )
+    const best = pickFastestEvent(completed.filter((event) => event.eventType === eventType))
+    if (!best) continue
 
     results.push({
       eventId: best.id,

@@ -280,6 +280,48 @@
     "rank": "{{rank}} of {{total}}",
     "paceNote": "Compared by pace, because the same course is not always measured at the same distance."
   },
+  "celebration": {
+    "bandTitle": "What this race marked",
+    "dismiss": "Close",
+    "superseded": "Beaten since",
+    "supersededBy": "Beaten at {{name}}",
+    "personalRecord": {
+      "title": "Personal best · {{distance}}",
+      "improvement": "{{delta}} s/km faster than the old record",
+      "improvementTiny": "Faster than the old record, barely",
+      "first": "The first at this distance"
+    },
+    "firstAtDistance": {
+      "title": "First {{distance}}",
+      "detail": "The first one always stays"
+    },
+    "courseRecord": {
+      "title": "Course best",
+      "detail": "{{runs}} runnings here · {{delta}} s/km faster",
+      "detailTiny": "{{runs}} runnings here, and this was the best"
+    },
+    "annualGoal": {
+      "title": "Goal for the year",
+      "detail": "{{year}} target closed"
+    },
+    "performanceGoal": {
+      "title": "Performance goal",
+      "detail": "Met in {{year}}"
+    },
+    "raceCount": {
+      "title": "Races finished",
+      "detail": "A round number"
+    },
+    "distanceCount": {
+      "title": "Times at {{distance}}",
+      "detail": "They add up"
+    },
+    "seasonDistance": {
+      "title": "Kilometres raced",
+      "value": "{{km}} km",
+      "detail": "Over {{year}}"
+    }
+  },
   "eventForm": {
     "new": "New event",
     "edit": "Edit event",
@@ -985,6 +1027,64 @@
       "Let's go!",
       "This is the one. No excuses."
     ],
+    "celebration": {
+      "record": {
+        "primary": [
+          "Your fastest ever",
+          "You beat your best",
+          "New record, the old one can rest",
+          "You have never run this fast"
+        ],
+        "secondary": [
+          "That was not luck. That was training.",
+          "Let the asphalt complain.",
+          "Save this time. You will want to beat it.",
+          "The you of a few months ago never caught up."
+        ]
+      },
+      "goal": {
+        "primary": [
+          "Goal done",
+          "Target closed",
+          "That is that",
+          "The year's plan adds up"
+        ],
+        "secondary": [
+          "You wrote it down, then you ran it.",
+          "This was the one missing. Not any more.",
+          "The goal was yours. So was the work.",
+          "And there is still season left."
+        ]
+      },
+      "generic": {
+        "primary": [
+          "Worth marking",
+          "One more for the collection",
+          "This one counts",
+          "On the board"
+        ],
+        "secondary": [
+          "Not every race leaves a mark. This one did.",
+          "Small detail, good day.",
+          "Your history just got better.",
+          "Keep going."
+        ]
+      },
+      "past": {
+        "primary": [
+          "It was big at the time",
+          "Back then, a record",
+          "This day counted",
+          "It stays in the history"
+        ],
+        "secondary": [
+          "It has been beaten since. That takes nothing away.",
+          "The record moved on. The day did not.",
+          "You got faster since. Even better.",
+          "Every old record was new once."
+        ]
+      }
+    },
     "loading": {
       "shared": {
         "aria": "Loading shared data from {{name}}",

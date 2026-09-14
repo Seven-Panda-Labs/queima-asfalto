@@ -4,6 +4,18 @@
 
 ---
 
+## [1.59.0] - 2026-09-14
+
+### Ajouté
+
+- **Une course célèbre désormais ce qu'elle a changé :** à l'enregistrement d'un résultat, un panneau avec des confettis annonce un nouveau record personnel, un objectif de l'année atteint, un objectif de performance, une première sur une distance, un record de parcours et les chiffres ronds, au lieu du simple avis de résultat enregistré. Ce que la course a marqué reste sur sa page pour toujours, même une fois battu, et qui préfère moins de mouvement n'a pas de confettis.
+
+### Modifié
+
+- **Le record personnel se lit sur le temps, pas sur l'allure arrondie :** deux courses affichant 5:20 pouvaient être séparées de trois secondes, et le départage différait entre l'accueil, l'analyse et les objectifs. Les trois suivent désormais la même règle.
+
+---
+
 ## [1.58.0] - 2026-09-13
 
 ### Corrigé

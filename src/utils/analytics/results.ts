@@ -54,7 +54,7 @@ export function isAnalysableResult(event: Event): boolean {
   return resolveTiming(event, event.realDistance) !== null
 }
 
-function toAnalysableResult(event: Event): AnalysableResult | null {
+export function toAnalysableResult(event: Event): AnalysableResult | null {
   if (event.status !== 'completed') return null
   if (!Number.isFinite(event.realDistance) || event.realDistance <= 0) return null
 
