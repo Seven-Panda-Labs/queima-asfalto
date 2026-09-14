@@ -15,6 +15,7 @@ import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarat
 import { readKilometerliebeCalendar } from '../shared/eventDiscovery/kilometerliebe.js'
 import { readMarathonDePage } from '../shared/eventDiscovery/marathonDe.js'
 import { readRunmeCalendar } from '../shared/eventDiscovery/runme.js'
+import { readCologneTimingCalendar } from '../shared/eventDiscovery/cologneTiming.js'
 import { readSccCalendar } from '../shared/eventDiscovery/sccEvents.js'
 import {
   davengoStarterUrl,
@@ -174,6 +175,11 @@ function readListing(source: DiscoverySource, url: string, html: string): Discov
   switch (source.listingReader) {
     case 'planet-marathon':
       return readPlanetMarathonCalendar(html, { sourceUrl: url, country: source.country })
+    case 'cologne-timing':
+      return readCologneTimingCalendar(html, {
+        country: source.country ?? 'XX',
+        baseUrl: source.baseUrl ?? url,
+      })
     case 'kilometerliebe':
       return readKilometerliebeCalendar(html, { baseUrl: source.baseUrl ?? url })
     case 'runme':

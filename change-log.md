@@ -4,6 +4,14 @@
 
 ---
 
+## [1.62.0] - 2026-09-14
+
+### Adicionado
+
+- **O calendário de um segundo cronometrista:** a descoberta passa a ler 32 provas na Renânia, cada uma com o sítio da própria prova, e todas já resolvem para uma plataforma de resultados que a app importa. Fica desligado até o activares.
+
+---
+
 ## [1.61.0] - 2026-09-14
 
 ### Alterado

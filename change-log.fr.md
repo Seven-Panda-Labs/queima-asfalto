@@ -4,6 +4,14 @@
 
 ---
 
+## [1.62.0] - 2026-09-14
+
+### Ajouté
+
+- **Le calendrier d'un deuxième chronométreur :** la découverte lit désormais 32 courses en Rhénanie, chacune avec le site de la course elle-même, et toutes aboutissent à une plateforme de résultats que l'app importe. Reste désactivé tant que vous ne l'activez pas.
+
+---
+
 ## [1.61.0] - 2026-09-14
 
 ### Modifié

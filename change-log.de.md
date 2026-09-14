@@ -4,6 +4,14 @@
 
 ---
 
+## [1.62.0] - 2026-09-14
+
+### Hinzugefügt
+
+- **Der Kalender eines zweiten Zeitmessers:** die Suche liest jetzt 32 Rennen im Rheinland, jedes mit der eigenen Seite des Rennens, und alle führen zu einer Ergebnisplattform, die die App importiert. Bleibt aus, bis du sie einschaltest.
+
+---
+
 ## [1.61.0] - 2026-09-14
 
 ### Geändert

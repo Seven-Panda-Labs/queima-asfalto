@@ -23,6 +23,7 @@ export type DiscoverySourceKind = 'sitemap' | 'search' | 'listing'
  */
 export const LISTING_READERS = [
   'scc-events',
+  'cologne-timing',
   'planet-marathon',
   'kilometerliebe',
   'schema-org',
