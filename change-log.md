@@ -4,6 +4,18 @@
 
 ---
 
+## [1.59.0] - 2026-09-14
+
+### Adicionado
+
+- **A prova passa a celebrar o que mudou:** ao guardar um resultado aparece um painel com confetis para um novo recorde pessoal, um objetivo do ano cumprido, uma meta de performance, a estreia numa distância, o recorde de um percurso e os números redondos, em vez do simples aviso de resultado guardado. O que a prova marcou fica na sua página para sempre, mesmo depois de ser superado, e quem prefere menos movimento não leva confetis.
+
+### Alterado
+
+- **O recorde pessoal passa a ler-se do tempo, não do ritmo arredondado:** duas provas que mostram 5:20 podiam estar a três segundos uma da outra, e o desempate não era o mesmo no Início, na análise e nas metas. Os três seguem agora a mesma regra.
+
+---
+
 ## [1.58.0] - 2026-09-13
 
 ### Corrigido

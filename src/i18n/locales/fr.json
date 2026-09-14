@@ -280,6 +280,48 @@
     "rank": "{{rank}}e sur {{total}}",
     "paceNote": "Comparé à l'allure, car le même parcours n'est pas toujours mesuré à la même distance."
   },
+  "celebration": {
+    "bandTitle": "Ce que cette course a marqué",
+    "dismiss": "Fermer",
+    "superseded": "Battu depuis",
+    "supersededBy": "Battu à {{name}}",
+    "personalRecord": {
+      "title": "Record personnel · {{distance}}",
+      "improvement": "{{delta}} s/km sous l'ancien record",
+      "improvementTiny": "Sous l'ancien record, de justesse",
+      "first": "Le premier sur cette distance"
+    },
+    "firstAtDistance": {
+      "title": "Première sur {{distance}}",
+      "detail": "La première reste toujours"
+    },
+    "courseRecord": {
+      "title": "Record du parcours",
+      "detail": "{{runs}} passages ici · {{delta}} s/km plus vite",
+      "detailTiny": "{{runs}} passages ici, et celui-ci fut le meilleur"
+    },
+    "annualGoal": {
+      "title": "Objectif de l'année",
+      "detail": "Objectif {{year}} bouclé"
+    },
+    "performanceGoal": {
+      "title": "Objectif de performance",
+      "detail": "Atteint en {{year}}"
+    },
+    "raceCount": {
+      "title": "Courses terminées",
+      "detail": "Un chiffre rond"
+    },
+    "distanceCount": {
+      "title": "Fois sur {{distance}}",
+      "detail": "Tout s'additionne"
+    },
+    "seasonDistance": {
+      "title": "Kilomètres en course",
+      "value": "{{km}} km",
+      "detail": "Cumulés en {{year}}"
+    }
+  },
   "eventForm": {
     "new": "Nouvel événement",
     "edit": "Modifier l'événement",
@@ -985,6 +1027,64 @@
       "On y va !",
       "C'est celle-là. Sans excuses."
     ],
+    "celebration": {
+      "record": {
+        "primary": [
+          "Ton meilleur temps",
+          "Tu as battu ton record",
+          "Record neuf, l'ancien peut se reposer",
+          "Jamais couru aussi vite"
+        ],
+        "secondary": [
+          "Ce n'était pas de la chance. C'était l'entraînement.",
+          "Que le bitume se plaigne.",
+          "Garde ce temps. Tu voudras le battre.",
+          "Le toi d'il y a quelques mois ne te rattrapait pas."
+        ]
+      },
+      "goal": {
+        "primary": [
+          "Objectif atteint",
+          "Objectif bouclé",
+          "C'est fait",
+          "Le plan de l'année tient"
+        ],
+        "secondary": [
+          "Tu l'as écrit, tu l'as couru, tu l'as fait.",
+          "Il ne manquait que celui-ci. Plus maintenant.",
+          "L'objectif était le tien. Le travail aussi.",
+          "Et il reste de la saison."
+        ]
+      },
+      "generic": {
+        "primary": [
+          "C'est noté",
+          "Une de plus pour la collection",
+          "Ça compte",
+          "Au tableau"
+        ],
+        "secondary": [
+          "Toutes les courses ne laissent pas de trace. Celle-ci si.",
+          "Petit détail, grande journée.",
+          "Ton historique vient de s'améliorer.",
+          "Continue."
+        ]
+      },
+      "past": {
+        "primary": [
+          "C'était grand à l'époque",
+          "À l'époque, un record",
+          "Cette journée a compté",
+          "Resté dans l'histoire"
+        ],
+        "secondary": [
+          "Il a été battu depuis. Ça n'enlève rien.",
+          "Le record a changé de mains. Pas la journée.",
+          "Tu es devenu plus rapide entre-temps. Encore mieux.",
+          "Tout vieux record a été neuf."
+        ]
+      }
+    },
     "loading": {
       "shared": {
         "aria": "Chargement des données partagées de {{name}}",

@@ -1,10 +1,8 @@
 import { lazy, Suspense, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useLocation, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import {
-  PersonalRecordIndicator,
-  personalRecordRowClass,
-} from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
+import { personalRecordRowClass } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
+import { MilestoneBand, RaceCelebration } from '../../components/RaceMilestones'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
 import { OutcomeReasonPrompt } from '../../components/OutcomeReasonPrompt'
@@ -31,6 +29,8 @@ import { IdentifyInCatalog } from './IdentifyInCatalog'
 import { useEventMedia } from '../../hooks/useEventMedia'
 import { useEventTrack } from '../../hooks/useEventTrack'
 import { useEvents } from '../../hooks/useEvents'
+import { useGoals } from '../../hooks/useGoals'
+import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
 import { useShares } from '../../hooks/useShares'
 import { deleteEventMedia, uploadEventMediaFiles } from '../../services/eventMedia'
@@ -46,7 +46,12 @@ import { isAnchorFor } from '../../domain/seasonAnchors'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollover'
 import { formatDatePt, isFutureDate } from '../../utils/date'
-import { getPersonalRecordIds } from '../../utils/bestPerformances'
+import {
+  computeRaceMilestones,
+  durableMilestones,
+  type RaceMilestone,
+} from '../../domain/raceMilestones'
+import { markMilestonesSeen, unseenMilestones } from '../../utils/celebrationSeen'
 import { buildCourseComparison } from '../../utils/analytics/course'
 import { projectRaceTime, racesPreparing } from '../../utils/analytics/racePrediction'
 import { canRecoverEventToBucketList, eventToBucketListItem } from '../../utils/eventToBucketList'
@@ -87,11 +92,14 @@ export function EventDetail() {
     () => searchParams.get('resultado') === 'editar',
   )
   const [editingOutcome, setEditingOutcome] = useState(false)
+  const [celebration, setCelebration] = useState<RaceMilestone[] | null>(null)
   const { shares } = useShares()
-  const { allEvents, removeEvent } = useEvents()
+  const { allEvents, loading: eventsLoading, removeEvent } = useEvents()
   const { addItem, items: bucketListItems } = useBucketList()
   const { entries: raceEntries, addEntry } = useRaceEntries()
   const { races } = useRaces()
+  const { allGoals: goals } = useGoals()
+  const { allGoals: performanceGoals } = usePerformanceGoals()
 
   const requestedOwnerId = parseOwnerSearchParam(searchParams)
   const activeShare = useMemo(
@@ -182,10 +190,18 @@ export function EventDetail() {
     }).byRaceId.get(event.raceId)
   }, [allEvents, bucketListItems, event, isSharedView, raceEntries, races])
 
-  const personalRecordIds = isSharedView
-    ? new Set<string>()
-    : getPersonalRecordIds(allEvents)
-  const isRecord = event ? personalRecordIds.has(event.id) : false
+  /**
+   * What this race changed, read in the order things happened. The band below
+   * the header keeps the durable half of it for good.
+   */
+  const milestones = useMemo(() => {
+    if (!event || isSharedView) return []
+    return computeRaceMilestones({ event, events: allEvents, goals, performanceGoals })
+  }, [allEvents, event, goals, isSharedView, performanceGoals])
+
+  const isRecord = milestones.some(
+    (milestone) => milestone.kind === 'personal_record' && milestone.superseded === null,
+  )
   const returnTo = getEventDetailReturnTo(location.state, searchParams)
   const detailLinkState = eventLinkState(returnTo).state
 
@@ -394,6 +410,43 @@ export function EventDetail() {
     })
   }
 
+  /**
+   * A result lands, and the race gets to say what it changed.
+   *
+   * Read with the freshly saved race put back into the history: the list from
+   * the hook has not caught up with the write yet, and the whole reading turns
+   * on this race being in it. Marks already celebrated stay quiet, so correcting
+   * a time does not throw the same confetti twice.
+   */
+  async function handleResultSaved() {
+    setEditingResult(false)
+    const saved = (await getEvent(event!.id)) ?? event!
+    setEvent(saved)
+
+    // Reading a history that has not arrived yet would call this race a first
+    // and a record on the strength of knowing nothing else.
+    if (!user || isSharedView || eventsLoading) {
+      toast.success(t('resultsForm.saved'))
+      return
+    }
+
+    const marks = computeRaceMilestones({
+      event: saved,
+      events: allEvents,
+      goals,
+      performanceGoals,
+    })
+    const unseen = unseenMilestones(user.uid, saved.id, marks)
+
+    if (unseen.length === 0) {
+      toast.success(t('resultsForm.saved'))
+      return
+    }
+
+    markMilestonesSeen(user.uid, saved.id, unseen)
+    setCelebration(unseen)
+  }
+
   return (
     <PageShell greeting={t('eventDetail.title')} title={event.name}>
       <div className="mt-6 max-w-3xl">
@@ -443,7 +496,6 @@ export function EventDetail() {
                 onChanged={reloadEvent}
               />
             ) : null}
-            {isRecord ? <PersonalRecordIndicator /> : null}
             {event.outcomeReason ? (
               <button
                 type="button"
@@ -458,6 +510,21 @@ export function EventDetail() {
             <StatusBadge status={event.status} />
           </div>
         </header>
+
+        {celebration ? (
+          <RaceCelebration
+            event={event}
+            milestones={celebration}
+            returnTo={returnTo}
+            onDismiss={() => setCelebration(null)}
+          />
+        ) : (
+          <MilestoneBand
+            event={event}
+            milestones={durableMilestones(milestones)}
+            returnTo={returnTo}
+          />
+        )}
 
         {!isSharedView && (needsOutcomeReason(event) || editingOutcome) ? (
           <OutcomeReasonPrompt
@@ -476,11 +543,7 @@ export function EventDetail() {
               event={event}
               canLookup={canEditResult}
               onEventChanged={reloadEvent}
-              onSaved={() => {
-                setEditingResult(false)
-                toast.success(t('resultsForm.saved'))
-                reloadEvent()
-              }}
+              onSaved={() => void handleResultSaved()}
               onCancel={() => setEditingResult(false)}
             />
           </div>
@@ -524,7 +587,11 @@ export function EventDetail() {
               ) : null}
             </div>
             {canLookupAgain ? (
-              <OfficialResultsLookup event={event} onApplied={reloadEvent} layout="icon" />
+              <OfficialResultsLookup
+                event={event}
+                onApplied={() => void handleResultSaved()}
+                layout="icon"
+              />
             ) : null}
           </div>
         ) : showResults ? (

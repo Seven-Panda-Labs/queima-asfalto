@@ -4,6 +4,18 @@
 
 ---
 
+## [1.59.0] - 2026-09-14
+
+### Hinzugefügt
+
+- **Ein Rennen feiert jetzt, was es verändert hat:** beim Speichern eines Ergebnisses erscheint ein Panel mit Konfetti für eine neue persönliche Bestzeit, ein erreichtes Jahresziel, ein Leistungsziel, die Premiere über eine Distanz, eine Streckenbestzeit und runde Zahlen, statt des schlichten Hinweises, dass das Ergebnis gespeichert wurde. Was das Rennen gesetzt hat, bleibt für immer auf seiner Seite, auch nachdem es überboten wurde, und wer weniger Bewegung möchte, bekommt kein Konfetti.
+
+### Geändert
+
+- **Die persönliche Bestzeit wird aus der Zeit gelesen, nicht aus dem gerundeten Tempo:** zwei Rennen, die beide 5:20 anzeigen, konnten drei Sekunden auseinanderliegen, und der Gleichstand wurde auf der Startseite, in der Analyse und bei den Zielen unterschiedlich aufgelöst. Alle drei folgen jetzt derselben Regel.
+
+---
+
 ## [1.58.0] - 2026-09-13
 
 ### Behoben

@@ -5,6 +5,7 @@ import type {
   PerformanceGoalWithProgress,
 } from '../types/PerformanceGoal'
 import i18n from '../i18n'
+import { beatsRecordPace, pickFastestEvent, recordPaceSeconds } from '../domain/personalRecord'
 import { parsePaceSeconds } from './pace'
 import { parseTime } from './time'
 
@@ -24,18 +25,6 @@ function eventsBeforeYear(events: Event[], eventType: EventType, year: number): 
   return completedWithResults(events).filter(
     (event) => event.eventType === eventType && event.date.getFullYear() < year,
   )
-}
-
-function pickBestByPace(events: Event[]): Event | null {
-  if (events.length === 0) return null
-
-  return events.reduce((currentBest, candidate) => {
-    const bestPace = parsePaceSeconds(currentBest.pace!)
-    const candidatePace = parsePaceSeconds(candidate.pace!)
-    if (bestPace === null) return candidate
-    if (candidatePace === null) return currentBest
-    return candidatePace < bestPace ? candidate : currentBest
-  })
 }
 
 function pacePercentTowardTarget(currentSeconds: number, targetSeconds: number): number {
@@ -70,17 +59,19 @@ function computePrTargetProgress(
   goal: PerformanceGoal,
   events: Event[],
 ): PerformanceGoalWithProgress {
-  const yearBest = pickBestByPace(eventsInYear(events, goal.eventType, goal.year))
+  const yearBest = pickFastestEvent(eventsInYear(events, goal.eventType, goal.year))
   if (!yearBest) {
     return buildResult(goal, 'no_data', 0, i18n.t('performanceGoal.noEventsInYear', { year: goal.year }))
   }
 
-  const historicalBest = pickBestByPace(eventsBeforeYear(events, goal.eventType, goal.year))
-  const yearPace = parsePaceSeconds(yearBest.pace!)
-  const historicalPace = historicalBest ? parsePaceSeconds(historicalBest.pace!) : null
+  const historicalBest = pickFastestEvent(eventsBeforeYear(events, goal.eventType, goal.year))
+  // The same measure that picked the two races decides whether one beat the
+  // other. The stored pace only ever gets printed.
+  const yearPace = recordPaceSeconds(yearBest)
+  const historicalPace = historicalBest ? recordPaceSeconds(historicalBest) : null
 
   const achieved =
-    historicalPace === null || (yearPace !== null && yearPace < historicalPace)
+    historicalPace === null || (yearPace !== null && beatsRecordPace(yearPace, historicalPace))
 
   if (achieved) {
     return buildResult(
@@ -119,7 +110,7 @@ function computePaceTargetProgress(
     return buildResult(goal, 'no_data', 0, i18n.t('performanceGoal.missingTargetPace'))
   }
 
-  const yearBest = pickBestByPace(eventsInYear(events, goal.eventType, goal.year))
+  const yearBest = pickFastestEvent(eventsInYear(events, goal.eventType, goal.year))
   if (!yearBest) {
     return buildResult(goal, 'no_data', 0, i18n.t('performanceGoal.noEventsInYear', { year: goal.year }))
   }

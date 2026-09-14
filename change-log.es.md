@@ -4,6 +4,18 @@
 
 ---
 
+## [1.59.0] - 2026-09-14
+
+### Añadido
+
+- **La carrera celebra lo que cambió:** al guardar un resultado aparece un panel con confeti para una nueva marca personal, un objetivo del año cumplido, una meta de rendimiento, el estreno en una distancia, el récord de un recorrido y los números redondos, en lugar del simple aviso de resultado guardado. Lo que la carrera marcó permanece en su página para siempre, incluso después de ser superado, y quien prefiere menos movimiento no recibe confeti.
+
+### Cambiado
+
+- **La marca personal se lee del tiempo, no del ritmo redondeado:** dos carreras que muestran 5:20 podían estar a tres segundos una de otra, y el desempate no era el mismo en el inicio, en el análisis y en las metas. Los tres siguen ahora la misma regla.
+
+---
+
 ## [1.58.0] - 2026-09-13
 
 ### Corregido

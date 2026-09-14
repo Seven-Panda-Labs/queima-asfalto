@@ -4,6 +4,18 @@
 
 ---
 
+## [1.59.0] - 2026-09-14
+
+### Added
+
+- **A race now celebrates what it changed:** saving a result brings up a panel with confetti for a new personal best, a yearly goal completed, a performance goal met, a first at a distance, a course best and round numbers, instead of the plain result saved notice. What the race marked stays on its page for good, even after something beats it, and anyone who prefers less movement gets no confetti.
+
+### Changed
+
+- **A personal best is read from the time, not from the rounded pace:** two races both printing 5:20 could be three seconds apart, and the tie-break differed between the dashboard, the analysis and the goals. All three now follow the same rule.
+
+---
+
 ## [1.58.0] - 2026-09-13
 
 ### Fixed
