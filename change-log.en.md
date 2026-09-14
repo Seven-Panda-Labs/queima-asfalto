@@ -4,6 +4,14 @@
 
 ---
 
+## [1.62.0] - 2026-09-14
+
+### Added
+
+- **A second timing operator's calendar:** discovery can now read 32 races in the Rhineland, each one linking the race's own site, and all of them already resolve to a results platform the app imports. It stays off until you enable it.
+
+---
+
 ## [1.61.0] - 2026-09-14
 
 ### Changed

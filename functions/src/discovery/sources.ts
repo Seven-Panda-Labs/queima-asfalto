@@ -48,6 +48,28 @@ export const DISCOVERY_SOURCES: DiscoverySource[] = [
     pageLimit: 1,
   },
   {
+    /**
+     * The other timing operator's calendar, in the Rhineland.
+     *
+     * Small, 32 events, and overlapping the German sources we already read, so
+     * the argument for it is not reach. It is that these events already resolve
+     * to RaceResult, which this app imports, so an entry from here arrives with
+     * a working results path. Every row also links the race's own site, which
+     * most calendars do not.
+     *
+     * No distances anywhere on it, and none worth chasing: the numbers live
+     * behind a registration widget that needs a browser.
+     */
+    id: 'cologne-timing.de',
+    kind: 'listing',
+    listingReader: 'cologne-timing',
+    listingUrl: 'https://cologne-timing.de/veranstaltungen',
+    baseUrl: 'https://cologne-timing.de/',
+    // Every town on the calendar is German, and the page never says a country.
+    country: 'DE',
+    pageLimit: 1,
+  },
+  {
     // 20 races per page of schema.org, 116 pages of them, and the event page
     // adds nothing the list does not already say. Ordered by date, so the first
     // pages are the races coming up: no rotation, just the nearest 1000.

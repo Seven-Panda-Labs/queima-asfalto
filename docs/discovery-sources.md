@@ -44,6 +44,7 @@ Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
 | `running.life/half-marathons` | `listing` | meias maratonas em 17 países, um calendário por país |
 | `runme.de` | `listing` | 2280 provas em 60 países, um mês por página |
 | `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
+| `cologne-timing.de` | `listing` | 32 provas na Renânia, o outro operador de cronometragem |
 | `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
 | `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
 
@@ -172,6 +173,21 @@ postal aparece antes da terra na Alemanha e depois nos Estados Unidos («Mountai
 Home 83647»), com letras em Andorra e na Argentina; e uma competição que só é
 marcha («5 km-W», «1 Meilen-W») não é distância de prova, enquanto uma que diz
 as duas coisas («5 km-Laufen & Walking») fica.
+
+A `cologne-timing.de` é o segundo operador de cronometragem que lemos, e a
+única fonte que entra por uma razão que não é alcance: 32 provas na Renânia, que
+as outras fontes alemãs já listam em parte. O que ela tem é o encaixe. Estes
+eventos já resolvem para a RaceResult, que a app importa, por isso uma entrada
+vinda daqui chega com um caminho de resultados a funcionar. E cada linha liga o
+sítio da própria prova, não a página de quem a listou, o que a maioria dos
+calendários não dá.
+
+Não publica distância nenhuma, e não há nenhuma a perseguir: os números vivem
+atrás de um widget de inscrição que precisa de um browser, e pela regra deste
+documento isso não é fonte. Entram sem distância, e o nome responde pelas duas
+maratonas. Ficam de fora as caminhadas e o swim and run que o operador também
+cronometra, e a edição virtual, que está datada na terra do operador e nesse dia
+não há lá nada.
 
 ### As coordenadas, e o que o raio pode prometer
 
@@ -409,6 +425,7 @@ None of them runs unless `DISCOVERY_SOURCES` names it.
 | `running.life/half-marathons` | `listing` | half marathons in 17 countries, a calendar each |
 | `runme.de` | `listing` | 2280 races in 60 countries, a month a page |
 | `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
+| `cologne-timing.de` | `listing` | 32 races in the Rhineland, the other timing operator |
 | `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
 | `planet-marathon.de` | `listing` | marathons on every continent, three pages |
 
@@ -539,6 +556,21 @@ before the town in Germany and after it in the United States ("Mountain Home
 83647"), with letters in Andorra and Argentina; and a competition that is only a
 walk ("5 km-W", "1 Meilen-W") is not a race distance, while one that says both
 ("5 km-Laufen & Walking") stays.
+
+`cologne-timing.de` is the second timing operator we read, and the only source
+that earns its place for a reason other than reach: 32 races in the Rhineland,
+which the other German sources already list in part. What it has is the join.
+These events already resolve to RaceResult, which this app imports, so an entry
+from here arrives with a working results path attached. And every row links the
+race's own site rather than the page of whoever listed it, which most calendars
+do not.
+
+It publishes no distances, and there are none worth chasing: the numbers live
+behind a registration widget that needs a browser, and by this document's own
+rule that is not a source. They arrive with no distance, and the name answers
+for the two marathons. Left out are the hikes and the swim and run the operator
+also times, and the virtual edition, which is dated to the operator's own town
+with nothing there on the day.
 
 ### The coordinates, and what a radius can promise
 

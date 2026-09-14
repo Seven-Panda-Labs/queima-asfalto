@@ -4,6 +4,14 @@
 
 ---
 
+## [1.62.0] - 2026-09-14
+
+### Añadido
+
+- **El calendario de un segundo cronometrador:** el descubrimiento ya puede leer 32 carreras en Renania, cada una con el sitio de la propia carrera, y todas resuelven a una plataforma de resultados que la app importa. Sigue apagado hasta que lo actives.
+
+---
+
 ## [1.61.0] - 2026-09-14
 
 ### Cambiado
