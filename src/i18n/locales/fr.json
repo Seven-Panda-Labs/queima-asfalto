@@ -1401,6 +1401,8 @@
     "registrationUrl": "Lien d'inscription",
     "fee": "Prix",
     "feeCurrency": "Devise",
+    "feeAsk": "Aucun calendrier que nous lisons ne publie les tarifs. Si tu te souviens de ce que tu as payé, note-le : il ira au catalogue pour les suivants.",
+    "feeNeedsCurrency": "Choisis la monnaie, sinon le tarif n'arrive pas au catalogue.",
     "saved": "Inscription enregistrée.",
     "saveError": "Impossible d'enregistrer l'inscription.",
     "yearError": "Une année entre 2000 et 2100.",

@@ -6,6 +6,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
+import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 import { useRaces } from '../../hooks/useRaces'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
@@ -161,6 +162,28 @@ export function EntryForm() {
     setYear(existing?.year ?? null)
     setHydrated(true)
   }, [hydrated, itemsLoading, entriesLoading, existing, offer, catalogSettled])
+
+  /**
+   * Whether to ask this runner what they paid.
+   *
+   * No calendar we read publishes a fee: measured across 5116 catalog entries,
+   * 140 carry one and both sources that publish them are already read whole.
+   * The runner who just got in is the only one who knows, and this is the only
+   * moment they know it.
+   *
+   * Asked, never required. A race can be free, a memory can fail, and an entry
+   * saved without a price is still an entry.
+   */
+  const catalogFee = catalogRace?.editions?.find(
+    (edition) => edition.year === Number(form.year),
+  )?.typicalFee
+  const askForFee =
+    form.entryStatus === 'registered' &&
+    !form.fee.trim() &&
+    Boolean(catalogRaceId) &&
+    catalogFee === undefined
+  // A fee with no currency is dropped on the way to the catalog, silently.
+  const feeNeedsCurrency = Boolean(form.fee.trim()) && !form.feeCurrency.trim()
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((current) => ({ ...current, [key]: value }))
@@ -431,15 +454,25 @@ export function EntryForm() {
                 onChange={(event) => update('fee', event.target.value)}
                 className={inputClass}
               />
+              {askForFee ? (
+                <span className="mt-1 block text-xs font-normal text-primary">
+                  {t('entry.feeAsk')}
+                </span>
+              ) : null}
             </label>
-            <label className="text-sm font-semibold text-foreground">
+            <label className="text-sm font-semibold text-foreground" htmlFor="entry-fee-currency">
               {t('entry.feeCurrency')}
-              <input
+              <CurrencySelect
+                id="entry-fee-currency"
                 value={form.feeCurrency}
-                maxLength={3}
-                onChange={(event) => update('feeCurrency', event.target.value.toUpperCase())}
+                onChange={(currency) => update('feeCurrency', currency)}
                 className={inputClass}
               />
+              {feeNeedsCurrency ? (
+                <span className="mt-1 block text-xs font-normal text-primary">
+                  {t('entry.feeNeedsCurrency')}
+                </span>
+              ) : null}
             </label>
             <label className="text-sm font-semibold text-foreground sm:col-span-2">
               {t('common.notes')}

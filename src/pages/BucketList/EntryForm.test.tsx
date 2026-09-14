@@ -107,6 +107,43 @@ describe('what the runner tells the catalog back', () => {
     fireEvent.click(screen.getByRole('button', { name: /Guardar/ }))
   }
 
+  it('asks for the fee when the catalog has none and the runner is in', async () => {
+    // Measured: 140 of 5116 entries carry a fee, and both sources that publish
+    // one are already read whole. The runner who just got in is the only
+    // source left, and this is the only moment they know it.
+    catalogRace = catalog({ editions: [{ year: 2099, raceDate: '2099-10-10', source: 'x', confirmedAt: 'x' }] })
+    render(<EntryForm />)
+
+    await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
+    expect(screen.queryByText(/Nenhum calendário que lemos publica preços/)).toBeNull()
+
+    fireEvent.change(screen.getByLabelText(/Estado/), { target: { value: 'registered' } })
+
+    expect(screen.getByText(/Nenhum calendário que lemos publica preços/)).toBeInTheDocument()
+  })
+
+  it('does not ask when the catalog already knows the price', async () => {
+    catalogRace = catalog()
+    render(<EntryForm />)
+
+    await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
+    fireEvent.change(screen.getByLabelText(/Estado/), { target: { value: 'registered' } })
+
+    // The field arrives filled in from the catalog, so there is nothing to ask.
+    expect(screen.queryByText(/Nenhum calendário que lemos publica preços/)).toBeNull()
+  })
+
+  it('says so when a fee would be dropped for having no currency', async () => {
+    catalogRace = catalog({ editions: [{ year: 2099, raceDate: '2099-10-10', source: 'x', confirmedAt: 'x' }] })
+    render(<EntryForm />)
+
+    await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
+    fireEvent.change(screen.getByLabelText(/Preço/), { target: { value: '45' } })
+
+    // A fee with no currency never reaches the catalog, and said nothing.
+    expect(screen.getByText(/Escolhe a moeda/)).toBeInTheDocument()
+  })
+
   it('reports the fee it cost once the runner is in', async () => {
     catalogRace = catalog()
     render(<EntryForm />)
