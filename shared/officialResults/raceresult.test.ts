@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { namesMatch } from './matchName'
+import altstadtlaufFixture from './fixtures/raceresult-altstadtlauf-dotted-rank-snippet.json'
+import embeddedPageFixture from './fixtures/raceresult-embedded-page-snippet.html?raw'
 import berlinFixture from './fixtures/raceresult-berlin-5km-snippet.json'
 import herbstFixture from './fixtures/raceresult-herbstwaldlauf-snippet.json'
 import herbstSearchFixture from './fixtures/raceresult-herbstwaldlauf-search-snippet.json'
@@ -12,6 +14,8 @@ import {
   buildRaceResultSearchUrl,
   computeRaceResultOverallPosition,
   extractRaceResultEventIdFromHtml,
+  findRankFieldIndex,
+  isRaceResultCategoryRankField,
   flattenRaceResultData,
   listsToSearch,
   namesMatchRaceResultDisplay,
@@ -306,5 +310,39 @@ describe('computeRaceResultOverallPosition', () => {
       position: 230,
       totalParticipants: 252,
     })
+  })
+})
+
+describe('rank fields spelled with dots', () => {
+  const fields = altstadtlaufFixture.DataFields
+
+  it('finds the overall rank RaceResult writes as GesPl.p', () => {
+    expect(findRankFieldIndex(fields)).toBe(2)
+    expect(raceResultFieldIndexes(fields)).toEqual({ name: 3, time: 8, rank: 2 })
+  })
+
+  it('reads the published placing instead of re-ranking by time', () => {
+    expect(shouldComputeRaceResultOverallRank(fields, 2)).toBe(false)
+  })
+
+  it('still recognises the undotted spelling', () => {
+    expect(findRankFieldIndex(['BIB', 'GesPlp'])).toBe(1)
+    expect(shouldComputeRaceResultOverallRank(['BIB', 'GesPlp'], 1)).toBe(false)
+  })
+
+  it('treats the dotted category ranks as categories', () => {
+    expect(isRaceResultCategoryRankField('MWPl.p')).toBe(true)
+    expect(isRaceResultCategoryRankField('AKPl.p')).toBe(true)
+  })
+
+  it('leaves time fields alone, dots and all', () => {
+    // Ziel.CHIP is matched by its exact spelling: dropping dots is for ranks only.
+    expect(raceResultFieldIndexes(fields)?.time).toBe(fields.indexOf('Ziel.CHIP'))
+  })
+})
+
+describe('an embedded page with no fragment', () => {
+  it('carries the event id only in the embed', () => {
+    expect(extractRaceResultEventIdFromHtml(embeddedPageFixture)).toBe('362542')
   })
 })

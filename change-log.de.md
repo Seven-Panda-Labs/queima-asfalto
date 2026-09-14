@@ -4,6 +4,15 @@
 
 ---
 
+## [1.60.0] - 2026-09-14
+
+### Behoben
+
+- **Die offizielle Platzierung wird nicht mehr neu berechnet:** schrieb eine RaceResult-Veranstaltung ihre Gesamtrang-Spalte als `GesPl.p`, erkannte der Import sie nicht und sortierte das Feld nach Zeiten neu. Die Zahl lag nah dran, war aber falsch, und nichts wies darauf hin.
+- **Eine Seite, die RaceResult nur einbettet, wird jetzt erkannt:** die Adresse, die eine Läuferin kopiert, trägt gar kein Fragment, und der Import lehnte sie ab. Die Seite wird nun gelesen, und die Veranstaltung kommt aus der Einbettung selbst.
+
+---
+
 ## [1.59.0] - 2026-09-14
 
 ### Hinzugefügt

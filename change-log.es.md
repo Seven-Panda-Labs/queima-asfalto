@@ -4,6 +4,15 @@
 
 ---
 
+## [1.60.0] - 2026-09-14
+
+### Corregido
+
+- **El puesto oficial ya no se recalcula:** cuando una prueba de RaceResult escribía la columna del puesto general como `GesPl.p`, la importación no la reconocía y rehacía la clasificación ordenando tiempos. El número salía cercano pero equivocado, sin nada que lo delatara.
+- **Una página que solo incrusta RaceResult ya se reconoce:** la dirección que copia el corredor no lleva ningún fragmento, y la importación la rechazaba. Ahora la página se lee y la prueba sale del propio incrustado.
+
+---
+
 ## [1.59.0] - 2026-09-14
 
 ### Añadido

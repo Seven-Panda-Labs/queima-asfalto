@@ -4,6 +4,15 @@
 
 ---
 
+## [1.60.0] - 2026-09-14
+
+### Fixed
+
+- **The official placing is no longer recomputed:** when a RaceResult event spelled its overall rank column `GesPl.p`, the import did not recognise it and re-ranked the field by sorting times. The number came out close but wrong, with nothing to give it away.
+- **A page that only embeds RaceResult is now recognised:** the address a runner copies carries no fragment at all, and the import refused it. The page is now read, and the event comes from the embed itself.
+
+---
+
 ## [1.59.0] - 2026-09-14
 
 ### Added

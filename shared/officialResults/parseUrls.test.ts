@@ -112,6 +112,11 @@ describe('parseRaceResultUrl', () => {
     })
   })
 
+  it('cannot name an embedded page without its hash, which is why a resolver reads it', () => {
+    expect(parseRaceResultUrl('https://cologne-timing.de/ergebnisse/altstadtlauf-2026')).toBeNull()
+    expect(detectPlatformFromUrl('https://cologne-timing.de/ergebnisse/altstadtlauf-2026')).toBeNull()
+  })
+
   it('parses embedded event pages with raceresult hash', () => {
     const parts = parseRaceResultUrl('https://mittsommer-lauf.de/ergebnislisten/#1_A472E2')
     expect(parts).toEqual({

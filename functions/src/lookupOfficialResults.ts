@@ -10,6 +10,7 @@ import {
 import { lookupPlatform } from './connectors/index.js'
 import { resolveSccEventsUrlParts } from './connectors/sccEvents.js'
 import { resolveWiclaxUrlParts } from './connectors/wiclax.js'
+import { resolveRaceResultUrlParts } from './connectors/raceresult.js'
 import { reserveOfficialResultsLookup } from './officialResultsLookupRateLimit.js'
 import { callableFunctionOptions, LOOKUP_CALLABLE_CONCURRENCY, LOOKUP_CALLABLE_MAX_INSTANCES } from './functionOptions.js'
 import { requireApprovedAccount } from './accountApproval/requireApprovedAccount.js'
@@ -98,6 +99,13 @@ export const lookupOfficialResults = onCall(
     if (!platform && event.resultsUrl?.trim()) {
       const wiclaxParts = await resolveWiclaxUrlParts(event.resultsUrl.trim())
       if (wiclaxParts) platform = 'wiclax'
+    }
+
+    // A site embedding the RaceResult widget names no event until the reader has
+    // clicked into a list, so the page they copied has to be read to know.
+    if (!platform && event.resultsUrl?.trim()) {
+      const raceResultParts = await resolveRaceResultUrlParts(event.resultsUrl.trim())
+      if (raceResultParts) platform = 'myraceresult'
     }
 
     if (!platform) {

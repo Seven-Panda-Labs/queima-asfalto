@@ -4,6 +4,15 @@
 
 ---
 
+## [1.60.0] - 2026-09-14
+
+### Corrigé
+
+- **Le classement officiel n’est plus recalculé :** lorsqu’une épreuve RaceResult écrivait sa colonne de place au général `GesPl.p`, l’import ne la reconnaissait pas et reclassait le peloton en triant les temps. Le chiffre tombait proche mais faux, sans rien pour le signaler.
+- **Une page qui ne fait qu’intégrer RaceResult est désormais reconnue :** l’adresse que copie un coureur ne porte aucun fragment, et l’import la refusait. La page est maintenant lue, et l’épreuve vient de l’intégration elle-même.
+
+---
+
 ## [1.59.0] - 2026-09-14
 
 ### Ajouté
