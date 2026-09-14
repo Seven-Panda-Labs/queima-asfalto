@@ -4,6 +4,14 @@
 
 ---
 
+## [1.61.0] - 2026-09-14
+
+### Alterado
+
+- **Ao marcares uma inscrição como feita, pedimos o preço:** só se o catálogo não tiver nenhum, e nunca a bloquear. Nenhum calendário publica preços, portanto quem pagou é a única fonte. A moeda passa a ser uma lista, para o preço não se perder por causa de três letras.
+
+---
+
 ## [1.60.0] - 2026-09-14
 
 ### Corrigido

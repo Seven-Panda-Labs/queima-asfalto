@@ -4,6 +4,14 @@
 
 ---
 
+## [1.61.0] - 2026-09-14
+
+### Changed
+
+- **Marking an entry as done now asks what it cost:** only when the catalog has no fee, and never blocking. No calendar publishes fees, so whoever paid is the only source. The currency is a list now, so a price is not lost over three letters.
+
+---
+
 ## [1.60.0] - 2026-09-14
 
 ### Fixed

@@ -1401,6 +1401,8 @@
     "registrationUrl": "Anmeldelink",
     "fee": "Preis",
     "feeCurrency": "Währung",
+    "feeAsk": "Kein Kalender, den wir lesen, veröffentlicht Gebühren. Wenn du weißt, was du bezahlt hast, schreib es auf: es kommt in den Katalog für die Nächsten.",
+    "feeNeedsCurrency": "Wähle die Währung, sonst erreicht die Gebühr den Katalog nicht.",
     "saved": "Anmeldung gespeichert.",
     "saveError": "Anmeldung konnte nicht gespeichert werden.",
     "yearError": "Ein Jahr zwischen 2000 und 2100.",

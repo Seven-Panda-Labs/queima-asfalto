@@ -4,6 +4,14 @@
 
 ---
 
+## [1.61.0] - 2026-09-14
+
+### Cambiado
+
+- **Al marcar una inscripción como hecha, te preguntamos el precio:** solo si el catálogo no tiene ninguno, y nunca bloqueando. Ningún calendario publica precios, así que quien pagó es la única fuente. La moneda pasa a ser una lista, para que el precio no se pierda por tres letras.
+
+---
+
 ## [1.60.0] - 2026-09-14
 
 ### Corregido

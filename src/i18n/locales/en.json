@@ -1401,6 +1401,8 @@
     "registrationUrl": "Registration link",
     "fee": "Fee",
     "feeCurrency": "Currency",
+    "feeAsk": "No calendar we read publishes fees. If you remember what you paid, write it down: it goes to the catalog for whoever comes next.",
+    "feeNeedsCurrency": "Pick the currency, or the fee does not reach the catalog.",
     "saved": "Entry saved.",
     "saveError": "Could not save the entry.",
     "yearError": "A year between 2000 and 2100.",

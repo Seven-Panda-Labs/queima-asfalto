@@ -4,6 +4,14 @@
 
 ---
 
+## [1.61.0] - 2026-09-14
+
+### Geändert
+
+- **Eine Anmeldung als erledigt zu markieren fragt jetzt nach dem Preis:** nur wenn der Katalog keinen hat, und nie blockierend. Kein Kalender veröffentlicht Gebühren, also ist der Zahlende die einzige Quelle. Die Währung ist jetzt eine Liste, damit ein Preis nicht an drei Buchstaben scheitert.
+
+---
+
 ## [1.60.0] - 2026-09-14
 
 ### Behoben

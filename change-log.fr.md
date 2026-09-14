@@ -4,6 +4,14 @@
 
 ---
 
+## [1.61.0] - 2026-09-14
+
+### Modifié
+
+- **Marquer une inscription comme faite demande maintenant le tarif :** seulement si le catalogue n'en a aucun, et jamais en bloquant. Aucun calendrier ne publie les tarifs, donc celui qui a payé est la seule source. La monnaie devient une liste, pour qu'un tarif ne se perde pas sur trois lettres.
+
+---
+
 ## [1.60.0] - 2026-09-14
 
 ### Corrigé
