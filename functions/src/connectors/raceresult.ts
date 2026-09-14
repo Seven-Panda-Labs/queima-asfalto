@@ -53,6 +53,37 @@ async function resolveRaceResultEventId(parts: RaceResultUrlParts): Promise<stri
   return extractRaceResultEventIdFromHtml(html) ?? null
 }
 
+/**
+ * The event behind a url, including the pages that only embed RaceResult.
+ *
+ * A site running the widget names no event in its address until the reader has
+ * clicked through to a list, and the page they copy before that is the one they
+ * were looking at. Whether that page is RaceResult cannot be told without
+ * reading it, so the url parser stays honest and the answer comes from the
+ * embed, the same way SCC Events and Wiclax resolve theirs.
+ */
+export async function resolveRaceResultUrlParts(
+  url: string,
+): Promise<RaceResultUrlParts | null> {
+  const strict = parseRaceResultUrl(url)
+  if (strict) return strict
+
+  let pageUrl: string
+  try {
+    const parsed = new URL(url.trim())
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') return null
+    pageUrl = parsed.toString()
+  } catch {
+    return null
+  }
+
+  const response = await fetch(pageUrl)
+  if (!response.ok) return null
+
+  const eventId = extractRaceResultEventIdFromHtml(await response.text())
+  return eventId ? { eventId, pageUrl } : null
+}
+
 function rowToCandidate(
   row: string[],
   indexes: { name: number; time: number; rank?: number },
@@ -192,7 +223,7 @@ export async function lookupRaceResult(
   resultsUrl: string,
   profile: UserResultsProfile,
 ): Promise<OfficialResultCandidate[]> {
-  const parts = parseRaceResultUrl(resultsUrl)
+  const parts = await resolveRaceResultUrlParts(resultsUrl)
   if (!parts) return []
 
   const eventId = await resolveRaceResultEventId(parts)

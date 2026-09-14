@@ -4,6 +4,15 @@
 
 ---
 
+## [1.60.0] - 2026-09-14
+
+### Corrigido
+
+- **O lugar oficial deixa de ser recalculado:** quando uma prova RaceResult escrevia a coluna do lugar geral como `GesPl.p`, a importação não a reconhecia e refazia a classificação ordenando tempos. Dava um número próximo mas errado, sem nada que o denunciasse.
+- **Uma página que só embute o RaceResult passa a ser reconhecida:** o endereço que o corredor copia não traz fragmento nenhum, e a importação recusava-o. Agora a página é lida e o evento sai do próprio embed.
+
+---
+
 ## [1.59.0] - 2026-09-14
 
 ### Adicionado

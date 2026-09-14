@@ -1,0 +1,18 @@
+{
+  "DataFields": [
+    "BIB",
+    "ID",
+    "GesPl.p",
+    "AnzeigeName",
+    "YEAR",
+    "GeschlechtMW",
+    "CLUB",
+    "Ziel.GUN",
+    "Ziel.CHIP"
+  ],
+  "data": [
+    ["1141", "1196", "629.", "Zeca Ninguém", "2003", "M", "", "1:00:48", "59:10"],
+    ["1145", "1200", "633.", "Zita Ninguém", "2005", "W", "", "1:00:48", "59:11"],
+    [1152]
+  ]
+}

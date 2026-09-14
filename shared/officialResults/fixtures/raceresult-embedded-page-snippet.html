@@ -1,0 +1,15 @@
+<!--
+  A club site embedding the RaceResult widget. Its address names no event until
+  the reader clicks into a list, so the event id is only here, in the embed.
+  Names and ids are fictional.
+-->
+<article class="uk-article">
+  <h1 class="uk-article-title">Altstadtlauf 2026</h1>
+  <div id="divRRPublish" class="RRPublish"></div>
+  <script type="text/javascript" src="https://my.raceresult.com/RRPublish/load.js.php?lang=de"></script>
+  <script type="text/javascript">
+    var rrp = new RRPublish(document.getElementById("divRRPublish"), 362542, "results")
+    rrp.ShowTimerLogo = true
+    rrp.ShowInfoText = false
+  </script>
+</article>

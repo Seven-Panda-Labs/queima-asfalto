@@ -125,10 +125,28 @@ function findFieldIndexByPattern(dataFields: string[], pattern: RegExp): number 
   return index >= 0 ? index : undefined
 }
 
+const RANK_FIELD_NAMES = ['RANK', 'Rank', 'Platz', 'Pos', 'GesPlp']
+
+/**
+ * RaceResult writes the same rank field as `GesPlp` or `GesPl.p`, depending on
+ * how the organiser configured the list, so the dots cannot be part of the name
+ * we match. Only rank fields are read this way: `Ziel.CHIP` is a time field
+ * matched by its exact spelling, dot included.
+ */
+function withoutDots(field: string): string {
+  return field.replace(/\./g, '')
+}
+
+function matchesRankPattern(field: string, pattern: RegExp): boolean {
+  return pattern.test(withoutDots(field))
+}
+
 export function findRankFieldIndex(dataFields: string[]): number | undefined {
-  const byPattern = findFieldIndexByPattern(dataFields, RANK_FIELD_PATTERN)
-  if (byPattern != null) return byPattern
-  return findFieldIndex(dataFields, ['RANK', 'Rank', 'Platz', 'Pos', 'GesPlp'])
+  const byPattern = dataFields.findIndex((field) => matchesRankPattern(field, RANK_FIELD_PATTERN))
+  if (byPattern >= 0) return byPattern
+
+  const byName = dataFields.findIndex((field) => RANK_FIELD_NAMES.includes(withoutDots(field)))
+  return byName >= 0 ? byName : undefined
 }
 
 function findNameFieldIndex(dataFields: string[]): number | undefined {
@@ -219,7 +237,7 @@ export function extractRaceResultEventIdFromHtml(html: string): string | undefin
 }
 
 export function isRaceResultCategoryRankField(field: string): boolean {
-  return CATEGORY_RANK_FIELD_PATTERN.test(field)
+  return matchesRankPattern(field, CATEGORY_RANK_FIELD_PATTERN)
 }
 
 export function shouldComputeRaceResultOverallRank(
@@ -228,7 +246,7 @@ export function shouldComputeRaceResultOverallRank(
 ): boolean {
   if (rankIndex == null) return true
   const field = dataFields[rankIndex] ?? ''
-  if (RANK_FIELD_PATTERN.test(field)) return false
+  if (matchesRankPattern(field, RANK_FIELD_PATTERN)) return false
   return isRaceResultCategoryRankField(field)
 }
 
