@@ -39,11 +39,27 @@ export function parseTimestamp(raw: string | undefined): number | undefined {
   return Number.isNaN(value) ? undefined : value
 }
 
-/** `DOMParser` reports malformed XML through a `parsererror` node instead of throwing. */
+/**
+ * Malformed XML comes back as `null`, however the host says so.
+ *
+ * The host has to provide `DOMParser`. A browser has one; Node does not, and the
+ * functions tsconfig targets ES2022 with the default lib, which carries the DOM
+ * types, so this compiles there and would only fail when it ran. A Cloud Function
+ * using this parser must install a DOMParser on globalThis first.
+ *
+ * A browser `DOMParser` reports it through a `parsererror` node; the one a Cloud
+ * Function runs throws instead. The same parser has to survive both.
+ */
 export function parseXmlDocument(xml: string): Document | null {
-  const document = new DOMParser().parseFromString(xml, 'application/xml')
+  let document: Document
+  try {
+    document = new DOMParser().parseFromString(xml, 'application/xml')
+  } catch {
+    return null
+  }
+
+  if (!document?.documentElement) return null
   if (document.getElementsByTagName('parsererror').length > 0) return null
-  if (!document.documentElement) return null
   return document
 }
 

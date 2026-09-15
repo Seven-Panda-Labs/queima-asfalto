@@ -1,19 +1,5 @@
-export { parseActivityFile, parseActivityXml, trackExtensionOf } from './parseActivityFile'
-export { haversineMeters, summarizeActivity } from './metrics'
-export { computePacingDrift } from './pacing'
-export { simplifyRoute } from './simplify'
-export type {
-  ActivityTrackSummary,
-  HeartRateSummary,
-  TrackProfilePoint,
-  TrackSplit,
-} from './metrics'
-export type { RoutePoint } from './simplify'
-export type {
-  ActivityFileErrorCode,
-  ActivityFileFormat,
-  ParseActivityResult,
-  ParsedActivity,
-  TrackLap,
-  TrackPoint,
-} from './types'
+/**
+ * The parser lives in `shared/` so a Cloud Function can run the same code the
+ * browser does. This keeps the app's imports where they were.
+ */
+export * from '../../../shared/activityTrack/index.js'

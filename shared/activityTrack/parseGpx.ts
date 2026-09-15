@@ -1,11 +1,11 @@
-import type { ParsedActivity, TrackPoint } from './types'
+import type { ParsedActivity, TrackPoint } from './types.js'
 import {
   childNumber,
   descendantsByLocalName,
   parseNumericAttribute,
   parseTimestamp,
   textByLocalName,
-} from './xml'
+} from './xml.js'
 
 /** GPX carries no sensor data of its own: anything beyond position is a vendor extension. */
 export function parseGpxDocument(document: Document): ParsedActivity | null {

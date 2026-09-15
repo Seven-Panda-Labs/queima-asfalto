@@ -1,4 +1,4 @@
-import type { ParsedActivity, TrackLap, TrackPoint } from './types'
+import type { ParsedActivity, TrackLap, TrackPoint } from './types.js'
 import {
   childByLocalName,
   childNumber,
@@ -6,7 +6,7 @@ import {
   descendantsByLocalName,
   parseTimestamp,
   textByLocalName,
-} from './xml'
+} from './xml.js'
 
 /** Zero on a lap aggregate means the device wrote nothing there, not a real zero. */
 function positiveOrUndefined(value: number | undefined): number | undefined {

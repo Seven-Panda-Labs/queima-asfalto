@@ -1,5 +1,5 @@
 import type { ParkrunCatalogEvent } from '../../shared/parkrun/catalog'
-import { haversineMeters } from './activityTrack/metrics'
+import { haversineMeters } from './activityTrack'
 
 /**
  * parkruns as candidates, which no race calendar carries.

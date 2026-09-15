@@ -19,7 +19,7 @@
  */
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
-import { computePacingDrift } from '../src/domain/activityTrack/pacing.js'
+import { computePacingDrift } from '../shared/activityTrack/pacing.js'
 
 const require = createRequire(resolve(import.meta.dirname, '../functions/package.json'))
 const { initializeApp } = require('firebase-admin/app')

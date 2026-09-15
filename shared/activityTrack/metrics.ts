@@ -1,5 +1,5 @@
-import type { ParsedActivity, TrackPoint } from './types'
-import { simplifyRoute, type RoutePoint } from './simplify'
+import type { ParsedActivity, TrackPoint } from './types.js'
+import { simplifyRoute, type RoutePoint } from './simplify.js'
 
 const EARTH_RADIUS_METERS = 6371000
 const SPLIT_DISTANCE_METERS = 1000
