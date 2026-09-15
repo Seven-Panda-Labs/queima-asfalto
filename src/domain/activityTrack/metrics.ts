@@ -14,6 +14,16 @@ const MOVING_SPEED_THRESHOLD_MPS = 0.5
  */
 const ELEVATION_NOISE_THRESHOLD_METERS = 3
 
+/**
+ * Altitude has to be this complete before we will put a number on it.
+ *
+ * A gap cannot be repaired the way a distance gap can: distance only ever grows,
+ * so carrying the last reading is right, while interpolating altitude across a
+ * gap invents terrain. A barometer that dies mid race and reports nothing, or the
+ * same value forever, leaves arithmetic that is correct about data that is not.
+ */
+const MIN_ELEVATION_COVERAGE = 0.9
+
 /** Keeps a stored route under a few kilobytes whatever the race distance. */
 const ROUTE_POINT_BUDGET = 150
 
@@ -61,8 +71,9 @@ export type ActivityTrackSummary = {
   /** `device` when the watch recorded distance itself, which beats integrating GPS fixes. */
   distanceSource: 'device' | 'computed'
   averagePaceSecondsPerKm: number
-  elevationGainMeters: number
-  elevationLossMeters: number
+  /** Absent when the file's altitude is too patchy to summarise. */
+  elevationGainMeters?: number
+  elevationLossMeters?: number
   splits: TrackSplit[]
   heartRate?: HeartRateSummary
   route: RoutePoint[]
@@ -86,6 +97,34 @@ function hasPosition(point: TrackPoint): point is TrackPoint & RoutePoint {
   return point.lat !== undefined && point.lon !== undefined
 }
 
+/** Below this the series is too sparse to resample, whatever it claims. */
+const MIN_DEVICE_READING_SHARE = 0.5
+
+/**
+ * Whether the watch's own distance can be trusted as the spine of the race.
+ *
+ * Monotonic among the readings that exist, and present often enough to be a
+ * series rather than a couple of stamps. Gaps are expected at the start and are
+ * not a reason to throw the rest away.
+ */
+function isUsableDeviceSeries(
+  values: readonly (number | undefined)[],
+  firstReading: number,
+): boolean {
+  let readings = 0
+  let previous = Number.NEGATIVE_INFINITY
+
+  for (let index = firstReading; index < values.length; index++) {
+    const value = values[index]
+    if (value === undefined) continue
+    if (value < previous) return false
+    previous = value
+    readings += 1
+  }
+
+  return readings / values.length >= MIN_DEVICE_READING_SHARE
+}
+
 /**
  * Device distance wins when it is present and monotonic. A reset partway through
  * means the export stitched laps together badly, and integrating the fixes is safer.
@@ -95,13 +134,21 @@ function cumulativeDistances(points: TrackPoint[]): {
   source: 'device' | 'computed'
 } {
   const deviceValues = points.map((point) => point.deviceDistance)
-  const usable =
-    deviceValues.every((value) => value !== undefined) &&
-    deviceValues.every((value, index) => index === 0 || value! >= deviceValues[index - 1]!)
+  const firstReading = deviceValues.findIndex((value) => value !== undefined)
 
-  if (usable) {
-    const base = deviceValues[0]!
-    return { cumulative: deviceValues.map((value) => value! - base), source: 'device' }
+  if (firstReading !== -1 && isUsableDeviceSeries(deviceValues, firstReading)) {
+    const base = deviceValues[firstReading]!
+    const cumulative: number[] = []
+    // A point with no reading holds the last one. The real case is the head of a
+    // race, where the watch reports nothing for the first few seconds: crediting
+    // that stretch with zero is right, and discarding the whole series over it
+    // sends the first kilometre to the fallback along with everything else.
+    let carried = 0
+    for (const value of deviceValues) {
+      if (value !== undefined) carried = value - base
+      cumulative.push(carried)
+    }
+    return { cumulative, source: 'device' }
   }
 
   const cumulative: number[] = [0]
@@ -117,6 +164,11 @@ function cumulativeDistances(points: TrackPoint[]): {
     }
   }
   return { cumulative, source: 'computed' }
+}
+
+function elevationCoverage(points: TrackPoint[]): number {
+  if (points.length === 0) return 0
+  return points.filter((point) => point.elevation !== undefined).length / points.length
 }
 
 /** Hysteresis: a move only counts once it clears the noise floor from the last accepted level. */
@@ -231,7 +283,11 @@ function buildSplits(points: TrackPoint[], cumulative: number[]): TrackSplit[] {
  * Even spacing is what makes the chart readable: a time based series bunches up
  * wherever the runner slowed down, which is exactly where the detail matters.
  */
-function buildProfile(points: TrackPoint[], cumulative: number[]): TrackProfilePoint[] {
+function buildProfile(
+  points: TrackPoint[],
+  cumulative: number[],
+  withElevation: boolean,
+): TrackProfilePoint[] {
   const total = cumulative[cumulative.length - 1]
   if (total <= 0 || points.length < 2) return []
 
@@ -278,7 +334,7 @@ function buildProfile(points: TrackPoint[], cumulative: number[]): TrackProfileP
       distanceMeters: Math.round(target),
       paceSecondsPerKm: Math.round(lastPace * 10) / 10,
     }
-    if (elevationCount > 0) {
+    if (withElevation && elevationCount > 0) {
       point.elevationMeters = Math.round((elevationSum / elevationCount) * 10) / 10
     }
     profile.push(point)
@@ -313,6 +369,9 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
   const elapsedSeconds = (points[points.length - 1].time - points[0].time) / 1000
   const { gain, loss } = elevationChange(points)
   const heartRate = heartRateSummary(points)
+  // One trust decision for the whole altitude series: if it is not good enough to
+  // summarise, it is not good enough to plot either.
+  const trustElevation = elevationCoverage(points) >= MIN_ELEVATION_COVERAGE
 
   return {
     startedAt: activity.startedAt,
@@ -322,14 +381,15 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
     distanceSource: source,
     averagePaceSecondsPerKm:
       distanceMeters > 0 ? (elapsedSeconds / distanceMeters) * SPLIT_DISTANCE_METERS : 0,
-    elevationGainMeters: Math.round(gain),
-    elevationLossMeters: Math.round(loss),
+    ...(trustElevation
+      ? { elevationGainMeters: Math.round(gain), elevationLossMeters: Math.round(loss) }
+      : {}),
     splits: buildSplits(points, cumulative),
     ...(heartRate ? { heartRate } : {}),
     route: simplifyRoute(
       points.filter(hasPosition).map((point) => ({ lat: point.lat, lon: point.lon })),
       ROUTE_POINT_BUDGET,
     ),
-    profile: buildProfile(points, cumulative),
+    profile: buildProfile(points, cumulative, trustElevation),
   }
 }

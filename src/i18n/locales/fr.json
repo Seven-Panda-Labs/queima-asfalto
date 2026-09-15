@@ -236,6 +236,8 @@
     "measuredDistance": "Mesuré",
     "elevationGain": "Dénivelé positif",
     "elevationApproximate": "Le dénivelé est approximatif. Montres et formats de fichier ne s'accordent pas dessus.",
+    "elevationUnavailable": "Pas de données",
+    "elevationMissingNote": "Les relevés d'altitude de ce fichier s'arrêtent en cours de route, le dénivelé n'est pas mesurable.",
     "heartRateAverage": "FC moyenne",
     "heartRateMax": "FC maximale",
     "heartRateMin": "FC minimale",

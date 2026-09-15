@@ -236,6 +236,8 @@
     "measuredDistance": "Medido",
     "elevationGain": "Desnivel positivo",
     "elevationApproximate": "El desnivel es aproximado. Relojes y formatos no coinciden en él.",
+    "elevationUnavailable": "Sin datos",
+    "elevationMissingNote": "Las lecturas de altitud de este archivo se cortan a medias, así que el desnivel no se puede medir.",
     "heartRateAverage": "FC media",
     "heartRateMax": "FC máxima",
     "heartRateMin": "FC mínima",

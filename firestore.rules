@@ -400,8 +400,10 @@ service cloud.firestore {
         && data.distanceMeters is number
         && data.distanceSource in ['device', 'computed']
         && data.averagePaceSecondsPerKm is number
-        && data.elevationGainMeters is number
-        && data.elevationLossMeters is number
+        && (!('elevationGainMeters' in data) || data.elevationGainMeters == null
+          || data.elevationGainMeters is number)
+        && (!('elevationLossMeters' in data) || data.elevationLossMeters == null
+          || data.elevationLossMeters is number)
         && data.splits is list
         && data.splits.size() <= 200
         && data.route is list
@@ -415,8 +417,7 @@ service cloud.firestore {
       return data.keys().hasAll([
           'userId', 'format', 'storagePath', 'downloadUrl', 'sizeBytes', 'fileName',
           'startedAt', 'elapsedSeconds', 'movingSeconds', 'distanceMeters', 'distanceSource',
-          'averagePaceSecondsPerKm', 'elevationGainMeters', 'elevationLossMeters', 'splits',
-          'route', 'profile'
+          'averagePaceSecondsPerKm', 'splits', 'route', 'profile'
         ])
         && isOwner(data.userId)
         && isApprovedUser(data.userId)

@@ -240,6 +240,8 @@
     "measuredDistance": "المقاس",
     "elevationGain": "الصعود التراكمي",
     "elevationApproximate": "قياس الارتفاع تقريبي. الساعات وصيغ الملفات لا تتفق عليه.",
+    "elevationUnavailable": "لا تتوفر بيانات",
+    "elevationMissingNote": "تتوقف قراءات الارتفاع في هذا الملف في منتصف الطريق، لذا لا يمكن قياس الصعود.",
     "heartRateAverage": "متوسط النبض",
     "heartRateMax": "أقصى نبض",
     "heartRateMin": "أدنى نبض",

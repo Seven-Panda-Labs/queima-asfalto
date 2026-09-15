@@ -236,6 +236,8 @@
     "measuredDistance": "Gemessen",
     "elevationGain": "Höhenmeter",
     "elevationApproximate": "Die Höhenangabe ist ungefähr. Uhren und Dateiformate weichen darin ab.",
+    "elevationUnavailable": "Keine Daten",
+    "elevationMissingNote": "Die Höhenwerte dieser Datei brechen mittendrin ab, der Anstieg lässt sich nicht messen.",
     "heartRateAverage": "HF Durchschnitt",
     "heartRateMax": "HF Maximum",
     "heartRateMin": "HF Minimum",
