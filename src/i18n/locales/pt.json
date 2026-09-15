@@ -236,6 +236,8 @@
     "measuredDistance": "Medido",
     "elevationGain": "Subida acumulada",
     "elevationApproximate": "A altimetria é aproximada. Relógios e formatos de ficheiro não coincidem nela.",
+    "elevationUnavailable": "Sem dados",
+    "elevationMissingNote": "As leituras de altitude deste ficheiro param a meio, portanto a subida não é mensurável.",
     "heartRateAverage": "FC média",
     "heartRateMax": "FC máxima",
     "heartRateMin": "FC mínima",

@@ -53,8 +53,10 @@ export function docToEventTrack(
     distanceMeters: data.distanceMeters as number,
     distanceSource: data.distanceSource as EventTrack['distanceSource'],
     averagePaceSecondsPerKm: data.averagePaceSecondsPerKm as number,
-    elevationGainMeters: data.elevationGainMeters as number,
-    elevationLossMeters: data.elevationLossMeters as number,
+    elevationGainMeters:
+      typeof data.elevationGainMeters === 'number' ? data.elevationGainMeters : undefined,
+    elevationLossMeters:
+      typeof data.elevationLossMeters === 'number' ? data.elevationLossMeters : undefined,
     splits: (data.splits as EventTrack['splits'] | undefined) ?? [],
     heartRate: (data.heartRate as EventTrack['heartRate'] | null) ?? undefined,
     route: (data.route as EventTrack['route'] | undefined) ?? [],
@@ -86,8 +88,8 @@ export async function saveEventTrackRecord(
     distanceMeters: data.distanceMeters,
     distanceSource: data.distanceSource,
     averagePaceSecondsPerKm: data.averagePaceSecondsPerKm,
-    elevationGainMeters: data.elevationGainMeters,
-    elevationLossMeters: data.elevationLossMeters,
+    elevationGainMeters: data.elevationGainMeters ?? null,
+    elevationLossMeters: data.elevationLossMeters ?? null,
     splits: data.splits,
     heartRate: data.heartRate ?? null,
     route: data.route,

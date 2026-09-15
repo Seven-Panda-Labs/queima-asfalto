@@ -110,11 +110,19 @@ export function EventTrackSection({ event, track, loading, userId }: EventTrackS
             />
             <Stat
               label={t('eventTrack.elevationGain')}
-              value={`${track.elevationGainMeters} m`}
+              value={
+                track.elevationGainMeters === undefined
+                  ? t('eventTrack.elevationUnavailable')
+                  : `${track.elevationGainMeters} m`
+              }
             />
           </dl>
 
-          <p className="mt-2 text-xs text-muted">{t('eventTrack.elevationApproximate')}</p>
+          <p className="mt-2 text-xs text-muted">
+            {track.elevationGainMeters === undefined
+              ? t('eventTrack.elevationMissingNote')
+              : t('eventTrack.elevationApproximate')}
+          </p>
 
           {/* TCX carries heart rate, GPX does not, so this block comes and goes. */}
           {track.heartRate ? (

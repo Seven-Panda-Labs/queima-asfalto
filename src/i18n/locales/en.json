@@ -236,6 +236,8 @@
     "measuredDistance": "Measured",
     "elevationGain": "Elevation gain",
     "elevationApproximate": "Elevation is approximate. Watches and file formats disagree on it.",
+    "elevationUnavailable": "Not available",
+    "elevationMissingNote": "This file's altitude readings stop partway, so the climb cannot be measured.",
     "heartRateAverage": "Average HR",
     "heartRateMax": "Max HR",
     "heartRateMin": "Min HR",

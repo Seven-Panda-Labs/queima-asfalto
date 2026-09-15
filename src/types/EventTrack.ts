@@ -32,9 +32,12 @@ export type EventTrack = {
   distanceMeters: number
   distanceSource: 'device' | 'computed'
   averagePaceSecondsPerKm: number
-  /** Approximate, and not comparable across formats. See the parser notes. */
-  elevationGainMeters: number
-  elevationLossMeters: number
+  /**
+   * Approximate, and not comparable across formats. See the parser notes.
+   * Absent when the file's altitude was too patchy to summarise.
+   */
+  elevationGainMeters?: number
+  elevationLossMeters?: number
   splits: TrackSplit[]
   heartRate?: HeartRateSummary
   route: RoutePoint[]
