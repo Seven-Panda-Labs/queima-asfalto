@@ -52,3 +52,27 @@ export async function setAccountStatusForAdmin(
   )
   await callable({ uid, status })
 }
+
+export type RecomputeTracksReport = {
+  examined: number
+  recomputed: number
+  withoutTrack: number
+  failed: Array<{ eventId: string; reason: string }>
+  /** Absent when the sweep is done. */
+  cursor?: string
+}
+
+/**
+ * Rebuilds the stored summaries from the files already in Storage.
+ *
+ * One batch per call, so a long sweep cannot hit the function timeout. The caller
+ * passes the returned cursor back until there is none.
+ */
+export async function recomputeTracksForAdmin(cursor?: string): Promise<RecomputeTracksReport> {
+  const callable = httpsCallable<{ cursor?: string }, RecomputeTracksReport>(
+    functions,
+    'adminRecomputeTracks',
+  )
+  const result = await callable(cursor ? { cursor } : {})
+  return result.data
+}
