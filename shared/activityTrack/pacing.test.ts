@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
-import type { TrackSplit } from './metrics'
-import { computePacingDrift } from './pacing'
+import type { TrackSplit } from './metrics.js'
+import { computePacingDrift } from './pacing.js'
 
 function splits(paces: number[], trailingPartial?: number): TrackSplit[] {
   const full = paces.map((pace, index) => ({

@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
-import gpxSample from '../../../assets/sample-parkrun.GPX?raw'
-import tcxSample from '../../../assets/sample-parkrun.TCX?raw'
-import { parseActivityXml } from './parseActivityFile'
-import { summarizeActivity } from './metrics'
-import type { ParsedActivity } from './types'
+import gpxSample from '../../assets/sample-parkrun.GPX?raw'
+import tcxSample from '../../assets/sample-parkrun.TCX?raw'
+import { parseActivityXml } from './parseActivityFile.js'
+import { summarizeActivity } from './metrics.js'
+import type { ParsedActivity } from './types.js'
 
 function parse(xml: string): ParsedActivity {
   const result = parseActivityXml(xml)

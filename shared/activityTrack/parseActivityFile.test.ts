@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
-import gpxSample from '../../../assets/sample-parkrun.GPX?raw'
-import tcxSample from '../../../assets/sample-parkrun.TCX?raw'
-import { parseActivityXml, trackExtensionOf } from './parseActivityFile'
+import gpxSample from '../../assets/sample-parkrun.GPX?raw'
+import tcxSample from '../../assets/sample-parkrun.TCX?raw'
+import { parseActivityXml, trackExtensionOf } from './parseActivityFile.js'
 
 describe('trackExtensionOf', () => {
   it('accepts the uppercase names the sample exports use', () => {

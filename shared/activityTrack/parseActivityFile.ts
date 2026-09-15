@@ -1,8 +1,8 @@
-import { MAX_TRACK_BYTES, TRACK_FILE_EXTENSIONS } from '../../constants/activityTrack'
-import { parseGpxDocument } from './parseGpx'
-import { parseTcxDocument } from './parseTcx'
-import type { ActivityFileFormat, ParseActivityResult } from './types'
-import { parseXmlDocument } from './xml'
+import { MAX_TRACK_BYTES, TRACK_FILE_EXTENSIONS } from './limits.js'
+import { parseGpxDocument } from './parseGpx.js'
+import { parseTcxDocument } from './parseTcx.js'
+import type { ActivityFileFormat, ParseActivityResult } from './types.js'
+import { parseXmlDocument } from './xml.js'
 
 /** The samples are named `.GPX` and `.TCX`, so extension checks are case insensitive. */
 export function trackExtensionOf(fileName: string): string | null {
