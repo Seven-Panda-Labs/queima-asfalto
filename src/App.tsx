@@ -21,6 +21,7 @@ import { Results } from './pages/Results/Results'
 import { AdminCatalog } from './pages/Admin/AdminCatalog'
 import { AdminCatalogForm } from './pages/Admin/AdminCatalogForm'
 import { AdminOnly } from './pages/Admin/AdminOnly'
+import { AdminMaintenance } from './pages/Admin/AdminMaintenance'
 import { AdminUsers } from './pages/Admin/AdminUsers'
 import { Settings } from './pages/Settings/Settings'
 import { ANALYSIS_PATH } from './utils/eventNavigation'
@@ -82,6 +83,14 @@ export default function App() {
               element={
                 <AdminOnly>
                   <AdminUsers />
+                </AdminOnly>
+              }
+            />
+            <Route
+              path="admin/manutencao"
+              element={
+                <AdminOnly>
+                  <AdminMaintenance />
                 </AdminOnly>
               }
             />

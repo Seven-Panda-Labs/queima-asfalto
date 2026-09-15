@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 const TABS = [
   { to: '/admin', key: 'admin.tabUsers', end: true },
   { to: '/admin/catalogo', key: 'admin.tabCatalog', end: false },
+  { to: '/admin/manutencao', key: 'admin.tabMaintenance', end: false },
 ] as const
 
 export function AdminTabs() {
