@@ -4,6 +4,19 @@
 
 ---
 
+## [1.63.0] - 2026-09-17
+
+### Fixed
+
+- **Correcting a result by hand is no longer hidden:** the search-again button covered the edit pencil. They now sit side by side.
+- **Recording a result no longer leads nowhere:** the stopwatch shortcut led to a page that no longer exists, and a race already run only offered the form once marked completed.
+
+### Changed
+
+- **Automatic MaxFunSports lookup is off:** the site blocks all automated reading. The time is recorded by hand.
+
+---
+
 ## [1.62.0] - 2026-09-14
 
 ### Added

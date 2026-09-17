@@ -39,6 +39,18 @@ export const RESULTS_PLATFORMS: ResultsPlatform[] = [
   'mikatiming',
 ]
 
+/**
+ * Platforms whose site turns away every automated reader, so the button could
+ * only ever return an error. MaxFunSports serves the results table behind a
+ * Cloudflare challenge and its iframe host disallows all crawling; Parkrun
+ * answers 403 to anything that is not a browser.
+ */
+export const LOOKUP_UNAVAILABLE_PLATFORMS: ResultsPlatform[] = ['parkrun', 'maxfunsports']
+
+export function isLookupUnavailable(platform: ResultsPlatform): boolean {
+  return LOOKUP_UNAVAILABLE_PLATFORMS.includes(platform)
+}
+
 export function resultsPlatformLabel(platform: ResultsPlatform): string {
   if (platform === 'parkrun') return 'Parkrun'
   if (platform === 'davengo') return 'Davengo'
@@ -60,9 +72,14 @@ export function resultsPlatformLabel(platform: ResultsPlatform): string {
   return platform
 }
 
-export function getSortedResultsPlatforms(): ResultsPlatform[] {
-  return [...RESULTS_PLATFORMS].sort((left, right) =>
-    resultsPlatformLabel(left).localeCompare(resultsPlatformLabel(right), 'en'),
+/**
+ * What settings lists. RESULTS_PLATFORMS stays whole for reading back a
+ * backup, but naming a platform the search can no longer reach only promises
+ * something the button will not do.
+ */
+export function getSupportedLookupPlatforms(): ResultsPlatform[] {
+  return RESULTS_PLATFORMS.filter((platform) => !isLookupUnavailable(platform)).sort(
+    (left, right) => resultsPlatformLabel(left).localeCompare(resultsPlatformLabel(right), 'en'),
   )
 }
 

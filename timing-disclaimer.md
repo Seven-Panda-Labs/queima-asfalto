@@ -1,7 +1,7 @@
 ---locale:pt---
 #### Aviso: importação de resultados oficiais
 
-**Última actualização:** 2026-07-20
+**Última actualização:** 2026-09-17
 
 #### O que faz esta funcionalidade
 
@@ -25,6 +25,17 @@ Este aviso **não constitui aconselhamento jurídico**. Em caso de dúvida, cons
 - Sites podem **alterar formatos**, bloquear acesso ou impor limites sem aviso prévio; a funcionalidade pode deixar de funcionar temporária ou permanentemente.
 - A app inclui **limites de frequência** entre pesquisas para reduzir carga nos sites; não substitui o cumprimento dos termos de cada fornecedor.
 
+#### Plataformas fechadas à procura automática
+
+Alguns sites de timing recusam deliberadamente qualquer leitor automático. Nesses casos o botão de procura não aparece e o tempo regista-se à mão. Não se perde nada: um resultado escrito por ti conta igual em toda a app, só não fica marcado como verificado.
+
+Fechadas de momento:
+
+- **Parkrun:** responde com erro a tudo o que não seja um browser.
+- **MaxFunSports:** as páginas de resultados estão atrás de um desafio Cloudflare, e o host que serve a tabela pede no seu `robots.txt` para não ser lido automaticamente.
+
+Não contornamos estes bloqueios. Disfarçar a app de browser para derrotar um controlo que existe para a recusar violaria os termos acima, fosse ou não tecnicamente possível. Se um site reabrir, ou publicar uma API, a procura volta.
+
 #### Operadores de instâncias self-hosted
 
 Se fazes deploy da tua própria instância, és responsável pelo uso que os teus utilizadores fazem desta funcionalidade. Recomendações:
@@ -43,7 +54,7 @@ O Queima Asfalto é software open source (AGPL-3.0), fornecido **«tal como est�
 ---locale:en---
 #### Notice: official results import
 
-**Last updated:** 2026-07-20
+**Last updated:** 2026-09-17
 
 #### What this feature does
 
@@ -67,6 +78,17 @@ This notice is **not legal advice**. If in doubt, contact your instance operator
 - Sites may **change formats**, block access, or impose limits without notice; the feature may stop working temporarily or permanently.
 - The app includes **rate limits** between searches to reduce load on sites; this does not replace compliance with each provider’s terms.
 
+#### Platforms closed to automatic search
+
+Some timing sites deliberately turn away every automated reader. Where that is the case the search button does not appear and you record the time by hand. Nothing is lost: a time you type in counts the same everywhere in the app, it simply is not marked as verified.
+
+Closed at the moment:
+
+- **Parkrun:** answers with an error to anything that is not a browser.
+- **MaxFunSports:** the results pages sit behind a Cloudflare challenge, and the host serving the table asks in its `robots.txt` not to be read automatically.
+
+We do not work around these blocks. Disguising the app as a browser to defeat a control that exists to refuse it would break the terms above, whether or not it were technically possible. If a site reopens, or publishes an API, the search comes back.
+
 #### Self-hosted instance operators
 
 If you deploy your own instance, you are responsible for how your users use this feature. Recommendations:
@@ -85,7 +107,7 @@ Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The
 ---locale:es---
 #### Aviso: importación de resultados oficiales
 
-**Última actualización:** 2026-07-20
+**Última actualización:** 2026-09-17
 
 #### Qué hace esta funcionalidad
 
@@ -109,6 +131,17 @@ Este aviso **no constituye asesoramiento jurídico**. En caso de duda, contacta 
 - Los sitios pueden **cambiar formatos**, bloquear el acceso o imponer límites sin previo aviso; la funcionalidad puede dejar de funcionar temporal o permanentemente.
 - La app incluye **límites de frecuencia** entre búsquedas para reducir la carga en los sitios; esto no sustituye el cumplimiento de los términos de cada proveedor.
 
+#### Plataformas cerradas a la búsqueda automática
+
+Algunos sitios de cronometraje rechazan deliberadamente cualquier lector automático. En esos casos el botón de búsqueda no aparece y el tiempo se registra a mano. No se pierde nada: un resultado escrito por ti cuenta igual en toda la app, solo que no queda marcado como verificado.
+
+Cerradas por ahora:
+
+- **Parkrun:** responde con error a todo lo que no sea un navegador.
+- **MaxFunSports:** las páginas de resultados están tras un desafío de Cloudflare, y el host que sirve la tabla pide en su `robots.txt` que no se lea automáticamente.
+
+No sorteamos estos bloqueos. Disfrazar la app de navegador para derrotar un control que existe para rechazarla violaría los términos anteriores, fuese o no técnicamente posible. Si un sitio vuelve a abrirse, o publica una API, la búsqueda regresa.
+
 #### Operadores de instancias self-hosted
 
 Si despliegas tu propia instancia, eres responsable de cómo tus usuarios usan esta funcionalidad. Recomendaciones:
@@ -127,7 +160,7 @@ Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal 
 ---locale:de---
 #### Hinweis: Import offizieller Ergebnisse
 
-**Zuletzt aktualisiert:** 2026-07-20
+**Zuletzt aktualisiert:** 2026-09-17
 
 #### Was diese Funktion macht
 
@@ -151,6 +184,17 @@ Dieser Hinweis ist **keine Rechtsberatung**. Im Zweifel wende dich an den Betrei
 - Websites können **Formate ändern**, den Zugriff sperren oder Limits ohne Vorankündigung einführen; die Funktion kann vorübergehend oder dauerhaft ausfallen.
 - Die App enthält **Ratenlimits** zwischen Suchen, um die Belastung der Websites zu reduzieren; das ersetzt nicht die Einhaltung der Bedingungen jedes Anbieters.
 
+#### Plattformen, die der automatischen Suche verschlossen sind
+
+Manche Timing-Websites weisen jeden automatisierten Leser bewusst ab. Dann erscheint der Suchknopf nicht und die Zeit wird von Hand eingetragen. Es geht nichts verloren: eine selbst eingetragene Zeit zählt überall in der App gleich, sie ist nur nicht als verifiziert markiert.
+
+Derzeit verschlossen:
+
+- **Parkrun:** antwortet allem, was kein Browser ist, mit einem Fehler.
+- **MaxFunSports:** die Ergebnisseiten liegen hinter einer Cloudflare-Abfrage, und der Host, der die Tabelle ausliefert, bittet in seiner `robots.txt` darum, nicht automatisiert gelesen zu werden.
+
+Wir umgehen diese Sperren nicht. Die App als Browser zu tarnen, um eine Kontrolle auszuhebeln, die sie gerade abweisen soll, würde gegen die oben genannten Bedingungen verstoßen, ob technisch möglich oder nicht. Öffnet eine Website wieder, oder veröffentlicht sie eine API, kommt die Suche zurück.
+
 #### Betreiber selbst gehosteter Instanzen
 
 Wenn du deine eigene Instanz betreibst, bist du dafür verantwortlich, wie deine Nutzer diese Funktion verwenden. Empfehlungen:
@@ -169,7 +213,7 @@ Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie bese
 ---locale:fr---
 #### Avis: importation des résultats officiels
 
-**Dernière mise à jour :** 2026-07-20
+**Dernière mise à jour :** 2026-09-17
 
 #### Ce que fait cette fonctionnalité
 
@@ -193,6 +237,17 @@ Cet avis **ne constitue pas un conseil juridique**. En cas de doute, contacte l'
 - Les sites peuvent **changer de format**, bloquer l'accès ou imposer des limites sans préavis ; la fonctionnalité peut cesser de fonctionner temporairement ou définitivement.
 - L'application inclut des **limites de fréquence** entre les recherches pour réduire la charge sur les sites ; cela ne remplace pas le respect des conditions de chaque prestataire.
 
+#### Plateformes fermées à la recherche automatique
+
+Certains sites de chronométrage refusent délibérément tout lecteur automatisé. Dans ce cas le bouton de recherche n'apparaît pas et le temps s'enregistre à la main. Rien n'est perdu : un temps que tu saisis compte de la même façon partout dans l'application, il n'est simplement pas marqué comme vérifié.
+
+Fermées pour l'instant :
+
+- **Parkrun :** répond par une erreur à tout ce qui n'est pas un navigateur.
+- **MaxFunSports :** les pages de résultats sont derrière un défi Cloudflare, et l'hôte qui sert le tableau demande dans son `robots.txt` à ne pas être lu automatiquement.
+
+Nous ne contournons pas ces blocages. Déguiser l'application en navigateur pour déjouer un contrôle qui existe pour la refuser violerait les conditions ci-dessus, que ce soit techniquement possible ou non. Si un site rouvre, ou publie une API, la recherche revient.
+
 #### Opérateurs d'instances auto-hébergées
 
 Si tu déploies ta propre instance, tu es responsable de la manière dont tes utilisateurs se servent de cette fonctionnalité. Recommandations :
@@ -210,7 +265,7 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 ---locale:ar---
 #### تنبيه: استيراد النتائج الرسمية
 
-**آخر تحديث:** 2026-07-20
+**آخر تحديث:** 2026-09-17
 
 #### ما الذي تقوم به هذه الميزة
 
@@ -233,6 +288,17 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 - البيانات المستوردة تأتي من مصادر خارجية: **قد تكون غير كاملة أو قديمة أو غير صحيحة**. تأكد دائمًا قبل تطبيق أي نتيجة.
 - قد **تغيّر المواقع تنسيقاتها** أو تحجب الوصول أو تفرض قيودًا دون إشعار مسبق؛ وقد تتوقف الميزة عن العمل مؤقتًا أو نهائيًا.
 - يتضمن التطبيق **حدودًا لمعدل الطلبات** بين عمليات البحث لتقليل الحمل على المواقع؛ وهذا لا يحل محل الامتثال لشروط كل مزوّد.
+
+#### منصات مغلقة أمام البحث التلقائي
+
+بعض مواقع التوقيت ترفض عمدًا أي قارئ آلي. في هذه الحالات لا يظهر زر البحث ويُسجَّل الزمن يدويًا. لا شيء يُفقد: الزمن الذي تكتبه بنفسك يُحتسب في التطبيق كله بالطريقة ذاتها، غير أنه لا يُوسم بأنه مُتحقَّق منه.
+
+المغلقة حاليًا:
+
+- **Parkrun:** يرد بخطأ على كل ما ليس متصفحًا.
+- **MaxFunSports:** صفحات النتائج خلف تحدي Cloudflare، والمضيف الذي يقدم الجدول يطلب في `robots.txt` ألا يُقرأ آليًا.
+
+نحن لا نلتف على هذه الحواجز. تنكُّر التطبيق في هيئة متصفح لتعطيل ضابط وُضع أصلًا لرفضه يخالف الشروط أعلاه، سواء أمكن ذلك تقنيًا أم لا. إن عاد موقع وفتح أبوابه، أو نشر واجهة برمجية، عاد البحث معه.
 
 #### مشغّلو المثيلات المستضافة ذاتيًا
 

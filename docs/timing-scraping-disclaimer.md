@@ -33,7 +33,9 @@ Não há sincronização em background nem crawling em massa: cada lookup é exp
 
 ### Plataformas suportadas (referência)
 
-A lista evolui com o código, ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Exemplos: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, entre outras.
+A lista evolui com o código, ver `getSupportedLookupPlatforms()` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Exemplos: Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, entre outras.
+
+`LOOKUP_UNAVAILABLE_PLATFORMS`, no mesmo ficheiro, guarda as que fecharam a porta ao acesso automatizado (hoje Parkrun e MaxFunSports). O conector fica no repositório, mas a procura não o alcança e o utilizador regista o tempo à mão. Ver [`adding-a-results-connector.md`](./adding-a-results-connector.md).
 
 Marcas citadas são propriedade dos respectivos titulares.
 
@@ -106,7 +108,9 @@ There is no background sync or bulk crawling: each lookup is explicit and subjec
 
 ### Supported platforms (reference)
 
-The list evolves with the code, see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Examples: Parkrun, Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, among others.
+The list evolves with the code, see `getSupportedLookupPlatforms()` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts). Examples: Sporthive, Davengo, MyRaceResult, mika:timing, EQ Timing, RunCzech, among others.
+
+`LOOKUP_UNAVAILABLE_PLATFORMS`, in the same file, holds the ones that closed the door to automated access (today Parkrun and MaxFunSports). The connector stays in the repo, but the search does not reach it and the runner records the time by hand. See [`adding-a-results-connector.md`](./adding-a-results-connector.md).
 
 Cited brands belong to their respective owners.
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { getSortedResultsPlatforms, resultsPlatformLabel } from '../../../shared/officialResults'
+import { getSupportedLookupPlatforms, resultsPlatformLabel } from '../../../shared/officialResults'
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
 import { isCompleteParkrunnerId } from '../../types/UserResultsProfile'
 import { ParkrunnerIdInput } from '../../components/ParkrunnerIdInput/ParkrunnerIdInput'
@@ -83,7 +83,7 @@ export function ResultsProfileSection() {
     }
   }
 
-  const supportedPlatforms = getSortedResultsPlatforms()
+  const supportedPlatforms = getSupportedLookupPlatforms()
     .map((platform) => resultsPlatformLabel(platform))
     .join(', ')
 

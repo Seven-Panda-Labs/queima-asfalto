@@ -4,6 +4,19 @@
 
 ---
 
+## [1.63.0] - 2026-09-17
+
+### Corregido
+
+- **Corregir un resultado a mano ya no queda tapado:** el botón de volver a buscar cubría el lápiz de editar. Ahora están uno al lado del otro.
+- **Registrar un resultado ya no acaba en nada:** el atajo del cronómetro llevaba a una página que ya no existe, y una carrera ya corrida solo ofrecía el formulario tras marcarla como completada.
+
+### Cambiado
+
+- **La búsqueda automática en MaxFunSports queda desactivada:** el sitio bloquea toda lectura automática. El tiempo se registra a mano.
+
+---
+
 ## [1.62.0] - 2026-09-14
 
 ### Añadido

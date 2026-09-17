@@ -4,6 +4,8 @@ import { getFirestore, Timestamp } from 'firebase-admin/firestore'
 import { detectPlatform } from './shared/detectPlatform.js'
 import {
   canLookupPlatform,
+  isLookupUnavailable,
+  resultsPlatformLabel,
   type OfficialResultCandidate,
   type UserResultsProfile,
 } from './shared/types.js'
@@ -115,10 +117,10 @@ export const lookupOfficialResults = onCall(
       )
     }
 
-    if (platform === 'parkrun') {
+    if (isLookupUnavailable(platform)) {
       throw new HttpsError(
         'failed-precondition',
-        'Parkrun automatic lookup is temporarily unavailable. Record your result manually.',
+        `${resultsPlatformLabel(platform)} automatic lookup is unavailable. Record your result manually.`,
       )
     }
 

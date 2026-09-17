@@ -401,7 +401,7 @@ export function Events() {
                         </Link>
                         {event.status === 'confirmed' ? (
                           <Link
-                            to={`/eventos/${event.id}/resultados`}
+                            to={`/eventos/${event.id}?resultado=editar`}
                             state={eventLinkState(returnTo).state}
                             title={t('events.registerResults')}
                           aria-label={t('events.registerResults')}

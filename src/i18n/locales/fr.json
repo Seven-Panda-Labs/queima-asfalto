@@ -396,7 +396,7 @@
     "preconditionFailed": "Configure ton profil de résultats ou le lien de l'événement avant de rechercher.",
     "rateLimited": "Attends quelques secondes avant de relancer la recherche.",
     "applyError": "Impossible d'appliquer le résultat.",
-    "parkrunUnavailable": "La recherche automatique Parkrun est temporairement indisponible. Enregistre ton résultat manuellement ci-dessous.",
+    "lookupUnavailable": "La recherche automatique sur {{platform}} n'est pas disponible : le site bloque les lectures automatisées. Enregistre ton résultat manuellement.",
     "configurePlatform": "Renseigne ton nom dans les paramètres et le lien des résultats de l'événement.",
     "platform": "Plateforme",
     "previewTime": "Temps à appliquer : {{time}}",

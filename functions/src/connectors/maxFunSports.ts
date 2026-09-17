@@ -1,3 +1,7 @@
+// Kept for the day the site reopens. MaxFunSports now answers a Cloudflare
+// challenge to every non-browser client, its iframe host sets `Disallow: /`,
+// and the main site disallows the very query this search builds, so the
+// platform is listed in LOOKUP_UNAVAILABLE_PLATFORMS and never reached.
 import type { OfficialResultCandidate, UserResultsProfile } from '../shared/types.js'
 import { namesMatch } from '../shared/matchName.js'
 import { parseMaxFunSportsUrl } from '../shared/parseUrls.js'
