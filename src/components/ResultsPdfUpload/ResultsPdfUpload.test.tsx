@@ -72,7 +72,7 @@ describe('ResultsPdfUpload', () => {
       },
     })
 
-    render(<ResultsPdfUpload event={event} onApplied={vi.fn()} />)
+    render(<ResultsPdfUpload event={event} platform="maxfunsports" onApplied={vi.fn()} />)
     pickFile()
 
     expect(await screen.findByText('Bernd Graumann')).toBeInTheDocument()
@@ -88,7 +88,7 @@ describe('ResultsPdfUpload', () => {
     })
     saveResults.mockResolvedValue(undefined)
 
-    render(<ResultsPdfUpload event={event} onApplied={onApplied} />)
+    render(<ResultsPdfUpload event={event} platform="maxfunsports" onApplied={onApplied} />)
     pickFile()
 
     fireEvent.click(await screen.findByRole('button', { name: /aplicar|apply/i }))
@@ -105,7 +105,7 @@ describe('ResultsPdfUpload', () => {
   it('says the PDF is for another day rather than importing it', async () => {
     importResultsPdf.mockResolvedValue({ ok: false, code: 'wrong_event' })
 
-    render(<ResultsPdfUpload event={event} onApplied={vi.fn()} />)
+    render(<ResultsPdfUpload event={event} platform="maxfunsports" onApplied={vi.fn()} />)
     pickFile()
 
     expect(await screen.findByText(/outra data|another date/i)).toBeInTheDocument()
@@ -116,13 +116,13 @@ describe('ResultsPdfUpload', () => {
   it('passes the event date and results link to the reader', async () => {
     importResultsPdf.mockResolvedValue({ ok: false, code: 'name_not_found' })
 
-    render(<ResultsPdfUpload event={event} onApplied={vi.fn()} />)
+    render(<ResultsPdfUpload event={event} platform="maxfunsports" onApplied={vi.fn()} />)
     const file = pickFile()
 
     await waitFor(() => expect(importResultsPdf).toHaveBeenCalled())
     expect(importResultsPdf).toHaveBeenCalledWith(
       file,
-      { date: event.date, resultsUrl: event.resultsUrl },
+      { date: event.date, platform: 'maxfunsports', resultsUrl: event.resultsUrl },
       { resultLastName: 'Graumann' },
     )
   })
@@ -134,7 +134,7 @@ describe('ResultsPdfUpload', () => {
     })
     saveResults.mockRejectedValue(new Error('offline'))
 
-    render(<ResultsPdfUpload event={event} onApplied={vi.fn()} />)
+    render(<ResultsPdfUpload event={event} platform="maxfunsports" onApplied={vi.fn()} />)
     pickFile()
     fireEvent.click(await screen.findByRole('button', { name: /aplicar|apply/i }))
 

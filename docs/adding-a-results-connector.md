@@ -205,7 +205,13 @@ Notas que valeram tempo a descobrir:
 - O cabeçalho traz a data, usada para recusar um PDF carregado no evento errado.
 - Nem o PDF nem um extracto em bruto podem entrar no repositório. A fixture é anonimizada, ver [CLAUDE.md](../CLAUDE.md).
 
-Só o MaxFunSports usa esta via. Ao aparecer um segundo formato, `isMaxFunSportsPdfText()` e o parser passam a registo por plataforma; até lá, um registo para uma entrada era peso sem uso.
+Um segundo formato apareceu, o parkrun, e o registo prometido existe: `READERS` em `src/services/resultsPdfImport.ts`, uma entrada por plataforma com `matches`, `eventDates`, `eventName`, `preliminary` e `candidates`. Acrescentar um terceiro é acrescentar um parser em `shared/` e uma linha ali.
+
+O parkrun difere em três pontos que vale a pena conhecer antes de escrever o próximo:
+
+- **Duas formas da mesma página**, compacta e detalhada, e ambas são lidas: quem exportar a errada deve receber o resultado, não um enigma.
+- **A data é ambígua.** A página formata-a na locale de quem imprimiu, por isso `eventDates` devolve as duas leituras de `8/9/26` e quem chama fica com a que bate certo com o evento.
+- **O parser não expõe a tabela toda.** `findParkrunPdfRows` devolve as linhas de um corredor e o tamanho do campo, e mais nada: o documento traz todos os nomes e o parkrun imprime-lhe um aviso de direitos reservados.
 
 ### Tipo `OfficialResultCandidate`
 
@@ -381,7 +387,13 @@ Things worth knowing before writing another one:
 - The header carries the date, used to refuse a PDF uploaded onto the wrong event.
 - Neither the PDF nor a raw extract may enter the repo. The fixture is anonymized, see [CLAUDE.md](../CLAUDE.md).
 
-Only MaxFunSports uses this path. When a second format appears, `isMaxFunSportsPdfText()` and the parser become a per-platform registry; a registry for one entry would have been weight with nothing on it.
+A second format has since appeared, parkrun, and the promised registry exists: `READERS` in `src/services/resultsPdfImport.ts`, one entry per platform with `matches`, `eventDates`, `eventName`, `preliminary` and `candidates`. Adding a third means a parser in `shared/` and one line there.
+
+parkrun differs in three ways worth knowing before writing the next one:
+
+- **Two shapes of the same page**, compact and detailed, and both are read: a runner who exports the wrong one should get their result, not a puzzle.
+- **The date is ambiguous.** The page formats it in the printer's locale, so `eventDates` returns both readings of `8/9/26` and the caller keeps whichever matches the event.
+- **The parser does not expose the whole table.** `findParkrunPdfRows` returns one runner's rows and the field size, nothing else: the document carries every name and parkrun prints an all rights reserved notice on it.
 
 ### `OfficialResultCandidate` fields
 

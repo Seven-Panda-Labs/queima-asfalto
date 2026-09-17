@@ -4,6 +4,18 @@
 
 ---
 
+## [1.65.0] - 2026-09-19
+
+### Ajouté
+
+- **Importer un résultat parkrun depuis la page imprimée :** parkrun n'autorise pas la recherche automatique, mais permet d'imprimer les résultats en PDF. Ouvre ce fichier dans l'éditeur de résultat et l'application y prend ton temps, ta place et la taille du peloton. Les deux versions de la page, compacte et détaillée, sont lues. Le fichier est lu sur ton appareil et n'est envoyé nulle part.
+
+### Corrigé
+
+- **Un nom abrégé ne correspond plus à la mauvaise personne :** quand quelqu'un ne donne pas son nom de famille, les résultats affichent « Jonas S ». L'application traitait cette initiale comme un fragment de texte quelconque, ce qui la faisait correspondre à presque n'importe quel nom. Elle doit désormais en être le début.
+
+---
+
 ## [1.64.0] - 2026-09-18
 
 ### Ajouté

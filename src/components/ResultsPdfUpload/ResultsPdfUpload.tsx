@@ -7,10 +7,11 @@ import { importResultsPdf, type ResultsPdfImport } from '../../services/resultsP
 import { saveResults } from '../../services/events'
 import { formatClassification } from '../../utils/classification'
 import type { Event } from '../../types/Event'
-import type { OfficialResultCandidate } from '../../../shared/officialResults'
+import type { OfficialResultCandidate, ResultsPlatform } from '../../../shared/officialResults'
 
 type ResultsPdfUploadProps = {
   event: Event
+  platform: ResultsPlatform
   onApplied: () => void
 }
 
@@ -21,7 +22,7 @@ type ResultsPdfUploadProps = {
  * ranking carries every finisher's name, and none of it needs to leave the
  * machine for this runner to find their own row.
  */
-export function ResultsPdfUpload({ event, onApplied }: ResultsPdfUploadProps) {
+export function ResultsPdfUpload({ event, platform, onApplied }: ResultsPdfUploadProps) {
   const { t } = useTranslation()
   const { profile } = useUserResultsProfile()
   const inputRef = useRef<HTMLInputElement>(null)
@@ -43,7 +44,7 @@ export function ResultsPdfUpload({ event, onApplied }: ResultsPdfUploadProps) {
     try {
       const outcome = await importResultsPdf(
         file,
-        { date: event.date, resultsUrl: event.resultsUrl },
+        { date: event.date, platform, resultsUrl: event.resultsUrl },
         profile,
       )
       if (outcome.ok) setFound(outcome.result)
@@ -97,7 +98,9 @@ export function ResultsPdfUpload({ event, onApplied }: ResultsPdfUploadProps) {
 
   return (
     <div className="mt-4">
-      <p className="text-xs text-muted">{t('resultsPdf.hint')}</p>
+      <p className="text-xs text-muted">
+        {t(platform === 'parkrun' ? 'resultsPdf.hintPrint' : 'resultsPdf.hint')}
+      </p>
 
       <input
         ref={inputRef}

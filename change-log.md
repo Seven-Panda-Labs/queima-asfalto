@@ -4,6 +4,18 @@
 
 ---
 
+## [1.65.0] - 2026-09-19
+
+### Adicionado
+
+- **Importar o resultado do parkrun a partir da página impressa:** o parkrun não deixa procurar automaticamente, mas deixa-te imprimir os resultados para PDF. Abre esse ficheiro no editor do resultado e a app tira de lá o teu tempo, a tua posição e o tamanho do campo. As duas versões da página, a compacta e a detalhada, são lidas. O ficheiro é lido no teu equipamento e não é enviado para lado nenhum.
+
+### Corrigido
+
+- **Nomes abreviados deixaram de corresponder à pessoa errada:** quando alguém omite o apelido, os resultados mostram algo como «Jonas S». A app tratava essa inicial como um pedaço de texto solto, o que a fazia corresponder a quase qualquer nome. Passa a ser tratada como o início de um nome.
+
+---
+
 ## [1.64.0] - 2026-09-18
 
 ### Adicionado

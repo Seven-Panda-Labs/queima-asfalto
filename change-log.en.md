@@ -4,6 +4,18 @@
 
 ---
 
+## [1.65.0] - 2026-09-19
+
+### Added
+
+- **Import a parkrun result from the printed page:** parkrun allows no automatic search, but it does let you print the results to PDF. Open that file in the result editor and the app takes your time, your placing and the size of the field from it. Both versions of the page, compact and detailed, are read. The file is read on your device and is never sent anywhere.
+
+### Fixed
+
+- **A shortened name no longer matches the wrong person:** when somebody withholds their family name, results show something like “Jonas S”. The app treated that initial as a loose piece of text, which made it match almost any name. It now has to be the start of one.
+
+---
+
 ## [1.64.0] - 2026-09-18
 
 ### Added

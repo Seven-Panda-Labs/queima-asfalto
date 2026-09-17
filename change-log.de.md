@@ -4,6 +4,18 @@
 
 ---
 
+## [1.65.0] - 2026-09-19
+
+### Hinzugefügt
+
+- **Ein parkrun-Ergebnis aus der gedruckten Seite übernehmen:** parkrun lässt keine automatische Suche zu, wohl aber das Drucken der Ergebnisse als PDF. Öffne diese Datei im Ergebnis-Editor, und die App entnimmt ihr deine Zeit, deine Platzierung und die Feldgröße. Beide Fassungen der Seite, die kompakte und die ausführliche, werden gelesen. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet.
+
+### Behoben
+
+- **Ein abgekürzter Name trifft nicht mehr die falsche Person:** wer den Familiennamen zurückhält, erscheint in den Ergebnissen als „Jonas S“. Die App behandelte diese Initiale als losen Textschnipsel, womit sie fast jeden Namen traf. Jetzt muss sie der Anfang eines Namens sein.
+
+---
+
 ## [1.64.0] - 2026-09-18
 
 ### Hinzugefügt

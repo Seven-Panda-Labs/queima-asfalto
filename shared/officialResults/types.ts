@@ -55,7 +55,7 @@ export function isLookupUnavailable(platform: ResultsPlatform): boolean {
  * Platforms whose official results PDF the app can read from a file the runner
  * saved. The upload is the way in where the site itself refuses to be read.
  */
-export const RESULTS_PDF_PLATFORMS: ResultsPlatform[] = ['maxfunsports']
+export const RESULTS_PDF_PLATFORMS: ResultsPlatform[] = ['maxfunsports', 'parkrun']
 
 export function acceptsResultsPdf(platform: ResultsPlatform): boolean {
   return RESULTS_PDF_PLATFORMS.includes(platform)
