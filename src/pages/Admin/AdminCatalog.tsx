@@ -2,13 +2,15 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
-import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
+import { RETIRED_REASONS, type RaceCatalogEntry, type RetiredReason } from '../../../shared/raceCatalog'
 import { useAuth } from '../../contexts/AuthContext'
 import {
   listStaleForAdmin,
   mergeCatalogRaces,
+  retireCatalogRaces,
   searchCatalogForAdmin,
   unmergeCatalogRace,
+  unretireCatalogRaces,
 } from '../../services/adminRaceCatalog'
 import { AdminTabs } from './AdminTabs'
 import { CatalogDuplicates } from './CatalogDuplicates'
@@ -53,6 +55,18 @@ export function AdminCatalog() {
    */
   const [joining, setJoining] = useState<RaceCatalogEntry | null>(null)
   const [joined, setJoined] = useState<string | null>(null)
+  /**
+   * The entries an operator has ticked, by id, across both lists.
+   *
+   * By id rather than by row, because the two lists are two queries and the
+   * same race can be in either: a sweep starts in the search and finishes in
+   * the queue without losing what was already picked.
+   */
+  const [picked, setPicked] = useState<Set<string>>(new Set())
+  const [reason, setReason] = useState<RetiredReason | ''>('')
+  /** What the last sweep did, kept so it can be taken back in one press. */
+  const [swept, setSwept] = useState<string[]>([])
+  const [sweeping, setSweeping] = useState(false)
 
   const load = useCallback(
     async (after?: string) => {
@@ -95,6 +109,54 @@ export function AdminCatalog() {
   }
 
   const more = cursors[cursors.length - 1]
+
+  const toggle = (id: string) =>
+    setPicked((current) => {
+      const next = new Set(current)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+
+  /** Takes every ticked entry out of the catalog, with the same reason. */
+  const sweep = async () => {
+    if (!user || !reason || picked.size === 0) return
+    const ids = [...picked]
+    setSweeping(true)
+    setError(null)
+    try {
+      await retireCatalogRaces(ids, reason, user.uid)
+      setPicked(new Set())
+      setReason('')
+      setSwept(ids)
+      if (found) void search()
+      setStale([])
+      setCursors([])
+      await load()
+    } catch {
+      setError(t('admin.duplicatesError'))
+    } finally {
+      setSweeping(false)
+    }
+  }
+
+  /** Puts back what the last sweep took out, for when it went too wide. */
+  const undoSweep = async () => {
+    if (!user || swept.length === 0) return
+    setSweeping(true)
+    try {
+      await unretireCatalogRaces(swept, user.uid)
+      setSwept([])
+      if (found) void search()
+      setStale([])
+      setCursors([])
+      await load()
+    } catch {
+      setError(t('admin.duplicatesError'))
+    } finally {
+      setSweeping(false)
+    }
+  }
 
   /** Points the picked entry at this one, which is the survivor. */
   const join = async (survivor: RaceCatalogEntry) => {
@@ -139,6 +201,16 @@ export function AdminCatalog() {
         data-quiet={quiet}
         className={`flex flex-wrap items-center gap-3 px-4 py-3${quiet ? ' bg-border/20' : ''}`}
       >
+        {/* Only what is still in the catalog can be taken out of it. */}
+        {user && !quiet ? (
+          <input
+            type="checkbox"
+            checked={picked.has(race.id)}
+            onChange={() => toggle(race.id)}
+            aria-label={t('admin.catalogPick', { name: race.name })}
+            className="h-4 w-4 shrink-0 rounded border-border"
+          />
+        ) : null}
         <Link
           to={`/admin/catalogo/${race.id}`}
           className={`font-semibold hover:text-primary ${quiet ? 'text-muted' : 'text-foreground'}`}
@@ -228,6 +300,67 @@ export function AdminCatalog() {
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}
       {joined ? <p className="mt-4 text-sm text-primary">{joined}</p> : null}
+
+      {picked.size > 0 ? (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-primary bg-primary/5 px-4 py-3">
+          <p className="text-sm font-semibold text-foreground">
+            {t('admin.catalogPicked', { count: picked.size })}
+          </p>
+          <label className="sr-only" htmlFor="catalog-sweep-reason">
+            {t('admin.catalogRetiredReason')}
+          </label>
+          <select
+            id="catalog-sweep-reason"
+            value={reason}
+            onChange={(change) => setReason(change.target.value as RetiredReason | '')}
+            className="rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+          >
+            <option value="">{t('admin.catalogRetiredReason')}</option>
+            {RETIRED_REASONS.map((value) => (
+              <option key={value} value={value}>
+                {t(`admin.retiredReason.${value}`)}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            disabled={!reason || sweeping}
+            onClick={() => void sweep()}
+            className="rounded-md bg-primary px-3 py-2 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-50"
+          >
+            {t('admin.catalogRetirePicked')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setPicked(new Set())}
+            className="ml-auto text-xs font-semibold text-muted hover:text-foreground"
+          >
+            {t('common.cancel')}
+          </button>
+        </div>
+      ) : null}
+
+      {/* A decision made this fast has to be as fast to take back. */}
+      {swept.length > 0 ? (
+        <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3">
+          <p className="text-sm text-foreground">{t('admin.catalogSwept', { count: swept.length })}</p>
+          <button
+            type="button"
+            disabled={sweeping}
+            onClick={() => void undoSweep()}
+            className="text-xs font-semibold text-primary hover:underline disabled:opacity-50"
+          >
+            {t('admin.catalogSweptUndo')}
+          </button>
+          <button
+            type="button"
+            onClick={() => setSwept([])}
+            className="ml-auto text-xs font-semibold text-muted hover:text-foreground"
+          >
+            {t('common.dash')}
+          </button>
+        </div>
+      ) : null}
 
       {joining ? (
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-primary bg-primary/5 px-4 py-3">

@@ -1390,6 +1390,11 @@
     "catalogJoinBanner": "Joining \"{{name}}\". Search and pick the race that stays.",
     "catalogJoinHere": "This one stays",
     "catalogJoinCopy": "That race is already a copy of {{name}}. Pick the original.",
+    "catalogPick": "Pick {{name}}",
+    "catalogPicked": "{{count}} picked",
+    "catalogRetirePicked": "Take out of the catalog",
+    "catalogSwept": "{{count}} races are out of the catalog.",
+    "catalogSweptUndo": "Undo",
     "catalogJoined": "\"{{drop}}\" now points at \"{{keep}}\"."
   },
   "funnel": {

@@ -1402,6 +1402,11 @@
     "catalogJoinBanner": "دمج «{{name}}». ابحث واختر السباق الذي يبقى.",
     "catalogJoinHere": "هذا يبقى",
     "catalogJoinCopy": "هذا السباق نسخة من {{name}} أصلا. اختر الأصل.",
+    "catalogPick": "اختيار {{name}}",
+    "catalogPicked": "{{count}} مختارة",
+    "catalogRetirePicked": "إخراج من الفهرس",
+    "catalogSwept": "{{count}} سباقات خرجت من الفهرس.",
+    "catalogSweptUndo": "تراجع",
     "catalogJoined": "«{{drop}}» يشير الآن إلى «{{keep}}»."
   },
   "funnel": {

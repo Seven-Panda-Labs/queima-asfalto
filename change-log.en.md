@@ -4,6 +4,14 @@
 
 ---
 
+## [1.67.0] - 2026-09-17
+
+### Added
+
+- **Take several races out of the catalog at once:** pick the rows, give one reason, and they all go. With a button to undo the whole sweep, in case it went too wide.
+
+---
+
 ## [1.66.0] - 2026-09-17
 
 ### Fixed

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.67.0] - 2026-09-17
+
+### Añadido
+
+- **Sacar varias carreras del catálogo de una vez:** eliges las filas, das una razón, y salen todas. Con un botón para deshacer la limpieza entera, por si fue demasiado lejos.
+
+---
+
 ## [1.66.0] - 2026-09-17
 
 ### Corregido

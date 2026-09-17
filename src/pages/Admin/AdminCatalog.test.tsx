@@ -8,6 +8,8 @@ const listStaleForAdmin = vi.fn()
 const searchCatalogForAdmin = vi.fn()
 const unmergeCatalogRace = vi.fn()
 const mergeCatalogRaces = vi.fn()
+const retireCatalogRaces = vi.fn()
+const unretireCatalogRaces = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
   listStaleForAdmin: (...args: unknown[]) => listStaleForAdmin(...args),
@@ -16,6 +18,8 @@ vi.mock('../../services/adminRaceCatalog', () => ({
   mergeCatalogRaces: (...args: unknown[]) => mergeCatalogRaces(...args),
   separateCatalogRaces: vi.fn(),
   unmergeCatalogRace: (...args: unknown[]) => unmergeCatalogRace(...args),
+  retireCatalogRaces: (...args: unknown[]) => retireCatalogRaces(...args),
+  unretireCatalogRaces: (...args: unknown[]) => unretireCatalogRaces(...args),
 }))
 
 vi.mock('../../services/catalogProposals', () => ({
@@ -173,6 +177,85 @@ describe('the official page', () => {
     expect(link).toHaveAttribute('target', '_blank')
     // And an entry with no site shows no link, rather than a dead one.
     expect(screen.queryByRole('link', { name: /Abrir a página oficial de Sem site/ })).toBeNull()
+  })
+})
+
+describe('one decision for many entries', () => {
+  const triathlon = race({ id: 'de-berlin-oranke-open-triathlon', name: 'Oranke Open Triathlon' })
+  const walk = race({ id: 'de-alzey-ahmadiyya-charity-walk', name: 'Ahmadiyya Charity Walk' })
+  const keeper = race({ id: 'de-berlin-tierparklauf', name: 'Tierparklauf' })
+
+  function pick(name: string) {
+    fireEvent.click(screen.getByRole('checkbox', { name: `Escolher ${name}` }))
+  }
+
+  it('takes every picked entry out with one reason', async () => {
+    // Ten triathlons is ten pages and ten saves otherwise, which is the reason
+    // the sweep never happens.
+    listStaleForAdmin.mockResolvedValue({ races: [triathlon, walk, keeper], nextCursor: undefined })
+    render(<AdminCatalog />)
+
+    await screen.findByText('Oranke Open Triathlon')
+    pick('Oranke Open Triathlon')
+    pick('Ahmadiyya Charity Walk')
+
+    expect(screen.getByText('2 escolhidas')).toBeInTheDocument()
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), {
+      target: { value: 'other_sport' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Tirar do catálogo' }))
+
+    await waitFor(() =>
+      expect(retireCatalogRaces).toHaveBeenCalledWith(
+        ['de-berlin-oranke-open-triathlon', 'de-alzey-ahmadiyya-charity-walk'],
+        'other_sport',
+        'admin',
+      ),
+    )
+  })
+
+  it('will not act without a reason, the same as the form', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [triathlon], nextCursor: undefined })
+    render(<AdminCatalog />)
+
+    await screen.findByText('Oranke Open Triathlon')
+    pick('Oranke Open Triathlon')
+
+    expect(screen.getByRole('button', { name: 'Tirar do catálogo' })).toBeDisabled()
+  })
+
+  it('offers to take a sweep back', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [triathlon], nextCursor: undefined })
+    render(<AdminCatalog />)
+
+    await screen.findByText('Oranke Open Triathlon')
+    pick('Oranke Open Triathlon')
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), { target: { value: 'not_a_race' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Tirar do catálogo' }))
+
+    // A decision made this fast has to be as fast to take back.
+    fireEvent.click(await screen.findByRole('button', { name: 'Anular' }))
+
+    await waitFor(() =>
+      expect(unretireCatalogRaces).toHaveBeenCalledWith(
+        ['de-berlin-oranke-open-triathlon'],
+        'admin',
+      ),
+    )
+  })
+
+  it('does not offer to take out what is already out', async () => {
+    listStaleForAdmin.mockResolvedValue({
+      races: [
+        race({ id: 'de-berlin-gone', name: 'Prova acabada', retired: true }),
+        race({ id: 'de-berlin-copy', name: 'Cópia', duplicateOfCatalogRaceId: 'de-berlin-other' }),
+      ],
+      nextCursor: undefined,
+    })
+    render(<AdminCatalog />)
+
+    await screen.findByText('Prova acabada')
+    expect(screen.queryByRole('checkbox', { name: /Escolher/ })).toBeNull()
   })
 })
 

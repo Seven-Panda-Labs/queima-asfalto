@@ -4,6 +4,14 @@
 
 ---
 
+## [1.67.0] - 2026-09-17
+
+### Hinzugefügt
+
+- **Mehrere Rennen auf einmal aus dem Katalog nehmen:** Zeilen auswählen, einen Grund angeben, und alle gehen. Mit einem Knopf, der den ganzen Durchgang zurücknimmt, falls er zu weit ging.
+
+---
+
 ## [1.66.0] - 2026-09-17
 
 ### Behoben

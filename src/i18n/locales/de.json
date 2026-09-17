@@ -1390,6 +1390,11 @@
     "catalogJoinBanner": "„{{name}}“ wird zusammengelegt. Suche das Rennen, das bleibt.",
     "catalogJoinHere": "Dieses bleibt",
     "catalogJoinCopy": "Dieses Rennen ist schon eine Kopie von {{name}}. Wähle das Original.",
+    "catalogPick": "{{name}} auswählen",
+    "catalogPicked": "{{count}} ausgewählt",
+    "catalogRetirePicked": "Aus dem Katalog nehmen",
+    "catalogSwept": "{{count}} Rennen sind aus dem Katalog.",
+    "catalogSweptUndo": "Rückgängig",
     "catalogJoined": "„{{drop}}“ zeigt jetzt auf „{{keep}}“."
   },
   "funnel": {
