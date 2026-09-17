@@ -1390,6 +1390,11 @@
     "catalogJoinBanner": "Uniendo «{{name}}». Busca y elige la carrera que se queda.",
     "catalogJoinHere": "Se queda esta",
     "catalogJoinCopy": "Esa carrera ya es una copia de {{name}}. Elige la original.",
+    "catalogPick": "Elegir {{name}}",
+    "catalogPicked": "{{count}} elegidas",
+    "catalogRetirePicked": "Sacar del catálogo",
+    "catalogSwept": "{{count}} carreras quedaron fuera de circulación.",
+    "catalogSweptUndo": "Deshacer",
     "catalogJoined": "«{{drop}}» ahora apunta a «{{keep}}»."
   },
   "funnel": {

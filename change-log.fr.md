@@ -4,6 +4,14 @@
 
 ---
 
+## [1.67.0] - 2026-09-17
+
+### Ajouté
+
+- **Sortir plusieurs courses du catalogue d'un coup :** on choisit les lignes, on donne une raison, et elles sortent toutes. Avec un bouton pour annuler tout le passage, s'il est allé trop loin.
+
+---
+
 ## [1.66.0] - 2026-09-17
 
 ### Corrigé

@@ -1390,6 +1390,11 @@
     "catalogJoinBanner": "Fusion de « {{name}} ». Cherche et choisis la course qui reste.",
     "catalogJoinHere": "C'est celle-ci qui reste",
     "catalogJoinCopy": "Cette course est déjà une copie de {{name}}. Choisis l'originale.",
+    "catalogPick": "Choisir {{name}}",
+    "catalogPicked": "{{count}} choisies",
+    "catalogRetirePicked": "Sortir du catalogue",
+    "catalogSwept": "{{count}} courses sont sorties du catalogue.",
+    "catalogSweptUndo": "Annuler",
     "catalogJoined": "« {{drop}} » pointe désormais vers « {{keep}} »."
   },
   "funnel": {

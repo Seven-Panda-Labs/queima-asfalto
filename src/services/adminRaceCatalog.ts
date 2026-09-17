@@ -10,6 +10,7 @@ import {
   setDoc,
   startAfter,
   where,
+  writeBatch,
 } from 'firebase/firestore'
 import {
   absorb,
@@ -19,6 +20,7 @@ import {
   rankByName,
   searchTokens,
   type RaceCatalogEntry,
+  type RetiredReason,
 } from '../../shared/raceCatalog'
 import { pairAlreadyAnswered } from '../../shared/eventDiscovery/duplicates'
 import { db } from './firebase'
@@ -246,6 +248,53 @@ export async function mergeCatalogRaces(
         ),
       ),
   )
+}
+
+/**
+ * Takes several entries out of the catalog at once, with one reason.
+ *
+ * The decision is the same one the form makes, and so is the write: what
+ * changes is how many times a person has to make it. A sweep of triathlons
+ * read as races is ten pages and ten saves otherwise, which is the reason it
+ * does not get done.
+ *
+ * One batch, so a failure leaves none of them half done, and the ids come back
+ * for the undo: a decision made this fast has to be as fast to take back.
+ */
+export async function retireCatalogRaces(
+  ids: readonly string[],
+  reason: RetiredReason,
+  adminUid: string,
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = new Date().toISOString()
+  const batch = writeBatch(db)
+  for (const id of ids) {
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, id),
+      { retired: true, retiredReason: reason, updatedAt, updatedBy: adminUid },
+      { merge: true },
+    )
+  }
+  await batch.commit()
+}
+
+/** Puts them back, reason and all, for when the sweep went too wide. */
+export async function unretireCatalogRaces(
+  ids: readonly string[],
+  adminUid: string,
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = new Date().toISOString()
+  const batch = writeBatch(db)
+  for (const id of ids) {
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, id),
+      { retired: false, retiredReason: null, updatedAt, updatedBy: adminUid },
+      { merge: true },
+    )
+  }
+  await batch.commit()
 }
 
 /** Undo the above. The entry goes back to standing on its own. */

@@ -1390,6 +1390,11 @@
     "catalogJoinBanner": "A juntar «{{name}}». Procura e escolhe a prova que fica.",
     "catalogJoinHere": "Fica esta",
     "catalogJoinCopy": "Essa prova já é uma cópia de {{name}}. Escolhe a original.",
+    "catalogPick": "Escolher {{name}}",
+    "catalogPicked": "{{count}} escolhidas",
+    "catalogRetirePicked": "Tirar do catálogo",
+    "catalogSwept": "{{count}} provas ficaram fora de circulação.",
+    "catalogSweptUndo": "Anular",
     "catalogJoined": "«{{drop}}» passa a apontar para «{{keep}}»."
   },
   "funnel": {

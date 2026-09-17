@@ -4,6 +4,14 @@
 
 ---
 
+## [1.67.0] - 2026-09-17
+
+### Adicionado
+
+- **Tirar várias provas do catálogo de uma vez:** escolhem-se as linhas, dá-se uma razão, e ficam todas fora de circulação. Com um botão para anular a limpeza inteira, caso tenha ido longe de mais.
+
+---
+
 ## [1.66.0] - 2026-09-17
 
 ### Corrigido
