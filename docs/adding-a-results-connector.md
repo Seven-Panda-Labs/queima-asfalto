@@ -186,6 +186,27 @@ Conector mais complexo (HTML, formulários, domínios custom):
 | Parkrun | Responde 403 a tudo o que não seja um browser |
 | MaxFunSports | Desafio Cloudflare em `/result/*`; `robots.txt` do host de iframe é `Disallow: /`, e o do site principal proíbe queries com `Search` |
 
+### Ler os resultados de um PDF carregado
+
+Quando o site publica um PDF oficial mas recusa ser lido, a via é o ficheiro que o próprio atleta descarregou. Nada é obtido pela app, e o PDF **não sai do browser**.
+
+| Peça | Onde |
+|------|------|
+| Regras de leitura, puras e testáveis | `shared/officialResults/maxFunSportsPdf.ts` |
+| Extracção de texto no browser | `src/services/resultsPdfText.ts`, pdfjs em `import()` dinâmico |
+| Orquestração e erros | `src/services/resultsPdfImport.ts` |
+| Entrada na interface | `src/components/ResultsPdfUpload/` |
+| Que plataformas a oferecem | `RESULTS_PDF_PLATFORMS` em `types.ts` |
+
+Notas que valeram tempo a descobrir:
+
+- A coluna de nome tem largura fixa. Um nome comprido encosta ao tempo **sem espaço**, por isso o separador entre os dois é opcional no regex.
+- Não há total impresso: o tamanho do campo é a posição do último classificado.
+- O cabeçalho traz a data, usada para recusar um PDF carregado no evento errado.
+- Nem o PDF nem um extracto em bruto podem entrar no repositório. A fixture é anonimizada, ver [CLAUDE.md](../CLAUDE.md).
+
+Só o MaxFunSports usa esta via. Ao aparecer um segundo formato, `isMaxFunSportsPdfText()` e o parser passam a registo por plataforma; até lá, um registo para uma entrada era peso sem uso.
+
 ### Tipo `OfficialResultCandidate`
 
 Definido em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts):
@@ -340,6 +361,27 @@ Uses **Parkrunner ID**, not name on the event URL. See `canLookupPlatform()` and
 ### Platforms that closed the door
 
 `LOOKUP_UNAVAILABLE_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts) lists the platforms that no longer answer an automated reader: Parkrun (403 to anything but a browser) and MaxFunSports (Cloudflare challenge on `/result/*`, `Disallow: /` on the iframe host, and queries containing `Search` disallowed on the main site). The search button stays hidden, the callable returns `failed-precondition`, and the runner records the time by hand. The connector stays in the repo in case the site reopens.
+
+### Reading results from an uploaded PDF
+
+Where a site publishes an official PDF but refuses to be read, the way in is the file the runner downloaded themselves. The app fetches nothing, and the PDF **never leaves the browser**.
+
+| Piece | Where |
+|-------|-------|
+| Parsing rules, pure and testable | `shared/officialResults/maxFunSportsPdf.ts` |
+| Browser text extraction | `src/services/resultsPdfText.ts`, pdfjs behind a dynamic `import()` |
+| Orchestration and error codes | `src/services/resultsPdfImport.ts` |
+| Entry point in the UI | `src/components/ResultsPdfUpload/` |
+| Which platforms offer it | `RESULTS_PDF_PLATFORMS` in `types.ts` |
+
+Things worth knowing before writing another one:
+
+- The name column is fixed width. A long name runs into the time **with no space**, so the separator between them is optional in the row pattern.
+- No total is printed: the field is as big as its last finisher's rank.
+- The header carries the date, used to refuse a PDF uploaded onto the wrong event.
+- Neither the PDF nor a raw extract may enter the repo. The fixture is anonymized, see [CLAUDE.md](../CLAUDE.md).
+
+Only MaxFunSports uses this path. When a second format appears, `isMaxFunSportsPdfText()` and the parser become a per-platform registry; a registry for one entry would have been weight with nothing on it.
 
 ### `OfficialResultCandidate` fields
 

@@ -3,8 +3,10 @@ import { useTranslation } from 'react-i18next'
 import { CatalogResultsLink } from '../CatalogResultsLink/CatalogResultsLink'
 import { EventResultsUrlField } from '../EventResultsUrlField'
 import { OfficialResultsLookup } from '../OfficialResultsLookup/OfficialResultsLookup'
+import { ResultsPdfUpload } from '../ResultsPdfUpload'
 import { TrackResultSuggestion } from '../TrackResultSuggestion'
 import { useEventTrack } from '../../hooks/useEventTrack'
+import { acceptsResultsPdf, detectPlatform } from '../../../shared/officialResults'
 import type { Event } from '../../types/Event'
 import { saveResults } from '../../services/events'
 import {
@@ -47,6 +49,7 @@ export function EventResultEditor({
 }: EventResultEditorProps) {
   const { t } = useTranslation()
   const { track } = useEventTrack(event.id)
+  const platform = event.resultsPlatform ?? detectPlatform(event.resultsUrl, event.name)
   const initialTime = event.time ? splitTime(event.time) : null
   const initialPlaces = event.classification ? parseClassification(event.classification) : null
 
@@ -238,6 +241,9 @@ export function EventResultEditor({
               <EventResultsUrlField event={event} onSaved={onEventChanged} />
             </>
           )}
+          {platform && acceptsResultsPdf(platform) ? (
+            <ResultsPdfUpload event={event} onApplied={onSaved} />
+          ) : null}
         </div>
       ) : null}
 

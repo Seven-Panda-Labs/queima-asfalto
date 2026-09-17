@@ -404,6 +404,22 @@
     "disclaimerLink": "Vollständigen Hinweis lesen",
     "refresh": "Erneut suchen"
   },
+  "resultsPdf": {
+    "hint": "Wenn die Website keine Suche zulässt, lade das offizielle Ergebnis-PDF herunter und öffne es hier. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet.",
+    "choose": "Ergebnis-PDF auswählen",
+    "reading": "PDF wird gelesen...",
+    "readFrom": "Aus dem PDF von {{event}} gelesen.",
+    "preliminary": "Das PDF weist diese Ergebnisse als vorläufig aus.",
+    "truncated": "Mehrere Teilnehmende tragen diesen Namen. Präzisiere deinen Namen in den Einstellungen.",
+    "errors": {
+      "unsupported_type": "Wähle eine PDF-Datei.",
+      "file_too_large": "Das PDF ist zu groß.",
+      "unreadable": "Dieses PDF konnte nicht gelesen werden.",
+      "not_a_results_pdf": "Dieses PDF enthält keine Ergebnistabelle, die die App lesen kann.",
+      "wrong_event": "Dieses PDF ist von einem anderen Tag. Prüfe, ob du das richtige Rennen geladen hast.",
+      "name_not_found": "Dein Name steht nicht in diesem PDF. Prüfe deinen Namen in den Einstellungen."
+    }
+  },
   "resultsForm": {
     "saved": "Ergebnisse gespeichert!",
     "hours": "Stunden",

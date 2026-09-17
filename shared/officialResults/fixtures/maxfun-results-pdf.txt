@@ -1,0 +1,19 @@
+** Vorläufige Ergebnisse **
+16.09.2026
+B2Run Beispielstadt
+Einzelwertung
+
+Wertungen und Altersklassen nach Vorgaben des Veranstalters.
+
+GESAMTWERTUNG
+ Pos            Nr           Name                              Zeit         GPos Firma
+     1.       13765          Zé Ninguém                        00:16:42.4    1    Kaufhaus Beispiel
+     2.        7722          Noname                            00:18:23.8    2    Team Beispiel
+     3.        1457          Bernd Graumann                    00:18:30.3    3    Beispiel GmbH
+     4.       14954          Sabine (2) Mustermann             00:43:08.3    3914 Beispiel Kasse
+     5.         433          Fulana Otília Tavares Mehanna00:21:50.9 104 Beispiel Logistik
+     6.        9516          Km 17                             00:32:40.0    4912 Beispiel Bahn
+-- 2 of 2 --
+     7.       10292          Zezinho da Silva                  01:29:07.6    8797 Beispiel Verein
+
+www.maxfunsports.com/result

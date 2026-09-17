@@ -404,6 +404,22 @@
     "disclaimerLink": "Leer aviso completo",
     "refresh": "Volver a buscar"
   },
+  "resultsPdf": {
+    "hint": "Si el sitio no deja buscar, descarga el PDF oficial de resultados y ábrelo aquí. El archivo se lee en tu dispositivo y no se envía a ninguna parte.",
+    "choose": "Elegir PDF de resultados",
+    "reading": "Leyendo el PDF...",
+    "readFrom": "Leído del PDF de {{event}}.",
+    "preliminary": "El PDF dice que estos resultados son provisionales.",
+    "truncated": "Hay más atletas con este nombre. Ajusta tu nombre en los ajustes para encontrar el tuyo.",
+    "errors": {
+      "unsupported_type": "Elige un archivo PDF.",
+      "file_too_large": "El PDF es demasiado grande.",
+      "unreadable": "No se pudo leer este PDF.",
+      "not_a_results_pdf": "Este PDF no tiene una tabla de resultados que la app sepa leer.",
+      "wrong_event": "Este PDF es de otra fecha. Comprueba que descargaste la carrera correcta.",
+      "name_not_found": "Tu nombre no está en este PDF. Comprueba tu nombre en los ajustes."
+    }
+  },
   "resultsForm": {
     "saved": "¡Resultados guardados!",
     "hours": "Horas",

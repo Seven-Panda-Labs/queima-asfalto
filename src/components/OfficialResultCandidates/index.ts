@@ -1,0 +1,1 @@
+export { OfficialResultCandidates } from './OfficialResultCandidates'

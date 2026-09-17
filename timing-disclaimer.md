@@ -1,7 +1,7 @@
 ---locale:pt---
 #### Aviso: importação de resultados oficiais
 
-**Última actualização:** 2026-09-17
+**Última actualização:** 2026-09-18
 
 #### O que faz esta funcionalidade
 
@@ -34,6 +34,8 @@ Fechadas de momento:
 - **Parkrun:** responde com erro a tudo o que não seja um browser.
 - **MaxFunSports:** as páginas de resultados estão atrás de um desafio Cloudflare, e o host que serve a tabela pede no seu `robots.txt` para não ser lido automaticamente.
 
+No MaxFunSports há uma saída pela porta da frente: o cronometrista publica a classificação completa num PDF oficial. Descarrega-o no teu browser e abre-o na app, no editor do resultado. O ficheiro é lido no teu equipamento e não é enviado para lado nenhum, e o tempo entra marcado como verificado.
+
 Não contornamos estes bloqueios. Disfarçar a app de browser para derrotar um controlo que existe para a recusar violaria os termos acima, fosse ou não tecnicamente possível. Se um site reabrir, ou publicar uma API, a procura volta.
 
 #### Operadores de instâncias self-hosted
@@ -54,7 +56,7 @@ O Queima Asfalto é software open source (AGPL-3.0), fornecido **«tal como est�
 ---locale:en---
 #### Notice: official results import
 
-**Last updated:** 2026-09-17
+**Last updated:** 2026-09-18
 
 #### What this feature does
 
@@ -87,6 +89,8 @@ Closed at the moment:
 - **Parkrun:** answers with an error to anything that is not a browser.
 - **MaxFunSports:** the results pages sit behind a Cloudflare challenge, and the host serving the table asks in its `robots.txt` not to be read automatically.
 
+MaxFunSports leaves one door open: the operator publishes the whole ranking as an official PDF. Download it in your browser and open it in the app, in the result editor. The file is read on your device and is never sent anywhere, and the time comes in marked as verified.
+
 We do not work around these blocks. Disguising the app as a browser to defeat a control that exists to refuse it would break the terms above, whether or not it were technically possible. If a site reopens, or publishes an API, the search comes back.
 
 #### Self-hosted instance operators
@@ -107,7 +111,7 @@ Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The
 ---locale:es---
 #### Aviso: importación de resultados oficiales
 
-**Última actualización:** 2026-09-17
+**Última actualización:** 2026-09-18
 
 #### Qué hace esta funcionalidad
 
@@ -140,6 +144,8 @@ Cerradas por ahora:
 - **Parkrun:** responde con error a todo lo que no sea un navegador.
 - **MaxFunSports:** las páginas de resultados están tras un desafío de Cloudflare, y el host que sirve la tabla pide en su `robots.txt` que no se lea automáticamente.
 
+En MaxFunSports queda una puerta abierta: el cronometrador publica la clasificación completa en un PDF oficial. Descárgalo en tu navegador y ábrelo en la app, en el editor del resultado. El archivo se lee en tu dispositivo y no se envía a ninguna parte, y el tiempo entra marcado como verificado.
+
 No sorteamos estos bloqueos. Disfrazar la app de navegador para derrotar un control que existe para rechazarla violaría los términos anteriores, fuese o no técnicamente posible. Si un sitio vuelve a abrirse, o publica una API, la búsqueda regresa.
 
 #### Operadores de instancias self-hosted
@@ -160,7 +166,7 @@ Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal 
 ---locale:de---
 #### Hinweis: Import offizieller Ergebnisse
 
-**Zuletzt aktualisiert:** 2026-09-17
+**Zuletzt aktualisiert:** 2026-09-18
 
 #### Was diese Funktion macht
 
@@ -193,6 +199,8 @@ Derzeit verschlossen:
 - **Parkrun:** antwortet allem, was kein Browser ist, mit einem Fehler.
 - **MaxFunSports:** die Ergebnisseiten liegen hinter einer Cloudflare-Abfrage, und der Host, der die Tabelle ausliefert, bittet in seiner `robots.txt` darum, nicht automatisiert gelesen zu werden.
 
+Bei MaxFunSports bleibt eine Tür offen: der Zeitnehmer veröffentlicht die vollständige Wertung als offizielles PDF. Lade es in deinem Browser herunter und öffne es in der App, im Ergebnis-Editor. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet, und die Zeit gilt als verifiziert.
+
 Wir umgehen diese Sperren nicht. Die App als Browser zu tarnen, um eine Kontrolle auszuhebeln, die sie gerade abweisen soll, würde gegen die oben genannten Bedingungen verstoßen, ob technisch möglich oder nicht. Öffnet eine Website wieder, oder veröffentlicht sie eine API, kommt die Suche zurück.
 
 #### Betreiber selbst gehosteter Instanzen
@@ -213,7 +221,7 @@ Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie bese
 ---locale:fr---
 #### Avis: importation des résultats officiels
 
-**Dernière mise à jour :** 2026-09-17
+**Dernière mise à jour :** 2026-09-18
 
 #### Ce que fait cette fonctionnalité
 
@@ -246,6 +254,8 @@ Fermées pour l'instant :
 - **Parkrun :** répond par une erreur à tout ce qui n'est pas un navigateur.
 - **MaxFunSports :** les pages de résultats sont derrière un défi Cloudflare, et l'hôte qui sert le tableau demande dans son `robots.txt` à ne pas être lu automatiquement.
 
+MaxFunSports laisse une porte ouverte : le chronométreur publie le classement complet dans un PDF officiel. Télécharge-le depuis ton navigateur et ouvre-le dans l'application, dans l'éditeur de résultat. Le fichier est lu sur ton appareil et n'est envoyé nulle part, et le temps est marqué comme vérifié.
+
 Nous ne contournons pas ces blocages. Déguiser l'application en navigateur pour déjouer un contrôle qui existe pour la refuser violerait les conditions ci-dessus, que ce soit techniquement possible ou non. Si un site rouvre, ou publie une API, la recherche revient.
 
 #### Opérateurs d'instances auto-hébergées
@@ -265,7 +275,7 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 ---locale:ar---
 #### تنبيه: استيراد النتائج الرسمية
 
-**آخر تحديث:** 2026-09-17
+**آخر تحديث:** 2026-09-18
 
 #### ما الذي تقوم به هذه الميزة
 
@@ -297,6 +307,8 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 
 - **Parkrun:** يرد بخطأ على كل ما ليس متصفحًا.
 - **MaxFunSports:** صفحات النتائج خلف تحدي Cloudflare، والمضيف الذي يقدم الجدول يطلب في `robots.txt` ألا يُقرأ آليًا.
+
+يترك MaxFunSports بابًا مفتوحًا: المُوقِّت ينشر الترتيب الكامل في ملف PDF رسمي. نزّله من متصفحك وافتحه في التطبيق، في محرر النتيجة. يُقرأ الملف على جهازك ولا يُرسَل إلى أي مكان، ويدخل الزمن موسومًا بأنه مُتحقَّق منه.
 
 نحن لا نلتف على هذه الحواجز. تنكُّر التطبيق في هيئة متصفح لتعطيل ضابط وُضع أصلًا لرفضه يخالف الشروط أعلاه، سواء أمكن ذلك تقنيًا أم لا. إن عاد موقع وفتح أبوابه، أو نشر واجهة برمجية، عاد البحث معه.
 

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.64.0] - 2026-09-18
+
+### Ajouté
+
+- **Importer ton résultat depuis le PDF officiel :** là où le chronométreur publie le classement mais bloque la recherche, comme MaxFunSports, télécharge le PDF et ouvre-le dans l'éditeur de résultat. L'application te trouve dans le tableau et remplit le temps et la place. Le fichier est lu sur ton appareil et n'est envoyé nulle part.
+
+---
+
 ## [1.63.0] - 2026-09-17
 
 ### Corrigé
