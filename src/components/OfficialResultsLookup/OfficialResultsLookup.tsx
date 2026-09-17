@@ -5,7 +5,7 @@ import { timingDisclaimerPath } from '../../config/timingDisclaimer'
 import { RefreshIcon } from '../icons/actionIcons'
 import type { Event } from '../../types/Event'
 import type { OfficialResultCandidate } from '../../../shared/officialResults'
-import { detectPlatform, resultsPlatformLabel } from '../../../shared/officialResults'
+import { detectPlatform, isLookupUnavailable, resultsPlatformLabel } from '../../../shared/officialResults'
 import { canLookupPlatform } from '../../types/UserResultsProfile'
 import { useUserResultsProfile } from '../../hooks/useUserResultsProfile'
 import { startLookupCooldownFromError, useLookupCooldown } from '../../hooks/useLookupCooldown'
@@ -43,7 +43,7 @@ export function OfficialResultsLookup({
   const isPastOrToday = !isFutureDate(event.date)
   const canLookup =
     platform &&
-    platform !== 'parkrun' &&
+    !isLookupUnavailable(platform) &&
     isPastOrToday &&
     (event.status === 'confirmed' || event.status === 'completed') &&
     canLookupPlatform(platform, profile, event.resultsUrl)
@@ -118,10 +118,9 @@ export function OfficialResultsLookup({
   }
 
   const timeParts = candidates?.[0] ? splitTime(candidates[0].time) : null
-  const unavailableMessage =
-    platform === 'parkrun'
-      ? t('officialResults.parkrunUnavailable')
-      : t('officialResults.configurePlatform')
+  const unavailableMessage = isLookupUnavailable(platform)
+    ? t('officialResults.lookupUnavailable', { platform: resultsPlatformLabel(platform) })
+    : t('officialResults.configurePlatform')
 
   const busy = searching || applying
   const hasOutput = Boolean(error) || Boolean(candidates?.length)
@@ -231,16 +230,21 @@ export function OfficialResultsLookup({
   if (layout === 'icon') {
     return (
       <>
-        <div
-          className={[
-            'absolute -end-3 -top-3 z-10 rounded-full border border-border bg-surface shadow-sm transition-opacity',
-            busy || hasOutput
-              ? 'opacity-100'
-              : 'opacity-0 focus-within:opacity-100 group-hover:opacity-100 max-sm:opacity-100',
-          ].join(' ')}
-        >
-          {trigger}
-        </div>
+        {/* Beside the edit pencil, never on top of it: the corner itself is the
+            pencil's, because correcting a time by hand is the way out when this
+            search comes back empty. Nothing to press means nothing to draw. */}
+        {trigger ? (
+          <div
+            className={[
+              'absolute end-6 -top-3 z-10 rounded-full border border-border bg-surface shadow-sm transition-opacity',
+              busy || hasOutput
+                ? 'opacity-100'
+                : 'opacity-0 focus-within:opacity-100 group-hover:opacity-100 max-sm:opacity-100',
+            ].join(' ')}
+          >
+            {trigger}
+          </div>
+        ) : null}
         {output}
       </>
     )

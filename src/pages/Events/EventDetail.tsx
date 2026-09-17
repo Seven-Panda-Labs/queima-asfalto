@@ -399,7 +399,13 @@ export function EventDetail() {
     )
   }
 
-  const showResults = !hideResults && (event.status === 'completed' || Boolean(event.time))
+  // A race already run, still marked confirmed, has to offer the result too:
+  // otherwise the only way in was the list, and the page reads as a dead end.
+  const showResults =
+    !hideResults &&
+    (event.status === 'completed' ||
+      Boolean(event.time) ||
+      (event.status === 'confirmed' && !isFutureDate(event.date)))
   const canEditResult =
     !isSharedView && (event.status === 'confirmed' || event.status === 'completed')
   const canLookupAgain = !isSharedView && !hideResults

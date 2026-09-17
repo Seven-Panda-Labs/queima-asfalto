@@ -177,6 +177,15 @@ Conector mais complexo (HTML, formulários, domínios custom):
 - `canLookupPlatform()` em `types.ts`: regra `parkrun` vs outras plataformas.
 - Conector: `functions/src/connectors/parkrun.ts`.
 
+### Plataformas que fecharam a porta
+
+`LOOKUP_UNAVAILABLE_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts) lista as plataformas que já não respondem a um leitor automático. O botão de procura não aparece, a função devolve `failed-precondition` e o utilizador regista o tempo à mão. O conector fica no repositório, caso o site volte a abrir.
+
+| Plataforma | Porquê |
+|------------|--------|
+| Parkrun | Responde 403 a tudo o que não seja um browser |
+| MaxFunSports | Desafio Cloudflare em `/result/*`; `robots.txt` do host de iframe é `Disallow: /`, e o do site principal proíbe queries com `Search` |
+
 ### Tipo `OfficialResultCandidate`
 
 Definido em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts):
@@ -327,6 +336,10 @@ Complex connector (HTML forms, custom domains): `mikaTiming.ts` + `functions/src
 ### Special case: Parkrun
 
 Uses **Parkrunner ID**, not name on the event URL. See `canLookupPlatform()` and `functions/src/connectors/parkrun.ts`.
+
+### Platforms that closed the door
+
+`LOOKUP_UNAVAILABLE_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts) lists the platforms that no longer answer an automated reader: Parkrun (403 to anything but a browser) and MaxFunSports (Cloudflare challenge on `/result/*`, `Disallow: /` on the iframe host, and queries containing `Search` disallowed on the main site). The search button stays hidden, the callable returns `failed-precondition`, and the runner records the time by hand. The connector stays in the repo in case the site reopens.
 
 ### `OfficialResultCandidate` fields
 

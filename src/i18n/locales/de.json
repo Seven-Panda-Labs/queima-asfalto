@@ -396,7 +396,7 @@
     "preconditionFailed": "Richte dein Ergebnisprofil oder den Event-Ergebnislink ein, bevor du suchst.",
     "rateLimited": "Bitte warte ein paar Sekunden, bevor du erneut suchst.",
     "applyError": "Ergebnis konnte nicht übernommen werden.",
-    "parkrunUnavailable": "Die automatische Parkrun-Ergebnissuche ist vorübergehend nicht verfügbar. Trage dein Ergebnis unten manuell ein.",
+    "lookupUnavailable": "Die automatische Suche bei {{platform}} ist nicht verfügbar: Die Website blockiert automatisierte Zugriffe. Trage dein Ergebnis manuell ein.",
     "configurePlatform": "Trage deinen Namen in den Einstellungen und den Event-Ergebnislink ein.",
     "platform": "Plattform",
     "previewTime": "Zeit zum Übernehmen: {{time}}",

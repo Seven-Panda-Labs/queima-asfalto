@@ -24,7 +24,7 @@ import {
   parseMikaTimingUrl,
 } from './mikaTiming'
 import { buildMikaTimingSearchTerm } from './mikaTimingSearch'
-import { getSortedResultsPlatforms, resultsPlatformLabel } from './types'
+import { getSupportedLookupPlatforms, resultsPlatformLabel } from './types'
 
 const chicagoUrl = 'https://results.chicagomarathon.com/2025/?pid=search'
 const londonUrl = 'https://results.tcslondonmarathon.com/2026/'
@@ -238,10 +238,16 @@ describe('resultsPlatformLabel', () => {
   })
 })
 
-describe('getSortedResultsPlatforms', () => {
+describe('getSupportedLookupPlatforms', () => {
   it('returns platforms sorted alphabetically by label', () => {
-    const labels = getSortedResultsPlatforms().map((platform) => resultsPlatformLabel(platform))
+    const labels = getSupportedLookupPlatforms().map((platform) => resultsPlatformLabel(platform))
     expect(labels).toEqual([...labels].sort((a, b) => a.localeCompare(b, 'en')))
+  })
+
+  it('leaves out the platforms the search can no longer reach', () => {
+    expect(getSupportedLookupPlatforms()).not.toContain('parkrun')
+    expect(getSupportedLookupPlatforms()).not.toContain('maxfunsports')
+    expect(getSupportedLookupPlatforms()).toContain('mikatiming')
   })
 })
 

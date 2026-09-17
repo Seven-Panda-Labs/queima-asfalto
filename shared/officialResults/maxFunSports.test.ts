@@ -10,7 +10,7 @@ import {
 import { buildMaxFunSportsSearchTerm } from './maxFunSportsSearch'
 import { detectPlatformFromUrl } from './detectPlatform'
 import { parseMaxFunSportsUrl } from './parseUrls'
-import { resultsPlatformLabel } from './types'
+import { isLookupUnavailable, resultsPlatformLabel } from './types'
 
 const wwwParts = {
   competitionId: '4220',
@@ -107,5 +107,17 @@ describe('buildMaxFunSportsSearchTerm', () => {
 describe('resultsPlatformLabel', () => {
   it('formats maxfunsports as MaxFunSports', () => {
     expect(resultsPlatformLabel('maxfunsports')).toBe('MaxFunSports')
+  })
+})
+
+describe('isLookupUnavailable', () => {
+  it('keeps maxfunsports off the automatic path', () => {
+    expect(isLookupUnavailable('maxfunsports')).toBe(true)
+    expect(isLookupUnavailable('parkrun')).toBe(true)
+  })
+
+  it('leaves the platforms that still answer alone', () => {
+    expect(isLookupUnavailable('davengo')).toBe(false)
+    expect(isLookupUnavailable('mikatiming')).toBe(false)
   })
 })

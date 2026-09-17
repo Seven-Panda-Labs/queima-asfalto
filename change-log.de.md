@@ -4,6 +4,19 @@
 
 ---
 
+## [1.63.0] - 2026-09-17
+
+### Behoben
+
+- **Ein Ergebnis von Hand zu korrigieren ist nicht mehr verdeckt:** der Knopf für die erneute Suche lag über dem Bearbeiten-Stift. Jetzt stehen beide nebeneinander.
+- **Ein Ergebnis einzutragen führt nicht mehr ins Leere:** die Stoppuhr-Verknüpfung führte auf eine Seite, die es nicht mehr gibt, und ein bereits gelaufenes Rennen bot das Formular erst nach dem Abschließen an.
+
+### Geändert
+
+- **Die automatische MaxFunSports-Suche ist abgeschaltet:** die Website blockiert jedes automatisierte Lesen. Die Zeit wird von Hand eingetragen.
+
+---
+
 ## [1.62.0] - 2026-09-14
 
 ### Hinzugefügt
