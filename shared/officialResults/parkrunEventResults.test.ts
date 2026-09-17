@@ -17,8 +17,8 @@ describe('parseParkrunEventResults', () => {
   })
 
   it('finds athlete row by parkrunner id', () => {
-    expect(parseParkrunAthleteFromEventResults(html, '1078662')).toEqual({
-      matchedName: 'Colin KING',
+    expect(parseParkrunAthleteFromEventResults(html, '7654321')).toEqual({
+      matchedName: 'Bernd GRAUMANN',
       time: '00:31:57',
       position: 124,
     })
