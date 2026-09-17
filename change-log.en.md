@@ -4,6 +4,14 @@
 
 ---
 
+## [1.70.0] - 2026-09-17
+
+### Added
+
+- **Say "these are races" and stop seeing them:** in the list of what reads as another sport, the ones that really are races are marked as such and drop out of it. With an undo, in case the yes was too quick.
+
+---
+
 ## [1.69.0] - 2026-09-17
 
 ### Added

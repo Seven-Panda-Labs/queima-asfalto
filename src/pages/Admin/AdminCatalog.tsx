@@ -5,6 +5,8 @@ import { PageShell } from '../../components/PageShell/PageShell'
 import { RETIRED_REASONS, type RaceCatalogEntry, type RetiredReason } from '../../../shared/raceCatalog'
 import { useAuth } from '../../contexts/AuthContext'
 import {
+  askAgainAboutRaces,
+  keepAsRunningRaces,
   listStaleForAdmin,
   loadOtherSportsForAdmin,
   mergeCatalogRaces,
@@ -65,8 +67,9 @@ export function AdminCatalog() {
    */
   const [picked, setPicked] = useState<Set<string>>(new Set())
   const [reason, setReason] = useState<RetiredReason | ''>('')
-  /** What the last sweep did, kept so it can be taken back in one press. */
+  /** What the last decision touched, kept so it can be taken back in one press. */
   const [swept, setSwept] = useState<string[]>([])
+  const [sweptKind, setSweptKind] = useState<'retired' | 'kept'>('retired')
   /** What reads as another sport, asked for when somebody wants to sweep. */
   const [otherSports, setOtherSports] = useState<RaceCatalogEntry[] | null>(null)
   const [reading, setReading] = useState(false)
@@ -145,6 +148,7 @@ export function AdminCatalog() {
       setPicked(new Set())
       setReason('')
       setSwept(ids)
+      setSweptKind('retired')
       if (found) void search()
       setStale([])
       setCursors([])
@@ -156,12 +160,33 @@ export function AdminCatalog() {
     }
   }
 
-  /** Puts back what the last sweep took out, for when it went too wide. */
+  /** Says the picked entries are races, so the list stops asking about them. */
+  const keep = async () => {
+    if (!user || picked.size === 0) return
+    const ids = [...picked]
+    setSweeping(true)
+    setError(null)
+    try {
+      await keepAsRunningRaces(ids, user.uid)
+      setPicked(new Set())
+      setSwept(ids)
+      setSweptKind('kept')
+      if (otherSports) void readOtherSports()
+    } catch {
+      setError(t('admin.duplicatesError'))
+    } finally {
+      setSweeping(false)
+    }
+  }
+
+  /** Puts back what the last decision did, for when it went too wide. */
   const undoSweep = async () => {
     if (!user || swept.length === 0) return
     setSweeping(true)
     try {
-      await unretireCatalogRaces(swept, user.uid)
+      if (sweptKind === 'kept') await askAgainAboutRaces(swept, user.uid)
+      else await unretireCatalogRaces(swept, user.uid)
+      if (otherSports) void readOtherSports()
       setSwept([])
       if (found) void search()
       setStale([])
@@ -346,6 +371,16 @@ export function AdminCatalog() {
           >
             {t('admin.catalogRetirePicked')}
           </button>
+          {/* The other answer to the same question, and the one that needs no
+              reason: a race is a race. */}
+          <button
+            type="button"
+            disabled={sweeping}
+            onClick={() => void keep()}
+            className="rounded-md border border-primary px-3 py-2 text-xs font-semibold text-primary hover:bg-primary/10 disabled:opacity-50"
+          >
+            {t('admin.catalogKeepPicked')}
+          </button>
           <button
             type="button"
             onClick={() => setPicked(new Set())}
@@ -359,7 +394,11 @@ export function AdminCatalog() {
       {/* A decision made this fast has to be as fast to take back. */}
       {swept.length > 0 ? (
         <div className="mt-4 flex flex-wrap items-center gap-3 rounded-lg border border-border bg-surface px-4 py-3">
-          <p className="text-sm text-foreground">{t('admin.catalogSwept', { count: swept.length })}</p>
+          <p className="text-sm text-foreground">
+            {sweptKind === 'kept'
+              ? t('admin.catalogKept', { count: swept.length })
+              : t('admin.catalogSwept', { count: swept.length })}
+          </p>
           <button
             type="button"
             disabled={sweeping}

@@ -1400,6 +1400,8 @@
     "catalogRetirePicked": "Tirar do catálogo",
     "catalogSwept": "{{count}} provas ficaram fora de circulação.",
     "catalogSweptUndo": "Anular",
+    "catalogKeepPicked": "São corridas",
+    "catalogKept": "{{count}} ficam como corridas e não voltam a aparecer aqui.",
     "catalogJoined": "«{{drop}}» passa a apontar para «{{keep}}»."
   },
   "funnel": {

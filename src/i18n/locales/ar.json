@@ -1412,6 +1412,8 @@
     "catalogRetirePicked": "إخراج من الفهرس",
     "catalogSwept": "{{count}} سباقات خرجت من الفهرس.",
     "catalogSweptUndo": "تراجع",
+    "catalogKeepPicked": "هذه سباقات",
+    "catalogKept": "{{count}} تبقى سباقات ولن تعود إلى هذه القائمة.",
     "catalogJoined": "«{{drop}}» يشير الآن إلى «{{keep}}»."
   },
   "funnel": {

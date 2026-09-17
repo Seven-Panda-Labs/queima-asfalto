@@ -4,6 +4,14 @@
 
 ---
 
+## [1.70.0] - 2026-09-17
+
+### Adicionado
+
+- **Dizer "são corridas" e não voltar a ver:** na lista do que parece outro desporto, as provas que são mesmo corridas ficam marcadas como tal e deixam de aparecer. Com anulação, caso o sim tenha sido rápido de mais.
+
+---
+
 ## [1.69.0] - 2026-09-17
 
 ### Adicionado

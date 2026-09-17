@@ -4,6 +4,14 @@
 
 ---
 
+## [1.70.0] - 2026-09-17
+
+### Ajouté
+
+- **Dire « ce sont des courses » et ne plus les revoir :** dans la liste de ce qui se lit comme un autre sport, celles qui sont vraiment des courses sont marquées comme telles et en sortent. Avec une annulation, si le oui est allé trop vite.
+
+---
+
 ## [1.69.0] - 2026-09-17
 
 ### Ajouté

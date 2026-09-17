@@ -1400,6 +1400,8 @@
     "catalogRetirePicked": "Aus dem Katalog nehmen",
     "catalogSwept": "{{count}} Rennen sind aus dem Katalog.",
     "catalogSweptUndo": "Rückgängig",
+    "catalogKeepPicked": "Das sind Läufe",
+    "catalogKept": "{{count}} bleiben Läufe und tauchen hier nicht wieder auf.",
     "catalogJoined": "„{{drop}}“ zeigt jetzt auf „{{keep}}“."
   },
   "funnel": {

@@ -1037,6 +1037,24 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes an operator saying a name that reads as a walk is a race', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+
+      await assertSucceeds(
+        db.collection('raceCatalog').doc('de-freiburg-charity-walk-run').set({
+          ...race,
+          notAnotherSport: true,
+        }),
+      )
+      await assertFails(
+        db
+          .collection('raceCatalog')
+          .doc('de-freiburg-charity-walk-run')
+          .set({ ...race, notAnotherSport: 'sim' }),
+      )
+    })
+
     it('takes an operator saying two entries are different races', async () => {
       await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
       const db = testEnv.authenticatedContext('user-admin').firestore()

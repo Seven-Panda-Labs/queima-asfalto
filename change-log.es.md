@@ -4,6 +4,14 @@
 
 ---
 
+## [1.70.0] - 2026-09-17
+
+### Añadido
+
+- **Decir "son carreras" y no volver a verlas:** en la lista de lo que parece otro deporte, las que son carreras de verdad quedan marcadas y dejan de aparecer. Con deshacer, por si el sí fue demasiado rápido.
+
+---
+
 ## [1.69.0] - 2026-09-17
 
 ### Añadido
