@@ -406,6 +406,7 @@
   },
   "resultsPdf": {
     "hint": "Wenn die Website keine Suche zulässt, lade das offizielle Ergebnis-PDF herunter und öffne es hier. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet.",
+    "hintPrint": "parkrun lässt keine automatische Suche zu. Öffne die Ergebnisseite in deinem Browser, drucke sie als PDF („Als PDF speichern“) und wähle sie hier aus. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet.",
     "choose": "Ergebnis-PDF auswählen",
     "reading": "PDF wird gelesen...",
     "readFrom": "Aus dem PDF von {{event}} gelesen.",

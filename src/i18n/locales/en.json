@@ -406,6 +406,7 @@
   },
   "resultsPdf": {
     "hint": "If the site will not be searched, download the official results PDF and open it here. The file is read on your device and is never sent anywhere.",
+    "hintPrint": "parkrun does not allow an automatic search. Open the results page in your browser, print it to PDF (“Save as PDF”) and choose it here. The file is read on your device and is never sent anywhere.",
     "choose": "Choose results PDF",
     "reading": "Reading the PDF...",
     "readFrom": "Read from the {{event}} PDF.",

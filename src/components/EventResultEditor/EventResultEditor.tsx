@@ -242,7 +242,7 @@ export function EventResultEditor({
             </>
           )}
           {platform && acceptsResultsPdf(platform) ? (
-            <ResultsPdfUpload event={event} onApplied={onSaved} />
+            <ResultsPdfUpload event={event} platform={platform} onApplied={onSaved} />
           ) : null}
         </div>
       ) : null}

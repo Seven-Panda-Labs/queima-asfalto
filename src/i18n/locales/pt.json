@@ -406,6 +406,7 @@
   },
   "resultsPdf": {
     "hint": "Se o site não deixa procurar, descarrega o PDF oficial de resultados e abre-o aqui. O ficheiro é lido no teu equipamento e não é enviado para lado nenhum.",
+    "hintPrint": "O parkrun não deixa procurar automaticamente. Abre a página de resultados no teu browser, imprime-a para PDF («Guardar como PDF») e escolhe-a aqui. O ficheiro é lido no teu equipamento e não é enviado para lado nenhum.",
     "choose": "Escolher PDF de resultados",
     "reading": "A ler o PDF...",
     "readFrom": "Lido do PDF de {{event}}.",

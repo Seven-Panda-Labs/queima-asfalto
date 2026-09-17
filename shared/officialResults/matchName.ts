@@ -16,6 +16,19 @@ export function splitFullName(fullName: string): { first: string; last: string }
   return { first: parts[0]!, last: parts.slice(1).join(' ') }
 }
 
+/**
+ * Whether the source shortened the name rather than named somebody else.
+ *
+ * parkrun prints `Jonas S` when a runner withholds their surname, so a source
+ * part shorter than the profile's has to be allowed. It has to be a *prefix* of
+ * one of the profile's words though: as a loose substring, a one-letter surname
+ * matched almost anybody, because `beispiel` happens to contain an `s`.
+ */
+function abbreviates(profilePart: string, candidatePart: string): boolean {
+  if (!candidatePart) return false
+  return profilePart.split(' ').some((word) => word.startsWith(candidatePart))
+}
+
 export function namesMatch(
   profile: UserResultsProfile,
   candidateFirst: string,
@@ -28,8 +41,9 @@ export function namesMatch(
 
   if (!profileFirst && !profileLast) return false
 
-  const lastMatches = !profileLast || last.includes(profileLast) || profileLast.includes(last)
-  const firstMatches = !profileFirst || first.includes(profileFirst) || profileFirst.includes(first)
+  const lastMatches = !profileLast || last.includes(profileLast) || abbreviates(profileLast, last)
+  const firstMatches =
+    !profileFirst || first.includes(profileFirst) || abbreviates(profileFirst, first)
 
   return lastMatches && firstMatches
 }
