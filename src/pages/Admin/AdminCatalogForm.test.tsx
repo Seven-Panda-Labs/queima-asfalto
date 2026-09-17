@@ -310,6 +310,54 @@ describe('AdminCatalogForm', () => {
     expect(screen.queryByLabelText(/Porque está fora/)).toBeNull()
   })
 
+  it('takes a harvested entry out with nothing but a reason', async () => {
+    // Every harvested entry is unreviewed and has editions, so taking one out
+    // used to mean first claiming a person had checked it, and inventing a
+    // distance for a triathlon that has none.
+    params = { id: 'de-berlin-oranke-open-triathlon' }
+    getCatalogRaceForAdmin.mockResolvedValue({
+      id: 'de-berlin-oranke-open-triathlon',
+      name: 'Oranke Open Triathlon',
+      country: 'DE',
+      city: 'Berlin',
+      disciplines: [],
+      entryMethod: 'unknown',
+      review: 'unreviewed',
+      source: '',
+      editions: [
+        { year: 2026, raceDate: '2026-09-12', source: 'running.life', confirmedAt: '2026-09-05' },
+      ],
+    })
+    render(<AdminCatalogForm />)
+
+    fireEvent.click(await screen.findByRole('checkbox', { name: /Fora de circulação/ }))
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), {
+      target: { value: 'other_sport' },
+    })
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() => expect(saveCatalogRaceForAdmin).toHaveBeenCalled())
+    const [saved] = saveCatalogRaceForAdmin.mock.calls[0]! as unknown as [
+      { retired: boolean; retiredReason: string; review: string },
+    ]
+    // And it goes out as what it is: nobody checked it.
+    expect(saved).toMatchObject({ retired: true, retiredReason: 'other_sport', review: 'unreviewed' })
+  })
+
+  it('still asks a race that is staying to describe itself', async () => {
+    render(<AdminCatalogForm />)
+
+    fill('Nome', 'Maratona do Porto')
+    fill('Cidade', 'Porto')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() =>
+      expect(screen.getByText('Seleciona pelo menos uma disciplina.')).toBeInTheDocument(),
+    )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
   it('refuses an id that is already taken, and says where it is', async () => {
     catalogRaceIdExists.mockResolvedValue(true)
     render(<AdminCatalogForm />)

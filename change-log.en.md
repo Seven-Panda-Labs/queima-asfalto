@@ -4,6 +4,14 @@
 
 ---
 
+## [1.66.0] - 2026-09-17
+
+### Fixed
+
+- **Taking a race out of the catalog asks only for the reason:** no distances, no source, and no need to claim somebody checked it first. A triathlon read as a race has no distance worth inventing.
+
+---
+
 ## [1.65.0] - 2026-09-17
 
 ### Added
