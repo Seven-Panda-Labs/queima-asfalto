@@ -197,7 +197,9 @@ What was missing was **why**, and the reason decides what happens next:
 | `other_sport` | a triathlon, a walk or a bike ride read as a race | the source is wrong and will publish it again every week. The entry stays as a tombstone and the harvest stops writing to it |
 | `not_a_race` | an expo, or a listing page read as a race | the same, counted apart on purpose: twenty of these from one source is the argument for dropping that source |
 
-**Always a person's judgement, never a rule.** A name is not evidence: of 281 live entries whose name reads as another sport or a walk, many are a run with a walk beside it and belong in the catalog exactly as they are.
+The panel offers a list to work from: `readsAsAnotherSport` reads a name and proposes. Ten words go to the server, since Firestore cannot match a pattern, and the reading decides among what comes back. On one instance it finds **80**: 49 whose name names another sport, and 31 that carry a walking word and no running one.
+
+**Always a person's judgement, never a rule.** A name is not evidence: **225** live entries carry a walking word **and** a running one, and they are running races with a walk beside them, "Wiler-Herbstlauf + Nordic Walking", "Run and Walk Bern", "City cross run & walk". The reading leaves those out of the list precisely so that nobody is tempted to sweep them, and what it does list is still a question rather than an answer.
 
 ### A gate is a day, and sometimes an hour
 

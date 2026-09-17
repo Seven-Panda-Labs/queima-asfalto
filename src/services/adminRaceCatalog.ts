@@ -23,6 +23,10 @@ import {
   type RetiredReason,
 } from '../../shared/raceCatalog'
 import { pairAlreadyAnswered } from '../../shared/eventDiscovery/duplicates'
+import {
+  OTHER_SPORT_WORDS,
+  readsAsAnotherSport,
+} from '../../shared/eventDiscovery/otherSport'
 import { db } from './firebase'
 
 /**
@@ -133,6 +137,36 @@ export async function loadDuplicateQueue(): Promise<[RaceCatalogEntry, RaceCatal
     found.push([keep, drop])
   }
   return found
+}
+
+/**
+ * The entries whose name reads as something other than a running race.
+ *
+ * Firestore cannot match a pattern, so the words go to the server and the
+ * reading happens here: one `array-contains-any` over the words a name search
+ * indexes, then `readsAsAnotherSport` decides among what comes back. A word
+ * the list misses is a candidate not shown, never a wrong one shown.
+ *
+ * Retired entries and copies are dropped: the question is what to take out of
+ * the catalog, and those are already out.
+ */
+export async function loadOtherSportsForAdmin(): Promise<RaceCatalogEntry[]> {
+  const snapshot = await getDocs(
+    query(
+      collection(db, RACE_CATALOG_COLLECTION),
+      where('nameTokens', 'array-contains-any', [...OTHER_SPORT_WORDS]),
+      limitTo(200),
+    ),
+  )
+  return snapshot.docs
+    .map((document) => document.data() as RaceCatalogEntry)
+    .filter(
+      (race) =>
+        race.retired !== true &&
+        !race.duplicateOfCatalogRaceId &&
+        readsAsAnotherSport(race.name),
+    )
+    .sort((left, right) => left.name.localeCompare(right.name))
 }
 
 export async function getCatalogRaceForAdmin(id: string): Promise<RaceCatalogEntry | null> {

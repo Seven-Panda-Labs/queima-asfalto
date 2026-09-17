@@ -4,6 +4,14 @@
 
 ---
 
+## [1.68.0] - 2026-09-17
+
+### Ajouté
+
+- **Lister ce qui ne se lit pas comme une course :** dans l'administration, un bouton cherche triathlons, marches et compagnie par le nom, pour trancher d'un coup. Une course avec une marche à côté reste hors de la liste, parce que c'est une course.
+
+---
+
 ## [1.67.0] - 2026-09-17
 
 ### Ajouté
