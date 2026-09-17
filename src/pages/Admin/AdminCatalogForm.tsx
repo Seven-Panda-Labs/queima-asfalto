@@ -123,8 +123,14 @@ export function AdminCatalogForm() {
     if (!race.name.trim()) next.name = t('validation.nameRequired')
     if (!race.city.trim()) next.city = t('validation.locationRequired')
     if (!/^[A-Z]{2}$/.test(race.country)) next.country = t('admin.catalogCountryError')
-    if (race.disciplines.length === 0) next.disciplines = t('validation.disciplinesRequired')
-    if (!race.source.trim()) next.source = t('admin.catalogSourceError')
+    // What describes a race is asked of a race. An entry on its way out needs
+    // its reason and nothing else: a triathlon read as a race has no distance
+    // worth inventing, and asking for one is asking the operator to answer a
+    // question about an entry nobody will ever see again.
+    if (!race.retired) {
+      if (race.disciplines.length === 0) next.disciplines = t('validation.disciplinesRequired')
+      if (!race.source.trim()) next.source = t('admin.catalogSourceError')
+    }
     // Out of the catalog is a decision, and the decision is the reason.
     if (race.retired && !race.retiredReason) {
       next.retiredReason = t('admin.catalogRetiredReasonError')
@@ -141,7 +147,13 @@ export function AdminCatalogForm() {
 
     // The rule the review state exists for: dates nobody checked must not be
     // stored as if somebody had.
-    if (race.review === 'unreviewed' && (race.editions ?? []).length > 0) {
+    //
+    // Not for an entry going out, which is where it bit hardest: every
+    // harvested entry is unreviewed and has editions, so taking one out of the
+    // catalog meant first claiming somebody had checked it. A retired entry
+    // reaches no runner, fires no reminder and answers no search, so there is
+    // nothing left for the rule to protect.
+    if (!race.retired && race.review === 'unreviewed' && (race.editions ?? []).length > 0) {
       next.review = t('admin.catalogUnreviewedEditions')
     }
     for (const edition of race.editions ?? []) {

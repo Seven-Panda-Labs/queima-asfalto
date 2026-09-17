@@ -4,6 +4,14 @@
 
 ---
 
+## [1.66.0] - 2026-09-17
+
+### Corrigido
+
+- **Tirar uma prova do catálogo pede só a razão:** deixa de exigir distâncias, fonte, e de obrigar a marcá-la como verificada. Um triatlo lido como corrida não tem distância que valha a pena inventar.
+
+---
+
 ## [1.65.0] - 2026-09-17
 
 ### Adicionado

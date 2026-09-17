@@ -4,6 +4,14 @@
 
 ---
 
+## [1.66.0] - 2026-09-17
+
+### Corrigé
+
+- **Sortir une course du catalogue ne demande que la raison :** plus de distances, plus de source, et plus besoin de prétendre que quelqu'un l'a vérifiée. Un triathlon lu comme une course n'a pas de distance qui vaille d'être inventée.
+
+---
+
 ## [1.65.0] - 2026-09-17
 
 ### Ajouté

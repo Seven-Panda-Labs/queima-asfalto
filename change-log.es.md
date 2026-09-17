@@ -4,6 +4,14 @@
 
 ---
 
+## [1.66.0] - 2026-09-17
+
+### Corregido
+
+- **Sacar una carrera del catálogo pide solo la razón:** ya no exige distancias, fuente, ni obliga a marcarla como verificada. Un triatlón leído como carrera no tiene distancia que merezca inventarse.
+
+---
+
 ## [1.65.0] - 2026-09-17
 
 ### Añadido

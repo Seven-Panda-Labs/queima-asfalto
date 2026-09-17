@@ -4,6 +4,14 @@
 
 ---
 
+## [1.66.0] - 2026-09-17
+
+### Behoben
+
+- **Ein Rennen aus dem Katalog zu nehmen fragt nur nach dem Grund:** keine Distanzen, keine Quelle, und niemand muss mehr behaupten, es sei geprüft worden. Ein als Lauf gelesener Triathlon hat keine Distanz, die zu erfinden lohnt.
+
+---
+
 ## [1.65.0] - 2026-09-17
 
 ### Hinzugefügt
