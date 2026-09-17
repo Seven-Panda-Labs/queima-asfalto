@@ -9,6 +9,7 @@ const searchCatalogForAdmin = vi.fn()
 const unmergeCatalogRace = vi.fn()
 const mergeCatalogRaces = vi.fn()
 const retireCatalogRaces = vi.fn()
+const loadOtherSportsForAdmin = vi.fn()
 const unretireCatalogRaces = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
@@ -19,6 +20,7 @@ vi.mock('../../services/adminRaceCatalog', () => ({
   separateCatalogRaces: vi.fn(),
   unmergeCatalogRace: (...args: unknown[]) => unmergeCatalogRace(...args),
   retireCatalogRaces: (...args: unknown[]) => retireCatalogRaces(...args),
+  loadOtherSportsForAdmin: (...args: unknown[]) => loadOtherSportsForAdmin(...args),
   unretireCatalogRaces: (...args: unknown[]) => unretireCatalogRaces(...args),
 }))
 
@@ -177,6 +179,46 @@ describe('the official page', () => {
     expect(link).toHaveAttribute('target', '_blank')
     // And an entry with no site shows no link, rather than a dead one.
     expect(screen.queryByRole('link', { name: /Abrir a página oficial de Sem site/ })).toBeNull()
+  })
+})
+
+describe('what reads as another sport', () => {
+  it('is asked for, listed, and swept with the same tick and reason', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [], nextCursor: undefined })
+    loadOtherSportsForAdmin.mockResolvedValue([
+      race({ id: 'de-berlin-oranke-open-triathlon', name: 'Oranke Open Triathlon' }),
+      race({ id: 'de-alzey-ahmadiyya-charity-walk', name: 'Ahmadiyya Charity Walk Alzey' }),
+    ])
+    render(<AdminCatalog />)
+
+    // On demand: a question about the whole catalog, asked when somebody
+    // wants to answer it.
+    fireEvent.click(await screen.findByRole('button', { name: 'Procurar' }))
+
+    expect(await screen.findByText('2 para decidir')).toBeInTheDocument()
+    fireEvent.click(screen.getByRole('checkbox', { name: 'Escolher Oranke Open Triathlon' }))
+    fireEvent.change(screen.getByLabelText(/Porque está fora/), {
+      target: { value: 'other_sport' },
+    })
+    fireEvent.click(screen.getByRole('button', { name: 'Tirar do catálogo' }))
+
+    await waitFor(() =>
+      expect(retireCatalogRaces).toHaveBeenCalledWith(
+        ['de-berlin-oranke-open-triathlon'],
+        'other_sport',
+        'admin',
+      ),
+    )
+  })
+
+  it('says so when the names give nothing away', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [], nextCursor: undefined })
+    loadOtherSportsForAdmin.mockResolvedValue([])
+    render(<AdminCatalog />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Procurar' }))
+
+    expect(await screen.findByText('Nada que o nome denuncie.')).toBeInTheDocument()
   })
 })
 

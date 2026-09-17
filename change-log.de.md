@@ -4,6 +4,14 @@
 
 ---
 
+## [1.68.0] - 2026-09-17
+
+### Hinzugefügt
+
+- **Auflisten, was sich nicht wie ein Lauf liest:** in der Verwaltung sucht ein Knopf Triathlons, Wanderungen und Ähnliches nach dem Namen, zum Entscheiden in einem Zug. Ein Lauf mit Walking daneben bleibt aus der Liste, denn er ist ein Lauf.
+
+---
+
 ## [1.67.0] - 2026-09-17
 
 ### Hinzugefügt

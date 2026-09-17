@@ -4,6 +4,14 @@
 
 ---
 
+## [1.68.0] - 2026-09-17
+
+### Added
+
+- **List what does not read as a running race:** in the admin area, a button finds triathlons, walks and the like by name, to decide in one go. A race with a walk beside it stays out of the list, because it is a race.
+
+---
+
 ## [1.67.0] - 2026-09-17
 
 ### Added

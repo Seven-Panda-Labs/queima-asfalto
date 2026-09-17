@@ -6,6 +6,7 @@ import { RETIRED_REASONS, type RaceCatalogEntry, type RetiredReason } from '../.
 import { useAuth } from '../../contexts/AuthContext'
 import {
   listStaleForAdmin,
+  loadOtherSportsForAdmin,
   mergeCatalogRaces,
   retireCatalogRaces,
   searchCatalogForAdmin,
@@ -66,6 +67,9 @@ export function AdminCatalog() {
   const [reason, setReason] = useState<RetiredReason | ''>('')
   /** What the last sweep did, kept so it can be taken back in one press. */
   const [swept, setSwept] = useState<string[]>([])
+  /** What reads as another sport, asked for when somebody wants to sweep. */
+  const [otherSports, setOtherSports] = useState<RaceCatalogEntry[] | null>(null)
+  const [reading, setReading] = useState(false)
   const [sweeping, setSweeping] = useState(false)
 
   const load = useCallback(
@@ -109,6 +113,18 @@ export function AdminCatalog() {
   }
 
   const more = cursors[cursors.length - 1]
+
+  const readOtherSports = async () => {
+    setReading(true)
+    setError(null)
+    try {
+      setOtherSports(await loadOtherSportsForAdmin())
+    } catch {
+      setError(t('admin.catalogLoadError'))
+    } finally {
+      setReading(false)
+    }
+  }
 
   const toggle = (id: string) =>
     setPicked((current) => {
@@ -380,6 +396,36 @@ export function AdminCatalog() {
       <CatalogProposals />
 
       {user ? <CatalogDuplicates adminUid={user.uid} onChanged={() => void load()} /> : null}
+
+      {/* What the name says is not a running race. A list to answer, not a
+          rule: a walk beside a run is a run, and only a person can tell. */}
+      <section className="mt-6 rounded-lg border border-border bg-surface p-4">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          {t('admin.catalogOtherSportTitle')}
+        </h2>
+        <p className="mt-1 text-xs text-muted">{t('admin.catalogOtherSportHint')}</p>
+        <button
+          type="button"
+          disabled={reading}
+          onClick={() => void readOtherSports()}
+          className="mt-2 rounded-md border border-border px-3 py-2 text-xs font-semibold text-foreground hover:bg-border/40 disabled:opacity-50"
+        >
+          {reading ? t('common.loading') : t('admin.catalogOtherSportFind')}
+        </button>
+
+        {otherSports === null ? null : otherSports.length === 0 ? (
+          <p className="mt-3 text-xs text-muted">{t('admin.catalogOtherSportNone')}</p>
+        ) : (
+          <>
+            <p className="mt-3 text-xs font-semibold text-foreground">
+              {t('admin.catalogOtherSportFound', { count: otherSports.length })}
+            </p>
+            <ul className="mt-2 divide-y divide-border rounded-lg border border-border">
+              {otherSports.map(row)}
+            </ul>
+          </>
+        )}
+      </section>
 
       {/* The other flow. Not a filter over the queue: a question about the
           whole catalog, asked when one entry is wrong. */}

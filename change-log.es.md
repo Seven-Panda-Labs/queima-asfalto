@@ -4,6 +4,14 @@
 
 ---
 
+## [1.68.0] - 2026-09-17
+
+### Añadido
+
+- **Listar lo que no parece una carrera:** en la administración, un botón busca triatlones, marchas y similares por el nombre, para decidir en bloque. Una carrera con marcha al lado queda fuera de la lista, porque es una carrera.
+
+---
+
 ## [1.67.0] - 2026-09-17
 
 ### Añadido

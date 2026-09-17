@@ -4,6 +4,14 @@
 
 ---
 
+## [1.68.0] - 2026-09-17
+
+### Adicionado
+
+- **Listar o que parece não ser corrida:** na administração, um botão procura triatlos, caminhadas e afins pelo nome, para decidires em bloco. Uma corrida com caminhada ao lado fica de fora da lista, porque é uma corrida.
+
+---
+
 ## [1.67.0] - 2026-09-17
 
 ### Adicionado
