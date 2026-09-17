@@ -199,6 +199,8 @@ What was missing was **why**, and the reason decides what happens next:
 
 The panel offers a list to work from: `readsAsAnotherSport` reads a name and proposes. Ten words go to the server, since Firestore cannot match a pattern, and the reading decides among what comes back. On one instance it finds **80**: 49 whose name names another sport, and 31 that carry a walking word and no running one.
 
+Both answers are recorded, and that is what keeps the list short. "Not a race" is `retiredReason`; "yes, this is a race" is `notAnotherSport`, which nothing but this list reads: it claims nothing about the race, asserts no date and is not a review. Without it the same rows come back every time the list is asked for, because a name does not change when somebody reads it.
+
 **Always a person's judgement, never a rule.** A name is not evidence: **225** live entries carry a walking word **and** a running one, and they are running races with a walk beside them, "Wiler-Herbstlauf + Nordic Walking", "Run and Walk Bern", "City cross run & walk". The reading leaves those out of the list precisely so that nobody is tempted to sweep them, and what it does list is still a question rather than an answer.
 
 ### A gate is a day, and sometimes an hour

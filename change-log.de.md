@@ -4,6 +4,14 @@
 
 ---
 
+## [1.70.0] - 2026-09-17
+
+### Hinzugefügt
+
+- **„Das sind Läufe“ sagen und sie nicht mehr sehen:** in der Liste dessen, was sich wie ein anderer Sport liest, werden die echten Läufe als solche markiert und verschwinden daraus. Mit Rückgängig, falls das Ja zu schnell kam.
+
+---
+
 ## [1.69.0] - 2026-09-17
 
 ### Hinzugefügt

@@ -1400,6 +1400,8 @@
     "catalogRetirePicked": "Take out of the catalog",
     "catalogSwept": "{{count}} races are out of the catalog.",
     "catalogSweptUndo": "Undo",
+    "catalogKeepPicked": "These are races",
+    "catalogKept": "{{count}} stay as races and will not come back to this list.",
     "catalogJoined": "\"{{drop}}\" now points at \"{{keep}}\"."
   },
   "funnel": {

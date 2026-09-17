@@ -164,6 +164,8 @@ export async function loadOtherSportsForAdmin(): Promise<RaceCatalogEntry[]> {
       (race) =>
         race.retired !== true &&
         !race.duplicateOfCatalogRaceId &&
+        // An answered question stops being asked.
+        race.notAnotherSport !== true &&
         readsAsAnotherSport(race.name),
     )
     .sort((left, right) => left.name.localeCompare(right.name))
@@ -307,6 +309,52 @@ export async function retireCatalogRaces(
     batch.set(
       doc(db, RACE_CATALOG_COLLECTION, id),
       { retired: true, retiredReason: reason, updatedAt, updatedBy: adminUid },
+      { merge: true },
+    )
+  }
+  await batch.commit()
+}
+
+/**
+ * Records that these are running races, whatever their names read like.
+ *
+ * The other half of the sweep. The list reads names, so it finds races too: a
+ * charity walk that is run, a "Bike & Run" whose run is the race. Without this
+ * the same rows come back every time the list is asked for, and an operator
+ * reads them forever.
+ *
+ * It claims nothing else. Not `reviewed`, no dates asserted, nothing a runner
+ * sees: one answer to one question.
+ */
+export async function keepAsRunningRaces(
+  ids: readonly string[],
+  adminUid: string,
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = new Date().toISOString()
+  const batch = writeBatch(db)
+  for (const id of ids) {
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, id),
+      { notAnotherSport: true, updatedAt, updatedBy: adminUid },
+      { merge: true },
+    )
+  }
+  await batch.commit()
+}
+
+/** Puts the question back, for when the yes was too quick. */
+export async function askAgainAboutRaces(
+  ids: readonly string[],
+  adminUid: string,
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = new Date().toISOString()
+  const batch = writeBatch(db)
+  for (const id of ids) {
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, id),
+      { notAnotherSport: false, updatedAt, updatedBy: adminUid },
       { merge: true },
     )
   }

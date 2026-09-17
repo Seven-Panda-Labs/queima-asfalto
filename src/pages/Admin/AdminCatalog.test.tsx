@@ -10,6 +10,8 @@ const unmergeCatalogRace = vi.fn()
 const mergeCatalogRaces = vi.fn()
 const retireCatalogRaces = vi.fn()
 const loadOtherSportsForAdmin = vi.fn()
+const keepAsRunningRaces = vi.fn()
+const askAgainAboutRaces = vi.fn()
 const unretireCatalogRaces = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
@@ -21,6 +23,8 @@ vi.mock('../../services/adminRaceCatalog', () => ({
   unmergeCatalogRace: (...args: unknown[]) => unmergeCatalogRace(...args),
   retireCatalogRaces: (...args: unknown[]) => retireCatalogRaces(...args),
   loadOtherSportsForAdmin: (...args: unknown[]) => loadOtherSportsForAdmin(...args),
+  keepAsRunningRaces: (...args: unknown[]) => keepAsRunningRaces(...args),
+  askAgainAboutRaces: (...args: unknown[]) => askAgainAboutRaces(...args),
   unretireCatalogRaces: (...args: unknown[]) => unretireCatalogRaces(...args),
 }))
 
@@ -208,6 +212,44 @@ describe('what reads as another sport', () => {
         'other_sport',
         'admin',
       ),
+    )
+  })
+
+  it('takes a yes, so the list stops asking about a race', async () => {
+    // The list reads names, so it finds races too: a charity walk that is run.
+    // Without an answer those come back every time it is asked for.
+    listStaleForAdmin.mockResolvedValue({ races: [], nextCursor: undefined })
+    loadOtherSportsForAdmin.mockResolvedValue([
+      race({ id: 'de-freiburg-charity-walk-run', name: 'Charity Walk Freiburg' }),
+    ])
+    render(<AdminCatalog />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Procurar' }))
+    fireEvent.click(await screen.findByRole('checkbox', { name: 'Escolher Charity Walk Freiburg' }))
+    fireEvent.click(screen.getByRole('button', { name: 'São corridas' }))
+
+    await waitFor(() =>
+      expect(keepAsRunningRaces).toHaveBeenCalledWith(['de-freiburg-charity-walk-run'], 'admin'),
+    )
+    // No reason needed for this one: a race is a race.
+    expect(retireCatalogRaces).not.toHaveBeenCalled()
+  })
+
+  it('can put the question back', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [], nextCursor: undefined })
+    loadOtherSportsForAdmin.mockResolvedValue([
+      race({ id: 'de-freiburg-charity-walk-run', name: 'Charity Walk Freiburg' }),
+    ])
+    render(<AdminCatalog />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Procurar' }))
+    fireEvent.click(await screen.findByRole('checkbox', { name: 'Escolher Charity Walk Freiburg' }))
+    fireEvent.click(screen.getByRole('button', { name: 'São corridas' }))
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Anular' }))
+
+    await waitFor(() =>
+      expect(askAgainAboutRaces).toHaveBeenCalledWith(['de-freiburg-charity-walk-run'], 'admin'),
     )
   })
 

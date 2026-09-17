@@ -1400,6 +1400,8 @@
     "catalogRetirePicked": "Sortir du catalogue",
     "catalogSwept": "{{count}} courses sont sorties du catalogue.",
     "catalogSweptUndo": "Annuler",
+    "catalogKeepPicked": "Ce sont des courses",
+    "catalogKept": "{{count}} restent des courses et ne reviendront pas dans cette liste.",
     "catalogJoined": "« {{drop}} » pointe désormais vers « {{keep}} »."
   },
   "funnel": {

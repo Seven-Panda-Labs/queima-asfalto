@@ -1400,6 +1400,8 @@
     "catalogRetirePicked": "Sacar del catálogo",
     "catalogSwept": "{{count}} carreras quedaron fuera de circulación.",
     "catalogSweptUndo": "Deshacer",
+    "catalogKeepPicked": "Son carreras",
+    "catalogKept": "{{count}} quedan como carreras y no vuelven a esta lista.",
     "catalogJoined": "«{{drop}}» ahora apunta a «{{keep}}»."
   },
   "funnel": {

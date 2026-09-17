@@ -209,6 +209,19 @@ export type RaceCatalogEntry = {
    */
   retiredReason?: RetiredReason
   /**
+   * A person looked at this name and said it is a running race.
+   *
+   * The list that finds triathlons and walks reads names, so it finds some
+   * races too: a "Charity Walk" that is run, a "Bike & Run" whose run is the
+   * race. Without somewhere to record the answer, those come back in the list
+   * every time it is asked for, and the operator reads the same rows forever.
+   *
+   * Only the operator's list reads this. It says nothing about the race, makes
+   * no claim about its dates, and is not `reviewed`: it is the answer to one
+   * question, kept so the question stops being asked.
+   */
+  notAnotherSport?: boolean
+  /**
    * The entry this one turned out to be a second copy of.
    *
    * Set when a harvest recognises a race the catalog already holds under
