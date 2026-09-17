@@ -1,7 +1,7 @@
 ---locale:pt---
 #### Aviso: importação de resultados oficiais
 
-**Última actualização:** 2026-09-19
+**Última actualização:** 2026-09-17
 
 #### O que faz esta funcionalidade
 
@@ -56,7 +56,7 @@ O Queima Asfalto é software open source (AGPL-3.0), fornecido **«tal como est�
 ---locale:en---
 #### Notice: official results import
 
-**Last updated:** 2026-09-19
+**Last updated:** 2026-09-17
 
 #### What this feature does
 
@@ -111,7 +111,7 @@ Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The
 ---locale:es---
 #### Aviso: importación de resultados oficiales
 
-**Última actualización:** 2026-09-19
+**Última actualización:** 2026-09-17
 
 #### Qué hace esta funcionalidad
 
@@ -166,7 +166,7 @@ Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal 
 ---locale:de---
 #### Hinweis: Import offizieller Ergebnisse
 
-**Zuletzt aktualisiert:** 2026-09-19
+**Zuletzt aktualisiert:** 2026-09-17
 
 #### Was diese Funktion macht
 
@@ -221,7 +221,7 @@ Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie bese
 ---locale:fr---
 #### Avis: importation des résultats officiels
 
-**Dernière mise à jour :** 2026-09-19
+**Dernière mise à jour :** 2026-09-17
 
 #### Ce que fait cette fonctionnalité
 
@@ -275,7 +275,7 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 ---locale:ar---
 #### تنبيه: استيراد النتائج الرسمية
 
-**آخر تحديث:** 2026-09-19
+**آخر تحديث:** 2026-09-17
 
 #### ما الذي تقوم به هذه الميزة
 
