@@ -4,6 +4,14 @@
 
 ---
 
+## [1.69.0] - 2026-09-17
+
+### Ajouté
+
+- **Résultats STGK :** les courses chronométrées par STGK, dans le nord de l'Allemagne, importent désormais ton résultat automatiquement. Colle le lien des résultats de l'épreuve et l'application trouve le bon classement parmi les distances du jour.
+
+---
+
 ## [1.68.0] - 2026-09-17
 
 ### Ajouté

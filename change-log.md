@@ -4,6 +4,14 @@
 
 ---
 
+## [1.69.0] - 2026-09-17
+
+### Adicionado
+
+- **Resultados do STGK:** as provas cronometradas pelo STGK, no norte da Alemanha, passam a importar o resultado automaticamente. Cola o link dos resultados da prova e a app encontra a classificação certa entre as várias distâncias do dia.
+
+---
+
 ## [1.68.0] - 2026-09-17
 
 ### Adicionado

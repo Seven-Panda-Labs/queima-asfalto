@@ -4,6 +4,14 @@
 
 ---
 
+## [1.69.0] - 2026-09-17
+
+### Added
+
+- **STGK results:** races timed by STGK, in northern Germany, now import your result automatically. Paste the event's results link and the app finds the right ranking among the day's several distances.
+
+---
+
 ## [1.68.0] - 2026-09-17
 
 ### Added

@@ -16,6 +16,7 @@ export function detectPlatformFromUrl(url: string): ResultsPlatform | null {
     if (hostname.includes('sporthive.com')) return 'sporthive'
     if (hostname.includes('raceresult.com')) return 'myraceresult'
     if (hostname.includes('maxfunsports.com')) return 'maxfunsports'
+    if (hostname.includes('stgk.de')) return 'stgk'
     if (hostname.includes('myracepartner.com') && /ergebnisse/i.test(parsed.pathname)) {
       const normalized = new URL(normalizeMyRacePartnerUrl(url))
       const resultId =
