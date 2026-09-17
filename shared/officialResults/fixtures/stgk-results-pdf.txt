@@ -1,0 +1,25 @@
+Ergebnis
+M / W - gesamt
+Beispiellauf
+( 10 km )
+M
+Pos Altersklasse	Nat.	Verein / Ort	Vorname	Name	StNr	Pos
+244 	Ninguem 	Ze	1 	GER-SH 	1	Laufen in Beispielstadt 	M-40	00:34:20
+202 	Graumann 	Bernd	2 	GER-SH 	2	FFG Beispiel Fahrzeugbau
+Gesellschaft mbH
+M-40	00:34:48
+404 	Mustermann 	Lukas	3 	GER-SH 	3	M-HK	00:38:14
+1. Beispiel Lauftreff e.V. Arndtstr. 5 24943 Beispielstadt
+1 von 2	© STGK 2024 	15.12.2024 	12:36:11
+
+-- 1 of 2 --
+
+Ergebnis
+M / W - gesamt
+Beispiellauf
+( 10 km )
+W
+Pos Altersklasse	Nat.	Verein / Ort	Vorname	Name	StNr	Pos
+101 	Nordmann 	Johanna	1 	GER-SH 	1	TriAs Beispiel 	W-HK	00:39:00
+248 	Mustermann 	Janine	2 	GER-SH 	5	Beispielhausen 	W-50	01:00:28
+2 von 2	© STGK 2024 	15.12.2024 	12:36:11

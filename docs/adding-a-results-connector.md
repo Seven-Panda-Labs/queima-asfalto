@@ -186,6 +186,17 @@ Conector mais complexo (HTML, formulários, domínios custom):
 | Parkrun | Responde 403 a tudo o que não seja um browser |
 | MaxFunSports | Desafio Cloudflare em `/result/*`; `robots.txt` do host de iframe é `Disallow: /`, e o do site principal proíbe queries com `Search` |
 
+### Ler um PDF que o conetor vai buscar
+
+Nem todo o PDF obriga a upload. Quando o site deixa ser lido, como o STGK, o conetor descarrega-o e o utilizador não faz nada. Ver `functions/src/connectors/stgk.ts` e `zielZeit.ts`, e as regras puras em `shared/officialResults/stgk.ts`.
+
+O que o STGK ensinou, e que se aplica ao próximo:
+
+- **A ordem dos campos do `pdf-parse` não é a ordem impressa.** Ali vem dorsal, apelido, nome, posição, nacionalidade, posição na classe, clube, classe, tempo. Lê-se o início pelo início e a cauda pelo fim, porque um atleta sem clube não deixa o campo vazio: deixa-o fora, e todos os índices a seguir mudam.
+- **Uma linha pode partir-se.** Um nome de clube comprido empurra o resto da linha para as seguintes, e é preciso juntá-las até aparecer um tempo. São 51 das 312 linhas no ficheiro de referência.
+- **Um ficheiro pode ter mais do que uma classificação.** O `-gesamt` do STGK traz a masculina e depois a feminina, cada uma numerada desde 1. O campo de um atleta é o seu bloco, nunca o documento, ou grava-se «63 de 312» a quem foi 63.ª de 104.
+- **A página pode não ser UTF-8.** A do STGK é Latin-1 e só o diz numa meta tag, por isso o `response.text()` estraga os tremas. Descodifica-se explicitamente.
+
 ### Ler os resultados de um PDF carregado
 
 Quando o site publica um PDF oficial mas recusa ser lido, a via é o ficheiro que o próprio atleta descarregou. Nada é obtido pela app, e o PDF **não sai do browser**.
@@ -367,6 +378,17 @@ Uses **Parkrunner ID**, not name on the event URL. See `canLookupPlatform()` and
 ### Platforms that closed the door
 
 `LOOKUP_UNAVAILABLE_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts) lists the platforms that no longer answer an automated reader: Parkrun (403 to anything but a browser) and MaxFunSports (Cloudflare challenge on `/result/*`, `Disallow: /` on the iframe host, and queries containing `Search` disallowed on the main site). The search button stays hidden, the callable returns `failed-precondition`, and the runner records the time by hand. The connector stays in the repo in case the site reopens.
+
+### Reading a PDF the connector fetches
+
+Not every PDF needs an upload. Where the site allows itself to be read, as STGK does, the connector downloads it and the runner does nothing. See `functions/src/connectors/stgk.ts` and `zielZeit.ts`, with the pure rules in `shared/officialResults/stgk.ts`.
+
+What STGK taught, which the next one will meet:
+
+- **`pdf-parse`'s field order is not the printed order.** There it is bib, family name, given name, position, nationality, age-class position, club, age class, time. Read the head from the front and the tail from the back, because a runner with no club leaves the field out rather than empty and shifts every index after it.
+- **A row can break across lines.** A long club name pushes the rest onto the following lines, which have to be joined until a time appears. 51 of 312 rows in the reference file.
+- **One file can hold more than one ranking.** STGK's `-gesamt` holds the men's and then the women's, each numbered from one. A runner's field is their block, never the document, or you store "63 of 312" for somebody who came 63rd of 104.
+- **The page may not be UTF-8.** STGK's is Latin-1 and says so only in a meta tag, so `response.text()` mangles the umlauts. Decode it explicitly.
 
 ### Reading results from an uploaded PDF
 

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.69.0] - 2026-09-17
+
+### Hinzugefügt
+
+- **STGK-Ergebnisse:** Läufe, die STGK in Norddeutschland zeitnimmt, übernehmen dein Ergebnis jetzt automatisch. Füge den Ergebnislink der Veranstaltung ein, und die App findet die richtige Wertung unter den Distanzen des Tages.
+
+---
+
 ## [1.68.0] - 2026-09-17
 
 ### Hinzugefügt

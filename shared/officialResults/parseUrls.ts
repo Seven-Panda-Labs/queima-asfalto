@@ -42,6 +42,7 @@ export type SccEventsUrlParts = {
 }
 
 export type { MaxFunSportsUrlParts } from './maxFunSports.js'
+export { parseStgkUrl, type StgkUrlParts } from './stgk.js'
 
 export type MyRacePartnerUrlParts = {
   resultId: string
