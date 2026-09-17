@@ -66,6 +66,10 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2}'],
+        // The PDF reader is half a megabyte and only a handful of races ever
+        // need it. It loads on demand; precaching it would charge every visitor
+        // for a feature most never open.
+        globIgnores: ['**/pdf-*.js', '**/pdf.worker*'],
         importScripts: ['notification-sw.js'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/__/],

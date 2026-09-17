@@ -404,6 +404,22 @@
     "disclaimerLink": "Read full notice",
     "refresh": "Search again"
   },
+  "resultsPdf": {
+    "hint": "If the site will not be searched, download the official results PDF and open it here. The file is read on your device and is never sent anywhere.",
+    "choose": "Choose results PDF",
+    "reading": "Reading the PDF...",
+    "readFrom": "Read from the {{event}} PDF.",
+    "preliminary": "The PDF says these results are preliminary.",
+    "truncated": "More runners share this name. Refine your name in settings to find yours.",
+    "errors": {
+      "unsupported_type": "Choose a PDF file.",
+      "file_too_large": "The PDF is too large.",
+      "unreadable": "This PDF could not be read.",
+      "not_a_results_pdf": "This PDF has no results table the app can read.",
+      "wrong_event": "This PDF is for another date. Check you downloaded the right race.",
+      "name_not_found": "Your name is not in this PDF. Check your name in settings."
+    }
+  },
   "resultsForm": {
     "saved": "Results saved!",
     "hours": "Hours",

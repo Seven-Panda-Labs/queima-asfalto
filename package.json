@@ -1,6 +1,6 @@
 {
   "name": "queima-asfalto",
-  "version": "1.63.0",
+  "version": "1.64.0",
   "license": "AGPL-3.0",
   "type": "module",
   "engines": {
@@ -51,6 +51,7 @@
     "firebase": "^12.15.0",
     "i18next": "^26.3.3",
     "leaflet": "^1.9.4",
+    "pdfjs-dist": "^6.3.289",
     "react": "^19.2.7",
     "react-chartjs-2": "^5.3.1",
     "react-dom": "^19.2.7",

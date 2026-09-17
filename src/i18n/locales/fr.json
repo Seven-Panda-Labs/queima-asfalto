@@ -404,6 +404,22 @@
     "disclaimerLink": "Lire l'avis complet",
     "refresh": "Rechercher à nouveau"
   },
+  "resultsPdf": {
+    "hint": "Si le site refuse la recherche, télécharge le PDF officiel des résultats et ouvre-le ici. Le fichier est lu sur ton appareil et n'est envoyé nulle part.",
+    "choose": "Choisir le PDF des résultats",
+    "reading": "Lecture du PDF...",
+    "readFrom": "Lu dans le PDF de {{event}}.",
+    "preliminary": "Le PDF indique que ces résultats sont provisoires.",
+    "truncated": "D'autres participants portent ce nom. Précise ton nom dans les réglages.",
+    "errors": {
+      "unsupported_type": "Choisis un fichier PDF.",
+      "file_too_large": "Le PDF est trop volumineux.",
+      "unreadable": "Ce PDF n'a pas pu être lu.",
+      "not_a_results_pdf": "Ce PDF ne contient pas de tableau de résultats que l'application sache lire.",
+      "wrong_event": "Ce PDF concerne une autre date. Vérifie que tu as téléchargé la bonne course.",
+      "name_not_found": "Ton nom ne figure pas dans ce PDF. Vérifie ton nom dans les réglages."
+    }
+  },
   "resultsForm": {
     "saved": "Résultats enregistrés !",
     "hours": "Heures",

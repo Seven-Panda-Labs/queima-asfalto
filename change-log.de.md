@@ -4,6 +4,14 @@
 
 ---
 
+## [1.64.0] - 2026-09-18
+
+### Hinzugefügt
+
+- **Das Ergebnis aus dem offiziellen PDF übernehmen:** wo der Zeitnehmer die Wertung veröffentlicht, die Suche aber sperrt, wie bei MaxFunSports, lade das PDF herunter und öffne es im Ergebnis-Editor. Die App findet dich in der Tabelle und trägt Zeit und Platzierung ein. Die Datei wird auf deinem Gerät gelesen und nirgendwohin gesendet.
+
+---
+
 ## [1.63.0] - 2026-09-17
 
 ### Behoben

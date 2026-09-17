@@ -4,6 +4,14 @@
 
 ---
 
+## [1.64.0] - 2026-09-18
+
+### Adicionado
+
+- **Importar o resultado do PDF oficial:** onde o cronometrista publica a classificação mas bloqueia a procura, como no MaxFunSports, descarrega o PDF e abre-o no editor do resultado. A app encontra-te na tabela e preenche tempo e classificação. O ficheiro é lido no teu equipamento e não é enviado para lado nenhum.
+
+---
+
 ## [1.63.0] - 2026-09-17
 
 ### Corrigido

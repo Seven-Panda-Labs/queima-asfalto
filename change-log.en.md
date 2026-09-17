@@ -4,6 +4,14 @@
 
 ---
 
+## [1.64.0] - 2026-09-18
+
+### Added
+
+- **Import your result from the official PDF:** where the timer publishes the ranking but blocks the search, as MaxFunSports does, download the PDF and open it in the result editor. The app finds you in the table and fills in time and placing. The file is read on your device and is never sent anywhere.
+
+---
+
 ## [1.63.0] - 2026-09-17
 
 ### Fixed
