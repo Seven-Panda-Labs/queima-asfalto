@@ -4,6 +4,14 @@
 
 ---
 
+## [1.78.0] - 2026-09-18
+
+### Fixed
+
+- **The daily harvest has room to finish:** its last step, the possible-duplicates list, risked being cut off whenever the day's source was a big one.
+
+---
+
 ## [1.77.0] - 2026-09-18
 
 ### Fixed

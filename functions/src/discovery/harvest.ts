@@ -50,6 +50,16 @@ const db = getFirestore()
 const HARVEST_SCHEDULE = 'every day 05:00'
 
 /**
+ * Long enough that the last thing the run does still happens.
+ *
+ * Measured on 2026-09-18: 5m30 reading a source and writing 1349 entries,
+ * 92s resolving organiser links, then the duplicate queue, for 499 seconds of
+ * the 540 this had. The queue is last, so it is the first thing a slow source
+ * costs, and it is the one an operator opens in the morning.
+ */
+const HARVEST_TIMEOUT_SECONDS = 900
+
+/**
  * Where the client reads how current the catalog is.
  *
  * Its own document because the catalog is a collection: there is no entry to
@@ -444,7 +454,7 @@ export async function refreshDiscoveryCatalog(
 }
 
 export const harvestRaceCatalog = onSchedule(
-  scheduleFunctionOptions(HARVEST_SCHEDULE, { memory: '512MiB', timeoutSeconds: 540 }),
+  scheduleFunctionOptions(HARVEST_SCHEDULE, { memory: '512MiB', timeoutSeconds: HARVEST_TIMEOUT_SECONDS }),
   async () => {
     const now = new Date()
     const source = sourceForRun(enabledSources(), now)
