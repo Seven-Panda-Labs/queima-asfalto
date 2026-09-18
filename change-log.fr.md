@@ -4,6 +4,14 @@
 
 ---
 
+## [1.77.0] - 2026-09-18
+
+### Corrigé
+
+- **« Afficher plus » sait maintenant quand s'arrêter :** dans la liste des courses confirmées sans édition à venir, le bouton répétait la dernière page sans fin et le total en haut grossissait avec elle. Les courses partageant une date ne sont plus sautées non plus.
+
+---
+
 ## [1.76.0] - 2026-09-18
 
 ### Modifié

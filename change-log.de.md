@@ -4,6 +4,14 @@
 
 ---
 
+## [1.77.0] - 2026-09-18
+
+### Behoben
+
+- **„Mehr anzeigen“ weiß jetzt, wann Schluss ist:** in der Liste bestätigter Rennen ohne künftigen Termin wiederholte der Knopf endlos die letzte Seite, und die Zahl oben wuchs mit. Außerdem werden Rennen mit gleichem Datum nicht mehr übersprungen.
+
+---
+
 ## [1.76.0] - 2026-09-18
 
 ### Geändert

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.77.0] - 2026-09-18
+
+### Fixed
+
+- **"Show more" now knows when it is done:** in the list of confirmed races with no future edition, the button repeated the last page forever and the count at the top grew with it. It also no longer skips races that share a date.
+
+---
+
 ## [1.76.0] - 2026-09-18
 
 ### Changed

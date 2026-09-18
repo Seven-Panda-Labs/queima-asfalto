@@ -70,7 +70,7 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
   it('opens on the work, a page at a time', async () => {
     listStaleForAdmin.mockResolvedValue({
       races: [race({ id: 'out-of-editions' })],
-      nextCursor: '2026-01-01',
+      nextCursor: { nextRaceDate: '2026-01-01', id: 'out-of-editions' },
     })
     render(<AdminCatalog />)
 
@@ -82,13 +82,38 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
   it('asks for the next page from where the last one ended', async () => {
     listStaleForAdmin.mockResolvedValue({
       races: [race({ id: 'out-of-editions' })],
-      nextCursor: '2026-01-01',
+      nextCursor: { nextRaceDate: '2026-01-01', id: 'out-of-editions' },
     })
     render(<AdminCatalog />)
 
     fireEvent.click(await screen.findByRole('button', { name: 'Mostrar mais' }))
 
-    await waitFor(() => expect(listStaleForAdmin).toHaveBeenCalledWith(50, '2026-01-01'))
+    await waitFor(() =>
+      expect(listStaleForAdmin).toHaveBeenCalledWith(50, {
+        nextRaceDate: '2026-01-01',
+        id: 'out-of-editions',
+      }),
+    )
+  })
+
+  it('takes the button away when the last page arrives', async () => {
+    // The bug: the cursor was a list that only grew, so the end of the queue
+    // left the previous page's cursor in place and "show more" asked for that
+    // page again, and again, adding it to the list every time.
+    listStaleForAdmin.mockResolvedValueOnce({
+      races: [race({ id: 'first-page' })],
+      nextCursor: { nextRaceDate: '2026-01-01', id: 'first-page' },
+    })
+    listStaleForAdmin.mockResolvedValueOnce({ races: [race({ id: 'last-page' })] })
+    render(<AdminCatalog />)
+
+    fireEvent.click(await screen.findByRole('button', { name: 'Mostrar mais' }))
+
+    expect(await screen.findByText('last-page')).toBeInTheDocument()
+    await waitFor(() =>
+      expect(screen.queryByRole('button', { name: 'Mostrar mais' })).not.toBeInTheDocument(),
+    )
+    expect(listStaleForAdmin).toHaveBeenCalledTimes(2)
   })
 
   it('offers no next page when the queue ends', async () => {
