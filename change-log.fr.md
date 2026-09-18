@@ -4,6 +4,14 @@
 
 ---
 
+## [1.74.0] - 2026-09-18
+
+### Ajouté
+
+- **Courses en double avec le même site :** la liste des doublons possibles rapproche désormais deux courses qui pointent vers la même page de l'organisateur, même si chaque calendrier les a classées dans un village différent.
+
+---
+
 ## [1.73.0] - 2026-09-18
 
 ### Ajouté

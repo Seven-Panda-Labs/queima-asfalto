@@ -336,6 +336,79 @@ function distancesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolea
 }
 
 /**
+ * The organiser's own site, when somebody has resolved it off the listing.
+ *
+ * An entry the harvest wrote points at the calendar it was read from in both
+ * fields, and a calendar's page is not evidence of anything: every race on
+ * runme.de would share an organiser with every other.
+ */
+function organiserPage(entry: RaceCatalogEntry): string | undefined {
+  if (!entry.officialUrl || !entry.sourceUrl || entry.officialUrl === entry.sourceUrl) {
+    return undefined
+  }
+  try {
+    const url = new URL(entry.officialUrl)
+    // The query stays. A club that runs six races often sells them all through
+    // one script, `va_details.php?id=…`, and dropping it makes six races one.
+    return `${url.host.replace(/^www\./, '')}${url.pathname.replace(/\/+$/, '')}${url.search}`.toLowerCase()
+  } catch {
+    return undefined
+  }
+}
+
+/**
+ * How many entries a page may stand behind and still name one race.
+ *
+ * The Eifellauf is five village runs, Wißmannsdorf to Mettendorf, behind one
+ * site: ten pairs, none of them a duplicate. Above this a shared page is a
+ * club's front door. At three it is still what the Mattmark Memorial looks
+ * like, which this catalog holds three copies of.
+ */
+const ENTRIES_PER_ORGANISER_PAGE = 3
+
+/** The pages that stand behind two or three entries, and no more. */
+function pagesWorthAsking(catalog: readonly RaceCatalogEntry[]): Set<string> {
+  const held = new Map<string, number>()
+  for (const entry of catalog) {
+    const page = organiserPage(entry)
+    if (page) held.set(page, (held.get(page) ?? 0) + 1)
+  }
+  return new Set(
+    [...held.entries()]
+      .filter(([, count]) => count > 1 && count <= ENTRIES_PER_ORGANISER_PAGE)
+      .map(([page]) => page),
+  )
+}
+
+/**
+ * Two entries sent to the same page of the same site.
+ *
+ * Not on its own a duplicate: a site is shared by a series as often as by a
+ * copy. What it does is stand in for the town, which is the test these pairs
+ * fail: "Duvenstedter Dorflauf" is filed under Alt Duvenstedt on one calendar
+ * and Neu Duvenstedt on the other, and no rule that compares places can see
+ * them as one race. Everything else the queue asks for still has to hold.
+ */
+function oneOrganisersPage(
+  left: RaceCatalogEntry,
+  right: RaceCatalogEntry,
+  worthAsking: Set<string>,
+): boolean {
+  const page = organiserPage(left)
+  return (
+    left.id !== right.id &&
+    page !== undefined &&
+    worthAsking.has(page) &&
+    page === organiserPage(right) &&
+    left.country.toUpperCase() === right.country.toUpperCase() &&
+    !pairAlreadyAnswered(left, right) &&
+    !numbersRuleOut(left, right) &&
+    namesAgree(left, right) &&
+    sharesAWord(left, right)
+  )
+}
+
+/**
  * As far as the day and the place can tell, one race.
  *
  * Necessary and nowhere near sufficient: the Berlin weekend has two different
@@ -559,6 +632,7 @@ export function catalogDuplicateCandidates(
   catalog: readonly RaceCatalogEntry[],
 ): DuplicateCandidate[] {
   const candidates: DuplicateCandidate[] = []
+  const worthAsking = pagesWorthAsking(catalog)
 
   for (let index = 0; index < catalog.length; index += 1) {
     for (let other = index + 1; other < catalog.length; other += 1) {
@@ -568,12 +642,16 @@ export function catalogDuplicateCandidates(
       // day-based rule can see them, and nothing merges them on its own: what
       // a person answers is which of the two the editions should live on.
       const acrossYears = sameAnnualRace(left, right)
-      if (!acrossYears && !couldBeTheSameRace(left, right)) continue
+      // The same race on two calendars, each filing it under the town next
+      // door: same name, same organiser page, and nothing that compares places
+      // will ever put them together.
+      const oneOrganiser = oneOrganisersPage(left, right, worthAsking)
+      if (!acrossYears && !oneOrganiser && !couldBeTheSameRace(left, right)) continue
       // Whatever the rule would have merged is already merged, so anything left
       // needing a decision is by definition what it declined.
       if (findCatalogDuplicate(right, [left])) continue
       // And a pair with no word in common is not a question, it is two races.
-      if (!acrossYears && !sharesAWord(left, right)) continue
+      if (!acrossYears && !oneOrganiser && !sharesAWord(left, right)) continue
 
       const [keep, drop] = survivorFirst(left, right)
       candidates.push({ keep, drop })

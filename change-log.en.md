@@ -4,6 +4,14 @@
 
 ---
 
+## [1.74.0] - 2026-09-18
+
+### Added
+
+- **Repeated races that share a site:** the possible-duplicates list now pairs two races pointing at the same organiser page, even when each calendar filed them under a different village.
+
+---
+
 ## [1.73.0] - 2026-09-18
 
 ### Added

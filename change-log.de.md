@@ -4,6 +4,14 @@
 
 ---
 
+## [1.74.0] - 2026-09-18
+
+### Hinzugefügt
+
+- **Doppelte Rennen mit derselben Seite:** die Liste möglicher Dubletten stellt jetzt zwei Rennen zusammen, die auf dieselbe Seite des Veranstalters zeigen, auch wenn jeder Kalender sie in einem anderen Ort einsortiert hat.
+
+---
+
 ## [1.73.0] - 2026-09-18
 
 ### Hinzugefügt

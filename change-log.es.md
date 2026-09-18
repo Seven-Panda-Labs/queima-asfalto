@@ -4,6 +4,14 @@
 
 ---
 
+## [1.74.0] - 2026-09-18
+
+### Añadido
+
+- **Pruebas repetidas con el mismo sitio:** la lista de posibles duplicados empareja dos pruebas que apuntan a la misma página del organizador, aunque cada calendario las haya archivado en un pueblo distinto.
+
+---
+
 ## [1.73.0] - 2026-09-18
 
 ### Añadido
