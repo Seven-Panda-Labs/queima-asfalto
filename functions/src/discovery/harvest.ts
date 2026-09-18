@@ -9,6 +9,7 @@ import {
   isHarvestable,
   storedForSources,
 } from '../shared/eventDiscovery/guards.js'
+import { isParkrunListing } from '../shared/eventDiscovery/parkrunListing.js'
 import { readRacesFromHtml } from '../shared/eventDiscovery/schemaOrg.js'
 import { findCatalogDuplicate } from '../shared/eventDiscovery/duplicates.js'
 import { readPlanetMarathonCalendar } from '../shared/eventDiscovery/planetMarathon.js'
@@ -268,7 +269,7 @@ async function harvestSource(source: DiscoverySource, now: Date): Promise<Source
         : await harvestSitemap(source, now)
 
   return {
-    races: harvest.races.filter((race) => isHarvestable(race, now)),
+    races: harvest.races.filter((race) => isHarvestable(race, now) && !isParkrunListing(race)),
     partial: harvest.partial,
   }
 }

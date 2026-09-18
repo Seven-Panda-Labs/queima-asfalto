@@ -1322,7 +1322,8 @@
     "retiredReason": {
       "over": "La carrera terminó",
       "other_sport": "No es carrera (triatlón, marcha, bici)",
-      "not_a_race": "No es una prueba (expo, página de listado)"
+      "not_a_race": "No es una prueba (expo, página de listado)",
+      "parkrun": "Es un parkrun (tiene su propio catálogo)"
     },
     "catalogReviewHint": "Una entrada sin confirmar puede sugerir, nunca afirmar: no alimenta avisos de plazo.",
     "catalogUnreviewedEditions": "Una entrada sin confirmar no puede tener ediciones con fechas.",

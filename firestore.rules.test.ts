@@ -1019,7 +1019,7 @@ describe('firestore.rules', () => {
       await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
       const db = testEnv.authenticatedContext('user-admin').firestore()
 
-      for (const reason of ['over', 'other_sport', 'not_a_race']) {
+      for (const reason of ['over', 'other_sport', 'not_a_race', 'parkrun']) {
         await assertSucceeds(
           db.collection('raceCatalog').doc(`de-berlin-out-${reason}`).set({
             ...race,

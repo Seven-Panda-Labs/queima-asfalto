@@ -4,6 +4,14 @@
 
 ---
 
+## [1.79.0] - 2026-09-18
+
+### Behoben
+
+- **parkruns verlassen den Kalender der jährlichen Rennen:** deutsche Kalender führten die Strecken als Events mit Termin und Anmeldung, neben derselben Strecke im parkrun-Katalog der App. Jährliche Rennen mit „Park Run“ im Namen, etwa der Brescia Park Run, bleiben.
+
+---
+
 ## [1.78.0] - 2026-09-18
 
 ### Behoben

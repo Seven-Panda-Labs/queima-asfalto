@@ -4,6 +4,14 @@
 
 ---
 
+## [1.79.0] - 2026-09-18
+
+### Corrigé
+
+- **Les parkruns quittent le calendrier des courses annuelles :** les calendriers allemands les listaient comme des événements avec date et inscription, à côté du même lieu dans le catalogue parkrun de l'app. Les courses annuelles nommées « park run », comme le Brescia Park Run, restent.
+
+---
+
 ## [1.78.0] - 2026-09-18
 
 ### Corrigé

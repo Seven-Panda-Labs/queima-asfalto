@@ -112,11 +112,16 @@ export type RaceCatalogEdition = {
  * source being wrong, and the entry stays only as a tombstone: deleting it
  * would have the next harvest write it again.
  *
- * The last two behave alike and are counted apart on purpose: twenty entries
+ * `parkrun` is a free weekly 5 km that a calendar listed as an event. It is a
+ * race and it is not the source being wrong: the app carries every parkrun
+ * venue in a catalog of its own, so a second copy here is a venue the runner
+ * sees twice and a date nobody should be reminded of.
+ *
+ * The last three behave alike and are counted apart on purpose: twenty entries
  * marked `not_a_race` from one source is the argument for dropping that
  * source, and without the reason nobody would ever know.
  */
-export const RETIRED_REASONS = ['over', 'other_sport', 'not_a_race'] as const
+export const RETIRED_REASONS = ['over', 'other_sport', 'not_a_race', 'parkrun'] as const
 
 export type RetiredReason = (typeof RETIRED_REASONS)[number]
 
