@@ -1,6 +1,7 @@
 import {
   arrayUnion,
   collection,
+  deleteField,
   doc,
   documentId,
   getDoc,
@@ -372,7 +373,13 @@ export async function askAgainAboutRaces(
   await batch.commit()
 }
 
-/** Puts them back, reason and all, for when the sweep went too wide. */
+/**
+ * Puts them back, reason and all, for when the sweep went too wide.
+ *
+ * The reason is deleted rather than set to null, which is not the same thing
+ * to a rule: a null is a value the field now holds, and the rule asks for one
+ * of three words. Every undo of a retire sweep was refused.
+ */
 export async function unretireCatalogRaces(
   ids: readonly string[],
   adminUid: string,
@@ -383,7 +390,7 @@ export async function unretireCatalogRaces(
   for (const id of ids) {
     batch.set(
       doc(db, RACE_CATALOG_COLLECTION, id),
-      { retired: false, retiredReason: null, updatedAt, updatedBy: adminUid },
+      { retired: false, retiredReason: deleteField(), updatedAt, updatedBy: adminUid },
       { merge: true },
     )
   }

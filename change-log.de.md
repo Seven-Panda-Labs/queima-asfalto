@@ -4,6 +4,14 @@
 
 ---
 
+## [1.80.0] - 2026-09-18
+
+### Behoben
+
+- **Das Rückgängigmachen entfernter Rennen funktioniert wieder:** der Grund wurde auf null gesetzt statt gelöscht, und die Regeln lehnten den ganzen Schreibvorgang ab.
+
+---
+
 ## [1.79.0] - 2026-09-18
 
 ### Behoben

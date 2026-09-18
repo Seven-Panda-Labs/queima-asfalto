@@ -4,6 +4,14 @@
 
 ---
 
+## [1.80.0] - 2026-09-18
+
+### Fixed
+
+- **Undoing a sweep of retired races works again:** the reason was written as null rather than deleted, and the rules refused the whole write.
+
+---
+
 ## [1.79.0] - 2026-09-18
 
 ### Fixed

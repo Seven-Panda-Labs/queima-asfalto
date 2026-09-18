@@ -4,6 +4,14 @@
 
 ---
 
+## [1.80.0] - 2026-09-18
+
+### Corrigido
+
+- **Anular um varrimento de provas retiradas volta a funcionar:** a razão era escrita como «nada» em vez de apagada, e as regras recusavam a escrita inteira.
+
+---
+
 ## [1.79.0] - 2026-09-18
 
 ### Corrigido
