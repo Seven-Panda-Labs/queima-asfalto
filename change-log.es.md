@@ -4,6 +4,14 @@
 
 ---
 
+## [1.73.0] - 2026-09-18
+
+### Añadido
+
+- **El sitio del organizador también en las pruebas nuevas:** cada noche la app lee hasta cien páginas de calendario y cambia el enlace de la plataforma por el sitio de la carrera.
+
+---
+
 ## [1.72.0] - 2026-09-18
 
 ### Corregido

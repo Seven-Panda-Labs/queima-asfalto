@@ -17,6 +17,8 @@
  * `class="referer-link"` with `target="webext"` and the word Website.
  */
 
+import type { RaceCatalogEntry } from '../raceCatalog/types.js'
+
 /** Hosts that are the platform or its family, never the organiser. */
 const NOT_THE_ORGANISER =
   /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life|walking\.life|gotrail\.run|evenager\.com|myraceland\.com|kilometerliebe\.de|planet-marathon\.de)$/i
@@ -77,4 +79,53 @@ export function readOrganiserLink(html: string): string | undefined {
   }
 
   return undefined
+}
+
+/** The listings whose pages carry a link to the race's own site. */
+const PLATFORM = /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life)$/i
+
+function isPlatformListing(url: string | undefined): boolean {
+  if (!url) return false
+  try {
+    return PLATFORM.test(new URL(url).host.replace(/^www\./, ''))
+  } catch {
+    return false
+  }
+}
+
+/**
+ * An entry whose official link is still the calendar it was found on.
+ *
+ * A resolved entry points somewhere else by definition, so the two URLs being
+ * the same is the whole test: no flag to keep in step with reality.
+ */
+export function needsOrganiserLink(entry: RaceCatalogEntry): boolean {
+  return (
+    entry.retired !== true &&
+    !entry.duplicateOfCatalogRaceId &&
+    isPlatformListing(entry.officialUrl) &&
+    (!entry.sourceUrl || entry.sourceUrl === entry.officialUrl)
+  )
+}
+
+/**
+ * Which pages to read next, longest unread first.
+ *
+ * Most listings that resolve did so on the first read, so what is left is
+ * mostly pages with no link at all: a run that always started at the top of
+ * the catalog would read the same fruitless hundred every night and never
+ * reach a race harvested last week. `organiserLinkReadAt` is written whether
+ * or not a link was found, which turns the queue over.
+ */
+export function pagesToReadForOrganiser(
+  catalog: RaceCatalogEntry[],
+  limit: number,
+): RaceCatalogEntry[] {
+  return catalog
+    .filter(needsOrganiserLink)
+    .sort((left, right) =>
+      (left.organiserLinkReadAt ?? '').localeCompare(right.organiserLinkReadAt ?? '') ||
+      left.id.localeCompare(right.id),
+    )
+    .slice(0, limit)
 }

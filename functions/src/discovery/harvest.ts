@@ -29,6 +29,7 @@ import { sourceForRun } from '../shared/eventDiscovery/sources.js'
 import { applyPendingEditionReports } from './editionReports.js'
 import { applyPendingProposals } from './proposals.js'
 import { writeDuplicateQueue } from './duplicateQueue.js'
+import { resolveOrganiserLinks } from './organiserLinks.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
 import { DELAY_BETWEEN_PAGES_MS, delay, fetchPage } from './fetchPage.js'
@@ -491,6 +492,19 @@ export const harvestRaceCatalog = onSchedule(
       `discovery harvest: ${result.written} written, ${result.skipped} left alone, ` +
         `${result.deduplicated ?? 0} recognised as copies, from ${result.sources.join(', ')}`,
     )
+
+    // After the harvest, so tonight's new entries are in the queue for it, and
+    // before the duplicates, so a pair that shares an organiser is already
+    // pointing at it when the pairs are worked out.
+    try {
+      const links = await resolveOrganiserLinks(isoDay(now))
+      if (links.read > 0) {
+        console.log(`organiser links: ${links.resolved} resolved, from ${links.read} pages read`)
+      }
+    } catch (error) {
+      // Reading somebody else's calendar is the least of what this run does.
+      console.error('organiser links failed', error)
+    }
 
     // After the harvest, so the queue reflects what this run wrote, and here
     // rather than in a browser: the rule compares every pair against every

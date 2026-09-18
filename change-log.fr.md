@@ -4,6 +4,14 @@
 
 ---
 
+## [1.73.0] - 2026-09-18
+
+### Ajouté
+
+- **Le site de l'organisateur aussi sur les nouvelles courses :** chaque nuit l'app lit jusqu'à cent pages de calendrier et remplace le lien de la plateforme par le site de la course.
+
+---
+
 ## [1.72.0] - 2026-09-18
 
 ### Corrigé

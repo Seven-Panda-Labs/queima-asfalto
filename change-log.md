@@ -4,6 +4,14 @@
 
 ---
 
+## [1.73.0] - 2026-09-18
+
+### Adicionado
+
+- **O site do organizador também nas provas novas:** todas as noites a app lê até cem páginas de calendário e troca o link da plataforma pelo site da prova.
+
+---
+
 ## [1.72.0] - 2026-09-18
 
 ### Corrigido

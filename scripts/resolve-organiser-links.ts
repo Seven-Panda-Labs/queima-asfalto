@@ -20,7 +20,11 @@
  */
 import { createRequire } from 'node:module'
 import { resolve } from 'node:path'
-import { readOrganiserLink } from '../shared/eventDiscovery/organiserLink.js'
+import {
+  needsOrganiserLink,
+  pagesToReadForOrganiser,
+  readOrganiserLink,
+} from '../shared/eventDiscovery/organiserLink.js'
 import type { RaceCatalogEntry } from '../shared/raceCatalog/types.js'
 
 const require = createRequire(resolve(import.meta.dirname, '../functions/package.json'))
@@ -45,39 +49,23 @@ const USER_AGENT =
   'queima-asfalto-discovery/1.0 (+https://github.com/Seven-Panda-Labs/queima-asfalto)'
 const DELAY_MS = 800
 
-/** The listings whose pages carry a link to the race's own site. */
-const PLATFORM = /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life)$/i
-
-function isPlatform(url: string | undefined): boolean {
-  if (!url) return false
-  try {
-    return PLATFORM.test(new URL(url).host.replace(/^www\./, ''))
-  } catch {
-    return false
-  }
-}
-
 async function main(): Promise<void> {
+  const today = new Date().toISOString().slice(0, 10)
   initializeApp({ projectId: PROJECT_ID })
   const db = getFirestore()
 
   const snapshot = await db.collection('raceCatalog').get()
-  const pending = snapshot.docs
-    .map((document: { id: string; data: () => unknown }) => ({
-      ...(document.data() as RaceCatalogEntry),
-      id: document.id,
-    }))
-    .filter(
-      (entry: RaceCatalogEntry) =>
-        entry.retired !== true &&
-        !entry.duplicateOfCatalogRaceId &&
-        isPlatform(entry.officialUrl) &&
-        // Already resolved entries point somewhere else by definition.
-        (!entry.sourceUrl || entry.sourceUrl === entry.officialUrl),
-    )
+  const catalog = snapshot.docs.map((document: { id: string; data: () => unknown }) => ({
+    ...(document.data() as RaceCatalogEntry),
+    id: document.id,
+  }))
+  const pending = catalog.filter(needsOrganiserLink)
 
   console.log(`${snapshot.size} entries, ${pending.length} still pointing at the listing`)
-  const batchOfWork = pending.slice(0, Number.isFinite(limit) ? limit : pending.length)
+  const batchOfWork = pagesToReadForOrganiser(
+    catalog,
+    Number.isFinite(limit) ? limit : pending.length,
+  )
   console.log(`reading ${batchOfWork.length} pages, one every ${DELAY_MS}ms\n`)
 
   let resolved = 0
@@ -98,6 +86,11 @@ async function main(): Promise<void> {
         const organiser = readOrganiserLink(await response.text())
         if (!organiser) {
           noLink += 1
+          // Recorded, so the nightly pass works through the rest of the
+          // catalog rather than reading these same pages first every time.
+          if (!dryRun) {
+            await db.collection('raceCatalog').doc(entry.id).update({ organiserLinkReadAt: today })
+          }
         } else {
           resolved += 1
           if (resolved <= 15) console.log(`  ${entry.id}: -> ${organiser}`)
@@ -105,7 +98,7 @@ async function main(): Promise<void> {
             await db
               .collection('raceCatalog')
               .doc(entry.id)
-              .update({ officialUrl: organiser, sourceUrl: page })
+              .update({ officialUrl: organiser, sourceUrl: page, organiserLinkReadAt: today })
           }
         }
       }
