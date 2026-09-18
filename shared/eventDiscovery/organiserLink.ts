@@ -12,9 +12,11 @@
  * site is the same on both, which is the strongest evidence a duplicate rule
  * could have and it was hidden behind the platform.
  *
- * Both platforms mark the link, so nothing here reads prose: running.life
- * carries `data-out="website"` on the anchor, and runme.de gives it
- * `class="referer-link"` with `target="webext"` and the word Website.
+ * All three platforms mark the link, so nothing here reads prose: running.life
+ * carries `data-out="website"` on the anchor, runme.de gives it
+ * `class="referer-link"` with `target="webext"` and the word Website, and
+ * kilometerliebe.de gives it `class="ev-bib__action"` and the words "zur
+ * Event-Website".
  */
 
 import type { RaceCatalogEntry } from '../raceCatalog/types.js'
@@ -34,9 +36,14 @@ function anchorAttributes(html: string): string[] {
   return [...html.matchAll(/<a\b([^>]*)>/gi)].map((match) => match[1] ?? '')
 }
 
-/** Anchors with the words inside them, for the one platform that labels. */
+/**
+ * Anchors with the words inside them, for the platforms that label the link.
+ *
+ * The window has to hold whatever sits beside the label: kilometerliebe.de
+ * puts a four-hundred character SVG arrow after it, inside the same anchor.
+ */
 function labelledAnchors(html: string): { attributes: string; text: string }[] {
-  return [...html.matchAll(/<a\b([^>]*)>([\s\S]{0,400}?)<\/a>/gi)].map((match) => ({
+  return [...html.matchAll(/<a\b([^>]*)>([\s\S]{0,1000}?)<\/a>/gi)].map((match) => ({
     attributes: match[1] ?? '',
     text: (match[2] ?? '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim(),
   }))
@@ -78,11 +85,24 @@ export function readOrganiserLink(html: string): string | undefined {
     if (href) return href
   }
 
+  // kilometerliebe.de marks it with the class its panel uses and labels it
+  // "zur Event-Website". The class alone is not enough: the same panel's
+  // "add to calendar" anchor carries it, and a future event's page offers
+  // the timekeeper's entry form the same way.
+  for (const anchor of labelledAnchors(html)) {
+    if (!/\bclass\s*=\s*["'][^"']*ev-bib__action/i.test(anchor.attributes)) continue
+    if (!/\b(?:web-?site|webseite|homepage)\b/i.test(anchor.text) || anchor.text.length > 40) {
+      continue
+    }
+    const href = organiserHref(anchor.attributes)
+    if (href) return href
+  }
+
   return undefined
 }
 
 /** The listings whose pages carry a link to the race's own site. */
-const PLATFORM = /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life)$/i
+const PLATFORM = /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life|kilometerliebe\.de)$/i
 
 function isPlatformListing(url: string | undefined): boolean {
   if (!url) return false
