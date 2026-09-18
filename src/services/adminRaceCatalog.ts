@@ -2,6 +2,7 @@ import {
   arrayUnion,
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   limit as limitTo,
@@ -45,28 +46,38 @@ import { db } from './firebase'
  * from the page rather than excluded in the query, which would cost a second
  * inequality Firestore does not allow beside the date.
  */
+export type StaleCursor = { nextRaceDate: string; id: string }
+
 export async function listStaleForAdmin(
   pageSize: number,
-  after?: string,
+  after?: StaleCursor,
   today = new Date(),
-): Promise<{ races: RaceCatalogEntry[]; nextCursor?: string }> {
+): Promise<{ races: RaceCatalogEntry[]; nextCursor?: StaleCursor }> {
   const snapshot = await getDocs(
     query(
       collection(db, RACE_CATALOG_COLLECTION),
       where('nextRaceDate', '<', today.toISOString().slice(0, 10)),
       orderBy('nextRaceDate'),
-      ...(after ? [startAfter(after)] : []),
+      // A date is not a position: half the catalog ran on a Sunday, and a
+      // cursor that is only the date starts the next page after every entry
+      // that shares it. The id makes it exact, and costs no index, because
+      // Firestore orders by it after every field anyway.
+      orderBy(documentId()),
+      ...(after ? [startAfter(after.nextRaceDate, after.id)] : []),
       limitTo(pageSize + 1),
     ),
   )
   const all = snapshot.docs.map((document) => document.data() as RaceCatalogEntry)
   const page = all.slice(0, pageSize)
+  // The cursor is the last row of the page whether or not it survived the
+  // filter, or the next page starts by repeating it.
+  const last = page[page.length - 1]
 
   return {
     races: page.filter((race) => race.retired !== true && !race.duplicateOfCatalogRaceId),
-    // The cursor is the last row of the page whether or not it survived the
-    // filter, or the next page starts by repeating it.
-    ...(all.length > pageSize ? { nextCursor: page[page.length - 1]?.nextRaceDate } : {}),
+    ...(all.length > pageSize && last
+      ? { nextCursor: { nextRaceDate: last.nextRaceDate ?? '', id: last.id } }
+      : {}),
   }
 }
 

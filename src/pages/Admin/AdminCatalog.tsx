@@ -14,6 +14,7 @@ import {
   searchCatalogForAdmin,
   unmergeCatalogRace,
   unretireCatalogRaces,
+  type StaleCursor,
 } from '../../services/adminRaceCatalog'
 import { AdminTabs } from './AdminTabs'
 import { CatalogDuplicates } from './CatalogDuplicates'
@@ -40,7 +41,14 @@ export function AdminCatalog() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const [stale, setStale] = useState<RaceCatalogEntry[]>([])
-  const [cursors, setCursors] = useState<string[]>([])
+  /**
+   * Where the next page starts, or nothing when there is no next page.
+   *
+   * It was a list that only ever grew: the last page brings no cursor, the
+   * list kept the one before it, and "show more" stayed on screen asking for
+   * the same page again, appending it to the list and to the count, forever.
+   */
+  const [next, setNext] = useState<StaleCursor | undefined>(undefined)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -76,15 +84,13 @@ export function AdminCatalog() {
   const [sweeping, setSweeping] = useState(false)
 
   const load = useCallback(
-    async (after?: string) => {
+    async (after?: StaleCursor) => {
       setLoading(true)
       setError(null)
       try {
         const page = await listStaleForAdmin(PAGE_SIZE, after)
         setStale((current) => (after ? [...current, ...page.races] : page.races))
-        setCursors((current) =>
-          page.nextCursor ? [...current, page.nextCursor] : current,
-        )
+        setNext(page.nextCursor)
         return page.nextCursor
       } catch {
         setError(t('admin.catalogLoadError'))
@@ -114,8 +120,6 @@ export function AdminCatalog() {
       setSearching(false)
     }
   }
-
-  const more = cursors[cursors.length - 1]
 
   const readOtherSports = async () => {
     setReading(true)
@@ -151,7 +155,7 @@ export function AdminCatalog() {
       setSweptKind('retired')
       if (found) void search()
       setStale([])
-      setCursors([])
+      setNext(undefined)
       await load()
     } catch {
       setError(t('admin.duplicatesError'))
@@ -190,7 +194,7 @@ export function AdminCatalog() {
       setSwept([])
       if (found) void search()
       setStale([])
-      setCursors([])
+      setNext(undefined)
       await load()
     } catch {
       setError(t('admin.duplicatesError'))
@@ -215,7 +219,7 @@ export function AdminCatalog() {
       setJoined(t('admin.catalogJoined', { drop: dropped.name, keep: survivor.name }))
       if (found) void search()
       setStale([])
-      setCursors([])
+      setNext(undefined)
       await load()
     } catch {
       setError(t('admin.duplicatesError'))
@@ -312,7 +316,7 @@ export function AdminCatalog() {
             onClick={async () => {
               await unmergeCatalogRace(race.id, user.uid)
               setStale([])
-              setCursors([])
+              setNext(undefined)
               await load()
             }}
             className="rounded-md border border-border px-2 py-1 text-xs font-semibold text-foreground hover:bg-border/40"
@@ -528,11 +532,11 @@ export function AdminCatalog() {
             <ul className="mt-2 divide-y divide-border rounded-lg border border-border bg-surface">
               {stale.map(row)}
             </ul>
-            {more ? (
+            {next ? (
               <button
                 type="button"
                 disabled={loading}
-                onClick={() => void load(more)}
+                onClick={() => void load(next)}
                 className="mt-4 rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground hover:bg-border/40 disabled:opacity-50"
               >
                 {loading ? t('common.loading') : t('findRaces.more')}

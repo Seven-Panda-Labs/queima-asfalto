@@ -4,6 +4,14 @@
 
 ---
 
+## [1.77.0] - 2026-09-18
+
+### Corrigido
+
+- **«Mostrar mais» já sabe quando acabou:** na lista de provas confirmadas sem edição futura, o botão repetia a última página sem fim e o total no topo crescia com ela. Também deixa de saltar provas que partilham a mesma data.
+
+---
+
 ## [1.76.0] - 2026-09-18
 
 ### Alterado
