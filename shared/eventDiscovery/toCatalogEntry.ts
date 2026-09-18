@@ -103,6 +103,17 @@ export function toCatalogEntry(
  * a person checked it, and a scrape has no standing to disagree. What it may do
  * is add an edition nobody had yet, which is the field that goes stale.
  */
+/**
+ * The organiser's own site, when the entry carries one.
+ *
+ * An entry that has never been resolved points at the page it was read from
+ * in both fields, and that is not a site anybody chose.
+ */
+function resolvedSite(entry: RaceCatalogEntry): string | undefined {
+  if (!entry.officialUrl || entry.officialUrl === entry.sourceUrl) return undefined
+  return entry.officialUrl
+}
+
 export function mergeIntoCatalog(
   existing: RaceCatalogEntry | undefined,
   harvested: RaceCatalogEntry,
@@ -148,7 +159,13 @@ export function mergeIntoCatalog(
     editions: sorted,
     nextRaceDate: nextRaceDateOf(sorted, harvested.updatedAt ?? ''),
     retired: existing.retired,
+    retiredReason: existing.retiredReason,
+    notAnotherSport: existing.notAnotherSport,
     duplicateOfCatalogRaceId: existing.duplicateOfCatalogRaceId,
     notDuplicateOf: existing.notDuplicateOf,
+    // The organiser's site, once somebody or something has resolved it off
+    // the listing. The harvest only ever knows the page it read, so writing
+    // its own would put the calendar back every week and undo the work.
+    officialUrl: resolvedSite(existing) ?? harvested.officialUrl ?? harvested.sourceUrl,
   })
 }

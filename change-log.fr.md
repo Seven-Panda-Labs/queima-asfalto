@@ -4,6 +4,14 @@
 
 ---
 
+## [1.72.0] - 2026-09-18
+
+### Corrigé
+
+- **Ce qui est décidé dans le catalogue survit à la collecte :** le site de l'organisateur, la raison du retrait d'une course et le « c'est bien une course » étaient effacés la nuit suivante.
+
+---
+
 ## [1.71.0] - 2026-09-18
 
 ### Modifié

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.72.0] - 2026-09-18
+
+### Fixed
+
+- **What is decided in the catalog survives the harvest:** the organiser's site, the reason a race was taken out and "this is a race" were wiped by the next night's run.
+
+---
+
 ## [1.71.0] - 2026-09-18
 
 ### Changed
