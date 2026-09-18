@@ -4,6 +4,14 @@
 
 ---
 
+## [1.79.0] - 2026-09-18
+
+### Fixed
+
+- **parkruns leave the annual race calendar:** German calendars listed the venues as events with a date and an entry, beside the same venue in the app's own parkrun catalog. Annual races named "park run", like the Brescia Park Run, stay.
+
+---
+
 ## [1.78.0] - 2026-09-18
 
 ### Fixed

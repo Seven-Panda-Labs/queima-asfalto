@@ -1322,7 +1322,8 @@
     "retiredReason": {
       "over": "La course n'existe plus",
       "other_sport": "Pas une course à pied (triathlon, marche, vélo)",
-      "not_a_race": "Pas une épreuve (salon, page de liste)"
+      "not_a_race": "Pas une épreuve (salon, page de liste)",
+      "parkrun": "C'est un parkrun (il a son propre catalogue)"
     },
     "catalogReviewHint": "Une entrée non confirmée peut suggérer, jamais affirmer : elle n'alimente aucun rappel d'échéance.",
     "catalogUnreviewedEditions": "Une entrée non confirmée ne peut pas porter d'éditions datées.",

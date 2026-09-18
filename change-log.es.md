@@ -4,6 +4,14 @@
 
 ---
 
+## [1.79.0] - 2026-09-18
+
+### Corregido
+
+- **Los parkruns salen del calendario de pruebas anuales:** se leían de los calendarios alemanes como pruebas con fecha e inscripción, junto al mismo lugar en el catálogo de parkrun de la app. Las pruebas anuales con «park run» en el nombre, como el Brescia Park Run, se quedan.
+
+---
+
 ## [1.78.0] - 2026-09-18
 
 ### Corregido

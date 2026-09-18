@@ -1322,7 +1322,8 @@
     "retiredReason": {
       "over": "Das Rennen gibt es nicht mehr",
       "other_sport": "Kein Lauf (Triathlon, Walking, Rad)",
-      "not_a_race": "Kein Wettkampf (Messe, Listenseite)"
+      "not_a_race": "Kein Wettkampf (Messe, Listenseite)",
+      "parkrun": "Es ist ein parkrun (hat einen eigenen Katalog)"
     },
     "catalogReviewHint": "Ein unbestätigter Eintrag darf vorschlagen, nie behaupten: er speist keine Fristerinnerungen.",
     "catalogUnreviewedEditions": "Ein unbestätigter Eintrag kann keine Ausgaben mit Datum tragen.",

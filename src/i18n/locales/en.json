@@ -1322,7 +1322,8 @@
     "retiredReason": {
       "over": "The race ended",
       "other_sport": "Not a running race (triathlon, walk, bike)",
-      "not_a_race": "Not a race (expo, listing page)"
+      "not_a_race": "Not a race (expo, listing page)",
+      "parkrun": "It is a parkrun (it has its own catalog)"
     },
     "catalogReviewHint": "An unconfirmed entry may suggest, never assert: it feeds no deadline reminders.",
     "catalogUnreviewedEditions": "An unconfirmed entry cannot carry dated editions.",

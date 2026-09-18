@@ -557,7 +557,7 @@ service cloud.firestore {
         // Why an entry is out, which is one of three answers and never a
         // free string: it is counted per source to tell a bad one apart.
         && (!('retiredReason' in request.resource.data)
-          || request.resource.data.retiredReason in ['over', 'other_sport', 'not_a_race'])
+          || request.resource.data.retiredReason in ['over', 'other_sport', 'not_a_race', 'parkrun'])
         // An operator saying a name that reads as another sport is a race.
         && (!('notAnotherSport' in request.resource.data)
           || request.resource.data.notAnotherSport is bool);
