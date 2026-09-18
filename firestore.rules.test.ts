@@ -1037,6 +1037,23 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes the undo of a sweep: the reason goes away, it does not turn null', async () => {
+      // A null is a value the field holds, and the rule asks for one of the
+      // four words. Written as null, every undo of a retire sweep was refused.
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+      const entry = db.collection('raceCatalog').doc('de-berlin-swept')
+
+      await assertSucceeds(entry.set({ ...race, retired: true, retiredReason: 'over' }))
+      await assertFails(entry.set({ retired: false, retiredReason: null }, { merge: true }))
+      await assertSucceeds(
+        entry.set(
+          { retired: false, retiredReason: firebase.firestore.FieldValue.delete() },
+          { merge: true },
+        ),
+      )
+    })
+
     it('takes an operator saying a name that reads as a walk is a race', async () => {
       await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
       const db = testEnv.authenticatedContext('user-admin').firestore()

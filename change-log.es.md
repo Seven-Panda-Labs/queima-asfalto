@@ -4,6 +4,14 @@
 
 ---
 
+## [1.80.0] - 2026-09-18
+
+### Corregido
+
+- **Deshacer un barrido de pruebas retiradas vuelve a funcionar:** el motivo se escribía como nulo en vez de borrarse, y las reglas rechazaban toda la escritura.
+
+---
+
 ## [1.79.0] - 2026-09-18
 
 ### Corregido

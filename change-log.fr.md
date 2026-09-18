@@ -4,6 +4,14 @@
 
 ---
 
+## [1.80.0] - 2026-09-18
+
+### Corrigé
+
+- **Annuler un retrait groupé de courses fonctionne à nouveau :** la raison était écrite à null au lieu d'être supprimée, et les règles refusaient toute l'écriture.
+
+---
+
 ## [1.79.0] - 2026-09-18
 
 ### Corrigé
