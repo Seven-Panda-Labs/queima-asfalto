@@ -1404,6 +1404,13 @@
     "catalogSweptUndo": "Anular",
     "catalogKeepPicked": "São corridas",
     "catalogKept": "{{count}} ficam como corridas e não voltam a aparecer aqui.",
+    "catalogSnoozePicked": "Perguntar mais tarde",
+    "catalogSnoozed": "{{count}} provas voltam a aparecer mais tarde.",
+    "snoozeDays": {
+      "7": "Daqui a uma semana",
+      "30": "Daqui a um mês",
+      "90": "Daqui a três meses"
+    },
     "catalogJoined": "«{{drop}}» passa a apontar para «{{keep}}»."
   },
   "funnel": {

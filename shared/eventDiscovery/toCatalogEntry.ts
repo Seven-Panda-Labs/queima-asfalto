@@ -1,5 +1,6 @@
 import { keepRunnerFacts } from '../raceCatalog/editionReports.js'
 import { nameTokensOf } from '../raceCatalog/nameTokens.js'
+import { reviewDueDateFor } from '../raceCatalog/reviewDue.js'
 import { nextRaceDateOf } from '../raceCatalog/schedule.js'
 import type { RaceCatalogEdition, RaceCatalogEntry } from '../raceCatalog/types.js'
 import { toDisciplines } from './distances.js'
@@ -88,6 +89,9 @@ export function toCatalogEntry(
     typicalRaceMonth: Number(day.slice(5, 7)),
     editions: Number.isFinite(year) ? [edition] : undefined,
     nextRaceDate: nextRaceDateOf([edition], provenance.harvestedAt),
+    // Nothing has been put off yet, so the race's own date is when it is worth
+    // an operator's eye.
+    reviewDueDate: nextRaceDateOf([edition], provenance.harvestedAt),
     review: 'unreviewed',
     source: provenance.source,
     producer: 'harvest',
@@ -129,10 +133,14 @@ export function mergeIntoCatalog(
     const incoming = harvested.editions?.[0]
     if (!incoming || editions.some((edition) => edition.year === incoming.year)) return null
     const merged = [...editions, incoming].sort((left, right) => left.year - right.year)
-    return compact({
+    const withEdition = {
       ...existing,
       editions: merged,
       nextRaceDate: nextRaceDateOf(merged, harvested.updatedAt ?? ''),
+    }
+    return compact({
+      ...withEdition,
+      reviewDueDate: reviewDueDateFor(withEdition),
       updatedAt: harvested.updatedAt,
       updatedBy: harvested.updatedBy,
     })
@@ -151,7 +159,7 @@ export function mergeIntoCatalog(
   // The harvest overwrites the entry whole, so anything an operator decided
   // about it has to be carried across by hand or next week undoes it.
   const sorted = editions.sort((left, right) => left.year - right.year)
-  return compact({
+  const merged = {
     ...harvested,
     // A place a person put there outlives a scrape that publishes none.
     latitude: harvested.latitude ?? existing.latitude,
@@ -168,5 +176,9 @@ export function mergeIntoCatalog(
     // its own would put the calendar back every week and undo the work.
     officialUrl: resolvedSite(existing) ?? harvested.officialUrl ?? harvested.sourceUrl,
     organiserLinkReadAt: existing.organiserLinkReadAt,
-  })
+    reviewDueDate: existing.reviewDueDate,
+  }
+  // Last, because it reads the merged entry: a race put off until March stays
+  // put off, and a season that arrives in the meantime answers the question.
+  return compact({ ...merged, reviewDueDate: reviewDueDateFor(merged) })
 }

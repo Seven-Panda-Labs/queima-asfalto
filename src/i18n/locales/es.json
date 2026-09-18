@@ -1404,6 +1404,13 @@
     "catalogSweptUndo": "Deshacer",
     "catalogKeepPicked": "Son carreras",
     "catalogKept": "{{count}} quedan como carreras y no vuelven a esta lista.",
+    "catalogSnoozePicked": "Preguntar más tarde",
+    "catalogSnoozed": "{{count}} pruebas vuelven a aparecer más tarde.",
+    "snoozeDays": {
+      "7": "Dentro de una semana",
+      "30": "Dentro de un mes",
+      "90": "Dentro de tres meses"
+    },
     "catalogJoined": "«{{drop}}» ahora apunta a «{{keep}}»."
   },
   "funnel": {

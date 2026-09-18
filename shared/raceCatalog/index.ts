@@ -19,6 +19,12 @@ export {
 } from './types.js'
 export { nextRaceDateOf } from './schedule.js'
 export {
+  reviewDueDateFor,
+  SNOOZE_DAYS,
+  snoozedUntil,
+  type SnoozeDays,
+} from './reviewDue.js'
+export {
   nameMatchScore,
   nameTokensOf,
   normalizeToken,

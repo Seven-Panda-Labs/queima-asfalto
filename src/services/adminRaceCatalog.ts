@@ -4,6 +4,7 @@ import {
   deleteField,
   doc,
   documentId,
+  getCountFromServer,
   getDoc,
   getDocs,
   limit as limitTo,
@@ -20,9 +21,12 @@ import {
   nextRaceDateOf,
   RACE_CATALOG_COLLECTION,
   rankByName,
+  reviewDueDateFor,
   searchTokens,
+  snoozedUntil,
   type RaceCatalogEntry,
   type RetiredReason,
+  type SnoozeDays,
 } from '../../shared/raceCatalog'
 import { pairAlreadyAnswered } from '../../shared/eventDiscovery/duplicates'
 import {
@@ -38,16 +42,20 @@ import { db } from './firebase'
 /**
  * The entries that need work, a page at a time.
  *
- * `nextRaceDate` is the soonest edition that had not happened when the entry
- * was written, so an entry whose last known date has passed is one nobody has
- * read a new season for: exactly the queue `catalog:review` reports, and now a
- * query rather than five thousand documents sorted in the browser.
- *
- * A retired entry and a copy are not work. Both are rare, so they are dropped
- * from the page rather than excluded in the query, which would cost a second
- * inequality Firestore does not allow beside the date.
+ * `reviewDueDate` is the race's own next date until an operator puts it off,
+ * and absent on an entry that is retired or a copy, so what the query matches
+ * is the work and nothing else: it can be counted, and a race put off until
+ * March leaves the queue rather than being filtered out of it in the browser,
+ * where it would still take up a page.
  */
-export type StaleCursor = { nextRaceDate: string; id: string }
+export type StaleCursor = { reviewDueDate: string; id: string }
+
+function dueBefore(today: Date) {
+  return [
+    where('reviewDueDate', '<', today.toISOString().slice(0, 10)),
+    orderBy('reviewDueDate'),
+  ] as const
+}
 
 export async function listStaleForAdmin(
   pageSize: number,
@@ -57,14 +65,13 @@ export async function listStaleForAdmin(
   const snapshot = await getDocs(
     query(
       collection(db, RACE_CATALOG_COLLECTION),
-      where('nextRaceDate', '<', today.toISOString().slice(0, 10)),
-      orderBy('nextRaceDate'),
+      ...dueBefore(today),
       // A date is not a position: half the catalog ran on a Sunday, and a
       // cursor that is only the date starts the next page after every entry
       // that shares it. The id makes it exact, and costs no index, because
       // Firestore orders by it after every field anyway.
       orderBy(documentId()),
-      ...(after ? [startAfter(after.nextRaceDate, after.id)] : []),
+      ...(after ? [startAfter(after.reviewDueDate, after.id)] : []),
       limitTo(pageSize + 1),
     ),
   )
@@ -77,9 +84,76 @@ export async function listStaleForAdmin(
   return {
     races: page.filter((race) => race.retired !== true && !race.duplicateOfCatalogRaceId),
     ...(all.length > pageSize && last
-      ? { nextCursor: { nextRaceDate: last.nextRaceDate ?? '', id: last.id } }
+      ? { nextCursor: { reviewDueDate: last.reviewDueDate ?? '', id: last.id } }
       : {}),
   }
+}
+
+/**
+ * How many races are waiting, in one question to the server.
+ *
+ * The heading counted the rows on screen, so it grew with every "show more"
+ * and never said how much work there was. This counts without reading the
+ * documents, which is the whole reason the queue is a field and not a filter.
+ */
+export async function countStaleForAdmin(today = new Date()): Promise<number> {
+  const counted = await getCountFromServer(
+    query(collection(db, RACE_CATALOG_COLLECTION), ...dueBefore(today)),
+  )
+  return counted.data().count
+}
+
+/**
+ * Asks about these again in a week, a month or a season.
+ *
+ * Most of this queue is a race that simply has not published next season yet,
+ * and reading the same rows before reaching a new one is how a queue stops
+ * being worked. Nothing is claimed by putting one off: no date, no review, and
+ * the entry keeps everything it had.
+ */
+export async function snoozeCatalogRaces(
+  ids: readonly string[],
+  days: SnoozeDays,
+  adminUid: string,
+  today = new Date(),
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = today.toISOString()
+  const until = snoozedUntil(days, today)
+  const batch = writeBatch(db)
+  for (const id of ids) {
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, id),
+      { reviewDueDate: until, updatedAt, updatedBy: adminUid },
+      { merge: true },
+    )
+  }
+  await batch.commit()
+}
+
+/** Asks now after all, for when the wait was too long. */
+export async function unsnoozeCatalogRaces(
+  ids: readonly string[],
+  adminUid: string,
+): Promise<void> {
+  if (ids.length === 0) return
+  const updatedAt = new Date().toISOString()
+  const entries = await Promise.all(ids.map((id) => getCatalogRaceForAdmin(id)))
+  const batch = writeBatch(db)
+  for (const entry of entries) {
+    if (!entry) continue
+    batch.set(
+      doc(db, RACE_CATALOG_COLLECTION, entry.id),
+      {
+        // Back to the race's own date, which is what put it here.
+        reviewDueDate: entry.nextRaceDate ?? updatedAt.slice(0, 10),
+        updatedAt,
+        updatedBy: adminUid,
+      },
+      { merge: true },
+    )
+  }
+  await batch.commit()
 }
 
 /**
@@ -214,6 +288,12 @@ export async function saveCatalogRaceForAdmin(
     ...(nextRaceDateOf(race.editions, today.slice(0, 10))
       ? { nextRaceDate: nextRaceDateOf(race.editions, today.slice(0, 10)) }
       : {}),
+    // And the day the queue asks about it again, which follows the dates the
+    // form just edited unless it is being put out of the catalog here.
+    reviewDueDate: reviewDueDateFor({
+      ...race,
+      nextRaceDate: nextRaceDateOf(race.editions, today.slice(0, 10)) ?? race.nextRaceDate,
+    }),
     updatedAt: today,
     updatedBy: adminUid,
   }))
@@ -277,7 +357,13 @@ export async function mergeCatalogRaces(
 
   await setDoc(
     doc(db, RACE_CATALOG_COLLECTION, dropId),
-    { duplicateOfCatalogRaceId: keepId, updatedAt, updatedBy: adminUid },
+    {
+      duplicateOfCatalogRaceId: keepId,
+      // A copy is not work: the entry it points at is.
+      reviewDueDate: deleteField(),
+      updatedAt,
+      updatedBy: adminUid,
+    },
     { merge: true },
   )
 
@@ -320,7 +406,14 @@ export async function retireCatalogRaces(
   for (const id of ids) {
     batch.set(
       doc(db, RACE_CATALOG_COLLECTION, id),
-      { retired: true, retiredReason: reason, updatedAt, updatedBy: adminUid },
+      {
+        retired: true,
+        retiredReason: reason,
+        // Out of the catalog is out of the queue, and out of its count.
+        reviewDueDate: deleteField(),
+        updatedAt,
+        updatedBy: adminUid,
+      },
       { merge: true },
     )
   }
@@ -386,11 +479,21 @@ export async function unretireCatalogRaces(
 ): Promise<void> {
   if (ids.length === 0) return
   const updatedAt = new Date().toISOString()
+  // Read, because what puts an entry back in the queue is its own next date,
+  // and the sweep only carried the ids.
+  const entries = await Promise.all(ids.map((id) => getCatalogRaceForAdmin(id)))
   const batch = writeBatch(db)
-  for (const id of ids) {
+  for (const entry of entries) {
+    if (!entry) continue
     batch.set(
-      doc(db, RACE_CATALOG_COLLECTION, id),
-      { retired: false, retiredReason: deleteField(), updatedAt, updatedBy: adminUid },
+      doc(db, RACE_CATALOG_COLLECTION, entry.id),
+      {
+        retired: false,
+        retiredReason: deleteField(),
+        reviewDueDate: reviewDueDateFor({ ...entry, retired: false }) ?? updatedAt.slice(0, 10),
+        updatedAt,
+        updatedBy: adminUid,
+      },
       { merge: true },
     )
   }
@@ -399,9 +502,16 @@ export async function unretireCatalogRaces(
 
 /** Undo the above. The entry goes back to standing on its own. */
 export async function unmergeCatalogRace(id: string, adminUid: string): Promise<void> {
+  const updatedAt = new Date().toISOString()
+  const entry = await getCatalogRaceForAdmin(id)
   await setDoc(
     doc(db, RACE_CATALOG_COLLECTION, id),
-    { duplicateOfCatalogRaceId: null, updatedAt: new Date().toISOString(), updatedBy: adminUid },
+    {
+      duplicateOfCatalogRaceId: null,
+      reviewDueDate: entry?.nextRaceDate ?? updatedAt.slice(0, 10),
+      updatedAt,
+      updatedBy: adminUid,
+    },
     { merge: true },
   )
 }

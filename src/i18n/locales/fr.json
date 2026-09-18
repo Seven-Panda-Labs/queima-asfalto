@@ -1404,6 +1404,13 @@
     "catalogSweptUndo": "Annuler",
     "catalogKeepPicked": "Ce sont des courses",
     "catalogKept": "{{count}} restent des courses et ne reviendront pas dans cette liste.",
+    "catalogSnoozePicked": "Redemander plus tard",
+    "catalogSnoozed": "{{count}} courses reviennent dans cette liste plus tard.",
+    "snoozeDays": {
+      "7": "Dans une semaine",
+      "30": "Dans un mois",
+      "90": "Dans trois mois"
+    },
     "catalogJoined": "« {{drop}} » pointe désormais vers « {{keep}} »."
   },
   "funnel": {

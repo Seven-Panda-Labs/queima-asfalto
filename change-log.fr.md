@@ -4,6 +4,15 @@
 
 ---
 
+## [1.81.0] - 2026-09-18
+
+### Ajouté
+
+- **Redemander plus tard :** dans la liste des courses en attente d'une nouvelle saison, les courses cochées peuvent être reportées d'une semaine, d'un mois ou de trois mois, pour atteindre celles que tu n'as pas lues sans dix pages.
+- **Le total est le total :** le nombre en haut de cette liste est désormais celui des courses réellement en attente, compté sur le serveur, au lieu de grossir à chaque « Afficher plus ».
+
+---
+
 ## [1.80.0] - 2026-09-18
 
 ### Corrigé
