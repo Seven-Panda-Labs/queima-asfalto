@@ -4,6 +4,14 @@
 
 ---
 
+## [1.75.0] - 2026-09-18
+
+### Cambiado
+
+- **La lista de duplicados dice por qué pregunta:** cuando las dos pruebas apuntan a la misma página del organizador, la lista la muestra bajo el par.
+
+---
+
 ## [1.74.0] - 2026-09-18
 
 ### Añadido

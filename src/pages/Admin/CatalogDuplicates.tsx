@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import type { DuplicateCandidate } from '../../../shared/eventDiscovery/duplicates'
+import { organiserPage } from '../../../shared/eventDiscovery/duplicates'
 import type { DuplicateVoteTally, RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { duplicateVotePairId } from '../../../shared/raceCatalog'
 import {
@@ -160,6 +161,17 @@ export function CatalogDuplicates({
                 <Side race={candidate.keep} label={t('admin.duplicatesKeep')} />
                 <Side race={candidate.drop} />
               </div>
+              {(() => {
+                // Why this pair is here at all, when the towns say two races:
+                // the organiser published one page for both.
+                const site = organiserPage(candidate.keep)
+                if (!site || site !== organiserPage(candidate.drop)) return null
+                return (
+                  <p className="mt-1 truncate text-xs text-muted">
+                    {t('admin.duplicatesSameOrganiser', { site })}
+                  </p>
+                )
+              })()}
               {(() => {
                 const tally = tallies.get(duplicateVotePairId(candidate.keep.id, candidate.drop.id))
                 if (!tally) return null

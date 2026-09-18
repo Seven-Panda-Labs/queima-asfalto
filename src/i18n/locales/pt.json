@@ -1362,7 +1362,8 @@
       "unknown": "Desconhecida"
     },
     "duplicatesTitle": "Possivelmente a mesma prova ({{count}})",
-    "duplicatesHint": "Mesmo dia, mesma terra, e nem o nome nem uma revisão o decidem. Escolhe com qual das duas ficar: a outra passa a apontar para essa e não é apagada. A resposta fica guardada em qualquer dos casos.",
+    "duplicatesHint": "Mesmo dia e mesma terra, ou o mesmo site do organizador, e nem o nome nem uma revisão o decidem. Escolhe com qual das duas ficar: a outra passa a apontar para essa e não é apagada. A resposta fica guardada em qualquer dos casos.",
+    "duplicatesSameOrganiser": "Mesmo site do organizador: {{site}}",
     "duplicatesKeep": "sugerida",
     "duplicatesMerge": "Mesma prova, ficar com {{name}}",
     "duplicatesSeparate": "Provas diferentes",

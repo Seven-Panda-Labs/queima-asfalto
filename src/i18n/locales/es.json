@@ -1362,7 +1362,8 @@
       "unknown": "Desconocida"
     },
     "duplicatesTitle": "Posiblemente la misma carrera ({{count}})",
-    "duplicatesHint": "Mismo día, mismo pueblo, y ni el nombre ni una revisión lo deciden. Elige con cuál de las dos quedarte: la otra apunta a esa y no se borra. La respuesta se guarda en cualquier caso.",
+    "duplicatesHint": "Mismo día y pueblo, o el mismo sitio del organizador, y ni el nombre ni una revisión lo deciden. Elige con cuál de las dos quedarte: la otra apunta a esa y no se borra. La respuesta se guarda en cualquier caso.",
+    "duplicatesSameOrganiser": "Mismo sitio del organizador: {{site}}",
     "duplicatesKeep": "sugerida",
     "duplicatesMerge": "Misma carrera, quedarse con {{name}}",
     "duplicatesSeparate": "Carreras distintas",

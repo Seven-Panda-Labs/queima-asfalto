@@ -4,6 +4,14 @@
 
 ---
 
+## [1.75.0] - 2026-09-18
+
+### Modifié
+
+- **La liste des doublons dit pourquoi elle demande :** quand les deux courses pointent vers la même page de l'organisateur, la liste l'affiche sous la paire.
+
+---
+
 ## [1.74.0] - 2026-09-18
 
 ### Ajouté

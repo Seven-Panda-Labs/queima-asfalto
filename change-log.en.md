@@ -4,6 +4,14 @@
 
 ---
 
+## [1.75.0] - 2026-09-18
+
+### Changed
+
+- **The duplicates list says why it is asking:** when both races point at the same organiser page, the list shows it under the pair.
+
+---
+
 ## [1.74.0] - 2026-09-18
 
 ### Added

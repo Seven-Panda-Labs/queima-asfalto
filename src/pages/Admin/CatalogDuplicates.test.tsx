@@ -218,6 +218,40 @@ describe('what the runners answered', () => {
     expect(shown[1]).toContain('Haspa')
   })
 
+  it('says why it is asking when the two share the organiser page', async () => {
+    // The towns say two races, and the link the organiser published says one.
+    const site = 'https://duvenstedter-dorflauf.de/'
+    queue = pairsOf([
+      race({
+        id: 'de-alt-duvenstedt',
+        name: 'Duvenstedter Dorflauf',
+        city: 'Alt Duvenstedt',
+        officialUrl: site,
+        sourceUrl: 'https://runme.de/laufe/alt',
+      }),
+      race({
+        id: 'de-neu-duvenstedt',
+        name: 'Duvenstedter Dorflauf',
+        city: 'Neu Duvenstedt',
+        officialUrl: site,
+        sourceUrl: 'https://runme.de/laufe/neu',
+      }),
+    ])
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
+
+    expect(
+      await screen.findByText('Mesmo site do organizador: duvenstedter-dorflauf.de'),
+    ).toBeInTheDocument()
+  })
+
+  it('says nothing about a site when the pair does not share one', async () => {
+    queue = pairsOf(pair)
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
+
+    await screen.findByText('Haspa Marathon Hamburg')
+    expect(screen.queryByText(/Mesmo site do organizador/)).not.toBeInTheDocument()
+  })
+
   it('says nothing when nobody has answered', async () => {
     queue = pairsOf(pair)
     render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
