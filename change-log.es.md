@@ -4,6 +4,14 @@
 
 ---
 
+## [1.72.0] - 2026-09-18
+
+### Corregido
+
+- **Lo que se decide en el catálogo sobrevive a la recogida:** el sitio del organizador, el motivo de una prueba retirada y el «esto es una carrera» desaparecían en la recogida de la noche siguiente.
+
+---
+
 ## [1.71.0] - 2026-09-18
 
 ### Cambiado

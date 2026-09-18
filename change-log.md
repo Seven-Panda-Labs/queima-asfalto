@@ -4,6 +4,14 @@
 
 ---
 
+## [1.72.0] - 2026-09-18
+
+### Corrigido
+
+- **O que é decidido no catálogo sobrevive à recolha:** o site do organizador, a razão de uma prova ter saído e o «isto é uma corrida» deixavam de existir na recolha da noite seguinte.
+
+---
+
 ## [1.71.0] - 2026-09-18
 
 ### Alterado

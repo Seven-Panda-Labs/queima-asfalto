@@ -4,6 +4,14 @@
 
 ---
 
+## [1.72.0] - 2026-09-18
+
+### Behoben
+
+- **Was im Katalog entschieden wird, überlebt den Abgleich:** die Seite des Veranstalters, der Grund für ein entferntes Rennen und das „das ist ein Lauf“ wurden in der nächsten Nacht überschrieben.
+
+---
+
 ## [1.71.0] - 2026-09-18
 
 ### Geändert

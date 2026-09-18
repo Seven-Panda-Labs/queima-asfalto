@@ -117,6 +117,49 @@ describe('mergeIntoCatalog', () => {
     expect(merged.notDuplicateOf).toEqual(['de-berlin-generali-5k'])
   })
 
+  it('keeps the organiser site somebody resolved off the listing', () => {
+    // The harvest only ever knows the page it read. Writing its own link back
+    // would put the calendar in front of the organiser again every week.
+    const merged = mergeIntoCatalog(
+      stored({
+        review: 'unreviewed',
+        producer: 'harvest',
+        sourceUrl: 'https://runme.de/laufe/run-castle',
+        officialUrl: 'https://runcastle.pt/',
+      }),
+      { ...harvested, sourceUrl: 'https://runme.de/laufe/run-castle', officialUrl: 'https://runme.de/laufe/run-castle' },
+    )!
+
+    expect(merged.officialUrl).toBe('https://runcastle.pt/')
+    expect(merged.sourceUrl).toBe('https://runme.de/laufe/run-castle')
+  })
+
+  it('stands the listing in as the site while nobody has resolved one', () => {
+    const listing = 'https://runme.de/laufe/run-castle'
+    const merged = mergeIntoCatalog(
+      stored({ review: 'unreviewed', producer: 'harvest', sourceUrl: listing, officialUrl: listing }),
+      { ...harvested, sourceUrl: listing, officialUrl: listing },
+    )!
+
+    expect(merged.officialUrl).toBe(listing)
+  })
+
+  it('keeps the reason an entry was taken out, and a race called a race', () => {
+    const merged = mergeIntoCatalog(
+      stored({
+        review: 'unreviewed',
+        producer: 'harvest',
+        retired: true,
+        retiredReason: 'over',
+        notAnotherSport: true,
+      }),
+      harvested,
+    )!
+
+    expect(merged.retiredReason).toBe('over')
+    expect(merged.notAnotherSport).toBe(true)
+  })
+
   it('writes a race nobody had', () => {
     expect(mergeIntoCatalog(undefined, harvested)).toBe(harvested)
   })
