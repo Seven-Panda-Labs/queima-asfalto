@@ -8,6 +8,8 @@
 export type DiscoveredRace = {
   /** The source page. The identity a harvest can refresh against. */
   sourceUrl: string
+  /** The organiser's own site, when the page that listed the race named it. */
+  officialUrl?: string
   name: string
   /** As published: an instant when the source gives a time, a date when it does not. */
   startDate: string

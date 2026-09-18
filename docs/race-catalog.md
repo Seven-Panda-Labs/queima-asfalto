@@ -175,6 +175,12 @@ The results page also comes **back**: on an event with no link of its own, the r
 
 What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
 
+### The site an entry points at
+
+`officialUrl` is the organiser's own site and `sourceUrl` is the page the race was read from. They were one field until now, which cost twice: an operator checking next season opened a calendar and clicked again to leave it, and two entries for one race, found on two calendars, hid the one thing that would have paired them, the same organiser on both. Measured: 5115 of 5585 live entries pointed at a listing.
+
+Both listings mark the link, so `readOrganiserLink` reads a marked anchor and never prose: running.life puts `data-out="website"` on the anchor, runme.de gives it `class="referer-link"` and the word Website, and the platform's own family of links is refused by host. A page with no such link keeps the listing as its official URL and is tried again another day, which is what an entry whose two URLs are equal means.
+
 ### The name an entry is stored under
 
 Without the edition. A catalog entry is a race and its editions are the years, so "33. Graz Marathon" names the race wrong: the same race is the 34th next year, and every list showing it carries a number that is already out of date. `nameWithoutEdition` drops an ordinal with its dot at the front and a year at the end, and it is deliberately narrower than the `stripEdition` the duplicate rule compares with.

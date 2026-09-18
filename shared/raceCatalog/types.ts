@@ -133,7 +133,24 @@ export type RaceCatalogEntry = {
   city: string
   disciplines: EventType[]
   entryMethod: RaceEntryMethod
+  /**
+   * The organiser's own site.
+   *
+   * Not the page the race was read from, which is `sourceUrl`. Nine tenths of
+   * this catalog was found on two calendars, and while the calendar's page
+   * stood here an operator opened it and clicked again to leave, and two
+   * entries for one race hid the one thing that would have paired them: the
+   * same organiser's site on both.
+   */
   officialUrl?: string
+  /**
+   * The page the race was read from, which is where to go to see it again.
+   *
+   * Provenance, and never the same question as `officialUrl`: a calendar that
+   * lists a race is not the race's site, however convenient it was to call it
+   * that.
+   */
+  sourceUrl?: string
   registrationUrl?: string
   /** 1 to 12. What month the race usually falls in, not a promise about a year. */
   typicalRaceMonth?: number

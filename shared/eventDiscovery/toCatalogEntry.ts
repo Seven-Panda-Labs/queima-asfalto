@@ -80,7 +80,11 @@ export function toCatalogEntry(
     // What a listing never says is how you get in. Guessing `first_come`
     // because there is a price would put a lottery race in the wrong funnel.
     entryMethod: 'unknown',
-    officialUrl: race.sourceUrl,
+    // The page it was read from is provenance. It also stands in as the
+    // official site until the organiser's own link is resolved off it, so a
+    // link that exists today does not disappear while that is pending.
+    sourceUrl: race.sourceUrl,
+    officialUrl: race.officialUrl ?? race.sourceUrl,
     typicalRaceMonth: Number(day.slice(5, 7)),
     editions: Number.isFinite(year) ? [edition] : undefined,
     nextRaceDate: nextRaceDateOf([edition], provenance.harvestedAt),
