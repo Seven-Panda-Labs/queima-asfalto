@@ -4,6 +4,14 @@
 
 ---
 
+## [1.75.0] - 2026-09-18
+
+### Alterado
+
+- **A fila de duplicados diz porque está a perguntar:** quando as duas provas apontam para a mesma página do organizador, a lista mostra-a por baixo do par.
+
+---
+
 ## [1.74.0] - 2026-09-18
 
 ### Adicionado

@@ -1362,7 +1362,8 @@
       "unknown": "Unbekannt"
     },
     "duplicatesTitle": "Möglicherweise dasselbe Rennen ({{count}})",
-    "duplicatesHint": "Gleicher Tag, gleicher Ort, und weder der Name noch eine Prüfung entscheidet es. Wähle, welchen der beiden du behältst: der andere zeigt darauf und wird nicht gelöscht. Die Antwort wird in beiden Fällen gespeichert.",
+    "duplicatesHint": "Gleicher Tag und Ort, oder dieselbe Seite des Veranstalters, und weder der Name noch eine Prüfung entscheidet es. Wähle, welchen der beiden du behältst: der andere zeigt darauf und wird nicht gelöscht. Die Antwort wird in beiden Fällen gespeichert.",
+    "duplicatesSameOrganiser": "Dieselbe Seite des Veranstalters: {{site}}",
     "duplicatesKeep": "Vorschlag",
     "duplicatesMerge": "Dasselbe Rennen, {{name}} behalten",
     "duplicatesSeparate": "Verschiedene Rennen",

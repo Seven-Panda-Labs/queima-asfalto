@@ -4,6 +4,14 @@
 
 ---
 
+## [1.75.0] - 2026-09-18
+
+### Geändert
+
+- **Die Dublettenliste sagt, warum sie fragt:** zeigen beide Rennen auf dieselbe Seite des Veranstalters, steht sie unter dem Paar.
+
+---
+
 ## [1.74.0] - 2026-09-18
 
 ### Hinzugefügt

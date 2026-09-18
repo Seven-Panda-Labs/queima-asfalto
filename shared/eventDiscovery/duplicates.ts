@@ -341,8 +341,11 @@ function distancesAgree(left: RaceCatalogEntry, right: RaceCatalogEntry): boolea
  * An entry the harvest wrote points at the calendar it was read from in both
  * fields, and a calendar's page is not evidence of anything: every race on
  * runme.de would share an organiser with every other.
+ *
+ * Exported because the screen that asks about a pair has to be able to say
+ * why it is asking, and "these two are one page" is the whole reason.
  */
-function organiserPage(entry: RaceCatalogEntry): string | undefined {
+export function organiserPage(entry: RaceCatalogEntry): string | undefined {
   if (!entry.officialUrl || !entry.sourceUrl || entry.officialUrl === entry.sourceUrl) {
     return undefined
   }

@@ -1362,7 +1362,8 @@
       "unknown": "Inconnue"
     },
     "duplicatesTitle": "Peut-être la même course ({{count}})",
-    "duplicatesHint": "Même jour, même ville, et ni le nom ni une relecture ne tranchent. Choisis laquelle des deux garder : l'autre pointe vers elle et n'est pas supprimée. La réponse est retenue dans les deux cas.",
+    "duplicatesHint": "Même jour et même ville, ou le même site de l'organisateur, et ni le nom ni une relecture ne tranchent. Choisis laquelle des deux garder : l'autre pointe vers elle et n'est pas supprimée. La réponse est retenue dans les deux cas.",
+    "duplicatesSameOrganiser": "Même site de l'organisateur : {{site}}",
     "duplicatesKeep": "proposée",
     "duplicatesMerge": "Même course, garder {{name}}",
     "duplicatesSeparate": "Courses différentes",
