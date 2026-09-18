@@ -4,6 +4,14 @@
 
 ---
 
+## [1.78.0] - 2026-09-18
+
+### Corrigé
+
+- **La collecte quotidienne a le temps de finir :** sa dernière étape, la liste des doublons possibles, risquait d'être coupée quand la source du jour était volumineuse.
+
+---
+
 ## [1.77.0] - 2026-09-18
 
 ### Corrigé

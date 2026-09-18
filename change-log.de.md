@@ -4,6 +4,14 @@
 
 ---
 
+## [1.78.0] - 2026-09-18
+
+### Behoben
+
+- **Der tägliche Abgleich hat Zeit, fertig zu werden:** sein letzter Schritt, die Liste möglicher Dubletten, drohte auszufallen, wenn die Quelle des Tages groß war.
+
+---
+
 ## [1.77.0] - 2026-09-18
 
 ### Behoben

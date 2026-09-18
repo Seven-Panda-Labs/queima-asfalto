@@ -4,6 +4,14 @@
 
 ---
 
+## [1.78.0] - 2026-09-18
+
+### Corregido
+
+- **La recogida diaria tiene tiempo de terminar:** su último paso, la lista de posibles duplicados, corría el riesgo de quedarse sin hacer cuando la fuente del día era grande.
+
+---
+
 ## [1.77.0] - 2026-09-18
 
 ### Corregido
