@@ -4,6 +4,14 @@
 
 ---
 
+## [1.71.0] - 2026-09-18
+
+### Geändert
+
+- **Der Link eines Rennens ist jetzt die Seite des Veranstalters:** bisher war es die Kalenderseite, auf der das Rennen gefunden wurde, was einen zweiten Klick bis zur echten Seite kostete. Die Fundseite wird getrennt aufbewahrt.
+
+---
+
 ## [1.70.0] - 2026-09-17
 
 ### Hinzugefügt

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.71.0] - 2026-09-18
+
+### Alterado
+
+- **O link de uma prova passa a ser o site do organizador:** até agora era a página do calendário onde a prova foi encontrada, o que obrigava a um segundo clique para chegar ao sítio certo. A página de onde veio fica guardada à parte.
+
+---
+
 ## [1.70.0] - 2026-09-17
 
 ### Adicionado

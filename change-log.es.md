@@ -4,6 +4,14 @@
 
 ---
 
+## [1.71.0] - 2026-09-18
+
+### Cambiado
+
+- **El enlace de una carrera pasa a ser el sitio del organizador:** hasta ahora era la página del calendario donde se encontró, lo que obligaba a un segundo clic para llegar al sitio real. La página de origen se guarda aparte.
+
+---
+
 ## [1.70.0] - 2026-09-17
 
 ### Añadido

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.71.0] - 2026-09-18
+
+### Modifié
+
+- **Le lien d'une course est désormais le site de l'organisateur :** jusqu'ici c'était la page du calendrier où la course avait été trouvée, ce qui imposait un second clic pour atteindre le bon site. La page d'origine est conservée à part.
+
+---
+
 ## [1.70.0] - 2026-09-17
 
 ### Ajouté

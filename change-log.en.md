@@ -4,6 +4,14 @@
 
 ---
 
+## [1.71.0] - 2026-09-18
+
+### Changed
+
+- **A race's link is now the organiser's own site:** until now it was the calendar page the race was found on, which meant a second click to reach the real one. The page it came from is kept separately.
+
+---
+
 ## [1.70.0] - 2026-09-17
 
 ### Added
