@@ -234,6 +234,69 @@ describe('catalogDuplicateCandidates', () => {
     expect(catalogDuplicateCandidates([generali, r5k])).toEqual([])
   })
 
+  describe('two entries sent to one organiser page', () => {
+    // The same village run on two calendars, each filing it under a different
+    // half of the same place. Every place-based rule reads them as two races,
+    // and the link the organiser published is the thing that says otherwise.
+    function dorflauf(id: string, city: string, site: string): RaceCatalogEntry {
+      return entry({
+        id,
+        city,
+        name: 'Duvenstedter Dorflauf',
+        disciplines: ['km_10'],
+        officialUrl: site,
+        sourceUrl: `https://runme.de/laufe/${id}`,
+      })
+    }
+
+    const here = dorflauf('de-alt-duvenstedt', 'Alt Duvenstedt', 'https://duvenstedter-dorflauf.de/')
+    const there = dorflauf('de-neu-duvenstedt', 'Neu Duvenstedt', 'https://duvenstedter-dorflauf.de/')
+
+    it('asks about a pair no rule that compares towns can see', () => {
+      expect(catalogDuplicateCandidates([here, there])).toHaveLength(1)
+    })
+
+    it('says nothing when the page is the calendar it was read from', () => {
+      const listing = 'https://runme.de/laufe/dorflauf'
+      const unresolved = [here, there].map((race) => ({
+        ...race,
+        officialUrl: listing,
+        sourceUrl: listing,
+      }))
+      expect(catalogDuplicateCandidates(unresolved)).toEqual([])
+    })
+
+    it('leaves a club that runs a series alone', () => {
+      // Five village runs behind one site is ten pairs and no duplicates.
+      const series = ['Oberweis', 'Heilenbach', 'Mettendorf', 'Nimshuscheid', 'Wissmannsdorf'].map(
+        (town) =>
+          entry({
+            id: `de-${town.toLowerCase()}`,
+            city: town,
+            name: `Eifellauf ${town}`,
+            disciplines: ['km_10'],
+            officialUrl: 'https://eifellauf.de/',
+            sourceUrl: `https://runme.de/laufe/${town.toLowerCase()}`,
+          }),
+      )
+      expect(catalogDuplicateCandidates(series)).toEqual([])
+    })
+
+    it('does not cross a border on a shared site', () => {
+      expect(catalogDuplicateCandidates([here, { ...there, country: 'AT' }])).toEqual([])
+    })
+
+    it('keeps the query, because a club sells six races through one script', () => {
+      const script = (id: string) => `https://strassenlauf.org/va_details.php?id=${id}`
+      expect(
+        catalogDuplicateCandidates([
+          { ...here, officialUrl: script('11') },
+          { ...there, officialUrl: script('84') },
+        ]),
+      ).toEqual([])
+    })
+  })
+
   it('reports each pair once', () => {
     const three = entry({ id: 'c', name: 'Rathaus-Center Cross', disciplines: ['km_10'] })
     expect(catalogDuplicateCandidates([one, two, three])).toHaveLength(3)
