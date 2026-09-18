@@ -239,6 +239,15 @@ export type RaceCatalogEntry = {
    */
   notAnotherSport?: boolean
   /**
+   * `YYYY-MM-DD`, the day the listing was last read for the organiser's link.
+   *
+   * Written whether or not one was found, because most pages that have a link
+   * give it up on the first read and what is left is pages that never will.
+   * Without the day, the nightly pass would spend its budget on those same
+   * pages forever and never reach a race harvested last week.
+   */
+  organiserLinkReadAt?: string
+  /**
    * The entry this one turned out to be a second copy of.
    *
    * Set when a harvest recognises a race the catalog already holds under

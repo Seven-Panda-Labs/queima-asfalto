@@ -4,6 +4,14 @@
 
 ---
 
+## [1.73.0] - 2026-09-18
+
+### Added
+
+- **The organiser's site on new races too:** each night the app reads up to a hundred calendar pages and swaps the platform's link for the race's own site.
+
+---
+
 ## [1.72.0] - 2026-09-18
 
 ### Fixed

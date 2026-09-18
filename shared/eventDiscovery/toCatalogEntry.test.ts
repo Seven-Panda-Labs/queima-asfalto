@@ -134,6 +134,15 @@ describe('mergeIntoCatalog', () => {
     expect(merged.sourceUrl).toBe('https://runme.de/laufe/run-castle')
   })
 
+  it('keeps the day the listing was read, so the nightly pass moves on', () => {
+    const merged = mergeIntoCatalog(
+      stored({ review: 'unreviewed', producer: 'harvest', organiserLinkReadAt: '2026-09-17' }),
+      harvested,
+    )!
+
+    expect(merged.organiserLinkReadAt).toBe('2026-09-17')
+  })
+
   it('stands the listing in as the site while nobody has resolved one', () => {
     const listing = 'https://runme.de/laufe/run-castle'
     const merged = mergeIntoCatalog(

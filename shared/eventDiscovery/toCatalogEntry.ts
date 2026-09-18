@@ -167,5 +167,6 @@ export function mergeIntoCatalog(
     // the listing. The harvest only ever knows the page it read, so writing
     // its own would put the calendar back every week and undo the work.
     officialUrl: resolvedSite(existing) ?? harvested.officialUrl ?? harvested.sourceUrl,
+    organiserLinkReadAt: existing.organiserLinkReadAt,
   })
 }

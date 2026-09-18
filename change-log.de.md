@@ -4,6 +4,14 @@
 
 ---
 
+## [1.73.0] - 2026-09-18
+
+### Hinzugefügt
+
+- **Die Seite des Veranstalters auch bei neuen Rennen:** jede Nacht liest die App bis zu hundert Kalenderseiten und ersetzt den Link der Plattform durch die Seite des Rennens.
+
+---
+
 ## [1.72.0] - 2026-09-18
 
 ### Behoben
