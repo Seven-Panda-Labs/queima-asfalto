@@ -2,18 +2,27 @@ import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
-import { RETIRED_REASONS, type RaceCatalogEntry, type RetiredReason } from '../../../shared/raceCatalog'
+import {
+  RETIRED_REASONS,
+  SNOOZE_DAYS,
+  type RaceCatalogEntry,
+  type RetiredReason,
+  type SnoozeDays,
+} from '../../../shared/raceCatalog'
 import { useAuth } from '../../contexts/AuthContext'
 import {
   askAgainAboutRaces,
+  countStaleForAdmin,
   keepAsRunningRaces,
   listStaleForAdmin,
   loadOtherSportsForAdmin,
   mergeCatalogRaces,
   retireCatalogRaces,
   searchCatalogForAdmin,
+  snoozeCatalogRaces,
   unmergeCatalogRace,
   unretireCatalogRaces,
+  unsnoozeCatalogRaces,
   type StaleCursor,
 } from '../../services/adminRaceCatalog'
 import { AdminTabs } from './AdminTabs'
@@ -75,9 +84,18 @@ export function AdminCatalog() {
    */
   const [picked, setPicked] = useState<Set<string>>(new Set())
   const [reason, setReason] = useState<RetiredReason | ''>('')
+  /** How long the ticked entries are put off for, once somebody picks it. */
+  const [snooze, setSnooze] = useState<SnoozeDays>(SNOOZE_DAYS[1])
+  /**
+   * How many races are waiting, counted by the server.
+   *
+   * Not the rows on screen. Those grew with every "show more", so the heading
+   * said 44, then 81, then 124, and never what the work was.
+   */
+  const [waiting, setWaiting] = useState<number | null>(null)
   /** What the last decision touched, kept so it can be taken back in one press. */
   const [swept, setSwept] = useState<string[]>([])
-  const [sweptKind, setSweptKind] = useState<'retired' | 'kept'>('retired')
+  const [sweptKind, setSweptKind] = useState<'retired' | 'kept' | 'snoozed'>('retired')
   /** What reads as another sport, asked for when somebody wants to sweep. */
   const [otherSports, setOtherSports] = useState<RaceCatalogEntry[] | null>(null)
   const [reading, setReading] = useState(false)
@@ -91,6 +109,9 @@ export function AdminCatalog() {
         const page = await listStaleForAdmin(PAGE_SIZE, after)
         setStale((current) => (after ? [...current, ...page.races] : page.races))
         setNext(page.nextCursor)
+        // Only when the list starts over: paging through does not change how
+        // many are waiting, and asking again would only cost a round trip.
+        if (!after) void countStaleForAdmin().then(setWaiting).catch(() => setWaiting(null))
         return page.nextCursor
       } catch {
         setError(t('admin.catalogLoadError'))
@@ -164,6 +185,27 @@ export function AdminCatalog() {
     }
   }
 
+  /** Asks about the ticked entries again later, so the rest can be read now. */
+  const putOff = async () => {
+    if (!user || picked.size === 0) return
+    const ids = [...picked]
+    setSweeping(true)
+    setError(null)
+    try {
+      await snoozeCatalogRaces(ids, snooze, user.uid)
+      setPicked(new Set())
+      setSwept(ids)
+      setSweptKind('snoozed')
+      setStale([])
+      setNext(undefined)
+      await load()
+    } catch {
+      setError(t('admin.duplicatesError'))
+    } finally {
+      setSweeping(false)
+    }
+  }
+
   /** Says the picked entries are races, so the list stops asking about them. */
   const keep = async () => {
     if (!user || picked.size === 0) return
@@ -189,6 +231,7 @@ export function AdminCatalog() {
     setSweeping(true)
     try {
       if (sweptKind === 'kept') await askAgainAboutRaces(swept, user.uid)
+      else if (sweptKind === 'snoozed') await unsnoozeCatalogRaces(swept, user.uid)
       else await unretireCatalogRaces(swept, user.uid)
       if (otherSports) void readOtherSports()
       setSwept([])
@@ -375,6 +418,31 @@ export function AdminCatalog() {
           >
             {t('admin.catalogRetirePicked')}
           </button>
+          {/* Neither answer yet: the race has not published next season, which
+              is most of this queue, so it is asked again later instead. */}
+          <label className="sr-only" htmlFor="catalog-snooze-days">
+            {t('admin.catalogSnoozePicked')}
+          </label>
+          <select
+            id="catalog-snooze-days"
+            value={snooze}
+            onChange={(change) => setSnooze(Number(change.target.value) as SnoozeDays)}
+            className="rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
+          >
+            {SNOOZE_DAYS.map((days) => (
+              <option key={days} value={days}>
+                {t(`admin.snoozeDays.${days}`)}
+              </option>
+            ))}
+          </select>
+          <button
+            type="button"
+            disabled={sweeping}
+            onClick={() => void putOff()}
+            className="rounded-md border border-border px-3 py-2 text-xs font-semibold text-foreground hover:bg-border/40 disabled:opacity-50"
+          >
+            {t('admin.catalogSnoozePicked')}
+          </button>
           {/* The other answer to the same question, and the one that needs no
               reason: a race is a race. */}
           <button
@@ -401,7 +469,9 @@ export function AdminCatalog() {
           <p className="text-sm text-foreground">
             {sweptKind === 'kept'
               ? t('admin.catalogKept', { count: swept.length })
-              : t('admin.catalogSwept', { count: swept.length })}
+              : sweptKind === 'snoozed'
+                ? t('admin.catalogSnoozed', { count: swept.length })
+                : t('admin.catalogSwept', { count: swept.length })}
           </p>
           <button
             type="button"
@@ -513,7 +583,7 @@ export function AdminCatalog() {
 
       <section className="mt-8">
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
-          {t('admin.catalogGroup.stale', { count: stale.length })}
+          {t('admin.catalogGroup.stale', { count: waiting ?? stale.length })}
         </h2>
         <p className="mt-1 text-xs text-muted">{t('admin.catalogStaleHint')}</p>
 

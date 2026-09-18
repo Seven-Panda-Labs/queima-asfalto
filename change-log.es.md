@@ -4,6 +4,15 @@
 
 ---
 
+## [1.81.0] - 2026-09-18
+
+### Añadido
+
+- **Preguntar más tarde:** en la lista de pruebas a la espera de nueva temporada, las marcadas pueden aplazarse una semana, un mes o tres meses, para leer las que aún no has visto sin pasar diez páginas.
+- **El total es el total:** el número de arriba de esa lista son ahora las pruebas que de verdad esperan, contadas en el servidor, en vez de crecer con cada «Mostrar más».
+
+---
+
 ## [1.80.0] - 2026-09-18
 
 ### Corregido

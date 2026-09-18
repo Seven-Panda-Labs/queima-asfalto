@@ -4,6 +4,15 @@
 
 ---
 
+## [1.81.0] - 2026-09-18
+
+### Adicionado
+
+- **Perguntar mais tarde:** na lista de provas à espera de temporada nova, as provas escolhidas podem ser adiadas uma semana, um mês ou três meses, para poderes ler as que ainda não viste sem paginar dez vezes.
+- **O total é o total:** o número no topo dessa lista passa a ser as provas que estão mesmo à espera, contadas no servidor, em vez de crescer a cada «Mostrar mais».
+
+---
+
 ## [1.80.0] - 2026-09-18
 
 ### Corrigido

@@ -4,6 +4,15 @@
 
 ---
 
+## [1.81.0] - 2026-09-18
+
+### Added
+
+- **Ask me later:** in the list of races waiting for a new season, the ticked ones can be put off by a week, a month or three months, so the ones you have not read yet are reachable without paging ten times.
+- **The total is the total:** the number above that list is now the races actually waiting, counted on the server, instead of growing with every "show more".
+
+---
+
 ## [1.80.0] - 2026-09-18
 
 ### Fixed

@@ -1416,6 +1416,13 @@
     "catalogSweptUndo": "تراجع",
     "catalogKeepPicked": "هذه سباقات",
     "catalogKept": "{{count}} تبقى سباقات ولن تعود إلى هذه القائمة.",
+    "catalogSnoozePicked": "اسأل لاحقاً",
+    "catalogSnoozed": "{{count}} سباقات تعود إلى هذه القائمة لاحقاً.",
+    "snoozeDays": {
+      "7": "بعد أسبوع",
+      "30": "بعد شهر",
+      "90": "بعد ثلاثة أشهر"
+    },
     "catalogJoined": "«{{drop}}» يشير الآن إلى «{{keep}}»."
   },
   "funnel": {

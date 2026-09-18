@@ -1404,6 +1404,13 @@
     "catalogSweptUndo": "Undo",
     "catalogKeepPicked": "These are races",
     "catalogKept": "{{count}} stay as races and will not come back to this list.",
+    "catalogSnoozePicked": "Ask me later",
+    "catalogSnoozed": "{{count}} races come back to this list later.",
+    "snoozeDays": {
+      "7": "In a week",
+      "30": "In a month",
+      "90": "In three months"
+    },
     "catalogJoined": "\"{{drop}}\" now points at \"{{keep}}\"."
   },
   "funnel": {

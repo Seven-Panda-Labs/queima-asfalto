@@ -4,6 +4,15 @@
 
 ---
 
+## [1.81.0] - 2026-09-18
+
+### Hinzugefügt
+
+- **Später fragen:** in der Liste der Rennen, die auf eine neue Saison warten, lassen sich die angehakten um eine Woche, einen Monat oder drei Monate vertagen, damit die ungelesenen ohne zehn Seiten erreichbar sind.
+- **Die Zahl stimmt:** die Zahl über dieser Liste ist jetzt die der wirklich wartenden Rennen, auf dem Server gezählt, statt mit jedem „Mehr anzeigen“ zu wachsen.
+
+---
+
 ## [1.80.0] - 2026-09-18
 
 ### Behoben

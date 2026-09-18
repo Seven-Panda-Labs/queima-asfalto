@@ -1054,6 +1054,17 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('takes a race put off until later, as a day', async () => {
+      await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
+      const db = testEnv.authenticatedContext('user-admin').firestore()
+      const entry = db.collection('raceCatalog').doc('de-berlin-not-yet-announced')
+
+      await assertSucceeds(entry.set({ ...race, reviewDueDate: '2026-12-01' }))
+      // A timestamp would sort before every day in the queue's range, so the
+      // entry would come back on the next visit and never leave.
+      await assertFails(entry.set({ ...race, reviewDueDate: Timestamp.now() }))
+    })
+
     it('takes an operator saying a name that reads as a walk is a race', async () => {
       await seedDocument('users/user-admin', { accountStatus: 'approved', admin: true })
       const db = testEnv.authenticatedContext('user-admin').firestore()

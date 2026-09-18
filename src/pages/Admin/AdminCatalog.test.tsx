@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { AdminCatalog } from './AdminCatalog'
 
@@ -13,6 +13,9 @@ const loadOtherSportsForAdmin = vi.fn()
 const keepAsRunningRaces = vi.fn()
 const askAgainAboutRaces = vi.fn()
 const unretireCatalogRaces = vi.fn()
+const countStaleForAdmin = vi.fn()
+const snoozeCatalogRaces = vi.fn()
+const unsnoozeCatalogRaces = vi.fn()
 
 vi.mock('../../services/adminRaceCatalog', () => ({
   listStaleForAdmin: (...args: unknown[]) => listStaleForAdmin(...args),
@@ -26,6 +29,9 @@ vi.mock('../../services/adminRaceCatalog', () => ({
   keepAsRunningRaces: (...args: unknown[]) => keepAsRunningRaces(...args),
   askAgainAboutRaces: (...args: unknown[]) => askAgainAboutRaces(...args),
   unretireCatalogRaces: (...args: unknown[]) => unretireCatalogRaces(...args),
+  countStaleForAdmin: (...args: unknown[]) => countStaleForAdmin(...args),
+  snoozeCatalogRaces: (...args: unknown[]) => snoozeCatalogRaces(...args),
+  unsnoozeCatalogRaces: (...args: unknown[]) => unsnoozeCatalogRaces(...args),
 }))
 
 vi.mock('../../services/catalogProposals', () => ({
@@ -66,11 +72,15 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
+beforeEach(() => {
+  countStaleForAdmin.mockResolvedValue(0)
+})
+
 describe('AdminCatalog, which no longer downloads the catalog', () => {
   it('opens on the work, a page at a time', async () => {
     listStaleForAdmin.mockResolvedValue({
       races: [race({ id: 'out-of-editions' })],
-      nextCursor: { nextRaceDate: '2026-01-01', id: 'out-of-editions' },
+      nextCursor: { reviewDueDate: '2026-01-01', id: 'out-of-editions' },
     })
     render(<AdminCatalog />)
 
@@ -82,7 +92,7 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
   it('asks for the next page from where the last one ended', async () => {
     listStaleForAdmin.mockResolvedValue({
       races: [race({ id: 'out-of-editions' })],
-      nextCursor: { nextRaceDate: '2026-01-01', id: 'out-of-editions' },
+      nextCursor: { reviewDueDate: '2026-01-01', id: 'out-of-editions' },
     })
     render(<AdminCatalog />)
 
@@ -90,9 +100,46 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
 
     await waitFor(() =>
       expect(listStaleForAdmin).toHaveBeenCalledWith(50, {
-        nextRaceDate: '2026-01-01',
+        reviewDueDate: '2026-01-01',
         id: 'out-of-editions',
       }),
+    )
+  })
+
+  it('heads the list with what is waiting, not with what is on screen', async () => {
+    // The rows grew with every "show more" and the heading grew with them, so
+    // it said 44, then 81, then 124, and never how much work there was.
+    countStaleForAdmin.mockResolvedValue(933)
+    listStaleForAdmin.mockResolvedValue({
+      races: [race({ id: 'one-of-many' })],
+      nextCursor: { reviewDueDate: '2026-01-01', id: 'one-of-many' },
+    })
+    render(<AdminCatalog />)
+
+    expect(
+      await screen.findByText('Confirmadas, sem edição futura (933)'),
+    ).toBeInTheDocument()
+  })
+
+  it('puts the ticked races off, and takes the wait back', async () => {
+    listStaleForAdmin.mockResolvedValue({ races: [race({ id: 'de-berlin-not-yet-announced' })] })
+    snoozeCatalogRaces.mockResolvedValue(undefined)
+    render(<AdminCatalog />)
+
+    fireEvent.click(
+      await screen.findByRole('checkbox', { name: 'Escolher de-berlin-not-yet-announced' }),
+    )
+    fireEvent.change(screen.getByLabelText('Perguntar mais tarde'), { target: { value: '7' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Perguntar mais tarde' }))
+
+    await waitFor(() =>
+      expect(snoozeCatalogRaces).toHaveBeenCalledWith(['de-berlin-not-yet-announced'], 7, 'admin'),
+    )
+
+    // A decision made this fast has to be as fast to take back.
+    fireEvent.click(await screen.findByRole('button', { name: 'Anular' }))
+    await waitFor(() =>
+      expect(unsnoozeCatalogRaces).toHaveBeenCalledWith(['de-berlin-not-yet-announced'], 'admin'),
     )
   })
 
@@ -102,7 +149,7 @@ describe('AdminCatalog, which no longer downloads the catalog', () => {
     // page again, and again, adding it to the list every time.
     listStaleForAdmin.mockResolvedValueOnce({
       races: [race({ id: 'first-page' })],
-      nextCursor: { nextRaceDate: '2026-01-01', id: 'first-page' },
+      nextCursor: { reviewDueDate: '2026-01-01', id: 'first-page' },
     })
     listStaleForAdmin.mockResolvedValueOnce({ races: [race({ id: 'last-page' })] })
     render(<AdminCatalog />)

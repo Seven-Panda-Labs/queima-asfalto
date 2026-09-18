@@ -1404,6 +1404,13 @@
     "catalogSweptUndo": "Rückgängig",
     "catalogKeepPicked": "Das sind Läufe",
     "catalogKept": "{{count}} bleiben Läufe und tauchen hier nicht wieder auf.",
+    "catalogSnoozePicked": "Später fragen",
+    "catalogSnoozed": "{{count}} Rennen kommen später zurück in diese Liste.",
+    "snoozeDays": {
+      "7": "In einer Woche",
+      "30": "In einem Monat",
+      "90": "In drei Monaten"
+    },
     "catalogJoined": "„{{drop}}“ zeigt jetzt auf „{{keep}}“."
   },
   "funnel": {

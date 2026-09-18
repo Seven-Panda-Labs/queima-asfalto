@@ -253,6 +253,15 @@ export type RaceCatalogEntry = {
    */
   organiserLinkReadAt?: string
   /**
+   * `YYYY-MM-DD`, the day this entry is next worth an operator's eye.
+   *
+   * The race's own next date, until somebody puts it off, and absent on an
+   * entry that is retired or a copy because neither is work. The admin queue
+   * asks for this and nothing else, which is why the count above it is the
+   * number of races waiting rather than the number of rows a query matched.
+   */
+  reviewDueDate?: string
+  /**
    * The entry this one turned out to be a second copy of.
    *
    * Set when a harvest recognises a race the catalog already holds under

@@ -560,7 +560,12 @@ service cloud.firestore {
           || request.resource.data.retiredReason in ['over', 'other_sport', 'not_a_race', 'parkrun'])
         // An operator saying a name that reads as another sport is a race.
         && (!('notAnotherSport' in request.resource.data)
-          || request.resource.data.notAnotherSport is bool);
+          || request.resource.data.notAnotherSport is bool)
+        // The day the work queue asks about this entry again, which an
+        // operator moves by putting it off. A day, never a timestamp: the
+        // queue compares it against `YYYY-MM-DD`.
+        && (!('reviewDueDate' in request.resource.data)
+          || request.resource.data.reviewDueDate is string);
       allow delete: if false;
     }
 

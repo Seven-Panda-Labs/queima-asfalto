@@ -134,6 +134,27 @@ describe('mergeIntoCatalog', () => {
     expect(merged.sourceUrl).toBe('https://runme.de/laufe/run-castle')
   })
 
+  it('keeps a race put off by an operator put off', () => {
+    // The harvest writes the entry whole every week, so a wait of a month
+    // would last until the next run of that source otherwise.
+    const merged = mergeIntoCatalog(
+      stored({ review: 'unreviewed', producer: 'harvest', reviewDueDate: '2026-12-01' }),
+      harvested,
+    )!
+
+    expect(merged.reviewDueDate).toBe('2026-12-01')
+  })
+
+  it('asks again as soon as a season arrives, whatever the wait was', () => {
+    // A date the wait would have outlived answers the question by itself.
+    const merged = mergeIntoCatalog(
+      stored({ review: 'unreviewed', producer: 'harvest', reviewDueDate: '2026-09-04' }),
+      harvested,
+    )!
+
+    expect(merged.reviewDueDate).toBe(merged.nextRaceDate)
+  })
+
   it('keeps the day the listing was read, so the nightly pass moves on', () => {
     const merged = mergeIntoCatalog(
       stored({ review: 'unreviewed', producer: 'harvest', organiserLinkReadAt: '2026-09-17' }),
