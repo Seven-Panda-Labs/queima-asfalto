@@ -4,6 +4,14 @@
 
 ---
 
+## [1.76.0] - 2026-09-18
+
+### Geändert
+
+- **Auch bei Rennen von kilometerliebe.de:** ihr Link ist jetzt die Seite des Veranstalters, wie bei den beiden anderen Plattformen. 267 Rennen, über einige Nächte verteilt.
+
+---
+
 ## [1.75.0] - 2026-09-18
 
 ### Geändert

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.76.0] - 2026-09-18
+
+### Alterado
+
+- **Também nas provas vindas da kilometerliebe.de:** o link da prova passa a ser o site do organizador, como já acontecia nas outras duas plataformas. São 267 provas, resolvidas ao longo de algumas noites.
+
+---
+
 ## [1.75.0] - 2026-09-18
 
 ### Alterado

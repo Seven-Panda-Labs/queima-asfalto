@@ -4,6 +4,14 @@
 
 ---
 
+## [1.76.0] - 2026-09-18
+
+### Modifié
+
+- **Aussi pour les courses venues de kilometerliebe.de :** leur lien devient le site de l'organisateur, comme sur les deux autres plateformes. 267 courses, réparties sur quelques nuits.
+
+---
+
 ## [1.75.0] - 2026-09-18
 
 ### Modifié

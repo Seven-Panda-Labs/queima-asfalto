@@ -4,6 +4,14 @@
 
 ---
 
+## [1.76.0] - 2026-09-18
+
+### Changed
+
+- **Races found on kilometerliebe.de too:** their link becomes the organiser's site, as it already was on the other two platforms. 267 races, resolved over a few nights.
+
+---
+
 ## [1.75.0] - 2026-09-18
 
 ### Changed

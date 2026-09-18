@@ -12,6 +12,10 @@ const runningLife = readFileSync(
   'shared/eventDiscovery/fixtures/running-life-organiser-link.html',
   'utf8',
 )
+const kilometerliebe = readFileSync(
+  'shared/eventDiscovery/fixtures/kilometerliebe-organiser-link.html',
+  'utf8',
+)
 
 describe('readOrganiserLink', () => {
   it('reads the site runme.de points at', () => {
@@ -20,6 +24,22 @@ describe('readOrganiserLink', () => {
 
   it('reads the site running.life points at', () => {
     expect(readOrganiserLink(runningLife)).toBe('https://grimming-volkslauf.at/')
+  })
+
+  it('reads the site kilometerliebe.de points at, past the arrow beside it', () => {
+    // The label and a four-hundred character SVG share the anchor, and the
+    // "add to calendar" button beside it carries the same class.
+    expect(readOrganiserLink(kilometerliebe)).toBe('https://othaler-gutshof-lauf.de/')
+  })
+
+  it('does not take an entry form for the organiser', () => {
+    // A future event's panel offers the timekeeper the same way, which is why
+    // the class alone is not enough.
+    expect(
+      readOrganiserLink(
+        '<a class="ev-bib__action" href="https://my.raceresult.com/123/">zur Anmeldung</a>',
+      ),
+    ).toBeUndefined()
   })
 
   it('does not take the platform for the organiser', () => {
@@ -65,6 +85,8 @@ function entry(overrides: Partial<RaceCatalogEntry> = {}): RaceCatalogEntry {
 describe('needsOrganiserLink', () => {
   it('takes an entry whose official link is the calendar it was found on', () => {
     expect(needsOrganiserLink(entry())).toBe(true)
+    const listing = 'https://www.kilometerliebe.de/events/6-othaler-gutshof-lauf'
+    expect(needsOrganiserLink(entry({ officialUrl: listing, sourceUrl: listing }))).toBe(true)
   })
 
   it('leaves an entry that already points at the organiser', () => {
