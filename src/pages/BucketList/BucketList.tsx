@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import {
@@ -13,11 +13,14 @@ import { PageShell } from '../../components/PageShell/PageShell'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
-import { ScheduleDisciplineDialog } from '../../components/ScheduleDisciplineDialog/ScheduleDisciplineDialog'
+import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/ScheduleRaceDialog'
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
+import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
+import { loadCatalogRace } from '../../services/raceCatalog'
+import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
@@ -56,21 +59,6 @@ const UnmappedBucketListPanel = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.UnmappedBucketListPanel })),
 )
 
-export type EventFormFromBucketListState = {
-  fromBucketList: {
-    bucketListItemId: string
-    raceId?: string
-    name: string
-    location: string
-    locationLat?: number
-    locationLng?: number
-    realDistance: number
-    eventType: EventType
-    emoji?: string
-    notes?: string
-  }
-}
-
 function BucketListSkeleton() {
   return (
     <div className="space-y-3" aria-hidden>
@@ -83,7 +71,6 @@ function BucketListSkeleton() {
 
 export function BucketList() {
   const { t } = useTranslation()
-  const navigate = useNavigate()
   const { user } = useAuth()
   const {
     tabs: ownerTabs,
@@ -97,6 +84,10 @@ export function BucketList() {
   const [viewMode, setViewMode] = useState<BucketListViewMode>(() => getBucketListViewMode(user?.uid))
   const [itemToDelete, setItemToDelete] = useState<BucketListItem | null>(null)
   const [itemToSchedule, setItemToSchedule] = useState<BucketListItem | null>(null)
+  /** What the catalog knows about the next running of the wish being scheduled. */
+  const [offer, setOffer] = useState<EntryPrefill | null>(null)
+  const [loadingOffer, setLoadingOffer] = useState(false)
+  const [scheduling, setScheduling] = useState(false)
   const [deleting, setDeleting] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
@@ -229,36 +220,62 @@ export function BucketList() {
     }
   }
 
-  function navigateToSchedule(item: BucketListItem, eventType: EventType) {
-    const state: EventFormFromBucketListState = {
-      fromBucketList: {
-        bucketListItemId: item.id,
-        raceId: item.raceId,
+  /**
+   * Opens the one step between a wish and the calendar.
+   *
+   * The catalog is read here rather than for the whole list: one document when
+   * somebody asks to schedule, against five thousand on every visit.
+   */
+  async function handleSchedule(item: BucketListItem) {
+    setItemToSchedule(item)
+    setOffer(null)
+    const catalogRaceId = races.find((race) => race.id === item.raceId)?.catalogRaceId
+    if (!catalogRaceId) return
+    setLoadingOffer(true)
+    try {
+      setOffer(prefillFromCatalog(await loadCatalogRace(catalogRaceId)))
+    } catch {
+      setOffer(null)
+    } finally {
+      setLoadingOffer(false)
+    }
+  }
+
+  /**
+   * Writes the event and takes the wish off the list.
+   *
+   * Everything the old event form asked for is already here: the wish carries
+   * the name, the place and the distance, and the only two answers worth a
+   * question are which distance and which day. `planned` because a date in the
+   * calendar is not an entry: saying "I am in" is the event's own state.
+   */
+  async function handleConfirmSchedule(eventType: EventType, day: string) {
+    const item = itemToSchedule
+    if (!item || !user) return
+    setScheduling(true)
+    try {
+      await createEvent(user.uid, {
         name: item.name,
+        date: new Date(`${day}T12:00:00`),
+        realDistance: item.realDistance,
+        eventType,
         location: item.location,
         locationLat: item.locationLat,
         locationLng: item.locationLng,
-        realDistance: item.realDistance,
-        eventType,
+        status: 'planned',
         emoji: item.emoji,
         notes: item.notes,
-      },
+        ...(item.raceId ? { raceId: item.raceId } : {}),
+      })
+      // The wish was "one day"; the day is now a date in the calendar.
+      await removeItem(item.id)
+      setItemToSchedule(null)
+      setSuccessMessage(t('bucketList.scheduled', { name: item.name }))
+    } catch {
+      setSuccessMessage(null)
+    } finally {
+      setScheduling(false)
     }
-    navigate('/eventos/novo', { state })
-  }
-
-  function handleSchedule(item: BucketListItem) {
-    if (item.disciplines.length === 1) {
-      navigateToSchedule(item, item.disciplines[0]!)
-      return
-    }
-    setItemToSchedule(item)
-  }
-
-  function handleConfirmScheduleDiscipline(eventType: EventType) {
-    if (!itemToSchedule) return
-    navigateToSchedule(itemToSchedule, eventType)
-    setItemToSchedule(null)
   }
 
   return (
@@ -451,7 +468,7 @@ export function BucketList() {
                 {!isSharedView ? (
                   <button
                     type="button"
-                    onClick={() => handleSchedule(item)}
+                    onClick={() => void handleSchedule(item)}
                     aria-label={t('common.schedule')}
                     title={t('common.schedule')}
                     className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
@@ -467,11 +484,14 @@ export function BucketList() {
         )}
       </div>
 
-      <ScheduleDisciplineDialog
+      <ScheduleRaceDialog
         open={itemToSchedule !== null}
         item={itemToSchedule}
+        offer={offer}
+        loading={loadingOffer}
+        saving={scheduling}
         onCancel={() => setItemToSchedule(null)}
-        onConfirm={handleConfirmScheduleDiscipline}
+        onConfirm={handleConfirmSchedule}
       />
 
       <ConfirmDialog

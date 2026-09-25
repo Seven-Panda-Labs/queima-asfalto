@@ -351,8 +351,7 @@
     "parkrunPromptSkip": "Save event without ID",
     "eventKindLabel": "Event type",
     "kindRegular": "Race",
-    "kindParkrun": "Parkrun",
-    "movedFromBucketList": "\"{{name}}\" left the bucket list and is on the calendar."
+    "kindParkrun": "Parkrun"
   },
   "parkrun": {
     "eventLabel": "Parkrun event",
@@ -468,8 +467,6 @@
     "notesPlaceholder": "E.g.: Entries open in January",
     "disciplines": "Disciplines",
     "disciplinesHint": "Select one or more. When scheduling, you choose which becomes the event.",
-    "scheduleDisciplineTitle": "Choose discipline",
-    "scheduleDisciplineMessage": "Which discipline do you want to schedule for \"{{name}}\"?",
     "noMappedItems": "No bucket list items with a map location for the selected filters.",
     "unmappedTitle": "No map location",
     "unmappedHint": "These items need a valid location. Edit to fix or use autocomplete.",
@@ -488,7 +485,12 @@
     },
     "serves": "Prepares which anchor",
     "servesHint": "The suggested window comes from the anchor date and distance.",
-    "servesEmpty": "Mark a race as an anchor of the year first."
+    "servesEmpty": "Mark a race as an anchor of the year first.",
+    "scheduleTitle": "Put it in the calendar",
+    "scheduleMessage": "When are you running \"{{name}}\"?",
+    "scheduleDiscipline": "Distance",
+    "scheduleNeedsDate": "Say the race date. No date, no calendar.",
+    "scheduled": "{{name}} is in the calendar."
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",
