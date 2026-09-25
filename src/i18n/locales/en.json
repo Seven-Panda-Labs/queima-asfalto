@@ -1453,18 +1453,15 @@
   "entry": {
     "title": "Entry",
     "subtitle": "When it opens, when it closes, and what is left to do to get into this race.",
-    "year": "Year",
-    "discipline": "Distance",
     "method": "How you get in",
     "status": "Status",
     "dates": "Dates",
-    "datesHint": "Leave blank whatever has not been published. Nothing is invented.",
     "raceDate": "Race date",
+    "datesHint": "Leave blank whatever has not been published. Nothing is invented.",
     "opensAt": "Registration opens",
     "closesAt": "Registration closes",
     "drawAt": "Draw",
     "placeConfirmByAt": "Secure the place by",
-    "raceDateConfirmed": "The race date is confirmed",
     "registrationUrl": "Registration link",
     "fee": "Fee",
     "feeCurrency": "Currency",
@@ -1472,9 +1469,7 @@
     "feeNeedsCurrency": "Pick the currency, or the fee does not reach the catalog.",
     "saved": "Entry saved.",
     "saveError": "Could not save the entry.",
-    "yearError": "A year between 2000 and 2100.",
     "closesBeforeOpens": "Closing cannot be before opening.",
-    "itemGone": "This wish no longer exists.",
     "methods": {
       "lottery": "Lottery",
       "first_come": "First come",
@@ -1492,11 +1487,12 @@
       "declined": "Declined",
       "missed": "Missed the deadline"
     },
-    "registeredNeedsDate": "To be registered, give the race date: it goes on the calendar.",
-    "registeredNeedsDiscipline": "Say which distance you are running.",
-    "savedWithEvent": "Entry saved, and the race is on the calendar.",
     "prefilled": "Filled in from the catalog, from what {{source}} publishes. Check it before you count on these dates.",
-    "prefilledReviewed": "Filled in from the catalog, checked against {{source}}."
+    "prefilledReviewed": "Filled in from the catalog, checked against {{source}}.",
+    "eventGone": "This race is gone.",
+    "registeredConfirmsEvent": "Saving marks the race confirmed in the calendar.",
+    "addDeadlines": "Does this race have a lottery or deadlines? Note them",
+    "openDeadlines": "Lottery and deadlines for this race"
   },
   "season": {
     "tuneUpWindow": "tune-up of ~{{distance}} km between {{from}} and {{to}}",

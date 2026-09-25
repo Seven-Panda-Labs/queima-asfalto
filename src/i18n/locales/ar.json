@@ -1465,18 +1465,15 @@
   "entry": {
     "title": "التسجيل",
     "subtitle": "متى يفتح، ومتى يغلق، وما بقي لتدخل هذا السباق.",
-    "year": "السنة",
-    "discipline": "المسافة",
     "method": "طريقة التسجيل",
     "status": "الحالة",
     "dates": "التواريخ",
-    "datesHint": "اترك ما لم يُنشر فارغا. لا شيء يُختلق.",
     "raceDate": "تاريخ السباق",
+    "datesHint": "اترك ما لم يُنشر فارغا. لا شيء يُختلق.",
     "opensAt": "يفتح التسجيل",
     "closesAt": "يغلق التسجيل",
     "drawAt": "القرعة",
     "placeConfirmByAt": "تثبيت المكان قبل",
-    "raceDateConfirmed": "تاريخ السباق مؤكَّد",
     "registrationUrl": "رابط التسجيل",
     "fee": "السعر",
     "feeCurrency": "العملة",
@@ -1484,9 +1481,7 @@
     "feeNeedsCurrency": "اختر العملة، وإلا لن يصل السعر إلى الفهرس.",
     "saved": "تم حفظ التسجيل.",
     "saveError": "تعذّر حفظ التسجيل.",
-    "yearError": "سنة بين 2000 و2100.",
     "closesBeforeOpens": "لا يمكن أن يكون الإغلاق قبل الفتح.",
-    "itemGone": "هذه الأمنية لم تعد موجودة.",
     "methods": {
       "lottery": "قرعة",
       "first_come": "حسب الأسبقية",
@@ -1504,11 +1499,12 @@
       "declined": "انسحبت",
       "missed": "فات الموعد"
     },
-    "registeredNeedsDate": "للتسجيل، حدّد تاريخ السباق: سيذهب إلى التقويم.",
-    "registeredNeedsDiscipline": "حدّد المسافة التي ستركضها.",
-    "savedWithEvent": "تم حفظ التسجيل، والسباق في التقويم.",
     "prefilled": "مُعبّأ من الفهرس، بما ينشره {{source}}. تحقّق قبل أن تعتمد على هذه المواعيد.",
-    "prefilledReviewed": "مُعبّأ من الفهرس، ومُتحقَّق منه على {{source}}."
+    "prefilledReviewed": "مُعبّأ من الفهرس، ومُتحقَّق منه على {{source}}.",
+    "eventGone": "هذا السباق لم يعد موجوداً.",
+    "registeredConfirmsEvent": "بالحفظ يصبح السباق مؤكَّداً في التقويم.",
+    "addDeadlines": "هل لهذا السباق قرعة أو مواعيد نهائية؟ دوّنها",
+    "openDeadlines": "قرعة السباق ومواعيده النهائية"
   },
   "season": {
     "tuneUpWindow": "اختبار بنحو {{distance}} كم بين {{from}} و{{to}}",

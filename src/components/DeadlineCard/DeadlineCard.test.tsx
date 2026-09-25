@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/vitest'
 import { cleanup, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
-import type { BucketListItem } from '../../types/BucketListItem'
+import type { Race } from '../../types/Race'
 import type { RaceEntry } from '../../types/RaceEntry'
 import { DeadlineCard } from './DeadlineCard'
 
@@ -12,24 +12,21 @@ vi.mock('react-router-dom', () => ({
 const NOW = new Date()
 const inDays = (count: number) => new Date(NOW.getTime() + count * 24 * 60 * 60 * 1000)
 
-function item(id: string, name: string): BucketListItem {
+function race(id: string, name: string): Race {
   return {
     id,
     userId: 'user-1',
     name,
     location: 'London',
-    realDistance: 42.195,
-    disciplines: ['km_42_2'],
     createdAt: NOW,
     updatedAt: NOW,
   }
 }
 
-function entry(overrides: Partial<RaceEntry> & Pick<RaceEntry, 'bucketListItemId'>): RaceEntry {
+function entry(overrides: Partial<RaceEntry> & Pick<RaceEntry, 'raceId'>): RaceEntry {
   return {
-    id: `entry-${overrides.bucketListItemId}`,
+    id: `entry-${overrides.raceId}`,
     userId: 'user-1',
-    raceId: 'race-1',
     year: 2027,
     raceDateConfirmed: false,
     entryMethod: 'lottery',
@@ -46,23 +43,23 @@ describe('DeadlineCard', () => {
   it('is absent when nothing needs doing', () => {
     const { container } = render(
       <DeadlineCard
-        items={[item('w1', 'London Marathon')]}
-        entries={[entry({ bucketListItemId: 'w1', registrationOpensAt: inDays(90) })]}
+        races={[race('r1', 'London Marathon')]}
+        entries={[entry({ raceId: 'r1', registrationOpensAt: inDays(90) })]}
       />,
     )
     expect(container).toBeEmptyDOMElement()
   })
 
-  it('is absent for an empty bucket list', () => {
-    const { container } = render(<DeadlineCard items={[]} entries={[]} />)
+  it('is absent when nobody is chasing a place', () => {
+    const { container } = render(<DeadlineCard races={[]} entries={[]} />)
     expect(container).toBeEmptyDOMElement()
   })
 
   it('names the most urgent race when a gate is closing', () => {
     render(
       <DeadlineCard
-        items={[item('w1', 'London Marathon')]}
-        entries={[entry({ bucketListItemId: 'w1', registrationClosesAt: inDays(5) })]}
+        races={[race('r1', 'London Marathon')]}
+        entries={[entry({ raceId: 'r1', registrationClosesAt: inDays(5) })]}
       />,
     )
     expect(screen.getByText('London Marathon')).toBeInTheDocument()
@@ -71,10 +68,10 @@ describe('DeadlineCard', () => {
   it('counts the rest rather than listing them', () => {
     render(
       <DeadlineCard
-        items={[item('w1', 'London Marathon'), item('w2', 'Valencia Half Marathon')]}
+        races={[race('r1', 'London Marathon'), race('r2', 'Valencia Half Marathon')]}
         entries={[
-          entry({ bucketListItemId: 'w1', registrationClosesAt: inDays(3) }),
-          entry({ bucketListItemId: 'w2', registrationClosesAt: inDays(9) }),
+          entry({ raceId: 'r1', registrationClosesAt: inDays(3) }),
+          entry({ raceId: 'r2', registrationClosesAt: inDays(9) }),
         ]}
       />,
     )
