@@ -13,6 +13,7 @@
 - **A wish is a marker:** it no longer has a name, a place or a distance of its own, which are the race's, and keeps only your note.
 - **The lottery and the deadlines live on the race:** out of everybody's path and into the anchor races where entry is fought over.
 - **The wishes map reads the race's place:** a race marked in the catalog now keeps the coordinates the catalog publishes, and the map shows what the race knows rather than what the wish had copied.
+- **The app learns where the catalog's races are:** each night it finds up to three hundred of them, from the town and the country the sources publish. Two thirds of the catalog carried no coordinates, and without them a race is missing from the map and from a search by radius.
 
 ---
 

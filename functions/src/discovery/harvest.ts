@@ -30,6 +30,7 @@ import { sourceForRun } from '../shared/eventDiscovery/sources.js'
 import { applyPendingEditionReports } from './editionReports.js'
 import { applyPendingProposals } from './proposals.js'
 import { writeDuplicateQueue } from './duplicateQueue.js'
+import { geocodeCatalogRaces } from './geocode.js'
 import { resolveOrganiserLinks } from './organiserLinks.js'
 import type { DiscoveredRace } from '../shared/eventDiscovery/types.js'
 import { scheduleFunctionOptions } from '../functionOptions.js'
@@ -515,6 +516,17 @@ export const harvestRaceCatalog = onSchedule(
     } catch (error) {
       // Reading somebody else's calendar is the least of what this run does.
       console.error('organiser links failed', error)
+    }
+
+    // Where the races are, for the map and for the radius a runner searches
+    // in. Two thirds of the catalog publishes no coordinates.
+    try {
+      const places = await geocodeCatalogRaces(isoDay(now))
+      if (places.asked > 0) {
+        console.log(`places: ${places.placed} found, from ${places.asked} asked about`)
+      }
+    } catch (error) {
+      console.error('geocoding failed', error)
     }
 
     // After the harvest, so the queue reflects what this run wrote, and here

@@ -13,6 +13,7 @@
 - **Ein Wunsch ist eine Markierung:** ohne eigenen Namen, Ort und Distanz, die dem Rennen gehören, und nur mit deiner Notiz.
 - **Losverfahren und Fristen gehören zum Rennen:** raus aus dem Weg aller und hinein in die Ankerrennen, um deren Startplätze gekämpft wird.
 - **Die Wunschkarte liest den Ort des Rennens:** ein im Katalog markiertes Rennen behält jetzt die Koordinaten, die der Katalog veröffentlicht, und die Karte zeigt, was das Rennen weiß, statt was der Wunsch kopiert hatte.
+- **Die App lernt, wo die Rennen des Katalogs liegen:** jede Nacht findet sie bis zu dreihundert davon, aus Ort und Land, die die Quellen veröffentlichen. Zwei Drittel des Katalogs hatten keine Koordinaten, und ohne sie fehlt ein Rennen auf der Karte und in einer Suche nach Umkreis.
 
 ---
 

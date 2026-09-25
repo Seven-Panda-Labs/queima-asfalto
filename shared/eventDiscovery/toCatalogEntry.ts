@@ -176,6 +176,7 @@ export function mergeIntoCatalog(
     // its own would put the calendar back every week and undo the work.
     officialUrl: resolvedSite(existing) ?? harvested.officialUrl ?? harvested.sourceUrl,
     organiserLinkReadAt: existing.organiserLinkReadAt,
+    placeReadAt: existing.placeReadAt,
     reviewDueDate: existing.reviewDueDate,
   }
   // Last, because it reads the merged entry: a race put off until March stays

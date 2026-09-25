@@ -253,6 +253,13 @@ export type RaceCatalogEntry = {
    */
   organiserLinkReadAt?: string
   /**
+   * `YYYY-MM-DD`, the day the geocoder was last asked where this race is.
+   *
+   * Written whether or not it answered, so a town nobody can find does not
+   * keep the rest of the catalog from being asked about.
+   */
+  placeReadAt?: string
+  /**
    * `YYYY-MM-DD`, the day this entry is next worth an operator's eye.
    *
    * The race's own next date, until somebody puts it off, and absent on an
