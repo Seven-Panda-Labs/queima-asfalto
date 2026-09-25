@@ -4,6 +4,9 @@ import { formatEventTypeLabel } from '../../i18n/formatters'
 import { SeasonNotes } from '../../components/SeasonNotes'
 import type { SeasonAnnotation } from '../../domain/seasonBoard'
 import { wishSubject } from '../../domain/wishSubject'
+import { wishNextDate } from '../../domain/wishNextDate'
+import { formatDatePt } from '../../utils/date'
+import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import type { BucketListItem } from '../../types/BucketListItem'
 import type { Race } from '../../types/Race'
 
@@ -11,6 +14,8 @@ type WishListProps = {
   items: readonly BucketListItem[]
   /** Where the name and the place come from: a wish is a marker on a race. */
   races: readonly Race[]
+  /** The catalog behind them, which is what knows when they are next run. */
+  catalog: readonly RaceCatalogEntry[]
   /** Keyed by race identity, which is what survives a wish being scheduled. */
   season: Map<string, SeasonAnnotation>
   /** Anchors by race identity: the flag is on the race, not on the wish. */
@@ -27,13 +32,25 @@ type WishListProps = {
  * paperwork of a lottery belongs to a race already in the calendar. What is
  * left here is the dream, which needs no groups.
  */
-export function WishList({ items, races, season, anchorRaceIds, actions }: WishListProps) {
-  const { t } = useTranslation()
+export function WishList({
+  items,
+  races,
+  catalog,
+  season,
+  anchorRaceIds,
+  actions,
+}: WishListProps) {
+  const { t, i18n } = useTranslation()
+  const monthName = (month: number) =>
+    new Intl.DateTimeFormat(i18n.language, { month: 'long' }).format(new Date(2026, month - 1, 1))
 
   return (
     <ul className="divide-y divide-border rounded-lg border border-border bg-surface">
       {items.map((item) => {
         const subject = wishSubject(item, races)
+        // A day when the edition has been published, the typical month while
+        // it has not: the difference between a decision and a dream.
+        const next = wishNextDate(item, races, catalog)
         return (
           <li key={item.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
             <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
@@ -58,6 +75,18 @@ export function WishList({ items, races, season, anchorRaceIds, actions }: WishL
             {item.role && item.role !== 'none' ? (
               <span className="text-xs font-semibold text-muted">
                 {t(`bucketList.roles.${item.role}`)}
+              </span>
+            ) : null}
+
+            {next ? (
+              <span
+                className={`text-xs tabular-nums ${
+                  next.kind === 'day' ? 'font-semibold text-accent' : 'text-muted'
+                }`}
+              >
+                {next.kind === 'day'
+                  ? formatDatePt(new Date(`${next.day}T12:00:00`))
+                  : t('planning.typicalMonth', { month: monthName(next.month) })}
               </span>
             ) : null}
 

@@ -22,7 +22,6 @@ import { wishPins, wishSubject } from '../../domain/wishSubject'
 import { formatDatePt } from '../../utils/date'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { loadCatalogRace, loadCatalogRaces } from '../../services/raceCatalog'
-import { wishesWithADate } from '../../domain/wishesWithADate'
 import { entriesWithoutACalendar } from '../../domain/entriesWithoutACalendar'
 import { nextDateFor } from '../../domain/raceEntryFunnel'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
@@ -150,11 +149,6 @@ export function Planning() {
     }
     void loadCatalogRaces(markedCatalogIds).then(setMarkedEntries)
   }, [isSharedView, markedCatalogIds])
-
-  const dated = useMemo(
-    () => wishesWithADate(items, races, markedEntries, seasonYear),
-    [items, races, markedEntries, seasonYear],
-  )
 
   /** Places being chased for this season, on races with no date yet. */
   const chasing = useMemo(
@@ -374,33 +368,6 @@ export function Planning() {
           />
         ) : null}
 
-        {/* A wish waits for its edition to be published, and that moment is a
-            decision nobody was being told about. */}
-        {dated.length > 0 ? (
-          <div className="rounded-lg border border-accent/40 bg-accent/5 p-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-accent">
-              {t('planning.datedTitle', { count: dated.length, year: seasonYear })}
-            </p>
-            <ul className="mt-2 space-y-1">
-              {dated.map((row) => (
-                <li key={row.item.id} className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <span className="text-sm font-semibold text-foreground">{row.entry.name}</span>
-                  <span className="text-xs tabular-nums text-muted">
-                    {formatDatePt(new Date(`${row.raceDate}T12:00:00`))}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => void handleSchedule(row.item)}
-                    className="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10"
-                  >
-                    {t('bucketList.scheduleTitle')}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ) : null}
-
         <ViewSwitcher
           options={[
             { value: 'lista', label: t('viewMode.list') },
@@ -464,6 +431,7 @@ export function Planning() {
           <WishList
             items={sortedItems}
             races={isSharedView ? [] : races}
+            catalog={markedEntries}
             season={isSharedView ? new Map() : season}
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
             actions={(item) => (

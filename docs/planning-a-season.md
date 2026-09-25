@@ -50,7 +50,7 @@ Dois passos onde hoje são cinco, e nenhuma data escrita à mão quando o catál
 
 **Uma prova sem data não se agenda.** Fica favorita até a edição ser publicada, e é a colheita que traz a data. Nada de datas estimadas no calendário: uma data estimada é indistinguível de uma real no sítio onde mais custa enganar-se.
 
-E quando a data chega, a página diz: "2 desejos já têm data para 2027", com o botão que os põe no calendário. Sem isso, a regra acima obrigava a abrir desejo a desejo para descobrir se já era altura de decidir.
+Cada desejo diz quando é, na própria linha: a data da próxima edição quando já está publicada, ou o mês em que a prova costuma ser enquanto não está. Sem isso, a regra acima obrigava a abrir desejo a desejo para descobrir se já era altura de decidir. Um painel à parte foi tentado e ocupava meia página para dizer o que cabe numa linha.
 
 ### A navegação
 
@@ -103,7 +103,7 @@ Estas duas substituem linhas de [`race-lifecycle.md`](./race-lifecycle.md) que d
 
 1. ~~**O mapa.**~~ **Respondido.** A identidade da prova passou a copiar as coordenadas que o catálogo publica, 1777 das 5593 entradas vivas, e a colheita geocodifica 300 por noite a partir da terra e do país, o que limpa as restantes 3816 em menos de duas semanas. Sem chave do Geoapify a passagem não faz nada e a colheita segue.
 2. ~~**Os desejos que não se conseguem ligar.**~~ **Respondido.** Não existem em contas reais: os cinco que havia eram de uma conta de teste e foram apagados. O recurso ao nome guardado fica, para o parkrun vigiado e para quem se auto-aloja com dados antigos.
-3. ~~**Quando a edição é publicada.**~~ **Respondido.** A página de planeamento diz quais dos desejos ganharam data para a época que está a ser montada, e agenda a partir dali. Lembrete continua fora: isto é uma decisão, não um prazo.
+3. ~~**Quando a edição é publicada.**~~ **Respondido.** Cada desejo mostra a data da próxima edição, ou o mês típico enquanto não há data, e agenda-se dali. Lembrete continua fora: isto é uma decisão, não um prazo.
 
 ### O que continua por fazer
 
@@ -157,7 +157,7 @@ Two steps where today there are five, and no date typed by hand when the catalog
 
 **A race with no date cannot be scheduled.** It stays a favourite until the edition is published, and the harvest is what brings the date. No estimated dates on the calendar: an estimate is indistinguishable from a real date in the one place where being wrong costs most.
 
-And when the date arrives the page says so: "2 wishes have a date for 2027", with the button that puts them in the calendar. Without that, the rule above meant opening one wish at a time to find out whether it was time to decide.
+Every wish says when it is, on its own row: the date of the next edition once it is published, or the month the race usually falls in while it is not. Without that, the rule above meant opening one wish at a time to find out whether it was time to decide. A panel of its own was tried and took half a page to say what fits on a line.
 
 ### Navigation
 
@@ -210,7 +210,7 @@ Two of these replace rows in [`race-lifecycle.md`](./race-lifecycle.md) that no 
 
 1. ~~**The map.**~~ **Answered.** The race identity now copies the coordinates the catalog publishes, 1777 of 5593 live entries, and the harvest geocodes 300 a night from the town and the country, which clears the other 3816 in under a fortnight. With no Geoapify key the pass does nothing and the harvest carries on.
 2. ~~**The wishes that cannot be linked.**~~ **Answered.** There are none in real accounts: the five that existed belonged to a test account and were deleted. The fallback to a stored name stays, for a watched parkrun and for self-hosted instances with older data.
-3. ~~**When an edition is published.**~~ **Answered.** The planning page says which wishes gained a date for the season being built, and schedules from there. A reminder stays out: this is a decision, not a deadline.
+3. ~~**When an edition is published.**~~ **Answered.** Every wish shows the date of its next edition, or the typical month while there is none, and is scheduled from there. A reminder stays out: this is a decision, not a deadline.
 
 ### Still to do
 

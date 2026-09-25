@@ -512,8 +512,7 @@
       "weeks_other": "{{count}} sem"
     },
     "otherSeason": "D'une autre saison, dans le cycle de celle-ci",
-    "datedTitle_one": "1 souhait a une date pour {{year}}",
-    "datedTitle_other": "{{count}} souhaits ont une date pour {{year}}"
+    "typicalMonth": "d'habitude en {{month}}"
   },
   "linkWishes": {
     "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",

@@ -14,7 +14,7 @@
 - **Losverfahren und Fristen gehören zum Rennen:** raus aus dem Weg aller und hinein in die Ankerrennen, um deren Startplätze gekämpft wird.
 - **Die Wunschkarte liest den Ort des Rennens:** ein im Katalog markiertes Rennen behält jetzt die Koordinaten, die der Katalog veröffentlicht, und die Karte zeigt, was das Rennen weiß, statt was der Wunsch kopiert hatte.
 - **Die App lernt, wo die Rennen des Katalogs liegen:** jede Nacht findet sie bis zu dreihundert davon, aus Ort und Land, die die Quellen veröffentlichen. Zwei Drittel des Katalogs hatten keine Koordinaten, und ohne sie fehlt ein Rennen auf der Karte und in einer Suche nach Umkreis.
-- **Ein Wunsch meldet sich, wenn er ein Datum bekommt:** sobald der Veranstalter die Ausgabe veröffentlicht und der Abgleich sie bringt, sagt die Planungsseite, welche deiner Wünsche einen Termin für die Saison haben, die du baust, und legt sie von dort in den Kalender.
+- **Jeder Wunsch sagt, wann er ist:** das Datum der nächsten Ausgabe, sobald der Veranstalter es veröffentlicht und der Abgleich es bringt, oder der Monat, in dem das Rennen üblicherweise liegt, solange es keins gibt. In der Zeile selbst, neben dem Knopf, der es in den Kalender legt.
 - **Eine Anmeldung darf vor dem Kalender bestehen:** ein ein Jahr im Voraus eingereichtes Losverfahren, oder ein ausgefallenes Rennen, das du nächste Saison erneut versuchst, erscheint in der Planung dieser Saison und lässt sich für seine Fristen öffnen, ganz ohne Termin.
 - **Eine Zeilenaktion sieht überall gleich aus:** Katalog und parkrun-Liste mischen nicht mehr Links, Emojis und farbige Knöpfe, sondern nutzen dieselben beschrifteten Symbole wie Events seit jeher. Das Teilen-Feld sitzt jetzt in den Wünschen, denn die werden geteilt.
 

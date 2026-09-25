@@ -524,8 +524,7 @@
       "weeks_other": "{{count}} أسابيع"
     },
     "otherSeason": "من موسم آخر، ضمن دورة هذا الموسم",
-    "datedTitle_one": "أمنية واحدة لها تاريخ لعام {{year}}",
-    "datedTitle_other": "{{count}} أمنيات لها تواريخ لعام {{year}}"
+    "typicalMonth": "عادةً في {{month}}"
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",
