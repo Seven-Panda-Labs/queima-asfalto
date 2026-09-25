@@ -14,7 +14,7 @@
 - **El sorteo y los plazos viven en la prueba:** salen del camino de todos y se quedan donde importan, en las pruebas ancla con inscripción disputada.
 - **El mapa de deseos lee el lugar de la prueba:** una prueba marcada en el catálogo guarda ahora las coordenadas que el catálogo publica, y el mapa muestra lo que sabe la prueba en vez de lo que el deseo había copiado.
 - **La app aprende dónde están las pruebas del catálogo:** cada noche averigua hasta trescientas, a partir del pueblo y el país que publican las fuentes. Dos tercios del catálogo no traía coordenadas, y sin ellas una prueba no aparece en el mapa ni en una búsqueda por radio.
-- **Cada deseo dice cuándo es:** la fecha de la próxima edición, en cuanto el organizador la publica y la recogida la trae, o el mes en que la prueba suele caer mientras no hay fecha. En la propia fila, junto al botón que la pone en el calendario.
+- **Los deseos van en el orden en que ocurren:** cada uno dice la fecha de su próxima edición, en cuanto el organizador la publica y la recogida la trae, o el mes en que la prueba suele caer mientras no hay fecha, y la lista sigue ese orden en vez del alfabeto.
 - **Una inscripción puede existir antes que el calendario:** un sorteo entregado con un año de antelación, o una prueba que falló y vas a intentar la temporada siguiente, aparecen en la planificación de esa temporada y se abren para editar plazos, sin fecha fijada.
 - **Las acciones de cada fila son iguales en todas partes:** el catálogo y los parkruns dejan de mezclar enlaces, emojis y botones de color, y usan los mismos iconos con etiqueta que Eventos usa desde siempre. El panel de compartir pasó dentro de los deseos, que es lo que se comparte.
 

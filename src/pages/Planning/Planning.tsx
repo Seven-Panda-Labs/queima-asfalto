@@ -19,6 +19,7 @@ import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { wishPins, wishSubject } from '../../domain/wishSubject'
+import { wishNextDate, wishSortKey } from '../../domain/wishNextDate'
 import { formatDatePt } from '../../utils/date'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { loadCatalogRace, loadCatalogRaces } from '../../services/raceCatalog'
@@ -159,13 +160,23 @@ export function Planning() {
     [isSharedView, raceEntries, allEvents, races, seasonYear],
   )
 
-  /** By the race's name, because a marker has nothing else to sort by. */
+  /**
+   * In the order they will happen, which is how a list of dates is read.
+   *
+   * Alphabetical was no order at all: the eye goes down looking for what is
+   * next and finds a race in January under one in October. Two on the same day
+   * fall back to the name.
+   */
   const sortedItems = useMemo(
     () =>
-      [...items].sort((left, right) =>
-        wishSubject(left, races).name.localeCompare(wishSubject(right, races).name, 'pt'),
-      ),
-    [items, races],
+      [...items].sort((left, right) => {
+        const byDate = wishSortKey(wishNextDate(left, races, markedEntries)).localeCompare(
+          wishSortKey(wishNextDate(right, races, markedEntries)),
+        )
+        if (byDate !== 0) return byDate
+        return wishSubject(left, races).name.localeCompare(wishSubject(right, races).name, 'pt')
+      }),
+    [items, races, markedEntries],
   )
 
   /**

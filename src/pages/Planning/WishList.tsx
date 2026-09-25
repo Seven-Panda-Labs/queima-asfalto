@@ -81,7 +81,7 @@ export function WishList({
             {next ? (
               <span
                 className={`text-xs tabular-nums ${
-                  next.kind === 'day' ? 'font-semibold text-accent' : 'text-muted'
+                  next.kind === 'day' ? 'font-semibold text-foreground' : 'text-muted'
                 }`}
               >
                 {next.kind === 'day'

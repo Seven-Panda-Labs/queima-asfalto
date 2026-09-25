@@ -14,7 +14,7 @@
 - **The lottery and the deadlines live on the race:** out of everybody's path and into the anchor races where entry is fought over.
 - **The wishes map reads the race's place:** a race marked in the catalog now keeps the coordinates the catalog publishes, and the map shows what the race knows rather than what the wish had copied.
 - **The app learns where the catalog's races are:** each night it finds up to three hundred of them, from the town and the country the sources publish. Two thirds of the catalog carried no coordinates, and without them a race is missing from the map and from a search by radius.
-- **Every wish says when it is:** the date of the next edition, as soon as the organiser publishes it and the harvest brings it, or the month the race usually falls in while there is none. On the row itself, beside the button that puts it in the calendar.
+- **Wishes are in the order they happen:** each says the date of its next edition, as soon as the organiser publishes it and the harvest brings it, or the month the race usually falls in while there is none, and the list follows that rather than the alphabet.
 - **An entry can exist before the calendar:** a lottery entered a year ahead, or a race that did not happen and you will try again next season, shows in that season's planning and opens for its deadlines, with no date set.
 - **A row action looks the same everywhere:** the catalog and the parkrun list stop mixing links, emojis and coloured buttons, and use the labelled icons Events has used all along. The sharing panel moved into the wishes, which is what is shared.
 

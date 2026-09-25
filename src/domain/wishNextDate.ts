@@ -41,3 +41,22 @@ export function wishNextDate(
 
   return entry.typicalRaceMonth ? { kind: 'month', month: entry.typicalRaceMonth } : null
 }
+
+/**
+ * A key that puts the wishes in the order they will happen.
+ *
+ * Alphabetical is no order at all for a list of dates: the eye reads down it
+ * looking for what is next and finds Egypt in January under a race in October.
+ *
+ * A typical month sorts at the end of the month it names, and at its next
+ * occurrence rather than in the past: "usually November" read in December is
+ * about next November. A wish the catalog says nothing about goes last, where
+ * a race with no date belongs.
+ */
+export function wishSortKey(next: WishNextDate, today: Date = new Date()): string {
+  if (!next) return '9999-99'
+  if (next.kind === 'day') return next.day
+
+  const year = next.month >= today.getMonth() + 1 ? today.getFullYear() : today.getFullYear() + 1
+  return `${year}-${String(next.month).padStart(2, '0')}-99`
+}

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import type { RaceCatalogEntry } from '../../shared/raceCatalog'
 import type { BucketListItem } from '../types/BucketListItem'
 import type { Race } from '../types/Race'
-import { wishNextDate } from './wishNextDate'
+import { wishNextDate, wishSortKey } from './wishNextDate'
 
 const TODAY = new Date('2026-09-25')
 
@@ -77,5 +77,27 @@ describe('wishNextDate', () => {
     expect(wishNextDate(wish, [race], [], TODAY)).toBeNull()
     expect(wishNextDate({ ...wish, raceId: undefined }, [race], [entry()], TODAY)).toBeNull()
     expect(wishNextDate(wish, [race], [entry()], TODAY)).toBeNull()
+  })
+})
+
+describe('wishSortKey', () => {
+  it('orders a day by the day', () => {
+    expect(wishSortKey({ kind: 'day', day: '2027-04-11' }, TODAY)).toBe('2027-04-11')
+  })
+
+  it('puts a typical month at the end of the month it names', () => {
+    // After every race with a real date in that month, because it is an
+    // approximation and the dated ones are the ones to act on.
+    expect(wishSortKey({ kind: 'month', month: 11 }, TODAY) > '2026-11-30').toBe(true)
+    expect(wishSortKey({ kind: 'month', month: 11 }, TODAY) < '2026-12-01').toBe(true)
+  })
+
+  it('reads a month that has passed as next year', () => {
+    // In September, "usually May" is about the May that is coming.
+    expect(wishSortKey({ kind: 'month', month: 5 }, TODAY).startsWith('2027-05')).toBe(true)
+  })
+
+  it('puts a race nobody has dated last', () => {
+    expect(wishSortKey(null, TODAY) > wishSortKey({ kind: 'month', month: 12 }, TODAY)).toBe(true)
   })
 })
