@@ -13,6 +13,7 @@
 - **Un souhait est un marqueur :** plus de nom, de lieu ni de distance propres, qui sont ceux de la course, et il ne garde que ta note.
 - **Le tirage et les échéances vivent sur la course :** hors du chemin de tous, là où ils comptent, sur les courses ancres dont l'inscription se dispute.
 - **La carte des souhaits lit le lieu de la course :** une course marquée dans le catalogue conserve désormais les coordonnées que le catalogue publie, et la carte montre ce que la course sait plutôt que ce que le souhait avait copié.
+- **L'app apprend où sont les courses du catalogue :** chaque nuit elle en situe jusqu'à trois cents, à partir de la ville et du pays publiés par les sources. Deux tiers du catalogue n'avaient pas de coordonnées, et sans elles une course manque à la carte et à une recherche par rayon.
 
 ---
 

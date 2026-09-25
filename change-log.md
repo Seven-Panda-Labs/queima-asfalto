@@ -13,6 +13,7 @@
 - **Um desejo é um marcador:** deixa de ter nome, local e distância próprios, que são os da prova, e fica só com a tua nota.
 - **O sorteio e os prazos vivem na prova:** deixam de estar no caminho de toda a gente e passam a estar onde importam, nas provas âncora com inscrição disputada.
 - **O mapa dos desejos lê o sítio da prova:** uma prova marcada no catálogo passa a guardar as coordenadas que o catálogo publica, e o mapa mostra o que a prova sabe em vez do que o desejo tinha copiado.
+- **A app passa a saber onde ficam as provas do catálogo:** todas as noites descobre onde estão até trezentas, a partir da terra e do país que as fontes publicam. Dois terços do catálogo não trazia coordenadas, e sem elas uma prova não aparece no mapa nem numa procura por raio.
 
 ---
 

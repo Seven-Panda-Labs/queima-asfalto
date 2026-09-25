@@ -155,6 +155,15 @@ describe('mergeIntoCatalog', () => {
     expect(merged.reviewDueDate).toBe(merged.nextRaceDate)
   })
 
+  it('keeps the day the geocoder was asked, so the nightly pass moves on', () => {
+    const merged = mergeIntoCatalog(
+      stored({ review: 'unreviewed', producer: 'harvest', placeReadAt: '2026-09-24' }),
+      harvested,
+    )!
+
+    expect(merged.placeReadAt).toBe('2026-09-24')
+  })
+
   it('keeps the day the listing was read, so the nightly pass moves on', () => {
     const merged = mergeIntoCatalog(
       stored({ review: 'unreviewed', producer: 'harvest', organiserLinkReadAt: '2026-09-17' }),
