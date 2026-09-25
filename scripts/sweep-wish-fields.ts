@@ -24,7 +24,7 @@ import { resolve } from 'node:path'
 
 const require = createRequire(resolve(import.meta.dirname, '../functions/package.json'))
 const { initializeApp } = require('firebase-admin/app')
-const { FieldValue, getFirestore } = require('firebase-admin/firestore')
+const { FieldValue, getFirestore, Timestamp } = require('firebase-admin/firestore')
 
 const PROJECT_ID =
   process.env.GCLOUD_PROJECT ?? process.env.GOOGLE_CLOUD_PROJECT ?? 'queima-asfalto'
@@ -87,7 +87,10 @@ async function main(): Promise<void> {
 
   let written = 0
   for (const wish of toClear) {
-    const patch: Record<string, unknown> = { updatedAt: new Date().toISOString() }
+    // A Timestamp, because that is what the field holds everywhere else and
+    // what the client calls `toDate()` on. An ISO string here blanked the
+    // whole list until the documents were rewritten.
+    const patch: Record<string, unknown> = { updatedAt: Timestamp.now() }
     for (const field of COPIED) {
       if (field in wish.data) patch[field] = FieldValue.delete()
     }
