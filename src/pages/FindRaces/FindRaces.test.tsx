@@ -46,6 +46,8 @@ vi.mock('../../components/PageShell/PageShell', () => ({
 }))
 vi.mock('react-router-dom', () => ({
   Link: ({ children }: { children: React.ReactNode }) => <a href="#">{children}</a>,
+  // The page opens on the dates a gap in the season asked about.
+  useSearchParams: () => [new URLSearchParams()],
 }))
 
 function race(id: string, overrides: Partial<RaceCatalogEntry> = {}): RaceCatalogEntry {

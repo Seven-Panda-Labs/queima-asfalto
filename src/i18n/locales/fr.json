@@ -500,8 +500,17 @@
     "seasonYear": "Année de la saison",
     "seasonCount_one": "1 course prévue",
     "seasonCount_other": "{{count}} courses prévues",
-    "seasonEmptyMonth": "rien",
-    "wishesTitle": "Souhaits"
+    "wishesTitle": "Souhaits",
+    "gapBefore": "Trouver une course avant {{name}}",
+    "gapAfter": "Trouver une course après {{name}}",
+    "gapAnywhere": "Trouver des courses pour cette saison",
+    "noAnchorHint": "Aucune n'est marquée comme ancre. Marque-la sur la page de la course et les autres se lisent comme sa préparation.",
+    "span": {
+      "days_one": "1 jour",
+      "days_other": "{{count}} jours",
+      "weeks_one": "1 sem",
+      "weeks_other": "{{count}} sem"
+    }
   },
   "linkWishes": {
     "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",

@@ -500,8 +500,17 @@
     "seasonYear": "Ano da época",
     "seasonCount_one": "1 prova marcada",
     "seasonCount_other": "{{count}} provas marcadas",
-    "seasonEmptyMonth": "nada",
-    "wishesTitle": "Desejos"
+    "wishesTitle": "Desejos",
+    "gapBefore": "Encontrar uma prova antes de {{name}}",
+    "gapAfter": "Encontrar uma prova depois de {{name}}",
+    "gapAnywhere": "Encontrar provas para esta época",
+    "noAnchorHint": "Nenhuma destas está marcada como âncora. Marca-a na página da prova e as outras passam a ler-se como preparação para ela.",
+    "span": {
+      "days_one": "1 dia",
+      "days_other": "{{count}} dias",
+      "weeks_one": "1 sem",
+      "weeks_other": "{{count}} sem"
+    }
   },
   "linkWishes": {
     "offer_one": "1 desejo ainda não diz que prova é. Dizer agora",

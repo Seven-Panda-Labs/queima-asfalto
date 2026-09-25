@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { DayField } from '../../components/DatePicker'
@@ -318,7 +318,18 @@ export function FindRaces() {
   const [locating, setLocating] = useState(false)
   const [locationRefused, setLocationRefused] = useState(false)
   const [syncedAt, setSyncedAt] = useState<Date | null>(null)
-  const [criteria, setCriteria] = useState<DiscoveryCriteria>(EMPTY_CRITERIA)
+  /**
+   * The dates the caller asked about, when it was a gap in the season.
+   *
+   * Read once. What the runner types afterwards is theirs, and a link that
+   * kept overwriting it would make the filters unusable.
+   */
+  const [searchParams] = useSearchParams()
+  const [criteria, setCriteria] = useState<DiscoveryCriteria>(() => ({
+    ...EMPTY_CRITERIA,
+    from: searchParams.get('from') ?? EMPTY_CRITERIA.from,
+    to: searchParams.get('to') ?? EMPTY_CRITERIA.to,
+  }))
   const [anchorRaceId, setAnchorRaceId] = useState('')
   const [adding, setAdding] = useState<string | null>(null)
   const [addedIds, setAddedIds] = useState<string[]>([])
