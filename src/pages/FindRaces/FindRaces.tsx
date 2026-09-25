@@ -42,6 +42,11 @@ import {
 } from '../../services/raceCatalog'
 import { setRaceSeasonRole } from '../../services/races'
 import { formatDatePt } from '../../utils/date'
+import {
+  CalendarPlusIcon,
+  ExternalLinkIcon,
+  HeartIcon,
+} from '../../components/icons/actionIcons'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { prefillFromCatalog } from '../../domain/entryPrefill'
 import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/ScheduleRaceDialog'
@@ -191,9 +196,11 @@ function Candidate({
             href={entry.officialUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-xs font-semibold text-primary hover:underline"
+            title={t('findRaces.openSource')}
+            aria-label={t('findRaces.openSource')}
+            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-50"
           >
-            {t('findRaces.openSource')}
+            <ExternalLinkIcon />
           </a>
         ) : null}
         {/* The answer to a gap in a season is a race in the calendar, so this
@@ -204,9 +211,9 @@ function Candidate({
           disabled={busy}
           aria-label={t('findRaces.schedule', { name: entry.name })}
           title={t('findRaces.schedule', { name: entry.name })}
-          className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
+          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-50"
         >
-          <span aria-hidden>📅</span>
+          <CalendarPlusIcon />
         </button>
         <button
           type="button"
@@ -214,11 +221,11 @@ function Candidate({
           disabled={busy}
           aria-label={t(marked ? 'findRaces.unmark' : 'findRaces.add', { name: entry.name })}
           title={t(marked ? 'findRaces.unmark' : 'findRaces.add', { name: entry.name })}
-          className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
+          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-50"
         >
           {/* A wish is a heart on a race in the catalog, and pressing it again
-              takes it back. */}
-          <span aria-hidden>{marked ? '❤️' : '🤍'}</span>
+              takes it back. Filled says which of the two it is. */}
+          <HeartIcon filled={marked} />
         </button>
       </div>
     </li>

@@ -97,3 +97,17 @@ export function RefreshIcon() {
     </svg>
   )
 }
+
+/**
+ * Marcar uma prova do catálogo como desejo, ou tirar a marca.
+ *
+ * Cheia quando já está marcada: é o mesmo botão nos dois estados, e a forma
+ * dele não deve mudar por causa disso.
+ */
+export function HeartIcon({ filled = false }: { filled?: boolean }) {
+  return (
+    <svg {...ICON_PROPS} fill={filled ? 'currentColor' : 'none'}>
+      <path d="M12 20s-7-4.35-7-9a4 4 0 0 1 7-2.65A4 4 0 0 1 19 11c0 4.65-7 9-7 9Z" />
+    </svg>
+  )
+}

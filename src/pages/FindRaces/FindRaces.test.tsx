@@ -384,6 +384,27 @@ describe('what the runner has already marked', () => {
     await waitFor(() => expect(removeItem).toHaveBeenCalledWith('wish-1'))
   })
 
+  it('draws a row action the way the rest of the app does', async () => {
+    // Icons with a label, not a link with an emoji beside a coloured button:
+    // three tables on two pages were doing three different things.
+    const entry = race('pt-lisboa-maratona', {
+      name: 'Maratona de Lisboa',
+      officialUrl: 'https://maratonadelisboa.com/',
+    })
+
+    await search(entry)
+
+    for (const name of [
+      'Ver origem',
+      /Pôr «Maratona de Lisboa» no calendário/,
+      /Marcar «Maratona de Lisboa»/,
+    ]) {
+      const action = screen.getByRole(name === 'Ver origem' ? 'link' : 'button', { name })
+      expect(action.querySelector('svg')).not.toBeNull()
+      expect(action.textContent).toBe('')
+    }
+  })
+
   it('offers the calendar, so arriving from a gap is not a dead end', async () => {
     const entry = race('pt-lisboa-maratona', { name: 'Maratona de Lisboa' })
 
