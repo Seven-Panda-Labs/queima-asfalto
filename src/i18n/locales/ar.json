@@ -363,8 +363,7 @@
     "parkrunPromptSkip": "حفظ الفعالية بدون معرّف",
     "eventKindLabel": "نوع الفعالية",
     "kindRegular": "سباق",
-    "kindParkrun": "Parkrun",
-    "movedFromBucketList": "«{{name}}» خرج من قائمة الأمنيات وأصبح في التقويم."
+    "kindParkrun": "Parkrun"
   },
   "parkrun": {
     "eventLabel": "فعالية Parkrun",
@@ -480,8 +479,6 @@
     "notesPlaceholder": "مثلًا: يبدأ التسجيل في يناير",
     "disciplines": "المسافات",
     "disciplinesHint": "اختر واحدة أو أكثر. عند الجدولة، تختار أيها تصبح الفعالية.",
-    "scheduleDisciplineTitle": "اختر المسافة",
-    "scheduleDisciplineMessage": "أي مسافة تريد جدولتها لـ «{{name}}»؟",
     "noMappedItems": "لا توجد عناصر في قائمة الأحلام بموقع على الخريطة للفلاتر المحددة.",
     "unmappedTitle": "بدون موقع على الخريطة",
     "unmappedHint": "تحتاج هذه العناصر إلى موقع صالح. عدّلها للإصلاح أو استخدم الإكمال التلقائي.",
@@ -500,7 +497,12 @@
     },
     "serves": "يجهّز أي مرساة",
     "servesHint": "النافذة المقترحة تأتي من تاريخ المرساة ومسافتها.",
-    "servesEmpty": "حدّد أولا سباقا كمرساة للسنة."
+    "servesEmpty": "حدّد أولا سباقا كمرساة للسنة.",
+    "scheduleTitle": "ضعه في التقويم",
+    "scheduleMessage": "متى تجري \"{{name}}\"؟",
+    "scheduleDiscipline": "المسافة",
+    "scheduleNeedsDate": "حدّد تاريخ السباق. بلا تاريخ لا يوجد تقويم.",
+    "scheduled": "{{name}} صار في التقويم."
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",

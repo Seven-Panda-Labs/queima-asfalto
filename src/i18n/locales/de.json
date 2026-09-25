@@ -351,8 +351,7 @@
     "parkrunPromptSkip": "Event ohne ID speichern",
     "eventKindLabel": "Eventtyp",
     "kindRegular": "Wettkampf",
-    "kindParkrun": "Parkrun",
-    "movedFromBucketList": "\"{{name}}\" ist von der Bucket List in den Kalender gewandert."
+    "kindParkrun": "Parkrun"
   },
   "parkrun": {
     "eventLabel": "Parkrun-Event",
@@ -468,8 +467,6 @@
     "notesPlaceholder": "Z. B.: Anmeldung öffnet im Januar",
     "disciplines": "Disziplinen",
     "disciplinesHint": "Wähle eine oder mehrere. Beim Planen entscheidest du, welche zum Event wird.",
-    "scheduleDisciplineTitle": "Disziplin wählen",
-    "scheduleDisciplineMessage": "Welche Disziplin möchtest du für „{{name}}“ planen?",
     "noMappedItems": "Keine Bucket-List-Einträge mit Kartenort für die gewählten Filter.",
     "unmappedTitle": "Kein Kartenort",
     "unmappedHint": "Diese Einträge brauchen einen gültigen Ort. Bearbeite sie oder nutze die Autovervollständigung.",
@@ -488,7 +485,12 @@
     },
     "serves": "Bereitet welchen Anker vor",
     "servesHint": "Das vorgeschlagene Fenster ergibt sich aus Datum und Distanz des Ankers.",
-    "servesEmpty": "Markiere zuerst ein Rennen als Anker des Jahres."
+    "servesEmpty": "Markiere zuerst ein Rennen als Anker des Jahres.",
+    "scheduleTitle": "In den Kalender legen",
+    "scheduleMessage": "Wann läufst du \"{{name}}\"?",
+    "scheduleDiscipline": "Distanz",
+    "scheduleNeedsDate": "Sag das Renndatum. Ohne Datum kein Kalender.",
+    "scheduled": "{{name}} steht im Kalender."
   },
   "linkWishes": {
     "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",

@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Dizer que prova do catálogo é um desejo:** a bucket list passa a oferecer a ligação para os desejos escritos à mão. Sem ela, um desejo é só um nome: não sabe as datas da próxima edição nem se reconhece na prova que já tens no calendário.
+- **Pôr no calendário num passo:** agendar um desejo deixa de abrir o formulário de evento com a data de hoje. Pergunta a distância, quando há escolha, e o dia, já preenchido com o que o catálogo publica para a próxima edição.
 
 ---
 

@@ -9,6 +9,7 @@
 ### Added
 
 - **Say which catalog race a wish is:** the bucket list now offers the link for wishes typed by hand. Without it a wish is only a name: no dates for the next edition, and no way to recognise the race already in your calendar.
+- **Into the calendar in one step:** scheduling a wish no longer opens the event form on today's date. It asks the distance, when there is a choice, and the day, already filled with what the catalog publishes for the next edition.
 
 ---
 

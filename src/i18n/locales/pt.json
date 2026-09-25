@@ -351,8 +351,7 @@
     "parkrunPromptSkip": "Guardar evento sem ID",
     "eventKindLabel": "Tipo de evento",
     "kindRegular": "Corrida",
-    "kindParkrun": "Parkrun",
-    "movedFromBucketList": "«{{name}}» saiu da bucket list e está no calendário."
+    "kindParkrun": "Parkrun"
   },
   "parkrun": {
     "eventLabel": "Evento parkrun",
@@ -468,8 +467,6 @@
     "notesPlaceholder": "Ex: Inscrições abrem em janeiro",
     "disciplines": "Disciplinas",
     "disciplinesHint": "Seleciona uma ou mais. Ao agendar, escolhes qual leva para o evento.",
-    "scheduleDisciplineTitle": "Escolher disciplina",
-    "scheduleDisciplineMessage": "Qual disciplina queres agendar para \"{{name}}\"?",
     "noMappedItems": "Nenhum item com localização no mapa para os filtros seleccionados.",
     "unmappedTitle": "Sem localização no mapa",
     "unmappedHint": "Estes itens precisam de um local válido. Edita para corrigir ou usar autocomplete.",
@@ -488,7 +485,12 @@
     },
     "serves": "Prepara qual âncora",
     "servesHint": "A janela sugerida sai da data e da distância da âncora.",
-    "servesEmpty": "Marca primeiro uma prova como âncora do ano."
+    "servesEmpty": "Marca primeiro uma prova como âncora do ano.",
+    "scheduleTitle": "Pôr no calendário",
+    "scheduleMessage": "Quando corres a \"{{name}}\"?",
+    "scheduleDiscipline": "Distância",
+    "scheduleNeedsDate": "Diz a data da prova. Sem data não há calendário.",
+    "scheduled": "{{name}} ficou no calendário."
   },
   "linkWishes": {
     "offer_one": "1 desejo ainda não diz que prova é. Dizer agora",

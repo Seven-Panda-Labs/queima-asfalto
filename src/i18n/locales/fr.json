@@ -351,8 +351,7 @@
     "parkrunPromptSkip": "Enregistrer l'événement sans ID",
     "eventKindLabel": "Type d'événement",
     "kindRegular": "Course",
-    "kindParkrun": "Parkrun",
-    "movedFromBucketList": "« {{name}} » a quitté la bucket list et est au calendrier."
+    "kindParkrun": "Parkrun"
   },
   "parkrun": {
     "eventLabel": "Événement Parkrun",
@@ -468,8 +467,6 @@
     "notesPlaceholder": "Ex. : Inscriptions ouvertes en janvier",
     "disciplines": "Disciplines",
     "disciplinesHint": "Sélectionne une ou plusieurs disciplines. Lors de la planification, tu choisis celle qui deviendra l'événement.",
-    "scheduleDisciplineTitle": "Choisir la discipline",
-    "scheduleDisciplineMessage": "Quelle discipline veux-tu planifier pour « {{name}} » ?",
     "noMappedItems": "Aucun élément de la bucket list avec un lieu sur la carte pour les filtres sélectionnés.",
     "unmappedTitle": "Sans lieu sur la carte",
     "unmappedHint": "Ces éléments ont besoin d'un lieu valide. Modifie-les pour corriger ou utilise l'autocomplétion.",
@@ -488,7 +485,12 @@
     },
     "serves": "Prépare quelle course pivot",
     "servesHint": "La fenêtre suggérée vient de la date et de la distance du pivot.",
-    "servesEmpty": "Marque d'abord une course comme pivot de l'année."
+    "servesEmpty": "Marque d'abord une course comme pivot de l'année.",
+    "scheduleTitle": "Mettre au calendrier",
+    "scheduleMessage": "Quand cours-tu \"{{name}}\" ?",
+    "scheduleDiscipline": "Distance",
+    "scheduleNeedsDate": "Dis la date de la course. Sans date, pas de calendrier.",
+    "scheduled": "{{name}} est au calendrier."
   },
   "linkWishes": {
     "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",

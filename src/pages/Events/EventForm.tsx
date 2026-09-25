@@ -6,9 +6,7 @@ import { DatePicker } from '../../components/DatePicker'
 import { EmojiPicker } from '../../components/EmojiPicker'
 import { LocationAutocomplete } from '../../components/LocationAutocomplete'
 import { PageShell } from '../../components/PageShell/PageShell'
-import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
-import type { EventFormFromBucketListState } from '../BucketList/BucketList'
 import { geocodeAndUpdateEvent } from '../../services/eventGeocoding'
 import { getEvent } from '../../services/events'
 import type { EventCreate, EventStatus, EventType } from '../../types/Event'
@@ -82,7 +80,6 @@ export function EventForm() {
   const location = useLocation()
   const navigate = useNavigate()
   const { addEvent, editEvent } = useEvents()
-  const { removeItem } = useBucketList()
   const { profile: resultsProfile, saveProfile } = useUserResultsProfile()
   const toast = useToast()
   const returnTo = getReturnTo(location.state)
@@ -91,10 +88,8 @@ export function EventForm() {
   const cancelState = eventLinkState(returnTo).state
 
   const [form, setForm] = useState<FormState>(EMPTY_FORM)
-  const [bucketListItemId, setBucketListItemId] = useState<string | null>(null)
   // Carried from the bucket list so the event joins the wish's race instead of
   // being matched by name again, which would split an identity on a typo.
-  const [bucketListRaceId, setBucketListRaceId] = useState<string | null>(null)
   const [loadingEvent, setLoadingEvent] = useState(isEditing)
   const [submitting, setSubmitting] = useState(false)
   /**
@@ -134,23 +129,23 @@ export function EventForm() {
     [enabledDisciplines, form.eventType],
   )
 
-  /** A blank race opens on the first enabled discipline. A parkrun is a 5K and
-   *  a bucket list item brings its own, so neither is overridden here. */
+  /** A blank race opens on the first enabled discipline. A parkrun is a 5K, so
+   *  that one is not overridden here. */
   useEffect(() => {
     if (isEditing || loadingDisciplines) return
-    if (eventKind === 'parkrun' || bucketListItemId !== null) return
+    if (eventKind === 'parkrun') return
 
     setForm((current) =>
       enabledDisciplines.includes(current.eventType)
         ? current
         : { ...current, eventType: enabledDisciplines[0]! },
     )
-  }, [isEditing, loadingDisciplines, eventKind, bucketListItemId, enabledDisciplines])
+  }, [isEditing, loadingDisciplines, eventKind, enabledDisciplines])
 
   useEffect(() => {
     if (id) return
 
-    const state = location.state as (EventFormFromBucketListState & EventFormLocationState) | null
+    const state = location.state as EventFormLocationState | null
     if (!state?.parkrunMode) return
 
     setEventKind('parkrun')
@@ -160,37 +155,6 @@ export function EventForm() {
       eventType: 'km_5',
       emoji: '🌳',
     }))
-  }, [id, location.state])
-
-  useEffect(() => {
-    if (id) return
-
-    const state = location.state as EventFormFromBucketListState | null
-    if (!state?.fromBucketList) return
-
-    const { fromBucketList } = state
-    setBucketListItemId(fromBucketList.bucketListItemId)
-    setBucketListRaceId(fromBucketList.raceId ?? null)
-    setForm({
-      name: fromBucketList.name,
-      date: new Date(),
-      status: 'planned',
-      realDistance: String(fromBucketList.realDistance),
-      eventType: fromBucketList.eventType,
-      location: fromBucketList.location,
-      locationLat: fromBucketList.locationLat,
-      locationLng: fromBucketList.locationLng,
-      emoji:
-        fromBucketList.emoji ??
-        suggestEventEmoji({
-          name: fromBucketList.name,
-          date: new Date(),
-          location: fromBucketList.location,
-        }),
-      notes: fromBucketList.notes ?? '',
-      resultsUrl: '',
-    })
-    emojiManualRef.current = Boolean(fromBucketList.emoji)
   }, [id, location.state])
 
   useEffect(() => {
@@ -387,7 +351,6 @@ export function EventForm() {
         : detectPlatform(trimmedResultsUrl, form.name.trim()) ?? undefined,
       parkrunEventSlug: isParkrunEvent ? parkrunSlug ?? undefined : undefined,
       parkrunCountryUrl: isParkrunEvent ? parkrunCountryUrl : undefined,
-      raceId: bucketListRaceId ?? undefined,
     }
   }
 
@@ -416,22 +379,6 @@ export function EventForm() {
     }
     if (payload.locationLat == null) {
       await geocodeAndUpdateEvent(newId, payload.location, i18n.language)
-    }
-    /**
-     * Planning is moving it: the wish is off the list once the race is on the
-     * calendar. It used to ask, and the answer was never interesting, because a
-     * wish and an event for the same race say the same thing twice. What the
-     * wish carried that had to outlive it, the anchor and the role, lives on the
-     * race now.
-     */
-    if (bucketListItemId) {
-      try {
-        await removeItem(bucketListItemId)
-      } catch {
-        // The event is saved either way, and a wish left behind is a duplicate
-        // rather than a loss.
-      }
-      toast.success(t('eventForm.movedFromBucketList', { name: payload.name }))
     }
     navigate('/eventos')
   }

@@ -9,6 +9,7 @@
 ### Añadido
 
 - **Decir qué prueba del catálogo es un deseo:** la bucket list ofrece ahora el enlace para los deseos escritos a mano. Sin él, un deseo es solo un nombre: no sabe las fechas de la próxima edición ni se reconoce en la prueba que ya tienes en el calendario.
+- **Al calendario en un paso:** programar un deseo ya no abre el formulario de evento con la fecha de hoy. Pregunta la distancia, cuando hay elección, y el día, ya relleno con lo que el catálogo publica para la próxima edición.
 
 ---
 
