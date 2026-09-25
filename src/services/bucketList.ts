@@ -93,6 +93,27 @@ export async function createBucketListItem(
       ? await findOrCreateRaceId(userId, { name: data.name, location: data.location ?? '' })
       : null)
 
+  /**
+   * A race is wanted once.
+   *
+   * A wish is a marker, and a marker pressed twice is still one mark. Until
+   * the catalog showed what was already marked, pressing the heart again was
+   * the only thing it allowed, and three wishes for the Meia Maratona de Faro
+   * is what that looked like. The guard belongs here rather than on the page,
+   * because a shared list writes through another door.
+   */
+  if (raceId) {
+    const marked = await getDocs(
+      query(
+        collection(db, BUCKET_LIST_COLLECTION),
+        where('userId', '==', userId),
+        where('raceId', '==', raceId),
+      ),
+    )
+    const existing = marked.docs[0]
+    if (existing) return existing.id
+  }
+
   const ref = await addDoc(collection(db, BUCKET_LIST_COLLECTION), {
     userId,
     raceId: raceId ?? null,
