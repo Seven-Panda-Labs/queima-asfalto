@@ -909,9 +909,13 @@
     "dayAria": "{{day}}, {{month}}{{events}}"
   },
   "datePicker": {
+    "setDate": "Definir data",
     "chooseDate": "Escolher data",
     "prevMonth": "Mês anterior",
     "nextMonth": "Mês seguinte"
+  },
+  "timeField": {
+    "minute": "Minutos"
   },
   "emojiPicker": {
     "choose": "Escolher emoji"
@@ -1333,7 +1337,6 @@
     "catalogNoEditions": "Sem edições. Acrescenta uma quando o organizador publicar datas.",
     "catalogEditionYear": "Ano",
     "catalogRaceDate": "Data da prova",
-    "catalogSetDate": "Definir data",
     "catalogGateTime": "Hora",
     "catalogGateTimeZone": "hora em {{zone}}",
     "catalogGateTimeNeedsZone": "escolhe primeiro o fuso da prova",

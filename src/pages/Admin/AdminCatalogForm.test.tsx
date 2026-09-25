@@ -233,11 +233,14 @@ describe('AdminCatalogForm', () => {
     })
     render(<AdminCatalogForm />)
 
-    const time = await screen.findByLabelText('Hora')
-    expect(time).toHaveValue('17:00')
+    const hour = await screen.findByLabelText('Hora')
+    const minute = screen.getByLabelText('Minutos')
+    expect(hour).toHaveValue('17')
+    expect(minute).toHaveValue('00')
     expect(screen.getByText(/hora em America\/New_York/)).toBeInTheDocument()
 
-    fireEvent.change(time, { target: { value: '18:30' } })
+    fireEvent.change(hour, { target: { value: '18' } })
+    fireEvent.change(screen.getByLabelText('Minutos'), { target: { value: '30' } })
     fireEvent.click(screen.getByText('Guardar'))
 
     await waitFor(() => expect(saveCatalogRaceForAdmin).toHaveBeenCalled())

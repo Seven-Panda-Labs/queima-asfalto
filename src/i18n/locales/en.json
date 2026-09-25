@@ -909,9 +909,13 @@
     "dayAria": "{{day}}, {{month}}{{events}}"
   },
   "datePicker": {
+    "setDate": "Set a date",
     "chooseDate": "Choose date",
     "prevMonth": "Previous month",
     "nextMonth": "Next month"
+  },
+  "timeField": {
+    "minute": "Minutes"
   },
   "emojiPicker": {
     "choose": "Choose emoji"
@@ -1333,7 +1337,6 @@
     "catalogNoEditions": "No editions. Add one when the organiser publishes dates.",
     "catalogEditionYear": "Year",
     "catalogRaceDate": "Race date",
-    "catalogSetDate": "Set a date",
     "catalogGateTime": "Time",
     "catalogGateTimeZone": "time in {{zone}}",
     "catalogGateTimeNeedsZone": "pick the race’s zone first",

@@ -14,11 +14,16 @@ export const MONTH_LABEL = new Intl.DateTimeFormat('pt-PT', {
   year: 'numeric',
 })
 
-export function getWeekdays(): string[] {
-  const formatter = new Intl.DateTimeFormat(getIntlLocale(), { weekday: 'short' })
+/**
+ * Column headers, Monday first. Narrow, because `short` is still the whole word
+ * in some locales (pt-PT «segunda», Arabic), and seven of those overlap.
+ */
+export function getWeekdays(): { narrow: string; long: string }[] {
+  const narrow = new Intl.DateTimeFormat(getIntlLocale(), { weekday: 'narrow' })
+  const long = new Intl.DateTimeFormat(getIntlLocale(), { weekday: 'long' })
   return Array.from({ length: 7 }, (_, index) => {
     const day = new Date(2024, 0, 1 + index)
-    return formatter.format(day)
+    return { narrow: narrow.format(day), long: long.format(day) }
   })
 }
 

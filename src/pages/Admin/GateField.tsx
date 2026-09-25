@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next'
 import { joinGate, splitGate } from '../../../shared/raceCatalog'
-import { DayField } from './DayField'
+import { DayField } from '../../components/DatePicker'
+import { TimeField } from '../../components/TimeField'
 
 /**
  * When a registration window opens, closes or is drawn.
@@ -46,15 +47,13 @@ export function GateField({
           <label className="sr-only" htmlFor={`${id}-time`}>
             {t('admin.catalogGateTime')}
           </label>
-          <input
+          <TimeField
             id={`${id}-time`}
-            type="time"
-            value={parts.time ?? ''}
+            value={parts.time}
+            optional
             disabled={!zone}
-            onChange={(event) =>
-              onChange(joinGate({ day: parts.day, time: event.target.value || undefined }, zone))
-            }
-            className="rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground disabled:opacity-50"
+            onChange={(time) => onChange(joinGate({ day: parts.day, time }, zone))}
+            className="py-1"
           />
           <span className="text-xs font-normal text-muted">
             {zone ? t('admin.catalogGateTimeZone', { zone }) : t('admin.catalogGateTimeNeedsZone')}

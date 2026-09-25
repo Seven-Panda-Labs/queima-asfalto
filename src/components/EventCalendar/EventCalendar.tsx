@@ -131,7 +131,9 @@ export function EventCalendar({
 
         <div className="mt-2 grid grid-cols-7 gap-0.5 text-center text-[0.65rem] font-semibold text-muted sm:mt-3 sm:gap-1 sm:text-xs">
           {weekdays.map((weekday) => (
-            <span key={weekday}>{weekday}</span>
+            <abbr key={weekday.long} title={weekday.long} className="no-underline">
+              {weekday.narrow}
+            </abbr>
           ))}
         </div>
 

@@ -909,9 +909,13 @@
     "dayAria": "{{day}}, {{month}}{{events}}"
   },
   "datePicker": {
+    "setDate": "Définir la date",
     "chooseDate": "Choisir une date",
     "prevMonth": "Mois précédent",
     "nextMonth": "Mois suivant"
+  },
+  "timeField": {
+    "minute": "Minutes"
   },
   "emojiPicker": {
     "choose": "Choisir un emoji"
@@ -1333,7 +1337,6 @@
     "catalogNoEditions": "Aucune édition. Ajoute-en une quand l'organisateur publie les dates.",
     "catalogEditionYear": "Année",
     "catalogRaceDate": "Date de la course",
-    "catalogSetDate": "Définir la date",
     "catalogGateTime": "Heure",
     "catalogGateTimeZone": "heure à {{zone}}",
     "catalogGateTimeNeedsZone": "choisis d'abord le fuseau de la course",

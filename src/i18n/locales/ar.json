@@ -921,9 +921,13 @@
     "dayAria": "{{day}}، {{month}}{{events}}"
   },
   "datePicker": {
+    "setDate": "تحديد التاريخ",
     "chooseDate": "اختر التاريخ",
     "prevMonth": "الشهر السابق",
     "nextMonth": "الشهر التالي"
+  },
+  "timeField": {
+    "minute": "الدقائق"
   },
   "emojiPicker": {
     "choose": "اختر رمزًا تعبيريًا"
@@ -1345,7 +1349,6 @@
     "catalogNoEditions": "لا نسخ. أضف واحدة عندما ينشر المنظّم التواريخ.",
     "catalogEditionYear": "السنة",
     "catalogRaceDate": "تاريخ السباق",
-    "catalogSetDate": "تحديد التاريخ",
     "catalogGateTime": "الساعة",
     "catalogGateTimeZone": "الساعة في {{zone}}",
     "catalogGateTimeNeedsZone": "اختر أولا منطقة السباق",
