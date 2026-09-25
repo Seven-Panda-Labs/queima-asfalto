@@ -5,18 +5,15 @@ import { PageShell } from '../../components/PageShell/PageShell'
 import { DayField } from '../../components/DatePicker'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
-import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
-import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 import { useRaces } from '../../hooks/useRaces'
-import { formatEventTypeLabel } from '../../i18n/formatters'
+import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
-import { createEvent } from '../../services/events'
+import { getEvent, updateEvent } from '../../services/events'
 import { reportEditionFee } from '../../services/editionReports'
 import { loadCatalogRace } from '../../services/raceCatalog'
-import { findOrCreateRaceId } from '../../services/races'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
-import type { EventType } from '../../types/Event'
+import type { Event } from '../../types/Event'
 import {
   ENTRY_METHODS,
   ENTRY_STATUSES,
@@ -40,12 +37,8 @@ function fromInputDate(value: string): Date | undefined {
 }
 
 type FormState = {
-  year: string
-  discipline: EventType | ''
   entryMethod: EntryMethod
   entryStatus: EntryStatus
-  raceDate: string
-  raceDateConfirmed: boolean
   registrationOpensAt: string
   registrationClosesAt: string
   lotteryDrawAt: string
@@ -57,23 +50,15 @@ type FormState = {
 }
 
 /**
- * @param offer what the catalog knows, and only ever for a new attempt.
+ * @param offer what the catalog knows, and only ever for an attempt that is new.
  *
- * The call site passes nothing for an entry that already exists: a field the
- * runner cleared on purpose is an answer, and a suggestion has no business
- * overwriting it a week later.
+ * Nothing for one that exists: a field the runner cleared on purpose is an
+ * answer, and a suggestion has no business overwriting it a week later.
  */
 function toFormState(entry: RaceEntry | null, offer: EntryPrefill | null = null): FormState {
   return {
-    year: String(entry?.year ?? offer?.year ?? new Date().getFullYear() + 1),
-    discipline: entry?.discipline ?? '',
     entryMethod: entry?.entryMethod ?? offer?.entryMethod ?? 'unknown',
     entryStatus: entry?.entryStatus ?? 'watching',
-    raceDate: toInputDate(entry?.raceDate) || (offer?.raceDate ?? ''),
-    // A date read off a listing nobody checked is a suggestion, never a settled
-    // date. Only a reviewed entry may say it is confirmed.
-    raceDateConfirmed:
-      entry?.raceDateConfirmed ?? Boolean(offer?.raceDate && offer.assertable),
     registrationOpensAt:
       toInputDate(entry?.registrationOpensAt) || (offer?.registrationOpensAt ?? ''),
     registrationClosesAt:
@@ -93,11 +78,16 @@ function toFormState(entry: RaceEntry | null, offer: EntryPrefill | null = null)
 }
 
 /**
- * The planning story of one attempt at one race.
+ * The paperwork of getting into one race, for the races that have any.
  *
- * Native date inputs rather than the app's `DatePicker`: every date here is
- * optional, and a picker that requires a value cannot say "not published yet",
- * which is the state most of these fields are in most of the time.
+ * Reached from a race already in the calendar, and only when somebody says it
+ * has deadlines: a lottery, a window that opens at nine in the morning, a place
+ * that has to be paid for by a date. Most races have none of that, and for them
+ * the calendar is the whole story.
+ *
+ * It asks nothing the event already answers. The year is the year of the race,
+ * the distance is the event's, and the race date is the day it is scheduled
+ * for, which is why scheduling requires a real one.
  */
 export function EntryForm() {
   const { t } = useTranslation()
@@ -105,36 +95,39 @@ export function EntryForm() {
   const navigate = useNavigate()
   const toast = useToast()
   const { user } = useAuth()
-  const { items, loading: itemsLoading } = useBucketList()
   const { entries, loading: entriesLoading, addEntry, editEntry } = useRaceEntries()
-
-  const item = useMemo(() => items.find((entry) => entry.id === id) ?? null, [items, id])
-  const [year, setYear] = useState<number | null>(null)
-
-  const existing = useMemo(() => {
-    if (!id) return null
-    const forItem = entries.filter((entry) => entry.bucketListItemId === id)
-    if (year !== null) return forItem.find((entry) => entry.year === year) ?? null
-    // The latest attempt is the one being planned, which is what the funnel shows.
-    return forItem.reduce<RaceEntry | null>(
-      (latest, entry) => (!latest || entry.year > latest.year ? entry : latest),
-      null,
-    )
-  }, [entries, id, year])
-
-  const [form, setForm] = useState<FormState>(() => toFormState(null))
-  const [hydrated, setHydrated] = useState(false)
-  const [saving, setSaving] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
-
-  /** The shared entry this race is, when it is one the catalog covers. */
   const { races } = useRaces()
-  const catalogRaceId = races.find((race) => race.id === item?.raceId)?.catalogRaceId
+
+  const [event, setEvent] = useState<Event | null>(null)
+  const [loadingEvent, setLoadingEvent] = useState(true)
+
+  useEffect(() => {
+    if (!id) return
+    let cancelled = false
+    void getEvent(id)
+      .then((found) => {
+        if (!cancelled) setEvent(found)
+      })
+      .finally(() => {
+        if (!cancelled) setLoadingEvent(false)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [id])
+
+  const year = event ? event.date.getFullYear() : null
+  const existing = useMemo(() => {
+    if (!event?.raceId || year === null) return null
+    return entries.find((entry) => entry.raceId === event.raceId && entry.year === year) ?? null
+  }, [entries, event?.raceId, year])
+
+  const catalogRaceId = races.find((race) => race.id === event?.raceId)?.catalogRaceId
   const [catalogRace, setCatalogRace] = useState<RaceCatalogEntry | null>(null)
   const [catalogSettled, setCatalogSettled] = useState(false)
 
   useEffect(() => {
-    if (itemsLoading) return
+    if (loadingEvent) return
     if (!catalogRaceId) {
       setCatalogSettled(true)
       return
@@ -143,41 +136,40 @@ export function EntryForm() {
       setCatalogRace(entry)
       setCatalogSettled(true)
     })
-  }, [catalogRaceId, itemsLoading])
+  }, [catalogRaceId, loadingEvent])
 
   /**
-   * What the catalog can fill in, for a year with no attempt recorded yet.
+   * What the catalog can fill in, for the year this race is scheduled in.
    *
-   * Nothing for an attempt that exists: this is the form opening, not a sync.
+   * The year is known here, unlike before, so the offer is about the edition
+   * being run rather than whichever one happens to be next.
    */
   const offer = useMemo(
-    () => (existing ? null : prefillFromCatalog(catalogRace)),
-    [catalogRace, existing],
+    () => (existing || year === null ? null : prefillFromCatalog(catalogRace, { year })),
+    [catalogRace, existing, year],
   )
+
+  const [form, setForm] = useState<FormState>(() => toFormState(null))
+  const [hydrated, setHydrated] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [errors, setErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
     // The catalog has to have settled first, or the form hydrates empty and the
     // suggestion arrives too late to be in it.
-    if (hydrated || itemsLoading || entriesLoading || !catalogSettled) return
+    if (hydrated || loadingEvent || entriesLoading || !catalogSettled) return
     setForm(toFormState(existing, offer))
-    setYear(existing?.year ?? null)
     setHydrated(true)
-  }, [hydrated, itemsLoading, entriesLoading, existing, offer, catalogSettled])
+  }, [hydrated, loadingEvent, entriesLoading, existing, offer, catalogSettled])
 
   /**
    * Whether to ask this runner what they paid.
    *
    * No calendar we read publishes a fee: measured across 5116 catalog entries,
-   * 140 carry one and both sources that publish them are already read whole.
-   * The runner who just got in is the only one who knows, and this is the only
-   * moment they know it.
-   *
-   * Asked, never required. A race can be free, a memory can fail, and an entry
-   * saved without a price is still an entry.
+   * 140 carry one. The runner who just got in is the only one who knows, and
+   * this is the only moment they know it. Asked, never required.
    */
-  const catalogFee = catalogRace?.editions?.find(
-    (edition) => edition.year === Number(form.year),
-  )?.typicalFee
+  const catalogFee = catalogRace?.editions?.find((edition) => edition.year === year)?.typicalFee
   const askForFee =
     form.entryStatus === 'registered' &&
     !form.fee.trim() &&
@@ -190,57 +182,31 @@ export function EntryForm() {
     setForm((current) => ({ ...current, [key]: value }))
   }
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault()
-    if (!item || !user) return
+  async function handleSubmit(submitted: FormEvent) {
+    submitted.preventDefault()
+    if (!event || !user || year === null) return
 
-    const parsedYear = Number(form.year)
     const next: Record<string, string> = {}
-    if (!Number.isInteger(parsedYear) || parsedYear < 2000 || parsedYear > 2100) {
-      next.year = t('entry.yearError')
-    }
     const opens = fromInputDate(form.registrationOpensAt)
     const closes = fromInputDate(form.registrationClosesAt)
     if (opens && closes && closes < opens) next.registrationClosesAt = t('entry.closesBeforeOpens')
-
-    // Registered means it goes on the calendar, and a calendar needs a day and a
-    // distance. The form already holds both fields, so it asks here rather than
-    // in a dialog on top of itself.
-    const raceDate = fromInputDate(form.raceDate)
-    if (form.entryStatus === 'registered') {
-      if (!raceDate) next.raceDate = t('entry.registeredNeedsDate')
-      if (!form.discipline) next.discipline = t('entry.registeredNeedsDiscipline')
-    }
 
     setErrors(next)
     if (Object.keys(next).length > 0) return
 
     setSaving(true)
     try {
-      // An item from before the races collection has no identity yet, and an
-      // entry cannot exist without one.
-      const raceId =
-        item.raceId ??
-        (await findOrCreateRaceId(user.uid, {
-          name: item.name,
-          location: item.location,
-          locationLat: item.locationLat,
-          locationLng: item.locationLng,
-        }))
-      if (!raceId) {
-        toast.error(t('entry.saveError'))
-        return
-      }
-
       const payload = {
-        raceId,
-        bucketListItemId: item.id,
-        year: parsedYear,
-        discipline: form.discipline || undefined,
+        raceId: event.raceId!,
+        year,
+        discipline: event.eventType,
+        eventId: event.id,
+        // The day is the day the race is scheduled for. Nothing is scheduled
+        // without one, so this is never a guess.
+        raceDate: event.date,
+        raceDateConfirmed: true,
         entryMethod: form.entryMethod,
         entryStatus: form.entryStatus,
-        raceDate,
-        raceDateConfirmed: form.raceDateConfirmed,
         registrationOpensAt: opens,
         // The zone belongs to the opening time: a reminder has to print the
         // hour the organiser meant, not the runner's.
@@ -254,51 +220,28 @@ export function EntryForm() {
         notes: form.notes.trim() || undefined,
       }
 
-      // The event is created once, when the place is secured. `confirmed` is
-      // exactly what being registered already means, and creating it here saves
-      // typing the same race into the calendar by hand.
-      let eventId = existing?.eventId
-      if (form.entryStatus === 'registered' && !eventId && raceDate && form.discipline) {
-        eventId = await createEvent(user.uid, {
-          name: item.name,
-          date: raceDate,
-          realDistance: item.realDistance,
-          eventType: form.discipline,
-          location: item.location,
-          locationLat: item.locationLat,
-          locationLng: item.locationLng,
-          status: 'confirmed',
-          emoji: item.emoji,
-          raceId,
-        })
+      if (existing) await editEntry(existing.id, payload)
+      else await addEntry(payload)
+
+      // Being in is what `confirmed` means on the calendar, and saying it twice
+      // is how the two drift apart.
+      if (form.entryStatus === 'registered' && event.status === 'planned') {
+        await updateEvent(event.id, { status: 'confirmed' })
       }
 
-      const withEvent = { ...payload, eventId }
-      if (existing) {
-        await editEntry(existing.id, withEvent)
-      } else {
-        await addEntry(withEvent)
-      }
       // No source we read publishes a fee, so a runner who got in is the only
-      // one who can tell the catalog what it costs. `registered` is the runner
-      // saying they are in: a fee they were quoted and never paid is not one.
+      // one who can tell the catalog what it costs.
       if (
         form.entryStatus === 'registered' &&
         catalogRaceId &&
         payload.fee !== undefined &&
         payload.feeCurrency
       ) {
-        await reportEditionFee(
-          user.uid,
-          catalogRaceId,
-          parsedYear,
-          payload.fee,
-          payload.feeCurrency,
-        )
+        await reportEditionFee(user.uid, catalogRaceId, year, payload.fee, payload.feeCurrency)
       }
 
-      toast.success(eventId && !existing?.eventId ? t('entry.savedWithEvent') : t('entry.saved'))
-      navigate('/bucket-list')
+      toast.success(t('entry.saved'))
+      navigate(`/eventos/${event.id}`)
     } catch {
       toast.error(t('entry.saveError'))
     } finally {
@@ -306,7 +249,7 @@ export function EntryForm() {
     }
   }
 
-  if (itemsLoading || entriesLoading) {
+  if (loadingEvent || entriesLoading) {
     return (
       <PageShell title={t('entry.title')}>
         <div className="mt-6 h-40 animate-pulse rounded-2xl bg-border/60" aria-hidden />
@@ -314,16 +257,15 @@ export function EntryForm() {
     )
   }
 
-  if (!item) {
+  if (!event || !event.raceId) {
     return (
       <PageShell title={t('entry.title')}>
-        <p className="mt-4 text-sm text-muted">{t('entry.itemGone')}</p>
+        <p className="mt-4 text-sm text-muted">{t('entry.eventGone')}</p>
       </PageShell>
     )
   }
 
   const dateFields: [keyof FormState, string][] = [
-    ['raceDate', t('entry.raceDate')],
     ['registrationOpensAt', t('entry.opensAt')],
     ['registrationClosesAt', t('entry.closesAt')],
     ['lotteryDrawAt', t('entry.drawAt')],
@@ -331,7 +273,7 @@ export function EntryForm() {
   ]
 
   return (
-    <PageShell title={item.name}>
+    <PageShell title={event.name}>
       <p className="mt-2 text-sm text-muted">{t('entry.subtitle')}</p>
 
       {/* An unreviewed entry may fill a field the runner can see and correct,
@@ -345,41 +287,14 @@ export function EntryForm() {
         </p>
       ) : null}
 
-      <form onSubmit={(event) => void handleSubmit(event)} className="mt-6 space-y-6">
+      <form onSubmit={(submitted) => void handleSubmit(submitted)} className="mt-6 space-y-6">
         <section className="rounded-lg border border-border bg-surface p-6">
           <div className="grid gap-4 sm:grid-cols-2">
-            <label className="text-sm font-semibold text-foreground">
-              {t('entry.year')}
-              <input
-                type="number"
-                value={form.year}
-                onChange={(event) => update('year', event.target.value)}
-                className={inputClass}
-              />
-              {errors.year ? <span className="text-xs text-danger">{errors.year}</span> : null}
-            </label>
-
-            <label className="text-sm font-semibold text-foreground">
-              {t('entry.discipline')}
-              <select
-                value={form.discipline}
-                onChange={(event) => update('discipline', event.target.value as EventType | '')}
-                className={inputClass}
-              >
-                <option value="">{t('common.dash')}</option>
-                {item.disciplines.map((discipline) => (
-                  <option key={discipline} value={discipline}>
-                    {formatEventTypeLabel(discipline)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
             <label className="text-sm font-semibold text-foreground">
               {t('entry.method')}
               <select
                 value={form.entryMethod}
-                onChange={(event) => update('entryMethod', event.target.value as EntryMethod)}
+                onChange={(changed) => update('entryMethod', changed.target.value as EntryMethod)}
                 className={inputClass}
               >
                 {ENTRY_METHODS.map((method) => (
@@ -394,7 +309,7 @@ export function EntryForm() {
               {t('entry.status')}
               <select
                 value={form.entryStatus}
-                onChange={(event) => update('entryStatus', event.target.value as EntryStatus)}
+                onChange={(changed) => update('entryStatus', changed.target.value as EntryStatus)}
                 className={inputClass}
               >
                 {ENTRY_STATUSES.map((status) => (
@@ -403,6 +318,11 @@ export function EntryForm() {
                   </option>
                 ))}
               </select>
+              {form.entryStatus === 'registered' && event.status === 'planned' ? (
+                <span className="mt-1 block text-xs font-normal text-primary">
+                  {t('entry.registeredConfirmsEvent')}
+                </span>
+              ) : null}
             </label>
           </div>
         </section>
@@ -424,16 +344,6 @@ export function EntryForm() {
               </label>
             ))}
           </div>
-
-          <label className="mt-4 flex items-center gap-2 text-sm text-foreground">
-            <input
-              type="checkbox"
-              checked={form.raceDateConfirmed}
-              onChange={(event) => update('raceDateConfirmed', event.target.checked)}
-              className="h-4 w-4 rounded border-border"
-            />
-            {t('entry.raceDateConfirmed')}
-          </label>
         </section>
 
         <section className="rounded-lg border border-border bg-surface p-6">
@@ -442,7 +352,7 @@ export function EntryForm() {
               {t('entry.registrationUrl')}
               <input
                 value={form.registrationUrl}
-                onChange={(event) => update('registrationUrl', event.target.value)}
+                onChange={(changed) => update('registrationUrl', changed.target.value)}
                 className={inputClass}
               />
             </label>
@@ -451,7 +361,7 @@ export function EntryForm() {
               <input
                 type="number"
                 value={form.fee}
-                onChange={(event) => update('fee', event.target.value)}
+                onChange={(changed) => update('fee', changed.target.value)}
                 className={inputClass}
               />
               {askForFee ? (
@@ -479,7 +389,7 @@ export function EntryForm() {
               <textarea
                 value={form.notes}
                 rows={3}
-                onChange={(event) => update('notes', event.target.value)}
+                onChange={(changed) => update('notes', changed.target.value)}
                 className={inputClass}
               />
             </label>
@@ -489,7 +399,7 @@ export function EntryForm() {
         <div className="flex flex-wrap justify-end gap-3">
           <button
             type="button"
-            onClick={() => navigate('/bucket-list')}
+            onClick={() => navigate(`/eventos/${event.id}`)}
             className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted hover:text-foreground"
           >
             {t('common.cancel')}

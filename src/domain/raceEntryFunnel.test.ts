@@ -1,22 +1,15 @@
 import { describe, expect, it } from 'vitest'
-import type { BucketListItem } from '../types/BucketListItem'
+import type { Race } from '../types/Race'
 import type { RaceEntry, EntryStatus } from '../types/RaceEntry'
-import {
-  buildRaceEntryFunnel,
-  funnelGroupFor,
-  nextDateFor,
-  type FunnelRow,
-} from './raceEntryFunnel'
+import { buildRaceEntryFunnel, funnelGroupFor, nextDateFor } from './raceEntryFunnel'
 
 const TODAY = new Date('2026-09-02')
 
-function item(overrides: Partial<BucketListItem> & Pick<BucketListItem, 'id'>): BucketListItem {
+function race(overrides: Partial<Race> & Pick<Race, 'id'>): Race {
   return {
     userId: 'user-1',
     name: overrides.id,
     location: 'Berlin',
-    realDistance: 42.195,
-    disciplines: ['km_42_2'],
     createdAt: TODAY,
     updatedAt: TODAY,
     ...overrides,
@@ -39,48 +32,37 @@ function entry(overrides: Partial<RaceEntry> = {}): RaceEntry {
   }
 }
 
-function row(entryOverrides: Partial<RaceEntry> | null, itemOverrides = {}): FunnelRow {
-  return {
-    item: item({ id: 'wish', ...itemOverrides }),
-    entry: entryOverrides === null ? null : entry(entryOverrides),
-  }
-}
-
 const days = (count: number) =>
   new Date(TODAY.getTime() + count * 24 * 60 * 60 * 1000)
 
 describe('funnelGroupFor', () => {
-  it('calls a wish with no attempt a dream', () => {
-    expect(funnelGroupFor(row(null), TODAY)).toBe('dream')
-  })
-
   it('calls an attempt with no dates a dream too, because there is nothing to act on', () => {
-    expect(funnelGroupFor(row({}), TODAY)).toBe('dream')
+    expect(funnelGroupFor(entry({}), TODAY)).toBe('dream')
   })
 
   it('waits while the gate is still shut', () => {
-    expect(funnelGroupFor(row({ registrationOpensAt: days(30) }), TODAY)).toBe('watching')
+    expect(funnelGroupFor(entry({ registrationOpensAt: days(30) }), TODAY)).toBe('watching')
   })
 
   it('asks for action the day the gate opens', () => {
-    expect(funnelGroupFor(row({ registrationOpensAt: TODAY }), TODAY)).toBe('action_needed')
-    expect(funnelGroupFor(row({ registrationOpensAt: days(-3) }), TODAY)).toBe('action_needed')
+    expect(funnelGroupFor(entry({ registrationOpensAt: TODAY }), TODAY)).toBe('action_needed')
+    expect(funnelGroupFor(entry({ registrationOpensAt: days(-3) }), TODAY)).toBe('action_needed')
   })
 
   it('asks for action a fortnight before the gate shuts', () => {
-    expect(funnelGroupFor(row({ registrationClosesAt: days(14) }), TODAY)).toBe('action_needed')
-    expect(funnelGroupFor(row({ registrationClosesAt: days(15) }), TODAY)).toBe('dream')
+    expect(funnelGroupFor(entry({ registrationClosesAt: days(14) }), TODAY)).toBe('action_needed')
+    expect(funnelGroupFor(entry({ registrationClosesAt: days(15) }), TODAY)).toBe('dream')
   })
 
   it('calls a closed gate missed, whatever the status still says', () => {
     expect(
-      funnelGroupFor(row({ entryStatus: 'watching', registrationClosesAt: days(-1) }), TODAY),
+      funnelGroupFor(entry({ entryStatus: 'watching', registrationClosesAt: days(-1) }), TODAY),
     ).toBe('missed')
   })
 
   it('puts a place won and not yet secured at the top of the list', () => {
     // The worst failure in the funnel: losing a place that was already yours.
-    expect(funnelGroupFor(row({ entryStatus: 'accepted' }), TODAY)).toBe('action_needed')
+    expect(funnelGroupFor(entry({ entryStatus: 'accepted' }), TODAY)).toBe('action_needed')
   })
 
   it('reads the terminal statuses as they are', () => {
@@ -92,27 +74,29 @@ describe('funnelGroupFor', () => {
       ['missed', 'missed'],
     ]
     for (const [status, expected] of cases) {
-      expect(funnelGroupFor(row({ entryStatus: status }), TODAY)).toBe(expected)
+      expect(funnelGroupFor(entry({ entryStatus: status }), TODAY)).toBe(expected)
     }
   })
 })
 
 describe('buildRaceEntryFunnel', () => {
-  it('keeps every wish, with or without an attempt', () => {
+  it('shows a race only while somebody is chasing a place in it', () => {
+    // A race with no attempt is not a row here: it is a date in the calendar
+    // like any other, and this list is only the paperwork.
     const groups = buildRaceEntryFunnel(
-      [item({ id: 'wish' }), item({ id: 'dream-only' })],
-      [entry({ bucketListItemId: 'wish', entryStatus: 'applied' })],
+      [race({ id: 'race-1' }), race({ id: 'race-quiet' })],
+      [entry({ raceId: 'race-1', entryStatus: 'applied' })],
       TODAY,
     )
 
     const byKey = Object.fromEntries(groups.map((group) => [group.key, group.rows]))
-    expect(byKey.applied!.map((r) => r.item.id)).toEqual(['wish'])
-    expect(byKey.dream!.map((r) => r.item.id)).toEqual(['dream-only'])
+    expect(byKey.applied!.map((r) => r.race.id)).toEqual(['race-1'])
+    expect(groups.every((group) => group.rows.every((r) => r.race.id !== 'race-quiet'))).toBe(true)
   })
 
   it('takes the latest year as the current attempt', () => {
     const groups = buildRaceEntryFunnel(
-      [item({ id: 'wish' })],
+      [race({ id: 'race-1' })],
       [
         entry({ id: 'old', year: 2026, entryStatus: 'rejected' }),
         entry({ id: 'new', year: 2027, entryStatus: 'applied' }),
@@ -124,50 +108,45 @@ describe('buildRaceEntryFunnel', () => {
     expect(applied.rows[0]?.entry?.id).toBe('new')
   })
 
-  it('ignores an attempt whose wish is gone', () => {
-    const groups = buildRaceEntryFunnel([], [entry({ bucketListItemId: 'deleted' })], TODAY)
+  it('ignores an attempt at a race this account does not hold', () => {
+    const groups = buildRaceEntryFunnel([], [entry({ raceId: 'deleted' })], TODAY)
     expect(groups.every((group) => group.rows.length === 0)).toBe(true)
   })
 
   it('sorts by the next date still ahead, not by one that has passed', () => {
     const groups = buildRaceEntryFunnel(
-      [item({ id: 'closing' }), item({ id: 'securing' })],
+      [race({ id: 'closing' }), race({ id: 'securing' })],
       [
         // Opened two days ago and closes in nine.
         entry({
           id: 'e1',
-          bucketListItemId: 'closing',
+          raceId: 'closing',
           registrationOpensAt: days(-2),
           registrationClosesAt: days(9),
         }),
-        entry({ id: 'e2', bucketListItemId: 'securing', entryStatus: 'accepted', placeConfirmByAt: days(6) }),
+        entry({ id: 'e2', raceId: 'securing', entryStatus: 'accepted', placeConfirmByAt: days(6) }),
       ],
       TODAY,
     )
 
     const actionNeeded = groups.find((group) => group.key === 'action_needed')!
-    expect(actionNeeded.rows.map((r) => r.item.id)).toEqual(['securing', 'closing'])
+    expect(actionNeeded.rows.map((r) => r.race.id)).toEqual(['securing', 'closing'])
   })
 
   it('puts anchors first, then the nearest date', () => {
     const groups = buildRaceEntryFunnel(
+      [race({ id: 'soon' }), race({ id: 'later' }), race({ id: 'race-anchor' })],
       [
-        item({ id: 'soon' }),
-        item({ id: 'later' }),
-        // The anchor is a fact about the race, so the sort reads the identity.
-        item({ id: 'anchor', raceId: 'race-anchor' }),
-      ],
-      [
-        entry({ id: 'e1', bucketListItemId: 'soon', registrationOpensAt: days(10) }),
-        entry({ id: 'e2', bucketListItemId: 'later', registrationOpensAt: days(200) }),
-        entry({ id: 'e3', bucketListItemId: 'anchor', registrationOpensAt: days(120) }),
+        entry({ id: 'e1', raceId: 'soon', registrationOpensAt: days(10) }),
+        entry({ id: 'e2', raceId: 'later', registrationOpensAt: days(200) }),
+        entry({ id: 'e3', raceId: 'race-anchor', registrationOpensAt: days(120) }),
       ],
       TODAY,
       new Set(['race-anchor']),
     )
 
     const watching = groups.find((group) => group.key === 'watching')!
-    expect(watching.rows.map((r) => r.item.id)).toEqual(['anchor', 'soon', 'later'])
+    expect(watching.rows.map((r) => r.race.id)).toEqual(['race-anchor', 'soon', 'later'])
   })
 
   it('returns every group, in order, even when empty', () => {

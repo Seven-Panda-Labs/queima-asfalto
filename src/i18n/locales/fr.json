@@ -1453,18 +1453,15 @@
   "entry": {
     "title": "Inscription",
     "subtitle": "Quand elle ouvre, quand elle ferme, et ce qu'il reste à faire pour entrer dans cette course.",
-    "year": "Année",
-    "discipline": "Distance",
     "method": "Mode d'inscription",
     "status": "Statut",
     "dates": "Dates",
-    "datesHint": "Laisse vide ce qui n'est pas encore publié. Rien n'est inventé.",
     "raceDate": "Date de la course",
+    "datesHint": "Laisse vide ce qui n'est pas encore publié. Rien n'est inventé.",
     "opensAt": "Ouverture des inscriptions",
     "closesAt": "Fermeture des inscriptions",
     "drawAt": "Tirage",
     "placeConfirmByAt": "Sécuriser la place avant",
-    "raceDateConfirmed": "La date de la course est confirmée",
     "registrationUrl": "Lien d'inscription",
     "fee": "Prix",
     "feeCurrency": "Devise",
@@ -1472,9 +1469,7 @@
     "feeNeedsCurrency": "Choisis la monnaie, sinon le tarif n'arrive pas au catalogue.",
     "saved": "Inscription enregistrée.",
     "saveError": "Impossible d'enregistrer l'inscription.",
-    "yearError": "Une année entre 2000 et 2100.",
     "closesBeforeOpens": "La fermeture ne peut pas précéder l'ouverture.",
-    "itemGone": "Cette envie n'existe plus.",
     "methods": {
       "lottery": "Tirage au sort",
       "first_come": "Premier arrivé",
@@ -1492,11 +1487,12 @@
       "declined": "Renoncé",
       "missed": "Délai manqué"
     },
-    "registeredNeedsDate": "Pour être inscrit, donne la date de la course : elle va au calendrier.",
-    "registeredNeedsDiscipline": "Indique la distance que tu vas courir.",
-    "savedWithEvent": "Inscription enregistrée, et la course est au calendrier.",
     "prefilled": "Prérempli depuis le catalogue, avec ce que publie {{source}}. Vérifie avant de compter sur ces dates.",
-    "prefilledReviewed": "Prérempli depuis le catalogue, vérifié sur {{source}}."
+    "prefilledReviewed": "Prérempli depuis le catalogue, vérifié sur {{source}}.",
+    "eventGone": "Cette course n'existe plus.",
+    "registeredConfirmsEvent": "En enregistrant, la course est confirmée au calendrier.",
+    "addDeadlines": "Cette course a un tirage ou des échéances ? Les noter",
+    "openDeadlines": "Tirage et échéances de cette course"
   },
   "season": {
     "tuneUpWindow": "test de ~{{distance}} km entre {{from}} et {{to}}",

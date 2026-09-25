@@ -209,7 +209,7 @@ export function Dashboard() {
       </section>
 
       <section className="mt-5">
-        <DeadlineCard items={bucketListItems} entries={raceEntries} />
+        <DeadlineCard races={races} entries={raceEntries} />
       </section>
 
       <section className="mt-5">

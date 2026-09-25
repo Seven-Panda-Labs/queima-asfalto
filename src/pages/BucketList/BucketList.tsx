@@ -24,10 +24,9 @@ import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
-import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
 import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
-import { BucketListFunnel } from './BucketListFunnel'
+import { WishList } from './WishList'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -155,19 +154,6 @@ export function BucketList() {
         return a.name.localeCompare(b.name, 'pt')
       })
   }, [items, eventTypeFilter, monthFilter])
-
-  // A shared view carries no entries: the snapshot does not include them, so
-  // every row lands in the group for a race nobody has acted on yet.
-  const funnelGroups = useMemo(
-    () =>
-      buildRaceEntryFunnel(
-        filteredItems,
-        isSharedView ? [] : raceEntries,
-        undefined,
-        anchorIds,
-      ),
-    [anchorIds, filteredItems, isSharedView, raceEntries],
-  )
 
   /**
    * The season, as the rules can read it: the races that have a date.
@@ -421,12 +407,11 @@ export function BucketList() {
             </Suspense>
           </div>
         ) : (
-          <BucketListFunnel
-            groups={funnelGroups}
+          <WishList
+            items={filteredItems}
             season={isSharedView ? new Map() : season}
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
-            showEntryLink={!isSharedView}
-            actions={({ item }) => (
+            actions={(item) => (
               <>
                 {item.link ? (
                   <a

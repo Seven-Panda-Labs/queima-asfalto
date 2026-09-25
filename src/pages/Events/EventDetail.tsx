@@ -328,7 +328,10 @@ export function EventDetail() {
       }
 
       toast.success(t(already ? 'outcome.tryAgainExists' : 'outcome.tryAgainDone', { year }))
-      navigate(`/bucket-list/${itemId}/inscricao`)
+      // No event for that season yet, so there is nowhere to send them but
+      // the list the wish went back to. The dates show up on the home page
+      // until the race is scheduled and the entry has a page of its own.
+      navigate('/bucket-list')
     } catch {
       setError(t('outcome.tryAgainError'))
     } finally {
@@ -641,6 +644,22 @@ export function EventDetail() {
           <div className="mt-4 flex flex-wrap items-center gap-2">
             <SeasonNotes season={season} />
           </div>
+        ) : null}
+
+        {/* The paperwork, for the races that have any. Most have none, so this
+            is an offer rather than a step: a lottery, a window that opens at
+            nine in the morning, a place that has to be paid for by a date. */}
+        {!isSharedView && event.raceId && (event.status === 'planned' || event.status === 'confirmed') ? (
+          <Link
+            to={`/eventos/${event.id}/inscricao`}
+            className="mt-4 block rounded-lg border border-dashed border-border px-4 py-3 text-xs text-muted hover:border-primary hover:text-primary"
+          >
+            {raceEntries.some(
+              (entry) => entry.raceId === event.raceId && entry.year === event.date.getFullYear(),
+            )
+              ? t('entry.openDeadlines')
+              : t('entry.addDeadlines')}
+          </Link>
         ) : null}
 
         {/* Only on the runner's own event, and only where the chain is broken:

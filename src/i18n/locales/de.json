@@ -1453,18 +1453,15 @@
   "entry": {
     "title": "Anmeldung",
     "subtitle": "Wann sie öffnet, wann sie schließt, und was noch fehlt, um bei diesem Rennen dabei zu sein.",
-    "year": "Jahr",
-    "discipline": "Distanz",
     "method": "Zugang zum Start",
     "status": "Status",
     "dates": "Termine",
+    "raceDate": "Renndatum",
     "datesHint": "Was nicht veröffentlicht ist, bleibt leer. Nichts wird erfunden.",
-    "raceDate": "Renntag",
     "opensAt": "Anmeldung öffnet",
     "closesAt": "Anmeldung schließt",
     "drawAt": "Ziehung",
     "placeConfirmByAt": "Platz sichern bis",
-    "raceDateConfirmed": "Der Renntag ist bestätigt",
     "registrationUrl": "Anmeldelink",
     "fee": "Preis",
     "feeCurrency": "Währung",
@@ -1472,9 +1469,7 @@
     "feeNeedsCurrency": "Wähle die Währung, sonst erreicht die Gebühr den Katalog nicht.",
     "saved": "Anmeldung gespeichert.",
     "saveError": "Anmeldung konnte nicht gespeichert werden.",
-    "yearError": "Ein Jahr zwischen 2000 und 2100.",
     "closesBeforeOpens": "Der Schluss kann nicht vor der Öffnung liegen.",
-    "itemGone": "Dieser Wunsch existiert nicht mehr.",
     "methods": {
       "lottery": "Losverfahren",
       "first_come": "Nach Anmeldung",
@@ -1492,11 +1487,12 @@
       "declined": "Abgelehnt",
       "missed": "Frist verpasst"
     },
-    "registeredNeedsDate": "Für eine Anmeldung braucht es den Renntag: er geht in den Kalender.",
-    "registeredNeedsDiscipline": "Sag, welche Distanz du läufst.",
-    "savedWithEvent": "Anmeldung gespeichert, und das Rennen steht im Kalender.",
     "prefilled": "Aus dem Katalog ausgefüllt, mit dem, was {{source}} veröffentlicht. Prüfe es, bevor du auf diese Termine baust.",
-    "prefilledReviewed": "Aus dem Katalog ausgefüllt, gegen {{source}} geprüft."
+    "prefilledReviewed": "Aus dem Katalog ausgefüllt, gegen {{source}} geprüft.",
+    "eventGone": "Dieses Rennen gibt es nicht mehr.",
+    "registeredConfirmsEvent": "Beim Speichern wird das Rennen im Kalender bestätigt.",
+    "addDeadlines": "Hat dieses Rennen ein Losverfahren oder Fristen? Notieren",
+    "openDeadlines": "Losverfahren und Fristen dieses Rennens"
   },
   "season": {
     "tuneUpWindow": "Test über ~{{distance}} km zwischen {{from}} und {{to}}",
