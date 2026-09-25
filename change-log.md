@@ -15,6 +15,7 @@
 - **Um desejo é um marcador, não uma ficha:** deixa de se escrever um desejo à mão com nome, local, distância e mês alvo. Marca-se a prova no catálogo, e o nome e o local passam a ser os da prova, por isso nunca mais discordam. Fica a nota, que é a única coisa que era mesmo tua.
 - **A época é o caminho até cada âncora:** em vez de doze meses para encher, uma linha por prova âncora com as provas que a preparam, em ordem, e o tempo entre cada uma. O espaço entre duas provas é um botão: abre o catálogo já a perguntar por aquelas datas.
 - **O desejo deixa de guardar o que a prova já diz:** nome, local, distância, disciplinas e mês alvo saem do desejo e ficam onde vivem, na prova e no catálogo. Um desejo de uma prova que o catálogo não tem continua a mostrar o que escreveste.
+- **A lista de desejos deixa de ficar em branco por causa de uma data:** um campo de data mal escrito derrubava a lista inteira, porque a página lê todos os desejos de uma vez. Agora o desejo aparece, com a data que der.
 
 ---
 

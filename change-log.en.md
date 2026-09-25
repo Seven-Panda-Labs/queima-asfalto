@@ -15,6 +15,7 @@
 - **A wish is a marker, not a record:** no more writing one by hand with a name, a place, a distance and a target month. You mark the race in the catalog, and the name and the place are the race's, so the two can never disagree. The note stays, which was the only part that was yours.
 - **The season is the path to each anchor:** instead of twelve months to fill, one line per anchor race with the races that prepare it, in order, and the time between each. The space between two races is a button: it opens the catalog already asking about those dates.
 - **A wish stops storing what the race already says:** the name, the place, the distance, the disciplines and the target month leave the wish and stay where they live, on the race and in the catalog. A wish for a race the catalog does not hold still shows what you typed.
+- **The wish list no longer goes blank over a date:** one badly written date field took the whole list down, because the page maps every wish at once. Now the wish shows, with whatever date it can read.
 
 ---
 

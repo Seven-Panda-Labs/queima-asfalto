@@ -26,8 +26,24 @@ function withoutUndefined<T extends Record<string, unknown>>(data: T): Partial<T
   ) as Partial<T>
 }
 
-function timestampToDate(value: Timestamp | undefined): Date {
-  return value?.toDate() ?? new Date(0)
+/**
+ * A date out of a field that should hold a Firestore timestamp.
+ *
+ * It is not always one. A script that wrote an ISO string into `updatedAt`
+ * took the whole list down, because the page maps every document and one
+ * `toDate` that is not a function throws for all of them. A wish is worth
+ * showing with the wrong date; it is not worth losing the list over.
+ */
+function timestampToDate(value: unknown): Date {
+  if (value && typeof (value as Timestamp).toDate === 'function') {
+    return (value as Timestamp).toDate()
+  }
+  if (value instanceof Date) return value
+  if (typeof value === 'string' || typeof value === 'number') {
+    const parsed = new Date(value)
+    if (!Number.isNaN(parsed.getTime())) return parsed
+  }
+  return new Date(0)
 }
 
 export function docToBucketListItem(id: string, data: Record<string, unknown>): BucketListItem {
