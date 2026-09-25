@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState, type FormEvent } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { DayField } from '../../components/DatePicker'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
@@ -27,7 +28,7 @@ import {
 const inputClass =
   'mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground'
 
-/** `YYYY-MM-DD` for a native date input, which is what an empty date needs. */
+/** `YYYY-MM-DD`, the form's day value, or empty for no date. */
 function toInputDate(date: Date | undefined): string {
   return date ? date.toISOString().slice(0, 10) : ''
 }
@@ -414,11 +415,10 @@ export function EntryForm() {
             {dateFields.map(([key, label]) => (
               <label key={key} className="text-sm font-semibold text-foreground">
                 {label}
-                <input
-                  type="date"
-                  value={form[key] as string}
-                  onChange={(event) => update(key, event.target.value as FormState[typeof key])}
-                  className={inputClass}
+                <DayField
+                  value={(form[key] as string) || undefined}
+                  onChange={(day) => update(key, (day ?? '') as FormState[typeof key])}
+                  hasError={Boolean(errors[key])}
                 />
                 {errors[key] ? <span className="text-xs text-danger">{errors[key]}</span> : null}
               </label>

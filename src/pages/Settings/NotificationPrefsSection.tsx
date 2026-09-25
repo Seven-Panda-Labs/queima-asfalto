@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
+import { TimeField } from '../../components/TimeField'
 import { useAuth } from '../../contexts/AuthContext'
 import { REMINDER_DAYS_OPTIONS } from '../../types/NotificationPrefs'
 import { useNotificationPrefs } from '../../hooks/useNotificationPrefs'
@@ -128,13 +129,15 @@ export function NotificationPrefsSection() {
             <label htmlFor="reminder-time" className="block text-sm font-medium text-foreground">
               {t('notifications.reminderTime')}
             </label>
-            <input
-              id="reminder-time"
-              type="time"
-              value={prefs.reminderTime}
-              onChange={(event) => void handleTimeChange(event.target.value)}
-              className="mt-1 w-full max-w-xs rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground"
-            />
+            <div className="mt-1">
+              <TimeField
+                id="reminder-time"
+                value={prefs.reminderTime}
+                onChange={(time) => {
+                  if (time) void handleTimeChange(time)
+                }}
+              />
+            </div>
           </div>
 
           <label className="flex items-start gap-3">

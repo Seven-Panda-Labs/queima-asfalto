@@ -2,6 +2,7 @@ import { Fragment, useEffect, useMemo, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { DayField } from '../../components/DatePicker'
 import { NearbyParkruns } from '../../components/NearbyParkruns'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { useAuth } from '../../contexts/AuthContext'
@@ -633,12 +634,10 @@ export function FindRaces() {
           <label htmlFor="from" className="block text-sm font-semibold text-foreground">
             {t('findRaces.from')}
           </label>
-          <input
+          <DayField
             id="from"
-            type="date"
-            value={criteria.from}
-            onChange={(event) => setCriteria({ ...criteria, from: event.target.value })}
-            className={FIELD}
+            value={criteria.from || undefined}
+            onChange={(day) => setCriteria({ ...criteria, from: day ?? '' })}
           />
         </div>
 
@@ -646,12 +645,10 @@ export function FindRaces() {
           <label htmlFor="to" className="block text-sm font-semibold text-foreground">
             {t('findRaces.to')}
           </label>
-          <input
+          <DayField
             id="to"
-            type="date"
-            value={criteria.to}
-            onChange={(event) => setCriteria({ ...criteria, to: event.target.value })}
-            className={FIELD}
+            value={criteria.to || undefined}
+            onChange={(day) => setCriteria({ ...criteria, to: day ?? '' })}
           />
         </div>
 

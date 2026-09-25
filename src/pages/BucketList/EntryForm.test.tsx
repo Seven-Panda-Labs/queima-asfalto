@@ -184,10 +184,10 @@ describe('EntryForm and what the catalog already knows', () => {
 
     // The year comes from the edition, not from the form's guess of next year.
     await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2099))
-    expect(screen.getByLabelText(/Data da prova/)).toHaveValue('2099-10-10')
-    // An instant is cut down to the day a date input takes.
-    expect(screen.getByLabelText(/Inscrições abrem/)).toHaveValue('2099-01-15')
-    expect(screen.getByLabelText(/Inscrições fecham/)).toHaveValue('2099-09-30')
+    expect(screen.getByLabelText(/Data da prova/)).toHaveTextContent('10/10/2099')
+    // An instant is cut down to its day.
+    expect(screen.getByLabelText(/Inscrições abrem/)).toHaveTextContent('15/01/2099')
+    expect(screen.getByLabelText(/Inscrições fecham/)).toHaveTextContent('30/09/2099')
     expect(screen.getByLabelText(/Preço/)).toHaveValue(45)
   })
 
@@ -203,7 +203,7 @@ describe('EntryForm and what the catalog already knows', () => {
     catalogRace = catalog()
     render(<EntryForm />)
 
-    await waitFor(() => expect(screen.getByLabelText(/Data da prova/)).toHaveValue('2099-10-10'))
+    await waitFor(() => expect(screen.getByLabelText(/Data da prova/)).toHaveTextContent('10/10/2099'))
     // The review rule: an unreviewed entry may suggest and may never assert.
     expect(screen.getByLabelText(/A data da prova está confirmada/)).not.toBeChecked()
   })
@@ -236,7 +236,7 @@ describe('EntryForm and what the catalog already knows', () => {
 
     // A field the runner left empty is an answer, not a gap to fill in later.
     await waitFor(() => expect(screen.getByLabelText(/Ano/)).toHaveValue(2098))
-    expect(screen.getByLabelText(/Data da prova/)).toHaveValue('')
+    expect(screen.getByLabelText(/Data da prova/)).toHaveTextContent('Definir data')
     expect(screen.getByLabelText(/Preço/)).toHaveValue(null)
     expect(screen.queryByText(/Preenchido a partir do catálogo/)).not.toBeInTheDocument()
   })
@@ -245,7 +245,7 @@ describe('EntryForm and what the catalog already knows', () => {
     catalogRace = null
     render(<EntryForm />)
 
-    await waitFor(() => expect(screen.getByLabelText(/Data da prova/)).toHaveValue(''))
+    await waitFor(() => expect(screen.getByLabelText(/Data da prova/)).toHaveTextContent('Definir data'))
     expect(screen.queryByText(/Preenchido a partir do catálogo/)).not.toBeInTheDocument()
   })
 })

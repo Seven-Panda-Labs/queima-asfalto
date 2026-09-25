@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next'
-import { DatePicker } from '../../components/DatePicker/DatePicker'
+import { DatePicker } from './DatePicker'
 import { parseDateInput, toDateInputValue } from '../../utils/date'
 
 /**
@@ -10,8 +10,8 @@ import { parseDateInput, toDateInputValue } from '../../utils/date'
  * September to somebody reading the page in Portuguese. The app's picker
  * writes the date the way the app's own language writes it.
  *
- * Optional by nature here: an edition can be dated with no gates at all, and a
- * gate can be a date that was published and later withdrawn.
+ * Optional by nature: an empty value is a button that sets one, and a set value
+ * can be removed again.
  */
 export function DayField({
   id,
@@ -35,7 +35,7 @@ export function DayField({
         onClick={() => onChange(toDateInputValue(new Date()))}
         className="mt-1 w-full rounded-md border border-dashed border-border px-3 py-2 text-start text-sm text-muted hover:border-primary hover:text-primary"
       >
-        {t('admin.catalogSetDate')}
+        {t('datePicker.setDate')}
       </button>
     )
   }

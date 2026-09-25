@@ -100,7 +100,9 @@ export function DatePicker({ id, value, onChange, hasError = false }: DatePicker
 
           <div className="mt-3 grid grid-cols-7 gap-1 text-center text-xs font-semibold text-muted">
             {weekdays.map((weekday) => (
-              <span key={weekday}>{weekday}</span>
+              <abbr key={weekday.long} title={weekday.long} className="no-underline">
+                {weekday.narrow}
+              </abbr>
             ))}
           </div>
 

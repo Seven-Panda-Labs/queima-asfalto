@@ -909,9 +909,13 @@
     "dayAria": "{{day}}, {{month}}{{events}}"
   },
   "datePicker": {
+    "setDate": "Datum setzen",
     "chooseDate": "Datum wählen",
     "prevMonth": "Vorheriger Monat",
     "nextMonth": "Nächster Monat"
+  },
+  "timeField": {
+    "minute": "Minuten"
   },
   "emojiPicker": {
     "choose": "Emoji wählen"
@@ -1333,7 +1337,6 @@
     "catalogNoEditions": "Keine Ausgaben. Füge eine hinzu, sobald der Veranstalter Termine veröffentlicht.",
     "catalogEditionYear": "Jahr",
     "catalogRaceDate": "Renntag",
-    "catalogSetDate": "Datum setzen",
     "catalogGateTime": "Uhrzeit",
     "catalogGateTimeZone": "Uhrzeit in {{zone}}",
     "catalogGateTimeNeedsZone": "wähle zuerst die Zone des Rennens",
