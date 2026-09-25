@@ -131,7 +131,8 @@ export function onboardingStepPath(
     case 'disciplines':
       return '/definicoes?tab=disciplinas'
     case 'anchor':
-      return '/planeamento/novo'
+      // The catalog, because a wish is a marker on a race it holds.
+      return '/planeamento/descobrir'
     case 'entry':
       // Straight at the anchor's own page, which is where its status is set and
       // where the deadlines live. A race that is still only a wish has no page

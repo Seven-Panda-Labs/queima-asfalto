@@ -2,7 +2,6 @@ import { lazy, Suspense, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
-import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import {
   CalendarPlusIcon,
   ExternalLinkIcon,
@@ -19,6 +18,7 @@ import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
+import { wishSubject } from '../../domain/wishSubject'
 import { loadCatalogRace } from '../../services/raceCatalog'
 import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
@@ -33,10 +33,6 @@ import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
-import { formatEventTypeLabel } from '../../i18n/formatters'
-import { useDisciplines } from '../../contexts/DisciplinesContext'
-import { visibleDisciplines } from '../../domain/disciplinePreferences'
-import { bucketListItemHasDiscipline } from '../../utils/bucketListDisciplines'
 import {
   bucketListItemsWithCoordinates,
   bucketListItemsWithoutCoordinates,
@@ -46,12 +42,6 @@ import {
   setBucketListViewMode,
   type BucketListViewMode,
 } from '../../utils/bucketListViewMode'
-import {
-  formatTargetMonth,
-  TARGET_MONTHS,
-  targetMonthSortIndex,
-  type TargetMonth,
-} from '../../utils/targetMonth'
 
 const BucketListMap = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.BucketListMap })),
@@ -80,8 +70,6 @@ export function Planning() {
     isSharedView,
     setActiveOwnerId,
   } = useSharedOwnerTabs('bucketList', 'shares.bucketListTabMine')
-  const [eventTypeFilter, setEventTypeFilter] = useState<EventType | 'all'>('all')
-  const [monthFilter, setMonthFilter] = useState<TargetMonth | 'all'>('all')
   const [viewMode, setViewMode] = useState<BucketListViewMode>(() => getBucketListViewMode(user?.uid))
   const [itemToDelete, setItemToDelete] = useState<BucketListItem | null>(null)
   const [itemToSchedule, setItemToSchedule] = useState<BucketListItem | null>(null)
@@ -119,46 +107,12 @@ export function Planning() {
   const removeItem = isSharedView ? sharedBucketList.removeItem : ownBucketList.removeItem
   const canWrite = !isSharedView || activeOwner?.permissions.bucketList === 'write'
 
-  const addItemPath = activeOwnerId
-    ? `/planeamento/novo?owner=${activeOwnerId}`
-    : '/planeamento/novo'
 
-  const { enabledDisciplines } = useDisciplines()
-
-  /** Only the enabled disciplines, plus whichever one is filtering right now:
-   *  a link into a disabled discipline would otherwise narrow the list with no
-   *  pill on screen to say so, and no way to clear it. */
-  const disciplineOptions = useMemo(
-    () =>
-      visibleDisciplines(enabledDisciplines, eventTypeFilter === 'all' ? [] : [eventTypeFilter]),
-    [enabledDisciplines, eventTypeFilter],
+  /** By name, because a marker has nothing else to sort by. */
+  const sortedItems = useMemo(
+    () => [...items].sort((left, right) => left.name.localeCompare(right.name, 'pt')),
+    [items],
   )
-
-  const availableMonths = useMemo(() => {
-    const months = new Set<TargetMonth>()
-    for (const item of items) {
-      if (item.targetMonth && TARGET_MONTHS.includes(item.targetMonth as TargetMonth)) {
-        months.add(item.targetMonth as TargetMonth)
-      }
-    }
-    return TARGET_MONTHS.filter((month) => months.has(month))
-  }, [items])
-
-  const filteredItems = useMemo(() => {
-    return items
-      .filter((item) => {
-        if (eventTypeFilter !== 'all' && !bucketListItemHasDiscipline(item, eventTypeFilter)) {
-          return false
-        }
-        if (monthFilter !== 'all' && item.targetMonth !== monthFilter) return false
-        return true
-      })
-      .sort((a, b) => {
-        const monthDiff = targetMonthSortIndex(a.targetMonth) - targetMonthSortIndex(b.targetMonth)
-        if (monthDiff !== 0) return monthDiff
-        return a.name.localeCompare(b.name, 'pt')
-      })
-  }, [items, eventTypeFilter, monthFilter])
 
   /**
    * The season, as the rules can read it: the races that have a date.
@@ -185,10 +139,10 @@ export function Planning() {
     [allEvents, ownBucketList.items, raceEntries, races],
   )
 
-  const mappedItems = useMemo(() => bucketListItemsWithCoordinates(filteredItems), [filteredItems])
+  const mappedItems = useMemo(() => bucketListItemsWithCoordinates(sortedItems), [sortedItems])
   const unmappedItems = useMemo(
-    () => bucketListItemsWithoutCoordinates(filteredItems),
-    [filteredItems],
+    () => bucketListItemsWithoutCoordinates(sortedItems),
+    [sortedItems],
   )
 
   function handleViewModeChange(mode: BucketListViewMode) {
@@ -245,14 +199,15 @@ export function Planning() {
     if (!item || !user) return
     setScheduling(true)
     try {
+      const subject = wishSubject(item, races)
       await createEvent(user.uid, {
-        name: item.name,
+        name: subject.name,
         date: new Date(`${day}T12:00:00`),
         realDistance: item.realDistance,
         eventType,
-        location: item.location,
-        locationLat: item.locationLat,
-        locationLng: item.locationLng,
+        location: subject.location,
+        locationLat: subject.locationLat,
+        locationLng: subject.locationLng,
         status: 'planned',
         emoji: item.emoji,
         notes: item.notes,
@@ -330,61 +285,12 @@ export function Planning() {
               {t('findRaces.cta')}
             </Link>
           ) : null}
-          {canWrite ? (
-            <Link
-              to={addItemPath}
-              className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
-            >
-              {t('common.add')}
-            </Link>
-          ) : null}
         </div>
 
         {/* Only on your own list, and only while something is unlinked: it is
             a one-off tidy-up, not a permanent part of the page. */}
         {!isSharedView && user ? (
           <LinkWishesToCatalog items={items} races={races} userId={user.uid} />
-        ) : null}
-
-        {items.length > 0 ? (
-          <>
-            <FilterBar>
-              <FilterGroup label={t('bucketList.discipline')}>
-                <FilterPill
-                  active={eventTypeFilter === 'all'}
-                  onClick={() => setEventTypeFilter('all')}
-                >
-                  {t('bucketList.allDisciplines')}
-                </FilterPill>
-                {disciplineOptions.map((type) => (
-                  <FilterPill
-                    key={type}
-                    active={eventTypeFilter === type}
-                    onClick={() => setEventTypeFilter(type)}
-                  >
-                    {formatEventTypeLabel(type)}
-                  </FilterPill>
-                ))}
-              </FilterGroup>
-
-              {availableMonths.length > 0 ? (
-                <FilterGroup label={t('bucketList.targetMonthFilter')}>
-                  <FilterPill active={monthFilter === 'all'} onClick={() => setMonthFilter('all')}>
-                    {t('common.all')}
-                  </FilterPill>
-                  {availableMonths.map((month) => (
-                    <FilterPill
-                      key={month}
-                      active={monthFilter === month}
-                      onClick={() => setMonthFilter(month)}
-                    >
-                      {formatTargetMonth(month)}
-                    </FilterPill>
-                  ))}
-                </FilterGroup>
-              ) : null}
-            </FilterBar>
-          </>
         ) : null}
 
         {error ? <p className="text-sm text-danger">{error}</p> : null}
@@ -407,16 +313,16 @@ export function Planning() {
                 </>
               )}
             </p>
-            {canWrite ? (
+            {canWrite && !isSharedView ? (
               <Link
-                to={addItemPath}
+                to="/planeamento/descobrir"
                 className="mt-6 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
               >
-                {t('bucketList.addFirst')}
+                {t('findRaces.cta')}
               </Link>
             ) : null}
           </div>
-        ) : filteredItems.length === 0 ? (
+        ) : sortedItems.length === 0 ? (
           <div className="rounded-lg border border-border bg-surface p-8 text-center">
             <p className="text-lg font-semibold text-foreground">{t('bucketList.noFilterMatch')}</p>
             <p className="mt-2 text-muted">{t('bucketList.noFilterHint')}</p>
@@ -432,7 +338,8 @@ export function Planning() {
           </div>
         ) : (
           <WishList
-            items={filteredItems}
+            items={sortedItems}
+            races={isSharedView ? [] : races}
             season={isSharedView ? new Map() : season}
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
             actions={(item) => (
