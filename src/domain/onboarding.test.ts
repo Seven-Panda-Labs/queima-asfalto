@@ -134,23 +134,19 @@ describe('shouldShowOnboarding', () => {
 })
 
 describe('onboardingStepPath', () => {
-  it('sends the entry step at the anchor it is about', () => {
-    expect(onboardingStepPath('entry', { anchorItemId: 'item-1' })).toBe(
-      '/bucket-list/item-1/inscricao',
-    )
-  })
-
-  it('sends it at the anchor event when the anchor was never a wish', () => {
+  it('sends the entry step at the anchor page, where its status and deadlines are', () => {
     expect(onboardingStepPath('entry', { anchorEventId: 'event-1' })).toBe('/eventos/event-1')
   })
 
-  it('falls back to the list when there is no anchor yet', () => {
-    expect(onboardingStepPath('entry')).toBe('/bucket-list')
+  it('falls back to planning while the anchor is still only a wish', () => {
+    // A wish has no page of its own, and nothing to put deadlines on until it
+    // has a date and a place in the calendar.
+    expect(onboardingStepPath('entry')).toBe('/planeamento')
   })
 
   it('knows where the other steps live', () => {
     expect(onboardingStepPath('disciplines')).toBe('/definicoes?tab=disciplinas')
-    expect(onboardingStepPath('anchor')).toBe('/bucket-list/novo')
+    expect(onboardingStepPath('anchor')).toBe('/planeamento/novo')
     expect(onboardingStepPath('result')).toBe('/eventos/novo')
   })
 })

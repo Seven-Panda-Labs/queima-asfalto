@@ -277,7 +277,7 @@ export function EventDetail() {
     try {
       await addItem(eventToBucketListItem(event))
       await removeEvent(event.id)
-      navigate('/bucket-list')
+      navigate('/planeamento')
     } catch {
       setError(t('eventDetail.recoverError'))
     } finally {
@@ -331,7 +331,7 @@ export function EventDetail() {
       // No event for that season yet, so there is nowhere to send them but
       // the list the wish went back to. The dates show up on the home page
       // until the race is scheduled and the entry has a page of its own.
-      navigate('/bucket-list')
+      navigate('/planeamento')
     } catch {
       setError(t('outcome.tryAgainError'))
     } finally {

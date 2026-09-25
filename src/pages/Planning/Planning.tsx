@@ -27,6 +27,8 @@ import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { WishList } from './WishList'
+import { SeasonShape } from '../../components/SeasonShape'
+import { seasonYears } from '../../domain/seasonShape'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -68,7 +70,7 @@ function BucketListSkeleton() {
   )
 }
 
-export function BucketList() {
+export function Planning() {
   const { t } = useTranslation()
   const { user } = useAuth()
   const {
@@ -97,6 +99,9 @@ export function BucketList() {
   /** Anchors live on the race, so a scheduled or directly created one counts. */
   const { races } = useRaces()
   const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
+  /** The season being planned, which is as often next year as this one. */
+  const years = useMemo(() => seasonYears(allEvents), [allEvents])
+  const [seasonYear, setSeasonYear] = useState(() => new Date().getFullYear())
   const sharedBucketList = useSharedBucketList(activeOwnerId)
 
   // Only for the account's own list: rolling over somebody else's wishes is not
@@ -115,8 +120,8 @@ export function BucketList() {
   const canWrite = !isSharedView || activeOwner?.permissions.bucketList === 'write'
 
   const addItemPath = activeOwnerId
-    ? `/bucket-list/novo?owner=${activeOwnerId}`
-    : '/bucket-list/novo'
+    ? `/planeamento/novo?owner=${activeOwnerId}`
+    : '/planeamento/novo'
 
   const { enabledDisciplines } = useDisciplines()
 
@@ -265,8 +270,23 @@ export function BucketList() {
   }
 
   return (
-    <PageShell title={t('bucketList.title')}>
-      <p className="mt-2 text-sm text-muted">{t('bucketList.subtitle')}</p>
+    <PageShell title={t('planning.title')}>
+      <p className="mt-2 text-sm text-muted">{t('planning.subtitle')}</p>
+
+      {/* The season first: the wishes below it are the answer to a gap in it,
+          which is the order somebody plans in. A shared list is somebody
+          else's wishes and carries no season of ours. */}
+      {!isSharedView ? (
+        <div className="mt-6">
+          <SeasonShape
+            events={allEvents}
+            year={seasonYear}
+            years={years}
+            anchorRaceIds={anchorIds}
+            onYear={setSeasonYear}
+          />
+        </div>
+      ) : null}
 
       <div className="mt-6 flex flex-col gap-6">
         <SharedOwnerTabs
@@ -288,6 +308,10 @@ export function BucketList() {
           />
         ) : null}
 
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          {t('planning.wishesTitle')}
+        </h2>
+
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <ViewSwitcher
             options={[
@@ -300,7 +324,7 @@ export function BucketList() {
           />
           {canWrite && !isSharedView ? (
             <Link
-              to="/bucket-list/descobrir"
+              to="/planeamento/descobrir"
               className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               {t('findRaces.cta')}
@@ -430,8 +454,8 @@ export function BucketList() {
                     <Link
                       to={
                         activeOwnerId
-                          ? `/bucket-list/${item.id}/editar?owner=${activeOwnerId}`
-                          : `/bucket-list/${item.id}/editar`
+                          ? `/planeamento/${item.id}/editar?owner=${activeOwnerId}`
+                          : `/planeamento/${item.id}/editar`
                       }
                       aria-label={t('common.edit')}
                       title={t('common.edit')}

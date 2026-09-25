@@ -44,14 +44,14 @@
   "nav": {
     "dashboard": "Tableau de bord",
     "events": "Événements",
-    "bucketList": "Bucket list",
     "goals": "Objectifs",
     "results": "Analyse",
     "settings": "Paramètres",
     "shares": "Partages",
     "pendingInvites": "{{count}} invitation(s) en attente",
     "main": "Navigation principale",
-    "admin": "Admin"
+    "admin": "Admin",
+    "planning": "Planification"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -491,6 +491,16 @@
     "scheduleDiscipline": "Distance",
     "scheduleNeedsDate": "Dis la date de la course. Sans date, pas de calendrier.",
     "scheduled": "{{name}} est au calendrier."
+  },
+  "planning": {
+    "title": "Planification",
+    "subtitle": "La saison que tu montes, ce que tu as marqué comme souhait, et le catalogue pour trouver le reste.",
+    "seasonTitle": "Ma saison",
+    "seasonYear": "Année de la saison",
+    "seasonCount_one": "1 course prévue",
+    "seasonCount_other": "{{count}} courses prévues",
+    "seasonEmptyMonth": "rien",
+    "wishesTitle": "Souhaits"
   },
   "linkWishes": {
     "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",
@@ -1551,9 +1561,9 @@
     "closes": "les inscriptions ferment le {{date}}",
     "closesUnreviewed": "la liste dit que ça ferme le {{date}}",
     "openSource": "Voir la source",
-    "add": "Ajouter",
-    "added": "Ajoutée",
-    "addedToast": "« {{name}} » est dans ta bucket list.",
+    "add": "Marquer « {{name}} » comme souhait",
+    "added": "Marquée comme souhait",
+    "addedToast": "« {{name}} » est marquée comme souhait.",
     "addError": "Impossible d'ajouter cette course.",
     "emptyCatalog": "Le catalogue de cette instance est vide. Un administrateur peut ajouter des courses ou activer la récolte.",
     "noMatches": "Rien dans le catalogue ne correspond à ces critères.",

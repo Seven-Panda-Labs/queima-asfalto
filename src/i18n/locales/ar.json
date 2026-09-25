@@ -44,14 +44,14 @@
   "nav": {
     "dashboard": "لوحة التحكم",
     "events": "الفعاليات",
-    "bucketList": "قائمة الأحلام",
     "goals": "الأهداف",
     "results": "التحليل",
     "settings": "الإعدادات",
     "shares": "المشاركات",
     "pendingInvites": "{{count}} دعوة (دعوات) معلّقة",
     "main": "التنقل الرئيسي",
-    "admin": "الإدارة"
+    "admin": "الإدارة",
+    "planning": "التخطيط"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -503,6 +503,16 @@
     "scheduleDiscipline": "المسافة",
     "scheduleNeedsDate": "حدّد تاريخ السباق. بلا تاريخ لا يوجد تقويم.",
     "scheduled": "{{name}} صار في التقويم."
+  },
+  "planning": {
+    "title": "التخطيط",
+    "subtitle": "الموسم الذي تبنيه، وما وضعت عليه علامة أمنية، والفهرس لإيجاد البقية.",
+    "seasonTitle": "موسمي",
+    "seasonYear": "سنة الموسم",
+    "seasonCount_one": "سباق واحد محجوز",
+    "seasonCount_other": "{{count}} سباقات محجوزة",
+    "seasonEmptyMonth": "لا شيء",
+    "wishesTitle": "الأمنيات"
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",
@@ -1575,9 +1585,9 @@
     "closes": "التسجيل يغلق في {{date}}",
     "closesUnreviewed": "القائمة تقول إنه يغلق في {{date}}",
     "openSource": "عرض المصدر",
-    "add": "أضف",
-    "added": "أُضيف",
-    "addedToast": "«{{name}}» أصبح في قائمة أمنياتك.",
+    "add": "ضع علامة أمنية على «{{name}}»",
+    "added": "عليها علامة أمنية",
+    "addedToast": "«{{name}}» صارت عليها علامة أمنية.",
     "addError": "تعذّر إضافة هذا السباق.",
     "emptyCatalog": "كتالوج هذه النسخة فارغ. يمكن لمسؤول إضافة سباقات أو تشغيل الحصد.",
     "noMatches": "لا شيء في الكتالوج يطابق هذه المعايير.",

@@ -22,7 +22,7 @@ const navItems = [
   { to: '/eventos', key: 'nav.events', end: false, badge: false },
   { to: '/analise', key: 'nav.results', end: false, badge: false },
   { to: '/objetivos', key: 'nav.goals', end: false, badge: false },
-  { to: '/bucket-list', key: 'nav.bucketList', end: false, badge: false },
+  { to: '/planeamento', key: 'nav.planning', end: false, badge: false },
   { to: '/definicoes', key: 'nav.settings', end: false, badge: true },
 ] as const
 

@@ -11,6 +11,7 @@
 - **Decir qué prueba del catálogo es un deseo:** la bucket list ofrece ahora el enlace para los deseos escritos a mano. Sin él, un deseo es solo un nombre: no sabe las fechas de la próxima edición ni se reconoce en la prueba que ya tienes en el calendario.
 - **Al calendario en un paso:** programar un deseo ya no abre el formulario de evento con la fecha de hoy. Pregunta la distancia, cuando hay elección, y el día, ya relleno con lo que el catálogo publica para la próxima edición.
 - **El sorteo y los plazos pasan a vivir en la prueba:** la lista de deseos deja de pedir un formulario de inscripción por cada sueño. Quien tenga que seguir un sorteo o un plazo lo hace en la prueba que ya está en el calendario, y quedar inscrito la confirma.
+- **Planificación, en lugar de Bucket List:** la navegación pasa a tener Planificación, con la forma de la temporada mes a mes para ver dónde faltan pruebas, los deseos como una sección, y el catálogo para encontrar el resto. Marcar un deseo es un corazón en la prueba del catálogo.
 
 ---
 
