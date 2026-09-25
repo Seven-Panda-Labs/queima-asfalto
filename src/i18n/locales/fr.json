@@ -510,7 +510,8 @@
       "days_other": "{{count}} jours",
       "weeks_one": "1 sem",
       "weeks_other": "{{count}} sem"
-    }
+    },
+    "otherSeason": "D'une autre saison, dans le cycle de celle-ci"
   },
   "linkWishes": {
     "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",

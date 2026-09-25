@@ -72,6 +72,52 @@ describe('seasonTimeline', () => {
     ])
   })
 
+  it('reaches back over the new year, because a cycle does not stop at it', () => {
+    // The build-up for an April anchor starts the previous autumn, and a year
+    // that begins on the first of January shows half a plan.
+    const legs = seasonTimeline(
+      [
+        event({ id: 'autumn', date: new Date('2026-11-08') }),
+        event({ id: 'winter', date: new Date('2027-02-14') }),
+        event({ id: 'anchor', date: new Date('2027-04-30'), raceId: 'race-hm' }),
+      ],
+      2027,
+      new Set(['race-hm']),
+    )
+
+    expect(legs[0]!.leadUp.map((race) => race.id)).toEqual(['autumn', 'winter'])
+    expect(legs[0]!.leadUp[0]!.inSeason).toBe(false)
+    expect(legs[0]!.leadUp[1]!.inSeason).toBe(true)
+  })
+
+  it('shows the anchor a season is building towards, even when it is next year', () => {
+    const legs = seasonTimeline(
+      [
+        event({ id: 'autumn', date: new Date('2027-11-08') }),
+        event({ id: 'anchor', date: new Date('2028-03-05'), raceId: 'race-hm' }),
+      ],
+      2027,
+      new Set(['race-hm']),
+    )
+
+    expect(legs).toHaveLength(1)
+    expect(legs[0]!.anchor?.id).toBe('anchor')
+    expect(legs[0]!.anchor?.inSeason).toBe(false)
+  })
+
+  it('does not drag in a race a year before the anchor: that is not a build-up', () => {
+    const legs = seasonTimeline(
+      [
+        event({ id: 'ancient', date: new Date('2025-06-01') }),
+        event({ id: 'anchor', date: new Date('2027-04-30'), raceId: 'race-hm' }),
+      ],
+      2027,
+      new Set(['race-hm']),
+    )
+
+    expect(legs[0]!.leadUp).toEqual([])
+  })
+
   it('says so even for an empty year, so the page has something to answer', () => {
     expect(seasonTimeline([], 2027)).toEqual([{ anchor: null, leadUp: [] }])
   })
@@ -88,15 +134,17 @@ describe('seasonTimeline', () => {
     expect(legs[0]!.leadUp.map((race) => race.id)).toEqual(['ran'])
   })
 
-  it('keeps the year asked for and nothing else', () => {
+  it('leaves out a year nothing in this one is building towards', () => {
     const legs = seasonTimeline(
       [
         event({ id: 'this-year', date: new Date('2027-04-11') }),
-        event({ id: 'next-year', date: new Date('2028-04-09') }),
+        event({ id: 'next-year', date: new Date('2028-09-09'), raceId: 'race-far' }),
       ],
       2027,
+      new Set(['race-far']),
     )
 
+    // Seventeen months apart: the second is not what the first prepares.
     expect(legs.flatMap((leg) => leg.leadUp).map((race) => race.id)).toEqual(['this-year'])
   })
 })
@@ -109,6 +157,7 @@ describe('gapBetween', () => {
     eventType: 'km_10' as const,
     status: 'planned' as const,
     isAnchor: false,
+    inSeason: true,
   })
 
   it('is the days between the two, not the days of the two', () => {
@@ -135,10 +184,16 @@ describe('seasonYears', () => {
     expect(seasonYears([], new Date('2026-09-25'))).toEqual([2026, 2027, 2028])
   })
 
-  it('adds a year the runner already has races in', () => {
+  it('adds a later year the runner already has races in', () => {
+    expect(
+      seasonYears([event({ id: 'far', date: new Date('2029-05-04') })], new Date('2026-09-25')),
+    ).toEqual([2026, 2027, 2028, 2029])
+  })
+
+  it('never offers a season that has been run', () => {
     expect(
       seasonYears([event({ id: 'old', date: new Date('2025-05-04') })], new Date('2026-09-25')),
-    ).toEqual([2025, 2026, 2027, 2028])
+    ).toEqual([2026, 2027, 2028])
   })
 })
 
@@ -150,6 +205,7 @@ describe('spanBetween', () => {
     eventType: 'km_10' as const,
     status: 'planned' as const,
     isAnchor: false,
+    inSeason: true,
   })
 
   it('is weeks, because that is how a season is planned', () => {

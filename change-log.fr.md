@@ -16,6 +16,7 @@
 - **La saison est le chemin vers chaque ancre :** au lieu de douze mois à remplir, une ligne par course ancre avec les courses qui la préparent, dans l'ordre, et le temps entre chacune. L'espace entre deux courses est un bouton : il ouvre le catalogue en demandant déjà ces dates.
 - **Un souhait cesse de stocker ce que la course dit déjà :** le nom, le lieu, la distance, les disciplines et le mois cible quittent le souhait et restent là où ils vivent, sur la course et dans le catalogue. Un souhait pour une course absente du catalogue affiche toujours ce que tu as écrit.
 - **La liste de souhaits ne se vide plus à cause d'une date :** un champ de date mal écrit faisait tomber toute la liste, car la page lit tous les souhaits d'un coup. Le souhait s'affiche maintenant, avec la date lisible.
+- **Le cycle d'une ancre traverse l'année :** la préparation qui commence à l'automne précédent, ou l'ancre qui tombe l'année suivante, apparaissent en plus pâle avec l'année à côté de la date. Les courses prennent moins de place, la saison vit dans l'adresse, donc revenir du catalogue te ramène à celle que tu planifiais, et le sélecteur n'offre plus de saisons déjà courues.
 
 ---
 

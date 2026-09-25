@@ -70,7 +70,7 @@ describe('SeasonTimeline', () => {
     // The days between the two, not the days of the two.
     expect(screen.getByLabelText('Encontrar uma prova antes de Prova Y')).toHaveAttribute(
       'href',
-      '/planeamento/descobrir?from=2027-01-11&to=2027-03-22',
+      '/planeamento/descobrir?from=2027-01-11&to=2027-03-22&season=2027',
     )
   })
 
@@ -119,7 +119,7 @@ describe('SeasonTimeline', () => {
 
     expect(screen.getByLabelText('Encontrar uma prova antes de Prova X')).toHaveAttribute(
       'href',
-      '/planeamento/descobrir?from=2027-01-01&to=2027-01-09',
+      '/planeamento/descobrir?from=2027-01-01&to=2027-01-09&season=2027',
     )
   })
 
@@ -130,8 +130,31 @@ describe('SeasonTimeline', () => {
 
     expect(screen.getByLabelText('Encontrar provas para esta época')).toHaveAttribute(
       'href',
-      '/planeamento/descobrir?from=2027-01-01&to=2027-12-31',
+      '/planeamento/descobrir?from=2027-01-01&to=2027-12-31&season=2027',
     )
+  })
+
+  it('shows a lead-up from the year before, quietly', () => {
+    // A cycle does not stop at the new year: the build-up for an April anchor
+    // starts the previous autumn, and hiding it shows half a plan.
+    render(
+      <SeasonTimeline
+        events={[
+          event({ id: 'Prova W', date: new Date('2026-11-08T12:00:00') }),
+          ...SEASON,
+        ]}
+        year={2027}
+        years={[2027]}
+        anchorRaceIds={new Set(['race-anchor'])}
+        onYear={vi.fn()}
+      />,
+    )
+
+    // The chip is the element with the title, which is what says why.
+    const earlier = screen.getByTitle(/De outra época/)
+    expect(earlier.textContent).toContain('Prova W')
+    expect(earlier.className).toContain('opacity-50')
+    expect(screen.queryAllByTitle(/De outra época/)).toHaveLength(1)
   })
 
   it('says what is missing when nothing is an anchor', () => {

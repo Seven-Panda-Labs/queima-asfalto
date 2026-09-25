@@ -510,7 +510,8 @@
       "days_other": "{{count}} days",
       "weeks_one": "1 wk",
       "weeks_other": "{{count}} wks"
-    }
+    },
+    "otherSeason": "From another season, in this one's cycle"
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",

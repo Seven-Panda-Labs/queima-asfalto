@@ -522,7 +522,8 @@
       "days_other": "{{count}} أيام",
       "weeks_one": "أسبوع",
       "weeks_other": "{{count}} أسابيع"
-    }
+    },
+    "otherSeason": "من موسم آخر، ضمن دورة هذا الموسم"
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",
