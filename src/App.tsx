@@ -68,13 +68,12 @@ export default function App() {
             <Route path="eventos/:id/inscricao" element={<EntryForm />} />
             <Route path="planeamento" element={<Planning />} />
             <Route path="planeamento/descobrir" element={<FindRaces />} />
-            <Route path="planeamento/novo" element={<WishForm />} />
             <Route path="planeamento/:id/editar" element={<WishForm />} />
             {/* The list was the bucket list until it became one section of
                 planning. Links out there, and bookmarks, still work. */}
             <Route path="bucket-list" element={<Navigate to="/planeamento" replace />} />
             <Route path="bucket-list/descobrir" element={<Navigate to="/planeamento/descobrir" replace />} />
-            <Route path="bucket-list/novo" element={<Navigate to="/planeamento/novo" replace />} />
+            <Route path="bucket-list/novo" element={<Navigate to="/planeamento/descobrir" replace />} />
             <Route path="objetivos" element={<Goals />} />
             <Route path="objetivos/novo" element={<GoalForm />} />
             <Route path="objetivos/performance/novo" element={<PerformanceGoalForm />} />

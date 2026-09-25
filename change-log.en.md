@@ -12,6 +12,7 @@
 - **Into the calendar in one step:** scheduling a wish no longer opens the event form on today's date. It asks the distance, when there is a choice, and the day, already filled with what the catalog publishes for the next edition.
 - **The lottery and the deadlines belong to the race:** the wish list no longer asks for an entry form on every dream. Whoever has a lottery or a deadline to track does it on the race already in the calendar, and being in confirms it.
 - **Planning, in place of Bucket List:** the navigation now has Planning, with the shape of the season month by month so the gaps show, the wishes as one section, and the catalog to find the rest. Marking a wish is a heart on the catalog race.
+- **A wish is a marker, not a record:** no more writing one by hand with a name, a place, a distance and a target month. You mark the race in the catalog, and the name and the place are the race's, so the two can never disagree. The note stays, which was the only part that was yours.
 
 ---
 

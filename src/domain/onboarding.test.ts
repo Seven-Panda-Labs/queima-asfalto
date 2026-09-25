@@ -146,7 +146,7 @@ describe('onboardingStepPath', () => {
 
   it('knows where the other steps live', () => {
     expect(onboardingStepPath('disciplines')).toBe('/definicoes?tab=disciplinas')
-    expect(onboardingStepPath('anchor')).toBe('/planeamento/novo')
+    expect(onboardingStepPath('anchor')).toBe('/planeamento/descobrir')
     expect(onboardingStepPath('result')).toBe('/eventos/novo')
   })
 })

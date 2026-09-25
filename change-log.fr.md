@@ -12,6 +12,7 @@
 - **Au calendrier en une étape :** planifier un souhait n'ouvre plus le formulaire d'événement à la date du jour. Il demande la distance, quand il y a un choix, et le jour, déjà rempli avec ce que le catalogue publie pour la prochaine édition.
 - **Le tirage et les échéances appartiennent à la course :** la liste de souhaits ne réclame plus un formulaire d'inscription pour chaque rêve. Celui qui doit suivre un tirage ou une échéance le fait sur la course déjà au calendrier, et y être inscrit la confirme.
 - **Planification, à la place de Bucket List :** la navigation a désormais Planification, avec la forme de la saison mois par mois pour voir les trous, les souhaits en une section, et le catalogue pour trouver le reste. Marquer un souhait est un cœur sur la course du catalogue.
+- **Un souhait est un marqueur, pas une fiche :** on n'écrit plus un souhait à la main avec un nom, un lieu, une distance et un mois cible. On marque la course dans le catalogue, et le nom et le lieu sont ceux de la course, donc les deux ne peuvent plus diverger. La note reste, la seule partie qui était vraiment à toi.
 
 ---
 
