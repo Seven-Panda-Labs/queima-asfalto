@@ -14,6 +14,7 @@
 - **El sorteo y los plazos viven en la prueba:** salen del camino de todos y se quedan donde importan, en las pruebas ancla con inscripción disputada.
 - **El mapa de deseos lee el lugar de la prueba:** una prueba marcada en el catálogo guarda ahora las coordenadas que el catálogo publica, y el mapa muestra lo que sabe la prueba en vez de lo que el deseo había copiado.
 - **La app aprende dónde están las pruebas del catálogo:** cada noche averigua hasta trescientas, a partir del pueblo y el país que publican las fuentes. Dos tercios del catálogo no traía coordenadas, y sin ellas una prueba no aparece en el mapa ni en una búsqueda por radio.
+- **El deseo avisa cuando gana fecha:** en cuanto el organizador publica la edición y la recogida la trae, la página de planificación dice cuáles de tus deseos ya tienen fecha para la temporada que montas, y los pone en el calendario desde ahí.
 
 ---
 

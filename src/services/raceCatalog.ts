@@ -1,6 +1,7 @@
 import {
   collection,
   doc,
+  documentId,
   getDoc,
   getDocs,
   limit as limitTo,
@@ -181,6 +182,40 @@ export async function loadCatalogRace(id: string): Promise<RaceCatalogEntry | nu
     // An instance with no catalog, or a denied read. The form opens empty,
     // which is what it did before this existed.
     return null
+  }
+}
+
+/** Firestore takes ten values in an `in` filter, so the ids go in tens. */
+const IN_CHUNK = 10
+
+/**
+ * Several catalog entries at once, for the races somebody has marked.
+ *
+ * By id, in chunks of ten, because that is what Firestore's `in` takes. A
+ * planning page with fifty wishes costs five reads rather than fifty.
+ */
+export async function loadCatalogRaces(ids: readonly string[]): Promise<RaceCatalogEntry[]> {
+  const wanted = [...new Set(ids)].filter(Boolean)
+  if (wanted.length === 0) return []
+
+  const chunks: string[][] = []
+  for (let at = 0; at < wanted.length; at += IN_CHUNK) {
+    chunks.push(wanted.slice(at, at + IN_CHUNK))
+  }
+
+  try {
+    const pages = await Promise.all(
+      chunks.map((chunk) =>
+        getDocs(
+          query(collection(db, RACE_CATALOG_COLLECTION), where(documentId(), 'in', chunk)),
+        ),
+      ),
+    )
+    return pages.flatMap((page) => page.docs.map((entry) => entry.data() as RaceCatalogEntry))
+  } catch {
+    // An instance with no catalog, or a denied read: the page shows what it
+    // has, which is the list of wishes it already had.
+    return []
   }
 }
 
