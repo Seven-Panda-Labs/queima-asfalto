@@ -114,6 +114,7 @@ The pre-push hook covers every agent and human that shells out to `git`. Emergen
 | Connectors | [docs/adding-a-results-connector.md](docs/adding-a-results-connector.md) |
 | Discovery sources | [docs/discovery-sources.md](docs/discovery-sources.md) |
 | Race lifecycle (product) | [docs/race-lifecycle.md](docs/race-lifecycle.md) |
+| Planning a season (product) | [docs/planning-a-season.md](docs/planning-a-season.md) |
 | Race catalog and its review rule | [docs/race-catalog.md](docs/race-catalog.md) |
 | Self-hosting | [docs/self-hosting.md](docs/self-hosting.md) |
 
