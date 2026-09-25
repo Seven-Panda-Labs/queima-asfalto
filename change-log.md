@@ -17,6 +17,7 @@
 - **O desejo deixa de guardar o que a prova já diz:** nome, local, distância, disciplinas e mês alvo saem do desejo e ficam onde vivem, na prova e no catálogo. Um desejo de uma prova que o catálogo não tem continua a mostrar o que escreveste.
 - **A lista de desejos deixa de ficar em branco por causa de uma data:** um campo de data mal escrito derrubava a lista inteira, porque a página lê todos os desejos de uma vez. Agora o desejo aparece, com a data que der.
 - **O ciclo de uma âncora atravessa o ano:** a preparação que começa no outono anterior, ou a âncora que cai no ano seguinte, aparecem no friso com um tom mais apagado e o ano ao lado da data. As provas ocupam menos espaço, a época fica na morada, por isso voltar do catálogo traz-te à época que estavas a planear, e o seletor deixa de oferecer épocas já corridas.
+- **Do catálogo direto para o calendário:** cada prova encontrada passa a ter um botão de calendário, com a data da edição já preenchida, por isso chegar de um buraco na época deixa de ser um beco sem saída. E o coração mostra o que já está marcado, de qualquer visita, e desmarca ao segundo toque.
 
 ---
 

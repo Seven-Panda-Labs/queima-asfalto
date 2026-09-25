@@ -29,14 +29,19 @@ vi.mock('../../contexts/ToastContext', () => ({
 vi.mock('../../contexts/DisciplinesContext', () => ({
   useDisciplines: () => ({ enabledDisciplines: ['km_5', 'km_10', 'km_21_1'] }),
 }))
+/** Set per test: the wishes this runner already has. */
+let wishes: { id: string; raceId?: string }[] = []
+const removeItem = vi.fn()
 vi.mock('../../hooks/useBucketList', () => ({
-  useBucketList: () => ({ items: [], addItem: vi.fn() }),
+  useBucketList: () => ({ items: wishes, addItem: vi.fn(), removeItem }),
 }))
 vi.mock('../../hooks/useEvents', () => ({
   useEvents: () => ({ allEvents: [], addEvent: vi.fn() }),
 }))
 vi.mock('../../hooks/useRaceEntries', () => ({ useRaceEntries: () => ({ entries: [] }) }))
-vi.mock('../../hooks/useRaces', () => ({ useRaces: () => ({ races: [] }) }))
+/** Set per test: the race identities, which is what ties a wish to the catalog. */
+let raceIdentities: { id: string; catalogRaceId?: string }[] = []
+vi.mock('../../hooks/useRaces', () => ({ useRaces: () => ({ races: raceIdentities }) }))
 vi.mock('../../hooks/useUserResultsProfile', () => ({
   useUserResultsProfile: () => ({ profile: {} }),
 }))
@@ -70,6 +75,8 @@ afterEach(() => {
   cleanup()
   vi.clearAllMocks()
   countries = ['DE', 'PT']
+  wishes = []
+  raceIdentities = []
 })
 
 describe('FindRaces', () => {
@@ -351,5 +358,38 @@ describe('the radius', () => {
     await waitFor(() =>
       expect(searchRaceCatalog).toHaveBeenCalledWith(expect.objectContaining({ limit: 200 })),
     )
+  })
+})
+
+describe('what the runner has already marked', () => {
+  /** The page searches only once something is filtered, so pick a country. */
+  async function search(entry: RaceCatalogEntry) {
+    searchRaceCatalog.mockResolvedValue([entry])
+    render(<FindRaces />)
+    await screen.findByText(/Escolhe onde/)
+    fireEvent.change(screen.getByLabelText('País'), { target: { value: 'DE' } })
+    return screen.findByText(entry.name)
+  }
+
+  it('shows a race marked in another visit as marked, and takes the mark back', async () => {
+    // It used to remember only this visit, so a race marked last week arrived
+    // unmarked and marking it again was all the page let you do.
+    wishes = [{ id: 'wish-1', raceId: 'race-1' }]
+    raceIdentities = [{ id: 'race-1', catalogRaceId: 'pt-lisboa-maratona' }]
+    const entry = race('pt-lisboa-maratona', { name: 'Maratona de Lisboa' })
+
+    await search(entry)
+
+    fireEvent.click(screen.getByRole('button', { name: /Tirar «Maratona de Lisboa»/ }))
+    await waitFor(() => expect(removeItem).toHaveBeenCalledWith('wish-1'))
+  })
+
+  it('offers the calendar, so arriving from a gap is not a dead end', async () => {
+    const entry = race('pt-lisboa-maratona', { name: 'Maratona de Lisboa' })
+
+    await search(entry)
+    fireEvent.click(screen.getByRole('button', { name: /Pôr «Maratona de Lisboa» no calendário/ }))
+
+    expect(await screen.findByRole('dialog')).toHaveTextContent('Maratona de Lisboa')
   })
 })

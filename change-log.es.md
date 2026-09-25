@@ -17,6 +17,7 @@
 - **El deseo deja de guardar lo que la prueba ya dice:** el nombre, el lugar, la distancia, las disciplinas y el mes objetivo salen del deseo y se quedan donde viven, en la prueba y en el catálogo. Un deseo de una prueba que el catálogo no tiene sigue mostrando lo que escribiste.
 - **La lista de deseos ya no se queda en blanco por una fecha:** un campo de fecha mal escrito tiraba la lista entera, porque la página lee todos los deseos de una vez. Ahora el deseo aparece, con la fecha que se pueda leer.
 - **El ciclo de un ancla cruza el año:** la preparación que empieza el otoño anterior, o el ancla que cae al año siguiente, aparecen en la línea con un tono más apagado y el año junto a la fecha. Las pruebas ocupan menos, la temporada vive en la dirección, así que volver del catálogo te deja en la que estabas planificando, y el selector ya no ofrece temporadas ya corridas.
+- **Del catálogo directo al calendario:** cada prueba encontrada tiene ahora un botón de calendario, con la fecha de la edición ya rellena, así que llegar desde un hueco de la temporada deja de ser un callejón sin salida. Y el corazón muestra lo ya marcado, de cualquier visita, y lo desmarca al segundo toque.
 
 ---
 

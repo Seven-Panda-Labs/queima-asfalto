@@ -1584,7 +1584,6 @@
     "fitsAnchor_one": "fits, 1 week out",
     "fitsAnchor_other": "fits, {{count}} weeks out",
     "distanceUnknown": "distance not published",
-    "addWithDistance": "Add as…",
     "radius": "Radius",
     "anyDistance": "Any distance",
     "radiusOption": "Within {{km}} km",
@@ -1598,7 +1597,11 @@
     "duplicateSame": "Same race",
     "duplicateDifferent": "Different races",
     "duplicateThanks": "Thank you. It goes for review, nothing changes yet.",
-    "duplicateError": "Could not save the answer."
+    "duplicateError": "Could not save the answer.",
+    "unmark": "Unmark \"{{name}}\"",
+    "unmarkedToast": "\"{{name}}\" is no longer marked.",
+    "schedule": "Put \"{{name}}\" in the calendar",
+    "scheduledToast": "\"{{name}}\" is in the calendar."
   },
   "onboarding": {
     "title": "Getting started",

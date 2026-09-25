@@ -424,7 +424,7 @@ export function Planning() {
 
       <ScheduleRaceDialog
         open={itemToSchedule !== null}
-        item={itemToSchedule}
+        race={itemToSchedule ? { name: wishSubject(itemToSchedule, races).name } : null}
         disciplines={scheduleDisciplines}
         offer={offer}
         loading={loadingOffer}
