@@ -154,8 +154,8 @@ export async function identifyWishInCatalog(
   const raceId =
     item.raceId ??
     (await findOrCreateRaceId(userId, {
-      name: item.name,
-      location: item.location,
+      name: item.name ?? '',
+      location: item.location ?? '',
       locationLat: item.locationLat,
       locationLng: item.locationLng,
     }))

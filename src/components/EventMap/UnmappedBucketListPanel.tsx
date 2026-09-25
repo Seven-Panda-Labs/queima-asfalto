@@ -25,7 +25,7 @@ export function UnmappedBucketListPanel({ items }: UnmappedBucketListPanelProps)
               {item.name}
             </p>
             <p className="text-xs text-muted">
-              {item.disciplines.map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
+              {(item.disciplines ?? []).map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
               {item.location || t('common.dash')}
               {item.targetMonth ? ` · ${formatTargetMonth(item.targetMonth)}` : ''}
             </p>

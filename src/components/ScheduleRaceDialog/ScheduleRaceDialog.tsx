@@ -9,6 +9,8 @@ import type { EventType } from '../../types/Event'
 type ScheduleRaceDialogProps = {
   open: boolean
   item: BucketListItem | null
+  /** What the race is run over, from the catalog entry behind the wish. */
+  disciplines: readonly EventType[]
   /** What the catalog knows about the next running, when the race is one it holds. */
   offer: EntryPrefill | null
   loading?: boolean
@@ -33,6 +35,7 @@ type ScheduleRaceDialogProps = {
 export function ScheduleRaceDialog({
   open,
   item,
+  disciplines,
   offer,
   loading,
   saving,
@@ -46,9 +49,9 @@ export function ScheduleRaceDialog({
 
   useEffect(() => {
     if (!open || !item) return
-    setSelected(item.disciplines[0] ?? null)
+    setSelected(disciplines[0] ?? null)
     setError(false)
-  }, [open, item])
+  }, [open, item, disciplines])
 
   // Separately, because the catalog is read after the dialog opens: setting the
   // day with the rest would set it to nothing.
@@ -81,10 +84,10 @@ export function ScheduleRaceDialog({
           {t('bucketList.scheduleMessage', { name: item.name })}
         </p>
 
-        {item.disciplines.length > 1 ? (
+        {disciplines.length > 1 ? (
           <fieldset className="mt-4 space-y-2">
             <legend className="sr-only">{t('bucketList.scheduleDiscipline')}</legend>
-            {item.disciplines.map((discipline) => (
+            {disciplines.map((discipline) => (
               <label
                 key={discipline}
                 className="flex cursor-pointer items-center gap-3 rounded-md border border-border px-3 py-2 hover:bg-background"

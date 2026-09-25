@@ -30,6 +30,7 @@
     "lift:catalog-timezones": "tsx scripts/lift-catalog-timezones.ts",
     "backfill:review-due": "tsx scripts/backfill-review-due-dates.ts",
     "retire:parkruns": "tsx scripts/retire-parkrun-entries.ts",
+    "sweep:wish-fields": "tsx scripts/sweep-wish-fields.ts",
     "set:retired-reason": "tsx scripts/set-retired-reason.ts",
     "clean:catalog-names": "tsx scripts/clean-catalog-names.ts",
     "resolve:organiser-links": "tsx scripts/resolve-organiser-links.ts",

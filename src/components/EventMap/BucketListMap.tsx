@@ -87,7 +87,7 @@ export function BucketListMap({ items, className = '' }: BucketListMapProps) {
                     {item.name}
                   </p>
                   <p className="text-muted">
-                    {item.disciplines.map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
+                    {(item.disciplines ?? []).map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
                     {item.realDistance} km
                   </p>
                   <p className="text-muted">{item.location}</p>

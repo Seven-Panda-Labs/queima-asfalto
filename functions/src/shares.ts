@@ -26,6 +26,7 @@ import { requireApprovedAccount } from './accountApproval/requireApprovedAccount
 
 const SHARES_COLLECTION = 'shares'
 const BUCKET_LIST_COLLECTION = 'bucketListItems'
+const RACES_COLLECTION = 'races'
 const EVENTS_COLLECTION = 'events'
 const GOALS_COLLECTION = 'goals'
 const PERFORMANCE_GOALS_COLLECTION = 'performanceGoals'
@@ -238,11 +239,10 @@ function validateBucketListItemInput(item: unknown): Record<string, unknown> {
     throw new HttpsError('invalid-argument', 'item is required.')
   }
   const patch = validateBucketListPatch(item)
-  const required = ['name', 'location', 'realDistance', 'disciplines'] as const
-  for (const key of required) {
-    if (!(key in patch)) {
-      throw new HttpsError('invalid-argument', `${key} is required.`)
-    }
+  // A wish is a marker on a race, or a name for the one thing that has no race
+  // identity: a watched parkrun. Either way it has to say what it is for.
+  if (!('raceId' in patch) && !('name' in patch)) {
+    throw new HttpsError('invalid-argument', 'raceId or name is required.')
   }
   return patch
 }
@@ -489,14 +489,25 @@ export const getSharedSnapshot = onCall(callableOptions, async (request) => {
     if (!hasBucketListAccess(share.permissions.bucketList)) {
       throw new HttpsError('permission-denied', 'Bucket list is not shared.')
     }
-    const snapshot = await db
-      .collection(BUCKET_LIST_COLLECTION)
-      .where('userId', '==', ownerId)
-      .orderBy('createdAt', 'desc')
-      .get()
-    payload.bucketList = snapshot.docs.map((doc) =>
-      redactBucketListItemForShare({ id: doc.id, ...doc.data() }),
-    )
+    const [snapshot, races] = await Promise.all([
+      db
+        .collection(BUCKET_LIST_COLLECTION)
+        .where('userId', '==', ownerId)
+        .orderBy('createdAt', 'desc')
+        .get(),
+      // The races too: a wish is a marker on one, and the reader cannot open
+      // the owner's races for themselves.
+      db.collection(RACES_COLLECTION).where('userId', '==', ownerId).get(),
+    ])
+    const raceById = new Map(races.docs.map((doc) => [doc.id, doc.data()]))
+    payload.bucketList = snapshot.docs.map((doc) => {
+      const item: Record<string, unknown> = { id: doc.id, ...doc.data() }
+      const raceId = item.raceId
+      return redactBucketListItemForShare(
+        item,
+        typeof raceId === 'string' ? raceById.get(raceId) : undefined,
+      )
+    })
   }
 
   if (sections.includes('goals')) {

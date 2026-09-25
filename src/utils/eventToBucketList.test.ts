@@ -26,19 +26,19 @@ function makeEvent(overrides: Partial<Event> = {}): Event {
 }
 
 describe('eventToBucketListItem', () => {
-  it('maps event fields to bucket list create payload', () => {
-    expect(eventToBucketListItem(makeEvent())).toEqual({
-      name: 'Test Marathon',
-      location: 'Berlin',
-      realDistance: 42.2,
-      disciplines: ['km_42_2'],
-      emoji: undefined,
-      notes: undefined,
+  it('is a marker on the race the event already points at', () => {
+    expect(eventToBucketListItem(makeEvent({ raceId: 'race-1', notes: 'Outra vez' }))).toEqual({
+      raceId: 'race-1',
+      notes: 'Outra vez',
     })
   })
 
-  it('normalizes legacy Outra type', () => {
-    expect(eventToBucketListItem(makeEvent({ eventType: 'km_10' })).disciplines).toEqual(['km_10'])
+  it('keeps the name for an event with no race identity, which has nothing to point at', () => {
+    expect(eventToBucketListItem(makeEvent())).toEqual({
+      name: 'Test Marathon',
+      location: 'Berlin',
+      notes: undefined,
+    })
   })
 })
 

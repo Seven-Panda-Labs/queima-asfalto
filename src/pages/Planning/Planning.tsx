@@ -19,6 +19,7 @@ import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { wishSubject } from '../../domain/wishSubject'
+import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { loadCatalogRace } from '../../services/raceCatalog'
 import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
@@ -75,6 +76,8 @@ export function Planning() {
   const [itemToSchedule, setItemToSchedule] = useState<BucketListItem | null>(null)
   /** What the catalog knows about the next running of the wish being scheduled. */
   const [offer, setOffer] = useState<EntryPrefill | null>(null)
+  /** What that race is run over, which is the catalog's answer and not the wish's. */
+  const [scheduleDisciplines, setScheduleDisciplines] = useState<EventType[]>([])
   const [loadingOffer, setLoadingOffer] = useState(false)
   const [scheduling, setScheduling] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -108,10 +111,13 @@ export function Planning() {
   const canWrite = !isSharedView || activeOwner?.permissions.bucketList === 'write'
 
 
-  /** By name, because a marker has nothing else to sort by. */
+  /** By the race's name, because a marker has nothing else to sort by. */
   const sortedItems = useMemo(
-    () => [...items].sort((left, right) => left.name.localeCompare(right.name, 'pt')),
-    [items],
+    () =>
+      [...items].sort((left, right) =>
+        wishSubject(left, races).name.localeCompare(wishSubject(right, races).name, 'pt'),
+      ),
+    [items, races],
   )
 
   /**
@@ -174,11 +180,14 @@ export function Planning() {
   async function handleSchedule(item: BucketListItem) {
     setItemToSchedule(item)
     setOffer(null)
+    setScheduleDisciplines(item.disciplines ?? [])
     const catalogRaceId = races.find((race) => race.id === item.raceId)?.catalogRaceId
     if (!catalogRaceId) return
     setLoadingOffer(true)
     try {
-      setOffer(prefillFromCatalog(await loadCatalogRace(catalogRaceId)))
+      const entry = await loadCatalogRace(catalogRaceId)
+      setOffer(prefillFromCatalog(entry))
+      if (entry && entry.disciplines.length > 0) setScheduleDisciplines(entry.disciplines)
     } catch {
       setOffer(null)
     } finally {
@@ -203,7 +212,9 @@ export function Planning() {
       await createEvent(user.uid, {
         name: subject.name,
         date: new Date(`${day}T12:00:00`),
-        realDistance: item.realDistance,
+        // The distance the discipline stands for. A wish carries none since it
+        // became a marker, and the one it used to carry is the same number.
+        realDistance: item.realDistance ?? NOMINAL_DISTANCE_KM[eventType],
         eventType,
         location: subject.location,
         locationLat: subject.locationLat,
@@ -401,6 +412,7 @@ export function Planning() {
       <ScheduleRaceDialog
         open={itemToSchedule !== null}
         item={itemToSchedule}
+        disciplines={scheduleDisciplines}
         offer={offer}
         loading={loadingOffer}
         saving={scheduling}

@@ -47,7 +47,9 @@ export function WishList({ items, races, season, anchorRaceIds, actions }: WishL
             ) : null}
 
             <span className="text-xs text-muted">
-              {item.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')}
+              {(item.disciplines ?? [])
+                .map((discipline) => formatEventTypeLabel(discipline))
+                .join(', ')}
             </span>
             {subject.location ? (
               <span className="text-xs text-muted">{subject.location}</span>
