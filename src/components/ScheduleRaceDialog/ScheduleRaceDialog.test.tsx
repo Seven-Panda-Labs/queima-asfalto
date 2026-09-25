@@ -11,10 +11,8 @@ function wish(overrides: Partial<BucketListItem> = {}): BucketListItem {
   return {
     id: 'wish-1',
     userId: 'u1',
+    raceId: 'race-1',
     name: 'Maratona do Porto',
-    location: 'Porto, Portugal',
-    realDistance: 42.195,
-    disciplines: ['km_42_2'],
     createdAt: new Date('2026-01-01'),
     updatedAt: new Date('2026-01-01'),
     ...overrides,
@@ -33,6 +31,7 @@ describe('ScheduleRaceDialog', () => {
     render(
       <ScheduleRaceDialog
         open
+        disciplines={['km_42_2']}
         item={wish()}
         offer={offer}
         onCancel={vi.fn()}
@@ -47,7 +46,14 @@ describe('ScheduleRaceDialog', () => {
   it('schedules with the day and the distance', () => {
     const onConfirm = vi.fn()
     render(
-      <ScheduleRaceDialog open item={wish()} offer={offer} onCancel={vi.fn()} onConfirm={onConfirm} />,
+      <ScheduleRaceDialog
+        open
+        disciplines={['km_42_2']}
+        item={wish()}
+        offer={offer}
+        onCancel={vi.fn()}
+        onConfirm={onConfirm}
+      />,
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Agendar' }))
@@ -59,7 +65,14 @@ describe('ScheduleRaceDialog', () => {
     // The whole rule: a race whose next edition is not published stays a wish.
     const onConfirm = vi.fn()
     render(
-      <ScheduleRaceDialog open item={wish()} offer={null} onCancel={vi.fn()} onConfirm={onConfirm} />,
+      <ScheduleRaceDialog
+        open
+        disciplines={['km_42_2']}
+        item={wish()}
+        offer={null}
+        onCancel={vi.fn()}
+        onConfirm={onConfirm}
+      />,
     )
 
     fireEvent.click(screen.getByRole('button', { name: 'Agendar' }))
@@ -68,16 +81,24 @@ describe('ScheduleRaceDialog', () => {
     expect(screen.getByText(/Diz a data da prova/)).toBeInTheDocument()
   })
 
-  it('asks which distance only when the wish offers a choice', () => {
+  it('asks which distance only when the catalog offers a choice', () => {
     const { rerender } = render(
-      <ScheduleRaceDialog open item={wish()} offer={offer} onCancel={vi.fn()} onConfirm={vi.fn()} />,
+      <ScheduleRaceDialog
+        open
+        disciplines={['km_42_2']}
+        item={wish()}
+        offer={offer}
+        onCancel={vi.fn()}
+        onConfirm={vi.fn()}
+      />,
     )
     expect(screen.queryByRole('radio')).not.toBeInTheDocument()
 
     rerender(
       <ScheduleRaceDialog
         open
-        item={wish({ disciplines: ['km_42_2', 'km_21_1'] })}
+        disciplines={['km_42_2', 'km_21_1']}
+        item={wish()}
         offer={offer}
         onCancel={vi.fn()}
         onConfirm={vi.fn()}

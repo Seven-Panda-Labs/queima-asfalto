@@ -14,6 +14,7 @@
 - **Planification, à la place de Bucket List :** la navigation a désormais Planification, avec la forme de la saison mois par mois pour voir les trous, les souhaits en une section, et le catalogue pour trouver le reste. Marquer un souhait est un cœur sur la course du catalogue.
 - **Un souhait est un marqueur, pas une fiche :** on n'écrit plus un souhait à la main avec un nom, un lieu, une distance et un mois cible. On marque la course dans le catalogue, et le nom et le lieu sont ceux de la course, donc les deux ne peuvent plus diverger. La note reste, la seule partie qui était vraiment à toi.
 - **La saison est le chemin vers chaque ancre :** au lieu de douze mois à remplir, une ligne par course ancre avec les courses qui la préparent, dans l'ordre, et le temps entre chacune. L'espace entre deux courses est un bouton : il ouvre le catalogue en demandant déjà ces dates.
+- **Un souhait cesse de stocker ce que la course dit déjà :** le nom, le lieu, la distance, les disciplines et le mois cible quittent le souhait et restent là où ils vivent, sur la course et dans le catalogue. Un souhait pour une course absente du catalogue affiche toujours ce que tu as écrit.
 
 ---
 

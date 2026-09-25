@@ -42,7 +42,7 @@ export function WishForm() {
     void getBucketListItem(id)
       .then((item) => {
         if (cancelled || !item) return
-        setName(item.name)
+        setName(item.name ?? '')
         setNotes(item.notes ?? '')
       })
       .catch(() => setError(t('bucketList.loadError')))

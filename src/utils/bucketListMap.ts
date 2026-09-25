@@ -6,5 +6,5 @@ export function bucketListItemsWithCoordinates(items: BucketListItem[]): BucketL
 }
 
 export function bucketListItemsWithoutCoordinates(items: BucketListItem[]): BucketListItem[] {
-  return items.filter((item) => !eventHasCoordinates(item) && item.location.trim())
+  return items.filter((item) => !eventHasCoordinates(item) && (item.location ?? '').trim())
 }

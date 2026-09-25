@@ -35,19 +35,32 @@ export function redactEventForShare(
   return base
 }
 
-export function redactBucketListItemForShare(item: RedactableRecord): RedactableRecord {
+/**
+ * @param race the race the wish marks, which is where its name now lives.
+ *
+ * A wish is a marker on a race, and a race belongs to its owner: somebody
+ * reading a shared list cannot open it. So the name and the place are read
+ * here, at the moment of sharing, or a shared wish would arrive nameless.
+ */
+export function redactBucketListItemForShare(
+  item: RedactableRecord,
+  race?: RedactableRecord,
+): RedactableRecord {
+  const place = (value: unknown, fallback: unknown) =>
+    typeof value === 'number' ? value : typeof fallback === 'number' ? fallback : null
+
   return {
     id: item.id,
     userId: item.userId,
-    name: item.name,
-    location: item.location ?? '',
-    realDistance: item.realDistance,
+    name: race?.name ?? item.name ?? '',
+    location: race?.location ?? item.location ?? '',
+    realDistance: item.realDistance ?? null,
     disciplines: item.disciplines ?? (item.eventType ? [item.eventType] : []),
     targetMonth: item.targetMonth ?? null,
     link: item.link ?? null,
     emoji: item.emoji ?? null,
-    locationLat: typeof item.locationLat === 'number' ? item.locationLat : null,
-    locationLng: typeof item.locationLng === 'number' ? item.locationLng : null,
+    locationLat: place(race?.locationLat, item.locationLat),
+    locationLng: place(race?.locationLng, item.locationLng),
     createdAt: item.createdAt,
     updatedAt: item.updatedAt,
   }

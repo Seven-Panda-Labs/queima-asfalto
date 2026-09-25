@@ -14,6 +14,7 @@
 - **Planificación, en lugar de Bucket List:** la navegación pasa a tener Planificación, con la forma de la temporada mes a mes para ver dónde faltan pruebas, los deseos como una sección, y el catálogo para encontrar el resto. Marcar un deseo es un corazón en la prueba del catálogo.
 - **Un deseo es un marcador, no una ficha:** ya no se escribe un deseo a mano con nombre, lugar, distancia y mes objetivo. Se marca la prueba en el catálogo, y el nombre y el lugar pasan a ser los de la prueba, así que nunca discrepan. Queda la nota, que era lo único realmente tuyo.
 - **La temporada es el camino hasta cada ancla:** en vez de doce meses que llenar, una línea por prueba ancla con las pruebas que la preparan, en orden, y el tiempo entre cada una. El espacio entre dos pruebas es un botón: abre el catálogo preguntando ya por esas fechas.
+- **El deseo deja de guardar lo que la prueba ya dice:** el nombre, el lugar, la distancia, las disciplinas y el mes objetivo salen del deseo y se quedan donde viven, en la prueba y en el catálogo. Un deseo de una prueba que el catálogo no tiene sigue mostrando lo que escribiste.
 
 ---
 

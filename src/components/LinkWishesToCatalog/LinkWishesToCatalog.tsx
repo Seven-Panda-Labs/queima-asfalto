@@ -64,7 +64,7 @@ export function LinkWishesToCatalog({
     setAsking(item)
     setCandidates(null)
     setError(null)
-    const nameTokens = searchTokens(item.name)
+    const nameTokens = searchTokens(item.name ?? '')
     if (nameTokens.length === 0) {
       setCandidates([])
       return
@@ -75,7 +75,7 @@ export function LinkWishesToCatalog({
       // The distance breaks the tie a name cannot: "Maratona de Lisboa" and
       // "Meia Maratona de Lisboa" agree on every word but one.
       const offersThis = (entry: RaceCatalogEntry) =>
-        Number(item.disciplines.some((discipline) => entry.disciplines.includes(discipline)))
+        Number((item.disciplines ?? []).some((discipline) => entry.disciplines.includes(discipline)))
       setCandidates([...found].sort((left, right) => offersThis(right) - offersThis(left)))
     } catch {
       setError(t('linkWishes.searchError'))

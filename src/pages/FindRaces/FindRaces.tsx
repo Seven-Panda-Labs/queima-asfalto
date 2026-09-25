@@ -40,6 +40,7 @@ import {
   loadHarvestStatus,
   searchRaceCatalog,
 } from '../../services/raceCatalog'
+import { setRaceSeasonRole } from '../../services/races'
 import { formatDatePt } from '../../utils/date'
 import type { EventType } from '../../types/Event'
 import type { ParkrunCatalogEvent } from '../../../shared/parkrun/catalog'
@@ -592,12 +593,11 @@ export function FindRaces() {
     setAdding(entry.id)
     try {
       const raceId = await findOrCreateCatalogRaceId(user.uid, entry)
-      await addItem(
-        catalogRaceToBucketListItem(entry, raceId, {
-          servesRaceId: anchor?.id,
-          discipline,
-        }),
-      )
+      if (!raceId) return
+      await addItem(catalogRaceToBucketListItem(raceId))
+      // Searching for an anchor is the runner saying what this race is for,
+      // and that is a fact about a season, so it lives on the race.
+      if (anchor?.id) await setRaceSeasonRole(raceId, { servesRaceId: anchor.id })
       setAddedIds((current) => [...current, entry.id])
       toast.success(t('findRaces.addedToast', { name: entry.name }))
     } catch {

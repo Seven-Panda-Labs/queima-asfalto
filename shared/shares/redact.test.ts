@@ -59,3 +59,23 @@ describe('redactBucketListItemForShare', () => {
     expect(redacted.name).toBe('Ultra')
   })
 })
+
+describe('a shared wish and the race it marks', () => {
+  it('takes the name and the place from the race, which the reader cannot open', () => {
+    const redacted = redactBucketListItemForShare(
+      { id: 'w1', userId: 'owner', raceId: 'race-1' },
+      { id: 'race-1', name: 'Maratona do Porto', location: 'Porto', locationLat: 41.1 },
+    )
+
+    expect(redacted.name).toBe('Maratona do Porto')
+    expect(redacted.location).toBe('Porto')
+    expect(redacted.locationLat).toBe(41.1)
+  })
+
+  it('falls back to what an old wish carries, and to nothing at all', () => {
+    expect(
+      redactBucketListItemForShare({ id: 'w1', userId: 'owner', name: 'Speyer parkrun' }).name,
+    ).toBe('Speyer parkrun')
+    expect(redactBucketListItemForShare({ id: 'w1', userId: 'owner' }).name).toBe('')
+  })
+})

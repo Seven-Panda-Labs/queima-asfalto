@@ -14,8 +14,7 @@ import {
   RACE_CATALOG_COLLECTION,
   type RaceCatalogEntry,
 } from '../../shared/raceCatalog'
-import { NOMINAL_DISTANCE_KM, type EventType } from '../domain/eventCodes'
-import { TARGET_MONTHS } from '../utils/targetMonth'
+import type { EventType } from '../domain/eventCodes'
 import type { BucketListItemCreate } from '../types/BucketListItem'
 import { db } from './firebase'
 import { findRaceByName } from '../domain/raceMatching'
@@ -211,8 +210,6 @@ export async function loadHarvestStatus(): Promise<HarvestStatus> {
   }
 }
 
-/** The bucket list cap. A catalog entry can name more distances than that. */
-const MAX_DISCIPLINES = 6
 
 /**
  * A catalog race as a wish, keeping the identity.
@@ -221,50 +218,15 @@ const MAX_DISCIPLINES = 6
  * planner pull this race's published deadlines later instead of asking the
  * runner to type them.
  */
-export function catalogRaceToBucketListItem(
-  race: RaceCatalogEntry,
-  raceId: string | null,
-  options: {
-    /** The anchor the search was for, when it was for one. */
-    servesRaceId?: string
-    /**
-     * What the runner said the distance is.
-     *
-     * Required for a race whose distance no source published: the catalog would
-     * rather hold nothing than a number nobody checked, so the answer comes
-     * from the person adding it.
-     */
-    discipline?: EventType
-  } = {},
-): BucketListItemCreate {
-  const { servesRaceId, discipline } = options
-  const disciplines = (
-    discipline ? [discipline] : race.disciplines
-  ).slice(0, MAX_DISCIPLINES)
-  const longest = disciplines.reduce(
-    (best, value) => Math.max(best, NOMINAL_DISTANCE_KM[value]),
-    0,
-  )
-  const upcoming = (race.editions ?? []).find((edition) => edition.raceDate)
-
-  return {
-    name: race.name,
-    location: [race.city, race.country].filter(Boolean).join(', '),
-    // The distance a wish carries is the longest on offer: scheduling is where
-    // one of them becomes the event. A wish with no distance at all cannot be
-    // saved, so the caller has to have asked.
-    realDistance: longest,
-    disciplines,
-    targetMonth: race.typicalRaceMonth
-      ? TARGET_MONTHS[race.typicalRaceMonth - 1]
-      : undefined,
-    targetYear: upcoming?.raceDate ? Number(upcoming.raceDate.slice(0, 4)) : undefined,
-    link: race.registrationUrl ?? race.officialUrl,
-    ...(raceId ? { raceId } : {}),
-    // Searching for an anchor is the runner saying what this race is for. The
-    // role stays theirs to pick: build-up and test are different intentions.
-    ...(servesRaceId ? { servesRaceId } : {}),
-  }
+/**
+ * Marking a catalog race as a wish.
+ *
+ * All a wish stores is the race, because everything else it used to copy, the
+ * name, the place, the distances and the month, is the catalog's to say and
+ * was free to drift the moment it was copied.
+ */
+export function catalogRaceToBucketListItem(raceId: string): BucketListItemCreate {
+  return { raceId }
 }
 
 /**

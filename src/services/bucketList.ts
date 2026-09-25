@@ -64,37 +64,33 @@ export async function createBucketListItem(
   userId: string,
   data: BucketListItemCreate,
 ): Promise<string> {
+  /**
+   * A wish is a marker on a race, so the race is what it stores.
+   *
+   * The name and the place are only written for a watched parkrun, which has
+   * no race identity and never will: its occurrences come from a rule rather
+   * than a list of editions, so there is nothing for a race document to hold.
+   */
   const raceId =
     data.raceId ??
-    (await findOrCreateRaceId(userId, {
-      name: data.name,
-      location: data.location,
-      locationLat: data.locationLat,
-      locationLng: data.locationLng,
-      locationGeocodeQuery: data.locationGeocodeQuery,
-    }))
+    (data.name
+      ? await findOrCreateRaceId(userId, { name: data.name, location: data.location ?? '' })
+      : null)
 
   const ref = await addDoc(collection(db, BUCKET_LIST_COLLECTION), {
     userId,
-    name: data.name.trim(),
-    location: data.location.trim(),
-    locationLat: data.locationLat ?? null,
-    locationLng: data.locationLng ?? null,
-    locationGeocodeQuery: data.locationGeocodeQuery ?? null,
-    locationGeocodedAt:
-      data.locationLat != null && data.locationLng != null ? serverTimestamp() : null,
-    realDistance: data.realDistance,
-    disciplines: data.disciplines,
-    targetMonth: data.targetMonth?.trim() || null,
-    targetYear: data.targetYear ?? null,
-    isAnchor: data.isAnchor === true,
-    recurring: data.recurring === true,
-    role: data.role ?? null,
-    servesRaceId: data.servesRaceId ?? null,
-    link: data.link?.trim() || null,
-    emoji: data.emoji ?? null,
-    notes: data.notes?.trim() || null,
     raceId: raceId ?? null,
+    notes: data.notes?.trim() || null,
+    recurring: data.recurring === true,
+    ...(data.name
+      ? {
+          name: data.name.trim(),
+          location: data.location?.trim() ?? '',
+          realDistance: data.realDistance,
+          disciplines: data.disciplines,
+          link: data.link?.trim() || null,
+        }
+      : {}),
     createdAt: serverTimestamp(),
     updatedAt: serverTimestamp(),
   })

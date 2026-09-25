@@ -24,8 +24,8 @@ export function wishSubject(item: BucketListItem, races: readonly Race[]): WishS
   const race = item.raceId ? races.find((candidate) => candidate.id === item.raceId) : undefined
   if (!race) {
     return {
-      name: item.name,
-      location: item.location,
+      name: item.name ?? '',
+      location: item.location ?? '',
       locationLat: item.locationLat,
       locationLng: item.locationLng,
     }

@@ -82,8 +82,12 @@ export function buildSeasonBoard(source: SeasonSource): SeasonBoard {
       distanceByRaceId.set(entry.raceId, NOMINAL_DISTANCE_KM[entry.discipline])
     }
   }
+  // A wish carries no distance since it became a marker on a race. What it
+  // knew is still read for the ones written before that.
   for (const item of source.items) {
-    if (item.raceId && item.realDistance > 0) distanceByRaceId.set(item.raceId, item.realDistance)
+    if (item.raceId && (item.realDistance ?? 0) > 0) {
+      distanceByRaceId.set(item.raceId, item.realDistance!)
+    }
   }
   for (const event of source.events) {
     if (event.raceId && event.realDistance > 0) {
