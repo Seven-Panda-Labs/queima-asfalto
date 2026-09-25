@@ -1584,7 +1584,6 @@
     "fitsAnchor_one": "convient, 1 semaine avant",
     "fitsAnchor_other": "convient, {{count}} semaines avant",
     "distanceUnknown": "distance non publiée",
-    "addWithDistance": "Ajouter comme…",
     "radius": "Rayon",
     "anyDistance": "N'importe quelle distance",
     "radiusOption": "Jusqu'à {{km}} km",
@@ -1598,7 +1597,11 @@
     "duplicateSame": "C'est la même course",
     "duplicateDifferent": "Ce sont deux courses",
     "duplicateThanks": "Merci. Ça part en révision, rien ne change encore.",
-    "duplicateError": "La réponse n'a pas pu être enregistrée."
+    "duplicateError": "La réponse n'a pas pu être enregistrée.",
+    "unmark": "Retirer « {{name}} » des souhaits",
+    "unmarkedToast": "« {{name}} » n'est plus marquée.",
+    "schedule": "Mettre « {{name}} » au calendrier",
+    "scheduledToast": "« {{name}} » est au calendrier."
   },
   "onboarding": {
     "title": "Commencer",

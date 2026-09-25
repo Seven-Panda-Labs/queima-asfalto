@@ -3,12 +3,12 @@ import { useTranslation } from 'react-i18next'
 import { DayField } from '../DatePicker'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import type { EntryPrefill } from '../../domain/entryPrefill'
-import type { BucketListItem } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
 
 type ScheduleRaceDialogProps = {
   open: boolean
-  item: BucketListItem | null
+  /** The race being put in the calendar, named. */
+  race: { name: string } | null
   /** What the race is run over, from the catalog entry behind the wish. */
   disciplines: readonly EventType[]
   /** What the catalog knows about the next running, when the race is one it holds. */
@@ -20,12 +20,16 @@ type ScheduleRaceDialogProps = {
 }
 
 /**
- * Putting a wish in the calendar, in one step.
+ * Putting a race in the calendar, in one step.
  *
  * It used to be two screens: a dialog for the distance and then the whole
  * event form, which opened on today's date even when the catalog held the
- * edition. Everything the form asked for is already on the wish except the
+ * edition. Everything the form asked for is already known except the
  * distance, when there is a choice, and the day.
+ *
+ * Reached from a wish and from the catalog, because the answer to a gap in a
+ * season is a race found in the catalog, and stopping at "marked as a wish"
+ * was a dead end.
  *
  * The day is never invented. The catalog's is offered when it has one, said to
  * be the catalog's, and an entry nobody checked stays a suggestion the runner
@@ -34,7 +38,7 @@ type ScheduleRaceDialogProps = {
  */
 export function ScheduleRaceDialog({
   open,
-  item,
+  race,
   disciplines,
   offer,
   loading,
@@ -48,10 +52,10 @@ export function ScheduleRaceDialog({
   const [error, setError] = useState(false)
 
   useEffect(() => {
-    if (!open || !item) return
+    if (!open || !race) return
     setSelected(disciplines[0] ?? null)
     setError(false)
-  }, [open, item, disciplines])
+  }, [open, race, disciplines])
 
   // Separately, because the catalog is read after the dialog opens: setting the
   // day with the rest would set it to nothing.
@@ -59,7 +63,7 @@ export function ScheduleRaceDialog({
     if (open) setDay(offer?.raceDate)
   }, [open, offer])
 
-  if (!open || !item) return null
+  if (!open || !race) return null
 
   const confirm = () => {
     if (!selected || !day) {
@@ -81,7 +85,7 @@ export function ScheduleRaceDialog({
           {t('bucketList.scheduleTitle')}
         </h2>
         <p className="mt-2 text-sm text-muted">
-          {t('bucketList.scheduleMessage', { name: item.name })}
+          {t('bucketList.scheduleMessage', { name: race.name })}
         </p>
 
         {disciplines.length > 1 ? (

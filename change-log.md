@@ -6,17 +6,12 @@
 
 ## [1.82.0] - 2026-09-25
 
-### Adicionado
+### Alterado
 
-- **Dizer que prova do catálogo é um desejo:** a bucket list passa a oferecer a ligação para os desejos escritos à mão. Sem ela, um desejo é só um nome: não sabe as datas da próxima edição nem se reconhece na prova que já tens no calendário.
-- **Pôr no calendário num passo:** agendar um desejo deixa de abrir o formulário de evento com a data de hoje. Pergunta a distância, quando há escolha, e o dia, já preenchido com o que o catálogo publica para a próxima edição.
-- **O sorteio e os prazos passam a viver na prova:** a lista de desejos deixa de pedir um formulário de inscrição por cada sonho. Quem precisa de tratar de um sorteio ou de um prazo fá-lo na prova que já está no calendário, e ficar inscrito confirma-a.
-- **Planeamento, em vez de Bucket List:** a navegação passa a ter Planeamento, com a forma da época mês a mês para veres onde faltam provas, os desejos como uma secção, e o catálogo para encontrar o resto. Marcar um desejo é um coração na prova do catálogo.
-- **Um desejo é um marcador, não uma ficha:** deixa de se escrever um desejo à mão com nome, local, distância e mês alvo. Marca-se a prova no catálogo, e o nome e o local passam a ser os da prova, por isso nunca mais discordam. Fica a nota, que é a única coisa que era mesmo tua.
-- **A época é o caminho até cada âncora:** em vez de doze meses para encher, uma linha por prova âncora com as provas que a preparam, em ordem, e o tempo entre cada uma. O espaço entre duas provas é um botão: abre o catálogo já a perguntar por aquelas datas.
-- **O desejo deixa de guardar o que a prova já diz:** nome, local, distância, disciplinas e mês alvo saem do desejo e ficam onde vivem, na prova e no catálogo. Um desejo de uma prova que o catálogo não tem continua a mostrar o que escreveste.
-- **A lista de desejos deixa de ficar em branco por causa de uma data:** um campo de data mal escrito derrubava a lista inteira, porque a página lê todos os desejos de uma vez. Agora o desejo aparece, com a data que der.
-- **O ciclo de uma âncora atravessa o ano:** a preparação que começa no outono anterior, ou a âncora que cai no ano seguinte, aparecem no friso com um tom mais apagado e o ano ao lado da data. As provas ocupam menos espaço, a época fica na morada, por isso voltar do catálogo traz-te à época que estavas a planear, e o seletor deixa de oferecer épocas já corridas.
+- **Planeamento, em vez de Bucket List:** a época é o caminho até cada prova âncora, com as provas que a preparam em linha, o tempo entre elas, e o espaço entre duas a abrir o catálogo já a perguntar por aquelas datas.
+- **Marcar e agendar sem formulários:** um coração no catálogo marca a prova como desejo, e o botão de calendário põe-na na época com a data que o catálogo publica.
+- **Um desejo é um marcador:** deixa de ter nome, local e distância próprios, que são os da prova, e fica só com a tua nota.
+- **O sorteio e os prazos vivem na prova:** deixam de estar no caminho de toda a gente e passam a estar onde importam, nas provas âncora com inscrição disputada.
 
 ---
 

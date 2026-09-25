@@ -1584,7 +1584,6 @@
     "fitsAnchor_one": "encaixa, 1 semana antes",
     "fitsAnchor_other": "encaixa, {{count}} semanas antes",
     "distanceUnknown": "distância não publicada",
-    "addWithDistance": "Adicionar com…",
     "radius": "Raio",
     "anyDistance": "Qualquer distância",
     "radiusOption": "Até {{km}} km",
@@ -1598,7 +1597,11 @@
     "duplicateSame": "É a mesma prova",
     "duplicateDifferent": "São provas diferentes",
     "duplicateThanks": "Obrigado. Vai para revisão, nada muda já.",
-    "duplicateError": "Não foi possível guardar a resposta."
+    "duplicateError": "Não foi possível guardar a resposta.",
+    "unmark": "Tirar «{{name}}» dos desejos",
+    "unmarkedToast": "«{{name}}» deixou de estar marcada.",
+    "schedule": "Pôr «{{name}}» no calendário",
+    "scheduledToast": "«{{name}}» ficou no calendário."
   },
   "onboarding": {
     "title": "Começar",

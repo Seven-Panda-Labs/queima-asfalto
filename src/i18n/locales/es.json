@@ -1584,7 +1584,6 @@
     "fitsAnchor_one": "encaja, 1 semana antes",
     "fitsAnchor_other": "encaja, {{count}} semanas antes",
     "distanceUnknown": "distancia no publicada",
-    "addWithDistance": "Añadir como…",
     "radius": "Radio",
     "anyDistance": "Cualquier distancia",
     "radiusOption": "Hasta {{km}} km",
@@ -1598,7 +1597,11 @@
     "duplicateSame": "Es la misma carrera",
     "duplicateDifferent": "Son carreras distintas",
     "duplicateThanks": "Gracias. Pasa a revisión, nada cambia todavía.",
-    "duplicateError": "No se pudo guardar la respuesta."
+    "duplicateError": "No se pudo guardar la respuesta.",
+    "unmark": "Quitar «{{name}}» de los deseos",
+    "unmarkedToast": "«{{name}}» ya no está marcada.",
+    "schedule": "Poner «{{name}}» en el calendario",
+    "scheduledToast": "«{{name}}» está en el calendario."
   },
   "onboarding": {
     "title": "Empezar",

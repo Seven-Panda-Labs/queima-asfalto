@@ -2,21 +2,12 @@ import '@testing-library/jest-dom/vitest'
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { EntryPrefill } from '../../domain/entryPrefill'
-import type { BucketListItem } from '../../types/BucketListItem'
 import { ScheduleRaceDialog } from './ScheduleRaceDialog'
 
 afterEach(cleanup)
 
-function wish(overrides: Partial<BucketListItem> = {}): BucketListItem {
-  return {
-    id: 'wish-1',
-    userId: 'u1',
-    raceId: 'race-1',
-    name: 'Maratona do Porto',
-    createdAt: new Date('2026-01-01'),
-    updatedAt: new Date('2026-01-01'),
-    ...overrides,
-  }
+function wish() {
+  return { name: 'Maratona do Porto' }
 }
 
 const offer: EntryPrefill = {
@@ -32,7 +23,7 @@ describe('ScheduleRaceDialog', () => {
       <ScheduleRaceDialog
         open
         disciplines={['km_42_2']}
-        item={wish()}
+        race={wish()}
         offer={offer}
         onCancel={vi.fn()}
         onConfirm={vi.fn()}
@@ -49,7 +40,7 @@ describe('ScheduleRaceDialog', () => {
       <ScheduleRaceDialog
         open
         disciplines={['km_42_2']}
-        item={wish()}
+        race={wish()}
         offer={offer}
         onCancel={vi.fn()}
         onConfirm={onConfirm}
@@ -68,7 +59,7 @@ describe('ScheduleRaceDialog', () => {
       <ScheduleRaceDialog
         open
         disciplines={['km_42_2']}
-        item={wish()}
+        race={wish()}
         offer={null}
         onCancel={vi.fn()}
         onConfirm={onConfirm}
@@ -86,7 +77,7 @@ describe('ScheduleRaceDialog', () => {
       <ScheduleRaceDialog
         open
         disciplines={['km_42_2']}
-        item={wish()}
+        race={wish()}
         offer={offer}
         onCancel={vi.fn()}
         onConfirm={vi.fn()}
@@ -98,7 +89,7 @@ describe('ScheduleRaceDialog', () => {
       <ScheduleRaceDialog
         open
         disciplines={['km_42_2', 'km_21_1']}
-        item={wish()}
+        race={wish()}
         offer={offer}
         onCancel={vi.fn()}
         onConfirm={vi.fn()}

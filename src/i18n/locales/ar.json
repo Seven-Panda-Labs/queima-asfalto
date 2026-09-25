@@ -1612,7 +1612,6 @@
     "fitsAnchor_many": "مناسب، قبل {{count}} أسبوعا",
     "fitsAnchor_other": "مناسب، قبل {{count}} أسبوع",
     "distanceUnknown": "المسافة غير منشورة",
-    "addWithDistance": "أضف كـ…",
     "radius": "النطاق",
     "anyDistance": "أي مسافة",
     "radiusOption": "حتى {{km}} كم",
@@ -1630,7 +1629,11 @@
     "duplicateSame": "السباق نفسه",
     "duplicateDifferent": "سباقان مختلفان",
     "duplicateThanks": "شكرا. تذهب الإجابة للمراجعة، ولا يتغير شيء الآن.",
-    "duplicateError": "لم يتمكن من حفظ الإجابة."
+    "duplicateError": "لم يتمكن من حفظ الإجابة.",
+    "unmark": "أزل علامة الأمنية عن «{{name}}»",
+    "unmarkedToast": "«{{name}}» لم تعد معلَّمة.",
+    "schedule": "ضع «{{name}}» في التقويم",
+    "scheduledToast": "«{{name}}» صارت في التقويم."
   },
   "onboarding": {
     "title": "البداية",

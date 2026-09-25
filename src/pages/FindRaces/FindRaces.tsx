@@ -42,6 +42,9 @@ import {
 } from '../../services/raceCatalog'
 import { setRaceSeasonRole } from '../../services/races'
 import { formatDatePt } from '../../utils/date'
+import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
+import { prefillFromCatalog } from '../../domain/entryPrefill'
+import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/ScheduleRaceDialog'
 import type { EventType } from '../../types/Event'
 import type { ParkrunCatalogEvent } from '../../../shared/parkrun/catalog'
 import { useUserResultsProfile } from '../../hooks/useUserResultsProfile'
@@ -130,17 +133,19 @@ function isoDay(date: Date): string {
 
 function Candidate({
   candidate,
-  added,
-  adding,
-  disciplineOptions,
-  onAdd,
+  marked,
+  busy,
+  onMark,
+  onUnmark,
+  onSchedule,
 }: {
   candidate: DiscoveryCandidate
-  added: boolean
-  adding: boolean
-  /** Offered when no source said how long the race is. */
-  disciplineOptions: EventType[]
-  onAdd: (discipline?: EventType) => void
+  /** Already on this runner's list of races they want. */
+  marked: boolean
+  busy: boolean
+  onMark: () => void
+  onUnmark: () => void
+  onSchedule: () => void
 }) {
   const { t } = useTranslation()
   const { entry, edition, date, fitsAnchor, weeksBeforeAnchor } = candidate
@@ -191,45 +196,30 @@ function Candidate({
             {t('findRaces.openSource')}
           </a>
         ) : null}
-        {added ? (
-          <span
-            className="rounded-full border border-border px-2 py-1 text-xs text-muted"
-            title={t('findRaces.added')}
-          >
-            {/* Marked, and nothing else happened: a wish is a heart on a race
-                in the catalog, not a copy of it somewhere else. */}
-            <span aria-hidden>❤️</span>
-            <span className="sr-only">{t('findRaces.added')}</span>
-          </span>
-        ) : entry.disciplines.length === 0 ? (
-          // No source published a distance, and a wish needs one. Asking beats
-          // storing a number nobody checked.
-          <select
-            value=""
-            disabled={adding}
-            onChange={(event) => onAdd(event.target.value as EventType)}
-            className="rounded-full border border-border bg-surface px-3 py-1 text-xs font-semibold text-foreground disabled:opacity-50"
-            aria-label={t('findRaces.addWithDistance')}
-          >
-            <option value="">{t('findRaces.addWithDistance')}</option>
-            {disciplineOptions.map((discipline) => (
-              <option key={discipline} value={discipline}>
-                {formatEventTypeLabel(discipline)}
-              </option>
-            ))}
-          </select>
-        ) : (
-          <button
-            type="button"
-            onClick={() => onAdd()}
-            disabled={adding}
-            aria-label={t('findRaces.add', { name: entry.name })}
-            title={t('findRaces.add', { name: entry.name })}
-            className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
-          >
-            <span aria-hidden>🤍</span>
-          </button>
-        )}
+        {/* The answer to a gap in a season is a race in the calendar, so this
+            is here: marking one and stopping was a dead end. */}
+        <button
+          type="button"
+          onClick={onSchedule}
+          disabled={busy}
+          aria-label={t('findRaces.schedule', { name: entry.name })}
+          title={t('findRaces.schedule', { name: entry.name })}
+          className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
+        >
+          <span aria-hidden>📅</span>
+        </button>
+        <button
+          type="button"
+          onClick={marked ? onUnmark : onMark}
+          disabled={busy}
+          aria-label={t(marked ? 'findRaces.unmark' : 'findRaces.add', { name: entry.name })}
+          title={t(marked ? 'findRaces.unmark' : 'findRaces.add', { name: entry.name })}
+          className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
+        >
+          {/* A wish is a heart on a race in the catalog, and pressing it again
+              takes it back. */}
+          <span aria-hidden>{marked ? '❤️' : '🤍'}</span>
+        </button>
       </div>
     </li>
   )
@@ -250,7 +240,7 @@ export function FindRaces() {
   const { t, i18n } = useTranslation()
   const { user } = useAuth()
   const toast = useToast()
-  const { items, addItem } = useBucketList()
+  const { items, addItem, removeItem } = useBucketList()
   const { entries: raceEntries } = useRaceEntries()
   const { races } = useRaces()
   const { profile: resultsProfile } = useUserResultsProfile()
@@ -337,7 +327,9 @@ export function FindRaces() {
   }))
   const [anchorRaceId, setAnchorRaceId] = useState('')
   const [adding, setAdding] = useState<string | null>(null)
-  const [addedIds, setAddedIds] = useState<string[]>([])
+  /** The race whose date is being picked, on its way to the calendar. */
+  const [entryToSchedule, setEntryToSchedule] = useState<RaceCatalogEntry | null>(null)
+  const [scheduling, setScheduling] = useState(false)
   const [watchedParkruns, setWatchedParkruns] = useState<string[]>([])
   /** Pairs this runner has already answered, so the question is asked once. */
   const [answeredPairs, setAnsweredPairs] = useState<Set<string>>(new Set())
@@ -591,9 +583,35 @@ export function FindRaces() {
     }
   }
 
-  async function handleAdd(entry: RaceCatalogEntry, discipline?: EventType) {
+  /**
+   * The races this runner has already marked, by catalog id.
+   *
+   * Read from the wishes rather than remembered for this visit: a race marked
+   * last week arrived unmarked, and marking it again was the only thing the
+   * page let you do with it.
+   */
+  const markedCatalogIds = useMemo(() => {
+    const catalogByRaceId = new Map(
+      races.filter((race) => race.catalogRaceId).map((race) => [race.id, race.catalogRaceId!]),
+    )
+    const marked = new Set<string>()
+    for (const item of items) {
+      const catalogRaceId = item.raceId ? catalogByRaceId.get(item.raceId) : undefined
+      if (catalogRaceId) marked.add(catalogRaceId)
+    }
+    return marked
+  }, [items, races])
+
+  /** The wish for a catalog race, when this runner has one. */
+  function wishFor(entry: RaceCatalogEntry) {
+    const raceIds = new Set(
+      races.filter((race) => race.catalogRaceId === entry.id).map((race) => race.id),
+    )
+    return items.find((item) => item.raceId && raceIds.has(item.raceId)) ?? null
+  }
+
+  async function handleMark(entry: RaceCatalogEntry) {
     if (!user) return
-    if (entry.disciplines.length === 0 && !discipline) return
     setAdding(entry.id)
     try {
       const raceId = await findOrCreateCatalogRaceId(user.uid, entry)
@@ -602,12 +620,60 @@ export function FindRaces() {
       // Searching for an anchor is the runner saying what this race is for,
       // and that is a fact about a season, so it lives on the race.
       if (anchor?.id) await setRaceSeasonRole(raceId, { servesRaceId: anchor.id })
-      setAddedIds((current) => [...current, entry.id])
       toast.success(t('findRaces.addedToast', { name: entry.name }))
     } catch {
       toast.error(t('findRaces.addError'))
     } finally {
       setAdding(null)
+    }
+  }
+
+  async function handleUnmark(entry: RaceCatalogEntry) {
+    const wish = wishFor(entry)
+    if (!wish) return
+    setAdding(entry.id)
+    try {
+      await removeItem(wish.id)
+      toast.success(t('findRaces.unmarkedToast', { name: entry.name }))
+    } catch {
+      toast.error(t('findRaces.addError'))
+    } finally {
+      setAdding(null)
+    }
+  }
+
+  /**
+   * Straight into the calendar, without going through a wish.
+   *
+   * Arriving here from a gap in a season and being able only to mark the race
+   * as a dream was a dead end: the gap is a date that wants filling.
+   */
+  async function handleSchedule(eventType: EventType, day: string) {
+    const entry = entryToSchedule
+    if (!entry || !user) return
+    setScheduling(true)
+    try {
+      const raceId = await findOrCreateCatalogRaceId(user.uid, entry)
+      await addEvent({
+        name: entry.name,
+        date: new Date(`${day}T12:00:00`),
+        realDistance: NOMINAL_DISTANCE_KM[eventType],
+        eventType,
+        location: [entry.city, entry.country].filter(Boolean).join(', '),
+        locationLat: entry.latitude,
+        locationLng: entry.longitude,
+        status: 'planned',
+        ...(raceId ? { raceId } : {}),
+      })
+      // It is in the calendar now, so it is not a race somebody wants one day.
+      const wish = wishFor(entry)
+      if (wish) await removeItem(wish.id)
+      setEntryToSchedule(null)
+      toast.success(t('findRaces.scheduledToast', { name: entry.name }))
+    } catch {
+      toast.error(t('findRaces.addError'))
+    } finally {
+      setScheduling(false)
     }
   }
 
@@ -794,10 +860,11 @@ export function FindRaces() {
               <Fragment key={candidate.entry.id}>
                 <Candidate
                   candidate={candidate}
-                  added={addedIds.includes(candidate.entry.id)}
-                  adding={adding === candidate.entry.id}
-                  disciplineOptions={disciplineOptions}
-                  onAdd={(discipline) => void handleAdd(candidate.entry, discipline)}
+                  marked={markedCatalogIds.has(candidate.entry.id)}
+                  busy={adding === candidate.entry.id}
+                  onMark={() => void handleMark(candidate.entry)}
+                  onUnmark={() => void handleUnmark(candidate.entry)}
+                  onSchedule={() => setEntryToSchedule(candidate.entry)}
                 />
                 {pair ? (
                   <DuplicateHint
@@ -836,6 +903,16 @@ export function FindRaces() {
         onPlan={planParkrun}
         onWatch={watchParkrun}
         addedSlugs={watchedParkruns}
+      />
+
+      <ScheduleRaceDialog
+        open={entryToSchedule !== null}
+        race={entryToSchedule ? { name: entryToSchedule.name } : null}
+        disciplines={entryToSchedule?.disciplines ?? []}
+        offer={entryToSchedule ? prefillFromCatalog(entryToSchedule) : null}
+        saving={scheduling}
+        onCancel={() => setEntryToSchedule(null)}
+        onConfirm={(eventType, day) => void handleSchedule(eventType, day)}
       />
 
       <p className="mt-4 text-xs text-muted">
