@@ -1,13 +1,15 @@
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('./firebase', () => ({ db: {} }))
+const addDoc = vi.fn(() => Promise.resolve({ id: 'wish-new' }))
+const getDocs = vi.fn(() => Promise.resolve({ docs: [] as { id: string }[] }))
 vi.mock('firebase/firestore', () => ({
-  addDoc: vi.fn(),
+  addDoc: (...args: unknown[]) => addDoc(...args),
   collection: vi.fn(),
   deleteDoc: vi.fn(),
   doc: vi.fn(),
   getDoc: vi.fn(),
-  getDocs: vi.fn(),
+  getDocs: (...args: unknown[]) => getDocs(...args),
   onSnapshot: vi.fn(),
   orderBy: vi.fn(),
   query: vi.fn(),
@@ -17,7 +19,7 @@ vi.mock('firebase/firestore', () => ({
 }))
 vi.mock('./races', () => ({ findOrCreateRaceId: vi.fn() }))
 
-const { docToBucketListItem } = await import('./bucketList')
+const { createBucketListItem, docToBucketListItem } = await import('./bucketList')
 
 describe('docToBucketListItem', () => {
   it('reads a Firestore timestamp', () => {
@@ -52,5 +54,27 @@ describe('docToBucketListItem', () => {
     expect(docToBucketListItem('w1', { userId: 'u1', updatedAt: {} }).updatedAt).toEqual(
       new Date(0),
     )
+  })
+})
+
+describe('createBucketListItem', () => {
+  it('marks a race once, however many times the heart is pressed', async () => {
+    // Three wishes for the Meia Maratona de Faro is what the second press
+    // used to do, because nothing on screen said it was already marked.
+    getDocs.mockResolvedValueOnce({ docs: [{ id: 'wish-1' }] })
+
+    const id = await createBucketListItem('u1', { raceId: 'race-1' })
+
+    expect(id).toBe('wish-1')
+    expect(addDoc).not.toHaveBeenCalled()
+  })
+
+  it('writes one for a race nobody had marked', async () => {
+    getDocs.mockResolvedValueOnce({ docs: [] })
+
+    const id = await createBucketListItem('u1', { raceId: 'race-1' })
+
+    expect(id).toBe('wish-new')
+    expect(addDoc).toHaveBeenCalled()
   })
 })
