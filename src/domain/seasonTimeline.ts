@@ -8,6 +8,8 @@ export type SeasonRace = {
   eventType: EventType
   status: EventStatus
   isAnchor: boolean
+  /** False for a race in the leg that belongs to the year before or after. */
+  inSeason: boolean
 }
 
 /**
@@ -24,7 +26,11 @@ export type SeasonLeg = {
   leadUp: SeasonRace[]
 }
 
-function toSeasonRace(event: Event, anchorRaceIds: ReadonlySet<string>): SeasonRace {
+function toSeasonRace(
+  event: Event,
+  anchorRaceIds: ReadonlySet<string>,
+  year: number,
+): SeasonRace {
   return {
     id: event.id,
     name: event.name,
@@ -32,7 +38,23 @@ function toSeasonRace(event: Event, anchorRaceIds: ReadonlySet<string>): SeasonR
     eventType: event.eventType,
     status: event.status,
     isAnchor: Boolean(event.raceId && anchorRaceIds.has(event.raceId)),
+    inSeason: event.date.getFullYear() === year,
   }
+}
+
+/**
+ * How far back a build-up can reach and still be one.
+ *
+ * A cycle around an anchor runs months, not years, and without a limit a leg
+ * whose anchor is the first in three seasons would drag every race since.
+ */
+const LEAD_UP_MONTHS = 12
+
+function withinLeadUp(race: SeasonRace, anchor: SeasonRace | null): boolean {
+  if (!anchor) return true
+  const earliest = new Date(anchor.date)
+  earliest.setMonth(earliest.getMonth() - LEAD_UP_MONTHS)
+  return race.date >= earliest
 }
 
 /**
@@ -58,24 +80,35 @@ export function seasonTimeline(
   anchorRaceIds: ReadonlySet<string> = new Set(),
 ): SeasonLeg[] {
   const races = events
-    .filter((event) => event.status !== 'cancelled' && event.date.getFullYear() === year)
-    .map((event) => toSeasonRace(event, anchorRaceIds))
+    .filter((event) => event.status !== 'cancelled')
+    .map((event) => toSeasonRace(event, anchorRaceIds, year))
     .sort((left, right) => left.date.getTime() - right.date.getTime())
 
-  const legs: SeasonLeg[] = []
+  // Every leg there is, across every year, because a cycle does not stop at
+  // the new year: a build-up for an April anchor starts the previous autumn.
+  const all: SeasonLeg[] = []
   let leadUp: SeasonRace[] = []
   for (const race of races) {
-    if (race.isAnchor) {
-      legs.push({ anchor: race, leadUp })
-      leadUp = []
-    } else {
+    if (!race.isAnchor) {
       leadUp.push(race)
+      continue
     }
+    // A race a year and a half before an anchor is not preparing it. It gets a
+    // leg of its own rather than disappearing from the season it is in.
+    const preparing = leadUp.filter((earlier) => withinLeadUp(earlier, race))
+    const unrelated = leadUp.filter((earlier) => !withinLeadUp(earlier, race))
+    if (unrelated.length > 0) all.push({ anchor: null, leadUp: unrelated })
+    all.push({ anchor: race, leadUp: preparing })
+    leadUp = []
   }
+  if (leadUp.length > 0) all.push({ anchor: null, leadUp })
 
-  // What comes after the last anchor, or the whole year when there is none.
-  if (leadUp.length > 0 || legs.length === 0) legs.push({ anchor: null, leadUp })
-  return legs
+  const legs = all.filter(
+    (leg) => leg.anchor?.inSeason || leg.leadUp.some((race) => race.inSeason),
+  )
+
+  // A season with nothing in it is still a season somebody is planning.
+  return legs.length > 0 ? legs : [{ anchor: null, leadUp: [] }]
 }
 
 /**
@@ -110,16 +143,20 @@ export function gapBetween(
  * The years worth offering, soonest first.
  *
  * This year and the next two, because an anchor is booked twelve to eighteen
- * months out, plus any year the runner already has races in so nothing is
- * hidden from them.
+ * months out, plus any later year the runner already has races in. Never a
+ * year that has been run: planning is about what is ahead.
  */
 export function seasonYears(events: readonly Event[], today: Date = new Date()): number[] {
   const current = today.getFullYear()
   const years = new Set([current, current + 1, current + 2])
   for (const event of events) {
-    if (event.status !== 'cancelled') years.add(event.date.getFullYear())
+    // Only ahead: a season that has been run is history, and history is what
+    // the events page and the analysis are for.
+    if (event.status !== 'cancelled' && event.date.getFullYear() > current) {
+      years.add(event.date.getFullYear())
+    }
   }
-  return [...years].sort((left, right) => left - right).filter((year) => year >= current - 1)
+  return [...years].sort((left, right) => left - right)
 }
 
 const MS_PER_DAY = 24 * 60 * 60 * 1000

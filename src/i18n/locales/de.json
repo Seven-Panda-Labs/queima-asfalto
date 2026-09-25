@@ -510,7 +510,8 @@
       "days_other": "{{count}} Tage",
       "weeks_one": "1 Wo",
       "weeks_other": "{{count}} Wo"
-    }
+    },
+    "otherSeason": "Aus einer anderen Saison, im Zyklus dieser"
   },
   "linkWishes": {
     "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",

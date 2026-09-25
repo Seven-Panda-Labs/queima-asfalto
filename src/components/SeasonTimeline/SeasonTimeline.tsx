@@ -9,9 +9,20 @@ import {
 } from '../../domain/seasonTimeline'
 import type { Event } from '../../types/Event'
 
-/** The day and the month, which is all a race on a timeline has to say. */
+/**
+ * The day and the month, as short as the language allows.
+ *
+ * Portuguese writes "15 de fev." where the parts are all that is wanted: a
+ * timeline is read across, and every extra word costs a race on the line.
+ */
 function shortDay(date: Date, language: string): string {
-  return new Intl.DateTimeFormat(language, { day: 'numeric', month: 'short' }).format(date)
+  const parts = new Intl.DateTimeFormat(language, {
+    day: 'numeric',
+    month: 'short',
+  }).formatToParts(date)
+  const day = parts.find((part) => part.type === 'day')?.value ?? ''
+  const month = (parts.find((part) => part.type === 'month')?.value ?? '').replace(/\.$/, '')
+  return `${day} ${month}`
 }
 
 /**
@@ -40,12 +51,12 @@ function Gap({
 
   return (
     <Link
-      to={`/planeamento/descobrir?from=${from}&to=${to}`}
+      to={`/planeamento/descobrir?from=${from}&to=${to}&season=${year}`}
       aria-label={label}
       title={label}
       className="group flex shrink-0 items-center gap-1 px-1 text-muted/50 transition-colors hover:text-primary focus-visible:text-primary"
     >
-      <span aria-hidden className="h-px w-4 bg-current sm:w-6" />
+      <span aria-hidden className="h-px w-3 bg-current sm:w-5" />
       {span ? (
         <span className="text-[0.65rem] uppercase tracking-wide tabular-nums">
           {t(`planning.span.${span.unit}`, { count: span.count })}
@@ -57,7 +68,7 @@ function Gap({
       >
         +
       </span>
-      <span aria-hidden className="h-px w-4 bg-current sm:w-6" />
+      <span aria-hidden className="h-px w-3 bg-current sm:w-5" />
     </Link>
   )
 }
@@ -67,18 +78,24 @@ function Race({ race, language }: { race: SeasonRace; language: string }) {
 
   return (
     <span
-      className={`inline-flex shrink-0 items-baseline gap-1.5 rounded-lg border px-3 py-1.5 ${
+      title={race.inSeason ? undefined : t('planning.otherSeason')}
+      className={`inline-flex shrink-0 items-baseline gap-1 rounded-md border px-2 py-1 ${
         race.isAnchor ? 'border-accent bg-accent/10' : 'border-border bg-surface'
-      }`}
+      } ${race.inSeason ? '' : 'opacity-50'}`}
     >
       {race.isAnchor ? (
-        <span aria-label={t('funnel.anchor')} title={t('funnel.anchor')}>
+        <span aria-label={t('funnel.anchor')} title={t('funnel.anchor')} className="text-xs">
           ⚓
         </span>
       ) : null}
-      <span className="text-sm font-semibold text-foreground">{race.name}</span>
-      <span className="text-xs text-muted">{formatEventTypeLabel(race.eventType)}</span>
-      <span className="text-xs tabular-nums text-muted">{shortDay(race.date, language)}</span>
+      <span className="text-sm font-semibold leading-tight text-foreground">{race.name}</span>
+      <span className="text-[0.65rem] uppercase text-muted">
+        {formatEventTypeLabel(race.eventType)}
+      </span>
+      <span className="text-[0.65rem] tabular-nums text-muted">
+        {shortDay(race.date, language)}
+        {race.inSeason ? '' : ` ${race.date.getFullYear()}`}
+      </span>
     </span>
   )
 }
@@ -140,13 +157,13 @@ export function SeasonTimeline({
         <span className="text-xs text-muted">{t('planning.seasonCount', { count: booked })}</span>
       </div>
 
-      <ul className="mt-2 space-y-2">
+      <ul className="mt-2 space-y-1.5">
         {legs.map((leg, at) => {
           const races = [...leg.leadUp, ...(leg.anchor ? [leg.anchor] : [])]
           return (
             <li
               key={leg.anchor?.id ?? `leg-${at}`}
-              className="flex flex-wrap items-center gap-y-2 overflow-x-auto rounded-lg border border-border bg-surface/50 p-2"
+              className="flex flex-wrap items-center gap-y-1 rounded-lg border border-border bg-surface/50 px-2 py-1.5"
             >
               {races.length === 0 ? (
                 <Gap before={null} after={null} year={year} label={t('planning.gapAnywhere')} />

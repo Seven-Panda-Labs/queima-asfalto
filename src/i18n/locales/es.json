@@ -510,7 +510,8 @@
       "days_other": "{{count}} días",
       "weeks_one": "1 sem",
       "weeks_other": "{{count}} sem"
-    }
+    },
+    "otherSeason": "De otra temporada, en el ciclo de esta"
   },
   "linkWishes": {
     "offer_one": "1 deseo aún no dice qué prueba es. Decirlo ahora",

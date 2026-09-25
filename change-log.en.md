@@ -16,6 +16,7 @@
 - **The season is the path to each anchor:** instead of twelve months to fill, one line per anchor race with the races that prepare it, in order, and the time between each. The space between two races is a button: it opens the catalog already asking about those dates.
 - **A wish stops storing what the race already says:** the name, the place, the distance, the disciplines and the target month leave the wish and stay where they live, on the race and in the catalog. A wish for a race the catalog does not hold still shows what you typed.
 - **The wish list no longer goes blank over a date:** one badly written date field took the whole list down, because the page maps every wish at once. Now the wish shows, with whatever date it can read.
+- **An anchor's cycle crosses the year:** the build-up that starts the previous autumn, or the anchor that falls in the next year, show on the timeline faded and with the year beside the date. Races take less room, the season lives in the address so coming back from the catalog lands on the one you were planning, and the picker no longer offers seasons already run.
 
 ---
 

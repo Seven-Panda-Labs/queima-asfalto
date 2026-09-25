@@ -326,6 +326,10 @@ export function FindRaces() {
    * kept overwriting it would make the filters unusable.
    */
   const [searchParams] = useSearchParams()
+  /** The season the visit came from, so going back lands on it again. */
+  const backToPlanning = searchParams.get('season')
+    ? `/planeamento?year=${searchParams.get('season')}`
+    : '/planeamento'
   const [criteria, setCriteria] = useState<DiscoveryCriteria>(() => ({
     ...EMPTY_CRITERIA,
     from: searchParams.get('from') ?? EMPTY_CRITERIA.from,
@@ -838,7 +842,7 @@ export function FindRaces() {
         {syncedAt
           ? t('findRaces.syncedAt', { date: formatDatePt(syncedAt) })
           : t('findRaces.neverSynced')}{' '}
-        <Link to="/planeamento" className="font-semibold text-primary hover:underline">
+        <Link to={backToPlanning} className="font-semibold text-primary hover:underline">
           {t('findRaces.backToBucketList')}
         </Link>
       </p>

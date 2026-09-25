@@ -1,6 +1,6 @@
 import { lazy, Suspense, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
 import {
   CalendarPlusIcon,
@@ -92,7 +92,20 @@ export function Planning() {
   const anchorIds = useMemo(() => anyAnchorRaceIds(races), [races])
   /** The season being planned, which is as often next year as this one. */
   const years = useMemo(() => seasonYears(allEvents), [allEvents])
-  const [seasonYear, setSeasonYear] = useState(() => new Date().getFullYear())
+  /**
+   * In the address, like the events list, so it survives leaving the page.
+   *
+   * Going to the catalog to fill a gap in 2027 and coming back to 2026 is the
+   * page forgetting the one thing the visit was about.
+   */
+  const [searchParams, setSearchParams] = useSearchParams()
+  const seasonYear = Number(searchParams.get('year')) || new Date().getFullYear()
+  const setSeasonYear = (year: number) => {
+    const next = new URLSearchParams(searchParams)
+    if (year === new Date().getFullYear()) next.delete('year')
+    else next.set('year', String(year))
+    setSearchParams(next, { replace: true })
+  }
   const sharedBucketList = useSharedBucketList(activeOwnerId)
 
   // Only for the account's own list: rolling over somebody else's wishes is not
@@ -254,7 +267,7 @@ export function Planning() {
           {/* The one thing this page is for, and it was a quiet link at the
               far end of a filter bar. */}
           <Link
-            to="/planeamento/descobrir"
+            to={`/planeamento/descobrir?season=${seasonYear}`}
             className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
           >
             {t('findRaces.cta')}

@@ -16,6 +16,7 @@
 - **Die Saison ist der Weg zu jedem Anker:** statt zwölf Monaten zum Füllen eine Zeile je Ankerrennen, mit den Rennen, die es vorbereiten, in Reihenfolge und mit dem Abstand dazwischen. Der Zwischenraum ist ein Knopf: er öffnet den Katalog mit genau diesen Daten.
 - **Ein Wunsch speichert nicht mehr, was das Rennen schon sagt:** Name, Ort, Distanz, Disziplinen und Zielmonat verlassen den Wunsch und bleiben dort, wo sie leben, am Rennen und im Katalog. Ein Wunsch für ein Rennen, das der Katalog nicht führt, zeigt weiter, was du getippt hast.
 - **Die Wunschliste bleibt nicht mehr wegen eines Datums leer:** ein falsch geschriebenes Datumsfeld riss die ganze Liste mit, weil die Seite alle Wünsche auf einmal liest. Jetzt erscheint der Wunsch, mit dem Datum, das lesbar ist.
+- **Der Zyklus eines Ankers überschreitet das Jahr:** der Aufbau, der im Herbst davor beginnt, oder der Anker im Jahr danach erscheinen blasser und mit der Jahreszahl neben dem Datum. Rennen brauchen weniger Platz, die Saison steht in der Adresse, also landet die Rückkehr aus dem Katalog wieder bei ihr, und gelaufene Saisons werden nicht mehr angeboten.
 
 ---
 
