@@ -15,6 +15,7 @@
 - **O mapa dos desejos lê o sítio da prova:** uma prova marcada no catálogo passa a guardar as coordenadas que o catálogo publica, e o mapa mostra o que a prova sabe em vez do que o desejo tinha copiado.
 - **A app passa a saber onde ficam as provas do catálogo:** todas as noites descobre onde estão até trezentas, a partir da terra e do país que as fontes publicam. Dois terços do catálogo não trazia coordenadas, e sem elas uma prova não aparece no mapa nem numa procura por raio.
 - **O desejo avisa quando ganha data:** assim que o organizador publica a edição e a recolha a traz, a página de planeamento diz quais dos teus desejos já têm data para a época que estás a montar, e põe-nos no calendário a partir dali.
+- **Uma inscrição pode existir antes do calendário:** um sorteio entregue com um ano de antecedência, ou uma prova que falhou e vais tentar na época seguinte, aparecem no planeamento dessa época e abrem para editar prazos, mesmo sem data marcada.
 
 ---
 

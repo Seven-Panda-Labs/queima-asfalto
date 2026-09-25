@@ -1527,7 +1527,8 @@
     "eventGone": "هذا السباق لم يعد موجوداً.",
     "registeredConfirmsEvent": "بالحفظ يصبح السباق مؤكَّداً في التقويم.",
     "addDeadlines": "هل لهذا السباق قرعة أو مواعيد نهائية؟ دوّنها",
-    "openDeadlines": "قرعة السباق ومواعيده النهائية"
+    "openDeadlines": "قرعة السباق ومواعيده النهائية",
+    "subtitleNoCalendar": "تسجيل لعام {{year}}، في سباق ليس له بعد تاريخ في تقويمك."
   },
   "season": {
     "tuneUpWindow": "اختبار بنحو {{distance}} كم بين {{from}} و{{to}}",

@@ -15,6 +15,7 @@
 - **Die Wunschkarte liest den Ort des Rennens:** ein im Katalog markiertes Rennen behält jetzt die Koordinaten, die der Katalog veröffentlicht, und die Karte zeigt, was das Rennen weiß, statt was der Wunsch kopiert hatte.
 - **Die App lernt, wo die Rennen des Katalogs liegen:** jede Nacht findet sie bis zu dreihundert davon, aus Ort und Land, die die Quellen veröffentlichen. Zwei Drittel des Katalogs hatten keine Koordinaten, und ohne sie fehlt ein Rennen auf der Karte und in einer Suche nach Umkreis.
 - **Ein Wunsch meldet sich, wenn er ein Datum bekommt:** sobald der Veranstalter die Ausgabe veröffentlicht und der Abgleich sie bringt, sagt die Planungsseite, welche deiner Wünsche einen Termin für die Saison haben, die du baust, und legt sie von dort in den Kalender.
+- **Eine Anmeldung darf vor dem Kalender bestehen:** ein ein Jahr im Voraus eingereichtes Losverfahren, oder ein ausgefallenes Rennen, das du nächste Saison erneut versuchst, erscheint in der Planung dieser Saison und lässt sich für seine Fristen öffnen, ganz ohne Termin.
 
 ---
 

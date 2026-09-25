@@ -23,6 +23,8 @@ import { formatDatePt } from '../../utils/date'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { loadCatalogRace, loadCatalogRaces } from '../../services/raceCatalog'
 import { wishesWithADate } from '../../domain/wishesWithADate'
+import { entriesWithoutACalendar } from '../../domain/entriesWithoutACalendar'
+import { nextDateFor } from '../../domain/raceEntryFunnel'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
@@ -152,6 +154,15 @@ export function Planning() {
   const dated = useMemo(
     () => wishesWithADate(items, races, markedEntries, seasonYear),
     [items, races, markedEntries, seasonYear],
+  )
+
+  /** Places being chased for this season, on races with no date yet. */
+  const chasing = useMemo(
+    () =>
+      isSharedView
+        ? []
+        : entriesWithoutACalendar(raceEntries, allEvents, races, seasonYear),
+    [isSharedView, raceEntries, allEvents, races, seasonYear],
   )
 
   /** By the race's name, because a marker has nothing else to sort by. */
@@ -294,6 +305,36 @@ export function Planning() {
             anchorRaceIds={anchorIds}
             onYear={setSeasonYear}
           />
+          {/* A lottery entered a year ahead, or a race being tried again: the
+              season has them and the calendar cannot, because nobody has
+              published a day. */}
+          {chasing.length > 0 ? (
+            <ul className="mt-3 space-y-1 rounded-lg border border-border bg-surface/50 px-3 py-2">
+              {chasing.map(({ entry, race }) => {
+                const waiting = nextDateFor(entry)
+                return (
+                  <li key={entry.id} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                    <span className="text-sm font-semibold text-foreground">{race.name}</span>
+                    <span className="text-xs text-muted">
+                      {t(`entry.statuses.${entry.entryStatus}`)}
+                    </span>
+                    {waiting ? (
+                      <span className="text-xs tabular-nums text-muted">
+                        {formatDatePt(waiting)}
+                      </span>
+                    ) : null}
+                    <Link
+                      to={`/planeamento/inscricao/${race.id}/${entry.year}`}
+                      className="ml-auto text-xs font-semibold text-primary hover:underline"
+                    >
+                      {t('entry.openDeadlines')}
+                    </Link>
+                  </li>
+                )
+              })}
+            </ul>
+          ) : null}
+
           {/* The one thing this page is for, and it was a quiet link at the
               far end of a filter bar. */}
           <Link

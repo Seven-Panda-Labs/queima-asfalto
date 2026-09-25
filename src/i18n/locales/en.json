@@ -1515,7 +1515,8 @@
     "eventGone": "This race is gone.",
     "registeredConfirmsEvent": "Saving marks the race confirmed in the calendar.",
     "addDeadlines": "Does this race have a lottery or deadlines? Note them",
-    "openDeadlines": "Lottery and deadlines for this race"
+    "openDeadlines": "Lottery and deadlines for this race",
+    "subtitleNoCalendar": "An entry for {{year}}, on a race with no date in your calendar yet."
   },
   "season": {
     "tuneUpWindow": "tune-up of ~{{distance}} km between {{from}} and {{to}}",

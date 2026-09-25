@@ -1515,7 +1515,8 @@
     "eventGone": "Cette course n'existe plus.",
     "registeredConfirmsEvent": "En enregistrant, la course est confirmée au calendrier.",
     "addDeadlines": "Cette course a un tirage ou des échéances ? Les noter",
-    "openDeadlines": "Tirage et échéances de cette course"
+    "openDeadlines": "Tirage et échéances de cette course",
+    "subtitleNoCalendar": "Une inscription pour {{year}}, sur une course sans date dans ton calendrier."
   },
   "season": {
     "tuneUpWindow": "test de ~{{distance}} km entre {{from}} et {{to}}",

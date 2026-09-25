@@ -328,10 +328,9 @@ export function EventDetail() {
       }
 
       toast.success(t(already ? 'outcome.tryAgainExists' : 'outcome.tryAgainDone', { year }))
-      // No event for that season yet, so there is nowhere to send them but
-      // the list the wish went back to. The dates show up on the home page
-      // until the race is scheduled and the entry has a page of its own.
-      navigate('/planeamento')
+      // Straight at the entry that was just written. The season has no
+      // calendar yet, which is exactly what that page is for.
+      navigate(`/planeamento/inscricao/${event.raceId}/${year}`)
     } catch {
       setError(t('outcome.tryAgainError'))
     } finally {
