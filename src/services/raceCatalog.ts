@@ -249,6 +249,11 @@ export async function findOrCreateCatalogRaceId(
     return await createRace(userId, {
       name: race.name,
       location: [race.city, race.country].filter(Boolean).join(', '),
+      // The place the catalog knows, which is what puts the race on a map and
+      // inside a radius. A third of the catalog carries one and none of it was
+      // reaching the runner's own race.
+      locationLat: race.latitude,
+      locationLng: race.longitude,
       catalogRaceId: race.id,
       officialUrl: race.officialUrl,
     })

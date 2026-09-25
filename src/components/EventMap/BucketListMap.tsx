@@ -4,9 +4,7 @@ import { Link } from 'react-router-dom'
 import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
-import type { BucketListItem } from '../../types/BucketListItem'
-import { formatEventTypeLabel } from '../../i18n/formatters'
-import { formatTargetMonth } from '../../utils/targetMonth'
+import type { WishPin } from '../../domain/wishSubject'
 import { PRIMARY_COLOR } from '../StatusBadge'
 import { createClusterIcon, markerIcon } from './mapMarkers'
 import 'leaflet/dist/leaflet.css'
@@ -14,11 +12,11 @@ import 'react-leaflet-cluster/dist/assets/MarkerCluster.css'
 import 'react-leaflet-cluster/dist/assets/MarkerCluster.Default.css'
 
 type BucketListMapProps = {
-  items: BucketListItem[]
+  items: WishPin[]
   className?: string
 }
 
-function FitMapBounds({ items }: { items: BucketListItem[] }) {
+function FitMapBounds({ items }: { items: WishPin[] }) {
   const map = useMap()
 
   useEffect(() => {
@@ -82,18 +80,8 @@ export function BucketListMap({ items, className = '' }: BucketListMapProps) {
             >
               <Popup>
                 <div className="space-y-1 text-sm">
-                  <p className="font-semibold text-foreground">
-                    {item.emoji ? `${item.emoji} ` : ''}
-                    {item.name}
-                  </p>
-                  <p className="text-muted">
-                    {(item.disciplines ?? []).map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
-                    {item.realDistance} km
-                  </p>
+                  <p className="font-semibold text-foreground">{item.name}</p>
                   <p className="text-muted">{item.location}</p>
-                  {item.targetMonth ? (
-                    <p className="text-muted">{formatTargetMonth(item.targetMonth)}</p>
-                  ) : null}
                   <Link
                     to={`/planeamento/${item.id}/editar`}
                     className="inline-block font-semibold text-primary hover:underline"

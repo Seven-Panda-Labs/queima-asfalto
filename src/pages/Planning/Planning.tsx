@@ -18,7 +18,7 @@ import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
-import { wishSubject } from '../../domain/wishSubject'
+import { wishPins, wishSubject } from '../../domain/wishSubject'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
 import { loadCatalogRace } from '../../services/raceCatalog'
 import { createEvent } from '../../services/events'
@@ -34,10 +34,6 @@ import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
-import {
-  bucketListItemsWithCoordinates,
-  bucketListItemsWithoutCoordinates,
-} from '../../utils/bucketListMap'
 import {
   getBucketListViewMode,
   setBucketListViewMode,
@@ -158,10 +154,10 @@ export function Planning() {
     [allEvents, ownBucketList.items, raceEntries, races],
   )
 
-  const mappedItems = useMemo(() => bucketListItemsWithCoordinates(sortedItems), [sortedItems])
-  const unmappedItems = useMemo(
-    () => bucketListItemsWithoutCoordinates(sortedItems),
-    [sortedItems],
+  // The place is the race's, so the map shows what the race identity knows.
+  const pins = useMemo(
+    () => wishPins(sortedItems, isSharedView ? [] : races),
+    [sortedItems, isSharedView, races],
   )
 
   function handleViewModeChange(mode: BucketListViewMode) {
@@ -352,10 +348,10 @@ export function Planning() {
         ) : viewMode === 'mapa' ? (
           <div className="flex w-full flex-col gap-4">
             <Suspense fallback={<BucketListSkeleton />}>
-              <BucketListMap items={mappedItems} className="w-full" />
+              <BucketListMap items={pins.mapped} className="w-full" />
             </Suspense>
             <Suspense fallback={null}>
-              <UnmappedBucketListPanel items={unmappedItems} />
+              <UnmappedBucketListPanel items={pins.unmapped} />
             </Suspense>
           </div>
         ) : (

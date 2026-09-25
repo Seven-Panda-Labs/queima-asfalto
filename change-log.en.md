@@ -12,6 +12,7 @@
 - **Marking and scheduling without forms:** a heart in the catalog marks a race as a wish, and the calendar button puts it in the season on the date the catalog publishes.
 - **A wish is a marker:** it no longer has a name, a place or a distance of its own, which are the race's, and keeps only your note.
 - **The lottery and the deadlines live on the race:** out of everybody's path and into the anchor races where entry is fought over.
+- **The wishes map reads the race's place:** a race marked in the catalog now keeps the coordinates the catalog publishes, and the map shows what the race knows rather than what the wish had copied.
 
 ---
 
