@@ -63,7 +63,8 @@
   },
   "changelog": {
     "title": "Release notes",
-    "subtitle": "Version history and app improvements."
+    "subtitle": "Version history and app improvements.",
+    "showOlder": "Show older versions"
   },
   "privacy": {
     "title": "Privacy policy",

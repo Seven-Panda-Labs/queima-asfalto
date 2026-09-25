@@ -29,6 +29,26 @@ export function prepareChangelogForDisplay(markdown: string): string {
   return body.trim()
 }
 
+export type ChangelogVersion = { version: string; markdown: string }
+
+const VERSION_LABEL = /^\[([^\]]+)\]/
+
+/** Version number from a heading such as `[1.42.0] - 2026-08-01`, used as its anchor. */
+export function changelogHeadingVersion(heading: string): string | null {
+  return VERSION_LABEL.exec(heading.trim())?.[1] ?? null
+}
+
+/** Splits the displayed changelog into one entry per version, newest first. */
+export function splitChangelogVersions(markdown: string): ChangelogVersion[] {
+  return markdown
+    .split(/^(?=## \[)/m)
+    .map((chunk) => chunk.trim())
+    .flatMap((chunk) => {
+      const version = changelogHeadingVersion(chunk.replace(/^## /, ''))
+      return chunk.startsWith('## [') && version ? [{ version, markdown: chunk }] : []
+    })
+}
+
 export async function getChangelogMarkdown(locale: AppLanguage): Promise<string> {
   const cached = changelogCache.get(locale)
   if (cached) return cached

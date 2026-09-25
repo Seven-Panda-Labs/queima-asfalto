@@ -63,7 +63,8 @@
   },
   "changelog": {
     "title": "Notes de version",
-    "subtitle": "Historique des versions et améliorations de l'app."
+    "subtitle": "Historique des versions et améliorations de l'app.",
+    "showOlder": "Afficher les versions précédentes"
   },
   "privacy": {
     "title": "Politique de confidentialité",
