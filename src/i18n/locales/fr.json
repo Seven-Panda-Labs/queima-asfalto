@@ -490,6 +490,18 @@
     "servesHint": "La fenêtre suggérée vient de la date et de la distance du pivot.",
     "servesEmpty": "Marque d'abord une course comme pivot de l'année."
   },
+  "linkWishes": {
+    "offer_one": "1 souhait ne dit pas encore de quelle course il s'agit. Le dire",
+    "offer_other": "{{count}} souhaits ne disent pas encore de quelles courses il s'agit. Le dire",
+    "title_one": "1 souhait à relier au catalogue",
+    "title_other": "{{count}} souhaits à relier au catalogue",
+    "hint": "Un souhait saisi à la main n'est qu'un nom : il ignore les dates de la prochaine édition et ne reconnaît pas la course déjà inscrite au calendrier.",
+    "which": "Quelle course est-ce ?",
+    "pick": "C'est celle-ci",
+    "none": "Rien dans le catalogue sous ce nom. Le souhait reste tel quel.",
+    "searchError": "Impossible de chercher dans le catalogue.",
+    "saveError": "Impossible de relier au catalogue."
+  },
   "goals": {
     "title": "Objectifs",
     "subtitle": "Cibles annuelles par type d'événement. La progression vient des événements terminés.",

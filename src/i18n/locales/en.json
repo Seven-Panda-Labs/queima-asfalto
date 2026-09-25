@@ -490,6 +490,18 @@
     "servesHint": "The suggested window comes from the anchor date and distance.",
     "servesEmpty": "Mark a race as an anchor of the year first."
   },
+  "linkWishes": {
+    "offer_one": "1 wish does not say which race it is. Say now",
+    "offer_other": "{{count}} wishes do not say which races they are. Say now",
+    "title_one": "1 wish to link to the catalog",
+    "title_other": "{{count}} wishes to link to the catalog",
+    "hint": "A wish typed by hand is only a name: it knows no dates for the next edition and does not recognise the race you already have in the calendar.",
+    "which": "Which race is it?",
+    "pick": "This one",
+    "none": "Nothing in the catalog by that name. The wish stays as it is.",
+    "searchError": "Could not search the catalog.",
+    "saveError": "Could not link it to the catalog."
+  },
   "goals": {
     "title": "Goals",
     "subtitle": "Annual targets by event type. Progress comes from completed events.",

@@ -1,7 +1,9 @@
 import { shareableResultsUrl } from '../../shared/officialResults'
+import type { BucketListItem } from '../types/BucketListItem'
 import type { Event } from '../types/Event'
 import { proposeCatalogRace } from './catalogProposals'
 import { reportEditionDates } from './editionReports'
+import { updateBucketListItem } from './bucketList'
 import { listEvents, updateEvent } from './events'
 import { findOrCreateRaceId, updateRace } from './races'
 
@@ -129,4 +131,36 @@ function toIsoDay(date: Date): string {
   const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
   return `${date.getFullYear()}-${month}-${day}`
+}
+
+/**
+ * Says that this wish is for a race the shared catalog holds.
+ *
+ * The same act as identifying an event, one step earlier in the story, and it
+ * is what a wish needs to be worth anything: a wish with no identity cannot
+ * offer next season's date, cannot be recognised as the race already in the
+ * calendar, and cannot become a marker on a catalog entry. Measured on a real
+ * instance: 15 of 16 wishes were free text typed by hand, so nothing built on
+ * the catalog could ever reach them.
+ *
+ * No past editions to report, unlike an event: a wish is a race nobody has run
+ * yet, so it has nothing to tell the catalog.
+ */
+export async function identifyWishInCatalog(
+  userId: string,
+  item: BucketListItem,
+  catalogRaceId: string,
+): Promise<void> {
+  const raceId =
+    item.raceId ??
+    (await findOrCreateRaceId(userId, {
+      name: item.name,
+      location: item.location,
+      locationLat: item.locationLat,
+      locationLng: item.locationLng,
+    }))
+  if (!raceId) throw new Error('no race')
+
+  await updateRace(raceId, { catalogRaceId })
+  if (!item.raceId) await updateBucketListItem(item.id, { raceId })
 }
