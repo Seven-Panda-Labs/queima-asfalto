@@ -11,7 +11,6 @@ import {
 type OnboardingCardProps = {
   facts: OnboardingFacts
   /** The anchor's item, so the entry step lands on the right race. */
-  anchorItemId?: string
   /** Or its event, for an anchor that never was a wish. */
   anchorEventId?: string
   onDismiss: () => void
@@ -41,7 +40,6 @@ function Tick({ done }: { done: boolean }) {
  */
 export function OnboardingCard({
   facts,
-  anchorItemId,
   anchorEventId,
   onDismiss,
 }: OnboardingCardProps) {
@@ -80,7 +78,7 @@ export function OnboardingCard({
                     {t(`onboarding.steps.${step.id as OnboardingStepId}.why`)}
                   </p>
                   <Link
-                    to={onboardingStepPath(step.id, { anchorItemId, anchorEventId })}
+                    to={onboardingStepPath(step.id, { anchorEventId })}
                     className="mt-1 inline-block text-xs font-semibold text-primary hover:underline"
                   >
                     {t(`onboarding.steps.${step.id as OnboardingStepId}.action`)}

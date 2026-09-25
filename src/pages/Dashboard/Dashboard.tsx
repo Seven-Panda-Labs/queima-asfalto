@@ -138,9 +138,6 @@ export function Dashboard() {
     [allEvents, anchorIds, onboarding, raceEntries],
   )
 
-  const anchorItemId = bucketListItems.find(
-    (item) => item.raceId && anchorIds.has(item.raceId),
-  )?.id
   /** For an anchor that never was a wish, its own page is where to send anybody. */
   const anchorEventId = allEvents.find(
     (event) => event.raceId && anchorIds.has(event.raceId),
@@ -180,7 +177,6 @@ export function Dashboard() {
         <div className="mt-6">
           <OnboardingCard
             facts={onboardingFacts}
-            anchorItemId={anchorItemId}
             anchorEventId={anchorEventId}
             onDismiss={() => void handleDismissOnboarding()}
           />

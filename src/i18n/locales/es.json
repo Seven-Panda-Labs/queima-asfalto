@@ -44,14 +44,14 @@
   "nav": {
     "dashboard": "Inicio",
     "events": "Eventos",
-    "bucketList": "Bucket list",
     "goals": "Objetivos",
     "results": "Análisis",
     "settings": "Ajustes",
     "shares": "Compartir",
     "pendingInvites": "{{count}} invitación(es) pendiente(s)",
     "main": "Navegación principal",
-    "admin": "Admin"
+    "admin": "Admin",
+    "planning": "Planificación"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -491,6 +491,16 @@
     "scheduleDiscipline": "Distancia",
     "scheduleNeedsDate": "Di la fecha de la prueba. Sin fecha no hay calendario.",
     "scheduled": "{{name}} está en el calendario."
+  },
+  "planning": {
+    "title": "Planificación",
+    "subtitle": "La temporada que estás montando, lo que has marcado como deseo, y el catálogo para encontrar el resto.",
+    "seasonTitle": "Mi temporada",
+    "seasonYear": "Año de la temporada",
+    "seasonCount_one": "1 prueba marcada",
+    "seasonCount_other": "{{count}} pruebas marcadas",
+    "seasonEmptyMonth": "nada",
+    "wishesTitle": "Deseos"
   },
   "linkWishes": {
     "offer_one": "1 deseo aún no dice qué prueba es. Decirlo ahora",
@@ -1551,9 +1561,9 @@
     "closes": "las inscripciones cierran el {{date}}",
     "closesUnreviewed": "la lista dice que cierra el {{date}}",
     "openSource": "Ver origen",
-    "add": "Añadir",
-    "added": "Añadida",
-    "addedToast": "«{{name}}» fue a tu bucket list.",
+    "add": "Marcar «{{name}}» como deseo",
+    "added": "Marcada como deseo",
+    "addedToast": "«{{name}}» queda marcada como deseo.",
     "addError": "No se pudo añadir esta carrera.",
     "emptyCatalog": "El catálogo de esta instancia está vacío. Un administrador puede añadir carreras o activar la cosecha.",
     "noMatches": "Nada en el catálogo con estos criterios.",

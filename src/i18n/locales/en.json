@@ -44,14 +44,14 @@
   "nav": {
     "dashboard": "Dashboard",
     "events": "Events",
-    "bucketList": "Bucket List",
     "goals": "Goals",
     "results": "Analysis",
     "settings": "Settings",
     "shares": "Shares",
     "pendingInvites": "{{count}} pending invite(s)",
     "main": "Main navigation",
-    "admin": "Admin"
+    "admin": "Admin",
+    "planning": "Planning"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -491,6 +491,16 @@
     "scheduleDiscipline": "Distance",
     "scheduleNeedsDate": "Say the race date. No date, no calendar.",
     "scheduled": "{{name}} is in the calendar."
+  },
+  "planning": {
+    "title": "Planning",
+    "subtitle": "The season you are putting together, what you have marked as a wish, and the catalog to find the rest.",
+    "seasonTitle": "My season",
+    "seasonYear": "Season year",
+    "seasonCount_one": "1 race booked",
+    "seasonCount_other": "{{count}} races booked",
+    "seasonEmptyMonth": "nothing",
+    "wishesTitle": "Wishes"
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",
@@ -1551,9 +1561,9 @@
     "closes": "entries close {{date}}",
     "closesUnreviewed": "the listing says it closes {{date}}",
     "openSource": "View source",
-    "add": "Add",
-    "added": "Added",
-    "addedToast": "\"{{name}}\" went to your bucket list.",
+    "add": "Mark \"{{name}}\" as a wish",
+    "added": "Marked as a wish",
+    "addedToast": "\"{{name}}\" is marked as a wish.",
     "addError": "Could not add this race.",
     "emptyCatalog": "This instance catalog is empty. An administrator can add races, or switch the harvest on.",
     "noMatches": "Nothing in the catalog matches these criteria.",

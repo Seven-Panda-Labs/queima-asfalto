@@ -95,7 +95,7 @@ export function BucketListMap({ items, className = '' }: BucketListMapProps) {
                     <p className="text-muted">{formatTargetMonth(item.targetMonth)}</p>
                   ) : null}
                   <Link
-                    to={`/bucket-list/${item.id}/editar`}
+                    to={`/planeamento/${item.id}/editar`}
                     className="inline-block font-semibold text-primary hover:underline"
                   >
                     {t('common.edit')}

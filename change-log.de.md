@@ -11,6 +11,7 @@
 - **Sagen, welches Katalogrennen ein Wunsch ist:** die Bucket List bietet die Verknüpfung jetzt für von Hand getippte Wünsche an. Ohne sie ist ein Wunsch nur ein Name: keine Termine der nächsten Ausgabe, und kein Wiedererkennen des Rennens, das schon im Kalender steht.
 - **In einem Schritt in den Kalender:** einen Wunsch zu planen öffnet nicht mehr das Rennformular mit dem heutigen Datum. Es fragt die Distanz, wenn es eine Wahl gibt, und den Tag, schon ausgefüllt mit dem, was der Katalog zur nächsten Ausgabe veröffentlicht.
 - **Losverfahren und Fristen gehören zum Rennen:** die Wunschliste verlangt kein Anmeldeformular mehr für jeden Traum. Wer ein Losverfahren oder eine Frist verfolgen muss, tut es am Rennen, das schon im Kalender steht, und drin zu sein bestätigt es.
+- **Planung statt Bucket List:** in der Navigation steht jetzt Planung, mit der Form der Saison Monat für Monat, damit die Lücken sichtbar sind, den Wünschen als einem Abschnitt und dem Katalog für den Rest. Einen Wunsch zu markieren ist ein Herz am Katalogrennen.
 
 ---
 

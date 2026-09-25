@@ -30,7 +30,7 @@ export function UnmappedBucketListPanel({ items }: UnmappedBucketListPanelProps)
               {item.targetMonth ? ` · ${formatTargetMonth(item.targetMonth)}` : ''}
             </p>
             <Link
-              to={`/bucket-list/${item.id}/editar`}
+              to={`/planeamento/${item.id}/editar`}
               className="mt-1 inline-block text-xs font-semibold text-primary hover:underline"
             >
               {t('eventMap.editLocation')}

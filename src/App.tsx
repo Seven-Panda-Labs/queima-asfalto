@@ -4,8 +4,8 @@ import { AnalyticsTracker } from './components/AnalyticsTracker/AnalyticsTracker
 import { Layout } from './components/Layout/Layout'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import { AccountApprovalGate } from './components/AccountApprovalGate/AccountApprovalGate'
-import { BucketList } from './pages/BucketList/BucketList'
-import { BucketListForm } from './pages/BucketList/BucketListForm'
+import { Planning } from './pages/Planning/Planning'
+import { WishForm } from './pages/Planning/WishForm'
 import { EntryForm } from './pages/Events/EntryForm'
 import { FindRaces } from './pages/FindRaces'
 import { Dashboard } from './pages/Dashboard/Dashboard'
@@ -66,10 +66,15 @@ export default function App() {
             <Route path="eventos/:id/editar" element={<EventForm />} />
             <Route path="eventos/:id" element={<EventDetail />} />
             <Route path="eventos/:id/inscricao" element={<EntryForm />} />
-            <Route path="bucket-list" element={<BucketList />} />
-            <Route path="bucket-list/descobrir" element={<FindRaces />} />
-            <Route path="bucket-list/novo" element={<BucketListForm />} />
-            <Route path="bucket-list/:id/editar" element={<BucketListForm />} />
+            <Route path="planeamento" element={<Planning />} />
+            <Route path="planeamento/descobrir" element={<FindRaces />} />
+            <Route path="planeamento/novo" element={<WishForm />} />
+            <Route path="planeamento/:id/editar" element={<WishForm />} />
+            {/* The list was the bucket list until it became one section of
+                planning. Links out there, and bookmarks, still work. */}
+            <Route path="bucket-list" element={<Navigate to="/planeamento" replace />} />
+            <Route path="bucket-list/descobrir" element={<Navigate to="/planeamento/descobrir" replace />} />
+            <Route path="bucket-list/novo" element={<Navigate to="/planeamento/novo" replace />} />
             <Route path="objetivos" element={<Goals />} />
             <Route path="objetivos/novo" element={<GoalForm />} />
             <Route path="objetivos/performance/novo" element={<PerformanceGoalForm />} />

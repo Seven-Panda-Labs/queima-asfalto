@@ -191,8 +191,14 @@ function Candidate({
           </a>
         ) : null}
         {added ? (
-          <span className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-muted">
-            {t('findRaces.added')}
+          <span
+            className="rounded-full border border-border px-2 py-1 text-xs text-muted"
+            title={t('findRaces.added')}
+          >
+            {/* Marked, and nothing else happened: a wish is a heart on a race
+                in the catalog, not a copy of it somewhere else. */}
+            <span aria-hidden>❤️</span>
+            <span className="sr-only">{t('findRaces.added')}</span>
           </span>
         ) : entry.disciplines.length === 0 ? (
           // No source published a distance, and a wish needs one. Asking beats
@@ -216,9 +222,11 @@ function Candidate({
             type="button"
             onClick={() => onAdd()}
             disabled={adding}
-            className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:border-primary hover:text-primary disabled:opacity-50"
+            aria-label={t('findRaces.add', { name: entry.name })}
+            title={t('findRaces.add', { name: entry.name })}
+            className="rounded-full border border-border px-2 py-1 text-xs text-muted hover:border-primary hover:text-primary disabled:opacity-50"
           >
-            {t('findRaces.add')}
+            <span aria-hidden>🤍</span>
           </button>
         )}
       </div>
@@ -819,7 +827,7 @@ export function FindRaces() {
         {syncedAt
           ? t('findRaces.syncedAt', { date: formatDatePt(syncedAt) })
           : t('findRaces.neverSynced')}{' '}
-        <Link to="/bucket-list" className="font-semibold text-primary hover:underline">
+        <Link to="/planeamento" className="font-semibold text-primary hover:underline">
           {t('findRaces.backToBucketList')}
         </Link>
       </p>

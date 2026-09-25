@@ -44,14 +44,14 @@
   "nav": {
     "dashboard": "Dashboard",
     "events": "Events",
-    "bucketList": "Bucket List",
     "goals": "Ziele",
     "results": "Analyse",
     "settings": "Einstellungen",
     "shares": "Freigaben",
     "pendingInvites": "{{count}} ausstehende Einladung(en)",
     "main": "Hauptnavigation",
-    "admin": "Admin"
+    "admin": "Admin",
+    "planning": "Planung"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -491,6 +491,16 @@
     "scheduleDiscipline": "Distanz",
     "scheduleNeedsDate": "Sag das Renndatum. Ohne Datum kein Kalender.",
     "scheduled": "{{name}} steht im Kalender."
+  },
+  "planning": {
+    "title": "Planung",
+    "subtitle": "Die Saison, die du zusammenstellst, was du als Wunsch markiert hast, und der Katalog für den Rest.",
+    "seasonTitle": "Meine Saison",
+    "seasonYear": "Saisonjahr",
+    "seasonCount_one": "1 Rennen gebucht",
+    "seasonCount_other": "{{count}} Rennen gebucht",
+    "seasonEmptyMonth": "nichts",
+    "wishesTitle": "Wünsche"
   },
   "linkWishes": {
     "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",
@@ -1551,9 +1561,9 @@
     "closes": "Anmeldung schließt am {{date}}",
     "closesUnreviewed": "die Liste sagt, es schließt am {{date}}",
     "openSource": "Quelle ansehen",
-    "add": "Hinzufügen",
-    "added": "Hinzugefügt",
-    "addedToast": "\"{{name}}\" ist auf deiner Bucket List.",
+    "add": "„{{name}}“ als Wunsch markieren",
+    "added": "Als Wunsch markiert",
+    "addedToast": "„{{name}}“ ist als Wunsch markiert.",
     "addError": "Dieses Rennen konnte nicht hinzugefügt werden.",
     "emptyCatalog": "Der Katalog dieser Instanz ist leer. Ein Administrator kann Rennen anlegen oder die Ernte einschalten.",
     "noMatches": "Im Katalog passt nichts zu diesen Kriterien.",

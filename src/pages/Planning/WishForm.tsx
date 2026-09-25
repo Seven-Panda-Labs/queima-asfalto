@@ -70,7 +70,7 @@ function emptyForm(): FormState {
   }
 }
 
-export function BucketListForm() {
+export function WishForm() {
   const { t } = useTranslation()
   const { id } = useParams<{ id: string }>()
   const [searchParams] = useSearchParams()
@@ -107,7 +107,7 @@ export function BucketListForm() {
   const isShared = Boolean(sharedOwnerId)
   const addItem = isShared ? sharedBucketList.addItem : ownBucketList.addItem
   const editItem = isShared ? sharedBucketList.editItem : ownBucketList.editItem
-  const listPath = sharedOwnerId ? `/bucket-list?owner=${sharedOwnerId}` : '/bucket-list'
+  const listPath = sharedOwnerId ? `/planeamento?owner=${sharedOwnerId}` : '/planeamento'
 
   const [form, setForm] = useState<FormState>(emptyForm)
   const [loadingItem, setLoadingItem] = useState(isEditing)

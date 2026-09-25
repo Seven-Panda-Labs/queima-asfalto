@@ -125,20 +125,19 @@ export function shouldShowOnboarding(
 /** Where a step is done, given what the runner already has. */
 export function onboardingStepPath(
   id: OnboardingStepId,
-  context: { anchorItemId?: string; anchorEventId?: string } = {},
+  context: { anchorEventId?: string } = {},
 ): string {
   switch (id) {
     case 'disciplines':
       return '/definicoes?tab=disciplinas'
     case 'anchor':
-      return '/bucket-list/novo'
+      return '/planeamento/novo'
     case 'entry':
-      // Straight at the anchor: the step is about that race, not about entries
-      // in general. An anchor that exists only as an event has no entry form to
-      // send anybody to, and its own page is where its status is set.
-      if (context.anchorItemId) return `/bucket-list/${context.anchorItemId}/inscricao`
+      // Straight at the anchor's own page, which is where its status is set and
+      // where the deadlines live. A race that is still only a wish has no page
+      // of its own, so that one goes to the list it is on.
       if (context.anchorEventId) return `/eventos/${context.anchorEventId}`
-      return '/bucket-list'
+      return '/planeamento'
     case 'result':
       return '/eventos/novo'
   }
