@@ -4,6 +4,14 @@
 
 ---
 
+## [1.82.0] - 2026-09-25
+
+### Adicionado
+
+- **Dizer que prova do catálogo é um desejo:** a bucket list passa a oferecer a ligação para os desejos escritos à mão. Sem ela, um desejo é só um nome: não sabe as datas da próxima edição nem se reconhece na prova que já tens no calendário.
+
+---
+
 ## [1.81.0] - 2026-09-18
 
 ### Adicionado

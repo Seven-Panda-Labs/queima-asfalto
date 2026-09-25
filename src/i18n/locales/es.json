@@ -490,6 +490,18 @@
     "servesHint": "La ventana sugerida sale de la fecha y la distancia del ancla.",
     "servesEmpty": "Marca primero una carrera como ancla del año."
   },
+  "linkWishes": {
+    "offer_one": "1 deseo aún no dice qué prueba es. Decirlo ahora",
+    "offer_other": "{{count}} deseos aún no dicen qué pruebas son. Decirlo ahora",
+    "title_one": "1 deseo por enlazar al catálogo",
+    "title_other": "{{count}} deseos por enlazar al catálogo",
+    "hint": "Un deseo escrito a mano es solo un nombre: no sabe las fechas de la próxima edición ni se reconoce en la prueba que ya tienes en el calendario.",
+    "which": "¿Qué prueba es?",
+    "pick": "Es esta",
+    "none": "Nada en el catálogo con ese nombre. El deseo se queda como está.",
+    "searchError": "No se pudo buscar en el catálogo.",
+    "saveError": "No se pudo enlazar al catálogo."
+  },
   "goals": {
     "title": "Objetivos",
     "subtitle": "Metas anuales por tipo de evento. El progreso viene de los eventos completados.",

@@ -490,6 +490,18 @@
     "servesHint": "A janela sugerida sai da data e da distância da âncora.",
     "servesEmpty": "Marca primeiro uma prova como âncora do ano."
   },
+  "linkWishes": {
+    "offer_one": "1 desejo ainda não diz que prova é. Dizer agora",
+    "offer_other": "{{count}} desejos ainda não dizem que provas são. Dizer agora",
+    "title_one": "1 desejo por ligar ao catálogo",
+    "title_other": "{{count}} desejos por ligar ao catálogo",
+    "hint": "Um desejo escrito à mão é só um nome: não sabe as datas da próxima edição nem se reconhece na prova que já tens no calendário.",
+    "which": "Que prova é?",
+    "pick": "É esta",
+    "none": "Nada no catálogo com este nome. O desejo fica como está.",
+    "searchError": "Não foi possível procurar no catálogo.",
+    "saveError": "Não foi possível ligar ao catálogo."
+  },
   "goals": {
     "title": "Objetivos",
     "subtitle": "Objetivos anuais por tipo de evento. O progresso vem dos eventos Concluídos.",

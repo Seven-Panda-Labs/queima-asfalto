@@ -4,6 +4,14 @@
 
 ---
 
+## [1.82.0] - 2026-09-25
+
+### Ajouté
+
+- **Dire à quelle course du catalogue correspond un souhait :** la bucket list propose désormais le lien pour les souhaits saisis à la main. Sans lui, un souhait n'est qu'un nom : aucune date de la prochaine édition, et aucun lien avec la course déjà au calendrier.
+
+---
+
 ## [1.81.0] - 2026-09-18
 
 ### Ajouté

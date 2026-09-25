@@ -490,6 +490,18 @@
     "servesHint": "Das vorgeschlagene Fenster ergibt sich aus Datum und Distanz des Ankers.",
     "servesEmpty": "Markiere zuerst ein Rennen als Anker des Jahres."
   },
+  "linkWishes": {
+    "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",
+    "offer_other": "{{count}} Wünsche sagen noch nicht, welche Rennen sie sind. Jetzt sagen",
+    "title_one": "1 Wunsch mit dem Katalog zu verknüpfen",
+    "title_other": "{{count}} Wünsche mit dem Katalog zu verknüpfen",
+    "hint": "Ein von Hand getippter Wunsch ist nur ein Name: er kennt keine Termine der nächsten Ausgabe und erkennt das Rennen nicht wieder, das schon im Kalender steht.",
+    "which": "Welches Rennen ist es?",
+    "pick": "Dieses",
+    "none": "Nichts im Katalog unter diesem Namen. Der Wunsch bleibt, wie er ist.",
+    "searchError": "Der Katalog konnte nicht durchsucht werden.",
+    "saveError": "Die Verknüpfung war nicht möglich."
+  },
   "goals": {
     "title": "Ziele",
     "subtitle": "Jahresziele nach Eventtyp. Fortschritt aus abgeschlossenen Events.",

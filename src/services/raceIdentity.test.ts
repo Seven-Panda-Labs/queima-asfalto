@@ -1,4 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
+import type { BucketListItem } from '../types/BucketListItem'
 import type { Event } from '../types/Event'
 
 const updateEvent = vi.fn()
@@ -7,6 +8,7 @@ const updateRace = vi.fn()
 const findOrCreateRaceId = vi.fn()
 const reportEditionDates = vi.fn()
 const proposeCatalogRace = vi.fn()
+const updateBucketListItem = vi.fn()
 
 vi.mock('./events', () => ({
   updateEvent: (...args: unknown[]) => updateEvent(...args),
@@ -22,8 +24,27 @@ vi.mock('./editionReports', () => ({
 vi.mock('./catalogProposals', () => ({
   proposeCatalogRace: (...args: unknown[]) => proposeCatalogRace(...args),
 }))
+vi.mock('./bucketList', () => ({
+  updateBucketListItem: (...args: unknown[]) => updateBucketListItem(...args),
+}))
 
-const { identifyRaceInCatalog, proposeRaceForEvent } = await import('./raceIdentity')
+const { identifyRaceInCatalog, identifyWishInCatalog, proposeRaceForEvent } = await import(
+  './raceIdentity'
+)
+
+function wish(overrides: Partial<BucketListItem> = {}): BucketListItem {
+  return {
+    id: 'wish-1',
+    userId: 'u1',
+    name: 'Maratona do Porto',
+    location: 'Porto, Portugal',
+    realDistance: 42.195,
+    disciplines: ['km_42_2'],
+    createdAt: new Date('2026-01-01'),
+    updatedAt: new Date('2026-01-01'),
+    ...overrides,
+  }
+}
 
 function event(overrides: Partial<Event> = {}): Event {
   return {
@@ -190,5 +211,36 @@ describe('proposeRaceForEvent', () => {
 
     const [, race] = proposeCatalogRace.mock.calls[0] as [string, Record<string, unknown>]
     expect(race.resultsUrl).toBeUndefined()
+  })
+})
+
+describe('identifyWishInCatalog', () => {
+  it('gives a wish with no race one, and links both', async () => {
+    findOrCreateRaceId.mockResolvedValue('race-new')
+
+    await identifyWishInCatalog('u1', wish(), 'pt-porto-maratona-do-porto')
+
+    expect(updateRace).toHaveBeenCalledWith('race-new', {
+      catalogRaceId: 'pt-porto-maratona-do-porto',
+    })
+    expect(updateBucketListItem).toHaveBeenCalledWith('wish-1', { raceId: 'race-new' })
+  })
+
+  it('leaves the identity a wish already has', async () => {
+    await identifyWishInCatalog('u1', wish({ raceId: 'race-old' }), 'pt-porto-maratona-do-porto')
+
+    expect(findOrCreateRaceId).not.toHaveBeenCalled()
+    expect(updateRace).toHaveBeenCalledWith('race-old', {
+      catalogRaceId: 'pt-porto-maratona-do-porto',
+    })
+    expect(updateBucketListItem).not.toHaveBeenCalled()
+  })
+
+  it('reports nothing to the catalog: a wish is a race nobody has run', async () => {
+    findOrCreateRaceId.mockResolvedValue('race-new')
+
+    await identifyWishInCatalog('u1', wish(), 'pt-porto-maratona-do-porto')
+
+    expect(reportEditionDates).not.toHaveBeenCalled()
   })
 })

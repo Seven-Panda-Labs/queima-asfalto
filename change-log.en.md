@@ -4,6 +4,14 @@
 
 ---
 
+## [1.82.0] - 2026-09-25
+
+### Added
+
+- **Say which catalog race a wish is:** the bucket list now offers the link for wishes typed by hand. Without it a wish is only a name: no dates for the next edition, and no way to recognise the race already in your calendar.
+
+---
+
 ## [1.81.0] - 2026-09-18
 
 ### Added

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.82.0] - 2026-09-25
+
+### Hinzugefügt
+
+- **Sagen, welches Katalogrennen ein Wunsch ist:** die Bucket List bietet die Verknüpfung jetzt für von Hand getippte Wünsche an. Ohne sie ist ein Wunsch nur ein Name: keine Termine der nächsten Ausgabe, und kein Wiedererkennen des Rennens, das schon im Kalender steht.
+
+---
+
 ## [1.81.0] - 2026-09-18
 
 ### Hinzugefügt

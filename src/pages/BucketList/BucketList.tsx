@@ -18,6 +18,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
+import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { buildRaceEntryFunnel } from '../../domain/raceEntryFunnel'
@@ -311,6 +312,12 @@ export function BucketList() {
             </Link>
           ) : null}
         </div>
+
+        {/* Only on your own list, and only while something is unlinked: it is
+            a one-off tidy-up, not a permanent part of the page. */}
+        {!isSharedView && user ? (
+          <LinkWishesToCatalog items={items} races={races} userId={user.uid} />
+        ) : null}
 
         {items.length > 0 ? (
           <>
