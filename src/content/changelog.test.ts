@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import packageJson from '../../package.json'
-import { getChangelogMarkdown, prepareChangelogForDisplay } from './changelog'
+import {
+  changelogHeadingVersion,
+  getChangelogMarkdown,
+  prepareChangelogForDisplay,
+  splitChangelogVersions,
+} from './changelog'
 
 describe('prepareChangelogForDisplay', () => {
   it('keeps content from the first version heading', () => {
@@ -65,6 +70,43 @@ Maintenance notes.
 
 ### Added
 - Item`)
+  })
+})
+
+describe('splitChangelogVersions', () => {
+  it('returns one entry per version, newest first', () => {
+    const input = `## [1.2.0] - 2026-02-01
+
+### Adicionado
+- Novo
+
+---
+
+## [1.1.0] - 2026-01-01
+
+### Corrigido
+- Velho`
+
+    expect(splitChangelogVersions(input)).toEqual([
+      { version: '1.2.0', markdown: '## [1.2.0] - 2026-02-01\n\n### Adicionado\n- Novo\n\n---' },
+      { version: '1.1.0', markdown: '## [1.1.0] - 2026-01-01\n\n### Corrigido\n- Velho' },
+    ])
+  })
+
+  it('splits every real changelog into its versions, with unique anchors', async () => {
+    const versions = splitChangelogVersions(await getChangelogMarkdown('pt'))
+    expect(versions[0].version).toBe(packageJson.version)
+    expect(new Set(versions.map((entry) => entry.version)).size).toBe(versions.length)
+  })
+})
+
+describe('changelogHeadingVersion', () => {
+  it('reads the version from a heading', () => {
+    expect(changelogHeadingVersion('[1.42.0] - 2026-08-01')).toBe('1.42.0')
+  })
+
+  it('ignores headings without a version', () => {
+    expect(changelogHeadingVersion('Legenda')).toBeNull()
   })
 })
 

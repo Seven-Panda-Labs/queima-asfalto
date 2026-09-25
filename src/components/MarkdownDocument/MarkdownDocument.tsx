@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import ReactMarkdown from 'react-markdown'
+import ReactMarkdown, { type Components } from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { resolveTextDirection, type AppLanguage } from '../../i18n/languages'
 
@@ -8,9 +8,11 @@ type MarkdownDocumentProps = {
   markdown: string
   /** Rendered in place of the markdown, for content that is still loading. */
   fallback?: ReactNode
+  /** Overrides for single elements, merged over the defaults. */
+  components?: Components
 }
 
-export function MarkdownDocument({ language, markdown, fallback }: MarkdownDocumentProps) {
+export function MarkdownDocument({ language, markdown, fallback, components }: MarkdownDocumentProps) {
   return (
     <article
       dir={resolveTextDirection(language)}
@@ -25,6 +27,7 @@ export function MarkdownDocument({ language, markdown, fallback }: MarkdownDocum
                 {children}
               </a>
             ),
+            ...components,
           }}
         >
           {markdown}
