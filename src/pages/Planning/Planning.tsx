@@ -1,4 +1,4 @@
-import { lazy, Suspense, useMemo, useState } from 'react'
+import { lazy, Suspense, useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Link, useSearchParams } from 'react-router-dom'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
@@ -19,8 +19,11 @@ import { useEvents } from '../../hooks/useEvents'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { wishPins, wishSubject } from '../../domain/wishSubject'
+import { formatDatePt } from '../../utils/date'
 import { NOMINAL_DISTANCE_KM } from '../../domain/eventCodes'
-import { loadCatalogRace } from '../../services/raceCatalog'
+import { loadCatalogRace, loadCatalogRaces } from '../../services/raceCatalog'
+import { wishesWithADate } from '../../domain/wishesWithADate'
+import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { createEvent } from '../../services/events'
 import { LinkWishesToCatalog } from '../../components/LinkWishesToCatalog'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
@@ -74,6 +77,8 @@ export function Planning() {
   const [offer, setOffer] = useState<EntryPrefill | null>(null)
   /** What that race is run over, which is the catalog's answer and not the wish's. */
   const [scheduleDisciplines, setScheduleDisciplines] = useState<EventType[]>([])
+  /** The catalog behind the marked races, for the dates they may have gained. */
+  const [markedEntries, setMarkedEntries] = useState<RaceCatalogEntry[]>([])
   const [loadingOffer, setLoadingOffer] = useState(false)
   const [scheduling, setScheduling] = useState(false)
   const [deleting, setDeleting] = useState(false)
@@ -119,6 +124,35 @@ export function Planning() {
   const removeItem = isSharedView ? sharedBucketList.removeItem : ownBucketList.removeItem
   const canWrite = !isSharedView || activeOwner?.permissions.bucketList === 'write'
 
+
+  /**
+   * What the catalog says about the races on this list.
+   *
+   * One read per ten wishes, when the list changes. A wish is a marker, so
+   * this is the only way to know that the edition it was waiting for has been
+   * published.
+   */
+  const markedCatalogIds = useMemo(() => {
+    const catalogByRaceId = new Map(
+      races.filter((race) => race.catalogRaceId).map((race) => [race.id, race.catalogRaceId!]),
+    )
+    return [...new Set(items.map((item) => item.raceId && catalogByRaceId.get(item.raceId)))].filter(
+      (id): id is string => Boolean(id),
+    )
+  }, [items, races])
+
+  useEffect(() => {
+    if (isSharedView || markedCatalogIds.length === 0) {
+      setMarkedEntries([])
+      return
+    }
+    void loadCatalogRaces(markedCatalogIds).then(setMarkedEntries)
+  }, [isSharedView, markedCatalogIds])
+
+  const dated = useMemo(
+    () => wishesWithADate(items, races, markedEntries, seasonYear),
+    [items, races, markedEntries, seasonYear],
+  )
 
   /** By the race's name, because a marker has nothing else to sort by. */
   const sortedItems = useMemo(
@@ -294,6 +328,33 @@ export function Planning() {
         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
           {t('planning.wishesTitle')}
         </h2>
+
+        {/* A wish waits for its edition to be published, and that moment is a
+            decision nobody was being told about. */}
+        {dated.length > 0 ? (
+          <div className="rounded-lg border border-accent/40 bg-accent/5 p-4">
+            <p className="text-xs font-semibold uppercase tracking-wider text-accent">
+              {t('planning.datedTitle', { count: dated.length, year: seasonYear })}
+            </p>
+            <ul className="mt-2 space-y-1">
+              {dated.map((row) => (
+                <li key={row.item.id} className="flex flex-wrap items-center gap-x-3 gap-y-1">
+                  <span className="text-sm font-semibold text-foreground">{row.entry.name}</span>
+                  <span className="text-xs tabular-nums text-muted">
+                    {formatDatePt(new Date(`${row.raceDate}T12:00:00`))}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => void handleSchedule(row.item)}
+                    className="rounded-md border border-primary px-2 py-1 text-xs font-semibold text-primary hover:bg-primary/10"
+                  >
+                    {t('bucketList.scheduleTitle')}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
 
         <ViewSwitcher
           options={[

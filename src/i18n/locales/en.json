@@ -511,7 +511,9 @@
       "weeks_one": "1 wk",
       "weeks_other": "{{count}} wks"
     },
-    "otherSeason": "From another season, in this one's cycle"
+    "otherSeason": "From another season, in this one's cycle",
+    "datedTitle_one": "1 wish has a date for {{year}}",
+    "datedTitle_other": "{{count}} wishes have a date for {{year}}"
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",
