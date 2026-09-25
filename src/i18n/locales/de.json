@@ -1515,7 +1515,8 @@
     "eventGone": "Dieses Rennen gibt es nicht mehr.",
     "registeredConfirmsEvent": "Beim Speichern wird das Rennen im Kalender bestätigt.",
     "addDeadlines": "Hat dieses Rennen ein Losverfahren oder Fristen? Notieren",
-    "openDeadlines": "Losverfahren und Fristen dieses Rennens"
+    "openDeadlines": "Losverfahren und Fristen dieses Rennens",
+    "subtitleNoCalendar": "Eine Anmeldung für {{year}}, für ein Rennen ohne Termin in deinem Kalender."
   },
   "season": {
     "tuneUpWindow": "Test über ~{{distance}} km zwischen {{from}} und {{to}}",

@@ -15,6 +15,7 @@
 - **La carte des souhaits lit le lieu de la course :** une course marquée dans le catalogue conserve désormais les coordonnées que le catalogue publie, et la carte montre ce que la course sait plutôt que ce que le souhait avait copié.
 - **L'app apprend où sont les courses du catalogue :** chaque nuit elle en situe jusqu'à trois cents, à partir de la ville et du pays publiés par les sources. Deux tiers du catalogue n'avaient pas de coordonnées, et sans elles une course manque à la carte et à une recherche par rayon.
 - **Un souhait se signale quand il gagne une date :** dès que l'organisateur publie l'édition et que la collecte la rapporte, la page de planification dit lesquels de tes souhaits ont une date pour la saison que tu montes, et les met au calendrier depuis là.
+- **Une inscription peut exister avant le calendrier :** un tirage déposé un an à l'avance, ou une course manquée que tu retenteras la saison suivante, apparaît dans la planification de cette saison et s'ouvre pour ses échéances, sans date fixée.
 
 ---
 

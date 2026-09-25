@@ -1515,7 +1515,8 @@
     "eventGone": "Esta prueba ya no existe.",
     "registeredConfirmsEvent": "Al guardar, la prueba queda confirmada en el calendario.",
     "addDeadlines": "¿Esta prueba tiene sorteo o plazos? Anotarlos",
-    "openDeadlines": "Sorteo y plazos de esta prueba"
+    "openDeadlines": "Sorteo y plazos de esta prueba",
+    "subtitleNoCalendar": "Una inscripción para {{year}}, en una prueba que aún no tiene fecha en tu calendario."
   },
   "season": {
     "tuneUpWindow": "test de ~{{distance}} km entre {{from}} y {{to}}",

@@ -69,6 +69,9 @@ export default function App() {
             <Route path="planeamento" element={<Planning />} />
             <Route path="planeamento/descobrir" element={<FindRaces />} />
             <Route path="planeamento/:id/editar" element={<WishForm />} />
+            {/* A place being chased for a season with no calendar yet: a
+                lottery entered a year ahead, or a race being tried again. */}
+            <Route path="planeamento/inscricao/:raceId/:year" element={<EntryForm />} />
             {/* The list was the bucket list until it became one section of
                 planning. Links out there, and bookmarks, still work. */}
             <Route path="bucket-list" element={<Navigate to="/planeamento" replace />} />

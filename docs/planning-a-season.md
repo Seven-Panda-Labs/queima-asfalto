@@ -107,7 +107,7 @@ Estas duas substituem linhas de [`race-lifecycle.md`](./race-lifecycle.md) que d
 
 ### O que continua por fazer
 
-**A inscrição de uma época que ainda não tem calendário.** O "tentar na próxima época" de uma prova falhada escreve a inscrição do ano seguinte, mas como não há evento nessa época ela só aparece no cartão de prazos, e só fica editável quando a prova for agendada.
+Nada de conhecido. A última coisa que faltava, a inscrição de uma época que ainda não tem calendário, passou a viver no planeamento dessa época: um sorteio entregue com um ano de antecedência e uma prova que vai ser tentada outra vez aparecem lá e abrem para editar prazos, sem data nenhuma.
 
 ---
 
@@ -214,4 +214,4 @@ Two of these replace rows in [`race-lifecycle.md`](./race-lifecycle.md) that no 
 
 ### Still to do
 
-**An entry for a season that has no calendar yet.** "Try again next season" on a failed race writes next year's entry, but with no event in that season it only shows on the deadline card, and only becomes editable once the race is scheduled.
+Nothing known. The last piece, an entry for a season with no calendar yet, now lives in that season's planning: a lottery entered a year ahead and a race about to be tried again show there and open for their deadlines, with no date at all.

@@ -91,7 +91,15 @@ function toFormState(entry: RaceEntry | null, offer: EntryPrefill | null = null)
  */
 export function EntryForm() {
   const { t } = useTranslation()
-  const { id } = useParams()
+  /**
+   * Two ways in, because an entry outlives the calendar.
+   *
+   * `id` is an event: the usual case, a race with a date. `raceId` and `year`
+   * are the other one, a place being chased for a season that has no calendar
+   * yet, which is what a lottery entered a year ahead looks like and what
+   * trying again after a race that did not happen writes.
+   */
+  const { id, raceId: raceParam, year: yearParam } = useParams()
   const navigate = useNavigate()
   const toast = useToast()
   const { user } = useAuth()
@@ -99,7 +107,7 @@ export function EntryForm() {
   const { races } = useRaces()
 
   const [event, setEvent] = useState<Event | null>(null)
-  const [loadingEvent, setLoadingEvent] = useState(true)
+  const [loadingEvent, setLoadingEvent] = useState(Boolean(id))
 
   useEffect(() => {
     if (!id) return
@@ -116,13 +124,15 @@ export function EntryForm() {
     }
   }, [id])
 
-  const year = event ? event.date.getFullYear() : null
+  const raceId = event?.raceId ?? raceParam ?? null
+  const year = event ? event.date.getFullYear() : Number(yearParam) || null
+  const race = races.find((candidate) => candidate.id === raceId) ?? null
   const existing = useMemo(() => {
-    if (!event?.raceId || year === null) return null
-    return entries.find((entry) => entry.raceId === event.raceId && entry.year === year) ?? null
-  }, [entries, event?.raceId, year])
+    if (!raceId || year === null) return null
+    return entries.find((entry) => entry.raceId === raceId && entry.year === year) ?? null
+  }, [entries, raceId, year])
 
-  const catalogRaceId = races.find((race) => race.id === event?.raceId)?.catalogRaceId
+  const catalogRaceId = race?.catalogRaceId
   const [catalogRace, setCatalogRace] = useState<RaceCatalogEntry | null>(null)
   const [catalogSettled, setCatalogSettled] = useState(false)
 
@@ -184,7 +194,7 @@ export function EntryForm() {
 
   async function handleSubmit(submitted: FormEvent) {
     submitted.preventDefault()
-    if (!event || !user || year === null) return
+    if (!raceId || !user || year === null) return
 
     const next: Record<string, string> = {}
     const opens = fromInputDate(form.registrationOpensAt)
@@ -197,14 +207,19 @@ export function EntryForm() {
     setSaving(true)
     try {
       const payload = {
-        raceId: event.raceId!,
+        raceId,
         year,
-        discipline: event.eventType,
-        eventId: event.id,
-        // The day is the day the race is scheduled for. Nothing is scheduled
-        // without one, so this is never a guess.
-        raceDate: event.date,
-        raceDateConfirmed: true,
+        // What the calendar knows, when there is a calendar. A place being
+        // chased for a season nobody has dated has none of it, and saying so
+        // is better than inventing a day.
+        ...(event
+          ? {
+              discipline: event.eventType,
+              eventId: event.id,
+              raceDate: event.date,
+              raceDateConfirmed: true,
+            }
+          : { raceDateConfirmed: false }),
         entryMethod: form.entryMethod,
         entryStatus: form.entryStatus,
         registrationOpensAt: opens,
@@ -225,7 +240,7 @@ export function EntryForm() {
 
       // Being in is what `confirmed` means on the calendar, and saying it twice
       // is how the two drift apart.
-      if (form.entryStatus === 'registered' && event.status === 'planned') {
+      if (form.entryStatus === 'registered' && event?.status === 'planned') {
         await updateEvent(event.id, { status: 'confirmed' })
       }
 
@@ -241,7 +256,7 @@ export function EntryForm() {
       }
 
       toast.success(t('entry.saved'))
-      navigate(`/eventos/${event.id}`)
+      navigate(event ? `/eventos/${event.id}` : '/planeamento')
     } catch {
       toast.error(t('entry.saveError'))
     } finally {
@@ -257,7 +272,7 @@ export function EntryForm() {
     )
   }
 
-  if (!event || !event.raceId) {
+  if (!raceId || year === null || (id && !event)) {
     return (
       <PageShell title={t('entry.title')}>
         <p className="mt-4 text-sm text-muted">{t('entry.eventGone')}</p>
@@ -273,8 +288,10 @@ export function EntryForm() {
   ]
 
   return (
-    <PageShell title={event.name}>
-      <p className="mt-2 text-sm text-muted">{t('entry.subtitle')}</p>
+    <PageShell title={event?.name ?? race?.name ?? t('entry.title')}>
+      <p className="mt-2 text-sm text-muted">
+        {event ? t('entry.subtitle') : t('entry.subtitleNoCalendar', { year })}
+      </p>
 
       {/* An unreviewed entry may fill a field the runner can see and correct,
           and may never assert. Saying where the values came from is what makes
@@ -318,7 +335,7 @@ export function EntryForm() {
                   </option>
                 ))}
               </select>
-              {form.entryStatus === 'registered' && event.status === 'planned' ? (
+              {form.entryStatus === 'registered' && event?.status === 'planned' ? (
                 <span className="mt-1 block text-xs font-normal text-primary">
                   {t('entry.registeredConfirmsEvent')}
                 </span>
@@ -399,7 +416,7 @@ export function EntryForm() {
         <div className="flex flex-wrap justify-end gap-3">
           <button
             type="button"
-            onClick={() => navigate(`/eventos/${event.id}`)}
+            onClick={() => navigate(event ? `/eventos/${event.id}` : '/planeamento')}
             className="rounded-md border border-border px-4 py-2 text-sm font-semibold text-muted hover:text-foreground"
           >
             {t('common.cancel')}
