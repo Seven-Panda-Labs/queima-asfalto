@@ -13,6 +13,7 @@
 - **O sorteio e os prazos passam a viver na prova:** a lista de desejos deixa de pedir um formulário de inscrição por cada sonho. Quem precisa de tratar de um sorteio ou de um prazo fá-lo na prova que já está no calendário, e ficar inscrito confirma-a.
 - **Planeamento, em vez de Bucket List:** a navegação passa a ter Planeamento, com a forma da época mês a mês para veres onde faltam provas, os desejos como uma secção, e o catálogo para encontrar o resto. Marcar um desejo é um coração na prova do catálogo.
 - **Um desejo é um marcador, não uma ficha:** deixa de se escrever um desejo à mão com nome, local, distância e mês alvo. Marca-se a prova no catálogo, e o nome e o local passam a ser os da prova, por isso nunca mais discordam. Fica a nota, que é a única coisa que era mesmo tua.
+- **A época é o caminho até cada âncora:** em vez de doze meses para encher, uma linha por prova âncora com as provas que a preparam, em ordem, e o tempo entre cada uma. O espaço entre duas provas é um botão: abre o catálogo já a perguntar por aquelas datas.
 
 ---
 

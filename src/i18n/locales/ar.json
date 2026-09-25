@@ -511,8 +511,17 @@
     "seasonYear": "سنة الموسم",
     "seasonCount_one": "سباق واحد محجوز",
     "seasonCount_other": "{{count}} سباقات محجوزة",
-    "seasonEmptyMonth": "لا شيء",
-    "wishesTitle": "الأمنيات"
+    "wishesTitle": "الأمنيات",
+    "gapBefore": "ابحث عن سباق قبل {{name}}",
+    "gapAfter": "ابحث عن سباق بعد {{name}}",
+    "gapAnywhere": "ابحث عن سباقات لهذا الموسم",
+    "noAnchorHint": "لا شيء منها مُعلَّم كمرساة. علّمه في صفحة السباق فتُقرأ البقية كتحضير له.",
+    "span": {
+      "days_one": "يوم",
+      "days_other": "{{count}} أيام",
+      "weeks_one": "أسبوع",
+      "weeks_other": "{{count}} أسابيع"
+    }
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",

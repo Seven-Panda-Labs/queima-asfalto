@@ -499,8 +499,17 @@
     "seasonYear": "Season year",
     "seasonCount_one": "1 race booked",
     "seasonCount_other": "{{count}} races booked",
-    "seasonEmptyMonth": "nothing",
-    "wishesTitle": "Wishes"
+    "wishesTitle": "Wishes",
+    "gapBefore": "Find a race before {{name}}",
+    "gapAfter": "Find a race after {{name}}",
+    "gapAnywhere": "Find races for this season",
+    "noAnchorHint": "None of these is marked as an anchor. Mark it on the race's own page and the rest read as preparation for it.",
+    "span": {
+      "days_one": "1 day",
+      "days_other": "{{count}} days",
+      "weeks_one": "1 wk",
+      "weeks_other": "{{count}} wks"
+    }
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",

@@ -13,6 +13,7 @@
 - **El sorteo y los plazos pasan a vivir en la prueba:** la lista de deseos deja de pedir un formulario de inscripción por cada sueño. Quien tenga que seguir un sorteo o un plazo lo hace en la prueba que ya está en el calendario, y quedar inscrito la confirma.
 - **Planificación, en lugar de Bucket List:** la navegación pasa a tener Planificación, con la forma de la temporada mes a mes para ver dónde faltan pruebas, los deseos como una sección, y el catálogo para encontrar el resto. Marcar un deseo es un corazón en la prueba del catálogo.
 - **Un deseo es un marcador, no una ficha:** ya no se escribe un deseo a mano con nombre, lugar, distancia y mes objetivo. Se marca la prueba en el catálogo, y el nombre y el lugar pasan a ser los de la prueba, así que nunca discrepan. Queda la nota, que era lo único realmente tuyo.
+- **La temporada es el camino hasta cada ancla:** en vez de doce meses que llenar, una línea por prueba ancla con las pruebas que la preparan, en orden, y el tiempo entre cada una. El espacio entre dos pruebas es un botón: abre el catálogo preguntando ya por esas fechas.
 
 ---
 

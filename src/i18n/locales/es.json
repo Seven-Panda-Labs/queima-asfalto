@@ -499,8 +499,17 @@
     "seasonYear": "Año de la temporada",
     "seasonCount_one": "1 prueba marcada",
     "seasonCount_other": "{{count}} pruebas marcadas",
-    "seasonEmptyMonth": "nada",
-    "wishesTitle": "Deseos"
+    "wishesTitle": "Deseos",
+    "gapBefore": "Encontrar una prueba antes de {{name}}",
+    "gapAfter": "Encontrar una prueba después de {{name}}",
+    "gapAnywhere": "Encontrar pruebas para esta temporada",
+    "noAnchorHint": "Ninguna está marcada como ancla. Márcala en la página de la prueba y el resto se leerá como preparación para ella.",
+    "span": {
+      "days_one": "1 día",
+      "days_other": "{{count}} días",
+      "weeks_one": "1 sem",
+      "weeks_other": "{{count}} sem"
+    }
   },
   "linkWishes": {
     "offer_one": "1 deseo aún no dice qué prueba es. Decirlo ahora",

@@ -27,8 +27,8 @@ import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { WishList } from './WishList'
-import { SeasonShape } from '../../components/SeasonShape'
-import { seasonYears } from '../../domain/seasonShape'
+import { SeasonTimeline } from '../../components/SeasonTimeline'
+import { seasonYears } from '../../domain/seasonTimeline'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
 import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -233,13 +233,21 @@ export function Planning() {
           else's wishes and carries no season of ours. */}
       {!isSharedView ? (
         <div className="mt-6">
-          <SeasonShape
+          <SeasonTimeline
             events={allEvents}
             year={seasonYear}
             years={years}
             anchorRaceIds={anchorIds}
             onYear={setSeasonYear}
           />
+          {/* The one thing this page is for, and it was a quiet link at the
+              far end of a filter bar. */}
+          <Link
+            to="/planeamento/descobrir"
+            className="mt-4 inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-primary-hover"
+          >
+            {t('findRaces.cta')}
+          </Link>
         </div>
       ) : null}
 
@@ -267,25 +275,15 @@ export function Planning() {
           {t('planning.wishesTitle')}
         </h2>
 
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <ViewSwitcher
-            options={[
-              { value: 'lista', label: t('viewMode.list') },
-              { value: 'mapa', label: t('viewMode.map') },
-            ]}
-            value={viewMode}
-            onChange={handleViewModeChange}
-            label={t('viewMode.label')}
-          />
-          {canWrite && !isSharedView ? (
-            <Link
-              to="/planeamento/descobrir"
-              className="inline-flex items-center justify-center rounded-md border border-border px-4 py-2 text-sm font-semibold text-foreground transition-colors hover:border-primary hover:text-primary"
-            >
-              {t('findRaces.cta')}
-            </Link>
-          ) : null}
-        </div>
+        <ViewSwitcher
+          options={[
+            { value: 'lista', label: t('viewMode.list') },
+            { value: 'mapa', label: t('viewMode.map') },
+          ]}
+          value={viewMode}
+          onChange={handleViewModeChange}
+          label={t('viewMode.label')}
+        />
 
         {/* Only on your own list, and only while something is unlinked: it is
             a one-off tidy-up, not a permanent part of the page. */}

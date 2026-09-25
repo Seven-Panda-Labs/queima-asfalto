@@ -499,8 +499,17 @@
     "seasonYear": "Saisonjahr",
     "seasonCount_one": "1 Rennen gebucht",
     "seasonCount_other": "{{count}} Rennen gebucht",
-    "seasonEmptyMonth": "nichts",
-    "wishesTitle": "Wünsche"
+    "wishesTitle": "Wünsche",
+    "gapBefore": "Ein Rennen vor {{name}} finden",
+    "gapAfter": "Ein Rennen nach {{name}} finden",
+    "gapAnywhere": "Rennen für diese Saison finden",
+    "noAnchorHint": "Keines davon ist als Anker markiert. Markiere es auf der Seite des Rennens, dann lesen sich die übrigen als Vorbereitung darauf.",
+    "span": {
+      "days_one": "1 Tag",
+      "days_other": "{{count}} Tage",
+      "weeks_one": "1 Wo",
+      "weeks_other": "{{count}} Wo"
+    }
   },
   "linkWishes": {
     "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",

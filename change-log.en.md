@@ -13,6 +13,7 @@
 - **The lottery and the deadlines belong to the race:** the wish list no longer asks for an entry form on every dream. Whoever has a lottery or a deadline to track does it on the race already in the calendar, and being in confirms it.
 - **Planning, in place of Bucket List:** the navigation now has Planning, with the shape of the season month by month so the gaps show, the wishes as one section, and the catalog to find the rest. Marking a wish is a heart on the catalog race.
 - **A wish is a marker, not a record:** no more writing one by hand with a name, a place, a distance and a target month. You mark the race in the catalog, and the name and the place are the race's, so the two can never disagree. The note stays, which was the only part that was yours.
+- **The season is the path to each anchor:** instead of twelve months to fill, one line per anchor race with the races that prepare it, in order, and the time between each. The space between two races is a button: it opens the catalog already asking about those dates.
 
 ---
 

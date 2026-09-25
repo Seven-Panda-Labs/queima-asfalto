@@ -13,6 +13,7 @@
 - **Losverfahren und Fristen gehören zum Rennen:** die Wunschliste verlangt kein Anmeldeformular mehr für jeden Traum. Wer ein Losverfahren oder eine Frist verfolgen muss, tut es am Rennen, das schon im Kalender steht, und drin zu sein bestätigt es.
 - **Planung statt Bucket List:** in der Navigation steht jetzt Planung, mit der Form der Saison Monat für Monat, damit die Lücken sichtbar sind, den Wünschen als einem Abschnitt und dem Katalog für den Rest. Einen Wunsch zu markieren ist ein Herz am Katalogrennen.
 - **Ein Wunsch ist eine Markierung, kein Datensatz:** kein Wunsch mehr von Hand mit Name, Ort, Distanz und Zielmonat. Man markiert das Rennen im Katalog, und Name und Ort sind die des Rennens, also können beide nie auseinandergehen. Die Notiz bleibt, das Einzige, was wirklich deins war.
+- **Die Saison ist der Weg zu jedem Anker:** statt zwölf Monaten zum Füllen eine Zeile je Ankerrennen, mit den Rennen, die es vorbereiten, in Reihenfolge und mit dem Abstand dazwischen. Der Zwischenraum ist ein Knopf: er öffnet den Katalog mit genau diesen Daten.
 
 ---
 
