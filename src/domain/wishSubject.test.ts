@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { BucketListItem } from '../types/BucketListItem'
 import type { Race } from '../types/Race'
-import { wishSubject } from './wishSubject'
+import { wishPins, wishSubject } from './wishSubject'
 
 const NOW = new Date('2026-09-25')
 
@@ -56,5 +56,32 @@ describe('wishSubject', () => {
 
     expect(subject.name).toBe('Maratona do Porto')
     expect(subject.location).toBe('Porto')
+  })
+})
+
+describe('wishPins', () => {
+  it('maps a wish by the place its race knows', () => {
+    const { mapped, unmapped } = wishPins(
+      [wish({ raceId: 'race-1' })],
+      [race({ locationLat: 41.15, locationLng: -8.61 })],
+    )
+
+    expect(mapped).toEqual([
+      expect.objectContaining({ id: 'wish-1', name: 'Maratona do Porto EDP', locationLat: 41.15 }),
+    ])
+    expect(unmapped).toEqual([])
+  })
+
+  it('falls back to the place an old wish carries', () => {
+    const { mapped } = wishPins([wish({ locationLat: 41.1, locationLng: -8.6 })], [])
+
+    expect(mapped[0]).toMatchObject({ name: 'Maratona do Porto', locationLat: 41.1 })
+  })
+
+  it('lists what it cannot place rather than dropping it', () => {
+    const { mapped, unmapped } = wishPins([wish({ raceId: 'race-1' })], [race()])
+
+    expect(mapped).toEqual([])
+    expect(unmapped).toEqual([{ id: 'wish-1', name: 'Maratona do Porto EDP', location: 'Porto, Portugal' }])
   })
 })

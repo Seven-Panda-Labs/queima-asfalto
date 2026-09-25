@@ -12,6 +12,7 @@
 - **Markieren und planen ohne Formulare:** ein Herz im Katalog markiert ein Rennen als Wunsch, und der Kalenderknopf legt es mit dem Datum des Katalogs in die Saison.
 - **Ein Wunsch ist eine Markierung:** ohne eigenen Namen, Ort und Distanz, die dem Rennen gehören, und nur mit deiner Notiz.
 - **Losverfahren und Fristen gehören zum Rennen:** raus aus dem Weg aller und hinein in die Ankerrennen, um deren Startplätze gekämpft wird.
+- **Die Wunschkarte liest den Ort des Rennens:** ein im Katalog markiertes Rennen behält jetzt die Koordinaten, die der Katalog veröffentlicht, und die Karte zeigt, was das Rennen weiß, statt was der Wunsch kopiert hatte.
 
 ---
 

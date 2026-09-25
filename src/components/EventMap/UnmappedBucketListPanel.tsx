@@ -1,13 +1,16 @@
 import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
-import type { BucketListItem } from '../../types/BucketListItem'
-import { formatEventTypeLabel } from '../../i18n/formatters'
-import { formatTargetMonth } from '../../utils/targetMonth'
 
 type UnmappedBucketListPanelProps = {
-  items: BucketListItem[]
+  items: { id: string; name: string; location: string }[]
 }
 
+/**
+ * The wishes the map cannot place.
+ *
+ * No link to fix it: the place belongs to the race and to the catalog entry
+ * behind it, not to the wish, and nothing on a wish's own page could correct
+ * it. What this is for is saying plainly that the map is not the whole list.
+ */
 export function UnmappedBucketListPanel({ items }: UnmappedBucketListPanelProps) {
   const { t } = useTranslation()
 
@@ -20,21 +23,8 @@ export function UnmappedBucketListPanel({ items }: UnmappedBucketListPanelProps)
       <ul className="mt-3 space-y-2">
         {items.map((item) => (
           <li key={item.id} className="rounded-md border border-border bg-background px-3 py-2">
-            <p className="text-sm font-semibold text-foreground">
-              {item.emoji ? `${item.emoji} ` : ''}
-              {item.name}
-            </p>
-            <p className="text-xs text-muted">
-              {(item.disciplines ?? []).map((d) => formatEventTypeLabel(d)).join(', ')} ·{' '}
-              {item.location || t('common.dash')}
-              {item.targetMonth ? ` · ${formatTargetMonth(item.targetMonth)}` : ''}
-            </p>
-            <Link
-              to={`/planeamento/${item.id}/editar`}
-              className="mt-1 inline-block text-xs font-semibold text-primary hover:underline"
-            >
-              {t('eventMap.editLocation')}
-            </Link>
+            <p className="text-sm font-semibold text-foreground">{item.name}</p>
+            <p className="text-xs text-muted">{item.location || t('common.dash')}</p>
           </li>
         ))}
       </ul>

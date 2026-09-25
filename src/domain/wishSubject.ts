@@ -40,3 +40,44 @@ export function wishSubject(item: BucketListItem, races: readonly Race[]): WishS
     locationLng: race.locationLng ?? item.locationLng,
   }
 }
+
+/** A wish with a place, which is all a map needs of it. */
+export type WishPin = {
+  id: string
+  name: string
+  location: string
+  locationLat: number
+  locationLng: number
+}
+
+/**
+ * The wishes a map can show, and the ones it cannot.
+ *
+ * The place comes from the race, so a wish put on the map is one whose race
+ * has been geocoded, or whose catalog entry carried a place when the race was
+ * minted. A third of the catalog does.
+ */
+export function wishPins(
+  items: readonly BucketListItem[],
+  races: readonly Race[],
+): { mapped: WishPin[]; unmapped: { id: string; name: string; location: string }[] } {
+  const mapped: WishPin[] = []
+  const unmapped: { id: string; name: string; location: string }[] = []
+
+  for (const item of items) {
+    const subject = wishSubject(item, races)
+    if (typeof subject.locationLat === 'number' && typeof subject.locationLng === 'number') {
+      mapped.push({
+        id: item.id,
+        name: subject.name,
+        location: subject.location,
+        locationLat: subject.locationLat,
+        locationLng: subject.locationLng,
+      })
+    } else if (subject.location.trim() || subject.name.trim()) {
+      unmapped.push({ id: item.id, name: subject.name, location: subject.location })
+    }
+  }
+
+  return { mapped, unmapped }
+}

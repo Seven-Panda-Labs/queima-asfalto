@@ -12,6 +12,7 @@
 - **Marquer et planifier sans formulaires :** un cœur dans le catalogue marque une course comme souhait, et le bouton calendrier la met dans la saison à la date publiée par le catalogue.
 - **Un souhait est un marqueur :** plus de nom, de lieu ni de distance propres, qui sont ceux de la course, et il ne garde que ta note.
 - **Le tirage et les échéances vivent sur la course :** hors du chemin de tous, là où ils comptent, sur les courses ancres dont l'inscription se dispute.
+- **La carte des souhaits lit le lieu de la course :** une course marquée dans le catalogue conserve désormais les coordonnées que le catalogue publie, et la carte montre ce que la course sait plutôt que ce que le souhait avait copié.
 
 ---
 
