@@ -347,6 +347,14 @@ export function Planning() {
       ) : null}
 
       <div className="mt-6 flex flex-col gap-6">
+        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
+          {t('planning.wishesTitle')}
+        </h2>
+
+        {/* Here and not at the top of the page: what is shared is the list of
+            wishes. The season above it is read off your own calendar, and the
+            catalog belongs to nobody. Outside the loading branch, so somebody
+            can go back to their own list while a shared one is still coming. */}
         <SharedOwnerTabs
           tabs={ownerTabs}
           activeOwnerId={activeOwnerId}
@@ -365,10 +373,6 @@ export function Planning() {
             })}
           />
         ) : null}
-
-        <h2 className="text-xs font-semibold uppercase tracking-wider text-muted">
-          {t('planning.wishesTitle')}
-        </h2>
 
         {/* A wish waits for its edition to be published, and that moment is a
             decision nobody was being told about. */}

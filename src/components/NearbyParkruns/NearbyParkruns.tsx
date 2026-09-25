@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { CalendarPlusIcon, HeartIcon } from '../icons/actionIcons'
 import type { ParkrunCatalogEvent } from '../../../shared/parkrun/catalog'
 import {
   nearbyParkruns,
@@ -149,24 +150,32 @@ export function NearbyParkruns({
                 {t('parkrunDiscovery.saturday', { date: formatDatePt(saturday) })}
               </span>
 
-              <div className="ms-auto flex items-center gap-2">
+              {/* The same two actions as every other race in this page, drawn
+                  the same way: a parkrun is not a different kind of row. */}
+              <div className="ms-auto flex flex-nowrap items-center gap-1">
                 <button
                   type="button"
                   onClick={() => void run(event.slug, () => onPlan(event, saturday))}
                   disabled={busySlug === event.slug}
-                  className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-white hover:bg-primary-hover disabled:opacity-50"
+                  title={t('parkrunDiscovery.plan')}
+                  aria-label={t('parkrunDiscovery.plan')}
+                  className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-50"
                 >
-                  {t('parkrunDiscovery.plan')}
+                  <CalendarPlusIcon />
                 </button>
                 <button
                   type="button"
                   onClick={() => void run(event.slug, () => onWatch(event))}
                   disabled={busySlug === event.slug || addedSlugs.includes(event.slug)}
-                  className="rounded-full border border-border px-3 py-1 text-xs font-semibold text-foreground hover:border-primary hover:text-primary disabled:opacity-50"
+                  title={addedSlugs.includes(event.slug) ? t('findRaces.added') : t('parkrunDiscovery.watch')}
+                  aria-label={
+                    addedSlugs.includes(event.slug)
+                      ? t('findRaces.added')
+                      : t('parkrunDiscovery.watch')
+                  }
+                  className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary disabled:opacity-50"
                 >
-                  {addedSlugs.includes(event.slug)
-                    ? t('findRaces.added')
-                    : t('parkrunDiscovery.watch')}
+                  <HeartIcon filled={addedSlugs.includes(event.slug)} />
                 </button>
               </div>
             </li>

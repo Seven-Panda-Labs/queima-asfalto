@@ -16,6 +16,7 @@
 - **La app aprende dónde están las pruebas del catálogo:** cada noche averigua hasta trescientas, a partir del pueblo y el país que publican las fuentes. Dos tercios del catálogo no traía coordenadas, y sin ellas una prueba no aparece en el mapa ni en una búsqueda por radio.
 - **El deseo avisa cuando gana fecha:** en cuanto el organizador publica la edición y la recogida la trae, la página de planificación dice cuáles de tus deseos ya tienen fecha para la temporada que montas, y los pone en el calendario desde ahí.
 - **Una inscripción puede existir antes que el calendario:** un sorteo entregado con un año de antelación, o una prueba que falló y vas a intentar la temporada siguiente, aparecen en la planificación de esa temporada y se abren para editar plazos, sin fecha fijada.
+- **Las acciones de cada fila son iguales en todas partes:** el catálogo y los parkruns dejan de mezclar enlaces, emojis y botones de color, y usan los mismos iconos con etiqueta que Eventos usa desde siempre. El panel de compartir pasó dentro de los deseos, que es lo que se comparte.
 
 ---
 

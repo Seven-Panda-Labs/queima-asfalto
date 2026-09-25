@@ -16,6 +16,7 @@
 - **The app learns where the catalog's races are:** each night it finds up to three hundred of them, from the town and the country the sources publish. Two thirds of the catalog carried no coordinates, and without them a race is missing from the map and from a search by radius.
 - **A wish speaks up when it gains a date:** as soon as the organiser publishes the edition and the harvest brings it, the planning page says which of your wishes have a date for the season you are building, and schedules them from there.
 - **An entry can exist before the calendar:** a lottery entered a year ahead, or a race that did not happen and you will try again next season, shows in that season's planning and opens for its deadlines, with no date set.
+- **A row action looks the same everywhere:** the catalog and the parkrun list stop mixing links, emojis and coloured buttons, and use the labelled icons Events has used all along. The sharing panel moved into the wishes, which is what is shared.
 
 ---
 
