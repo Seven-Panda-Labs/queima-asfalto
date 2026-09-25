@@ -6,18 +6,12 @@
 
 ## [1.82.0] - 2026-09-25
 
-### Ajouté
+### Modifié
 
-- **Dire à quelle course du catalogue correspond un souhait :** la bucket list propose désormais le lien pour les souhaits saisis à la main. Sans lui, un souhait n'est qu'un nom : aucune date de la prochaine édition, et aucun lien avec la course déjà au calendrier.
-- **Au calendrier en une étape :** planifier un souhait n'ouvre plus le formulaire d'événement à la date du jour. Il demande la distance, quand il y a un choix, et le jour, déjà rempli avec ce que le catalogue publie pour la prochaine édition.
-- **Le tirage et les échéances appartiennent à la course :** la liste de souhaits ne réclame plus un formulaire d'inscription pour chaque rêve. Celui qui doit suivre un tirage ou une échéance le fait sur la course déjà au calendrier, et y être inscrit la confirme.
-- **Planification, à la place de Bucket List :** la navigation a désormais Planification, avec la forme de la saison mois par mois pour voir les trous, les souhaits en une section, et le catalogue pour trouver le reste. Marquer un souhait est un cœur sur la course du catalogue.
-- **Un souhait est un marqueur, pas une fiche :** on n'écrit plus un souhait à la main avec un nom, un lieu, une distance et un mois cible. On marque la course dans le catalogue, et le nom et le lieu sont ceux de la course, donc les deux ne peuvent plus diverger. La note reste, la seule partie qui était vraiment à toi.
-- **La saison est le chemin vers chaque ancre :** au lieu de douze mois à remplir, une ligne par course ancre avec les courses qui la préparent, dans l'ordre, et le temps entre chacune. L'espace entre deux courses est un bouton : il ouvre le catalogue en demandant déjà ces dates.
-- **Un souhait cesse de stocker ce que la course dit déjà :** le nom, le lieu, la distance, les disciplines et le mois cible quittent le souhait et restent là où ils vivent, sur la course et dans le catalogue. Un souhait pour une course absente du catalogue affiche toujours ce que tu as écrit.
-- **La liste de souhaits ne se vide plus à cause d'une date :** un champ de date mal écrit faisait tomber toute la liste, car la page lit tous les souhaits d'un coup. Le souhait s'affiche maintenant, avec la date lisible.
-- **Le cycle d'une ancre traverse l'année :** la préparation qui commence à l'automne précédent, ou l'ancre qui tombe l'année suivante, apparaissent en plus pâle avec l'année à côté de la date. Les courses prennent moins de place, la saison vit dans l'adresse, donc revenir du catalogue te ramène à celle que tu planifiais, et le sélecteur n'offre plus de saisons déjà courues.
-- **Du catalogue directement au calendrier :** chaque course trouvée a désormais un bouton calendrier, avec la date de l'édition déjà remplie, si bien qu'arriver depuis un trou de la saison n'est plus une impasse. Et le cœur montre ce qui est déjà marqué, de n'importe quelle visite, et se retire au second appui.
+- **Planification, à la place de Bucket List :** une saison est le chemin vers chaque course ancre, avec les courses qui la préparent sur une ligne, le temps entre elles, et l'espace entre deux qui ouvre le catalogue sur ces dates.
+- **Marquer et planifier sans formulaires :** un cœur dans le catalogue marque une course comme souhait, et le bouton calendrier la met dans la saison à la date publiée par le catalogue.
+- **Un souhait est un marqueur :** plus de nom, de lieu ni de distance propres, qui sont ceux de la course, et il ne garde que ta note.
+- **Le tirage et les échéances vivent sur la course :** hors du chemin de tous, là où ils comptent, sur les courses ancres dont l'inscription se dispute.
 
 ---
 

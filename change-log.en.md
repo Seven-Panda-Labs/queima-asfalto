@@ -6,18 +6,12 @@
 
 ## [1.82.0] - 2026-09-25
 
-### Added
+### Changed
 
-- **Say which catalog race a wish is:** the bucket list now offers the link for wishes typed by hand. Without it a wish is only a name: no dates for the next edition, and no way to recognise the race already in your calendar.
-- **Into the calendar in one step:** scheduling a wish no longer opens the event form on today's date. It asks the distance, when there is a choice, and the day, already filled with what the catalog publishes for the next edition.
-- **The lottery and the deadlines belong to the race:** the wish list no longer asks for an entry form on every dream. Whoever has a lottery or a deadline to track does it on the race already in the calendar, and being in confirms it.
-- **Planning, in place of Bucket List:** the navigation now has Planning, with the shape of the season month by month so the gaps show, the wishes as one section, and the catalog to find the rest. Marking a wish is a heart on the catalog race.
-- **A wish is a marker, not a record:** no more writing one by hand with a name, a place, a distance and a target month. You mark the race in the catalog, and the name and the place are the race's, so the two can never disagree. The note stays, which was the only part that was yours.
-- **The season is the path to each anchor:** instead of twelve months to fill, one line per anchor race with the races that prepare it, in order, and the time between each. The space between two races is a button: it opens the catalog already asking about those dates.
-- **A wish stops storing what the race already says:** the name, the place, the distance, the disciplines and the target month leave the wish and stay where they live, on the race and in the catalog. A wish for a race the catalog does not hold still shows what you typed.
-- **The wish list no longer goes blank over a date:** one badly written date field took the whole list down, because the page maps every wish at once. Now the wish shows, with whatever date it can read.
-- **An anchor's cycle crosses the year:** the build-up that starts the previous autumn, or the anchor that falls in the next year, show on the timeline faded and with the year beside the date. Races take less room, the season lives in the address so coming back from the catalog lands on the one you were planning, and the picker no longer offers seasons already run.
-- **From the catalog straight to the calendar:** every race found gets a calendar button, with the edition's date already filled in, so arriving from a gap in the season is no longer a dead end. And the heart shows what is already marked, from any visit, and unmarks on a second press.
+- **Planning, in place of Bucket List:** a season is the path to each anchor race, with the races preparing it on one line, the time between them, and the space between two opening the catalog already asking about those dates.
+- **Marking and scheduling without forms:** a heart in the catalog marks a race as a wish, and the calendar button puts it in the season on the date the catalog publishes.
+- **A wish is a marker:** it no longer has a name, a place or a distance of its own, which are the race's, and keeps only your note.
+- **The lottery and the deadlines live on the race:** out of everybody's path and into the anchor races where entry is fought over.
 
 ---
 

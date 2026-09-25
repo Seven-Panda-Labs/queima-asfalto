@@ -6,18 +6,12 @@
 
 ## [1.82.0] - 2026-09-25
 
-### Hinzugefügt
+### Geändert
 
-- **Sagen, welches Katalogrennen ein Wunsch ist:** die Bucket List bietet die Verknüpfung jetzt für von Hand getippte Wünsche an. Ohne sie ist ein Wunsch nur ein Name: keine Termine der nächsten Ausgabe, und kein Wiedererkennen des Rennens, das schon im Kalender steht.
-- **In einem Schritt in den Kalender:** einen Wunsch zu planen öffnet nicht mehr das Rennformular mit dem heutigen Datum. Es fragt die Distanz, wenn es eine Wahl gibt, und den Tag, schon ausgefüllt mit dem, was der Katalog zur nächsten Ausgabe veröffentlicht.
-- **Losverfahren und Fristen gehören zum Rennen:** die Wunschliste verlangt kein Anmeldeformular mehr für jeden Traum. Wer ein Losverfahren oder eine Frist verfolgen muss, tut es am Rennen, das schon im Kalender steht, und drin zu sein bestätigt es.
-- **Planung statt Bucket List:** in der Navigation steht jetzt Planung, mit der Form der Saison Monat für Monat, damit die Lücken sichtbar sind, den Wünschen als einem Abschnitt und dem Katalog für den Rest. Einen Wunsch zu markieren ist ein Herz am Katalogrennen.
-- **Ein Wunsch ist eine Markierung, kein Datensatz:** kein Wunsch mehr von Hand mit Name, Ort, Distanz und Zielmonat. Man markiert das Rennen im Katalog, und Name und Ort sind die des Rennens, also können beide nie auseinandergehen. Die Notiz bleibt, das Einzige, was wirklich deins war.
-- **Die Saison ist der Weg zu jedem Anker:** statt zwölf Monaten zum Füllen eine Zeile je Ankerrennen, mit den Rennen, die es vorbereiten, in Reihenfolge und mit dem Abstand dazwischen. Der Zwischenraum ist ein Knopf: er öffnet den Katalog mit genau diesen Daten.
-- **Ein Wunsch speichert nicht mehr, was das Rennen schon sagt:** Name, Ort, Distanz, Disziplinen und Zielmonat verlassen den Wunsch und bleiben dort, wo sie leben, am Rennen und im Katalog. Ein Wunsch für ein Rennen, das der Katalog nicht führt, zeigt weiter, was du getippt hast.
-- **Die Wunschliste bleibt nicht mehr wegen eines Datums leer:** ein falsch geschriebenes Datumsfeld riss die ganze Liste mit, weil die Seite alle Wünsche auf einmal liest. Jetzt erscheint der Wunsch, mit dem Datum, das lesbar ist.
-- **Der Zyklus eines Ankers überschreitet das Jahr:** der Aufbau, der im Herbst davor beginnt, oder der Anker im Jahr danach erscheinen blasser und mit der Jahreszahl neben dem Datum. Rennen brauchen weniger Platz, die Saison steht in der Adresse, also landet die Rückkehr aus dem Katalog wieder bei ihr, und gelaufene Saisons werden nicht mehr angeboten.
-- **Vom Katalog direkt in den Kalender:** jedes gefundene Rennen hat jetzt einen Kalenderknopf, mit dem Datum der Ausgabe schon eingetragen, damit der Weg aus einer Lücke der Saison keine Sackgasse mehr ist. Und das Herz zeigt, was schon markiert ist, aus jedem Besuch, und nimmt die Markierung beim zweiten Druck zurück.
+- **Planung statt Bucket List:** eine Saison ist der Weg zu jedem Ankerrennen, mit den vorbereitenden Rennen auf einer Linie, dem Abstand dazwischen, und dem Zwischenraum, der den Katalog mit genau diesen Daten öffnet.
+- **Markieren und planen ohne Formulare:** ein Herz im Katalog markiert ein Rennen als Wunsch, und der Kalenderknopf legt es mit dem Datum des Katalogs in die Saison.
+- **Ein Wunsch ist eine Markierung:** ohne eigenen Namen, Ort und Distanz, die dem Rennen gehören, und nur mit deiner Notiz.
+- **Losverfahren und Fristen gehören zum Rennen:** raus aus dem Weg aller und hinein in die Ankerrennen, um deren Startplätze gekämpft wird.
 
 ---
 

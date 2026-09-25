@@ -6,18 +6,12 @@
 
 ## [1.82.0] - 2026-09-25
 
-### Añadido
+### Cambiado
 
-- **Decir qué prueba del catálogo es un deseo:** la bucket list ofrece ahora el enlace para los deseos escritos a mano. Sin él, un deseo es solo un nombre: no sabe las fechas de la próxima edición ni se reconoce en la prueba que ya tienes en el calendario.
-- **Al calendario en un paso:** programar un deseo ya no abre el formulario de evento con la fecha de hoy. Pregunta la distancia, cuando hay elección, y el día, ya relleno con lo que el catálogo publica para la próxima edición.
-- **El sorteo y los plazos pasan a vivir en la prueba:** la lista de deseos deja de pedir un formulario de inscripción por cada sueño. Quien tenga que seguir un sorteo o un plazo lo hace en la prueba que ya está en el calendario, y quedar inscrito la confirma.
-- **Planificación, en lugar de Bucket List:** la navegación pasa a tener Planificación, con la forma de la temporada mes a mes para ver dónde faltan pruebas, los deseos como una sección, y el catálogo para encontrar el resto. Marcar un deseo es un corazón en la prueba del catálogo.
-- **Un deseo es un marcador, no una ficha:** ya no se escribe un deseo a mano con nombre, lugar, distancia y mes objetivo. Se marca la prueba en el catálogo, y el nombre y el lugar pasan a ser los de la prueba, así que nunca discrepan. Queda la nota, que era lo único realmente tuyo.
-- **La temporada es el camino hasta cada ancla:** en vez de doce meses que llenar, una línea por prueba ancla con las pruebas que la preparan, en orden, y el tiempo entre cada una. El espacio entre dos pruebas es un botón: abre el catálogo preguntando ya por esas fechas.
-- **El deseo deja de guardar lo que la prueba ya dice:** el nombre, el lugar, la distancia, las disciplinas y el mes objetivo salen del deseo y se quedan donde viven, en la prueba y en el catálogo. Un deseo de una prueba que el catálogo no tiene sigue mostrando lo que escribiste.
-- **La lista de deseos ya no se queda en blanco por una fecha:** un campo de fecha mal escrito tiraba la lista entera, porque la página lee todos los deseos de una vez. Ahora el deseo aparece, con la fecha que se pueda leer.
-- **El ciclo de un ancla cruza el año:** la preparación que empieza el otoño anterior, o el ancla que cae al año siguiente, aparecen en la línea con un tono más apagado y el año junto a la fecha. Las pruebas ocupan menos, la temporada vive en la dirección, así que volver del catálogo te deja en la que estabas planificando, y el selector ya no ofrece temporadas ya corridas.
-- **Del catálogo directo al calendario:** cada prueba encontrada tiene ahora un botón de calendario, con la fecha de la edición ya rellena, así que llegar desde un hueco de la temporada deja de ser un callejón sin salida. Y el corazón muestra lo ya marcado, de cualquier visita, y lo desmarca al segundo toque.
+- **Planificación, en lugar de Bucket List:** la temporada es el camino hasta cada prueba ancla, con las pruebas que la preparan en línea, el tiempo entre ellas, y el espacio entre dos abriendo el catálogo con esas fechas.
+- **Marcar y programar sin formularios:** un corazón en el catálogo marca la prueba como deseo, y el botón de calendario la pone en la temporada con la fecha que el catálogo publica.
+- **Un deseo es un marcador:** deja de tener nombre, lugar y distancia propios, que son los de la prueba, y se queda solo con tu nota.
+- **El sorteo y los plazos viven en la prueba:** salen del camino de todos y se quedan donde importan, en las pruebas ancla con inscripción disputada.
 
 ---
 
