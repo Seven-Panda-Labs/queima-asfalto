@@ -113,7 +113,7 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 | Âncora com sorteio | A temporada organiza-se depois do sorteio. O ciclo mantém-se, o que é lento é a fase 4 | entrevistas |
 | Falha numa prova | Degrada essa prova, não a temporada, e há sempre a opção da época seguinte | entrevistas |
 | Identidade da corrida | O `catalogRaceId` de #246 e o catálogo de #210 são a mesma entidade | este documento |
-| Item da bucket list | Sobrevive ao agendamento | este documento |
+| Item da bucket list | Revisto: é um marcador numa prova do catálogo, e deixa de o ser quando a prova é agendada | [`planning-a-season.md`](./planning-a-season.md) |
 | Agrupamento de percurso | Quando existir identidade, prefere-se ela, com o nome como fallback | este documento |
 | Cadência de notificações | 60 minutos, o orçamento que os prazos de inscrição já assumem | #246 |
 | Descoberta ao vivo por consulta | Rejeitada. Colheita agendada para um catálogo, pesquisa no cliente | #210 |
@@ -121,7 +121,7 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 | Inscrição automática, pagamentos | Não. Deep link mais checklist | #246 |
 | Elegibilidade (projectar PBs contra tempos de qualificação) | Fora de roteiro | #246 |
 | Armazenamento da inscrição | Colecção `raceEntries` própria, não embutida no item | #246 |
-| Navegação | A bucket list cresce, sem rota nova de planeamento | #246 |
+| Navegação | Revisto: Planeamento substitui a bucket list no topo, e Eventos mantém-se | [`planning-a-season.md`](./planning-a-season.md) |
 | Integrações Strava/Garmin | Fora da v1. O parser de GPX/TCX serve qualquer integração futura | #226 |
 | Um traçado não é verificação | `resultsVerified` continua a vir só da importação oficial | #226 |
 | O que é uma edição | Um ano de uma prova anual. Um evento recorrente tem ocorrências de uma regra, não edições | [`race-catalog.md`](./race-catalog.md) |
@@ -260,7 +260,7 @@ They live in the issues or in the interviews, and should not be reopened in pass
 | Anchor with a lottery | The season is organised after the draw. The loop stays as it is, what is slow is stage 4 | interviews |
 | A failed race | Degrades that race, not the season, and there is always the next season | interviews |
 | Race identity | #246's `catalogRaceId` and #210's catalog are the same entity | this document |
-| The bucket list item | Survives scheduling | this document |
+| The bucket list item | Revised: it is a marker on a catalog race, and stops being one when the race is scheduled | [`planning-a-season.md`](./planning-a-season.md) |
 | Course grouping | Once identity exists, it wins, with the name as fallback | this document |
 | Notification cadence | 60 minutes, the budget registration deadlines already assume | #246 |
 | Live discovery per query | Rejected. Scheduled harvest into a catalog, client-side search | #210 |
@@ -268,7 +268,7 @@ They live in the issues or in the interviews, and should not be reopened in pass
 | Automatic registration, payments | No. Deep link plus checklist | #246 |
 | Eligibility (projecting PBs against qualifying times) | Out of roadmap | #246 |
 | Entry storage | Its own `raceEntries` collection, not embedded in the item | #246 |
-| Navigation | The bucket list grows, no new planning route | #246 |
+| Navigation | Revised: Planning replaces the bucket list at the top, and Events stays | [`planning-a-season.md`](./planning-a-season.md) |
 | Strava/Garmin integrations | Out of v1. The GPX/TCX parser serves any future integration | #226 |
 | A track is not a verification | `resultsVerified` still comes only from the official lookup | #226 |
 | What an edition is | One year of an annual race. A recurring event has occurrences from a rule, not editions | [`race-catalog.md`](./race-catalog.md) |
