@@ -1,8 +1,13 @@
 import { describe, expect, it, vi } from 'vitest'
 
 vi.mock('./firebase', () => ({ db: {} }))
-const addDoc = vi.fn(() => Promise.resolve({ id: 'wish-new' }))
-const getDocs = vi.fn(() => Promise.resolve({ docs: [] as { id: string }[] }))
+// The rest parameter is what lets the mock stand in for a call with
+// arguments: without it `tsc` refuses the spread and the build fails, which
+// the test run itself never notices.
+const addDoc = vi.fn((..._args: unknown[]) => Promise.resolve({ id: 'wish-new' }))
+const getDocs = vi.fn((..._args: unknown[]) =>
+  Promise.resolve({ docs: [] as { id: string }[] }),
+)
 vi.mock('firebase/firestore', () => ({
   addDoc: (...args: unknown[]) => addDoc(...args),
   collection: vi.fn(),
