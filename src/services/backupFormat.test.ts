@@ -586,6 +586,15 @@ describe('validateRestoreDocument', () => {
     expect(check('performanceGoals', { ...base, type: 'other' })).toBe('invalid_performance_goal')
   })
 
+  it('validates a weigh-in, and refuses a malformed day or an implausible weight', () => {
+    const entry = { userId: 'user-ze', date: '2026-09-27', weightKg: 94.1 }
+    expect(check('weightEntries', entry)).toBeNull()
+    expect(check('weightEntries', { ...entry, date: '27/09/2026' })).toBe('invalid_date')
+    expect(check('weightEntries', { ...entry, weightKg: 401 })).toBe('invalid_weight')
+    expect(check('weightEntries', { ...entry, weightKg: '94.1' })).toBe('invalid_weight')
+    expect(check('weightEntries', { userId: 'user-ze', date: '2026-09-27' })).toBe('missing_required_field')
+  })
+
   it('validates a race entry, and refuses a status or method it does not know', () => {
     const entry = {
       userId: 'user-ze',

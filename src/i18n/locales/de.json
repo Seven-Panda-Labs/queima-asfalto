@@ -781,6 +781,7 @@
     "countBucketListItems": "{{count}} Einträge auf der Bucket List",
     "countRaces": "{{count}} Rennen",
     "countRaceEntries": "{{count}} Anmeldungen",
+    "countWeightEntries": "{{count}} Gewichtseinträge",
     "countUserProfile": "Profil: Sprache, Benachrichtigungseinstellungen und Ergebnisprofil",
     "countShares": "{{count}} Freigaben (nicht wiederherstellbar)",
     "existingLoading": "Deine aktuellen Daten werden gezählt...",
@@ -836,7 +837,8 @@
       "raceEntries": "Anmeldungen",
       "userProfile": "Profil",
       "shares": "Freigaben",
-      "eventTracks": "Aktivitätsdateien"
+      "eventTracks": "Aktivitätsdateien",
+      "weightEntries": "Gewichtseinträge"
     },
     "rejectReasons": {
       "missing_required_field": "Pflichtfeld fehlt",
@@ -857,7 +859,9 @@
       "foreign_user": "Gehört zu einem anderen Konto",
       "invalid_track": "Ungültige Aktivitätsdatei",
       "invalid_entry_method": "Ungültige Anmeldeart",
-      "invalid_entry_status": "Ungültiger Anmeldestatus"
+      "invalid_entry_status": "Ungültiger Anmeldestatus",
+      "invalid_date": "Ungültiger Tag",
+      "invalid_weight": "Ungültiges Gewicht"
     }
   },
   "messages": {
@@ -1715,6 +1719,27 @@
         "time": "Gib Distanz und Pace an.",
         "distance": "Gib Zeit und Pace an."
       }
+    },
+    "weightLog": {
+      "title": "Gewichtsprotokoll",
+      "weightKg": "Gewicht (kg)",
+      "day": "Tag",
+      "kg": "{{weight}} kg",
+      "current": "Aktuell",
+      "last7Days": "7 Tage",
+      "last30Days": "30 Tage",
+      "total": "Gesamt",
+      "down": "gesunken",
+      "up": "gestiegen",
+      "entries": "Einträge",
+      "showAll": "Alle anzeigen ({{count}})",
+      "empty": "Noch keine Einträge.",
+      "saved": "Gewicht gespeichert.",
+      "updated": "Gewicht für diesen Tag aktualisiert.",
+      "saveError": "Das Gewicht konnte nicht gespeichert werden.",
+      "deleteError": "Der Eintrag konnte nicht gelöscht werden.",
+      "invalidWeight": "Gib ein Gewicht zwischen 20 und 400 kg an.",
+      "loadError": "Die Gewichtseinträge konnten nicht geladen werden."
     }
   }
 }

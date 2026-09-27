@@ -4,6 +4,14 @@
 
 ---
 
+## [1.85.0] - 2026-09-27
+
+### Added
+
+- **Weight log:** a new tool to log your weight each day, with a chart over time and the change over the last 7 and 30 days. It only keeps the weight and the day, is never shared, is part of the backup and is deleted with the account.
+
+---
+
 ## [1.84.0] - 2026-09-27
 
 ### Added

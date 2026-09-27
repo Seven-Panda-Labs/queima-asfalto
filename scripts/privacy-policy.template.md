@@ -22,6 +22,7 @@ Consoante as funcionalidades activadas, a instância pode tratar:
 | **Conta** | Nome, email, identificador Google (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
 | **Perfil de resultados** | Nome para classificações, aliases, Parkrunner ID, Parkruns favoritos | Firestore `users/{uid}` |
 | **Conteúdo da app** | Eventos, metas, resultados, notas, localizações, coordenadas GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Registo de peso** (se usado) | Peso e dia de cada registo. É um dado de saúde, nunca partilhado | Firestore `weightEntries` |
 | **Media** | Fotos e vídeos de eventos | Firebase Storage |
 | **Partilhas** | Email do convidado, permissões, dados redigidos partilhados | Firestore `shares`, Cloud Functions |
 | **Contribuições para o catálogo** | O par que marcaste como a mesma prova, e o dia em que corriste uma prova que o catálogo conhece, ligados ao teu UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. O catálogo partilhado recebe o valor, nunca quem o enviou |
@@ -43,6 +44,7 @@ Não recolhemos intencionalmente dados de menores de 16 anos. Se tiveres conheci
 | Analytics (se activado) | Consentimento ou interesse legítimo, conforme a tua configuração e jurisdição |
 | Segurança e prevenção de abuso | Interesse legítimo (art. 6.º(1)(f)) |
 | Importação de resultados oficiais | Execução de contrato (funcionalidade solicitada pelo utilizador) |
+| Registo de peso (opcional) | Consentimento explícito (art. 9.º(2)(a)): só existe se registares um peso, e apagar os registos retira-o |
 
 #### 5. Subcontratantes e serviços de terceiros
 
@@ -119,6 +121,7 @@ Depending on enabled features, the instance may process:
 | **Account** | Name, email, Google identifier (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
 | **Results profile** | Name for rankings, aliases, Parkrunner ID, favorite Parkruns | Firestore `users/{uid}` |
 | **App content** | Events, goals, results, notes, locations, GPS coordinates | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Weight log** (if used) | Weight and day of each entry. Health data, never shared | Firestore `weightEntries` |
 | **Media** | Event photos and videos | Firebase Storage |
 | **Sharing** | Invitee email, permissions, redacted shared data | Firestore `shares`, Cloud Functions |
 | **Contributions to the catalog** | The pair you marked as one race, and the day you ran a race the catalog knows, tied to your UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. The shared catalog receives the value, never who sent it |
@@ -140,6 +143,7 @@ We do not knowingly collect data from children under 16. Contact us if you belie
 | Analytics (if enabled) | Consent or legitimate interest, per your setup and jurisdiction |
 | Security and abuse prevention | Legitimate interest (Art. 6(1)(f)) |
 | Official results import | Contract (feature requested by the user) |
+| Weight log (optional) | Explicit consent (art. 9(2)(a)): it only exists if you log a weight, and deleting the entries withdraws it |
 
 #### 5. Sub-processors and third parties
 
@@ -216,6 +220,7 @@ Según las funcionalidades activadas, la instancia puede tratar:
 | **Cuenta** | Nombre, email, identificador de Google (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
 | **Perfil de resultados** | Nombre para clasificaciones, alias, Parkrunner ID, Parkruns favoritos | Firestore `users/{uid}` |
 | **Contenido de la app** | Eventos, metas, resultados, notas, ubicaciones, coordenadas GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Registro de peso** (si se usa) | Peso y día de cada registro. Es un dato de salud, nunca compartido | Firestore `weightEntries` |
 | **Multimedia** | Fotos y vídeos de eventos | Firebase Storage |
 | **Compartidos** | Email del invitado, permisos, datos compartidos redactados | Firestore `shares`, Cloud Functions |
 | **Contribuciones al catálogo** | El par que marcaste como la misma carrera, y el día en que corriste una carrera que el catálogo conoce, ligados a tu UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. El catálogo compartido recibe el valor, nunca quién lo envió |
@@ -237,6 +242,7 @@ No recopilamos intencionadamente datos de menores de 16 años. Si crees que un m
 | Analytics (si está activado) | Consentimiento o interés legítimo, según tu configuración y jurisdicción |
 | Seguridad y prevención de abusos | Interés legítimo (art. 6.1(f)) |
 | Importación de resultados oficiales | Ejecución de contrato (funcionalidad solicitada por el usuario) |
+| Registro de peso (opcional) | Consentimiento explícito (art. 9.2(a)): solo existe si registras un peso, y borrar los registros lo retira |
 
 #### 5. Encargados del tratamiento y terceros
 
@@ -313,6 +319,7 @@ Je nach aktivierten Funktionen kann die Instanz Folgendes verarbeiten:
 | **Konto** | Name, E-Mail, Google-Kennung (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
 | **Ergebnisprofil** | Name für Ranglisten, Aliase, Parkrunner ID, Lieblings-Parkruns | Firestore `users/{uid}` |
 | **App-Inhalte** | Events, Ziele, Ergebnisse, Notizen, Orte, GPS-Koordinaten | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Gewichtsprotokoll** (falls genutzt) | Gewicht und Tag jedes Eintrags. Gesundheitsdaten, nie geteilt | Firestore `weightEntries` |
 | **Medien** | Event-Fotos und -Videos | Firebase Storage |
 | **Freigaben** | E-Mail des Eingeladenen, Berechtigungen, redigierte geteilte Daten | Firestore `shares`, Cloud Functions |
 | **Beiträge zum Katalog** | Das Paar, das du als dasselbe Rennen markiert hast, und der Tag, an dem du ein Rennen gelaufen bist, das der Katalog kennt, mit deiner UID verknüpft | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. Der geteilte Katalog erhält den Wert, nie den Absender |
@@ -334,6 +341,7 @@ Wir erfassen wissentlich keine Daten von Kindern unter 16 Jahren. Kontaktiere un
 | Analytics (falls aktiviert) | Einwilligung oder berechtigtes Interesse, je nach Setup und Rechtsordnung |
 | Sicherheit und Missbrauchsprävention | Berechtigtes Interesse (Art. 6 Abs. 1 lit. f) |
 | Import offizieller Ergebnisse | Vertrag (vom Nutzer angeforderte Funktion) |
+| Gewichtsprotokoll (optional) | Ausdrückliche Einwilligung (Art. 9 Abs. 2 lit. a): entsteht nur, wenn du ein Gewicht einträgst, und das Löschen der Einträge widerruft sie |
 
 #### 5. Auftragsverarbeiter und Dritte
 
@@ -410,6 +418,7 @@ Selon les fonctionnalités activées, l'instance peut traiter :
 | **Compte** | Nom, e-mail, identifiant Google (UID Firebase Auth) | Firebase Authentication, Firestore `users/{uid}` |
 | **Profil de résultats** | Nom pour les classements, alias, identifiant Parkrunner, Parkruns favoris | Firestore `users/{uid}` |
 | **Contenu de l'application** | Événements, objectifs, résultats, notes, lieux, coordonnées GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Suivi du poids** (si utilisé) | Poids et jour de chaque relevé. Donnée de santé, jamais partagée | Firestore `weightEntries` |
 | **Médias** | Photos et vidéos d'événements | Firebase Storage |
 | **Partage** | E-mail de l'invité, permissions, données partagées expurgées | Firestore `shares`, Cloud Functions |
 | **Contributions au catalogue** | La paire que tu as marquée comme une seule course, et le jour où tu as couru une course que le catalogue connaît, liés à ton UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. Le catalogue partagé reçoit la valeur, jamais son auteur |
@@ -431,6 +440,7 @@ Nous ne collectons pas sciemment de données auprès d'enfants de moins de 16 an
 | Analytique (si activée) | Consentement ou intérêt légitime, selon ta configuration et ta juridiction |
 | Sécurité et prévention des abus | Intérêt légitime (art. 6(1)(f)) |
 | Importation des résultats officiels | Contrat (fonctionnalité demandée par l'utilisateur) |
+| Suivi du poids (facultatif) | Consentement explicite (art. 9(2)(a)) : il n'existe que si tu enregistres un poids, et supprimer les relevés le retire |
 
 #### 5. Sous-traitants et tiers
 
@@ -506,6 +516,7 @@ Instance : {{HOSTING_URL}}
 | **الحساب** | الاسم، البريد الإلكتروني، معرّف Google (Firebase Auth UID) | Firebase Authentication، Firestore `users/{uid}` |
 | **ملف النتائج** | الاسم في التصنيفات، الأسماء المستعارة، معرّف Parkrunner، مواقع Parkrun المفضلة | Firestore `users/{uid}` |
 | **محتوى التطبيق** | الفعاليات، الأهداف، النتائج، الملاحظات، المواقع، إحداثيات GPS | Firestore (`events`، `goals`، `performanceGoals`، `bucketListItems`، …) |
+| **سجل الوزن** (عند استخدامه) | الوزن ويوم كل سجل. بيانات صحية لا تتم مشاركتها أبدًا | Firestore `weightEntries` |
 | **الوسائط** | صور ومقاطع فيديو الفعاليات | Firebase Storage |
 | **المشاركة** | بريد المدعو الإلكتروني، الأذونات، البيانات المشتركة بعد الحجب الجزئي | Firestore `shares`، Cloud Functions |
 | **المساهمات في الفهرس** | الزوج الذي حدّدته كسباق واحد، واليوم الذي جريت فيه سباقا يعرفه الفهرس، مرتبطان بمعرّفك UID | Firestore `raceCatalogDuplicateVotes`، `raceCatalogEditionReports`. يستقبل الفهرس المشترك القيمة لا صاحبها |
@@ -527,6 +538,7 @@ Instance : {{HOSTING_URL}}
 | التحليلات (إذا كانت مفعّلة) | الموافقة أو المصلحة المشروعة، بحسب إعدادك واختصاصك القضائي |
 | الأمان ومنع إساءة الاستخدام | المصلحة المشروعة (المادة 6(1)(و)) |
 | استيراد النتائج الرسمية | العقد (ميزة يطلبها المستخدم) |
+| سجل الوزن (اختياري) | موافقة صريحة (المادة 9(2)(أ)): لا يوجد إلا إذا سجّلت وزنًا، وحذف السجلات يسحبها |
 
 #### 5. معالجو البيانات (من الباطن) والجهات الخارجية
 

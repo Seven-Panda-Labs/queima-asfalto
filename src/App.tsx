@@ -26,6 +26,7 @@ import { AdminUsers } from './pages/Admin/AdminUsers'
 import { Settings } from './pages/Settings/Settings'
 import { Tools } from './pages/Tools/Tools'
 import { PaceCalculator } from './pages/Tools/PaceCalculator'
+import { WeightLog } from './pages/Tools/WeightLog'
 import { ANALYSIS_PATH } from './utils/eventNavigation'
 
 const Changelog = lazy(() =>
@@ -88,6 +89,7 @@ export default function App() {
             <Route path="resultados" element={<AnalysisRouteRedirect />} />
             <Route path="ferramentas" element={<Tools />} />
             <Route path="ferramentas/ritmo" element={<PaceCalculator />} />
+            <Route path="ferramentas/peso" element={<WeightLog />} />
             <Route path="definicoes" element={<Settings />} />
             <Route
               path="admin"

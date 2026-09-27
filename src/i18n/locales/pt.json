@@ -781,6 +781,7 @@
     "countBucketListItems": "{{count}} itens da bucket list",
     "countRaces": "{{count}} corridas",
     "countRaceEntries": "{{count}} inscrições",
+    "countWeightEntries": "{{count}} registos de peso",
     "countUserProfile": "Perfil: idioma, preferências de notificações e perfil de resultados",
     "countShares": "{{count}} partilhas (não restauráveis)",
     "existingLoading": "A contar os dados actuais...",
@@ -836,7 +837,8 @@
       "raceEntries": "Inscrições",
       "userProfile": "Perfil",
       "shares": "Partilhas",
-      "eventTracks": "Ficheiros de atividade"
+      "eventTracks": "Ficheiros de atividade",
+      "weightEntries": "Registos de peso"
     },
     "rejectReasons": {
       "missing_required_field": "Campo obrigatório em falta",
@@ -857,7 +859,9 @@
       "foreign_user": "Pertence a outra conta",
       "invalid_track": "Ficheiro de atividade inválido",
       "invalid_entry_method": "Forma de inscrição inválida",
-      "invalid_entry_status": "Estado de inscrição inválido"
+      "invalid_entry_status": "Estado de inscrição inválido",
+      "invalid_date": "Dia inválido",
+      "invalid_weight": "Peso inválido"
     }
   },
   "messages": {
@@ -1715,6 +1719,27 @@
         "time": "Indica a distância e o ritmo.",
         "distance": "Indica o tempo e o ritmo."
       }
+    },
+    "weightLog": {
+      "title": "Registo de peso",
+      "weightKg": "Peso (kg)",
+      "day": "Dia",
+      "kg": "{{weight}} kg",
+      "current": "Atual",
+      "last7Days": "7 dias",
+      "last30Days": "30 dias",
+      "total": "Total",
+      "down": "desceu",
+      "up": "subiu",
+      "entries": "Registos",
+      "showAll": "Mostrar todos ({{count}})",
+      "empty": "Ainda não há registos.",
+      "saved": "Peso guardado.",
+      "updated": "Peso desse dia atualizado.",
+      "saveError": "Não foi possível guardar o peso.",
+      "deleteError": "Não foi possível apagar o registo.",
+      "invalidWeight": "Indica um peso entre 20 e 400 kg.",
+      "loadError": "Não foi possível carregar os registos de peso."
     }
   }
 }

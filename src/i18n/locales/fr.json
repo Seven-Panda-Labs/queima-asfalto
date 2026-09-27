@@ -781,6 +781,7 @@
     "countBucketListItems": "{{count}} éléments de bucket list",
     "countRaces": "{{count}} courses",
     "countRaceEntries": "{{count}} inscriptions",
+    "countWeightEntries": "{{count}} relevés de poids",
     "countUserProfile": "Profil : langue, préférences de notification et profil de résultats",
     "countShares": "{{count}} partages (non restaurables)",
     "existingLoading": "Comptage de tes données actuelles...",
@@ -836,7 +837,8 @@
       "raceEntries": "Inscriptions",
       "userProfile": "Profil",
       "shares": "Partages",
-      "eventTracks": "Fichiers d'activité"
+      "eventTracks": "Fichiers d'activité",
+      "weightEntries": "Relevés de poids"
     },
     "rejectReasons": {
       "missing_required_field": "Champ obligatoire manquant",
@@ -857,7 +859,9 @@
       "foreign_user": "Appartient à un autre compte",
       "invalid_track": "Fichier d'activité invalide",
       "invalid_entry_method": "Mode d'inscription invalide",
-      "invalid_entry_status": "Statut d'inscription invalide"
+      "invalid_entry_status": "Statut d'inscription invalide",
+      "invalid_date": "Jour invalide",
+      "invalid_weight": "Poids invalide"
     }
   },
   "messages": {
@@ -1715,6 +1719,27 @@
         "time": "Indique la distance et l’allure.",
         "distance": "Indique le temps et l’allure."
       }
+    },
+    "weightLog": {
+      "title": "Suivi du poids",
+      "weightKg": "Poids (kg)",
+      "day": "Jour",
+      "kg": "{{weight}} kg",
+      "current": "Actuel",
+      "last7Days": "7 jours",
+      "last30Days": "30 jours",
+      "total": "Total",
+      "down": "en baisse",
+      "up": "en hausse",
+      "entries": "Relevés",
+      "showAll": "Tout afficher ({{count}})",
+      "empty": "Pas encore de relevés.",
+      "saved": "Poids enregistré.",
+      "updated": "Poids de ce jour mis à jour.",
+      "saveError": "Impossible d’enregistrer le poids.",
+      "deleteError": "Impossible de supprimer le relevé.",
+      "invalidWeight": "Indique un poids entre 20 et 400 kg.",
+      "loadError": "Impossible de charger les relevés de poids."
     }
   }
 }

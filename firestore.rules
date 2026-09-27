@@ -175,6 +175,20 @@ service cloud.firestore {
         && data.year is int;
     }
 
+    // A weigh-in: the only fields it may hold, so it can never grow a link to
+    // the rest of the app. The range mirrors MIN/MAX_WEIGHT_KG in weightLog.ts.
+    function validWeightEntryWrite(data) {
+      return data.keys().hasOnly(['userId', 'date', 'weightKg', 'createdAt', 'updatedAt'])
+        && data.keys().hasAll(['userId', 'date', 'weightKg'])
+        && isOwner(data.userId)
+        && isApprovedUser(data.userId)
+        && data.date is string
+        && data.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+        && data.weightKg is number
+        && data.weightKg >= 20
+        && data.weightKg <= 400;
+    }
+
     function validPerformanceGoalType(type) {
       return type in ['pr_target', 'pace_target', 'time_target'];
     }
@@ -726,6 +740,22 @@ service cloud.firestore {
         && resource.data.userId == request.auth.uid
         && request.resource.data.userId == resource.data.userId
         && validGoalWrite(request.resource.data);
+      allow delete: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
+    }
+
+    // Never shared: no share rule reads it, and shares only ever carry the
+    // collections listed in shared/shares/types.ts.
+    match /weightEntries/{entryId} {
+      allow read: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && isApprovedUser(request.auth.uid);
+      allow create: if validWeightEntryWrite(request.resource.data);
+      allow update: if isSignedIn()
+        && resource.data.userId == request.auth.uid
+        && request.resource.data.userId == resource.data.userId
+        && validWeightEntryWrite(request.resource.data);
       allow delete: if isSignedIn()
         && resource.data.userId == request.auth.uid
         && isApprovedUser(request.auth.uid);

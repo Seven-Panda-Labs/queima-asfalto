@@ -21,6 +21,7 @@ const OWNED_COLLECTIONS = [
   'performanceGoals',
   'bucketListItems',
   'races',
+  'weightEntries',
 ] as const
 
 /** Subcollections under `events/{id}` that belong to the same owner. */

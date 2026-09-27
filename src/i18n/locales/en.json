@@ -781,6 +781,7 @@
     "countBucketListItems": "{{count}} bucket list items",
     "countRaces": "{{count}} races",
     "countRaceEntries": "{{count}} entries",
+    "countWeightEntries": "{{count}} weight entries",
     "countUserProfile": "Profile: language, notification preferences and results profile",
     "countShares": "{{count}} shares (not restorable)",
     "existingLoading": "Counting your current data...",
@@ -836,7 +837,8 @@
       "raceEntries": "Entries",
       "userProfile": "Profile",
       "shares": "Shares",
-      "eventTracks": "Activity files"
+      "eventTracks": "Activity files",
+      "weightEntries": "Weight entries"
     },
     "rejectReasons": {
       "missing_required_field": "Required field missing",
@@ -857,7 +859,9 @@
       "foreign_user": "Belongs to another account",
       "invalid_track": "Invalid activity file",
       "invalid_entry_method": "Invalid entry method",
-      "invalid_entry_status": "Invalid entry status"
+      "invalid_entry_status": "Invalid entry status",
+      "invalid_date": "Invalid day",
+      "invalid_weight": "Invalid weight"
     }
   },
   "messages": {
@@ -1715,6 +1719,27 @@
         "time": "Enter the distance and the pace.",
         "distance": "Enter the time and the pace."
       }
+    },
+    "weightLog": {
+      "title": "Weight log",
+      "weightKg": "Weight (kg)",
+      "day": "Day",
+      "kg": "{{weight}} kg",
+      "current": "Current",
+      "last7Days": "7 days",
+      "last30Days": "30 days",
+      "total": "Total",
+      "down": "down",
+      "up": "up",
+      "entries": "Entries",
+      "showAll": "Show all ({{count}})",
+      "empty": "No entries yet.",
+      "saved": "Weight saved.",
+      "updated": "Weight for that day updated.",
+      "saveError": "Could not save the weight.",
+      "deleteError": "Could not delete the entry.",
+      "invalidWeight": "Enter a weight between 20 and 400 kg.",
+      "loadError": "Could not load the weight entries."
     }
   }
 }

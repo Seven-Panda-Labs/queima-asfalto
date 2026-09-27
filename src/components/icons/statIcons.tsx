@@ -45,3 +45,13 @@ export function StopwatchIcon({ className = 'h-6 w-6' }: IconProps) {
     </svg>
   )
 }
+
+export function ScaleIcon({ className = 'h-6 w-6' }: IconProps) {
+  return (
+    <svg {...SHARED_PROPS} className={className}>
+      <rect x="3" y="3" width="18" height="18" rx="4" />
+      <path d="M7.5 10a4.5 4.5 0 0 1 9 0" />
+      <path d="M12 10l1.5-2" />
+    </svg>
+  )
+}

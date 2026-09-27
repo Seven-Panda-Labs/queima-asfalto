@@ -195,6 +195,18 @@ function rawFixture() {
         },
       },
     ],
+    weightEntries: [
+      {
+        id: 'weight-1',
+        data: {
+          userId: USER_ID,
+          date: '2026-09-27',
+          weightKg: 94.1,
+          createdAt: ts('2026-09-27T07:30:00Z'),
+          updatedAt: ts('2026-09-27T07:30:00Z'),
+        },
+      },
+    ],
     userProfile: [
       {
         id: USER_ID,
@@ -314,6 +326,7 @@ describe('backup zip round trip', () => {
       bucketListItems: raw.bucketListItems.length,
       races: raw.races.length,
       raceEntries: raw.raceEntries.length,
+      weightEntries: raw.weightEntries.length,
       userProfile: 1,
       shares: 1,
     })

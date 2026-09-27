@@ -4,6 +4,14 @@
 
 ---
 
+## [1.85.0] - 2026-09-27
+
+### Adicionado
+
+- **Registo de peso:** uma nova ferramenta para registar o peso de cada dia, com um gráfico ao longo do tempo e a variação dos últimos 7 e 30 dias. Só guarda o peso e o dia, nunca é partilhado, entra no backup e é apagado com a conta.
+
+---
+
 ## [1.84.0] - 2026-09-27
 
 ### Adicionado

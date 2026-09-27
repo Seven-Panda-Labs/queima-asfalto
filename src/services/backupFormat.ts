@@ -6,6 +6,7 @@ import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 import { ENTRY_METHODS, ENTRY_STATUSES } from '../types/RaceEntry'
 import { RESULTS_PLATFORMS } from '../../shared/officialResults'
 import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
+import { MAX_WEIGHT_KG, MIN_WEIGHT_KG } from '../utils/weightLog'
 
 /**
  * Backup v2 format: a zip of JSON files holding the raw Firestore documents.
@@ -21,8 +22,9 @@ export const BACKUP_KIND = 'user-backup'
  * 2 added the `tracks/` directory and the `eventTracks` section.
  * 3 added the `races` section.
  * 4 added the `raceEntries` section.
+ * 5 added the `weightEntries` section.
  */
-export const BACKUP_SCHEMA_VERSION = 4
+export const BACKUP_SCHEMA_VERSION = 5
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
 export const BACKUP_MEDIA_DIR = 'media'
 export const BACKUP_TRACKS_DIR = 'tracks'
@@ -54,6 +56,7 @@ export const BACKUP_SECTION_KEYS = [
   'bucketListItems',
   'races',
   'raceEntries',
+  'weightEntries',
   'userProfile',
   'shares',
 ] as const
@@ -70,6 +73,7 @@ export const RESTORABLE_SECTIONS = [
   'bucketListItems',
   'races',
   'raceEntries',
+  'weightEntries',
   'userProfile',
 ] as const
 
@@ -94,6 +98,7 @@ export const BACKUP_SECTION_FILES: Record<BackupSectionKey, string> = {
   bucketListItems: 'bucketListItems.json',
   races: 'races.json',
   raceEntries: 'raceEntries.json',
+  weightEntries: 'weightEntries.json',
   userProfile: 'userProfile.json',
   shares: 'shares.json',
 }
@@ -109,6 +114,7 @@ export const BACKUP_SECTION_COLLECTIONS: Record<
   bucketListItems: 'bucketListItems',
   races: 'races',
   raceEntries: 'raceEntries',
+  weightEntries: 'weightEntries',
   shares: 'shares',
 }
 
@@ -237,6 +243,7 @@ export function emptyBackupSections(): BackupSections {
     bucketListItems: [],
     races: [],
     raceEntries: [],
+    weightEntries: [],
     userProfile: [],
     shares: [],
   }
@@ -852,6 +859,8 @@ export const RESTORE_REJECTION_CODES = [
   'invalid_disciplines',
   'invalid_track',
   'invalid_media',
+  'invalid_date',
+  'invalid_weight',
   'unknown_event',
   'foreign_user',
 ] as const
@@ -1009,6 +1018,15 @@ function validateRace(data: Record<string, unknown>): RestoreRejectionCode | nul
   return null
 }
 
+function validateWeightEntry(data: Record<string, unknown>): RestoreRejectionCode | null {
+  if (!hasAll(data, ['userId', 'date', 'weightKg'])) return 'missing_required_field'
+  if (typeof data.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(data.date)) return 'invalid_date'
+  if (typeof data.weightKg !== 'number' || data.weightKg < MIN_WEIGHT_KG || data.weightKg > MAX_WEIGHT_KG) {
+    return 'invalid_weight'
+  }
+  return null
+}
+
 function validateRaceEntry(data: Record<string, unknown>): RestoreRejectionCode | null {
   if (!hasAll(data, ['userId', 'raceId', 'year', 'entryMethod', 'entryStatus'])) {
     return 'missing_required_field'
@@ -1158,6 +1176,8 @@ export function validateRestoreDocument(
       return validateRace(data)
     case 'raceEntries':
       return validateRaceEntry(data)
+    case 'weightEntries':
+      return validateWeightEntry(data)
     case 'eventMedia':
       return validateEventMedia(document, data, context)
     case 'eventTracks':
