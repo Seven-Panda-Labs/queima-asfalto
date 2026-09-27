@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, matchPath, useLocation } from 'react-router-dom'
 import { I18nSync } from '../I18nSync/I18nSync'
 import { usePushRegistration } from '../../hooks/usePushRegistration'
 import { useReminders } from '../../hooks/useReminders'
@@ -26,6 +27,22 @@ const navItems = [
   { to: '/definicoes', key: 'nav.settings', end: false, badge: true },
 ] as const
 
+function MenuIcon({ open }: { open: boolean }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      className="h-5 w-5"
+      aria-hidden
+    >
+      {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
+    </svg>
+  )
+}
+
 function navLinkClass({ isActive }: { isActive: boolean }) {
   return [
     'rounded-md px-3 py-2 text-sm font-semibold transition-colors',
@@ -40,6 +57,10 @@ export function Layout() {
   const showPrivacyPolicy = isPrivacyPolicyEnabled()
   const { user } = useAuth()
   const { isAdmin } = useIsAdmin(user?.uid)
+  const { pathname } = useLocation()
+  const [menuOpen, setMenuOpen] = useState(false)
+  const activeItem = navItems.find(({ to, end }) => matchPath({ path: to, end }, pathname))
+  const activeKey = activeItem?.key ?? (matchPath({ path: '/admin', end: false }, pathname) ? 'nav.admin' : null)
 
   useReminders()
   usePushRegistration()
@@ -53,11 +74,38 @@ export function Layout() {
         <p className="bg-background px-4 py-2 text-center text-xs text-muted">{persistenceWarning}</p>
       ) : null}
       <header className="border-b border-border bg-surface">
-        <div className="mx-auto flex max-w-5xl flex-col gap-4 px-4 py-4 sm:flex-row sm:items-center sm:justify-between">
+        {/* Below sm the links fold behind one button: seven of them wrapped into three rows. */}
+        <div
+          className="mx-auto flex max-w-5xl flex-wrap items-center gap-x-4 gap-y-3 px-4 py-3 sm:flex-nowrap sm:py-4"
+          onKeyDown={(e) => {
+            if (e.key === 'Escape') setMenuOpen(false)
+          }}
+        >
           <Logo linkTo="/" className="h-9 w-9 object-contain sm:h-10 sm:w-10" />
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+          <div className="ml-auto flex items-center gap-4">
             <SyncIndicator />
-            <nav className="flex flex-wrap gap-2" aria-label={t('nav.main')}>
+            <button
+              type="button"
+              className="relative inline-flex items-center gap-2 rounded-md px-3 py-2 text-sm font-semibold text-foreground hover:bg-background sm:hidden"
+              aria-expanded={menuOpen}
+              aria-controls="main-nav"
+              onClick={() => setMenuOpen((open) => !open)}
+            >
+              {activeKey ? t(activeKey) : null}
+              <span className="sr-only">{t('nav.menu')}</span>
+              <MenuIcon open={menuOpen} />
+              {!menuOpen && pendingReceivedCount > 0 ? (
+                <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-accent" aria-hidden />
+              ) : null}
+            </button>
+          </div>
+          <div className={`${menuOpen ? 'flex' : 'hidden'} basis-full sm:flex sm:basis-auto`}>
+            <nav
+              id="main-nav"
+              className="flex w-full flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-2"
+              aria-label={t('nav.main')}
+              onClick={() => setMenuOpen(false)}
+            >
               {navItems.map(({ to, key, end, badge }) => (
                 <NavLink key={to} to={to} end={end} className={navLinkClass}>
                   <span className="inline-flex items-center gap-1.5">

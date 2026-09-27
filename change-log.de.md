@@ -4,6 +4,14 @@
 
 ---
 
+## [1.83.0] - 2026-09-27
+
+### Geändert
+
+- **Kompaktes Menü auf kleinen Bildschirmen:** auf dem Handy passt die Navigation in eine Zeile, mit dem aktuellen Bereich und einer Schaltfläche, die die übrigen öffnet, statt drei Zeilen über jeder Seite zu belegen.
+
+---
+
 ## [1.82.0] - 2026-09-25
 
 ### Geändert
