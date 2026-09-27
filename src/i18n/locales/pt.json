@@ -52,7 +52,8 @@
     "main": "Navegação principal",
     "menu": "Menu",
     "admin": "Admin",
-    "planning": "Planeamento"
+    "planning": "Planeamento",
+    "tools": "Ferramentas"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1675,5 +1676,45 @@
     "offer": "O catálogo tem a página de resultados de {{year}} desta prova.",
     "use": "Usar este link",
     "error": "Não foi possível usar este link."
+  },
+  "tools": {
+    "title": "Ferramentas",
+    "back": "← Ferramentas",
+    "paceCalculator": {
+      "title": "Calculadora de ritmo",
+      "solveFor": "Calcular",
+      "unit": "Unidade",
+      "unitNames": {
+        "km": "km",
+        "mi": "milhas"
+      },
+      "fields": {
+        "pace": "Ritmo",
+        "time": "Tempo",
+        "distance": "Distância"
+      },
+      "distanceLabel": {
+        "km": "Distância (km)",
+        "mi": "Distância (milhas)"
+      },
+      "units": {
+        "km": "/km",
+        "mi": "/milha"
+      },
+      "pacePer": {
+        "km": "{{pace}} /km",
+        "mi": "{{pace}} /milha"
+      },
+      "distanceIn": {
+        "km": "{{distance}} km",
+        "mi": "{{distance}} milhas"
+      },
+      "result": "Resultado",
+      "empty": {
+        "pace": "Indica a distância e o tempo.",
+        "time": "Indica a distância e o ritmo.",
+        "distance": "Indica o tempo e o ritmo."
+      }
+    }
   }
 }

@@ -52,7 +52,8 @@
     "main": "Main navigation",
     "menu": "Menu",
     "admin": "Admin",
-    "planning": "Planning"
+    "planning": "Planning",
+    "tools": "Tools"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1675,5 +1676,45 @@
     "offer": "The catalog has this race's {{year}} results page.",
     "use": "Use this link",
     "error": "Could not use this link."
+  },
+  "tools": {
+    "title": "Tools",
+    "back": "← Tools",
+    "paceCalculator": {
+      "title": "Pace calculator",
+      "solveFor": "Calculate",
+      "unit": "Unit",
+      "unitNames": {
+        "km": "km",
+        "mi": "miles"
+      },
+      "fields": {
+        "pace": "Pace",
+        "time": "Time",
+        "distance": "Distance"
+      },
+      "distanceLabel": {
+        "km": "Distance (km)",
+        "mi": "Distance (miles)"
+      },
+      "units": {
+        "km": "/km",
+        "mi": "/mile"
+      },
+      "pacePer": {
+        "km": "{{pace}} /km",
+        "mi": "{{pace}} /mile"
+      },
+      "distanceIn": {
+        "km": "{{distance}} km",
+        "mi": "{{distance}} miles"
+      },
+      "result": "Result",
+      "empty": {
+        "pace": "Enter the distance and the time.",
+        "time": "Enter the distance and the pace.",
+        "distance": "Enter the time and the pace."
+      }
+    }
   }
 }

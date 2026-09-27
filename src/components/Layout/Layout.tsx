@@ -24,6 +24,7 @@ const navItems = [
   { to: '/analise', key: 'nav.results', end: false, badge: false },
   { to: '/objetivos', key: 'nav.goals', end: false, badge: false },
   { to: '/planeamento', key: 'nav.planning', end: false, badge: false },
+  { to: '/ferramentas', key: 'nav.tools', end: false, badge: false },
   { to: '/definicoes', key: 'nav.settings', end: false, badge: true },
 ] as const
 
