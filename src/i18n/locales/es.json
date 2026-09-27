@@ -50,6 +50,7 @@
     "shares": "Compartir",
     "pendingInvites": "{{count}} invitación(es) pendiente(s)",
     "main": "Navegación principal",
+    "menu": "Menú",
     "admin": "Admin",
     "planning": "Planificación"
   },

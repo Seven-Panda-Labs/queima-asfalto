@@ -4,6 +4,14 @@
 
 ---
 
+## [1.83.0] - 2026-09-27
+
+### Alterado
+
+- **Menu compacto em ecrãs pequenos:** num telemóvel a navegação cabe numa linha, com a secção atual e um botão que abre as restantes, em vez de ocupar três linhas por cima de cada página.
+
+---
+
 ## [1.82.0] - 2026-09-25
 
 ### Alterado

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.83.0] - 2026-09-27
+
+### Modifié
+
+- **Un menu compact sur les petits écrans :** sur un téléphone la navigation tient sur une ligne, avec la section en cours et un bouton qui ouvre les autres, au lieu d'occuper trois lignes au-dessus de chaque page.
+
+---
+
 ## [1.82.0] - 2026-09-25
 
 ### Modifié

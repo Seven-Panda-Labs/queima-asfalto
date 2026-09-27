@@ -4,6 +4,14 @@
 
 ---
 
+## [1.83.0] - 2026-09-27
+
+### Cambiado
+
+- **Menú compacto en pantallas pequeñas:** en un móvil la navegación cabe en una línea, con la sección actual y un botón que abre las demás, en lugar de ocupar tres filas encima de cada página.
+
+---
+
 ## [1.82.0] - 2026-09-25
 
 ### Cambiado
