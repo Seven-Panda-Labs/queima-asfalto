@@ -4,6 +4,15 @@
 
 ---
 
+## [1.84.0] - 2026-09-27
+
+### Adicionado
+
+- **Ferramentas:** uma entrada nova no menu para pequenas ajudas na preparação da época, independentes do resto da app.
+- **Calculadora de ritmo:** dá dois de distância, tempo e ritmo e calcula o terceiro, com atalhos para as distâncias escolhidas nas definições, e distâncias e ritmos em km ou em milhas.
+
+---
+
 ## [1.83.0] - 2026-09-27
 
 ### Alterado

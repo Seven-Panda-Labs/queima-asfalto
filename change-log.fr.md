@@ -4,6 +4,15 @@
 
 ---
 
+## [1.84.0] - 2026-09-27
+
+### Ajouté
+
+- **Outils :** une nouvelle entrée du menu pour de petites aides à la préparation de la saison, indépendantes du reste de l’app.
+- **Calculateur d’allure :** donne deux valeurs parmi distance, temps et allure et il calcule la troisième, avec des raccourcis pour les distances choisies dans les réglages, et distances et allures en km ou en miles.
+
+---
+
 ## [1.83.0] - 2026-09-27
 
 ### Modifié

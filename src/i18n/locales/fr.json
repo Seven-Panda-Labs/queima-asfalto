@@ -52,7 +52,8 @@
     "main": "Navigation principale",
     "menu": "Menu",
     "admin": "Admin",
-    "planning": "Planification"
+    "planning": "Planification",
+    "tools": "Outils"
   },
   "footer": {
     "appName": "Queima Asfalto",
@@ -1675,5 +1676,45 @@
     "offer": "Le catalogue a la page de résultats {{year}} de cette course.",
     "use": "Utiliser ce lien",
     "error": "Impossible d'utiliser ce lien."
+  },
+  "tools": {
+    "title": "Outils",
+    "back": "← Outils",
+    "paceCalculator": {
+      "title": "Calculateur d’allure",
+      "solveFor": "Calculer",
+      "unit": "Unité",
+      "unitNames": {
+        "km": "km",
+        "mi": "miles"
+      },
+      "fields": {
+        "pace": "Allure",
+        "time": "Temps",
+        "distance": "Distance"
+      },
+      "distanceLabel": {
+        "km": "Distance (km)",
+        "mi": "Distance (miles)"
+      },
+      "units": {
+        "km": "/km",
+        "mi": "/mile"
+      },
+      "pacePer": {
+        "km": "{{pace}} /km",
+        "mi": "{{pace}} /mile"
+      },
+      "distanceIn": {
+        "km": "{{distance}} km",
+        "mi": "{{distance}} miles"
+      },
+      "result": "Résultat",
+      "empty": {
+        "pace": "Indique la distance et le temps.",
+        "time": "Indique la distance et l’allure.",
+        "distance": "Indique le temps et l’allure."
+      }
+    }
   }
 }

@@ -24,6 +24,8 @@ import { AdminOnly } from './pages/Admin/AdminOnly'
 import { AdminMaintenance } from './pages/Admin/AdminMaintenance'
 import { AdminUsers } from './pages/Admin/AdminUsers'
 import { Settings } from './pages/Settings/Settings'
+import { Tools } from './pages/Tools/Tools'
+import { PaceCalculator } from './pages/Tools/PaceCalculator'
 import { ANALYSIS_PATH } from './utils/eventNavigation'
 
 const Changelog = lazy(() =>
@@ -84,6 +86,8 @@ export default function App() {
             <Route path="objetivos/:id/editar" element={<GoalForm />} />
             <Route path="analise" element={<Results />} />
             <Route path="resultados" element={<AnalysisRouteRedirect />} />
+            <Route path="ferramentas" element={<Tools />} />
+            <Route path="ferramentas/ritmo" element={<PaceCalculator />} />
             <Route path="definicoes" element={<Settings />} />
             <Route
               path="admin"

@@ -4,6 +4,15 @@
 
 ---
 
+## [1.84.0] - 2026-09-27
+
+### Hinzugefügt
+
+- **Werkzeuge:** ein neuer Menüpunkt für kleine Helfer bei der Saisonvorbereitung, unabhängig vom Rest der App.
+- **Pace-Rechner:** gib zwei von Distanz, Zeit und Pace an und er ermittelt das Dritte, mit Kurzwahl für die in den Einstellungen gewählten Distanzen, und Distanzen und Pace in km oder Meilen.
+
+---
+
 ## [1.83.0] - 2026-09-27
 
 ### Geändert

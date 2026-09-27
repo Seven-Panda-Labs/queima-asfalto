@@ -4,6 +4,15 @@
 
 ---
 
+## [1.84.0] - 2026-09-27
+
+### Added
+
+- **Tools:** a new menu entry for small helpers when preparing a season, independent from the rest of the app.
+- **Pace calculator:** give two of distance, time and pace and it works out the third, with shortcuts for the distances picked in the settings, and distances and paces in km or in miles.
+
+---
+
 ## [1.83.0] - 2026-09-27
 
 ### Changed
