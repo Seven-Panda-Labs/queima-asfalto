@@ -793,6 +793,7 @@
     "countBucketListItems": "{{count}} عنصر في قائمة الأحلام",
     "countRaces": "{{count}} سباقات",
     "countRaceEntries": "{{count}} تسجيلات",
+    "countWeightEntries": "{{count}} سجلات وزن",
     "countUserProfile": "الملف الشخصي: اللغة وتفضيلات الإشعارات وملف النتائج",
     "countShares": "{{count}} مشاركة (غير قابلة للاستعادة)",
     "existingLoading": "جارٍ إحصاء بياناتك الحالية...",
@@ -848,7 +849,8 @@
       "raceEntries": "التسجيلات",
       "userProfile": "الملف الشخصي",
       "shares": "المشاركات",
-      "eventTracks": "ملفات النشاط"
+      "eventTracks": "ملفات النشاط",
+      "weightEntries": "سجلات الوزن"
     },
     "rejectReasons": {
       "missing_required_field": "حقل مطلوب مفقود",
@@ -869,7 +871,9 @@
       "foreign_user": "ينتمي إلى حساب آخر",
       "invalid_track": "ملف نشاط غير صالح",
       "invalid_entry_method": "طريقة تسجيل غير صالحة",
-      "invalid_entry_status": "حالة تسجيل غير صالحة"
+      "invalid_entry_status": "حالة تسجيل غير صالحة",
+      "invalid_date": "يوم غير صالح",
+      "invalid_weight": "وزن غير صالح"
     }
   },
   "messages": {
@@ -1747,6 +1751,27 @@
         "time": "أدخل المسافة والوتيرة.",
         "distance": "أدخل الزمن والوتيرة."
       }
+    },
+    "weightLog": {
+      "title": "سجل الوزن",
+      "weightKg": "الوزن (كغ)",
+      "day": "اليوم",
+      "kg": "{{weight}} كغ",
+      "current": "الحالي",
+      "last7Days": "7 أيام",
+      "last30Days": "30 يومًا",
+      "total": "الإجمالي",
+      "down": "انخفض",
+      "up": "ارتفع",
+      "entries": "السجلات",
+      "showAll": "عرض الكل ({{count}})",
+      "empty": "لا توجد سجلات بعد.",
+      "saved": "تم حفظ الوزن.",
+      "updated": "تم تحديث وزن ذلك اليوم.",
+      "saveError": "تعذّر حفظ الوزن.",
+      "deleteError": "تعذّر حذف السجل.",
+      "invalidWeight": "أدخل وزنًا بين 20 و400 كغ.",
+      "loadError": "تعذّر تحميل سجلات الوزن."
     }
   }
 }

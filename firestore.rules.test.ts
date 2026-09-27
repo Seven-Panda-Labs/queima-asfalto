@@ -135,6 +135,15 @@ function validGoalPayload(userId: string, overrides: Record<string, unknown> = {
   }
 }
 
+function validWeightEntryPayload(userId: string, overrides: Record<string, unknown> = {}) {
+  return {
+    userId,
+    date: '2026-09-27',
+    weightKg: 94.1,
+    ...overrides,
+  }
+}
+
 function validPerformanceGoalPayload(userId: string, overrides: Record<string, unknown> = {}) {
   return {
     userId,
@@ -545,6 +554,43 @@ describe('firestore.rules', () => {
       await seedDocument('goals/goal-1', validGoalPayload('user-alice'))
       const db = testEnv.authenticatedContext('user-bob').firestore()
       await assertFails(db.collection('goals').doc('goal-1').get())
+    })
+  })
+
+  describe('weightEntries', () => {
+    it('allows owners to log, correct, read and delete a weigh-in', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const entry = db.collection('weightEntries').doc('weight-1')
+
+      await assertSucceeds(entry.set(validWeightEntryPayload(userId)))
+      await assertSucceeds(entry.update({ weightKg: 93.8 }))
+      await assertSucceeds(entry.get())
+      await assertSucceeds(entry.delete())
+    })
+
+    it('denies other users from reading or writing a weigh-in', async () => {
+      await seedDocument('weightEntries/weight-1', validWeightEntryPayload('user-alice'))
+      const db = testEnv.authenticatedContext('user-bob').firestore()
+
+      await assertFails(db.collection('weightEntries').doc('weight-1').get())
+      await assertFails(db.collection('weightEntries').doc('weight-1').update({ weightKg: 50 }))
+      await assertFails(db.collection('weightEntries').doc('weight-1').delete())
+      await assertFails(
+        db.collection('weightEntries').doc('weight-2').set(validWeightEntryPayload('user-alice')),
+      )
+    })
+
+    it('refuses a malformed day, an implausible weight or an extra field', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const entry = db.collection('weightEntries').doc('weight-1')
+
+      await assertFails(entry.set(validWeightEntryPayload(userId, { date: '27/09/2026' })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { weightKg: '94.1' })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { weightKg: 19 })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { weightKg: 401 })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { eventId: 'event-1' })))
     })
   })
 

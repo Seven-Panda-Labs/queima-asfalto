@@ -105,6 +105,7 @@ function emptySectionResults(): Record<RestorableSectionKey, BackupSectionResult
     bucketListItems: emptySectionResult(),
     races: emptySectionResult(),
     raceEntries: emptySectionResult(),
+    weightEntries: emptySectionResult(),
     userProfile: emptySectionResult(),
   }
 }
@@ -201,6 +202,7 @@ export function summarizeBackup(parsed: ParsedBackup, currentUserId: string): Ba
     counts.bucketListItems +
     counts.races +
     counts.raceEntries +
+    counts.weightEntries +
     counts.eventMedia +
     counts.eventTracks +
     counts.userProfile
@@ -328,6 +330,7 @@ export function planBackupRestore(
     'bucketListItems',
     'races',
     'raceEntries',
+    'weightEntries',
   ] as const) {
     rejections.push(...prepareSection(section, parsed.sections[section], userId).rejections)
   }
@@ -747,6 +750,7 @@ export async function restoreUserBackup(
           bucketListItems: new Set<string>(),
           races: new Set<string>(),
           raceEntries: new Set<string>(),
+          weightEntries: new Set<string>(),
         }
       : {
           events: await readExistingIds('events', userId),
@@ -755,6 +759,7 @@ export async function restoreUserBackup(
           bucketListItems: await readExistingIds('bucketListItems', userId),
           races: await readExistingIds('races', userId),
           raceEntries: await readExistingIds('raceEntries', userId),
+          weightEntries: await readExistingIds('weightEntries', userId),
         }
 
   const events = absorb('events', prepareSection('events', parsed.sections.events, userId), result)
@@ -766,6 +771,7 @@ export async function restoreUserBackup(
     'bucketListItems',
     'races',
     'raceEntries',
+    'weightEntries',
   ] as const) {
     const prepared = absorb(section, prepareSection(section, parsed.sections[section], userId), result)
     await writeFlatSection(section, prepared, existing[section], result, onProgress)

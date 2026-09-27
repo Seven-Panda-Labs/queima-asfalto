@@ -323,17 +323,27 @@ export async function collectUserBackup(
 }> {
   onProgress?.({ phase: 'collections' })
 
-  const [events, goals, performanceGoals, bucketListItems, races, raceEntries, shares, userProfile] =
-    await Promise.all([
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.events, 'userId', userId),
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.goals, 'userId', userId),
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.performanceGoals, 'userId', userId),
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.bucketListItems, 'userId', userId),
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.races, 'userId', userId),
-      readOwnedCollection(BACKUP_SECTION_COLLECTIONS.raceEntries, 'userId', userId),
-      readShares(userId),
-      readUserProfile(userId),
-    ])
+  const [
+    events,
+    goals,
+    performanceGoals,
+    bucketListItems,
+    races,
+    raceEntries,
+    weightEntries,
+    shares,
+    userProfile,
+  ] = await Promise.all([
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.events, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.goals, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.performanceGoals, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.bucketListItems, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.races, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.raceEntries, 'userId', userId),
+    readOwnedCollection(BACKUP_SECTION_COLLECTIONS.weightEntries, 'userId', userId),
+    readShares(userId),
+    readUserProfile(userId),
+  ])
 
   const eventIds = events.documents.map((document) => document.id)
   const media = await readEventMedia(eventIds, onProgress)
@@ -346,6 +356,7 @@ export async function collectUserBackup(
   sections.bucketListItems = bucketListItems.documents
   sections.races = races.documents
   sections.raceEntries = raceEntries.documents
+  sections.weightEntries = weightEntries.documents
   sections.eventMedia = media.documents
   sections.eventTracks = tracks.documents
   sections.shares = shares
@@ -377,7 +388,8 @@ export async function collectUserBackup(
     goals.documents.length === 0 &&
     performanceGoals.documents.length === 0 &&
     bucketListItems.documents.length === 0 &&
-    races.documents.length === 0
+    races.documents.length === 0 &&
+    weightEntries.documents.length === 0
   ) {
     warnings.push('no_data')
   }

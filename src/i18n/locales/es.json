@@ -781,6 +781,7 @@
     "countBucketListItems": "{{count}} elementos de la bucket list",
     "countRaces": "{{count}} carreras",
     "countRaceEntries": "{{count}} inscripciones",
+    "countWeightEntries": "{{count}} registros de peso",
     "countUserProfile": "Perfil: idioma, preferencias de notificaciones y perfil de resultados",
     "countShares": "{{count}} compartidos (no restaurables)",
     "existingLoading": "Contando tus datos actuales...",
@@ -836,7 +837,8 @@
       "raceEntries": "Inscripciones",
       "userProfile": "Perfil",
       "shares": "Compartidos",
-      "eventTracks": "Archivos de actividad"
+      "eventTracks": "Archivos de actividad",
+      "weightEntries": "Registros de peso"
     },
     "rejectReasons": {
       "missing_required_field": "Falta un campo obligatorio",
@@ -857,7 +859,9 @@
       "foreign_user": "Pertenece a otra cuenta",
       "invalid_track": "Archivo de actividad no válido",
       "invalid_entry_method": "Forma de inscripción inválida",
-      "invalid_entry_status": "Estado de inscripción inválido"
+      "invalid_entry_status": "Estado de inscripción inválido",
+      "invalid_date": "Día inválido",
+      "invalid_weight": "Peso inválido"
     }
   },
   "messages": {
@@ -1715,6 +1719,27 @@
         "time": "Indica la distancia y el ritmo.",
         "distance": "Indica el tiempo y el ritmo."
       }
+    },
+    "weightLog": {
+      "title": "Registro de peso",
+      "weightKg": "Peso (kg)",
+      "day": "Día",
+      "kg": "{{weight}} kg",
+      "current": "Actual",
+      "last7Days": "7 días",
+      "last30Days": "30 días",
+      "total": "Total",
+      "down": "bajó",
+      "up": "subió",
+      "entries": "Registros",
+      "showAll": "Mostrar todos ({{count}})",
+      "empty": "Todavía no hay registros.",
+      "saved": "Peso guardado.",
+      "updated": "Peso de ese día actualizado.",
+      "saveError": "No se pudo guardar el peso.",
+      "deleteError": "No se pudo borrar el registro.",
+      "invalidWeight": "Indica un peso entre 20 y 400 kg.",
+      "loadError": "No se pudieron cargar los registros de peso."
     }
   }
 }

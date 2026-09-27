@@ -21,6 +21,7 @@ export type ClearUserDataResult = {
   bucketListDeleted: number
   racesDeleted: number
   raceEntriesDeleted: number
+  weightEntriesDeleted: number
   performanceGoalsDeleted: number
   eventMediaDeleted: number
   eventTracksDeleted: number
@@ -137,6 +138,7 @@ export async function clearAllUserData(
     performanceGoalsDeleted,
     racesDeleted,
     raceEntriesDeleted,
+    weightEntriesDeleted,
   ] = await Promise.all([
     deleteCollectionDocs(userId, 'events'),
     deleteCollectionDocs(userId, 'goals'),
@@ -144,6 +146,7 @@ export async function clearAllUserData(
     deleteCollectionDocs(userId, 'performanceGoals'),
     deleteCollectionDocs(userId, 'races'),
     deleteCollectionDocs(userId, 'raceEntries'),
+    deleteCollectionDocs(userId, 'weightEntries'),
   ])
 
   return {
@@ -152,6 +155,7 @@ export async function clearAllUserData(
     bucketListDeleted,
     racesDeleted,
     raceEntriesDeleted,
+    weightEntriesDeleted,
     performanceGoalsDeleted,
     eventMediaDeleted,
     eventTracksDeleted,

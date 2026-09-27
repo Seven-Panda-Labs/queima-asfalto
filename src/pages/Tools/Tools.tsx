@@ -1,16 +1,20 @@
 import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
-import { StopwatchIcon } from '../../components/icons/statIcons'
+import { ScaleIcon, StopwatchIcon } from '../../components/icons/statIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
 
 export const TOOLS_PATH = '/ferramentas'
 export const PACE_CALCULATOR_PATH = `${TOOLS_PATH}/ritmo`
+export const WEIGHT_LOG_PATH = `${TOOLS_PATH}/peso`
 
 /**
  * Small helpers for preparing a season. Each tool stands alone: none reads or
  * writes events, goals or planning.
  */
-const tools = [{ to: PACE_CALCULATOR_PATH, key: 'paceCalculator', Icon: StopwatchIcon }] as const
+const tools = [
+  { to: PACE_CALCULATOR_PATH, key: 'paceCalculator', Icon: StopwatchIcon },
+  { to: WEIGHT_LOG_PATH, key: 'weightLog', Icon: ScaleIcon },
+] as const
 
 export function Tools() {
   const { t } = useTranslation()
