@@ -1731,7 +1731,7 @@
       "total": "Gesamt",
       "down": "gesunken",
       "up": "gestiegen",
-      "entries": "Einträge",
+      "entries": "Einträge ({{count}})",
       "showAll": "Alle anzeigen ({{count}})",
       "empty": "Noch keine Einträge.",
       "saved": "Gewicht gespeichert.",

@@ -1731,7 +1731,7 @@
       "total": "Total",
       "down": "down",
       "up": "up",
-      "entries": "Entries",
+      "entries": "Entries ({{count}})",
       "showAll": "Show all ({{count}})",
       "empty": "No entries yet.",
       "saved": "Weight saved.",

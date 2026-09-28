@@ -8,7 +8,7 @@
 
 ### Added
 
-- **Weight log:** a new tool to log your weight each day, with a chart over time and the change over the last 7 and 30 days. It only keeps the weight and the day, is never shared, is part of the backup and is deleted with the account.
+- **Weight log:** a new tool to log your weight each day, with a chart over time and the change over the last 7 and 30 days. The list of entries stays folded underneath. It only keeps the weight and the day, is never shared, is part of the backup and is deleted with the account.
 
 ---
 

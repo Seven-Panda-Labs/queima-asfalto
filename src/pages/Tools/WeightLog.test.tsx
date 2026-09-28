@@ -61,7 +61,7 @@ describe('WeightLog', () => {
     expect(screen.getByRole('button', { name: 'Guardar' })).toBeDisabled()
   })
 
-  it('shows the current weight and how it moved, newest entry first', () => {
+  it('shows the current weight and how it moved, with the entries folded, newest first', () => {
     entries = [entry('2026-09-16', 94.6), entry('2026-09-20', 95), entry('2026-09-27', 94.1)]
     renderLog()
 
@@ -70,7 +70,8 @@ describe('WeightLog', () => {
     expect(screen.getByText('7 dias').nextElementSibling).toHaveTextContent('desceu 0,9 kg')
     expect(screen.getByText('Total').nextElementSibling).toHaveTextContent('desceu 0,5 kg')
 
-    const rows = screen.getAllByRole('listitem')
-    expect(rows[0]).toHaveTextContent('27/09/2026')
+    const list = screen.getByText('Registos (3)').closest('details')
+    expect(list).not.toHaveAttribute('open')
+    expect(screen.getAllByRole('listitem', { hidden: true })[0]).toHaveTextContent('27/09/2026')
   })
 })
