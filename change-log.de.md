@@ -8,7 +8,7 @@
 
 ### Hinzugefügt
 
-- **Gewichtsprotokoll:** ein neues Werkzeug, um das Gewicht jedes Tages einzutragen, mit einem Verlauf und der Veränderung der letzten 7 und 30 Tage. Es speichert nur Gewicht und Tag, wird nie geteilt, ist Teil des Backups und wird mit dem Konto gelöscht.
+- **Gewichtsprotokoll:** ein neues Werkzeug, um das Gewicht jedes Tages einzutragen, mit einem Verlauf und der Veränderung der letzten 7 und 30 Tage. Die Liste der Einträge bleibt darunter eingeklappt. Es speichert nur Gewicht und Tag, wird nie geteilt, ist Teil des Backups und wird mit dem Konto gelöscht.
 
 ---
 

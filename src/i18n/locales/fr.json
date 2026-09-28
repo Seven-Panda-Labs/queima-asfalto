@@ -1731,7 +1731,7 @@
       "total": "Total",
       "down": "en baisse",
       "up": "en hausse",
-      "entries": "Relevés",
+      "entries": "Relevés ({{count}})",
       "showAll": "Tout afficher ({{count}})",
       "empty": "Pas encore de relevés.",
       "saved": "Poids enregistré.",

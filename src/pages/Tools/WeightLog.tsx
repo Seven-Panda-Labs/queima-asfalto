@@ -130,8 +130,11 @@ export function WeightLog() {
 
           <WeightChart entries={entries} />
 
-          <section>
-            <h2 className="text-sm font-semibold text-foreground">{t('tools.weightLog.entries')}</h2>
+          {/* Closed by default: it grows every day, and the chart already tells the story. */}
+          <details>
+            <summary className="cursor-pointer text-sm font-semibold text-foreground">
+              {t('tools.weightLog.entries', { count: entries.length })}
+            </summary>
             <ul className="mt-2 divide-y divide-border rounded-lg border border-border bg-surface">
               {visibleEntries.map((entry) => (
                 <li key={entry.id} className="flex items-center justify-between gap-3 px-4 py-2 text-sm">
@@ -158,7 +161,7 @@ export function WeightLog() {
                 {t('tools.weightLog.showAll', { count: newestFirst.length })}
               </button>
             ) : null}
-          </section>
+          </details>
         </div>
       ) : (
         <p className="mt-8 text-sm text-muted">{t('tools.weightLog.empty')}</p>

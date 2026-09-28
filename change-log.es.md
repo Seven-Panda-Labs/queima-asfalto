@@ -8,7 +8,7 @@
 
 ### Añadido
 
-- **Registro de peso:** una nueva herramienta para registrar el peso de cada día, con un gráfico a lo largo del tiempo y la variación de los últimos 7 y 30 días. Solo guarda el peso y el día, nunca se comparte, entra en la copia de seguridad y se borra con la cuenta.
+- **Registro de peso:** una nueva herramienta para registrar el peso de cada día, con un gráfico a lo largo del tiempo y la variación de los últimos 7 y 30 días. La lista de registros queda plegada debajo. Solo guarda el peso y el día, nunca se comparte, entra en la copia de seguridad y se borra con la cuenta.
 
 ---
 

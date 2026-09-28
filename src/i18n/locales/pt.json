@@ -1731,7 +1731,7 @@
       "total": "Total",
       "down": "desceu",
       "up": "subiu",
-      "entries": "Registos",
+      "entries": "Registos ({{count}})",
       "showAll": "Mostrar todos ({{count}})",
       "empty": "Ainda não há registos.",
       "saved": "Peso guardado.",

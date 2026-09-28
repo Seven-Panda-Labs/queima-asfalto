@@ -8,7 +8,7 @@
 
 ### Ajouté
 
-- **Suivi du poids :** un nouvel outil pour noter ton poids chaque jour, avec un graphique dans le temps et l’évolution sur les 7 et 30 derniers jours. Il ne garde que le poids et le jour, n’est jamais partagé, fait partie de la sauvegarde et est supprimé avec le compte.
+- **Suivi du poids :** un nouvel outil pour noter ton poids chaque jour, avec un graphique dans le temps et l’évolution sur les 7 et 30 derniers jours. La liste des relevés reste repliée en dessous. Il ne garde que le poids et le jour, n’est jamais partagé, fait partie de la sauvegarde et est supprimé avec le compte.
 
 ---
 
