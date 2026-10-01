@@ -6,6 +6,7 @@ import { CountrySelect } from '../../components/CountrySelect/CountrySelect'
 import { formatDatePt } from '../../utils/date'
 import { searchRaceCatalog } from '../../services/raceCatalog'
 import { identifyRaceInCatalog, proposeRaceForEvent } from '../../services/raceIdentity'
+import { isKnownParkrun } from '../../domain/parkrunEvent'
 import type { Event } from '../../types/Event'
 
 /**
@@ -110,7 +111,7 @@ export function IdentifyInCatalog({
   // Only what says it *is* a known parkrun counts. A race merely named like
   // one, with nothing linking it, is exactly the case where saying which race
   // it is still helps.
-  if (event.parkrunEventSlug || event.resultsPlatform === 'parkrun') return null
+  if (isKnownParkrun(event)) return null
 
   if (linked || justLinked) return null
 

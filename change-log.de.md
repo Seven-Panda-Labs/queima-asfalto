@@ -4,6 +4,14 @@
 
 ---
 
+## [1.86.0] - 2026-10-01
+
+### Behoben
+
+- **parkruns fragen nicht mehr nach Verlosung und Fristen:** die Eventseite bot an, Verlosung, Anmeldedaten und Gebühr einzutragen, die ein parkrun nicht hat, und dieses Formular öffnet sich für sie nicht mehr.
+
+---
+
 ## [1.85.0] - 2026-09-27
 
 ### Hinzugefügt

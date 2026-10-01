@@ -4,6 +4,14 @@
 
 ---
 
+## [1.86.0] - 2026-10-01
+
+### Corregido
+
+- **Los parkruns ya no piden sorteo ni plazos:** la página del evento ofrecía anotar el sorteo, las fechas de inscripción y el precio, que un parkrun no tiene, y ese formulario ya no se abre para ellos.
+
+---
+
 ## [1.85.0] - 2026-09-27
 
 ### Añadido

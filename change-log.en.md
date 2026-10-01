@@ -4,6 +4,14 @@
 
 ---
 
+## [1.86.0] - 2026-10-01
+
+### Fixed
+
+- **parkruns no longer ask for a lottery or deadlines:** the event page offered to note the lottery, entry dates and fee, which a parkrun does not have, and that form no longer opens for them.
+
+---
+
 ## [1.85.0] - 2026-09-27
 
 ### Added

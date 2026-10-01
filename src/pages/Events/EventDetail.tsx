@@ -43,6 +43,7 @@ import { formatEventTypeLabel } from '../../types/Goal'
 import { formatClassificationDisplay } from '../../utils/classification'
 import { needsOutcomeReason, offersNextEdition } from '../../domain/outcomeReasons'
 import { isAnchorFor } from '../../domain/seasonAnchors'
+import { isKnownParkrun } from '../../domain/parkrunEvent'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
 import { nextAttemptYear, nextSeasonAttempt } from '../../domain/raceEntryRollover'
 import { formatDatePt, isFutureDate } from '../../utils/date'
@@ -647,8 +648,12 @@ export function EventDetail() {
 
         {/* The paperwork, for the races that have any. Most have none, so this
             is an offer rather than a step: a lottery, a window that opens at
-            nine in the morning, a place that has to be paid for by a date. */}
-        {!isSharedView && event.raceId && (event.status === 'planned' || event.status === 'confirmed') ? (
+            nine in the morning, a place that has to be paid for by a date.
+            A parkrun has none of these. */}
+        {!isSharedView &&
+        event.raceId &&
+        !isKnownParkrun(event) &&
+        (event.status === 'planned' || event.status === 'confirmed') ? (
           <Link
             to={`/eventos/${event.id}/inscricao`}
             className="mt-4 block rounded-lg border border-dashed border-border px-4 py-3 text-xs text-muted hover:border-primary hover:text-primary"

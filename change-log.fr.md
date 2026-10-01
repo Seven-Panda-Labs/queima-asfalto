@@ -4,6 +4,14 @@
 
 ---
 
+## [1.86.0] - 2026-10-01
+
+### Corrigé
+
+- **Les parkruns ne demandent plus de tirage au sort ni de délais :** la page de l’événement proposait de noter le tirage, les dates d’inscription et le prix, qu’un parkrun n’a pas, et ce formulaire ne s’ouvre plus pour eux.
+
+---
+
 ## [1.85.0] - 2026-09-27
 
 ### Ajouté

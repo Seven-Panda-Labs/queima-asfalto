@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState, type FormEvent } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { DayField } from '../../components/DatePicker'
@@ -8,6 +8,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaces } from '../../hooks/useRaces'
 import { CurrencySelect } from '../../components/CurrencySelect/CurrencySelect'
+import { isKnownParkrun } from '../../domain/parkrunEvent'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
 import { getEvent, updateEvent } from '../../services/events'
 import { reportEditionFee } from '../../services/editionReports'
@@ -271,6 +272,9 @@ export function EntryForm() {
       </PageShell>
     )
   }
+
+  // Reached only by typing the address: the event page offers no link.
+  if (event && isKnownParkrun(event)) return <Navigate to={`/eventos/${event.id}`} replace />
 
   if (!raceId || year === null || (id && !event)) {
     return (
