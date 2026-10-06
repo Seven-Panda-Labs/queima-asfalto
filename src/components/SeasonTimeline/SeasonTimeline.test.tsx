@@ -39,6 +39,8 @@ const SEASON = [
   }),
 ]
 
+const ANCHORS = [{ id: 'race-anchor', anchorYears: [2027] }]
+
 describe('SeasonTimeline', () => {
   it('reads as a path to the anchor', () => {
     render(
@@ -46,7 +48,7 @@ describe('SeasonTimeline', () => {
         events={SEASON}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set(['race-anchor'])}
+        anchorRaces={ANCHORS}
         onYear={vi.fn()}
       />,
     )
@@ -62,7 +64,7 @@ describe('SeasonTimeline', () => {
         events={SEASON}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set(['race-anchor'])}
+        anchorRaces={ANCHORS}
         onYear={vi.fn()}
       />,
     )
@@ -80,7 +82,7 @@ describe('SeasonTimeline', () => {
         events={SEASON}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set(['race-anchor'])}
+        anchorRaces={ANCHORS}
         onYear={vi.fn()}
       />,
     )
@@ -96,7 +98,7 @@ describe('SeasonTimeline', () => {
         events={[SEASON[0]!]}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set()}
+        anchorRaces={[]}
         onYear={vi.fn()}
       />,
     )
@@ -112,7 +114,7 @@ describe('SeasonTimeline', () => {
         events={SEASON}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set(['race-anchor'])}
+        anchorRaces={ANCHORS}
         onYear={vi.fn()}
       />,
     )
@@ -125,7 +127,7 @@ describe('SeasonTimeline', () => {
 
   it('offers the whole year when the season is empty', () => {
     render(
-      <SeasonTimeline events={[]} year={2027} years={[2027]} anchorRaceIds={new Set()} onYear={vi.fn()} />,
+      <SeasonTimeline events={[]} year={2027} years={[2027]} anchorRaces={[]} onYear={vi.fn()} />,
     )
 
     expect(screen.getByLabelText('Encontrar provas para esta época')).toHaveAttribute(
@@ -145,7 +147,7 @@ describe('SeasonTimeline', () => {
         ]}
         year={2027}
         years={[2027]}
-        anchorRaceIds={new Set(['race-anchor'])}
+        anchorRaces={ANCHORS}
         onYear={vi.fn()}
       />,
     )
@@ -159,7 +161,7 @@ describe('SeasonTimeline', () => {
 
   it('says what is missing when nothing is an anchor', () => {
     render(
-      <SeasonTimeline events={SEASON} year={2027} years={[2027]} anchorRaceIds={new Set()} onYear={vi.fn()} />,
+      <SeasonTimeline events={SEASON} year={2027} years={[2027]} anchorRaces={[]} onYear={vi.fn()} />,
     )
 
     expect(screen.getByText(/Nenhuma destas está marcada como âncora/)).toBeInTheDocument()
@@ -172,7 +174,7 @@ describe('SeasonTimeline', () => {
         events={SEASON}
         year={2027}
         years={[2027, 2028]}
-        anchorRaceIds={new Set()}
+        anchorRaces={[]}
         onYear={onYear}
       />,
     )
