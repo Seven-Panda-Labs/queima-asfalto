@@ -10,6 +10,10 @@
 
 - **Results from Pacer:** the Cardiff Half Marathon moved to this platform and can be imported again. The placing follows whichever clock the race ranks on, gun or chip.
 
+### Fixed
+
+- **Climb is no longer invented on flat races:** altitude that wanders from second to second, as GPS altitude does, added up to hundreds of metres that were never run. The course profile still appears, now without a total, and the note beside it explains why.
+
 ---
 
 ## [1.86.0] - 2026-10-01

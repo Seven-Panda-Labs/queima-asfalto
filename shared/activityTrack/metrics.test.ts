@@ -45,6 +45,8 @@ function tcxWithRaggedStart(options: {
   distanceEvery?: number
   /** Index past which the barometer reports nothing. */
   altitudeUntil?: number
+  /** Climbs a metre a second, the rate at which we stop trusting a series. */
+  lurchingAltitude?: boolean
 }): string {
   const {
     pointsBeforeDistance,
@@ -53,6 +55,7 @@ function tcxWithRaggedStart(options: {
     metresPerPoint,
     distanceEvery = 1,
     altitudeUntil = Number.POSITIVE_INFINITY,
+    lurchingAltitude = false,
   } = options
   const start = Date.parse('2026-07-04T08:46:36.000Z')
   const at = (index: number) => new Date(start + index * 1000).toISOString()
@@ -69,8 +72,8 @@ function tcxWithRaggedStart(options: {
           `<LongitudeDegrees>13.4</LongitudeDegrees></Position>`
         : ''
     // A gentle climb, so a trusted series has a gain worth reporting.
-    const altitude =
-      index <= altitudeUntil ? `<AltitudeMeters>${35 + index / 10}</AltitudeMeters>` : ''
+    const metresUp = lurchingAltitude ? 35 + index : 35 + index / 10
+    const altitude = index <= altitudeUntil ? `<AltitudeMeters>${metresUp}</AltitudeMeters>` : ''
     return (
       `<Trackpoint><Time>${at(index)}</Time>${position}` +
       `${altitude}${distance}` +
@@ -169,7 +172,8 @@ describe('a barometer that gives up partway', () => {
   })
 
   it('keeps altitude off the chart as well, rather than drawing half a race', () => {
-    // One trust decision: a series unfit to summarise is unfit to plot.
+    // Holes are the one failure that also empties the chart: the missing part
+    // is exactly what there is to draw.
     expect(halfMeasured.profile.every((point) => point.elevationMeters === undefined)).toBe(true)
   })
 
@@ -229,14 +233,39 @@ describe('splits', () => {
 })
 
 describe('elevation', () => {
-  it('suppresses the quantisation noise of whole metre GPX elevations', () => {
-    // An unfiltered sum of the same series gives 133 m.
-    expect(gpx.elevationGainMeters).toBeLessThan(110)
-    expect(gpx.elevationGainMeters).toBeGreaterThan(0)
+  // Cardiff is the case that forced this. Polar's own figure for that half
+  // marathon is 110 m of ascent, and its barometric series gives us 111. The
+  // GPX export of the same run gives 403, because its GPS altitude wanders by
+  // more than a metre a second on 18.6% of its 8464 samples.
+  it('declines to total a climb from a series that wanders', () => {
+    expect(gpx.elevationGainMeters).toBeUndefined()
+    expect(gpx.elevationLossMeters).toBeUndefined()
   })
 
-  it('reports gain and loss separately on a loop course', () => {
-    expect(Math.abs(gpx.elevationGainMeters! - gpx.elevationLossMeters!)).toBeLessThan(20)
+  it('still plots the wandering series, whose shape is unharmed', () => {
+    expect(gpx.profile.some((point) => point.elevationMeters !== undefined)).toBe(true)
+  })
+
+  it('totals a climb from a steady series', () => {
+    expect(tcx.elevationGainMeters).toBeGreaterThan(0)
+    expect(tcx.elevationLossMeters).toBeGreaterThan(0)
+  })
+
+  it('needs a run of samples before it calls a series noisy', () => {
+    // A short series is too lumpy to judge: a few lurches are a hill, thousands
+    // are a sensor.
+    const short = summarizeActivity(
+      parse(
+        tcxWithRaggedStart({
+          pointsBeforeDistance: 0,
+          pointsBeforePosition: 0,
+          movingPoints: 20,
+          metresPerPoint: 3,
+          lurchingAltitude: true,
+        }),
+      ),
+    )
+    expect(short.elevationGainMeters).toBeDefined()
   })
 })
 

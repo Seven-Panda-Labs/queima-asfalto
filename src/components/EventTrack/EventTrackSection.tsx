@@ -18,6 +18,16 @@ type EventTrackSectionProps = {
   userId: string
 }
 
+/**
+ * Three outcomes, because a missing total has two different causes and only one
+ * of them also empties the chart.
+ */
+function elevationNoteKey(track: EventTrack): string {
+  if (track.elevationGainMeters !== undefined) return 'eventTrack.elevationApproximate'
+  const plotted = track.profile.some((point) => point.elevationMeters !== undefined)
+  return plotted ? 'eventTrack.elevationShapeOnly' : 'eventTrack.elevationMissingNote'
+}
+
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div>
@@ -118,11 +128,7 @@ export function EventTrackSection({ event, track, loading, userId }: EventTrackS
             />
           </dl>
 
-          <p className="mt-2 text-xs text-muted">
-            {track.elevationGainMeters === undefined
-              ? t('eventTrack.elevationMissingNote')
-              : t('eventTrack.elevationApproximate')}
-          </p>
+          <p className="mt-2 text-xs text-muted">{t(elevationNoteKey(track))}</p>
 
           {/* TCX carries heart rate, GPX does not, so this block comes and goes. */}
           {track.heartRate ? (

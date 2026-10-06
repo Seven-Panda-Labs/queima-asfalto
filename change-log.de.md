@@ -10,6 +10,10 @@
 
 - **Ergebnisse von Pacer:** der Cardiff Half Marathon ist auf diese Plattform gewechselt und lässt sich wieder importieren. Die Platzierung folgt der Zeit, nach der der Lauf wertet, brutto oder netto.
 
+### Behoben
+
+- **Keine erfundenen Höhenmeter mehr auf flachen Strecken:** Höhenwerte, die von Sekunde zu Sekunde schwanken, wie die des GPS, summierten sich zu Hunderten Metern, die nie gelaufen wurden. Das Streckenprofil erscheint weiterhin, jetzt ohne Summe, und der Hinweis daneben erklärt, warum.
+
 ---
 
 ## [1.86.0] - 2026-10-01

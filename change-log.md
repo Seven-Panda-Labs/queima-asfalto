@@ -10,6 +10,10 @@
 
 - **Resultados do Pacer:** a Meia Maratona de Cardiff mudou para esta plataforma e já se pode importar. O lugar segue o relógio que a prova usa para classificar, de arma ou de chip.
 
+### Corrigido
+
+- **Deixa de inventar subida em provas planas:** a altitude que oscila de segundo para segundo, como a de GPS, somava centenas de metros que nunca foram subidos. O perfil do percurso continua a aparecer, agora sem total, e a nota ao lado explica porquê.
+
 ---
 
 ## [1.86.0] - 2026-10-01

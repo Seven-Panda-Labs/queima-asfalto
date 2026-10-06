@@ -10,6 +10,10 @@
 
 - **Résultats de Pacer :** le semi-marathon de Cardiff est passé sur cette plateforme et redevient importable. La place suit le chronomètre sur lequel la course classe, départ ou puce.
 
+### Corrigé
+
+- **Plus de dénivelé inventé sur les courses plates :** l'altitude qui fluctue d'une seconde à l'autre, comme celle du GPS, totalisait des centaines de mètres jamais gravis. Le profil du parcours reste affiché, désormais sans total, et la note à côté explique pourquoi.
+
 ---
 
 ## [1.86.0] - 2026-10-01

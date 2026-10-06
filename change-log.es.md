@@ -10,6 +10,10 @@
 
 - **Resultados de Pacer:** la Media Maratón de Cardiff cambió a esta plataforma y ya se puede importar. El puesto sigue el reloj con el que clasifica la carrera, de salida o de chip.
 
+### Corregido
+
+- **Ya no se inventa desnivel en carreras llanas:** la altitud que oscila de segundo a segundo, como la del GPS, sumaba cientos de metros que nunca se subieron. El perfil del recorrido sigue apareciendo, ahora sin total, y la nota contigua explica por qué.
+
 ---
 
 ## [1.86.0] - 2026-10-01
