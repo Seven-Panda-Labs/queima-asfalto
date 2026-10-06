@@ -16,6 +16,7 @@ import { lookupWiclax } from './wiclax.js'
 import { lookupRaceResult } from './raceresult.js'
 import { lookupSccEvents } from './sccEvents.js'
 import { lookupSporthive } from './sporthive.js'
+import { lookupPacer } from './pacer.js'
 import { lookupStgk } from './stgk.js'
 
 export async function lookupPlatform(
@@ -75,6 +76,9 @@ export async function lookupPlatform(
     case 'mikatiming':
       if (!resultsUrl) return []
       return lookupMikaTiming(resultsUrl, profile)
+    case 'pacer':
+      if (!resultsUrl) return []
+      return lookupPacer(resultsUrl, profile)
     case 'stgk':
       if (!resultsUrl) return []
       return lookupStgk(resultsUrl, profile, eventName)

@@ -1,0 +1,66 @@
+{
+  "event": { "name": "Fictional Half Marathon 2026" },
+  "race": {
+    "name": "Half Marathon",
+    "distance": "21.1",
+    "measurement": "km",
+    "showRankings": true,
+    "chipTimeDisplay": true,
+    "gunTimeDisplay": true,
+    "overallTimingPreference": "gun",
+    "genderTimingPreference": "chip",
+    "categoryTimingPreference": "chip"
+  },
+  "chipTimes": {
+    "aaaaaaaa-0000-4000-8000-000000000001": {
+      "firstName": "Zé",
+      "lastName": "Ninguém",
+      "participantBibNumber": "1",
+      "gender": "male",
+      "category": "MSEN",
+      "club": null,
+      "chipSeconds": 3574,
+      "gunSeconds": 3574
+    },
+    "bbbbbbbb-0000-4000-8000-000000000002": {
+      "firstName": "Zita",
+      "lastName": "Ninguém",
+      "participantBibNumber": "2",
+      "gender": "female",
+      "category": "FSEN",
+      "club": null,
+      "chipSeconds": 3617.483,
+      "gunSeconds": 3617.483
+    },
+    "cccccccc-0000-4000-8000-000000000003": {
+      "firstName": "Quim",
+      "lastName": "Fulano",
+      "participantBibNumber": "3",
+      "gender": "male",
+      "category": "M40-44",
+      "club": "Clube Imaginário",
+      "chipSeconds": 8483.1,
+      "gunSeconds": 10479.4
+    },
+    "dddddddd-0000-4000-8000-000000000004": {
+      "firstName": "Rita",
+      "lastName": "Fulana",
+      "participantBibNumber": "4",
+      "gender": "female",
+      "category": "F40-44",
+      "club": null,
+      "chipSeconds": 8400,
+      "gunSeconds": 10479.4
+    },
+    "eeeeeeee-0000-4000-8000-000000000005": {
+      "firstName": "Beltrano",
+      "lastName": "Sem-Arma",
+      "participantBibNumber": "5",
+      "gender": "male",
+      "category": "MSEN",
+      "club": null,
+      "chipSeconds": 4000,
+      "gunSeconds": 0
+    }
+  }
+}

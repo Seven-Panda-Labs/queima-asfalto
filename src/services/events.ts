@@ -76,7 +76,8 @@ function docToEvent(id: string, data: Record<string, unknown>): Event {
       data.resultsPlatform === 'vcrunning' ||
       data.resultsPlatform === 'wiclax' ||
       data.resultsPlatform === 'timataka' ||
-      data.resultsPlatform === 'mikatiming'
+      data.resultsPlatform === 'mikatiming' ||
+      data.resultsPlatform === 'pacer'
         ? data.resultsPlatform
         : undefined,
     resultsVerified: data.resultsVerified === true,

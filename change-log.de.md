@@ -4,6 +4,14 @@
 
 ---
 
+## [1.87.0] - 2026-10-06
+
+### Hinzugefügt
+
+- **Ergebnisse von Pacer:** der Cardiff Half Marathon ist auf diese Plattform gewechselt und lässt sich wieder importieren. Die Platzierung folgt der Zeit, nach der der Lauf wertet, brutto oder netto.
+
+---
+
 ## [1.86.0] - 2026-10-01
 
 ### Behoben

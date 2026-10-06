@@ -7,6 +7,7 @@ import { isMikatimingCustomResultsUrl, isMikatimingHostname, parseMikaTimingUrl 
 import { isTimatakaHostname, isTimatakaResultsPath, parseTimatakaUrl } from './timataka.js'
 import { isWiclaxResultsPath, parseWiclaxUrl } from './wiclax.js'
 import { parseRaceResultEmbedHash } from './raceresult.js'
+import { parsePacerUrl } from './pacer.js'
 
 export function detectPlatformFromUrl(url: string): ResultsPlatform | null {
   try {
@@ -65,6 +66,7 @@ export function detectPlatformFromUrl(url: string): ResultsPlatform | null {
     if (parseMikaTimingUrl(url)) return 'mikatiming'
     if (isMikatimingHostname(parsed.hostname)) return 'mikatiming'
     if (isMikatimingCustomResultsUrl(parsed.hostname, parsed.pathname)) return 'mikatiming'
+    if (parsePacerUrl(url)) return 'pacer'
     if (parseRaceResultEmbedHash(url)) return 'myraceresult'
   } catch {
     return null

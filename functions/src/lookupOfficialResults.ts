@@ -39,7 +39,7 @@ function normalizeResultsPlatform(
   eventName?: string,
 ): OfficialResultCandidate['platform'] | null {
   if (stored === 'raceresult' || stored === 'myraceresult') return 'myraceresult'
-  if (stored === 'parkrun' || stored === 'davengo' || stored === 'sporthive' || stored === 'sccevents' || stored === 'maxfunsports' || stored === 'myracepartner' || stored === 'strassenlauf' || stored === 'zielzeit' || stored === 'eqtiming' || stored === 'nsfberlin' || stored === 'runczech' || stored === 'ultimate' || stored === 'vcrunning' || stored === 'wiclax' || stored === 'timataka' || stored === 'mikatiming' || stored === 'stgk')
+  if (stored === 'parkrun' || stored === 'davengo' || stored === 'sporthive' || stored === 'sccevents' || stored === 'maxfunsports' || stored === 'myracepartner' || stored === 'strassenlauf' || stored === 'zielzeit' || stored === 'eqtiming' || stored === 'nsfberlin' || stored === 'runczech' || stored === 'ultimate' || stored === 'vcrunning' || stored === 'wiclax' || stored === 'timataka' || stored === 'mikatiming' || stored === 'stgk' || stored === 'pacer')
     return stored
   return detectPlatform(resultsUrl, eventName)
 }

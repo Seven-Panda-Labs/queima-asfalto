@@ -4,6 +4,14 @@
 
 ---
 
+## [1.87.0] - 2026-10-06
+
+### Ajouté
+
+- **Résultats de Pacer :** le semi-marathon de Cardiff est passé sur cette plateforme et redevient importable. La place suit le chronomètre sur lequel la course classe, départ ou puce.
+
+---
+
 ## [1.86.0] - 2026-10-01
 
 ### Corrigé
