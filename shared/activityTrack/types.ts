@@ -1,4 +1,4 @@
-export type ActivityFileFormat = 'gpx' | 'tcx'
+export type ActivityFileFormat = 'gpx' | 'tcx' | 'fit'
 
 export type TrackPoint = {
   /** Milliseconds since the epoch. */
@@ -10,7 +10,7 @@ export type TrackPoint = {
    * disagree on the absolute value, and by more than a constant offset.
    */
   elevation?: number
-  /** Metres from the start as the device measured them. TCX only. */
+  /** Metres from the start as the device measured them. TCX and FIT only. */
   deviceDistance?: number
   heartRate?: number
   /**
@@ -37,7 +37,7 @@ export type ParsedActivity = {
    * exported, which in the sample is a day after the run.
    */
   startedAt: Date
-  /** TCX only, e.g. `Running`. */
+  /** TCX and FIT only, e.g. `Running`. */
   sport?: string
   points: TrackPoint[]
   laps: TrackLap[]

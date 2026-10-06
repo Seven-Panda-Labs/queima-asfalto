@@ -227,7 +227,7 @@
   },
   "eventTrack": {
     "title": "Fichier d'activité",
-    "empty": "Pas encore de fichier. Importe le GPX ou TCX de ta montre pour voir les splits et le parcours.",
+    "empty": "Pas encore de fichier. Importe le GPX, TCX ou FIT de ta montre pour voir les splits et le parcours.",
     "upload": "Importer un fichier",
     "replace": "Remplacer le fichier",
     "uploading": "Import en cours...",
@@ -235,7 +235,7 @@
     "replaced": "Fichier remplacé",
     "removed": "Fichier supprimé",
     "offline": "Tu es hors ligne. Réessaie une fois de retour.",
-    "formatsHint": "GPX ou TCX, jusqu'à 20 Mo. Un fichier par événement.",
+    "formatsHint": "GPX, TCX ou FIT, jusqu'à 20 Mo. Un fichier par événement. Le FIT est celui qui garde le plus de détail.",
     "measuredDistance": "Mesuré",
     "elevationGain": "Dénivelé positif",
     "elevationApproximate": "Le dénivelé est approximatif. Utile pour voir le profil d'une course, pas pour comparer au mètre près.",
@@ -263,7 +263,7 @@
     "chartDistanceAxis": "Distance (km)",
     "chartDistanceTooltip": "{{distance}} km",
     "errors": {
-      "unsupported_type": "Seuls les fichiers GPX et TCX sont acceptés.",
+      "unsupported_type": "Seuls les fichiers GPX, TCX et FIT sont acceptés.",
       "file_too_large": "Le fichier dépasse 20 Mo.",
       "malformed_xml": "Le fichier n'a pas pu être lu. Il est peut-être incomplet.",
       "no_track_points": "Le fichier ne contient aucun point horodaté."
@@ -745,7 +745,7 @@
     "exportUnavailable": "La sauvegarde devient disponible dès que tu as des événements ou des éléments dans la bucket list.",
     "exportIncludes": "Inclut les événements, objectifs, objectifs de performance, bucket list, photos et vidéos, préférences et partages.",
     "includeMediaFiles": "Inclure les fichiers photo, vidéo et d'activité",
-    "includeMediaFilesHint": "Rend la sauvegarde bien plus lourde, et c'est ce qui permet de récupérer les photos, les vidéos et les fichiers GPX ou TCX. Au-delà de {{max}} Mo la sauvegarde ne garde que les métadonnées.",
+    "includeMediaFilesHint": "Rend la sauvegarde bien plus lourde, et c'est ce qui permet de récupérer les photos, les vidéos et les fichiers d'activité. Au-delà de {{max}} Mo la sauvegarde ne garde que les métadonnées.",
     "exportMediaTooLarge": "Tes photos et vidéos dépassent {{max}} Mo, la sauvegarde ne contient donc que les données et les métadonnées.",
     "exportProgressCollections": "Lecture de tes données...",
     "exportProgressMedia": "Lecture des photos et vidéos ({{done}}/{{total}})...",
@@ -796,7 +796,7 @@
       "reminders_not_restored": "Historique des rappels envoyés et enregistrements des notifications push.",
       "profile_write_denied": "Les préférences du profil n'ont pas pu être restaurées.",
       "media_files_restored": "Photos et vidéos restaurées à partir des fichiers de la sauvegarde.",
-      "track_binaries_not_restored": "Cette sauvegarde ne contient aucun fichier GPX ou TCX, seulement les résumés. Les fichiers d'activité ne reviennent que si les fichiers eux-mêmes sont dans la sauvegarde.",
+      "track_binaries_not_restored": "Cette sauvegarde ne contient aucun fichier d'activité, seulement les résumés. Ils ne reviennent que si les fichiers eux-mêmes sont dans la sauvegarde.",
       "track_files_restored": "Fichiers d'activité restaurés depuis les fichiers de la sauvegarde."
     },
     "modeTitle": "Comment veux-tu restaurer ?",
@@ -1324,7 +1324,7 @@
     "tabMaintenance": "Maintenance",
     "maintenanceTitle": "Maintenance",
     "recomputeTitle": "Recalculer les résumés des fichiers d'activité",
-    "recomputeHint": "Relit chaque GPX et TCX stocké et réécrit ce qui en a été dérivé. À lancer après une correction du parseur, pour que les courses importées avant affichent les bons chiffres.",
+    "recomputeHint": "Relit chaque fichier d'activité stocké et réécrit ce qui en a été dérivé. À lancer après une correction du parseur, pour que les courses importées avant affichent les bons chiffres.",
     "recomputeStart": "Recalculer les résumés",
     "recomputeRunning": "Recalcul en cours...",
     "recomputeExamined": "Événements vus",

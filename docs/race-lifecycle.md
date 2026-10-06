@@ -22,7 +22,7 @@ flowchart LR
   B --> D["4 Decisão de inscrição<br/>ausente (issue 246)"]
   D --> E["5 Inscrição garantida<br/>events (confirmed)"]
   E --> F["6 Aproximação<br/>lembretes, tempo a bater"]
-  F --> G["7 Corrida e resultado<br/>resultados oficiais, GPX/TCX"]
+  F --> G["7 Corrida e resultado<br/>resultados oficiais, GPX/TCX/FIT"]
   G --> H["8 Análise<br/>página de resultados"]
   H --> A
   H -.-> B
@@ -67,7 +67,7 @@ Todas as provas passam pelas oito fases. O que muda entre uma âncora e uma secu
 | 4 | **Decisão de inscrição** | «Quando abre, é sorteio, quanto custa, até quando posso decidir» | Nada. Nenhuma data que não seja a data da prova existe no modelo | ausente, #246 |
 | 5 | **Inscrição garantida** | «Está paga, está no calendário» | Evento com estado `confirmed`. Agendar a partir da bucket list copia os campos e oferece apagar o item | [`EventForm.tsx`](../src/pages/Events/EventForm.tsx), [`ScheduleDisciplineDialog`](../src/components/ScheduleDisciplineDialog/) |
 | 6 | **Aproximação** | «Falta quanto, e o que tenho a bater» | Um lembrete FCM (1, 2, 3 ou 7 dias antes, a uma hora fixa), contagem no cartão de casa, tempo a bater quando o percurso já foi corrido | [`shared/reminders/`](../shared/reminders/), [`NextEventCard`](../src/components/NextEventCard/), [`analytics/course.ts`](../src/utils/analytics/course.ts) |
-| 7 | **Corrida e resultado** | «Correr, e registar o que aconteceu» | Transição automática para `missed`, tempo e ritmo à mão, importação oficial em 17 plataformas, ficheiro GPX/TCX com splits e traçado, fotos e vídeos | [`useAutoTransitions.ts`](../src/hooks/useAutoTransitions.ts), [`functions/src/connectors/`](../functions/src/connectors/), [`src/domain/activityTrack/`](../src/domain/activityTrack/) |
+| 7 | **Corrida e resultado** | «Correr, e registar o que aconteceu» | Transição automática para `missed`, tempo e ritmo à mão, importação oficial em 17 plataformas, ficheiro GPX/TCX/FIT com splits e traçado, fotos e vídeos | [`useAutoTransitions.ts`](../src/hooks/useAutoTransitions.ts), [`functions/src/connectors/`](../functions/src/connectors/), [`src/domain/activityTrack/`](../src/domain/activityTrack/) |
 | 8 | **Análise** | «O que é que isto quer dizer» | Temporadas, recordes e progressão, percentil, curva de forma, sazonalidade, pacing, mapa de calor, totais de carreira, previsão por equivalência, histórico de percurso, conquistas | [`src/pages/Results/`](../src/pages/Results/), [`src/components/Analysis/`](../src/components/Analysis/), [`src/utils/analytics/`](../src/utils/analytics/) |
 
 A app é forte nas duas pontas e vazia no meio. As fases 7 e 8 são das partes mais trabalhadas do produto; as fases 3 e 4, que é onde a decisão acontece, não existem.
@@ -122,7 +122,7 @@ Estão nas issues ou nas entrevistas, e não devem ser reabertas ao passar por a
 | Elegibilidade (projectar PBs contra tempos de qualificação) | Fora de roteiro | #246 |
 | Armazenamento da inscrição | Colecção `raceEntries` própria, não embutida no item | #246 |
 | Navegação | Revisto: Planeamento substitui a bucket list no topo, e Eventos mantém-se | [`planning-a-season.md`](./planning-a-season.md) |
-| Integrações Strava/Garmin | Fora da v1. O parser de GPX/TCX serve qualquer integração futura | #226 |
+| Integrações Strava/Garmin | Fora da v1. O parser de GPX/TCX/FIT serve qualquer integração futura | #226 |
 | Um traçado não é verificação | `resultsVerified` continua a vir só da importação oficial | #226 |
 | O que é uma edição | Um ano de uma prova anual. Um evento recorrente tem ocorrências de uma regra, não edições | [`race-catalog.md`](./race-catalog.md) |
 | Elo entre evento e edição | Derivado do ano da data do evento. Nenhum campo novo no evento | [`race-catalog.md`](./race-catalog.md) |
@@ -169,7 +169,7 @@ flowchart LR
   B --> D["4 Entry decision<br/>missing (issue 246)"]
   D --> E["5 Entry secured<br/>events (confirmed)"]
   E --> F["6 Approach<br/>reminders, time to beat"]
-  F --> G["7 Race and result<br/>official results, GPX/TCX"]
+  F --> G["7 Race and result<br/>official results, GPX/TCX/FIT"]
   G --> H["8 Analysis<br/>results page"]
   H --> A
   H -.-> B
@@ -214,7 +214,7 @@ Every race goes through all eight stages. What changes between an anchor and a s
 | 4 | **Entry decision** | "When does it open, is it a lottery, what does it cost, how long can I wait" | Nothing. No date other than the race date exists in the model | missing, #246 |
 | 5 | **Entry secured** | "It is paid, it is on the calendar" | Event with status `confirmed`. Scheduling from the bucket list copies the fields and offers to delete the item | [`EventForm.tsx`](../src/pages/Events/EventForm.tsx), [`ScheduleDisciplineDialog`](../src/components/ScheduleDisciplineDialog/) |
 | 6 | **Approach** | "How long to go, and what do I have to beat" | One FCM reminder (1, 2, 3 or 7 days before, at a fixed hour), a countdown on the home card, a time to beat when the course has been run before | [`shared/reminders/`](../shared/reminders/), [`NextEventCard`](../src/components/NextEventCard/), [`analytics/course.ts`](../src/utils/analytics/course.ts) |
-| 7 | **Race and result** | "Run it, and record what happened" | Automatic transition to `missed`, time and pace by hand, official results import across 17 platforms, GPX/TCX file with splits and route, photos and videos | [`useAutoTransitions.ts`](../src/hooks/useAutoTransitions.ts), [`functions/src/connectors/`](../functions/src/connectors/), [`src/domain/activityTrack/`](../src/domain/activityTrack/) |
+| 7 | **Race and result** | "Run it, and record what happened" | Automatic transition to `missed`, time and pace by hand, official results import across 17 platforms, GPX/TCX/FIT file with splits and route, photos and videos | [`useAutoTransitions.ts`](../src/hooks/useAutoTransitions.ts), [`functions/src/connectors/`](../functions/src/connectors/), [`src/domain/activityTrack/`](../src/domain/activityTrack/) |
 | 8 | **Analysis** | "What does this mean" | Seasons, records and progression, percentile, form curve, seasonality, pacing, heatmap, career totals, equivalence predictions, course history, achievements | [`src/pages/Results/`](../src/pages/Results/), [`src/components/Analysis/`](../src/components/Analysis/), [`src/utils/analytics/`](../src/utils/analytics/) |
 
 The app is strong at both ends and empty in the middle. Stages 7 and 8 are among the most worked parts of the product; stages 3 and 4, which is where the decision happens, do not exist.
@@ -269,7 +269,7 @@ They live in the issues or in the interviews, and should not be reopened in pass
 | Eligibility (projecting PBs against qualifying times) | Out of roadmap | #246 |
 | Entry storage | Its own `raceEntries` collection, not embedded in the item | #246 |
 | Navigation | Revised: Planning replaces the bucket list at the top, and Events stays | [`planning-a-season.md`](./planning-a-season.md) |
-| Strava/Garmin integrations | Out of v1. The GPX/TCX parser serves any future integration | #226 |
+| Strava/Garmin integrations | Out of v1. The GPX/TCX/FIT parser serves any future integration | #226 |
 | A track is not a verification | `resultsVerified` still comes only from the official lookup | #226 |
 | What an edition is | One year of an annual race. A recurring event has occurrences from a rule, not editions | [`race-catalog.md`](./race-catalog.md) |
 | Event to edition link | Derived from the year of the event's date. No new field on the event | [`race-catalog.md`](./race-catalog.md) |

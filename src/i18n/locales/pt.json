@@ -227,7 +227,7 @@
   },
   "eventTrack": {
     "title": "Ficheiro de atividade",
-    "empty": "Ainda não há ficheiro. Carrega o GPX ou TCX do relógio para veres os splits e o percurso.",
+    "empty": "Ainda não há ficheiro. Carrega o GPX, TCX ou FIT do relógio para veres os splits e o percurso.",
     "upload": "Carregar ficheiro",
     "replace": "Substituir ficheiro",
     "uploading": "A carregar...",
@@ -235,7 +235,7 @@
     "replaced": "Ficheiro substituído",
     "removed": "Ficheiro removido",
     "offline": "Estás offline. Tenta outra vez quando voltares.",
-    "formatsHint": "GPX ou TCX, até 20 MB. Um ficheiro por evento.",
+    "formatsHint": "GPX, TCX ou FIT, até 20 MB. Um ficheiro por evento. O FIT é o que guarda mais detalhe.",
     "measuredDistance": "Medido",
     "elevationGain": "Subida acumulada",
     "elevationApproximate": "A altimetria é aproximada. Serve para veres o perfil da prova, não para comparar metro a metro.",
@@ -263,7 +263,7 @@
     "chartDistanceAxis": "Distância (km)",
     "chartDistanceTooltip": "{{distance}} km",
     "errors": {
-      "unsupported_type": "Só são aceites ficheiros GPX e TCX.",
+      "unsupported_type": "Só são aceites ficheiros GPX, TCX e FIT.",
       "file_too_large": "O ficheiro tem mais de 20 MB.",
       "malformed_xml": "Não foi possível ler o ficheiro. Pode estar incompleto.",
       "no_track_points": "O ficheiro não tem pontos com data e hora."
@@ -745,7 +745,7 @@
     "exportUnavailable": "O backup fica disponível quando tiveres eventos ou itens na bucket list.",
     "exportIncludes": "Inclui eventos, objetivos, objetivos de performance, bucket list, fotos e vídeos, preferências e partilhas.",
     "includeMediaFiles": "Incluir os ficheiros de fotos, vídeos e atividade",
-    "includeMediaFilesHint": "Torna o backup muito maior, mas é o que permite recuperar as fotos, os vídeos e os ficheiros GPX ou TCX. Acima de {{max}} MB o backup fica só com os metadados.",
+    "includeMediaFilesHint": "Torna o backup muito maior, mas é o que permite recuperar as fotos, os vídeos e os ficheiros de atividade. Acima de {{max}} MB o backup fica só com os metadados.",
     "exportMediaTooLarge": "As tuas fotos e vídeos passam dos {{max}} MB, por isso o backup ficou só com os dados e os metadados.",
     "exportProgressCollections": "A ler os teus dados...",
     "exportProgressMedia": "A ler fotos e vídeos ({{done}}/{{total}})...",
@@ -796,7 +796,7 @@
       "reminders_not_restored": "Histórico de lembretes enviados e registos de notificações push.",
       "profile_write_denied": "Não foi possível restaurar as preferências do perfil.",
       "media_files_restored": "Fotos e vídeos recuperados a partir dos ficheiros do backup.",
-      "track_binaries_not_restored": "Este backup não tem ficheiros GPX ou TCX, só os resumos. Os ficheiros de atividade só voltam quando os próprios ficheiros estão no backup.",
+      "track_binaries_not_restored": "Este backup não tem ficheiros de atividade, só os resumos. Só voltam quando os próprios ficheiros estão no backup.",
       "track_files_restored": "Ficheiros de atividade restaurados a partir dos ficheiros no backup."
     },
     "modeTitle": "Como queres restaurar?",
@@ -1324,7 +1324,7 @@
     "tabMaintenance": "Manutenção",
     "maintenanceTitle": "Manutenção",
     "recomputeTitle": "Recalcular resumos dos ficheiros de atividade",
-    "recomputeHint": "Volta a ler cada GPX e TCX guardado e reescreve o que dele foi derivado. Corre isto depois de uma correção no parser, para as provas carregadas antes dela passarem a mostrar os números certos.",
+    "recomputeHint": "Volta a ler cada ficheiro de atividade guardado e reescreve o que dele foi derivado. Corre isto depois de uma correção no parser, para as provas carregadas antes dela passarem a mostrar os números certos.",
     "recomputeStart": "Recalcular resumos",
     "recomputeRunning": "A recalcular...",
     "recomputeExamined": "Eventos vistos",

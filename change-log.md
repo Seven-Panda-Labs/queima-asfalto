@@ -9,6 +9,7 @@
 ### Adicionado
 
 - **Resultados do Pacer:** a Meia Maratona de Cardiff mudou para esta plataforma e já se pode importar. O lugar segue o relógio que a prova usa para classificar, de arma ou de chip.
+- **Ficheiros FIT:** os ficheiros de atividade já podem ser carregados em FIT, o formato em que os relógios gravam. Guarda a altitude, a frequência cardíaca e a distância que os exports GPX e TCX por vezes perdem.
 
 ### Corrigido
 

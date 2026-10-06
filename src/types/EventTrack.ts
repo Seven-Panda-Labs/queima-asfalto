@@ -13,7 +13,7 @@ import type {
 export const EVENT_TRACK_DOC_ID = 'current'
 
 /**
- * The derived summary of an uploaded GPX or TCX, stored in its own subcollection
+ * The derived summary of an uploaded activity file, stored in its own subcollection
  * rather than on the event: the route alone is several kilobytes, and every event
  * list query would otherwise carry it.
  */

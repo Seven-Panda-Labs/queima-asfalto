@@ -178,7 +178,7 @@ Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcio
 | `races/{id}` | `userId` | Identidade de uma prova, o que se mantém de ano para ano |
 | `raceEntries/{id}` | `userId` | Uma tentativa de entrar numa prova: prazos, sorteio, estado |
 | `weightEntries/{id}` | `userId` | Registo de peso das Ferramentas: só peso e dia. Isolado do resto e nunca partilhado |
-| `events/{id}/track/{id}` | mesmo `userId` | O GPX/TCX carregado: splits, percurso, ritmo |
+| `events/{id}/track/{id}` | mesmo `userId` | O GPX/TCX/FIT carregado: splits, percurso, ritmo |
 | `shares/{id}` | participantes | Convites e permissões de partilha |
 | `raceCatalog/{id}` | ninguém | Identidade pública de uma prova, com as suas edições. Só admin e colheita escrevem |
 | `raceCatalogHarvest/status` | ninguém | Quando a colheita correu, por fonte, e a lista de países |
@@ -414,7 +414,7 @@ Scheduling logic in `shared/reminders/`; optional local queue in `src/services/r
 | `races/{id}` | `userId` | Race identity, what stays true from year to year |
 | `raceEntries/{id}` | `userId` | One attempt at getting into a race: deadlines, draw, status |
 | `weightEntries/{id}` | `userId` | The Tools weight log: only weight and day. Isolated from the rest and never shared |
-| `events/{id}/track/{id}` | same `userId` | The uploaded GPX/TCX: splits, route, pace |
+| `events/{id}/track/{id}` | same `userId` | The uploaded GPX/TCX/FIT: splits, route, pace |
 | `shares/{id}` | participants | Share invites and permissions |
 | `raceCatalog/{id}` | nobody | A race's public identity, with its editions. Written only by an admin and the harvest |
 | `raceCatalogHarvest/status` | nobody | When the harvest ran, per source, and the list of countries |

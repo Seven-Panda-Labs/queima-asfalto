@@ -153,7 +153,7 @@ export async function uploadEventTrack(
     EVENT_TRACK_DOC_ID,
     parsed.activity.format,
   )
-  const downloadUrl = await uploadEventTrackFile(storagePath, file)
+  const downloadUrl = await uploadEventTrackFile(storagePath, file, parsed.activity.format)
 
   const payload: EventTrackCreate = {
     userId,

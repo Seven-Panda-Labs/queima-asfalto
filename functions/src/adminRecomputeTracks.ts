@@ -3,7 +3,7 @@ import { getFirestore, type Firestore } from 'firebase-admin/firestore'
 import { getStorage } from 'firebase-admin/storage'
 import { DOMParser } from '@xmldom/xmldom'
 import { callableFunctionOptions } from './functionOptions.js'
-import { parseActivityXml } from './shared/activityTrack/parseActivityFile.js'
+import { parseActivityBytes } from './shared/activityTrack/parseActivityFile.js'
 import { summarizeActivity } from './shared/activityTrack/metrics.js'
 import { computePacingDrift } from './shared/activityTrack/pacing.js'
 
@@ -122,7 +122,7 @@ export const adminRecomputeTracks = onCall(callableOptions, async (request) => {
 
     try {
       const [buffer] = await bucket.file(storagePath).download()
-      const parsed = parseActivityXml(buffer.toString('utf8'))
+      const parsed = parseActivityBytes(buffer)
       if (!parsed.ok) {
         report.failed.push({ eventId: event.id, reason: parsed.code })
         continue

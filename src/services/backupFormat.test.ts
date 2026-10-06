@@ -397,17 +397,19 @@ describe('track zip entries', () => {
       trackId: 'current',
       extension: 'tcx',
     })
+    expect(parseBackupTrackEntryName('tracks/event-1/current.fit')?.extension).toBe('fit')
   })
 
   it('rejects anything that is not a track file', () => {
-    expect(isBackupTrackEntry('tracks/event-1/current.fit')).toBe(false)
+    expect(isBackupTrackEntry('tracks/event-1/current.kml')).toBe(false)
     expect(isBackupTrackEntry('media/event-1/photo.jpg')).toBe(false)
     expect(isBackupTrackEntry('tracks/event-1/nested/current.gpx')).toBe(false)
   })
 
   it('names an entry from the stored format, refusing anything else', () => {
     expect(backupTrackEntryName('event-1', 'current', 'gpx')).toBe('tracks/event-1/current.gpx')
-    expect(backupTrackEntryName('event-1', 'current', 'fit')).toBeNull()
+    expect(backupTrackEntryName('event-1', 'current', 'fit')).toBe('tracks/event-1/current.fit')
+    expect(backupTrackEntryName('event-1', 'current', 'kml')).toBeNull()
     expect(backupTrackEntryName('event-1', 'current', undefined)).toBeNull()
   })
 })
@@ -469,8 +471,19 @@ describe('validateRestoreDocument', () => {
     expect(check('eventTracks', validTrack(), trackDocument)).toBeNull()
   })
 
+  it('accepts a FIT track', () => {
+    const encoded = 'users%2Fuser-ze%2Fevents%2Fevent-1%2Ftrack%2Fcurrent'
+    const fit = validTrack({
+      format: 'fit',
+      storagePath: 'users/user-ze/events/event-1/track/current.fit',
+      downloadUrl: `https://firebasestorage.googleapis.com/v0/b/demo.appspot.com/o/${encoded}.fit?alt=media&token=t`,
+      fileName: 'race.FIT',
+    })
+    expect(check('eventTracks', fit, trackDocument)).toBeNull()
+  })
+
   it('rejects a format the parser cannot read', () => {
-    expect(check('eventTracks', validTrack({ format: 'fit' }), trackDocument)).toBe('invalid_track')
+    expect(check('eventTracks', validTrack({ format: 'kml' }), trackDocument)).toBe('invalid_track')
   })
 
   it('rejects a storagePath belonging to another account', () => {

@@ -7,11 +7,12 @@ describe('trackExtensionOf', () => {
   it('accepts the uppercase names the sample exports use', () => {
     expect(trackExtensionOf('sample-parkrun.GPX')).toBe('gpx')
     expect(trackExtensionOf('sample-parkrun.TCX')).toBe('tcx')
+    expect(trackExtensionOf('cardiff-half.FIT')).toBe('fit')
     expect(trackExtensionOf('run.gpx')).toBe('gpx')
   })
 
   it('rejects anything else', () => {
-    expect(trackExtensionOf('run.fit')).toBeNull()
+    expect(trackExtensionOf('run.kml')).toBeNull()
     expect(trackExtensionOf('run')).toBeNull()
     expect(trackExtensionOf('')).toBeNull()
   })

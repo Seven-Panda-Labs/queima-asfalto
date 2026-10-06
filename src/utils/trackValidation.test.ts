@@ -12,6 +12,7 @@ describe('validateTrackFile', () => {
   it('accepts the uppercase extensions watch exports actually use', () => {
     expect(validateTrackFile(fileOf('run.GPX'))).toEqual({ ok: true, extension: 'gpx' })
     expect(validateTrackFile(fileOf('run.TCX'))).toEqual({ ok: true, extension: 'tcx' })
+    expect(validateTrackFile(fileOf('run.FIT'))).toEqual({ ok: true, extension: 'fit' })
   })
 
   it('ignores the MIME type, which is unreliable for these files', () => {
@@ -20,7 +21,7 @@ describe('validateTrackFile', () => {
   })
 
   it('rejects other formats', () => {
-    expect(validateTrackFile(fileOf('run.fit'))).toEqual({ ok: false, code: 'unsupported_type' })
+    expect(validateTrackFile(fileOf('run.kml'))).toEqual({ ok: false, code: 'unsupported_type' })
     expect(validateTrackFile(fileOf('run.jpg'))).toEqual({ ok: false, code: 'unsupported_type' })
   })
 

@@ -227,7 +227,7 @@
   },
   "eventTrack": {
     "title": "Activity file",
-    "empty": "No file yet. Upload the GPX or TCX from your watch to see splits and the route.",
+    "empty": "No file yet. Upload the GPX, TCX or FIT from your watch to see splits and the route.",
     "upload": "Upload file",
     "replace": "Replace file",
     "uploading": "Uploading...",
@@ -235,7 +235,7 @@
     "replaced": "File replaced",
     "removed": "File removed",
     "offline": "You are offline. Try again once you are back.",
-    "formatsHint": "GPX or TCX, up to 20 MB. One file per event.",
+    "formatsHint": "GPX, TCX or FIT, up to 20 MB. One file per event. FIT keeps the most detail.",
     "measuredDistance": "Measured",
     "elevationGain": "Elevation gain",
     "elevationApproximate": "Elevation is approximate. Good for the shape of a race, not for comparing metre by metre.",
@@ -263,7 +263,7 @@
     "chartDistanceAxis": "Distance (km)",
     "chartDistanceTooltip": "{{distance}} km",
     "errors": {
-      "unsupported_type": "Only GPX and TCX files are accepted.",
+      "unsupported_type": "Only GPX, TCX and FIT files are accepted.",
       "file_too_large": "The file is larger than 20 MB.",
       "malformed_xml": "The file could not be read. It may be incomplete.",
       "no_track_points": "The file has no track points with a timestamp."
@@ -745,7 +745,7 @@
     "exportUnavailable": "Backup becomes available once you have events or bucket list items.",
     "exportIncludes": "Includes events, goals, performance goals, bucket list, photos and videos, preferences and shares.",
     "includeMediaFiles": "Include photo, video and activity files",
-    "includeMediaFilesHint": "Makes the backup much larger, and it is what lets photos, videos and GPX or TCX files come back. Past {{max}} MB the backup keeps metadata only.",
+    "includeMediaFilesHint": "Makes the backup much larger, and it is what lets photos, videos and activity files come back. Past {{max}} MB the backup keeps metadata only.",
     "exportMediaTooLarge": "Your photos and videos exceed {{max}} MB, so the backup contains data and metadata only.",
     "exportProgressCollections": "Reading your data...",
     "exportProgressMedia": "Reading photos and videos ({{done}}/{{total}})...",
@@ -796,7 +796,7 @@
       "reminders_not_restored": "History of sent reminders and push notification records.",
       "profile_write_denied": "Profile preferences could not be restored.",
       "media_files_restored": "Photos and videos restored from the files in the backup.",
-      "track_binaries_not_restored": "This backup has no GPX or TCX files, only the summaries. Activity files only come back when the files themselves are in the backup.",
+      "track_binaries_not_restored": "This backup has no activity files, only their summaries. They only come back when the files themselves are in the backup.",
       "track_files_restored": "Activity files restored from the files in the backup."
     },
     "modeTitle": "How do you want to restore?",
@@ -1324,7 +1324,7 @@
     "tabMaintenance": "Maintenance",
     "maintenanceTitle": "Maintenance",
     "recomputeTitle": "Rebuild activity file summaries",
-    "recomputeHint": "Reads every stored GPX and TCX again and rewrites what was derived from it. Run this after a parser fix, so races uploaded before it show the corrected figures.",
+    "recomputeHint": "Reads every stored activity file again and rewrites what was derived from it. Run this after a parser fix, so races uploaded before it show the corrected figures.",
     "recomputeStart": "Rebuild summaries",
     "recomputeRunning": "Rebuilding...",
     "recomputeExamined": "Events seen",

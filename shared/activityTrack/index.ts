@@ -1,4 +1,10 @@
-export { parseActivityFile, parseActivityXml, trackExtensionOf } from './parseActivityFile.js'
+export {
+  parseActivityBytes,
+  parseActivityFile,
+  parseActivityXml,
+  trackExtensionOf,
+} from './parseActivityFile.js'
+export { isActivityFileFormat } from './limits.js'
 export { haversineMeters, summarizeActivity } from './metrics.js'
 export { computePacingDrift } from './pacing.js'
 export { simplifyRoute } from './simplify.js'
