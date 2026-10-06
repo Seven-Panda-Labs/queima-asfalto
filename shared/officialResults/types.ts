@@ -18,6 +18,7 @@ export type ResultsPlatform =
   | 'wiclax'
   | 'timataka'
   | 'mikatiming'
+  | 'pacer'
   | 'stgk'
 
 export const RESULTS_PLATFORMS: ResultsPlatform[] = [
@@ -81,6 +82,7 @@ export function resultsPlatformLabel(platform: ResultsPlatform): string {
   if (platform === 'wiclax') return 'Wiclax'
   if (platform === 'timataka') return 'Tímataka'
   if (platform === 'mikatiming') return 'mika:timing'
+  if (platform === 'pacer') return 'Pacer'
   if (platform === 'stgk') return 'STGK'
   return platform
 }

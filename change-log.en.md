@@ -4,6 +4,14 @@
 
 ---
 
+## [1.87.0] - 2026-10-06
+
+### Added
+
+- **Results from Pacer:** the Cardiff Half Marathon moved to this platform and can be imported again. The placing follows whichever clock the race ranks on, gun or chip.
+
+---
+
 ## [1.86.0] - 2026-10-01
 
 ### Fixed

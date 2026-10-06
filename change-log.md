@@ -4,6 +4,14 @@
 
 ---
 
+## [1.87.0] - 2026-10-06
+
+### Adicionado
+
+- **Resultados do Pacer:** a Meia Maratona de Cardiff mudou para esta plataforma e já se pode importar. O lugar segue o relógio que a prova usa para classificar, de arma ou de chip.
+
+---
+
 ## [1.86.0] - 2026-10-01
 
 ### Corrigido

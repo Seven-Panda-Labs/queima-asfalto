@@ -13,6 +13,7 @@ import type { VcRunningUrlParts } from './vcRunning.js'
 import type { MikaTimingUrlParts } from './mikaTiming.js'
 import type { TimatakaUrlParts } from './timataka.js'
 import type { WiclaxUrlParts } from './wiclax.js'
+import type { PacerUrlParts } from './pacer.js'
 import { parseRaceResultEmbedHash } from './raceresult.js'
 
 export type DavengoUrlParts = {
@@ -61,11 +62,13 @@ export type { VcRunningUrlParts } from './vcRunning.js'
 export type { MikaTimingUrlParts } from './mikaTiming.js'
 export type { TimatakaUrlParts } from './timataka.js'
 export type { WiclaxUrlParts } from './wiclax.js'
+export type { PacerUrlParts } from './pacer.js'
 
 import { parseMikaTimingUrl as parseMikaTimingUrlInternal } from './mikaTiming.js'
 import { parseTimatakaUrl as parseTimatakaUrlInternal } from './timataka.js'
 import { parseVcRunningUrl as parseVcRunningUrlInternal } from './vcRunning.js'
 import { parseWiclaxUrl as parseWiclaxUrlInternal } from './wiclax.js'
+import { parsePacerUrl as parsePacerUrlInternal } from './pacer.js'
 
 export function parseDavengoUrl(url: string): DavengoUrlParts | null {
   try {
@@ -356,4 +359,8 @@ export function parseTimatakaUrl(url: string): TimatakaUrlParts | null {
 
 export function parseWiclaxUrl(url: string): WiclaxUrlParts | null {
   return parseWiclaxUrlInternal(url)
+}
+
+export function parsePacerUrl(url: string): PacerUrlParts | null {
+  return parsePacerUrlInternal(url)
 }

@@ -204,7 +204,7 @@ Todas as callables exigem `request.auth`. Limites de escala: [`functionOptions.t
 
 Router em [`functions/src/connectors/index.ts`](../functions/src/connectors/index.ts). Cada ficheiro implementa HTTP para uma plataforma; a detecção e parsing partilhados vivem em `shared/officialResults/`.
 
-Plataformas actuais (ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing.
+Plataformas actuais (ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing, Pacer.
 
 ### Serviços externos (fora do Firebase)
 
@@ -440,7 +440,7 @@ All callables require `request.auth`. Scaling limits: [`functionOptions.ts`](../
 
 Router in [`functions/src/connectors/index.ts`](../functions/src/connectors/index.ts). Each file implements HTTP for one platform; shared detection and parsing live in `shared/officialResults/`.
 
-Current platforms (see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing.
+Current platforms (see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing, Pacer.
 
 ### External services (outside Firebase)
 
