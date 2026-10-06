@@ -227,7 +227,7 @@
   },
   "eventTrack": {
     "title": "Aktivitätsdatei",
-    "empty": "Noch keine Datei. Lade die GPX oder TCX von deiner Uhr hoch, um Splits und Strecke zu sehen.",
+    "empty": "Noch keine Datei. Lade die GPX, TCX oder FIT von deiner Uhr hoch, um Splits und Strecke zu sehen.",
     "upload": "Datei hochladen",
     "replace": "Datei ersetzen",
     "uploading": "Wird hochgeladen...",
@@ -235,7 +235,7 @@
     "replaced": "Datei ersetzt",
     "removed": "Datei entfernt",
     "offline": "Du bist offline. Versuche es erneut, sobald du zurück bist.",
-    "formatsHint": "GPX oder TCX, bis 20 MB. Eine Datei pro Event.",
+    "formatsHint": "GPX, TCX oder FIT, bis 20 MB. Eine Datei pro Event. FIT enthält die meisten Details.",
     "measuredDistance": "Gemessen",
     "elevationGain": "Höhenmeter",
     "elevationApproximate": "Die Höhenangabe ist ungefähr. Gut für das Profil eines Rennens, nicht für den Vergleich auf den Meter.",
@@ -263,7 +263,7 @@
     "chartDistanceAxis": "Distanz (km)",
     "chartDistanceTooltip": "{{distance}} km",
     "errors": {
-      "unsupported_type": "Es werden nur GPX und TCX Dateien akzeptiert.",
+      "unsupported_type": "Es werden nur GPX, TCX und FIT Dateien akzeptiert.",
       "file_too_large": "Die Datei ist größer als 20 MB.",
       "malformed_xml": "Die Datei konnte nicht gelesen werden. Sie ist womöglich unvollständig.",
       "no_track_points": "Die Datei enthält keine Punkte mit Zeitstempel."
@@ -745,7 +745,7 @@
     "exportUnavailable": "Ein Backup ist möglich, sobald du Events oder Einträge auf der Bucket List hast.",
     "exportIncludes": "Enthält Events, Ziele, Leistungsziele, Bucket List, Fotos und Videos, Einstellungen und Freigaben.",
     "includeMediaFiles": "Foto, Video und Aktivitätsdateien einschließen",
-    "includeMediaFilesHint": "Macht das Backup deutlich größer, und nur so kommen Fotos, Videos und GPX oder TCX Dateien zurück. Über {{max}} MB enthält das Backup nur noch Metadaten.",
+    "includeMediaFilesHint": "Macht das Backup deutlich größer, und nur so kommen Fotos, Videos und Aktivitätsdateien zurück. Über {{max}} MB enthält das Backup nur noch Metadaten.",
     "exportMediaTooLarge": "Deine Fotos und Videos überschreiten {{max}} MB, daher enthält das Backup nur die Daten und Metadaten.",
     "exportProgressCollections": "Deine Daten werden gelesen...",
     "exportProgressMedia": "Fotos und Videos werden gelesen ({{done}}/{{total}})...",
@@ -796,7 +796,7 @@
       "reminders_not_restored": "Verlauf gesendeter Erinnerungen und Push-Benachrichtigungen.",
       "profile_write_denied": "Die Profileinstellungen konnten nicht wiederhergestellt werden.",
       "media_files_restored": "Fotos und Videos aus den Dateien im Backup wiederhergestellt.",
-      "track_binaries_not_restored": "Dieses Backup enthält keine GPX oder TCX Dateien, nur die Zusammenfassungen. Aktivitätsdateien kehren nur zurück, wenn die Dateien selbst im Backup liegen.",
+      "track_binaries_not_restored": "Dieses Backup enthält keine Aktivitätsdateien, nur die Zusammenfassungen. Sie kehren nur zurück, wenn die Dateien selbst im Backup liegen.",
       "track_files_restored": "Aktivitätsdateien aus den Dateien im Backup wiederhergestellt."
     },
     "modeTitle": "Wie möchtest du wiederherstellen?",
@@ -1324,7 +1324,7 @@
     "tabMaintenance": "Wartung",
     "maintenanceTitle": "Wartung",
     "recomputeTitle": "Zusammenfassungen der Aktivitätsdateien neu berechnen",
-    "recomputeHint": "Liest jede gespeicherte GPX und TCX erneut und schreibt das daraus Abgeleitete neu. Nach einer Korrektur am Parser ausführen, damit vorher hochgeladene Rennen die richtigen Werte zeigen.",
+    "recomputeHint": "Liest jede gespeicherte Aktivitätsdatei erneut und schreibt das daraus Abgeleitete neu. Nach einer Korrektur am Parser ausführen, damit vorher hochgeladene Rennen die richtigen Werte zeigen.",
     "recomputeStart": "Neu berechnen",
     "recomputeRunning": "Wird berechnet...",
     "recomputeExamined": "Events gesehen",

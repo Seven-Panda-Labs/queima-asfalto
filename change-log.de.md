@@ -9,6 +9,7 @@
 ### Hinzugefügt
 
 - **Ergebnisse von Pacer:** der Cardiff Half Marathon ist auf diese Plattform gewechselt und lässt sich wieder importieren. Die Platzierung folgt der Zeit, nach der der Lauf wertet, brutto oder netto.
+- **FIT Dateien:** Aktivitätsdateien lassen sich jetzt als FIT hochladen, das Format, in dem Uhren aufzeichnen. Es behält Höhe, Herzfrequenz und Distanz, die GPX und TCX Exporte manchmal verlieren.
 
 ### Behoben
 

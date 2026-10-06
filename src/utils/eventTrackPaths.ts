@@ -12,3 +12,11 @@ export function buildEventTrackStoragePath(
 ): string {
   return `users/${userId}/events/${eventId}/track/${trackId}.${format}`
 }
+
+/**
+ * Set by format rather than taken from the browser, which reports these files as
+ * anything from `text/xml` to `application/octet-stream` depending on the platform.
+ */
+export function eventTrackContentType(format: ActivityFileFormat): string {
+  return format === 'fit' ? 'application/octet-stream' : 'application/xml'
+}

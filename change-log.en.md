@@ -9,6 +9,7 @@
 ### Added
 
 - **Results from Pacer:** the Cardiff Half Marathon moved to this platform and can be imported again. The placing follows whichever clock the race ranks on, gun or chip.
+- **FIT files:** activity files can now be uploaded as FIT, the format watches record in. It keeps the altitude, heart rate and distance that GPX and TCX exports sometimes drop.
 
 ### Fixed
 

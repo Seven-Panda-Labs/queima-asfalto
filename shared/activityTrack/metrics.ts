@@ -8,9 +8,11 @@ const SPLIT_DISTANCE_METERS = 1000
 const MOVING_SPEED_THRESHOLD_MPS = 0.5
 
 /**
- * GPX rounds elevation to whole metres, so an unfiltered sum counts quantisation
- * steps as terrain. This is a noise floor, not a way to make formats agree: the two
- * sample exports of the same run carry genuinely different altitude series.
+ * A noise floor. Altitude wanders from one reading to the next even on a good
+ * barometer, and summing every small move counts that wander as terrain.
+ *
+ * Not a way to make formats agree: the two sample exports of the same run carry
+ * genuinely different altitude series, and no threshold reconciles them.
  */
 const ELEVATION_NOISE_THRESHOLD_METERS = 3
 

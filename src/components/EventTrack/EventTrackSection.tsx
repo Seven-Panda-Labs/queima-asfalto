@@ -130,7 +130,7 @@ export function EventTrackSection({ event, track, loading, userId }: EventTrackS
 
           <p className="mt-2 text-xs text-muted">{t(elevationNoteKey(track))}</p>
 
-          {/* TCX carries heart rate, GPX does not, so this block comes and goes. */}
+          {/* TCX and FIT carry heart rate, GPX does not, so this block comes and goes. */}
           {track.heartRate ? (
             <dl className="mt-4 grid grid-cols-3 gap-4 border-t border-border pt-4">
               <Stat

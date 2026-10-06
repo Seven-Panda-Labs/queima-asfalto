@@ -17,6 +17,7 @@ import { describe, expect, it } from 'vitest'
 const PARSER = resolve(import.meta.dirname, 'shared/activityTrack/parseActivityFile.ts')
 const METRICS = resolve(import.meta.dirname, 'shared/activityTrack/metrics.ts')
 const SAMPLE = resolve(import.meta.dirname, '../../assets/sample-parkrun.TCX')
+const FIT_FIXTURE = resolve(import.meta.dirname, '../../shared/activityTrack/fixtures/fitFile.ts')
 
 describe('the recompute function running the app parser in Node', () => {
   it.skipIf(!existsSync(PARSER))('installs a DOMParser the shared parser can use', async () => {
@@ -25,10 +26,11 @@ describe('the recompute function running the app parser in Node', () => {
     await import('./adminRecomputeTracks.js')
     expect((globalThis as { DOMParser?: unknown }).DOMParser).toBeDefined()
 
-    const { parseActivityXml } = await import(PARSER)
+    const { parseActivityBytes } = await import(PARSER)
     const { summarizeActivity } = await import(METRICS)
 
-    const parsed = parseActivityXml(readFileSync(SAMPLE, 'utf8'))
+    // A Buffer, as Storage hands it over, through the entry point the function uses.
+    const parsed = parseActivityBytes(readFileSync(SAMPLE))
     expect(parsed.ok).toBe(true)
     if (!parsed.ok) return
 
@@ -41,9 +43,35 @@ describe('the recompute function running the app parser in Node', () => {
 
   it.skipIf(!existsSync(PARSER))('reports malformed XML instead of throwing', async () => {
     await import('./adminRecomputeTracks.js')
-    const { parseActivityXml } = await import(PARSER)
+    const { parseActivityBytes } = await import(PARSER)
 
     // A browser DOMParser returns a parsererror document; this one throws.
-    expect(parseActivityXml('<gpx><trk>')).toEqual({ ok: false, code: 'malformed_xml' })
+    expect(parseActivityBytes(Buffer.from('<gpx><trk>'))).toEqual({
+      ok: false,
+      code: 'malformed_xml',
+    })
+  })
+
+  it.skipIf(!existsSync(PARSER))('reads a FIT, which needs no DOMParser at all', async () => {
+    const { parseActivityBytes } = await import(PARSER)
+    const { buildFitFile, fitSeconds, UINT8, UINT32 } = await import(FIT_FIXTURE)
+
+    const t0 = fitSeconds('2026-07-04T08:46:36Z')
+    const file = buildFitFile([
+      {
+        define: {
+          localNumber: 0,
+          globalNumber: 20,
+          fields: [
+            { number: 253, baseType: UINT32, bytes: 4 },
+            { number: 3, baseType: UINT8, bytes: 1 },
+          ],
+        },
+      },
+      { data: { localNumber: 0, values: [t0, 150] } },
+    ])
+
+    const parsed = parseActivityBytes(Buffer.from(file))
+    expect(parsed.ok && parsed.activity.format).toBe('fit')
   })
 })

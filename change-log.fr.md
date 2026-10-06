@@ -9,6 +9,7 @@
 ### Ajouté
 
 - **Résultats de Pacer :** le semi-marathon de Cardiff est passé sur cette plateforme et redevient importable. La place suit le chronomètre sur lequel la course classe, départ ou puce.
+- **Fichiers FIT :** les fichiers d'activité peuvent désormais être importés en FIT, le format dans lequel les montres enregistrent. Il garde l'altitude, la fréquence cardiaque et la distance que les exports GPX et TCX perdent parfois.
 
 ### Corrigé
 

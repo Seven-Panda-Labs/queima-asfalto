@@ -421,7 +421,8 @@ export async function buildUserBackupZip(
     entries[name] = [bytes, { level: 0 }]
   }
   for (const [name, bytes] of trackFiles) {
-    // GPX and TCX are repetitive XML and deflate to a fraction of their size.
+    // GPX and TCX are repetitive XML and deflate to a fraction of their size;
+    // FIT is binary already and still roughly halves.
     entries[name] = [bytes, { level: 6 }]
   }
 

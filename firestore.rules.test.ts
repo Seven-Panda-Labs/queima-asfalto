@@ -1800,6 +1800,25 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts a FIT track', async () => {
+      const userId = 'user-alice'
+      const eventId = 'event-1'
+      await seedEvent(userId, eventId)
+
+      const db = testEnv.authenticatedContext(userId).firestore()
+      await assertSucceeds(
+        db.collection('events').doc(eventId).collection('track').doc(trackId).set(
+          validTrackPayload(userId, eventId, trackId, {
+            format: 'fit',
+            storagePath: trackStoragePath(userId, eventId, trackId, 'fit'),
+            downloadUrl: trackDownloadUrl(userId, eventId, trackId, 'fit'),
+            fileName: 'race.FIT',
+            distanceSource: 'device',
+          }),
+        ),
+      )
+    })
+
     it('rejects a second track document under another id', async () => {
       const userId = 'user-alice'
       const eventId = 'event-1'
@@ -1853,8 +1872,8 @@ describe('firestore.rules', () => {
       await assertFails(
         db.collection('events').doc(eventId).collection('track').doc(trackId).set(
           validTrackPayload(userId, eventId, trackId, {
-            format: 'fit',
-            storagePath: `users/${userId}/events/${eventId}/track/${trackId}.fit`,
+            format: 'kml',
+            storagePath: `users/${userId}/events/${eventId}/track/${trackId}.kml`,
           }),
         ),
       )

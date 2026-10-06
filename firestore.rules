@@ -390,13 +390,13 @@ service cloud.firestore {
 
     function validEventTrackStoragePath(storagePath, userId, eventId, trackId) {
       return storagePath.matches(
-        '^users/' + userId + '/events/' + eventId + '/track/' + trackId + '\\.(gpx|tcx)$'
+        '^users/' + userId + '/events/' + eventId + '/track/' + trackId + '\\.(gpx|tcx|fit)$'
       );
     }
 
     function validEventTrackDownloadUrl(downloadUrl, userId, eventId, trackId) {
       let encodedObject = 'users%2F' + userId + '%2Fevents%2F' + eventId + '%2Ftrack%2F' + trackId;
-      let extension = '\\.(gpx|tcx)';
+      let extension = '\\.(gpx|tcx|fit)';
       return downloadUrl.matches(
           '^https://firebasestorage\\.googleapis\\.com/v0/b/[^/]+/o/' + encodedObject + extension + '\\?.*$'
         )
@@ -435,7 +435,7 @@ service cloud.firestore {
         ])
         && isOwner(data.userId)
         && isApprovedUser(data.userId)
-        && data.format in ['gpx', 'tcx']
+        && data.format in ['gpx', 'tcx', 'fit']
         && data.storagePath is string
         && data.downloadUrl is string
         && validEventTrackStoragePath(data.storagePath, data.userId, eventId, trackId)

@@ -1,6 +1,7 @@
 import { Timestamp } from 'firebase/firestore'
 import { APP_VERSION } from '../appVersion'
-import { MAX_TRACK_BYTES } from '../constants/activityTrack'
+import { MAX_TRACK_BYTES, TRACK_FILE_EXTENSIONS } from '../constants/activityTrack'
+import { isActivityFileFormat } from '../domain/activityTrack'
 import { MAX_PHOTO_BYTES, MAX_VIDEO_BYTES } from '../constants/eventMedia'
 import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 import { ENTRY_METHODS, ENTRY_STATUSES } from '../types/RaceEntry'
@@ -45,7 +46,7 @@ export const MAX_BACKUP_TRACK_ENTRY_BYTES = MAX_TRACK_BYTES
 
 /** Mirrors the extension allow-list in firestore.rules and storage.rules. */
 const MEDIA_EXTENSIONS = 'jpg|png|webp|heic|heif|mp4|mov|webm|bin'
-const TRACK_EXTENSIONS = 'gpx|tcx'
+const TRACK_EXTENSIONS = TRACK_FILE_EXTENSIONS.join('|')
 
 export const BACKUP_SECTION_KEYS = [
   'events',
@@ -152,7 +153,7 @@ export type BackupMediaFilesManifest = {
   sizeBytes: number
 }
 
-/** Raw GPX and TCX under `tracks/`. Absent in schema v1 backups. */
+/** Raw activity files under `tracks/`. Absent in schema v1 backups. */
 export type BackupTrackFilesManifest = {
   count: number
   sizeBytes: number
@@ -465,7 +466,7 @@ export function backupTrackEntryName(
   trackId: string,
   format: unknown,
 ): string | null {
-  if (format !== 'gpx' && format !== 'tcx') return null
+  if (!isActivityFileFormat(format)) return null
   return `${BACKUP_TRACKS_DIR}/${eventId}/${trackId}.${format}`
 }
 
@@ -1117,7 +1118,7 @@ function validateEventTrack(
   }
 
   const { format, storagePath, downloadUrl, sizeBytes, splits, route, profile } = data
-  if (format !== 'gpx' && format !== 'tcx') return 'invalid_track'
+  if (!isActivityFileFormat(format)) return 'invalid_track'
   if (typeof storagePath !== 'string' || typeof downloadUrl !== 'string') return 'invalid_track'
   if (!isPositiveNumber(sizeBytes) || (sizeBytes as number) > MAX_TRACK_BYTES) return 'invalid_track'
   // The rules cap all three lists, so a backup that exceeds them would be rejected on write.

@@ -3,7 +3,8 @@ import { getDownloadURL, ref, uploadBytes } from 'firebase/storage'
 import { db, storage } from './firebase'
 import { clearAllUserData } from './clearUserData'
 import { buildEventMediaStoragePath } from './eventMediaStorage'
-import { buildEventTrackStoragePath } from '../utils/eventTrackPaths'
+import { isActivityFileFormat } from '../domain/activityTrack'
+import { buildEventTrackStoragePath, eventTrackContentType } from '../utils/eventTrackPaths'
 import { EVENT_TRACK_DOC_ID } from '../types/EventTrack'
 import { loadFflate } from './zipLoader'
 import {
@@ -609,7 +610,7 @@ async function restoreEventTracks(
     const entryName = backupTrackEntryName(eventId, entry.document.id, format)
     const bytes = entryName ? parsed.trackFiles.get(entryName) : undefined
 
-    if (!bytes || (format !== 'gpx' && format !== 'tcx')) {
+    if (!bytes || !isActivityFileFormat(format)) {
       result.sections.eventTracks.skipped += 1
       done += 1
       onProgress?.({ section: 'eventTracks', done, total })
@@ -620,7 +621,7 @@ async function restoreEventTracks(
     try {
       const objectRef = ref(storage, storagePath)
       await uploadBytes(objectRef, bytes as Uint8Array<ArrayBuffer>, {
-        contentType: 'application/xml',
+        contentType: eventTrackContentType(format),
       })
       const downloadUrl = await getDownloadURL(objectRef)
 
