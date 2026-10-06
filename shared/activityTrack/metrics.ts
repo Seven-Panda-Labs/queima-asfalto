@@ -24,6 +24,18 @@ const ELEVATION_NOISE_THRESHOLD_METERS = 3
  */
 const MIN_ELEVATION_COVERAGE = 0.9
 
+/**
+ * A runner does not gain or lose a metre of height in a second. A sample that
+ * says so is the sensor moving, not the runner.
+ */
+const ELEVATION_NOISE_SPEED_METERS_PER_SECOND = 1
+
+/** Above this share of noisy steps, the sum of the small moves is mostly sensor. */
+const MAX_NOISY_STEP_SHARE = 0.1
+
+/** Below this many readings the share is too lumpy to judge. */
+const MIN_READINGS_TO_JUDGE_NOISE = 200
+
 /** Keeps a stored route under a few kilobytes whatever the race distance. */
 const ROUTE_POINT_BUDGET = 150
 
@@ -169,6 +181,47 @@ function cumulativeDistances(points: TrackPoint[]): {
 function elevationCoverage(points: TrackPoint[]): number {
   if (points.length === 0) return 0
   return points.filter((point) => point.elevation !== undefined).length / points.length
+}
+
+/**
+ * Whether the altitude jumps around too much for its small moves to be summed.
+ *
+ * A climb is the sum of thousands of small rises, so it inherits the noise of
+ * the series it is summed from. Cardiff's half marathon has 61 m between its
+ * lowest and highest point and climbs 110 m by Polar's own reckoning, but its
+ * GPX export adds up to 403, because GPS altitude wanders by metres from one
+ * second to the next. Smoothing does not recover it: the hysteresis is already
+ * there, and the wander is larger than the threshold.
+ *
+ * Measured as the share of samples claiming more than a metre of vertical
+ * movement in a second, which no runner does. On the five exports we have this
+ * separates cleanly, 16.8% and 18.6% for the two GPS series against 1.4% to
+ * 4.0% for the three barometric ones. It is the wander that matters, not the
+ * file format or the rounding: Polar's CSV for Cardiff is whole metres too and
+ * reproduces its 110.
+ *
+ * The shape survives the wander, so this stops the number, not the chart.
+ */
+function elevationIsNoisy(points: TrackPoint[]): boolean {
+  let steps = 0
+  let noisy = 0
+  let previous: TrackPoint | undefined
+
+  for (const point of points) {
+    if (point.elevation === undefined) continue
+    if (previous !== undefined) {
+      const seconds = (point.time - previous.time) / 1000
+      if (seconds > 0) {
+        steps += 1
+        const speed = Math.abs(point.elevation - previous.elevation!) / seconds
+        if (speed >= ELEVATION_NOISE_SPEED_METERS_PER_SECOND) noisy += 1
+      }
+    }
+    previous = point
+  }
+
+  if (steps < MIN_READINGS_TO_JUDGE_NOISE) return false
+  return noisy / steps > MAX_NOISY_STEP_SHARE
 }
 
 /** Hysteresis: a move only counts once it clears the noise floor from the last accepted level. */
@@ -369,9 +422,12 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
   const elapsedSeconds = (points[points.length - 1].time - points[0].time) / 1000
   const { gain, loss } = elevationChange(points)
   const heartRate = heartRateSummary(points)
-  // One trust decision for the whole altitude series: if it is not good enough to
-  // summarise, it is not good enough to plot either.
-  const trustElevation = elevationCoverage(points) >= MIN_ELEVATION_COVERAGE
+  // Two decisions, because the two failures are different. A series with holes
+  // cannot be plotted either, since the holes are the missing part. A series
+  // that wanders is complete and its shape is right; only the sum of its small
+  // steps is sensor noise.
+  const plotElevation = elevationCoverage(points) >= MIN_ELEVATION_COVERAGE
+  const summariseElevation = plotElevation && !elevationIsNoisy(points)
 
   return {
     startedAt: activity.startedAt,
@@ -381,7 +437,7 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
     distanceSource: source,
     averagePaceSecondsPerKm:
       distanceMeters > 0 ? (elapsedSeconds / distanceMeters) * SPLIT_DISTANCE_METERS : 0,
-    ...(trustElevation
+    ...(summariseElevation
       ? { elevationGainMeters: Math.round(gain), elevationLossMeters: Math.round(loss) }
       : {}),
     splits: buildSplits(points, cumulative),
@@ -390,6 +446,6 @@ export function summarizeActivity(activity: ParsedActivity): ActivityTrackSummar
       points.filter(hasPosition).map((point) => ({ lat: point.lat, lon: point.lon })),
       ROUTE_POINT_BUDGET,
     ),
-    profile: buildProfile(points, cumulative, trustElevation),
+    profile: buildProfile(points, cumulative, plotElevation),
   }
 }
