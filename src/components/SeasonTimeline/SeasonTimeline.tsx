@@ -8,6 +8,7 @@ import {
   type SeasonRace,
 } from '../../domain/seasonTimeline'
 import type { Event } from '../../types/Event'
+import type { Race } from '../../types/Race'
 
 /**
  * The day and the month, as short as the language allows.
@@ -116,17 +117,17 @@ export function SeasonTimeline({
   events,
   year,
   years,
-  anchorRaceIds,
+  anchorRaces,
   onYear,
 }: {
   events: readonly Event[]
   year: number
   years: readonly number[]
-  anchorRaceIds: ReadonlySet<string>
+  anchorRaces: readonly Pick<Race, 'id' | 'anchorYears'>[]
   onYear: (year: number) => void
 }) {
   const { t, i18n } = useTranslation()
-  const legs = seasonTimeline(events, year, anchorRaceIds)
+  const legs = seasonTimeline(events, year, anchorRaces)
   const booked = legs.reduce(
     (count, leg) => count + leg.leadUp.length + (leg.anchor ? 1 : 0),
     0,

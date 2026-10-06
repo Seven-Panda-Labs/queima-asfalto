@@ -25,7 +25,7 @@ describe('seasonTimeline', () => {
         event({ id: 'a', date: new Date('2027-01-10') }),
       ],
       2027,
-      new Set(['race-hm']),
+      [{ id: 'race-hm', anchorYears: [2027] }],
     )
 
     expect(legs).toHaveLength(1)
@@ -42,7 +42,7 @@ describe('seasonTimeline', () => {
         event({ id: 'second', date: new Date('2027-10-25'), raceId: 'race-two' }),
       ],
       2027,
-      new Set(['race-one', 'race-two']),
+      [{ id: 'race-one', anchorYears: [2027] }, { id: 'race-two', anchorYears: [2027] }],
     )
 
     expect(legs.map((leg) => leg.anchor?.id)).toEqual(['first', 'second'])
@@ -56,7 +56,7 @@ describe('seasonTimeline', () => {
         event({ id: 'after', date: new Date('2027-09-12') }),
       ],
       2027,
-      new Set(['race-hm']),
+      [{ id: 'race-hm', anchorYears: [2027] }],
     )
 
     expect(legs).toHaveLength(2)
@@ -82,7 +82,7 @@ describe('seasonTimeline', () => {
         event({ id: 'anchor', date: new Date('2027-04-30'), raceId: 'race-hm' }),
       ],
       2027,
-      new Set(['race-hm']),
+      [{ id: 'race-hm', anchorYears: [2027] }],
     )
 
     expect(legs[0]!.leadUp.map((race) => race.id)).toEqual(['autumn', 'winter'])
@@ -97,7 +97,7 @@ describe('seasonTimeline', () => {
         event({ id: 'anchor', date: new Date('2028-03-05'), raceId: 'race-hm' }),
       ],
       2027,
-      new Set(['race-hm']),
+      [{ id: 'race-hm', anchorYears: [2028] }],
     )
 
     expect(legs).toHaveLength(1)
@@ -112,7 +112,7 @@ describe('seasonTimeline', () => {
         event({ id: 'anchor', date: new Date('2027-04-30'), raceId: 'race-hm' }),
       ],
       2027,
-      new Set(['race-hm']),
+      [{ id: 'race-hm', anchorYears: [2027] }],
     )
 
     expect(legs[0]!.leadUp).toEqual([])
@@ -134,6 +134,24 @@ describe('seasonTimeline', () => {
     expect(legs[0]!.leadUp.map((race) => race.id)).toEqual(['ran'])
   })
 
+  it('takes an anchor from the edition year, not from the race in any year', () => {
+    const legs = seasonTimeline(
+      [
+        event({ id: 'tune-up', date: new Date('2027-10-10'), raceId: 'race-10k' }),
+        event({ id: 'anchor', date: new Date('2027-10-24'), raceId: 'race-hm' }),
+      ],
+      2027,
+      [
+        { id: 'race-10k', anchorYears: [2026] },
+        { id: 'race-hm', anchorYears: [2027] },
+      ],
+    )
+
+    expect(legs).toHaveLength(1)
+    expect(legs[0]!.anchor?.id).toBe('anchor')
+    expect(legs[0]!.leadUp.map((race) => race.id)).toEqual(['tune-up'])
+  })
+
   it('leaves out a year nothing in this one is building towards', () => {
     const legs = seasonTimeline(
       [
@@ -141,7 +159,7 @@ describe('seasonTimeline', () => {
         event({ id: 'next-year', date: new Date('2028-09-09'), raceId: 'race-far' }),
       ],
       2027,
-      new Set(['race-far']),
+      [{ id: 'race-far', anchorYears: [2028] }],
     )
 
     // Seventeen months apart: the second is not what the first prepares.

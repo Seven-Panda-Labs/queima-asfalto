@@ -307,7 +307,7 @@ export function Planning() {
             events={allEvents}
             year={seasonYear}
             years={years}
-            anchorRaceIds={anchorIds}
+            anchorRaces={races}
             onYear={setSeasonYear}
           />
           {/* A lottery entered a year ahead, or a race being tried again: the

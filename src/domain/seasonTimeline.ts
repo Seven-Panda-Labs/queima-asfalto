@@ -1,5 +1,7 @@
 import type { Event } from '../types/Event'
+import type { Race } from '../types/Race'
 import type { EventStatus, EventType } from './eventCodes'
+import { isAnchorFor } from './seasonAnchors'
 
 export type SeasonRace = {
   id: string
@@ -26,18 +28,23 @@ export type SeasonLeg = {
   leadUp: SeasonRace[]
 }
 
+type AnchorRace = Pick<Race, 'id' | 'anchorYears'>
+
 function toSeasonRace(
   event: Event,
-  anchorRaceIds: ReadonlySet<string>,
+  anchorsById: ReadonlyMap<string, AnchorRace>,
   year: number,
 ): SeasonRace {
+  const race = event.raceId ? anchorsById.get(event.raceId) : undefined
   return {
     id: event.id,
     name: event.name,
     date: event.date,
     eventType: event.eventType,
     status: event.status,
-    isAnchor: Boolean(event.raceId && anchorRaceIds.has(event.raceId)),
+    // The edition's own year, not the season on screen: the timeline also shows
+    // last autumn's races, and an anchor in 2026 says nothing about 2027.
+    isAnchor: race ? isAnchorFor(race, event.date.getFullYear()) : false,
     inSeason: event.date.getFullYear() === year,
   }
 }
@@ -77,11 +84,12 @@ function withinLeadUp(race: SeasonRace, anchor: SeasonRace | null): boolean {
 export function seasonTimeline(
   events: readonly Event[],
   year: number,
-  anchorRaceIds: ReadonlySet<string> = new Set(),
+  anchorRaces: readonly AnchorRace[] = [],
 ): SeasonLeg[] {
+  const anchorsById = new Map(anchorRaces.map((race) => [race.id, race]))
   const races = events
     .filter((event) => event.status !== 'cancelled')
-    .map((event) => toSeasonRace(event, anchorRaceIds, year))
+    .map((event) => toSeasonRace(event, anchorsById, year))
     .sort((left, right) => left.date.getTime() - right.date.getTime())
 
   // Every leg there is, across every year, because a cycle does not stop at
