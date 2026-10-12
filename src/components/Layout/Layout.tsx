@@ -15,6 +15,14 @@ import { isPrivacyPolicyEnabled, privacyPolicyPath } from '../../config/privacyP
 import { timingDisclaimerPath } from '../../config/timingDisclaimer'
 import { useAuth } from '../../contexts/AuthContext'
 import { useIsAdmin } from '../../hooks/useIsAdmin'
+import {
+  SHARED_SECTION_PATHS,
+  hasSectionAccess,
+  sharedHomePath,
+  useSharedView,
+} from '../../contexts/SharedViewContext'
+import { SharedViewBanner } from '../SharedView/SharedViewBanner'
+import { AccountMenu } from '../SharedView/AccountMenu'
 
 const REPO_URL = 'https://github.com/Seven-Panda-Labs/queima-asfalto'
 
@@ -27,6 +35,12 @@ const navItems = [
   { to: '/ferramentas', key: 'nav.tools', end: false, badge: false },
   { to: '/definicoes', key: 'nav.settings', end: false, badge: true },
 ] as const
+
+function SharedViewStrip() {
+  const { viewedOwner, setViewedOwnerId } = useSharedView()
+  if (!viewedOwner) return null
+  return <SharedViewBanner ownerName={viewedOwner.label} onShowMine={() => setViewedOwnerId(null)} />
+}
 
 function MenuIcon({ open }: { open: boolean }) {
   return (
@@ -60,6 +74,14 @@ export function Layout() {
   const { isAdmin } = useIsAdmin(user?.uid)
   const { pathname } = useLocation()
   const [menuOpen, setMenuOpen] = useState(false)
+  const { viewedOwner } = useSharedView()
+  // In the shared view the menu is that person's app: only what they share.
+  const visibleItems = viewedOwner
+    ? navItems.filter(({ to }) => {
+        const shared = SHARED_SECTION_PATHS.find(({ path }) => path === to)
+        return shared ? hasSectionAccess(viewedOwner.permissions, shared.section) : false
+      })
+    : navItems
   const activeItem = navItems.find(({ to, end }) => matchPath({ path: to, end }, pathname))
   const activeKey = activeItem?.key ?? (matchPath({ path: '/admin', end: false }, pathname) ? 'nav.admin' : null)
 
@@ -82,8 +104,10 @@ export function Layout() {
             if (e.key === 'Escape') setMenuOpen(false)
           }}
         >
-          <Logo linkTo="/" className="h-9 w-9 object-contain sm:h-10 sm:w-10" />
-          <div className="ml-auto flex items-center gap-4">
+          <Logo linkTo={viewedOwner ? sharedHomePath(viewedOwner) : '/'} className="h-9 w-9 object-contain sm:h-10 sm:w-10" />
+          {/* Last on wide screens, where the account sits at the end of the bar.
+              Logical margins, so Arabic puts it on the left. */}
+          <div className="ms-auto flex items-center gap-4 sm:order-last sm:ms-0">
             <SyncIndicator />
             <button
               type="button"
@@ -99,15 +123,16 @@ export function Layout() {
                 <span className="absolute right-1 top-1 h-2.5 w-2.5 rounded-full bg-accent" aria-hidden />
               ) : null}
             </button>
+            <AccountMenu />
           </div>
-          <div className={`${menuOpen ? 'flex' : 'hidden'} basis-full sm:flex sm:basis-auto`}>
+          <div className={`${menuOpen ? 'flex' : 'hidden'} basis-full sm:ms-auto sm:flex sm:basis-auto`}>
             <nav
               id="main-nav"
               className="flex w-full flex-col gap-1 sm:flex-row sm:flex-wrap sm:gap-2"
               aria-label={t('nav.main')}
               onClick={() => setMenuOpen(false)}
             >
-              {navItems.map(({ to, key, end, badge }) => (
+              {visibleItems.map(({ to, key, end, badge }) => (
                 <NavLink key={to} to={to} end={end} className={navLinkClass}>
                   <span className="inline-flex items-center gap-1.5">
                     {t(key)}
@@ -122,7 +147,7 @@ export function Layout() {
                   </span>
                 </NavLink>
               ))}
-              {isAdmin ? (
+              {isAdmin && !viewedOwner ? (
                 <NavLink to="/admin" className={navLinkClass}>
                   {t('nav.admin')}
                 </NavLink>
@@ -131,6 +156,7 @@ export function Layout() {
           </div>
         </div>
       </header>
+      <SharedViewStrip />
 
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-6">
         <Outlet />

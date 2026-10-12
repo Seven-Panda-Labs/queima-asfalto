@@ -19,7 +19,6 @@ import { PencilIcon } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { FinishFlagIcon, RoadIcon, StatStrip, StopwatchIcon } from '../../components/StatStrip'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
-import { SharedContextBanner } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
@@ -462,16 +461,6 @@ export function EventDetail() {
         <Link to={returnTo} className="text-sm font-semibold text-primary hover:text-primary-hover">
           {t('eventDetail.back')}
         </Link>
-
-        {isSharedView ? (
-          <div className="mt-4">
-            <SharedContextBanner
-              message={t('shares.sharedEventDetailBanner', {
-                name: ownerLabel,
-              })}
-            />
-          </div>
-        ) : null}
 
         <header
           className={[

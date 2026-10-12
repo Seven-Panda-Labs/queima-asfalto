@@ -11,12 +11,11 @@ import { SeasonTable } from '../../components/Analysis/SeasonTable'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
-import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { useEvents } from '../../hooks/useEvents'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
-import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
+import { useSharedSection } from '../../hooks/useSharedSection'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { useDisciplines } from '../../contexts/DisciplinesContext'
 import { visibleDisciplines } from '../../domain/disciplinePreferences'
@@ -121,13 +120,7 @@ export function Results() {
   const { t, i18n } = useTranslation()
   const currentYear = new Date().getFullYear()
   const [searchParams, setSearchParams] = useSearchParams()
-  const {
-    tabs: ownerTabs,
-    activeOwnerId,
-    activeOwner,
-    isSharedView,
-    setActiveOwnerId,
-  } = useSharedOwnerTabs('results', 'shares.resultsTabMine')
+  const { activeOwnerId, activeOwner, isSharedView } = useSharedSection('results')
 
   const filters = parseResultsListSearchParams(searchParams, currentYear)
   const { horizon, year: yearFilter, type: eventTypeFilter } = filters
@@ -284,27 +277,12 @@ export function Results() {
   }))
 
   return (
-    <PageShell title={t('results.title')}>
-      <p className="mt-2 text-sm text-muted">{t('results.subtitle')}</p>
-
+    <PageShell title={t('results.title')} subtitle={t('results.subtitle')}>
       <div className="mt-6 flex flex-col gap-8">
-        <SharedOwnerTabs
-          tabs={ownerTabs}
-          activeOwnerId={activeOwnerId}
-          onChange={setActiveOwnerId}
-          ariaLabelKey="shares.resultsTabsLabel"
-        />
-
         {isSharedView && loading ? (
           <SharedDataLoading section="results" ownerName={activeOwner?.label ?? ''} />
         ) : (
           <>
-            {isSharedView ? (
-              <SharedContextBanner
-                message={t('shares.sharedResultsBanner', { name: activeOwner?.label ?? '' })}
-              />
-            ) : null}
-
             <div className="flex flex-col gap-4">
               <ViewSwitcher
                 options={horizonOptions}

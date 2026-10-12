@@ -4,6 +4,15 @@
 
 ---
 
+## [1.88.0] - 2026-10-12
+
+### Modifié
+
+- **La même navigation dans toutes les sections :** les onglets d'Admin utilisent désormais le même contrôle que les Paramètres et les vues. Les filtres restent des pastilles séparées, pour distinguer ce qui change la vue de ce qui filtre la liste. Chaque section a un titre fixe et une ligne qui dit à quoi elle sert.
+- **Voir les données partagées avec toi :** on choisit la personne une fois, dans le menu du compte (tes initiales, au bout de l'en-tête), et le choix tient dans Événements, Analyse, Objectifs et Planification. Une bande sous le menu dit à qui sont les données et ramène aux tiennes. Pendant ce temps, le menu n'affiche que les sections que cette personne partage, et ouvrir une autre page ramène à tes données. La déconnexion est aussi passée dans ce menu, et l'onglet Compte a quitté les Paramètres.
+
+---
+
 ## [1.87.0] - 2026-10-06
 
 ### Ajouté

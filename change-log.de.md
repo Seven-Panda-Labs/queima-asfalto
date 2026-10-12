@@ -4,6 +4,15 @@
 
 ---
 
+## [1.88.0] - 2026-10-12
+
+### Geändert
+
+- **Überall dieselbe Navigation:** die Admin Reiter nutzen jetzt dasselbe Steuerelement wie die Einstellungen und die Ansichten. Filter bleiben einzelne Pillen, damit ein Ansichtswechsel anders aussieht als ein Filter. Jeder Bereich hat einen festen Titel und eine Zeile, wofür er da ist.
+- **Daten ansehen, die mit dir geteilt werden:** die Person wird einmal im Kontomenü gewählt (deine Initialen, am Ende der Kopfzeile), und die Wahl gilt in Events, Analyse, Ziele und Planung. Ein Streifen unter dem Menü zeigt, wessen Daten es sind, und führt zurück zu deinen. Solange zeigt das Menü nur die Bereiche, die diese Person teilt, und jede andere Seite führt zurück zu deinen Daten. Auch das Abmelden ist in dieses Menü gewandert, und der Reiter Konto ist aus den Einstellungen verschwunden.
+
+---
+
 ## [1.87.0] - 2026-10-06
 
 ### Hinzugefügt

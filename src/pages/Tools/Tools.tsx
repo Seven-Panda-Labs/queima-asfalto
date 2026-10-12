@@ -20,7 +20,7 @@ export function Tools() {
   const { t } = useTranslation()
 
   return (
-    <PageShell title={t('tools.title')}>
+    <PageShell title={t('tools.title')} subtitle={t('tools.subtitle')}>
       <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-6">
         {tools.map(({ to, key, Icon }) => (
           <li key={to}>

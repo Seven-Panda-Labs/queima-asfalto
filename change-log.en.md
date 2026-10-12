@@ -4,6 +4,15 @@
 
 ---
 
+## [1.88.0] - 2026-10-12
+
+### Changed
+
+- **The same navigation in every section:** the Admin tabs now use the same control as Settings and the views. Filters stay as loose pills, so changing the view still looks different from filtering the list. Every section keeps a fixed title and a line saying what it is for.
+- **Viewing data shared with you:** pick the person once, in the account menu (your initials, at the end of the header), and the choice holds across Events, Analysis, Goals and Planning. A strip under the menu says whose data it is and takes you back to yours. Meanwhile the menu only shows the sections that person shares, and opening any other page takes you back to your own data. Signing out moved to that menu too, and the Account tab is gone from Settings.
+
+---
+
 ## [1.87.0] - 2026-10-06
 
 ### Added

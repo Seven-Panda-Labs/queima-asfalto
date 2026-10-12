@@ -11,7 +11,6 @@ import {
 import { PageShell } from '../../components/PageShell/PageShell'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
-import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/ScheduleRaceDialog'
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
@@ -36,7 +35,7 @@ import { WishList } from './WishList'
 import { SeasonTimeline } from '../../components/SeasonTimeline'
 import { seasonYears } from '../../domain/seasonTimeline'
 import { useSharedBucketList } from '../../hooks/useSharedBucketList'
-import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
+import { useSharedSection } from '../../hooks/useSharedSection'
 import type { BucketListItem } from '../../types/BucketListItem'
 import type { EventType } from '../../types/Event'
 import {
@@ -65,13 +64,7 @@ function BucketListSkeleton() {
 export function Planning() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const {
-    tabs: ownerTabs,
-    activeOwnerId,
-    activeOwner,
-    isSharedView,
-    setActiveOwnerId,
-  } = useSharedOwnerTabs('bucketList', 'shares.bucketListTabMine')
+  const { activeOwnerId, activeOwner, isSharedView } = useSharedSection('bucketList')
   const [viewMode, setViewMode] = useState<BucketListViewMode>(() => getBucketListViewMode(user?.uid))
   const [itemToDelete, setItemToDelete] = useState<BucketListItem | null>(null)
   const [itemToSchedule, setItemToSchedule] = useState<BucketListItem | null>(null)
@@ -295,9 +288,7 @@ export function Planning() {
   }
 
   return (
-    <PageShell title={t('planning.title')}>
-      <p className="mt-2 text-sm text-muted">{t('planning.subtitle')}</p>
-
+    <PageShell title={t('planning.title')} subtitle={t('planning.subtitle')}>
       {/* The season first: the wishes below it are the answer to a gap in it,
           which is the order somebody plans in. A shared list is somebody
           else's wishes and carries no season of ours. */}
@@ -356,29 +347,10 @@ export function Planning() {
           {t('planning.wishesTitle')}
         </h2>
 
-        {/* Here and not at the top of the page: what is shared is the list of
-            wishes. The season above it is read off your own calendar, and the
-            catalog belongs to nobody. Outside the loading branch, so somebody
-            can go back to their own list while a shared one is still coming. */}
-        <SharedOwnerTabs
-          tabs={ownerTabs}
-          activeOwnerId={activeOwnerId}
-          onChange={setActiveOwnerId}
-          ariaLabelKey="shares.bucketListTabsLabel"
-        />
-
         {isSharedView && loading ? (
           <SharedDataLoading section="bucketList" ownerName={activeOwner?.label ?? ''} />
         ) : (
           <>
-        {isSharedView ? (
-          <SharedContextBanner
-            message={t('shares.sharedBucketListBanner', {
-              name: activeOwner?.label ?? '',
-            })}
-          />
-        ) : null}
-
         <ViewSwitcher
           options={[
             { value: 'lista', label: t('viewMode.list') },

@@ -695,11 +695,6 @@
   "settings": {
     "title": "الإعدادات",
     "subtitle": "تفضيلات التطبيق وإدارة البيانات.",
-    "account": "الحساب",
-    "signedInAs": "مسجّل الدخول باسم",
-    "signOut": "تسجيل الخروج",
-    "signingOut": "جارٍ تسجيل الخروج...",
-    "signOutError": "تعذّر تسجيل الخروج.",
     "languageSection": "اللغة",
     "languageSubtitle": "يكتشف التطبيق لغة متصفحك عند أول زيارة. يمكنك تغييرها هنا.",
     "themeSection": "المظهر",
@@ -716,11 +711,17 @@
     "themeDark": "داكن",
     "tabsLabel": "أقسام الإعدادات",
     "tabs": {
-      "account": "الحساب",
       "app": "التطبيق",
       "shares": "المشاركات",
       "data": "البيانات"
     }
+  },
+  "account": {
+    "menu": "الحساب",
+    "signedInAs": "مسجّل الدخول باسم",
+    "signOut": "تسجيل الخروج",
+    "signingOut": "جارٍ تسجيل الخروج...",
+    "signOutError": "تعذّر تسجيل الخروج."
   },
   "notifications": {
     "title": "الإشعارات",
@@ -1050,28 +1051,20 @@
     "openAccess": "فتح الوصول",
     "openEvents": "عرض الفعاليات المشتركة",
     "openBucketList": "فتح في قائمة الأحلام",
-    "eventsTabMine": "فعالياتي",
-    "eventsTabsLabel": "الفعاليات",
-    "sharedEventsBanner": "تعرض فعاليات {{name}}",
-    "sharedEventDetailBanner": "تعرض فعالية مشتركة من {{name}}",
-    "goalsTabMine": "أهدافي",
-    "goalsTabsLabel": "الأهداف",
-    "sharedGoalsBanner": "تعرض أهداف {{name}}",
     "sharedGoalsEmpty": "لا توجد أهداف مشتركة لهذه السنة.",
     "sharedPerformanceGoalsEmpty": "لا توجد أهداف أداء مشتركة لهذه السنة.",
-    "resultsTabMine": "نتائجي",
-    "resultsTabsLabel": "النتائج",
-    "sharedResultsBanner": "تعرض نتائج {{name}}",
     "sharedResultsEmpty": "لا توجد نتائج مشتركة.",
     "backToShares": "العودة إلى المشاركات",
     "sharedHubTitle": "بيانات {{name}}",
     "sharedEventsTitle": "فعاليات {{name}}",
     "sharedEventsEmpty": "لا توجد فعاليات مشتركة.",
     "viewingBanner": "تعرض بيانات {{name}}",
-    "sharedBucketListBanner": "قائمة أحلام {{name}}",
+    "viewing": {
+      "pickerLabel": "عرض بيانات",
+      "mine": "بياناتي",
+      "backToMine": "العودة إلى بياناتي"
+    },
     "sharedBucketListEmpty": "قائمة الأحلام هذه لا تزال فارغة.",
-    "bucketListTabMine": "قائمتي",
-    "bucketListTabsLabel": "قوائم الأحلام",
     "accessNotFound": "المشاركة غير موجودة أو تم إلغاؤها بالفعل.",
     "pendingBanner": "لديك {{count}} دعوة (دعوات) معلّقة.",
     "loadError": "تعذّر تحميل المشاركات.",
@@ -1304,7 +1297,6 @@
     }
   },
   "admin": {
-    "usersTitle": "المستخدمون",
     "usersSubtitle": "اعتمد أو احجب أو أعد تمكين حسابات هذه النسخة.",
     "columnAccount": "الحساب",
     "columnStatus": "الحالة",
@@ -1334,7 +1326,7 @@
     "tabUsers": "المستخدمون",
     "tabCatalog": "الدليل",
     "tabMaintenance": "الصيانة",
-    "maintenanceTitle": "الصيانة",
+    "maintenanceSubtitle": "مهام لمرة واحدة على بيانات هذه النسخة.",
     "recomputeTitle": "إعادة حساب ملخصات ملفات النشاط",
     "recomputeHint": "يعيد قراءة كل ملف نشاط مخزَّن ويكتب ما اشتُق منه من جديد. شغّله بعد إصلاح المحلل، لتظهر السباقات التي رُفعت قبله بالأرقام الصحيحة.",
     "recomputeStart": "إعادة الحساب",
@@ -1716,6 +1708,7 @@
   },
   "tools": {
     "title": "أدوات",
+    "subtitle": "أدوات يومية للعدّائين.",
     "back": "← أدوات",
     "paceCalculator": {
       "title": "حاسبة الوتيرة",

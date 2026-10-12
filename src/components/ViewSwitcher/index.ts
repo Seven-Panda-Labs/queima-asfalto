@@ -1,1 +1,6 @@
-export { ViewSwitcher, type ViewOption } from './ViewSwitcher'
+export {
+  ViewSwitcher,
+  segmentedGroupClass,
+  segmentedItemClass,
+  type ViewOption,
+} from './ViewSwitcher'

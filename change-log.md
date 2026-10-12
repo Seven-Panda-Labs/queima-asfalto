@@ -4,6 +4,15 @@
 
 ---
 
+## [1.88.0] - 2026-10-12
+
+### Alterado
+
+- **Navegação igual em todas as secções:** os separadores do Admin usam agora o mesmo controlo das Definições e das vistas. Os filtros continuam a ser pastilhas soltas, para se distinguir o que muda a vista do que filtra a lista. Todas as secções têm um título fixo e uma linha a explicar para que servem.
+- **Ver os dados de quem partilha contigo:** escolhe-se a pessoa uma vez, no menu da conta (as tuas iniciais, no fim do cabeçalho), e a escolha mantém-se em Eventos, Análise, Objetivos e Planeamento. Uma faixa por baixo do menu diz de quem são os dados e leva de volta aos teus. Enquanto isso, o menu só mostra as secções que essa pessoa partilha, e abrir outra página volta aos teus dados. Terminar sessão também passou para esse menu, e o separador Conta saiu das Definições.
+
+---
+
 ## [1.87.0] - 2026-10-06
 
 ### Adicionado

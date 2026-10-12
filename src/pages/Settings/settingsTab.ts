@@ -1,4 +1,4 @@
-export const SETTINGS_TABS = ['app', 'partilhas', 'dados', 'conta'] as const
+export const SETTINGS_TABS = ['app', 'partilhas', 'dados'] as const
 
 export type SettingsTab = (typeof SETTINGS_TABS)[number]
 

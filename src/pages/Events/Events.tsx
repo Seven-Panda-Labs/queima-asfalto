@@ -20,12 +20,11 @@ import {
 import { PageShell } from '../../components/PageShell/PageShell'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
-import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
-import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
+import { useSharedSection } from '../../hooks/useSharedSection'
 import type { Event } from '../../types/Event'
 import type { EventStatus } from '../../types/Event'
 import { EVENT_STATUSES } from '../../types/Event'
@@ -76,13 +75,7 @@ export function Events() {
   const defaultView = getEventsViewMode(user?.uid)
   const filters = parseEventsListSearchParams(searchParams, currentYear, defaultView)
   const { status: statusFilter, year: yearFilter, view: viewMode } = filters
-  const {
-    tabs: ownerTabs,
-    activeOwnerId,
-    activeOwner,
-    isSharedView,
-    setActiveOwnerId,
-  } = useSharedOwnerTabs('events', 'shares.eventsTabMine')
+  const { activeOwnerId, activeOwner, isSharedView } = useSharedSection('events')
   const returnTo = buildEventsListPath(filters, currentYear, activeOwnerId)
   const [eventToDelete, setEventToDelete] = useState<Event | null>(null)
   const [eventToRecover, setEventToRecover] = useState<Event | null>(null)
@@ -177,29 +170,12 @@ export function Events() {
   }
 
   return (
-    <PageShell title={t('events.title')}>
-      <p className="mt-2 text-sm text-muted">{t('events.subtitle')}</p>
-
+    <PageShell title={t('events.title')} subtitle={t('events.subtitle')}>
       <div className="mt-6 flex flex-col gap-6">
-        <SharedOwnerTabs
-          tabs={ownerTabs}
-          activeOwnerId={activeOwnerId}
-          onChange={setActiveOwnerId}
-          ariaLabelKey="shares.eventsTabsLabel"
-        />
-
         {isSharedView && loading ? (
           <SharedDataLoading section="events" ownerName={activeOwner?.label ?? ''} />
         ) : (
           <>
-        {isSharedView ? (
-          <SharedContextBanner
-            message={t('shares.sharedEventsBanner', {
-              name: activeOwner?.label ?? '',
-            })}
-          />
-        ) : null}
-
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <ViewSwitcher
             options={[

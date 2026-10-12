@@ -683,11 +683,6 @@
   "settings": {
     "title": "Einstellungen",
     "subtitle": "App-Einstellungen und Datenverwaltung.",
-    "account": "Konto",
-    "signedInAs": "Angemeldet als",
-    "signOut": "Abmelden",
-    "signingOut": "Wird abgemeldet...",
-    "signOutError": "Abmeldung fehlgeschlagen.",
     "languageSection": "Sprache",
     "languageSubtitle": "Die App erkennt beim ersten Besuch deine Browsersprache. Du kannst sie hier ändern.",
     "themeSection": "Darstellung",
@@ -704,11 +699,17 @@
     "themeDark": "Dunkel",
     "tabsLabel": "Einstellungsbereiche",
     "tabs": {
-      "account": "Konto",
       "app": "App",
       "shares": "Freigaben",
       "data": "Daten"
     }
+  },
+  "account": {
+    "menu": "Konto",
+    "signedInAs": "Angemeldet als",
+    "signOut": "Abmelden",
+    "signingOut": "Wird abgemeldet...",
+    "signOutError": "Abmeldung fehlgeschlagen."
   },
   "notifications": {
     "title": "Benachrichtigungen",
@@ -1038,28 +1039,20 @@
     "openAccess": "Zugriff öffnen",
     "openEvents": "Geteilte Events anzeigen",
     "openBucketList": "In Bucket List öffnen",
-    "eventsTabMine": "Meine",
-    "eventsTabsLabel": "Events",
-    "sharedEventsBanner": "Du siehst {{name}}s Events",
-    "sharedEventDetailBanner": "Du siehst {{name}}s geteiltes Event",
-    "goalsTabMine": "Meine",
-    "goalsTabsLabel": "Ziele",
-    "sharedGoalsBanner": "Du siehst {{name}}s Ziele",
     "sharedGoalsEmpty": "Keine geteilten Ziele für dieses Jahr.",
     "sharedPerformanceGoalsEmpty": "Keine geteilten Leistungsziele für dieses Jahr.",
-    "resultsTabMine": "Meine",
-    "resultsTabsLabel": "Ergebnisse",
-    "sharedResultsBanner": "Du siehst {{name}}s Ergebnisse",
     "sharedResultsEmpty": "Keine geteilten Ergebnisse.",
     "backToShares": "Zurück zu Freigaben",
     "sharedHubTitle": "{{name}}s Daten",
     "sharedEventsTitle": "{{name}}s Events",
     "sharedEventsEmpty": "Keine geteilten Events.",
     "viewingBanner": "Du siehst {{name}}s Daten",
-    "sharedBucketListBanner": "{{name}}s Bucket List",
+    "viewing": {
+      "pickerLabel": "Daten anzeigen von",
+      "mine": "Meine Daten",
+      "backToMine": "Zurück zu meinen Daten"
+    },
     "sharedBucketListEmpty": "Diese Bucket List ist noch leer.",
-    "bucketListTabMine": "Meine",
-    "bucketListTabsLabel": "Bucket Lists",
     "accessNotFound": "Freigabe nicht gefunden oder bereits widerrufen.",
     "pendingBanner": "Du hast {{count}} ausstehende Einladung(en).",
     "loadError": "Freigaben konnten nicht geladen werden.",
@@ -1292,7 +1285,6 @@
     }
   },
   "admin": {
-    "usersTitle": "Benutzer",
     "usersSubtitle": "Konten dieser Instanz freigeben, sperren oder entsperren.",
     "columnAccount": "Konto",
     "columnStatus": "Status",
@@ -1322,7 +1314,7 @@
     "tabUsers": "Benutzer",
     "tabCatalog": "Katalog",
     "tabMaintenance": "Wartung",
-    "maintenanceTitle": "Wartung",
+    "maintenanceSubtitle": "Einmalige Aufgaben für die Daten dieser Instanz.",
     "recomputeTitle": "Zusammenfassungen der Aktivitätsdateien neu berechnen",
     "recomputeHint": "Liest jede gespeicherte Aktivitätsdatei erneut und schreibt das daraus Abgeleitete neu. Nach einer Korrektur am Parser ausführen, damit vorher hochgeladene Rennen die richtigen Werte zeigen.",
     "recomputeStart": "Neu berechnen",
@@ -1684,6 +1676,7 @@
   },
   "tools": {
     "title": "Werkzeuge",
+    "subtitle": "Alltagshelfer für Läuferinnen und Läufer.",
     "back": "← Werkzeuge",
     "paceCalculator": {
       "title": "Pace-Rechner",
