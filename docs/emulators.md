@@ -53,16 +53,19 @@ Conta de desenvolvimento criada automaticamente:
 
 ### Dados de demonstração
 
-Os emuladores começam vazios. Para uma época completa, com provas portuguesas reais e uma corredora fictícia, semeia o conjunto que também serve os screenshots do README:
+Os emuladores começam vazios. Para uma época, com provas reais do catálogo e uma corredora fictícia, semeia o conjunto que também serve os screenshots do README:
 
 ```bash
 # 1. entra uma vez com «Entrar (emulador)» para a conta ser criada
 # 2. descobre o uid dessa conta (aparece em users/ na UI dos emuladores)
+# 3. o catálogo primeiro: cada prova da demo é uma entrada dele
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+  npm run seed:race-catalog -- --confirm
 FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
   npm run seed:demo-user -- --confirm --user-id <uid>
 ```
 
-São 36 eventos, 8 objetivos, 6 objetivos de performance e 5 itens de bucket list. Junta `--dry-run` em vez de `--confirm` para ver o que faria sem escrever nada.
+São 36 eventos, 8 objetivos, 6 objetivos de performance e 5 desejos, cada um ligado a uma prova do catálogo. O catálogo de arranque só tem 14 provas, por isso no emulador ficam 15 eventos e 4 desejos: o script salta, com aviso, o que aponta para uma entrada que o projeto não tem, e nunca inventa uma prova fora do catálogo. Junta `--dry-run` em vez de `--confirm` para ver o que faria sem escrever nada.
 
 O script recusa-se a correr contra o emulador se o projeto não começar por `demo-`, para não haver forma de semear produção por engano.
 
@@ -208,16 +211,19 @@ Dev account (auto-created on first sign-in):
 
 ### Demo data
 
-The emulators start empty. For a full season, with real Portuguese races and a fictional runner, seed the same set the README screenshots use:
+The emulators start empty. For a season, with real races from the catalog and a fictional runner, seed the same set the README screenshots use:
 
 ```bash
 # 1. sign in once with "Sign in (emulator)" so the account exists
 # 2. find that account's uid (listed under users/ in the emulator UI)
+# 3. the catalog first: every demo race is an entry in it
+FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
+  npm run seed:race-catalog -- --confirm
 FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
   npm run seed:demo-user -- --confirm --user-id <uid>
 ```
 
-That is 36 events, 8 goals, 6 performance goals and 5 bucket list items. Pass `--dry-run` instead of `--confirm` to see what it would do without writing anything.
+That is 36 events, 8 goals, 6 performance goals and 5 wishes, each linked to a catalog race. The bootstrap catalog holds only 14 races, so the emulator gets 15 events and 4 wishes: the script skips, with a warning, whatever points at an entry the project does not hold, and never invents a race outside the catalog. Pass `--dry-run` instead of `--confirm` to see what it would do without writing anything.
 
 The script refuses to run against the emulator unless the project id starts with `demo-`, so there is no way to seed production by accident.
 
