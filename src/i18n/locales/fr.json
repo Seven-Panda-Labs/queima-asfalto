@@ -683,11 +683,6 @@
   "settings": {
     "title": "Paramètres",
     "subtitle": "Préférences de l'app et gestion des données.",
-    "account": "Compte",
-    "signedInAs": "Connecté en tant que",
-    "signOut": "Se déconnecter",
-    "signingOut": "Déconnexion...",
-    "signOutError": "Impossible de se déconnecter.",
     "languageSection": "Langue",
     "languageSubtitle": "L'app détecte la langue de ton navigateur à la première visite. Tu peux la changer ici.",
     "themeSection": "Apparence",
@@ -704,11 +699,17 @@
     "themeDark": "Sombre",
     "tabsLabel": "Sections des paramètres",
     "tabs": {
-      "account": "Compte",
       "app": "App",
       "shares": "Partages",
       "data": "Données"
     }
+  },
+  "account": {
+    "menu": "Compte",
+    "signedInAs": "Connecté en tant que",
+    "signOut": "Se déconnecter",
+    "signingOut": "Déconnexion...",
+    "signOutError": "Impossible de se déconnecter."
   },
   "notifications": {
     "title": "Notifications",
@@ -1038,28 +1039,20 @@
     "openAccess": "Ouvrir l'accès",
     "openEvents": "Voir les événements partagés",
     "openBucketList": "Ouvrir dans la bucket list",
-    "eventsTabMine": "Les miens",
-    "eventsTabsLabel": "Événements",
-    "sharedEventsBanner": "Tu consultes les événements de {{name}}",
-    "sharedEventDetailBanner": "Tu consultes l'événement partagé de {{name}}",
-    "goalsTabMine": "Les miens",
-    "goalsTabsLabel": "Objectifs",
-    "sharedGoalsBanner": "Tu consultes les objectifs de {{name}}",
     "sharedGoalsEmpty": "Aucun objectif partagé pour cette année.",
     "sharedPerformanceGoalsEmpty": "Aucun objectif de performance partagé pour cette année.",
-    "resultsTabMine": "Les miens",
-    "resultsTabsLabel": "Résultats",
-    "sharedResultsBanner": "Tu consultes les résultats de {{name}}",
     "sharedResultsEmpty": "Aucun résultat partagé.",
     "backToShares": "Retour aux partages",
     "sharedHubTitle": "Données de {{name}}",
     "sharedEventsTitle": "Événements de {{name}}",
     "sharedEventsEmpty": "Aucun événement partagé.",
     "viewingBanner": "Tu consultes les données de {{name}}",
-    "sharedBucketListBanner": "Bucket list de {{name}}",
+    "viewing": {
+      "pickerLabel": "Voir les données de",
+      "mine": "Mes données",
+      "backToMine": "Revenir à mes données"
+    },
     "sharedBucketListEmpty": "Cette bucket list est encore vide.",
-    "bucketListTabMine": "La mienne",
-    "bucketListTabsLabel": "Bucket lists",
     "accessNotFound": "Partage introuvable ou déjà révoqué.",
     "pendingBanner": "Tu as {{count}} invitation(s) en attente.",
     "loadError": "Impossible de charger les partages.",
@@ -1292,7 +1285,6 @@
     }
   },
   "admin": {
-    "usersTitle": "Utilisateurs",
     "usersSubtitle": "Approuve, bloque ou débloque les comptes de cette instance.",
     "columnAccount": "Compte",
     "columnStatus": "Statut",
@@ -1322,7 +1314,7 @@
     "tabUsers": "Utilisateurs",
     "tabCatalog": "Catalogue",
     "tabMaintenance": "Maintenance",
-    "maintenanceTitle": "Maintenance",
+    "maintenanceSubtitle": "Tâches ponctuelles sur les données de cette instance.",
     "recomputeTitle": "Recalculer les résumés des fichiers d'activité",
     "recomputeHint": "Relit chaque fichier d'activité stocké et réécrit ce qui en a été dérivé. À lancer après une correction du parseur, pour que les courses importées avant affichent les bons chiffres.",
     "recomputeStart": "Recalculer les résumés",
@@ -1684,6 +1676,7 @@
   },
   "tools": {
     "title": "Outils",
+    "subtitle": "Des outils pour le quotidien du coureur.",
     "back": "← Outils",
     "paceCalculator": {
       "title": "Calculateur d’allure",

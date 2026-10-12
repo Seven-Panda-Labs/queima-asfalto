@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react'
 import { Route, Routes, Navigate, useLocation } from 'react-router-dom'
 import { AnalyticsTracker } from './components/AnalyticsTracker/AnalyticsTracker'
 import { Layout } from './components/Layout/Layout'
+import { SharedViewProvider } from './contexts/SharedViewContext'
 import { ProtectedRoute } from './components/ProtectedRoute/ProtectedRoute'
 import { AccountApprovalGate } from './components/AccountApprovalGate/AccountApprovalGate'
 import { Planning } from './pages/Planning/Planning'
@@ -62,7 +63,13 @@ export default function App() {
 
         <Route element={<ProtectedRoute />}>
           <Route element={<AccountApprovalGate />}>
-          <Route element={<Layout />}>
+          <Route
+            element={
+              <SharedViewProvider>
+                <Layout />
+              </SharedViewProvider>
+            }
+          >
             <Route index element={<Dashboard />} />
             <Route path="eventos" element={<Events />} />
             <Route path="eventos/novo" element={<EventForm />} />

@@ -699,8 +699,7 @@ export function FindRaces() {
   }
 
   return (
-    <PageShell greeting={t('findRaces.greeting')} title={t('findRaces.title')}>
-      <p className="mt-2 text-sm text-muted">{t('findRaces.subtitle')}</p>
+    <PageShell greeting={t('findRaces.greeting')} title={t('findRaces.title')} subtitle={t('findRaces.subtitle')}>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <div>

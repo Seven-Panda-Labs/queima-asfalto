@@ -683,11 +683,6 @@
   "settings": {
     "title": "Definições",
     "subtitle": "Preferências da app e gestão dos teus dados.",
-    "account": "Conta",
-    "signedInAs": "Sessão iniciada como",
-    "signOut": "Terminar sessão",
-    "signingOut": "A terminar sessão...",
-    "signOutError": "Não foi possível terminar a sessão.",
     "languageSection": "Idioma",
     "languageSubtitle": "A app deteta o idioma do browser na primeira visita. Podes alterar aqui.",
     "themeSection": "Aparência",
@@ -704,11 +699,17 @@
     "themeDark": "Escuro",
     "tabsLabel": "Secções das definições",
     "tabs": {
-      "account": "Conta",
-      "app": "Applicação",
+      "app": "Aplicação",
       "shares": "Partilhas",
       "data": "Dados"
     }
+  },
+  "account": {
+    "menu": "Conta",
+    "signedInAs": "Sessão iniciada como",
+    "signOut": "Terminar sessão",
+    "signingOut": "A terminar sessão...",
+    "signOutError": "Não foi possível terminar a sessão."
   },
   "notifications": {
     "title": "Notificações",
@@ -1038,28 +1039,20 @@
     "openAccess": "Abrir acesso",
     "openEvents": "Ver eventos partilhados",
     "openBucketList": "Abrir na bucket list",
-    "eventsTabMine": "Meus",
-    "eventsTabsLabel": "Eventos",
-    "sharedEventsBanner": "A ver eventos de {{name}}",
-    "sharedEventDetailBanner": "A ver evento partilhado de {{name}}",
-    "goalsTabMine": "Meus",
-    "goalsTabsLabel": "Objetivos",
-    "sharedGoalsBanner": "A ver objetivos de {{name}}",
     "sharedGoalsEmpty": "Sem objetivos partilhados para este ano.",
     "sharedPerformanceGoalsEmpty": "Sem objetivos de performance partilhados para este ano.",
-    "resultsTabMine": "Meus",
-    "resultsTabsLabel": "Resultados",
-    "sharedResultsBanner": "A ver resultados de {{name}}",
     "sharedResultsEmpty": "Sem resultados partilhados.",
     "backToShares": "Voltar às partilhas",
     "sharedHubTitle": "Dados de {{name}}",
     "sharedEventsTitle": "Eventos de {{name}}",
     "sharedEventsEmpty": "Sem eventos partilhados.",
     "viewingBanner": "A ver dados de {{name}}",
-    "sharedBucketListBanner": "Bucket list de {{name}}",
+    "viewing": {
+      "pickerLabel": "Ver os dados de",
+      "mine": "Os meus dados",
+      "backToMine": "Voltar aos meus dados"
+    },
     "sharedBucketListEmpty": "Esta bucket list ainda está vazia.",
-    "bucketListTabMine": "Minha",
-    "bucketListTabsLabel": "Bucket lists",
     "accessNotFound": "Partilha não encontrada ou já revogada.",
     "pendingBanner": "Tens {{count}} convite(s) pendente(s).",
     "loadError": "Não foi possível carregar as partilhas.",
@@ -1292,7 +1285,6 @@
     }
   },
   "admin": {
-    "usersTitle": "Utilizadores",
     "usersSubtitle": "Aprova, bloqueia ou desbloqueia contas desta instância.",
     "columnAccount": "Conta",
     "columnStatus": "Estado",
@@ -1322,7 +1314,7 @@
     "tabUsers": "Utilizadores",
     "tabCatalog": "Catálogo",
     "tabMaintenance": "Manutenção",
-    "maintenanceTitle": "Manutenção",
+    "maintenanceSubtitle": "Tarefas pontuais sobre os dados desta instância.",
     "recomputeTitle": "Recalcular resumos dos ficheiros de atividade",
     "recomputeHint": "Volta a ler cada ficheiro de atividade guardado e reescreve o que dele foi derivado. Corre isto depois de uma correção no parser, para as provas carregadas antes dela passarem a mostrar os números certos.",
     "recomputeStart": "Recalcular resumos",
@@ -1684,6 +1676,7 @@
   },
   "tools": {
     "title": "Ferramentas",
+    "subtitle": "Utilitários para o dia a dia de quem corre.",
     "back": "← Ferramentas",
     "paceCalculator": {
       "title": "Calculadora de ritmo",

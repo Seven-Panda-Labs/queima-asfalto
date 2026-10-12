@@ -19,6 +19,22 @@ type ViewSwitcherProps<T extends string> = {
   as?: 'group' | 'tablist'
 }
 
+/*
+ * The radius is half a single row (42px box), not `rounded-full`: on a narrow
+ * screen the options wrap to two or three rows, and `rounded-full` drew a
+ * giant oval around the whole block.
+ */
+export const segmentedGroupClass =
+  'inline-flex flex-wrap gap-y-1 rounded-[1.3125rem] border border-border bg-surface p-1'
+
+/** Shared with route-based tabs (Admin), which need links instead of buttons. */
+export function segmentedItemClass(active: boolean): string {
+  return [
+    'inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors',
+    active ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
+  ].join(' ')
+}
+
 /**
  * Muda a representação dos mesmos dados, ao contrário dos filtros, que mudam
  * que dados são. São operações diferentes, por isso não se parecem: este é um
@@ -37,13 +53,7 @@ export function ViewSwitcher<T extends string>({
     <div
       role={isTablist ? 'tablist' : 'group'}
       aria-label={label}
-      /*
-       * O raio é o da altura de uma linha (42px de caixa, logo 21px), e não
-       * `rounded-full`: em ecrã estreito os separadores passam a duas ou três
-       * linhas, e aí o `rounded-full` desenhava um oval gigante à volta do
-       * bloco todo. Numa linha só o resultado é igual ao de antes.
-       */
-      className="inline-flex flex-wrap gap-y-1 rounded-[1.3125rem] border border-border bg-surface p-1"
+      className={segmentedGroupClass}
     >
       {options.map((option) => {
         const active = value === option.value
@@ -55,10 +65,7 @@ export function ViewSwitcher<T extends string>({
             aria-selected={isTablist ? active : undefined}
             aria-pressed={isTablist ? undefined : active}
             onClick={() => onChange(option.value)}
-            className={[
-              'inline-flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-semibold transition-colors',
-              active ? 'bg-primary text-white' : 'text-muted hover:text-foreground',
-            ].join(' ')}
+            className={segmentedItemClass(active)}
           >
             {option.label}
             {option.badge && option.badge > 0 ? (

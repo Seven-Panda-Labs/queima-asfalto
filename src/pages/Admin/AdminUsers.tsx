@@ -92,8 +92,7 @@ export function AdminUsers() {
   })
 
   return (
-    <PageShell title={t('admin.usersTitle')}>
-      <p className="mt-2 text-sm text-muted">{t('admin.usersSubtitle')}</p>
+    <PageShell title={t('nav.admin')} subtitle={t('admin.usersSubtitle')}>
       <AdminTabs />
 
       {error ? <p className="mt-4 text-sm text-danger">{error}</p> : null}

@@ -1,5 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { segmentedGroupClass, segmentedItemClass } from '../../components/ViewSwitcher'
 
 const TABS = [
   { to: '/admin', key: 'admin.tabUsers', end: true },
@@ -11,19 +12,9 @@ export function AdminTabs() {
   const { t } = useTranslation()
 
   return (
-    <nav className="mt-4 flex flex-wrap gap-2" aria-label={t('admin.tabsLabel')}>
+    <nav className={`mt-6 ${segmentedGroupClass}`} aria-label={t('admin.tabsLabel')}>
       {TABS.map(({ to, key, end }) => (
-        <NavLink
-          key={to}
-          to={to}
-          end={end}
-          className={({ isActive }) =>
-            [
-              'rounded-full px-3 py-1 text-sm font-semibold transition-colors',
-              isActive ? 'bg-primary text-white' : 'text-muted ring-1 ring-border hover:text-foreground',
-            ].join(' ')
-          }
-        >
+        <NavLink key={to} to={to} end={end} className={({ isActive }) => segmentedItemClass(isActive)}>
           {t(key)}
         </NavLink>
       ))}

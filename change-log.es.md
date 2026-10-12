@@ -4,6 +4,15 @@
 
 ---
 
+## [1.88.0] - 2026-10-12
+
+### Cambiado
+
+- **La misma navegación en todas las secciones:** las pestañas de Admin usan ahora el mismo control que Ajustes y las vistas. Los filtros siguen siendo pastillas sueltas, para distinguir lo que cambia la vista de lo que filtra la lista. Cada sección tiene un título fijo y una línea que explica para qué sirve.
+- **Ver los datos de quien comparte contigo:** se elige la persona una vez, en el menú de la cuenta (tus iniciales, al final de la cabecera), y la elección se mantiene en Eventos, Análisis, Objetivos y Planificación. Una franja bajo el menú dice de quién son los datos y te devuelve a los tuyos. Mientras tanto, el menú solo muestra las secciones que esa persona comparte, y abrir otra página vuelve a tus datos. Cerrar sesión también pasó a ese menú, y la pestaña Cuenta salió de Ajustes.
+
+---
+
 ## [1.87.0] - 2026-10-06
 
 ### Añadido

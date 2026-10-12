@@ -372,8 +372,7 @@ export function AdminCatalog() {
   }
 
   return (
-    <PageShell title={t('admin.catalogTitle')}>
-      <p className="mt-2 text-sm text-muted">{t('admin.catalogSubtitle')}</p>
+    <PageShell title={t('nav.admin')} subtitle={t('admin.catalogSubtitle')}>
       <AdminTabs />
 
       <div className="mt-6 flex flex-wrap items-center justify-between gap-3">

@@ -7,11 +7,10 @@ import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { GoalBoardCard } from '../../components/GoalBoardCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
-import { SharedContextBanner, SharedOwnerTabs } from '../../components/SharedOwnerTabs/SharedOwnerTabs'
 import { useGoals } from '../../hooks/useGoals'
 import { usePerformanceGoals } from '../../hooks/usePerformanceGoals'
 import { useSharedGoals } from '../../hooks/useSharedGoals'
-import { useSharedOwnerTabs } from '../../hooks/useSharedOwnerTabs'
+import { useSharedSection } from '../../hooks/useSharedSection'
 import { computeGoalsBoard, type GoalBoardEntry } from '../../utils/goalsBoard'
 
 function GoalsSkeleton() {
@@ -77,13 +76,7 @@ export function Goals() {
   const [deleting, setDeleting] = useState(false)
   const [successMessage, setSuccessMessage] = useState<string | null>(null)
 
-  const {
-    tabs: ownerTabs,
-    activeOwnerId,
-    activeOwner,
-    isSharedView,
-    setActiveOwnerId,
-  } = useSharedOwnerTabs('goals', 'shares.goalsTabMine')
+  const { activeOwnerId, activeOwner, isSharedView } = useSharedSection('goals')
 
   const ownGoals = useGoals({ year: yearFilter })
   const ownPerformanceGoals = usePerformanceGoals({ year: yearFilter })
@@ -143,27 +136,12 @@ export function Goals() {
   }
 
   return (
-    <PageShell title={t('goals.title')}>
-      <p className="mt-2 text-sm text-muted">{t('goals.subtitle')}</p>
-
+    <PageShell title={t('goals.title')} subtitle={t('goals.subtitle')}>
       <div className="mt-6 flex flex-col gap-6">
-        <SharedOwnerTabs
-          tabs={ownerTabs}
-          activeOwnerId={activeOwnerId}
-          onChange={setActiveOwnerId}
-          ariaLabelKey="shares.goalsTabsLabel"
-        />
-
         {isSharedView && loading ? (
           <SharedDataLoading section="goals" ownerName={activeOwner?.label ?? ''} />
         ) : (
           <>
-            {isSharedView ? (
-              <SharedContextBanner
-                message={t('shares.sharedGoalsBanner', { name: activeOwner?.label ?? '' })}
-              />
-            ) : null}
-
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <FilterBar>
                 <FilterGroup label={t('common.year')}>

@@ -683,11 +683,6 @@
   "settings": {
     "title": "Settings",
     "subtitle": "App preferences and data management.",
-    "account": "Account",
-    "signedInAs": "Signed in as",
-    "signOut": "Sign out",
-    "signingOut": "Signing out...",
-    "signOutError": "Could not sign out.",
     "languageSection": "Language",
     "languageSubtitle": "The app detects your browser language on first visit. You can change it here.",
     "themeSection": "Appearance",
@@ -704,11 +699,17 @@
     "themeDark": "Dark",
     "tabsLabel": "Settings sections",
     "tabs": {
-      "account": "Account",
       "app": "App",
       "shares": "Shares",
       "data": "Data"
     }
+  },
+  "account": {
+    "menu": "Account",
+    "signedInAs": "Signed in as",
+    "signOut": "Sign out",
+    "signingOut": "Signing out...",
+    "signOutError": "Could not sign out."
   },
   "notifications": {
     "title": "Notifications",
@@ -1038,28 +1039,20 @@
     "openAccess": "Open access",
     "openEvents": "View shared events",
     "openBucketList": "Open in bucket list",
-    "eventsTabMine": "Mine",
-    "eventsTabsLabel": "Events",
-    "sharedEventsBanner": "Viewing {{name}}'s events",
-    "sharedEventDetailBanner": "Viewing {{name}}'s shared event",
-    "goalsTabMine": "Mine",
-    "goalsTabsLabel": "Goals",
-    "sharedGoalsBanner": "Viewing {{name}}'s goals",
     "sharedGoalsEmpty": "No shared goals for this year.",
     "sharedPerformanceGoalsEmpty": "No shared performance goals for this year.",
-    "resultsTabMine": "Mine",
-    "resultsTabsLabel": "Results",
-    "sharedResultsBanner": "Viewing {{name}}'s results",
     "sharedResultsEmpty": "No shared results.",
     "backToShares": "Back to shares",
     "sharedHubTitle": "{{name}}'s data",
     "sharedEventsTitle": "{{name}}'s events",
     "sharedEventsEmpty": "No shared events.",
     "viewingBanner": "Viewing {{name}}'s data",
-    "sharedBucketListBanner": "{{name}}'s bucket list",
+    "viewing": {
+      "pickerLabel": "Whose data to view",
+      "mine": "My data",
+      "backToMine": "Back to my data"
+    },
     "sharedBucketListEmpty": "This bucket list is still empty.",
-    "bucketListTabMine": "Mine",
-    "bucketListTabsLabel": "Bucket lists",
     "accessNotFound": "Share not found or already revoked.",
     "pendingBanner": "You have {{count}} pending invite(s).",
     "loadError": "Could not load shares.",
@@ -1292,7 +1285,6 @@
     }
   },
   "admin": {
-    "usersTitle": "Users",
     "usersSubtitle": "Approve, block or unblock accounts on this instance.",
     "columnAccount": "Account",
     "columnStatus": "Status",
@@ -1322,7 +1314,7 @@
     "tabUsers": "Users",
     "tabCatalog": "Catalog",
     "tabMaintenance": "Maintenance",
-    "maintenanceTitle": "Maintenance",
+    "maintenanceSubtitle": "One-off jobs over the data on this instance.",
     "recomputeTitle": "Rebuild activity file summaries",
     "recomputeHint": "Reads every stored activity file again and rewrites what was derived from it. Run this after a parser fix, so races uploaded before it show the corrected figures.",
     "recomputeStart": "Rebuild summaries",
@@ -1684,6 +1676,7 @@
   },
   "tools": {
     "title": "Tools",
+    "subtitle": "Everyday utilities for runners.",
     "back": "← Tools",
     "paceCalculator": {
       "title": "Pace calculator",

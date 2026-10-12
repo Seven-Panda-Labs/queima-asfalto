@@ -51,7 +51,7 @@ export function AdminMaintenance() {
   }
 
   return (
-    <PageShell title={t('admin.maintenanceTitle')}>
+    <PageShell title={t('nav.admin')} subtitle={t('admin.maintenanceSubtitle')}>
       <AdminTabs />
 
       <section className="mt-6 rounded-lg border border-border bg-surface p-5">

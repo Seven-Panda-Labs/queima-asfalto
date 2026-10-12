@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next'
 import { useSearchParams } from 'react-router-dom'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useShares } from '../../hooks/useShares'
-import { SettingsAccountSection } from './SettingsAccountSection'
 import { SettingsAppSection } from './SettingsAppSection'
 import { SettingsDataSection } from './SettingsDataSection'
 import { SettingsTabs } from './SettingsTabs'
@@ -25,7 +24,6 @@ export function Settings() {
         badge: pendingReceivedCount,
       },
       { id: 'dados' as const, labelKey: 'settings.tabs.data' },
-      { id: 'conta' as const, labelKey: 'settings.tabs.account' },
     ],
     [pendingReceivedCount],
   )
@@ -41,14 +39,13 @@ export function Settings() {
   }
 
   return (
-    <PageShell title={t('settings.title')}>
+    <PageShell title={t('settings.title')} subtitle={t('settings.subtitle')}>
       <div className="mt-6 flex flex-col gap-6">
         <div className="self-start">
           <SettingsTabs tabs={tabs} activeTab={activeTab} onChange={setActiveTab} />
         </div>
 
         <div className={activeTab === 'dados' ? 'max-w-4xl' : 'max-w-3xl'}>
-          {activeTab === 'conta' ? <SettingsAccountSection /> : null}
           {activeTab === 'app' ? <SettingsAppSection /> : null}
           {activeTab === 'partilhas' ? <SharesSection /> : null}
           {activeTab === 'dados' ? <SettingsDataSection /> : null}
