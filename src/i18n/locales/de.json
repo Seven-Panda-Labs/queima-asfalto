@@ -176,7 +176,6 @@
     "recoverMessage": "„{{name}}“ zurück auf die Bucket List verschieben? Das Event wird gelöscht.",
     "recovered": "„{{name}}“ wurde zur Bucket List zurückgeholt.",
     "editEvent": "Event bearbeiten",
-    "viewEvent": "Event anzeigen",
     "registerResults": "Ergebnisse erfassen",
     "deleteEvent": "Event löschen",
     "recoverBucket": "Zur Bucket List zurückholen"

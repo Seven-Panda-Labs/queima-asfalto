@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { CalendarPlusIcon, HeartIcon } from '../icons/actionIcons'
+import { CalendarPlusIcon, ExternalLinkIcon, HeartIcon } from '../icons/actionIcons'
 import type { ParkrunCatalogEvent } from '../../../shared/parkrun/catalog'
 import {
   nearbyParkruns,
@@ -9,14 +9,17 @@ import {
   referencePoints,
   type GeoPoint,
 } from '../../domain/parkrunDiscovery'
+import { parkrunSite } from '../../domain/parkrunEvent'
 import { loadParkrunCatalog } from '../../services/parkrunCatalog'
 import { formatDatePt } from '../../utils/date'
 
 type NearbyParkrunsProps = {
-  /** The runner's own parkruns: starred, and the ones they have run. */
-  knownSlugs: readonly string[]
+  /** Their usual parkrun, which "near" is measured from by default. */
+  homeSlug: string | undefined
   /** Shares the page's "where" box, so a search needs no permission. */
   place: string
+  /** The page's circle, when it has a radius and somewhere to draw it from. */
+  circle: { centre: GeoPoint; radiusKm: number } | null
   onPlan: (event: ParkrunCatalogEvent, date: Date) => Promise<void>
   onWatch: (event: ParkrunCatalogEvent) => Promise<void>
   addedSlugs: readonly string[]
@@ -32,8 +35,9 @@ type NearbyParkrunsProps = {
  * location.
  */
 export function NearbyParkruns({
-  knownSlugs,
+  homeSlug,
   place,
+  circle,
   onPlan,
   onWatch,
   addedSlugs,
@@ -49,15 +53,23 @@ export function NearbyParkruns({
     void loadParkrunCatalog().then((loaded) => setCatalog(loaded.events))
   }, [])
 
+  // The page's circle first, then the usual parkrun, then the browser.
   const references = useMemo(() => {
+    if (circle) return [circle.centre]
     if (!catalog) return []
-    const own = referencePoints(catalog, knownSlugs)
-    return own.length > 0 ? own : located ? [located] : []
-  }, [catalog, knownSlugs, located])
+    const home = homeSlug ? referencePoints(catalog, [homeSlug]) : []
+    return home.length > 0 ? home : located ? [located] : []
+  }, [catalog, circle, homeSlug, located])
 
   const candidates = useMemo(
-    () => (catalog ? nearbyParkruns(catalog, references, { place }) : []),
-    [catalog, place, references],
+    () =>
+      catalog
+        ? nearbyParkruns(catalog, references, {
+            place: circle ? undefined : place,
+            radiusKm: circle?.radiusKm,
+          })
+        : [],
+    [catalog, circle, place, references],
   )
 
   const saturday = nextParkrunDate()
@@ -137,22 +149,34 @@ export function NearbyParkruns({
           {candidates.map(({ event, distanceKm }) => (
             <li
               key={event.slug}
-              className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-4 py-3 last:border-b-0"
+              className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0"
             >
-              <span className="font-semibold text-foreground">{event.longName}</span>
-              <span className="text-xs text-muted">{event.location}</span>
-              {references.length > 0 ? (
-                <span className="text-xs text-muted">
-                  {t('parkrunDiscovery.away', { km: distanceKm.toFixed(1) })}
+              <div className="min-w-0 flex-1">
+                <span className="block font-semibold text-foreground">{event.longName}</span>
+                <span className="block text-xs text-muted">
+                  {/* The usual parkrun is where "near" is measured from, 0 km away. */}
+                  {references.length > 0 && distanceKm >= 0.05
+                    ? `${event.location} · ${t('parkrunDiscovery.away', { km: distanceKm.toFixed(1) })}`
+                    : event.location}
                 </span>
-              ) : null}
-              <span className="text-xs text-muted">
-                {t('parkrunDiscovery.saturday', { date: formatDatePt(saturday) })}
+              </div>
+              <span className="w-24 shrink-0 text-end text-xs tabular-nums text-muted">
+                {formatDatePt(saturday)}
               </span>
 
-              {/* The same two actions as every other race in this page, drawn
-                  the same way: a parkrun is not a different kind of row. */}
-              <div className="ms-auto flex flex-nowrap items-center gap-1">
+              {/* The same actions as every other race in this page, drawn the
+                  same way: a parkrun is not a different kind of row. */}
+              <div className="flex shrink-0 flex-nowrap items-center gap-1">
+                <a
+                  href={parkrunSite({ parkrunEventSlug: event.slug, parkrunCountryUrl: event.countryUrl })}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={t('common.officialSite')}
+                  aria-label={t('common.officialSite')}
+                  className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                >
+                  <ExternalLinkIcon />
+                </a>
                 <button
                   type="button"
                   onClick={() => void run(event.slug, () => onPlan(event, saturday))}

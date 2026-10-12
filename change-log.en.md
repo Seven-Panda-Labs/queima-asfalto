@@ -10,9 +10,14 @@
 
 - **Race website:** a link in the events and wish lists and on the event page. For parkruns, it opens the event's page.
 
+### Changed
+
+- **More compact lists:** in events, planning and discovery, the location and pace sit under the name and time, and the actions stay in view.
+
 ### Fixed
 
 - **Catalog URLs:** the admin area adds a missing `https://` and refuses invalid addresses.
+- **Parkruns near you:** measured from your usual parkrun, or from the radius set in the search.
 
 ---
 

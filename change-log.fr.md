@@ -10,9 +10,14 @@
 
 - **Site officiel de la course :** un lien dans les listes d'événements et d'envies et sur la page de l'événement. Pour les parkruns, il ouvre la page de l'événement.
 
+### Modifié
+
+- **Listes plus compactes :** dans les événements, la planification et la découverte, le lieu et l'allure passent sous le nom et le temps, et les actions restent visibles.
+
 ### Corrigé
 
 - **Adresses du catalogue :** l'administration ajoute `https://` s'il manque et refuse les adresses invalides.
+- **Parkruns près de chez toi :** mesurés depuis ton parkrun habituel, ou depuis le rayon choisi dans la recherche.
 
 ---
 

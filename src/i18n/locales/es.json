@@ -176,7 +176,6 @@
     "recoverMessage": "¿Quieres mover \"{{name}}\" de vuelta a la bucket list? El evento se eliminará.",
     "recovered": "\"{{name}}\" se ha recuperado en la bucket list.",
     "editEvent": "Editar evento",
-    "viewEvent": "Ver evento",
     "registerResults": "Registrar resultados",
     "deleteEvent": "Eliminar evento",
     "recoverBucket": "Recuperar a la bucket list"

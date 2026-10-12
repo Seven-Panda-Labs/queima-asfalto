@@ -36,7 +36,7 @@ export function WishList({
   items,
   races,
   catalog,
-  season,
+  season: seasonFor,
   anchorRaceIds,
   actions,
 }: WishListProps) {
@@ -51,48 +51,56 @@ export function WishList({
         // A day when the edition has been published, the typical month while
         // it has not: the difference between a decision and a dream.
         const next = wishNextDate(item, races, catalog)
+        const annotation = item.raceId ? seasonFor.get(item.raceId) : undefined
+        const season =
+          annotation &&
+          (annotation.window ||
+            (annotation.serves && annotation.serves.weeksBefore >= 1) ||
+            annotation.warnings.length > 0)
+            ? annotation
+            : undefined
+        const details = [
+          subject.location,
+          (item.disciplines ?? []).map((discipline) => formatEventTypeLabel(discipline)).join(', '),
+          item.role && item.role !== 'none' ? t(`bucketList.roles.${item.role}`) : '',
+        ].filter(Boolean)
         return (
-          <li key={item.id} className="flex flex-wrap items-center gap-x-3 gap-y-1 px-4 py-3">
-            <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
-              {item.emoji ? <span aria-hidden>{item.emoji}</span> : null}
-              <span>{subject.name}</span>
-            </span>
-            {item.raceId && anchorRaceIds.has(item.raceId) ? (
-              <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
-                {t('funnel.anchor')}
-              </span>
-            ) : null}
+          <li key={item.id} className="flex items-center gap-3 px-4 py-3">
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
+                  {item.emoji ? <span aria-hidden>{item.emoji}</span> : null}
+                  <span>{subject.name}</span>
+                </span>
+                {item.raceId && anchorRaceIds.has(item.raceId) ? (
+                  <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
+                    {t('funnel.anchor')}
+                  </span>
+                ) : null}
+              </div>
+              {details.length > 0 ? (
+                <p className="text-xs text-muted">{details.join(' · ')}</p>
+              ) : null}
+              {season ? (
+                <div className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1">
+                  <SeasonNotes season={season} />
+                </div>
+              ) : null}
+            </div>
 
-            <span className="text-xs text-muted">
-              {(item.disciplines ?? [])
-                .map((discipline) => formatEventTypeLabel(discipline))
-                .join(', ')}
-            </span>
-            {subject.location ? (
-              <span className="text-xs text-muted">{subject.location}</span>
-            ) : null}
-
-            {item.role && item.role !== 'none' ? (
-              <span className="text-xs font-semibold text-muted">
-                {t(`bucketList.roles.${item.role}`)}
-              </span>
-            ) : null}
-
-            {next ? (
-              <span
-                className={`text-xs tabular-nums ${
-                  next.kind === 'day' ? 'font-semibold text-foreground' : 'text-muted'
-                }`}
-              >
-                {next.kind === 'day'
+            <span
+              className={`w-28 shrink-0 text-end text-xs tabular-nums ${
+                next?.kind === 'day' ? 'font-semibold text-foreground' : 'text-muted'
+              }`}
+            >
+              {next
+                ? next.kind === 'day'
                   ? formatDatePt(new Date(`${next.day}T12:00:00`))
-                  : t('planning.typicalMonth', { month: monthName(next.month) })}
-              </span>
-            ) : null}
+                  : t('planning.typicalMonth', { month: monthName(next.month) })
+                : null}
+            </span>
 
-            <SeasonNotes season={item.raceId ? season.get(item.raceId) : undefined} />
-
-            <div className="ml-auto flex flex-nowrap items-center gap-1">{actions(item)}</div>
+            <div className="flex shrink-0 flex-nowrap items-center gap-1">{actions(item)}</div>
           </li>
           )
       })}
