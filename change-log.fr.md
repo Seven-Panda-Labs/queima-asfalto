@@ -8,7 +8,11 @@
 
 ### Ajouté
 
-- **Site officiel de la course :** une icône dans la liste des événements et dans la liste d'envies ouvre le site de l'organisateur, et la page de l'événement affiche le lien à côté du lieu. Si le site de l'organisateur n'est pas connu, il ouvre la page où la course a été trouvée. Pour les parkruns, il ouvre la page de chaque événement.
+- **Site officiel de la course :** un lien dans les listes d'événements et d'envies et sur la page de l'événement. Pour les parkruns, il ouvre la page de l'événement.
+
+### Corrigé
+
+- **Adresses du catalogue :** l'administration ajoute `https://` s'il manque et refuse les adresses invalides.
 
 ---
 

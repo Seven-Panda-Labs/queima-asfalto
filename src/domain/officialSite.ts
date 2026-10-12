@@ -26,8 +26,23 @@ export function webUrl(value: string | undefined): string | undefined {
   if (!value) return undefined
   try {
     const url = new URL(value.trim())
-    return url.protocol === 'https:' || url.protocol === 'http:' ? url.href : undefined
+    if (url.protocol !== 'https:' && url.protocol !== 'http:') return undefined
+    // The parser takes ",example.de" or "example" as a host, and a browser
+    // cannot open either.
+    return /^[a-z0-9-]+(?:\.[a-z0-9-]+)+$/i.test(url.hostname) ? url.href : undefined
   } catch {
     return undefined
   }
+}
+
+/**
+ * A typed address as it should be stored: `https://` added when the scheme
+ * was left out, `undefined` when nothing was typed, and `null` when it is not
+ * a web address at all.
+ */
+export function normalizeWebUrl(value: string | undefined): string | undefined | null {
+  const typed = value?.trim()
+  if (!typed) return undefined
+  const withScheme = /^[a-z][a-z0-9+.-]*:/i.test(typed) ? typed : `https://${typed}`
+  return webUrl(withScheme) ?? null
 }

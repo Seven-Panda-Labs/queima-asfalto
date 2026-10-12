@@ -64,6 +64,39 @@ describe('AdminCatalogForm', () => {
     expect(saved.disciplines).toEqual(['km_42_2'])
   })
 
+  it('stores a site typed without its scheme as a web address', async () => {
+    render(<AdminCatalogForm />)
+
+    fill('Nome', 'Maratona do Porto')
+    fill('Cidade', 'Porto')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fill('Fonte', 'maratonadoporto.com, confirmado 2026-09-01')
+    fill('URL oficial', 'maratonadoporto.com')
+    fireEvent.click(screen.getByText('Maratona'))
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() => expect(saveCatalogRaceForAdmin).toHaveBeenCalled())
+    const [saved] = saveCatalogRaceForAdmin.mock.calls[0]! as unknown as [{ officialUrl?: string }]
+    expect(saved.officialUrl).toBe('https://maratonadoporto.com/')
+  })
+
+  it('refuses a site no browser can open', async () => {
+    render(<AdminCatalogForm />)
+
+    fill('Nome', 'Maratona do Porto')
+    fill('Cidade', 'Porto')
+    fireEvent.change(screen.getByLabelText(/País/), { target: { value: 'PT' } })
+    fill('Fonte', 'x')
+    fill('URL oficial', 'https://,maratonadoporto.com')
+    fireEvent.click(screen.getByText('Maratona'))
+    fireEvent.click(screen.getByText('Guardar'))
+
+    await waitFor(() =>
+      expect(screen.getByText(/Endereço inválido/)).toBeInTheDocument(),
+    )
+    expect(saveCatalogRaceForAdmin).not.toHaveBeenCalled()
+  })
+
   it('refuses an entry with no country chosen', async () => {
     render(<AdminCatalogForm />)
 

@@ -8,7 +8,11 @@
 
 ### Hinzugefügt
 
-- **Offizielle Website des Laufs:** ein Symbol in der Veranstaltungsliste und auf der Wunschliste öffnet die Seite des Veranstalters, und die Veranstaltungsseite verlinkt sie neben dem Ort. Ist die Seite des Veranstalters nicht bekannt, öffnet es die Seite, auf der der Lauf gefunden wurde. Bei parkruns öffnet es die Seite des jeweiligen Events.
+- **Offizielle Website des Laufs:** ein Link in der Veranstaltungs- und Wunschliste und auf der Veranstaltungsseite. Bei parkruns öffnet er die Event-Seite.
+
+### Behoben
+
+- **Katalog-Adressen:** die Verwaltung ergänzt fehlendes `https://` und lehnt ungültige Adressen ab.
 
 ---
 

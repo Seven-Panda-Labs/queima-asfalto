@@ -1347,6 +1347,7 @@
     "catalogEntryMethod": "Mode d'inscription",
     "catalogMonth": "Mois habituel",
     "catalogOfficialUrl": "URL officielle",
+    "catalogUrlError": "Adresse non valide, par exemple : https://exemple.fr",
     "catalogOpenOfficial": "Ouvrir la page officielle de {{name}}",
     "catalogRegistrationUrl": "URL d'inscription",
     "catalogDisciplines": "Distances",

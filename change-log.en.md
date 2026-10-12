@@ -8,7 +8,11 @@
 
 ### Added
 
-- **The race's official website:** an icon in the events list and the wish list opens the organiser's site, and the event page links to it next to the location. When the organiser's site is not known, it opens the page the race was found on. For parkruns it opens each event's page.
+- **Race website:** a link in the events and wish lists and on the event page. For parkruns, it opens the event's page.
+
+### Fixed
+
+- **Catalog URLs:** the admin area adds a missing `https://` and refuses invalid addresses.
 
 ---
 
