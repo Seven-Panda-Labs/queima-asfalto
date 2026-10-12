@@ -1347,6 +1347,7 @@
     "catalogEntryMethod": "How you get in",
     "catalogMonth": "Typical month",
     "catalogOfficialUrl": "Official URL",
+    "catalogUrlError": "Not a valid address, for example: https://example.com",
     "catalogOpenOfficial": "Open the official page for {{name}}",
     "catalogRegistrationUrl": "Registration URL",
     "catalogDisciplines": "Distances",

@@ -1359,6 +1359,7 @@
     "catalogEntryMethod": "طريقة التسجيل",
     "catalogMonth": "الشهر المعتاد",
     "catalogOfficialUrl": "الرابط الرسمي",
+    "catalogUrlError": "عنوان غير صالح، مثال: https://example.com",
     "catalogOpenOfficial": "فتح الصفحة الرسمية لـ {{name}}",
     "catalogRegistrationUrl": "رابط التسجيل",
     "catalogDisciplines": "المسافات",

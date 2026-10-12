@@ -8,7 +8,11 @@
 
 ### Añadido
 
-- **Web oficial de la carrera:** un icono en la lista de eventos y en la lista de deseos abre la web del organizador, y la página del evento tiene el enlace junto al lugar. Cuando no se conoce la web del organizador, abre la página donde se encontró la carrera. En los parkruns abre la página de cada evento.
+- **Web oficial de la carrera:** un enlace en las listas de eventos y deseos y en la página del evento. En los parkruns, abre la página del evento.
+
+### Corregido
+
+- **Webs del catálogo:** la administración añade `https://` si falta y rechaza direcciones no válidas.
 
 ---
 

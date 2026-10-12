@@ -10,6 +10,7 @@ import { TimezoneSelect } from '../../components/TimezoneSelect/TimezoneSelect'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
 import { EVENT_TYPES, type EventType } from '../../domain/eventCodes'
+import { normalizeWebUrl } from '../../domain/officialSite'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import {
   isIsoDay,
@@ -60,6 +61,19 @@ function slugify(name: string): string {
 
 const inputClass =
   'mt-1 w-full rounded-md border border-border bg-background px-3 py-2 text-sm text-foreground'
+
+/** Runs after `validate`, so every address left is a web one or empty. */
+function withNormalizedUrls(race: RaceCatalogEntry): RaceCatalogEntry {
+  return {
+    ...race,
+    officialUrl: normalizeWebUrl(race.officialUrl) ?? undefined,
+    registrationUrl: normalizeWebUrl(race.registrationUrl) ?? undefined,
+    editions: race.editions?.map((edition) => ({
+      ...edition,
+      resultsUrl: normalizeWebUrl(edition.resultsUrl) ?? undefined,
+    })),
+  }
+}
 
 export function AdminCatalogForm() {
   const { t } = useTranslation()
@@ -135,6 +149,8 @@ export function AdminCatalogForm() {
     if (race.retired && !race.retiredReason) {
       next.retiredReason = t('admin.catalogRetiredReasonError')
     }
+    if (normalizeWebUrl(race.officialUrl) === null) next.officialUrl = t('admin.catalogUrlError')
+    if (normalizeWebUrl(race.registrationUrl) === null) next.registrationUrl = t('admin.catalogUrlError')
     if (!/^[a-z0-9-]+$/.test(id_)) next.id = t('admin.catalogIdError')
     // Naming it is the difference between a dead end and a link: an entry a
     // search could not reach held the id, and there was no way to get to it.
@@ -158,6 +174,7 @@ export function AdminCatalogForm() {
     }
     for (const edition of race.editions ?? []) {
       if (!edition.source.trim()) next.editions = t('admin.catalogEditionSourceError')
+      if (normalizeWebUrl(edition.resultsUrl) === null) next.editions = t('admin.catalogUrlError')
       // A day in the wrong shape is stored, compared as a string by the
       // duplicate rule and handed to `Intl`, which throws on it.
       if (edition.raceDate !== undefined && !isIsoDay(edition.raceDate)) {
@@ -189,7 +206,7 @@ export function AdminCatalogForm() {
 
     setSaving(true)
     try {
-      await saveCatalogRaceForAdmin({ ...race, id: race.id || slugify(race.name) }, user.uid)
+      await saveCatalogRaceForAdmin(withNormalizedUrls({ ...race, id: race.id || slugify(race.name) }), user.uid)
       toast.success(t('admin.catalogSaved'))
       navigate('/admin/catalogo')
     } catch {
@@ -328,8 +345,10 @@ export function AdminCatalogForm() {
               <input
                 value={race.officialUrl ?? ''}
                 onChange={(event) => set('officialUrl', event.target.value || undefined)}
+                placeholder="https://"
                 className={inputClass}
               />
+              {errors.officialUrl ? <span className="block text-xs text-danger">{errors.officialUrl}</span> : null}
             </label>
 
             <label className="text-sm font-semibold text-foreground sm:col-span-2">
@@ -337,8 +356,10 @@ export function AdminCatalogForm() {
               <input
                 value={race.registrationUrl ?? ''}
                 onChange={(event) => set('registrationUrl', event.target.value || undefined)}
+                placeholder="https://"
                 className={inputClass}
               />
+              {errors.registrationUrl ? <span className="block text-xs text-danger">{errors.registrationUrl}</span> : null}
             </label>
           </div>
 

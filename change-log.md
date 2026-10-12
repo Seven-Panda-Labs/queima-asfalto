@@ -8,7 +8,11 @@
 
 ### Adicionado
 
-- **Site oficial da prova:** um ícone na lista de eventos e na lista de desejos abre o site do organizador, e a página do evento tem o link ao lado do local. Quando o site do organizador não é conhecido, abre a página onde a prova foi encontrada. Nas parkruns abre a página de cada evento.
+- **Site oficial da prova:** um link nas listas de eventos e desejos e na página do evento. Nas parkruns, abre a página do evento.
+
+### Corrigido
+
+- **Sites no catálogo:** a administração acrescenta `https://` quando falta e recusa endereços inválidos.
 
 ---
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { officialSite, webUrl } from './officialSite'
+import { normalizeWebUrl, officialSite, webUrl } from './officialSite'
 
 const LISTING = 'https://www.runme.de/laufen/ze-ninguem-lauf'
 const ORGANISER = 'https://ze-ninguem-lauf.example/'
@@ -46,5 +46,23 @@ describe('webUrl', () => {
     expect(webUrl(ORGANISER)).toBe(ORGANISER)
     expect(webUrl('javascript:alert(1)')).toBeUndefined()
     expect(webUrl('not a url')).toBeUndefined()
+  })
+
+  it('refuses a host no browser can open', () => {
+    expect(webUrl('https://,ze-ninguem-lauf.example')).toBeUndefined()
+    expect(webUrl('https://ze-ninguem-lauf')).toBeUndefined()
+  })
+})
+
+describe('normalizeWebUrl', () => {
+  it('adds the scheme an operator left out', () => {
+    expect(normalizeWebUrl('ze-ninguem-lauf.example')).toBe('https://ze-ninguem-lauf.example/')
+    expect(normalizeWebUrl(' http://ze-ninguem-lauf.example/x ')).toBe('http://ze-ninguem-lauf.example/x')
+  })
+
+  it('is nothing for an empty field and null for something that is not an address', () => {
+    expect(normalizeWebUrl('  ')).toBeUndefined()
+    expect(normalizeWebUrl('https://,ze-ninguem-lauf.example')).toBeNull()
+    expect(normalizeWebUrl('mailto:ze@ninguem.example')).toBeNull()
   })
 })

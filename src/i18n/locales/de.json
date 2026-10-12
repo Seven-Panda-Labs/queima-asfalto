@@ -1347,6 +1347,7 @@
     "catalogEntryMethod": "Zugang zum Start",
     "catalogMonth": "Typischer Monat",
     "catalogOfficialUrl": "Offizielle URL",
+    "catalogUrlError": "Keine gültige Adresse, zum Beispiel: https://beispiel.de",
     "catalogOpenOfficial": "Die offizielle Seite von {{name}} öffnen",
     "catalogRegistrationUrl": "Anmelde-URL",
     "catalogDisciplines": "Distanzen",
