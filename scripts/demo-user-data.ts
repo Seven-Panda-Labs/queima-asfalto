@@ -12,24 +12,37 @@ export const DEMO_PROFILE = {
   favoriteParkrunSlugs: ['monsanto'],
 }
 
-export type SeedEvent = {
-  name: string
+type SeedEventBase = {
   date: string
   realDistance: number
   eventType: EventType
-  location: string
-  locationLat?: number
-  locationLng?: number
   status: EventStatus
   emoji?: string
   notes?: string | null
   time?: string
   classification?: string
   resultsPlatform?: string
-  parkrunEventSlug?: string
-  parkrunCountryUrl?: string
   resultsVerified?: boolean
 }
+
+/**
+ * A race from the catalog. The seed reads the entry from the target project
+ * and takes the name, the place and the site from it, so the demo shows what
+ * a runner who adds races from discovery sees.
+ */
+export type SeedRaceEvent = SeedEventBase & { catalogRaceId: string }
+
+/** A parkrun, which the race catalog does not hold on purpose. */
+export type SeedParkrunEvent = SeedEventBase & {
+  name: string
+  location: string
+  locationLat: number
+  locationLng: number
+  parkrunEventSlug: string
+  parkrunCountryUrl: string
+}
+
+export type SeedEvent = SeedRaceEvent | SeedParkrunEvent
 
 export type SeedGoal = {
   eventType: EventType
@@ -49,17 +62,11 @@ export type SeedPerformanceGoal = {
   notes?: string | null
 }
 
+/** A wish is a marker on a race, so all it carries is the race and a note. */
 export type SeedBucketListItem = {
-  name: string
-  location: string
-  realDistance: number
-  disciplines: EventType[]
-  targetMonth?: string
-  link?: string
-  emoji?: string
+  catalogRaceId: string
   notes?: string | null
-  locationLat?: number
-  locationLng?: number
+  recurring?: boolean
 }
 
 function parkrun(
@@ -67,7 +74,7 @@ function parkrun(
   time: string,
   classification: string,
   notes?: string,
-): SeedEvent {
+): SeedParkrunEvent {
   return {
     name: 'parkrun Monsanto',
     date,
@@ -88,56 +95,47 @@ function parkrun(
   }
 }
 
-/** Fictional runner history (2021 a 2026) with real Portuguese race names. */
+/**
+ * Fictional runner history (2021 to 2026) over real races from the catalog.
+ * Production ids: the seed skips, with a warning, any the target does not hold.
+ */
 export const DEMO_EVENTS: SeedEvent[] = [
   // 2021: getting started
   {
-    name: 'Corrida da Cidade de Almada',
+    catalogRaceId: 'lisbon-10k',
     date: '2021-03-14',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Almada',
-    locationLat: 38.68,
-    locationLng: -9.16,
     status: 'completed',
     emoji: '🎯',
     time: '01:04:12',
     classification: '842/2100',
   },
   {
-    name: 'Corrida da Mulher, Lisboa',
-    date: '2021-05-09',
-    realDistance: 5,
-    eventType: 'km_5',
-    location: 'Parque Eduardo VII, Lisboa',
-    locationLat: 38.727,
-    locationLng: -9.15,
-    status: 'completed',
-    emoji: '💜',
-    time: '00:32:45',
-    classification: '1205/4800',
-  },
-  {
-    name: 'Corrida Internacional de São João',
-    date: '2021-06-20',
+    catalogRaceId: 'meia-maratona-de-faro',
+    date: '2021-04-18',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Porto',
-    locationLat: 41.15,
-    locationLng: -8.61,
     status: 'completed',
     emoji: '🔥',
     time: '01:02:08',
     classification: '956/3200',
   },
   {
-    name: 'Meia Maratona de Cascais',
+    catalogRaceId: 'pt-peso-da-regua-meia-maratona-do-douro-vinhateiro',
+    date: '2021-05-30',
+    realDistance: 5,
+    eventType: 'km_5',
+    status: 'completed',
+    emoji: '🍇',
+    time: '00:32:45',
+    classification: '1205/4800',
+  },
+  {
+    catalogRaceId: 'pt-ovar-meia-maratona-de-ovar',
     date: '2021-10-17',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Cascais',
-    locationLat: 38.7,
-    locationLng: -9.42,
     status: 'completed',
     emoji: '🌊',
     time: '02:22:40',
@@ -148,13 +146,10 @@ export const DEMO_EVENTS: SeedEvent[] = [
   // 2022
   parkrun('2022-01-08', '00:28:42', '118/210'),
   {
-    name: 'Meia Maratona de Lisboa',
+    catalogRaceId: 'lisbon-half-marathon',
     date: '2022-03-20',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Lisboa',
-    locationLat: 38.72,
-    locationLng: -9.14,
     status: 'completed',
     emoji: '🏙️',
     time: '02:12:55',
@@ -163,27 +158,21 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida Montepio 10K',
+    catalogRaceId: 'pt-9950-302-madalena-do-pico-azores-trail-run',
     date: '2022-05-15',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.74,
-    locationLng: -9.16,
     status: 'completed',
-    emoji: '🏦',
+    emoji: '🌋',
     time: '00:58:20',
     classification: '640/2800',
   },
   parkrun('2022-07-02', '00:27:55', '92/198'),
   {
-    name: 'Trail da Arrábida, Curto',
-    date: '2022-09-18',
+    catalogRaceId: 'pt-sintra-trail-do-bom-despacho',
+    date: '2022-10-16',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Setúbal',
-    locationLat: 38.52,
-    locationLng: -8.9,
     status: 'completed',
     emoji: '⛰️',
     time: '01:06:30',
@@ -191,15 +180,12 @@ export const DEMO_EVENTS: SeedEvent[] = [
     notes: 'Primeiro trail.',
   },
   {
-    name: 'Vodafone mini-maratona de Lisboa',
-    date: '2022-11-06',
+    catalogRaceId: 'pt-restelo-meia-maratona-dos-descobrimentos',
+    date: '2022-11-27',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Lisboa',
-    locationLat: 38.72,
-    locationLng: -9.14,
     status: 'completed',
-    emoji: '📱',
+    emoji: '⛵',
     time: '02:08:44',
     classification: '980/11200',
     resultsPlatform: 'sporthive',
@@ -210,53 +196,41 @@ export const DEMO_EVENTS: SeedEvent[] = [
   // 2023
   parkrun('2023-02-04', '00:26:58', '71/192'),
   {
-    name: 'Meia Maratona do Douro',
-    date: '2023-04-02',
-    realDistance: 21.1,
-    eventType: 'km_21_1',
-    location: 'Peso da Régua',
-    locationLat: 41.16,
-    locationLng: -7.79,
-    status: 'completed',
-    emoji: '🍷',
-    time: '02:05:18',
-    classification: '540/3200',
-  },
-  {
-    name: 'Corrida da Ponte 25 de Abril',
-    date: '2023-05-28',
+    catalogRaceId: 'pt-cascais-montepio-meia-maratona-de-cascais',
+    date: '2023-02-05',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.69,
-    locationLng: -9.17,
     status: 'completed',
     emoji: '🌉',
     time: '00:54:32',
     classification: '720/6500',
   },
-  parkrun('2023-07-15', '00:26:20', '64/188'),
   {
-    name: 'Meia Maratona de Braga',
-    date: '2023-09-24',
+    catalogRaceId: 'pt-peso-da-regua-meia-maratona-do-douro-vinhateiro',
+    date: '2023-05-21',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Braga',
-    locationLat: 41.55,
-    locationLng: -8.43,
     status: 'completed',
-    emoji: '🏛️',
+    emoji: '🍷',
+    time: '02:05:18',
+    classification: '540/3200',
+  },
+  parkrun('2023-07-15', '00:26:20', '64/188'),
+  {
+    catalogRaceId: 'valencia-half-marathon',
+    date: '2023-10-22',
+    realDistance: 21.1,
+    eventType: 'km_21_1',
+    status: 'completed',
+    emoji: '🍊',
     time: '02:03:05',
     classification: '410/2100',
   },
   {
-    name: 'Corrida São Silvestre de Lisboa',
+    catalogRaceId: 'pt-alcochete-corrida-sao-silvestre-de-alcochete',
     date: '2023-12-31',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.71,
-    locationLng: -9.14,
     status: 'completed',
     emoji: '🎆',
     time: '00:52:18',
@@ -266,13 +240,10 @@ export const DEMO_EVENTS: SeedEvent[] = [
   // 2024: stronger year
   parkrun('2024-01-13', '00:25:48', '58/176'),
   {
-    name: 'Meia Maratona de Lisboa',
+    catalogRaceId: 'lisbon-half-marathon',
     date: '2024-03-17',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Lisboa',
-    locationLat: 38.72,
-    locationLng: -9.14,
     status: 'completed',
     emoji: '🏙️',
     time: '01:58:42',
@@ -281,40 +252,31 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida da Mulher, Porto',
-    date: '2024-05-12',
-    realDistance: 5,
-    eventType: 'km_5',
-    location: 'Porto',
-    locationLat: 41.15,
-    locationLng: -8.61,
-    status: 'completed',
-    emoji: '💜',
-    time: '00:27:35',
-    classification: '430/3900',
-  },
-  {
-    name: 'Algés 10K',
-    date: '2024-06-09',
+    catalogRaceId: 'meia-maratona-de-faro',
+    date: '2024-04-14',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Algés',
-    locationLat: 38.7,
-    locationLng: -9.23,
     status: 'completed',
     emoji: '⚡',
     time: '00:50:12',
     classification: '312/1800',
   },
+  {
+    catalogRaceId: 'pt-peso-da-regua-meia-maratona-do-douro-vinhateiro',
+    date: '2024-05-26',
+    realDistance: 5,
+    eventType: 'km_5',
+    status: 'completed',
+    emoji: '🍇',
+    time: '00:27:35',
+    classification: '430/3900',
+  },
   parkrun('2024-07-20', '00:25:05', '49/182'),
   {
-    name: 'Meia Maratona do Porto',
-    date: '2024-11-03',
+    catalogRaceId: 'pt-massarelos-meia-maratona-do-porto',
+    date: '2024-09-15',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Porto',
-    locationLat: 41.15,
-    locationLng: -8.61,
     status: 'completed',
     emoji: '🌉',
     time: '01:55:28',
@@ -323,13 +285,10 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida de Natal, Belém',
-    date: '2024-12-15',
+    catalogRaceId: 'pt-alcochete-corrida-sao-silvestre-de-alcochete',
+    date: '2024-12-29',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Belém, Lisboa',
-    locationLat: 38.7,
-    locationLng: -9.21,
     status: 'completed',
     emoji: '🎄',
     time: '00:49:55',
@@ -339,40 +298,31 @@ export const DEMO_EVENTS: SeedEvent[] = [
   // 2025: marathon year
   parkrun('2025-01-11', '00:24:38', '42/168'),
   {
-    name: 'Meia Maratona de Cascais',
-    date: '2025-03-09',
+    catalogRaceId: 'pt-cascais-montepio-meia-maratona-de-cascais',
+    date: '2025-02-09',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Cascais',
-    locationLat: 38.7,
-    locationLng: -9.42,
     status: 'completed',
     emoji: '🌊',
     time: '01:52:14',
     classification: '520/4100',
   },
   {
-    name: 'Corrida Montepio 10K',
+    catalogRaceId: 'pt-9950-302-madalena-do-pico-azores-trail-run',
     date: '2025-05-18',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.74,
-    locationLng: -9.16,
     status: 'completed',
-    emoji: '🏦',
+    emoji: '🌋',
     time: '00:48:22',
     classification: '188/2600',
   },
   parkrun('2025-06-28', '00:24:05', '35/174'),
   {
-    name: 'EDP Maratona do Porto',
+    catalogRaceId: 'pt-porto-edp-maratona-do-porto',
     date: '2025-11-02',
     realDistance: 42.2,
     eventType: 'km_42_2',
-    location: 'Porto',
-    locationLat: 41.15,
-    locationLng: -8.61,
     status: 'completed',
     emoji: '🏅',
     time: '04:12:36',
@@ -382,13 +332,10 @@ export const DEMO_EVENTS: SeedEvent[] = [
     notes: 'Primeira maratona.',
   },
   {
-    name: 'Corrida São Silvestre de Lisboa',
+    catalogRaceId: 'pt-alcochete-corrida-sao-silvestre-de-alcochete',
     date: '2025-12-31',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.71,
-    locationLng: -9.14,
     status: 'completed',
     emoji: '🎆',
     time: '00:47:58',
@@ -398,13 +345,10 @@ export const DEMO_EVENTS: SeedEvent[] = [
   // 2026: current season
   parkrun('2026-01-10', '00:23:52', '31/162'),
   {
-    name: 'Meia Maratona de Lisboa',
+    catalogRaceId: 'lisbon-half-marathon',
     date: '2026-03-15',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Lisboa',
-    locationLat: 38.72,
-    locationLng: -9.14,
     status: 'completed',
     emoji: '🏙️',
     time: '01:50:05',
@@ -413,50 +357,38 @@ export const DEMO_EVENTS: SeedEvent[] = [
     resultsVerified: true,
   },
   {
-    name: 'Corrida da Ponte 25 de Abril',
-    date: '2026-05-25',
+    catalogRaceId: 'meia-maratona-de-faro',
+    date: '2026-04-19',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Lisboa',
-    locationLat: 38.69,
-    locationLng: -9.17,
     status: 'completed',
-    emoji: '🌉',
+    emoji: '⚡',
     time: '00:47:12',
     classification: '298/6100',
   },
   {
-    name: 'Meia Maratona do Douro',
-    date: '2026-09-06',
+    catalogRaceId: 'pt-ovar-meia-maratona-de-ovar',
+    date: '2026-10-25',
     realDistance: 21.1,
     eventType: 'km_21_1',
-    location: 'Peso da Régua',
-    locationLat: 41.16,
-    locationLng: -7.79,
     status: 'confirmed',
-    emoji: '🍷',
+    emoji: '🌊',
     notes: 'Hotel já reservado.',
   },
   {
-    name: 'EDP Maratona do Porto',
-    date: '2026-11-01',
+    catalogRaceId: 'pt-porto-edp-maratona-do-porto',
+    date: '2026-11-08',
     realDistance: 42.2,
     eventType: 'km_42_2',
-    location: 'Porto',
-    locationLat: 41.15,
-    locationLng: -8.61,
     status: 'planned',
     emoji: '🎯',
     notes: 'Objectivo sub-4h.',
   },
   {
-    name: 'Corrida de Natal, Belém',
-    date: '2026-12-13',
+    catalogRaceId: 'pt-alcochete-corrida-sao-silvestre-de-alcochete',
+    date: '2026-12-31',
     realDistance: 10,
     eventType: 'km_10',
-    location: 'Belém, Lisboa',
-    locationLat: 38.7,
-    locationLng: -9.21,
     status: 'planned',
     emoji: '🎄',
   },
@@ -511,7 +443,7 @@ export const DEMO_PERFORMANCE_GOALS: SeedPerformanceGoal[] = [
     year: 2026,
     targetTime: '01:48:00',
     emoji: '🍷',
-    notes: 'Meia do Douro.',
+    notes: 'Meia de Ovar.',
   },
   {
     type: 'time_target',
@@ -524,58 +456,10 @@ export const DEMO_PERFORMANCE_GOALS: SeedPerformanceGoal[] = [
 ]
 
 export const DEMO_BUCKET_LIST: SeedBucketListItem[] = [
-  {
-    name: 'Maratona de Berlim',
-    location: 'Berlim, Alemanha',
-    realDistance: 42.2,
-    disciplines: ['km_42_2'],
-    targetMonth: 'September',
-    link: 'https://www.bmw-berlin-marathon.com',
-    emoji: '🐻',
-    locationLat: 52.52,
-    locationLng: 13.4,
-  },
-  {
-    name: 'Comrades Marathon',
-    location: 'KwaZulu-Natal, África do Sul',
-    realDistance: 89,
-    disciplines: ['km_42_2'],
-    targetMonth: 'June',
-    emoji: '🌍',
-    notes: 'Ultra clássica, sonho de longo prazo.',
-    locationLat: -29.6,
-    locationLng: 30.38,
-  },
-  {
-    name: 'UTMB CCC',
-    location: 'Chamonix, França',
-    realDistance: 101,
-    disciplines: ['km_42_2'],
-    targetMonth: 'August',
-    emoji: '⛰️',
-    notes: 'Trail de montanha.',
-    locationLat: 45.92,
-    locationLng: 6.87,
-  },
-  {
-    name: 'Great North Run',
-    location: 'Newcastle, Reino Unido',
-    realDistance: 21.1,
-    disciplines: ['km_21_1'],
-    targetMonth: 'September',
-    link: 'https://www.greatrun.org/great-north-run',
-    emoji: '🇬🇧',
-    locationLat: 54.98,
-    locationLng: -1.61,
-  },
-  {
-    name: 'São Silvestre de Porto',
-    location: 'Porto',
-    realDistance: 10,
-    disciplines: ['km_10'],
-    targetMonth: 'December',
-    emoji: '🎆',
-    locationLat: 41.15,
-    locationLng: -8.61,
-  },
+  // A copy in production, folded into the GENERALI BERLIN-MARATHON: the seed follows it.
+  { catalogRaceId: 'berlin-marathon', notes: 'A maratona mais rápida do mundo.' },
+  { catalogRaceId: 'tokyo-marathon', notes: 'Sorteio todos os anos, um dia calha.', recurring: true },
+  { catalogRaceId: 'london-marathon', notes: 'Sonho de longo prazo.' },
+  { catalogRaceId: 'gb-newcastle-upon-tyne-great-north-run' },
+  { catalogRaceId: 'copenhagen-half-marathon' },
 ]
