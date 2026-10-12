@@ -10,9 +10,14 @@
 
 - **Site oficial da prova:** um link nas listas de eventos e desejos e na página do evento. Nas parkruns, abre a página do evento.
 
+### Alterado
+
+- **Listas mais compactas:** nos eventos, no planeamento e na descoberta, o local e o ritmo passam para baixo do nome e do tempo, e as ações ficam sempre à vista.
+
 ### Corrigido
 
 - **Sites no catálogo:** a administração acrescenta `https://` quando falta e recusa endereços inválidos.
+- **Parkruns perto de ti:** medidas a partir da tua parkrun habitual, ou do raio escolhido na pesquisa.
 
 ---
 

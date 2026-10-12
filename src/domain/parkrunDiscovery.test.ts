@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import type { ParkrunCatalogEvent } from '../../shared/parkrun/catalog'
 import {
+  homeParkrunSlug,
   nearbyParkruns,
   nextParkrunDate,
   referencePoints,
@@ -110,5 +111,48 @@ describe('nearbyParkruns', () => {
       event({ slug: `p${index}`, lat: 38.7 + index / 1000, lng: -9.14 }),
     )
     expect(nearbyParkruns(many, fromLisbon, { limit: 3 })).toHaveLength(3)
+  })
+})
+
+describe('nearbyParkruns with a radius', () => {
+  const lisbon = { lat: 38.7223, lng: -9.1393 }
+
+  it('keeps only what is inside the radius', () => {
+    const slugs = nearbyParkruns(catalog, [lisbon], { radiusKm: 50 }).map(({ event }) => event.slug)
+    expect(slugs).toEqual(['lisboa', 'oeiras'])
+  })
+})
+
+describe('homeParkrunSlug', () => {
+  const today = new Date(2026, 9, 12)
+  const run = (slug: string, date: string, status = 'completed') => ({
+    parkrunEventSlug: slug,
+    status,
+    date: new Date(`${date}T09:00:00`),
+  })
+
+  it('is the parkrun run most often in the last year', () => {
+    const events = [
+      run('bushy', '2026-03-07'),
+      run('lisboa', '2026-05-02'),
+      run('lisboa', '2026-06-06'),
+      run('bushy', '2024-01-06'),
+      run('bushy', '2024-02-03'),
+    ]
+    expect(homeParkrunSlug(events, [], today)).toBe('lisboa')
+  })
+
+  it('takes the latest on a tie, and ignores what was not run', () => {
+    const events = [
+      run('bushy', '2026-03-07'),
+      run('lisboa', '2026-05-02'),
+      run('oeiras', '2026-09-05', 'planned'),
+    ]
+    expect(homeParkrunSlug(events, [], today)).toBe('lisboa')
+  })
+
+  it('falls back to the first favourite, then to nothing', () => {
+    expect(homeParkrunSlug([], ['oeiras', 'bushy'], today)).toBe('oeiras')
+    expect(homeParkrunSlug([], [], today)).toBeUndefined()
   })
 })

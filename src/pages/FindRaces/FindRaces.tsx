@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { DayField } from '../../components/DatePicker'
 import { NearbyParkruns } from '../../components/NearbyParkruns'
+import { homeParkrunSlug } from '../../domain/parkrunDiscovery'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import { useAuth } from '../../contexts/AuthContext'
 import { useToast } from '../../contexts/ToastContext'
@@ -160,37 +161,43 @@ function Candidate({
       : null
 
   return (
-    <li className="flex flex-wrap items-center gap-x-3 gap-y-1 border-b border-border px-4 py-3 last:border-b-0">
-      <span className="font-semibold text-foreground">{entry.name}</span>
-      {fitsAnchor ? (
-        <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
-          {t('findRaces.fitsAnchor', { count: Math.round(weeksBeforeAnchor ?? 0) })}
-        </span>
-      ) : null}
-      <span className="text-xs text-muted">{formatDatePt(date)}</span>
-      <span className="text-xs text-muted">
-        {[entry.city, entry.country].filter(Boolean).join(', ')}
-      </span>
-      <span className="text-xs text-muted">
-        {entry.disciplines.length > 0
-          ? entry.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')
-          : t('findRaces.distanceUnknown')}
-      </span>
-      {fee ? <span className="text-xs text-muted">{fee}</span> : null}
-      {/* An unreviewed entry may prefill a field and may never assert a deadline,
-          so the closing date is shown as what the listing said, not as a promise. */}
-      {edition.registrationClosesAt ? (
-        <span className="text-xs text-muted">
-          {t(
-            canAssertDates(entry)
-              ? 'findRaces.closes'
-              : 'findRaces.closesUnreviewed',
-            { date: formatDatePt(new Date(edition.registrationClosesAt)) },
-          )}
-        </span>
-      ) : null}
+    <li className="flex items-center gap-3 border-b border-border px-4 py-3 last:border-b-0">
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+          <span className="font-semibold text-foreground">{entry.name}</span>
+          {fitsAnchor ? (
+            <span className="rounded-full bg-accent/15 px-2 py-0.5 text-xs font-bold text-accent">
+              {t('findRaces.fitsAnchor', { count: Math.round(weeksBeforeAnchor ?? 0) })}
+            </span>
+          ) : null}
+        </div>
+        <p className="text-xs text-muted">
+          {[
+            [entry.city, entry.country].filter(Boolean).join(', '),
+            entry.disciplines.length > 0
+              ? entry.disciplines.map((discipline) => formatEventTypeLabel(discipline)).join(', ')
+              : t('findRaces.distanceUnknown'),
+            fee,
+          ]
+            .filter(Boolean)
+            .join(' · ')}
+        </p>
+        {/* An unreviewed entry may prefill a field and may never assert a deadline,
+            so the closing date is shown as what the listing said, not as a promise. */}
+        {edition.registrationClosesAt ? (
+          <p className="text-xs text-muted">
+            {t(canAssertDates(entry) ? 'findRaces.closes' : 'findRaces.closesUnreviewed', {
+              date: formatDatePt(new Date(edition.registrationClosesAt)),
+            })}
+          </p>
+        ) : null}
+      </div>
 
-      <div className="ms-auto flex items-center gap-2">
+      <span className="w-24 shrink-0 text-end text-xs tabular-nums text-muted">
+        {formatDatePt(date)}
+      </span>
+
+      <div className="flex shrink-0 flex-nowrap items-center gap-1">
         {entry.officialUrl ? (
           <a
             href={entry.officialUrl}
@@ -253,17 +260,10 @@ export function FindRaces() {
   const { profile: resultsProfile } = useUserResultsProfile()
   const { allEvents, addEvent } = useEvents()
 
-  /**
-   * The runner's own parkruns: the ones they starred, plus the ones they have
-   * run. Evidence, rather than asking the browser where they are.
-   */
-  const knownParkrunSlugs = useMemo(() => {
-    const slugs = new Set(resultsProfile.favoriteParkrunSlugs ?? [])
-    for (const event of allEvents) {
-      if (event.parkrunEventSlug) slugs.add(event.parkrunEventSlug)
-    }
-    return [...slugs]
-  }, [allEvents, resultsProfile.favoriteParkrunSlugs])
+  const homeParkrun = useMemo(
+    () => homeParkrunSlug(allEvents, resultsProfile.favoriteParkrunSlugs ?? []),
+    [allEvents, resultsProfile.favoriteParkrunSlugs],
+  )
 
   /** Planning is moving it onto the calendar, which for a parkrun is Saturday. */
   async function planParkrun(parkrun: ParkrunCatalogEvent, date: Date) {
@@ -431,6 +431,13 @@ export function FindRaces() {
   const centreLat = located?.lat ?? placeCentre?.lat
   const centreLng = located?.lng ?? placeCentre?.lng
   const hasCentre = centreLat !== undefined && centreLng !== undefined
+  const parkrunCircle = useMemo(
+    () =>
+      radiusKm && centreLat !== undefined && centreLng !== undefined
+        ? { centre: { lat: centreLat, lng: centreLng }, radiusKm }
+        : null,
+    [centreLat, centreLng, radiusKm],
+  )
 
   function askForLocation() {
     if (!navigator.geolocation) {
@@ -904,8 +911,9 @@ export function FindRaces() {
       ) : null}
 
       <NearbyParkruns
-        knownSlugs={knownParkrunSlugs}
+        homeSlug={homeParkrun}
         place={criteria.place}
+        circle={parkrunCircle}
         onPlan={planParkrun}
         onWatch={watchParkrun}
         addedSlugs={watchedParkruns}

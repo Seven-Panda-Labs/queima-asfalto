@@ -10,9 +10,14 @@
 
 - **Offizielle Website des Laufs:** ein Link in der Veranstaltungs- und Wunschliste und auf der Veranstaltungsseite. Bei parkruns öffnet er die Event-Seite.
 
+### Geändert
+
+- **Kompaktere Listen:** in Veranstaltungen, Planung und Entdecken stehen Ort und Tempo unter Name und Zeit, und die Aktionen bleiben sichtbar.
+
 ### Behoben
 
 - **Katalog-Adressen:** die Verwaltung ergänzt fehlendes `https://` und lehnt ungültige Adressen ab.
+- **Parkruns in deiner Nähe:** gemessen ab deinem üblichen parkrun oder ab dem Umkreis der Suche.
 
 ---
 

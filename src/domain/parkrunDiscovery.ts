@@ -53,6 +53,38 @@ export function referencePoints(
     .map((event) => ({ lat: event.lat, lng: event.lng }))
 }
 
+/** The parkrun a runner's results come from: an event of the parkrun series. */
+type RunParkrun = { parkrunEventSlug?: string; status: string; date: Date }
+
+const HOME_WINDOW_DAYS = 365
+
+/**
+ * The runner's usual parkrun: the one run most often in the last year, the
+ * latest on a tie, else the first one they starred.
+ *
+ * One point and not all of them, because a runner's parkruns span every trip
+ * they took, and measuring from each made Berlin and Sydney "near".
+ */
+export function homeParkrunSlug(
+  events: readonly RunParkrun[],
+  favorites: readonly string[],
+  today: Date = new Date(),
+): string | undefined {
+  const since = today.getTime() - HOME_WINDOW_DAYS * 24 * 60 * 60 * 1000
+  const runs = new Map<string, { count: number; latest: number }>()
+  for (const event of events) {
+    const slug = event.parkrunEventSlug
+    const at = event.date.getTime()
+    if (!slug || event.status !== 'completed' || at < since || at > today.getTime()) continue
+    const seen = runs.get(slug) ?? { count: 0, latest: 0 }
+    runs.set(slug, { count: seen.count + 1, latest: Math.max(seen.latest, at) })
+  }
+  const [home] = [...runs].sort(
+    ([, left], [, right]) => right.count - left.count || right.latest - left.latest,
+  )
+  return home?.[0] ?? favorites.find(Boolean)
+}
+
 function distanceKm(from: GeoPoint, to: GeoPoint): number {
   return haversineMeters({ lat: from.lat, lon: from.lng }, { lat: to.lat, lon: to.lng }) / 1000
 }
@@ -77,6 +109,8 @@ export type NearbyOptions = {
   /** Free text over the event's names and its town. */
   place?: string
   limit?: number
+  /** Only within this many km of the reference, when the runner set a radius. */
+  radiusKm?: number
 }
 
 export const DEFAULT_NEARBY_LIMIT = 6
@@ -118,8 +152,10 @@ export function nearbyParkruns(
     return place ? matches.slice(0, limit).map((event) => ({ event, distanceKm: 0 })) : []
   }
 
+  const radius = options.radiusKm
   return matches
     .map((event) => ({ event, distanceKm: nearestDistanceKm(event, references) }))
+    .filter(({ distanceKm }) => radius === undefined || distanceKm <= radius)
     .sort((left, right) => left.distanceKm - right.distanceKm)
     .slice(0, limit)
 }

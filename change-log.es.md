@@ -10,9 +10,14 @@
 
 - **Web oficial de la carrera:** un enlace en las listas de eventos y deseos y en la página del evento. En los parkruns, abre la página del evento.
 
+### Cambiado
+
+- **Listas más compactas:** en eventos, planificación y descubrimiento, el lugar y el ritmo van bajo el nombre y el tiempo, y las acciones quedan siempre a la vista.
+
 ### Corregido
 
 - **Webs del catálogo:** la administración añade `https://` si falta y rechaza direcciones no válidas.
+- **Parkruns cerca de ti:** medidos desde tu parkrun habitual, o desde el radio elegido en la búsqueda.
 
 ---
 

@@ -13,7 +13,6 @@ import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import {
   BucketIcon,
   ExternalLinkIcon,
-  EyeIcon,
   PencilIcon,
   StopwatchActionIcon,
   TrashIcon,
@@ -58,6 +57,17 @@ const UnmappedEventsPanel = lazy(() =>
 )
 
 const NO_EVENTS: Event[] = []
+
+/**
+ * The pinned actions cell needs a background of its own to cover what scrolls
+ * under it, and a record row's tint on top of that.
+ */
+function actionsCellClass(isRecord: boolean): string {
+  return [
+    'sticky end-0 bg-surface px-4 py-3',
+    isRecord ? 'before:pointer-events-none before:absolute before:inset-0 before:bg-accent/5' : '',
+  ].join(' ')
+}
 
 const STATUS_FILTER_OPTIONS: Array<EventStatus | 'all'> = ['all', ...EVENT_STATUSES]
 
@@ -293,21 +303,18 @@ export function Events() {
                   <th className="px-4 py-3 font-semibold">{t('common.date')}</th>
                   <th className="px-4 py-3 font-semibold">{t('eventDetail.title')}</th>
                   <th className="px-4 py-3 font-semibold">{t('common.distance')}</th>
-                  <th className="px-4 py-3 font-semibold">{t('common.location')}</th>
                   {!hideResults ? (
-                    <>
-                      <th className="px-4 py-3 font-semibold">{t('common.time')}</th>
-                      <th className="px-4 py-3 font-semibold">{t('common.pace')}</th>
-                    </>
+                    <th className="px-4 py-3 font-semibold">{t('common.time')}</th>
                   ) : null}
                   <th className="px-4 py-3 font-semibold">{t('common.status')}</th>
-                  {!isSharedView ? (
-                    <th className="px-4 py-3 font-semibold">{t('common.actions')}</th>
-                  ) : (
-                    <th className="px-4 py-3 font-semibold">
+                  {/* Pinned, so the actions stay in reach when a narrow screen scrolls. */}
+                  <th className="sticky end-0 bg-background px-4 py-3 font-semibold">
+                    {isSharedView ? (
                       <span className="sr-only">{t('common.actions')}</span>
-                    </th>
-                  )}
+                    ) : (
+                      t('common.actions')
+                    )}
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -333,49 +340,46 @@ export function Events() {
                         {event.emoji ? <span aria-hidden>{event.emoji}</span> : null}
                         <span>{event.name}</span>
                       </Link>
+                      {event.location ? (
+                        <span className="block text-xs text-muted">{event.location}</span>
+                      ) : null}
                     </td>
                     <td className="px-4 py-3 whitespace-nowrap">{event.realDistance} Km</td>
-                    <td className="px-4 py-3">{event.location || t('common.dash')}</td>
                     {!hideResults ? (
-                      <>
-                        <td className="px-4 py-3 whitespace-nowrap">
-                          <span className="inline-flex items-center gap-1">
-                            {event.time ?? t('common.dash')}
-                            {event.resultsVerified ? <VerifiedResultIndicator /> : null}
-                          </span>
-                        </td>
-                        <td
-                          className={[
-                            'px-4 py-3 whitespace-nowrap',
-                            isRecord ? 'font-semibold text-accent' : '',
-                          ].join(' ')}
-                        >
-                          {event.pace ? `${event.pace} ${t('common.paceUnit')}` : t('common.dash')}
-                        </td>
-                      </>
-                    ) : null}
-                    <td className="px-4 py-3">
-                      <div className="flex flex-wrap items-center gap-1">
-                        <StatusBadge status={event.status} />
-                        {event.outcomeReason ? (
-                          <span className="rounded-full border border-border px-2 py-0.5 text-xs font-semibold text-muted">
-                            {t(`outcome.reasons.${event.outcomeReason}`)}
+                      <td className="px-4 py-3 whitespace-nowrap">
+                        <span className="inline-flex items-center gap-1">
+                          {event.time ?? t('common.dash')}
+                          {event.resultsVerified ? <VerifiedResultIndicator /> : null}
+                        </span>
+                        {event.pace ? (
+                          <span
+                            className={[
+                              'block text-xs',
+                              isRecord ? 'font-semibold text-accent' : 'text-muted',
+                            ].join(' ')}
+                          >
+                            {event.pace} {t('common.paceUnit')}
                           </span>
                         ) : null}
-                      </div>
+                      </td>
+                    ) : null}
+                    <td className="px-4 py-3">
+                      {event.outcomeReason ? (
+                        <span
+                          className="inline-flex items-center gap-1 whitespace-nowrap"
+                          title={t(`outcome.reasons.${event.outcomeReason}`)}
+                        >
+                          <StatusBadge status={event.status} />
+                          <span aria-hidden className="text-xs text-muted">ⓘ</span>
+                          <span className="sr-only">{t(`outcome.reasons.${event.outcomeReason}`)}</span>
+                        </span>
+                      ) : (
+                        <StatusBadge status={event.status} />
+                      )}
                     </td>
                     {!isSharedView ? (
-                    <td className="px-4 py-3">
+                    <td className={actionsCellClass(isRecord)}>
                       <div className="flex flex-nowrap gap-1">
-                        <Link
-                          to={`/eventos/${event.id}`}
-                          state={eventLinkState(returnTo).state}
-                          title={t('events.viewEvent')}
-                          aria-label={t('events.viewEvent')}
-                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                        >
-                          <EyeIcon />
-                        </Link>
                         <Link
                           to={`/eventos/${event.id}/editar`}
                           state={eventLinkState(returnTo).state}
@@ -432,17 +436,8 @@ export function Events() {
                     </td>
                     ) : null}
                     {isSharedView ? (
-                      <td className="px-4 py-3">
+                      <td className={actionsCellClass(isRecord)}>
                         <div className="flex flex-nowrap gap-1">
-                          <Link
-                            to={buildEventDetailPath(event.id, { ownerId: activeOwnerId, returnTo })}
-                            state={eventLinkState(returnTo).state}
-                            title={t('events.viewEvent')}
-                            aria-label={t('events.viewEvent')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <EyeIcon />
-                          </Link>
                           {eventSites.has(event.id) ? (
                             <a
                               href={eventSites.get(event.id)}

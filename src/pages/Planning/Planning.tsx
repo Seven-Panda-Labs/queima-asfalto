@@ -325,19 +325,19 @@ export function Planning() {
               {chasing.map(({ entry, race }) => {
                 const waiting = nextDateFor(entry)
                 return (
-                  <li key={entry.id} className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                    <span className="text-sm font-semibold text-foreground">{race.name}</span>
-                    <span className="text-xs text-muted">
-                      {t(`entry.statuses.${entry.entryStatus}`)}
-                    </span>
-                    {waiting ? (
-                      <span className="text-xs tabular-nums text-muted">
-                        {formatDatePt(waiting)}
+                  <li key={entry.id} className="flex items-center gap-3">
+                    <div className="min-w-0 flex-1">
+                      <span className="block text-sm font-semibold text-foreground">{race.name}</span>
+                      <span className="block text-xs text-muted">
+                        {t(`entry.statuses.${entry.entryStatus}`)}
                       </span>
-                    ) : null}
+                    </div>
+                    <span className="w-28 shrink-0 text-end text-xs tabular-nums text-muted">
+                      {waiting ? formatDatePt(waiting) : null}
+                    </span>
                     <Link
                       to={`/planeamento/inscricao/${race.id}/${entry.year}`}
-                      className="ml-auto text-xs font-semibold text-primary hover:underline"
+                      className="shrink-0 text-xs font-semibold text-primary hover:underline"
                     >
                       {t('entry.openDeadlines')}
                     </Link>
