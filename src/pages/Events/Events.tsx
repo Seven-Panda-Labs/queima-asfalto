@@ -12,6 +12,7 @@ import { StatusBadge } from '../../components/StatusBadge'
 import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
 import {
   BucketIcon,
+  ExternalLinkIcon,
   EyeIcon,
   PencilIcon,
   StopwatchActionIcon,
@@ -23,6 +24,8 @@ import { SharedDataLoading } from '../../components/SharedDataLoading/SharedData
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
+import { useEventSites } from '../../hooks/useOfficialSites'
+import { useRaces } from '../../hooks/useRaces'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
 import { useSharedSection } from '../../hooks/useSharedSection'
 import type { Event } from '../../types/Event'
@@ -53,6 +56,8 @@ const EventMap = lazy(() =>
 const UnmappedEventsPanel = lazy(() =>
   import('../../components/EventMap').then((module) => ({ default: module.UnmappedEventsPanel })),
 )
+
+const NO_EVENTS: Event[] = []
 
 const STATUS_FILTER_OPTIONS: Array<EventStatus | 'all'> = ['all', ...EVENT_STATUSES]
 
@@ -103,6 +108,11 @@ export function Events() {
   const loading = isSharedView ? sharedEvents.loading : ownEvents.loading
   const error = isSharedView ? sharedEvents.error : ownEvents.error
   const removeEvent = ownEvents.removeEvent
+  const { races } = useRaces()
+  // Only the table has a place for the link.
+  const eventSites = useEventSites(viewMode === 'lista' ? events : NO_EVENTS, races, {
+    readRaces: !isSharedView,
+  })
 
   const availableYears = useMemo(() => {
     const years = new Set(allEvents.map((event) => event.date.getFullYear()))
@@ -375,6 +385,18 @@ export function Events() {
                         >
                           <PencilIcon />
                         </Link>
+                        {eventSites.has(event.id) ? (
+                          <a
+                            href={eventSites.get(event.id)}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            title={t('common.officialSite')}
+                            aria-label={t('common.officialSite')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                          >
+                            <ExternalLinkIcon />
+                          </a>
+                        ) : null}
                         {event.status === 'confirmed' ? (
                           <Link
                             to={`/eventos/${event.id}?resultado=editar`}
@@ -411,15 +433,29 @@ export function Events() {
                     ) : null}
                     {isSharedView ? (
                       <td className="px-4 py-3">
-                        <Link
-                          to={buildEventDetailPath(event.id, { ownerId: activeOwnerId, returnTo })}
-                          state={eventLinkState(returnTo).state}
-                          title={t('events.viewEvent')}
-                          aria-label={t('events.viewEvent')}
-                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                        >
-                          <EyeIcon />
-                        </Link>
+                        <div className="flex flex-nowrap gap-1">
+                          <Link
+                            to={buildEventDetailPath(event.id, { ownerId: activeOwnerId, returnTo })}
+                            state={eventLinkState(returnTo).state}
+                            title={t('events.viewEvent')}
+                            aria-label={t('events.viewEvent')}
+                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                          >
+                            <EyeIcon />
+                          </Link>
+                          {eventSites.has(event.id) ? (
+                            <a
+                              href={eventSites.get(event.id)}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              title={t('common.officialSite')}
+                              aria-label={t('common.officialSite')}
+                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
+                            >
+                              <ExternalLinkIcon />
+                            </a>
+                          ) : null}
+                        </div>
                       </td>
                     ) : null}
                   </tr>

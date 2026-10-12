@@ -4,6 +4,14 @@
 
 ---
 
+## [1.89.0] - 2026-10-12
+
+### Added
+
+- **The race's official website:** an icon in the events list and the wish list opens the organiser's site, and the event page links to it next to the location. When the organiser's site is not known, it opens the page the race was found on. For parkruns it opens each event's page.
+
+---
+
 ## [1.88.0] - 2026-10-12
 
 ### Changed

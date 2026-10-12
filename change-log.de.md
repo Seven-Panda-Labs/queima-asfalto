@@ -4,6 +4,14 @@
 
 ---
 
+## [1.89.0] - 2026-10-12
+
+### Hinzugefügt
+
+- **Offizielle Website des Laufs:** ein Symbol in der Veranstaltungsliste und auf der Wunschliste öffnet die Seite des Veranstalters, und die Veranstaltungsseite verlinkt sie neben dem Ort. Ist die Seite des Veranstalters nicht bekannt, öffnet es die Seite, auf der der Lauf gefunden wurde. Bei parkruns öffnet es die Seite des jeweiligen Events.
+
+---
+
 ## [1.88.0] - 2026-10-12
 
 ### Geändert

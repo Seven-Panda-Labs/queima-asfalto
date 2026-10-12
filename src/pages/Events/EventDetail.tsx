@@ -15,7 +15,7 @@ import { CourseHistory } from '../../components/CourseHistory'
 import { RaceProjection } from '../../components/RaceProjection'
 import { OfficialResultsLookup } from '../../components/OfficialResultsLookup/OfficialResultsLookup'
 import { EventResultEditor } from '../../components/EventResultEditor'
-import { PencilIcon } from '../../components/icons/actionIcons'
+import { ExternalLinkIcon, PencilIcon } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { FinishFlagIcon, RoadIcon, StatStrip, StopwatchIcon } from '../../components/StatStrip'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
@@ -24,6 +24,7 @@ import { useToast } from '../../contexts/ToastContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaces } from '../../hooks/useRaces'
+import { useEventSites } from '../../hooks/useOfficialSites'
 import { IdentifyInCatalog } from './IdentifyInCatalog'
 import { useEventMedia } from '../../hooks/useEventMedia'
 import { useEventTrack } from '../../hooks/useEventTrack'
@@ -134,6 +135,10 @@ export function EventDetail() {
   } = useEventMedia(isSharedView ? undefined : id)
 
   const [event, setEvent] = useState<Event | null>(null)
+  const shownEvents = useMemo(() => (event ? [event] : []), [event])
+  const officialSiteUrl = useEventSites(shownEvents, races, { readRaces: !isSharedView }).get(
+    event?.id ?? '',
+  )
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [recovering, setRecovering] = useState(false)
@@ -482,6 +487,20 @@ export function EventDetail() {
               <p className="mt-1 text-sm text-muted">
                 {formatEventTypeLabel(event.eventType)} · {event.realDistance} Km ·{' '}
                 {event.location || t('common.dash')}
+                {officialSiteUrl ? (
+                  <>
+                    {' · '}
+                    <a
+                      href={officialSiteUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 font-semibold text-primary hover:text-primary-hover"
+                    >
+                      {t('common.officialSite')}
+                      <ExternalLinkIcon />
+                    </a>
+                  </>
+                ) : null}
               </p>
             </div>
           </div>
