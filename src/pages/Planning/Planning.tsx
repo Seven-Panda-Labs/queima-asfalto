@@ -15,8 +15,11 @@ import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/Schedule
 import { useAuth } from '../../contexts/AuthContext'
 import { useBucketList } from '../../hooks/useBucketList'
 import { useEvents } from '../../hooks/useEvents'
+import { useOfficialSites } from '../../hooks/useOfficialSites'
 import { useRaces } from '../../hooks/useRaces'
 import { prefillFromCatalog, type EntryPrefill } from '../../domain/entryPrefill'
+import { webUrl } from '../../domain/officialSite'
+import { isListingPage } from '../../../shared/eventDiscovery/organiserLink'
 import { wishPins, wishSubject } from '../../domain/wishSubject'
 import { wishNextDate, wishSortKey } from '../../domain/wishNextDate'
 import { formatDatePt } from '../../utils/date'
@@ -223,6 +226,19 @@ export function Planning() {
     }
   }
 
+  const raceSites = useOfficialSites(
+    useMemo(() => items.map((item) => item.raceId), [items]),
+    races,
+  )
+
+  /** The race's site, or the link a wish typed by hand still carries. */
+  function wishSite(item: BucketListItem): string | undefined {
+    const known = [item.raceId ? raceSites.get(item.raceId) : undefined, webUrl(item.link)].filter(
+      (url): url is string => Boolean(url),
+    )
+    return known.find((url) => !isListingPage(url)) ?? known[0]
+  }
+
   /**
    * Opens the one step between a wish and the calendar.
    *
@@ -419,13 +435,13 @@ export function Planning() {
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
             actions={(item) => (
               <>
-                {item.link ? (
+                {wishSite(item) ? (
                   <a
-                    href={item.link}
+                    href={wishSite(item)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    aria-label={t('common.open')}
-                    title={t('common.open')}
+                    aria-label={t('common.officialSite')}
+                    title={t('common.officialSite')}
                     className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
                   >
                     <ExternalLinkIcon />

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.89.0] - 2026-10-12
+
+### Adicionado
+
+- **Site oficial da prova:** um ícone na lista de eventos e na lista de desejos abre o site do organizador, e a página do evento tem o link ao lado do local. Quando o site do organizador não é conhecido, abre a página onde a prova foi encontrada. Nas parkruns abre a página de cada evento.
+
+---
+
 ## [1.88.0] - 2026-10-12
 
 ### Alterado

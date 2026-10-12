@@ -4,6 +4,14 @@
 
 ---
 
+## [1.89.0] - 2026-10-12
+
+### Añadido
+
+- **Web oficial de la carrera:** un icono en la lista de eventos y en la lista de deseos abre la web del organizador, y la página del evento tiene el enlace junto al lugar. Cuando no se conoce la web del organizador, abre la página donde se encontró la carrera. En los parkruns abre la página de cada evento.
+
+---
+
 ## [1.88.0] - 2026-10-12
 
 ### Cambiado

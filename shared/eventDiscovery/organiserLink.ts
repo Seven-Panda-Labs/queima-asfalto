@@ -26,6 +26,26 @@ const NOT_THE_ORGANISER =
   /(?:^|\.)(?:runme\.(?:de|at|ch|us)|running\.life|walking\.life|gotrail\.run|evenager\.com|myraceland\.com|kilometerliebe\.de|planet-marathon\.de)$/i
 
 /**
+ * Calendars a harvest records as a race's page when it found no organiser
+ * link, beyond the platforms above. Measured on one instance: of 563 entries
+ * whose two URLs are the same, most were organisers' own sites, read directly.
+ * An entry or results page (davengo, raceresult) is not here: the organiser
+ * sets it up for the race, so it is the closest thing to a site it has.
+ */
+const LISTINGS = /(?:^|\.)acorrer\.pt$/i
+
+/** A page that lists the race rather than being its organiser's site. */
+export function isListingPage(url: string | undefined): boolean {
+  if (!url) return false
+  try {
+    const host = new URL(url).hostname
+    return NOT_THE_ORGANISER.test(host) || LISTINGS.test(host)
+  } catch {
+    return false
+  }
+}
+
+/**
  * The attributes of every anchor on the page.
  *
  * The opening tag alone, because an anchor's contents can be anything: the

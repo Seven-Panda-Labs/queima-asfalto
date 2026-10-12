@@ -4,6 +4,14 @@
 
 ---
 
+## [1.89.0] - 2026-10-12
+
+### Ajouté
+
+- **Site officiel de la course :** une icône dans la liste des événements et dans la liste d'envies ouvre le site de l'organisateur, et la page de l'événement affiche le lien à côté du lieu. Si le site de l'organisateur n'est pas connu, il ouvre la page où la course a été trouvée. Pour les parkruns, il ouvre la page de chaque événement.
+
+---
+
 ## [1.88.0] - 2026-10-12
 
 ### Modifié

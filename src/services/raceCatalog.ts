@@ -220,6 +220,32 @@ export async function loadCatalogRaces(ids: readonly string[]): Promise<RaceCata
 }
 
 /**
+ * The entries these ids name, with a merged copy replaced by the entry it was
+ * folded into, keyed by the id asked for.
+ *
+ * A merge moves the official site and the editions to the survivor, but a
+ * runner's race keeps pointing at the copy: race documents are theirs, and the
+ * merge cannot reach them.
+ */
+export async function loadCatalogRacesFollowingCopies(
+  ids: readonly string[],
+): Promise<Map<string, RaceCatalogEntry>> {
+  const asked = await loadCatalogRaces(ids)
+  const survivorIds = asked
+    .map((entry) => entry.duplicateOfCatalogRaceId)
+    .filter((id): id is string => Boolean(id))
+  const survivors = new Map(
+    (await loadCatalogRaces(survivorIds)).map((entry) => [entry.id, entry]),
+  )
+  return new Map(
+    asked.map((entry) => [
+      entry.id,
+      (entry.duplicateOfCatalogRaceId && survivors.get(entry.duplicateOfCatalogRaceId)) || entry,
+    ]),
+  )
+}
+
+/**
  * When the harvest last ran, or `null` on an instance that never harvests.
  *
  * The page shows it rather than implying live data: a catalog refreshed weekly
