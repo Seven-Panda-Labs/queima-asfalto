@@ -84,7 +84,8 @@ export function catalogId(race: DiscoveredRace): string {
 
 /**
  * The edition number written the way only an edition is written: "39." or
- * "XXXIV." at the front, with the dot that says "the thirty-ninth".
+ * "XXXIV." at the front, with the dot that says "the thirty-ninth", or the
+ * suffix Portuguese, Spanish and Italian say it with: "3ª", "5.º".
  *
  * Stricter than `EDITION_PREFIX`, which also reads a bare leading number.
  * That is right for comparing two names and wrong for storing one: of 698
@@ -92,7 +93,8 @@ export function catalogId(race: DiscoveredRace): string {
  * all of them the number is the race, not the year of it. "10 Marathon in 10
  * Tagen" is ten marathons, "20 Km de la Forêt de Beloeil" is the distance.
  */
-const EDITION_ORDINAL = /^\s*(?:\d{1,3}|[ivxlcdm]+)\s*[.)]\s+/i
+const EDITION_ORDINAL =
+  /^\s*(?:(?:\d{1,3}|[ivxlcdm]+)\s*[.)]|\d{1,3}\s*\.?\s*[ºª°])\s+/i
 
 /** How far ahead a calendar publishes, so a trailing year is this year's. */
 const EDITION_YEARS_AHEAD = 5
