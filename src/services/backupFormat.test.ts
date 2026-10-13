@@ -570,6 +570,12 @@ describe('validateRestoreDocument', () => {
     )
   })
 
+  it('accepts every platform an event can be saved with', () => {
+    // Pacer was missing from the list, so a backup holding one could not be restored.
+    expect(check('events', validEvent({ resultsPlatform: 'pacer' }))).toBeNull()
+    expect(check('events', validEvent({ resultsPlatform: 'stgk' }))).toBeNull()
+  })
+
   it('validates goals', () => {
     const goal = { userId: 'user-ze', eventType: 'km_10', targetCount: 12, year: 2026 }
 

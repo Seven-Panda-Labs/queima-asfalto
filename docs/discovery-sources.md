@@ -1,786 +1,111 @@
-# Fontes de descoberta / Discovery sources
+# Discovery sources
 
-[Português](#português) | [English](#english)
+How the app finds new races for the [catalog](./race-catalog.md), and what it takes to add a source.
 
-## Português
+## What counts as a source
 
-Como a app encontra provas novas, e o que é preciso para acrescentar uma fonte.
+A site that publishes upcoming races in a shape a parser can read. Two checks, in order:
 
-### O que é uma fonte
-
-Uma fonte é um sítio que publica provas futuras de forma legível por máquina. O
-que decide se entra são duas coisas, por esta ordem:
-
-1. **Permissão.** O `robots.txt` permite o caminho, o sitemap está anunciado, e
-   os termos não proíbem leitura automática. Um desafio de bot (Cloudflare, por
-   exemplo) é uma resposta: não.
-2. **Forma dos dados.** Uma de três, e nada mais:
-
-   | `kind` | Forma | Custo por corrida |
-   |---|---|---|
-   | `sitemap` | uma página por evento, cada uma com `schema.org` | um pedido por evento |
-   | `search` | um calendário em JSON, mais uma página por evento | um pedido por evento |
-   | `listing` | o calendário todo numa página | um pedido, total |
-
-   O que precisa de um browser a correr para os dados existirem não é fonte. O
-   `/v3/event/register/…/overview` do davengo é uma app Vaadin, e conduzir esse
-   protocolo é a mesma classe de coisa que uma grelha Livewire: rota que muda
-   por deploy, e o operador a dizer sem dizer que não quer aquele tráfego.
-
-Não escrevemos um conector por calendário. Há centenas e listam em grande parte
-as mesmas provas, por isso o objectivo não é cobertura de fontes, é escolher as
-mais baratas de ler e depois deduplicar.
-
-### As fontes que este código lê
-
-Nenhuma corre sem estar em `DISCOVERY_SOURCES`.
-
-| id | `kind` | O que dá |
-|---|---|---|
-| `acorrer.pt` | `sitemap` | provas em Portugal, com `schema.org` em cada página |
-| `davengo.com` | `search` | provas na Alemanha, distâncias tiradas da lista de participantes |
-| `kilometerliebe.de` | `listing` | 447 provas na Alemanha numa página, com as distâncias exactas |
-| `running.life` | `listing` | provas alemãs em `schema.org`, 20 por página, as mais próximas primeiro |
-| `running.life/half-marathons` | `listing` | meias maratonas em 17 países, um calendário por país |
-| `runme.de` | `listing` | 2280 provas em 60 países, um mês por página |
-| `scc-events.com` | `listing` | Berlim, o calendário do operador de cronometragem |
-| `cologne-timing.de` | `listing` | 32 provas na Renânia, o outro operador de cronometragem |
-| `marathon.de` | `sitemap` | 406 provas, com cidade, distâncias e preço por distância |
-| `planet-marathon.de` | `listing` | maratonas em todos os continentes, três páginas |
-
-O `planet-marathon.de` é um calendário mantido à mão por uma pessoa (Franz
-Schwengler), e é a fonte de maior alcance que temos: 386 maratonas, 55 países.
-Três coisas que só ele tem:
-
-- **Só a distância oficial.** A regra é da própria página: só entram provas com
-  os 42,195 km. Por isso este leitor não lê distância nenhuma, afirma-a.
-- **Sem HTTPS e sem charset.** O TLS do servidor não negocia, e o
-  `Content-Type` é um `text/html` seco sobre bytes ISO-8859-1. Sem isso
-  declarado na fonte, «Fränkische» entrava no catálogo como «Fr�nkische».
-- **Códigos de país escritos de memória.** `JAP`, `MAY`, `SER`, `ROM`, e `SLK` e
-  `SVK` os dois. A tabela conhece as duas grafias, e uma linha cujo código não
-  resolve é uma linha que se deixa cair: o país é o que a deduplicação compara.
-
-Também deixa cair a maratona que é a perna de uma estafeta de triatlo e a que se
-corre em três etapas: nenhuma delas é uma maratona que se possa inscrever.
-
-O `marathon.de` é a única fonte que dá **preço**. Não tem `schema.org`, mas cada
-página de evento está escrita sempre da mesma forma, com etiquetas:
-
-```
-Datum: Samstag, 05.09.2026        (um intervalo de dois dias começa no primeiro)
-Ort: Wolgast, Deutschland         cidade e país, o país por nome alemão
-Distanzen: 21 km / 42 km
-Startgebühr: 21 km ... 16,00 - 25,00 Euro | 42 km ... 25,00 - 35,00 Euro
-```
-
-Duas consequências que valem a pena saber:
-
-- **O sitemap não tem `lastmod`**, portanto um limite leria sempre as mesmas
-  primeiras páginas. Cada corrida lê uma fatia diferente (`rotatePages`), com o
-  desvio a andar por semana: 150 páginas por semana cobrem as 406 em três.
-- **O preço é o do evento, não o da distância.** `lowPrice` é o mais barato que
-  a página lista e `highPrice` o mais caro, que é o que os campos significam.
-  Numa prova que vende 5 km e maratona, o preço da entrada não é um número só.
-
-A `kilometerliebe.de` é a fonte mais barata que lemos e a que finalmente puxa o
-catálogo para as distâncias curtas: um pedido, 447 provas, 271 com 10 km, 242
-com 5 km e 172 com meia maratona. Entrega os campos em atributos, não em prosa:
-
-```html
-<article data-event-card data-event-title="34. Fohlenhoflauf"
-  data-event-city="Homburg" data-event-state="Saarland"
-  data-event-date="2026-09-03" data-event-category="lauf">
-  <span class="distpill">4 km</span><span class="distpill">5 km</span>…
-```
-
-Duas escolhas que valem a pena registar:
-
-- **As distâncias vêm das pastilhas, não do atributo.** O `data-event-distances`
-  diz `5k,10k`, que são os baldes do filtro do site; as pastilhas dizem 4, 5 e
-  10 km, que são as provas.
-- **Só `lauf` e `trail`.** O calendário também tem triatlos e caminhadas, e as
-  distâncias de um triatlo entrariam no catálogo como quilómetros que ninguém
-  correu. Uma prova medida em horas (um 24 h, um backyard) também fica de fora:
-  não tem distância nenhuma.
-
-A `running.life` publica `schema.org` na própria página de calendário, e a página
-de cada evento não acrescenta nada, portanto não se busca nenhuma. São 116
-páginas de 20, e lemos as 25 primeiras: o calendário está ordenado por data, por
-isso essas são as provas que vêm a seguir, e o resto chega sozinho com as
-semanas.
-
-Três coisas que ela nos ensinou, e as três são partilhadas:
-
-- **Responde 429 ao nosso ritmo.** Setecentos milissegundos entre páginas é
-  demasiado depressa para este site, três segundos não. Uma fonte pode agora
-  pedir o seu próprio ritmo (`delayMs`), e uma página recusada a meio do
-  calendário passa a guardar o que já foi lido em vez de deitar a corrida fora.
-- **O país vem como «Deutschland».** O `addressCountry` do schema.org está
-  documentado como ISO 3166-1 alpha-2 e é publicado como quiserem. Passar isso
-  para maiúsculas arquivava provas no país «DEUTSCHLAND», que é o campo que a
-  deduplicação compara.
-- **A distância só existe na descrição**, e em prosa um número pequeno não é uma
-  prova: «na pista de 400 m» é o comprimento da volta e «de 400 m a 10 km» é a
-  prova das crianças. Abaixo de 2 km, um número em prosa não conta. Numa oferta
-  com nome («1500 m») conta sempre. Em prosa, quem qualifica um número vem
-  depois dele e só até ao número seguinte: «1,5 km natação, 40 km ciclismo e
-  10 km corrida» dá uma prova de 10 km e nenhuma de 40, e em «5 km, 10 km e 1 km
-  Kids Run» a prova das crianças é o 1 km e mais nada. Apagam um número as
-  crianças, as pernas de um triatlo que não são a corrida, o desnível e uma
-  estafeta («4 mal 3 Kilometer»: ninguém se inscreve nos 3 km). Uma volta só é
-  distância se a descrição não disser nada mais longo, porque «uma volta de
-  6,8 km com cronometragem» é a prova e «100 km num circuito plano de 5 km» não
-  é uma prova de 5 km. E uma prova medida em tempo (um Stundenlauf, um backyard)
-  não fica com distância nenhuma: a volta é tudo o que a descrição dá.
-
-As meias maratonas fora da Alemanha vêm de um segundo conjunto de páginas do
-mesmo site, uma por país (`/halbmarathons/spanien`, `/half-marathons/portugal`,
-17 delas). São o mesmo `schema.org`, portanto não precisam de leitor próprio, e
-a razão para as ler em vez dos calendários gerais é medível: no calendário geral
-de Espanha, **um evento em vinte** tem distância legível, porque a descrição é
-curta demais; nas páginas de meias, o nome da prova diz «Media Maratón», «Meia
-Maratona», «Mezza Maratona», e sai 21,0975 exacto.
-
-Seis páginas por país, as mais próximas, e um calendário acaba onde acaba: uma
-página além do fim responde 200 com a lista vazia, que é como um calendário diz
-o seu tamanho sem termos de o fixar em código.
-
-O que não fazemos é acreditar no título da página. Ela chama-se «Half Marathon
-Calendar Portugal», mas a lista inclui um backyard ultra e um trail, portanto
-afirmar 21,0975 para as provas cujo nome não diz distância nenhuma seria afirmar
-o que não sabemos. Essas entram sem distância, e a distância pergunta-se ao
-adicionar.
-
-A `runme.de` é a fonte de maior alcance que temos e a única onde a Alemanha é
-minoria: 2280 provas em 60 países, com 1532 nos Estados Unidos, 458 na Alemanha,
-e depois Suíça, Áustria, Itália, Reino Unido, França, Nova Zelândia, Emirados,
-Antárctida. Doze pedidos, um por mês, em 27 segundos.
-
-O mês no URL é uma palavra (`/laufkalender/oktober/`), não uma data, portanto os
-mesmos doze endereços avançam sozinhos para sempre.
-
-Cada evento traz o lugar já com código de país, e as distâncias vêm dos nomes do
-que o evento vende, que é a diferença entre esta fonte e as outras:
-
-```
-46499 Hamminkeln, Nordrhein-Westfalen, DE
-  5 km · 5 km-W/NW · 10 km
-```
-
-Duas coisas que o leitor sabe e que valem os comentários que têm: o código
-postal aparece antes da terra na Alemanha e depois nos Estados Unidos («Mountain
-Home 83647»), com letras em Andorra e na Argentina; e uma competição que só é
-marcha («5 km-W», «1 Meilen-W») não é distância de prova, enquanto uma que diz
-as duas coisas («5 km-Laufen & Walking») fica.
-
-A `cologne-timing.de` é o segundo operador de cronometragem que lemos, e a
-única fonte que entra por uma razão que não é alcance: 32 provas na Renânia, que
-as outras fontes alemãs já listam em parte. O que ela tem é o encaixe. Estes
-eventos já resolvem para a RaceResult, que a app importa, por isso uma entrada
-vinda daqui chega com um caminho de resultados a funcionar. E cada linha liga o
-sítio da própria prova, não a página de quem a listou, o que a maioria dos
-calendários não dá.
-
-Não publica distância nenhuma, e não há nenhuma a perseguir: os números vivem
-atrás de um widget de inscrição que precisa de um browser, e pela regra deste
-documento isso não é fonte. Entram sem distância, e o nome responde pelas duas
-maratonas. Ficam de fora as caminhadas e o swim and run que o operador também
-cronometra, e a edição virtual, que está datada na terra do operador e nesse dia
-não há lá nada.
-
-### As coordenadas, e o que o raio pode prometer
-
-O `schema.org` de algumas fontes traz um nó `geo`, e nós passamos a guardá-lo
-(`latitude` e `longitude` na entrada). É o que a busca por raio precisa, e é
-guardado como a fonte o publica em vez de deduzido da terra.
-
-Só algumas o dão: a running.life dá-o em todos os eventos, e a maioria das
-outras dá terra e país. Por isso o raio conta quantas provas **não conseguiu
-situar** e diz na página, em vez de as tratar como longe: uma prova que a fonte
-não colocou no mapa pode ser a da tua rua.
-
-O círculo é aplicado depois da consulta, no browser, porque o Firestore não
-responde a «a 40 km daqui» sem geohashes. A consulta traz dez vezes as linhas
-que mostra para o círculo ter o que filtrar, e o centro vem da localização do
-browser ou da terra escrita, resolvida contra o próprio catálogo: se uma prova
-naquela terra tem coordenadas, aquela terra tem coordenadas. Sem geocoder.
-
-### O que a colheita faz
-
-`harvestRaceCatalog` corre **uma vez por dia e lê uma fonte**, escolhida pelo
-dia: com sete fontes activadas, cada uma é lida uma vez por semana, tal como
-quando uma corrida lia todas, mas com um sétimo do trabalho em cada invocação.
-Ler tudo de uma vez fazia o tempo de execução crescer com cada fonte
-acrescentada, até o limite da função passar a ser o limite de quantas fontes a
-app podia ter. Assim, uma fonte em baixo custa a sua vez e não a colheita.
-
-O dia escolhe a fonte, não um cursor guardado: forçar a execução no mesmo dia lê
-sempre a mesma fonte, e não há estado para encravar.
-
-Para a fonte do dia:
-
-1. Lê o sitemap e escolhe as páginas de evento, as mais recentemente alteradas
-   primeiro (`lastmod` ordena o trabalho, não o filtra).
-2. Busca cada página com uma pausa entre pedidos e um `user-agent` que se
-   identifica e diz onde reclamar.
-3. Lê os nós `Event`, tira as distâncias dos nomes das inscrições, e descarta o
-   que já passou, o que está cancelado e o que não tem distância nenhuma.
-4. Deduplica: nome sem a edição, mais o dia, mais o país.
-5. Escreve em `raceCatalog` como `unreviewed`, `producer: harvest`.
-
-### As duas regras que protegem o catálogo
-
-- **Nunca por cima de uma pessoa.** Uma entrada `curated` ou já `reviewed` só
-  recebe uma edição que lhe faltava. Nome, forma de inscrição e datas revistas
-  ficam como estão.
-- **Piso de colapso.** Se uma colheita traz menos de 80% do que **essa fonte**
-  já tem no catálogo, não publica nada. São scrapes: uma mudança de template lá
-  em cima custa uma corrida, não a funcionalidade. Por fonte e não por catálogo,
-  porque uma corrida lê uma fonte, e porque uma fonte a apagar-se ficava
-  escondida pelo volume das outras.
-
-  O piso só se aplica a uma fonte **lida por inteiro**. Uma que leia uma fatia
-  das páginas por desenho (`rotatePages`), ou que o site tenha cortado a meio,
-  traz menos por razões que conhecemos, e o piso não distingue leitura curta de
-  parser avariado. Isentá-las é seguro porque uma colheita nunca apaga: uma
-  corrida curta escreve menos, não remove o que já lá está.
-
-E uma prova que se deixa cair em vez de arquivar: **aquela cujo país não
-sabemos ler**. Um país em falta guarda-se como `XX`, a deduplicação compara o
-país antes de tudo, e duas provas `XX` numa terra chamada Porto passariam a ser
-uma. Uma fonte que escreve um país de uma forma que a tabela não conhece é uma
-tabela para estender, não uma prova para arquivar no lugar errado. Com a
-*distância* a decisão é a oposta, e fica como estava.
-
-E a regra que vem do #249: uma entrada `unreviewed` pode **sugerir** (preencher
-um campo que o corredor vê e corrige) e nunca **afirmar** (nada de lembretes ou
-contagens decrescentes).
-
-### Duplicados: quando a mesma prova já está no catálogo
-
-A colheita compara cada prova com o catálogo inteiro **e com o que a própria
-corrida acabou de escrever**. Isto último não era assim, e era o maior furo: com
-sete fontes lidas na mesma corrida, cada uma comparava-se ao catálogo como ele
-estava antes, portanto duas delas a trazerem «Wildman Harz» e «Wildman Harz -
-Ultra 55k» não se viam uma à outra e entravam as duas.
-
-Duas formas contam como a mesma prova, e ambas exigem o mesmo dia e a mesma
-cidade:
-
-1. **Uma entrada que uma pessoa reviu.** Alguém a verificou, e uma colheita a
-   aparecer com o nome do organizador não é novidade. É o que junta «Berlin Half
-   Marathon» e «GENERALI BERLINER HALBMARATHON», que são uma prova e não
-   partilham quase nenhuma letra.
-2. **Nomes que concordam**, depois de tirar patrocinadores, edição **e o nome da
-   terra**. A cidade já teve de ser igual para o par existir, e muda de lugar e
-   de forma: «28. Erfurter Zooparklauf» é «Zooparklauf Erfurt». Concordam se um
-   nome está dentro do outro, ou se são as mesmas letras na mesma ordem sem
-   separadores: «Sparkassen-City-Lauf» é «Sparkassen Citylauf». Igualdade e não
-   contenção, senão «Stundenlauf» dentro de «Viertelstundenlauf» juntava duas
-   provas diferentes.
-
-E a distância deixou de poder impedir: se um dos lados não publica nenhuma, não
-sabemos a distância, não é que saibamos que é outra. Metade das fontes não a
-publica, e o «Birkenfelder Firmenlauf» esteve ao lado do «Birkenfelder
-Firmenlauf - Die Wirtschaft läuft» só por isso. Depois de dezoito pares
-verificados à mão, deixou de impedir também quando os dois lados publicam: duas
-fontes a ler o mesmo evento publicam subconjuntos diferentes do que ele vende, e
-os subconjuntos podem ser disjuntos (uma tem a «wep Marathon», a outra a
-«wep-Strom Lauf» de 5, 10 e 21 km). A distância continua a ser exigida num
-único sítio, o da entrada verificada por uma pessoa, onde o nome não é a prova:
-sem ela, a «BT5K - New York City» entrava na maratona de Nova Iorque com quem
-partilha o domingo.
-
-**A cidade é a mesma se um nome estiver dentro do outro.** A igualdade era
-estrita demais e todos os pares verificados o dizem: «Dabendorf» e «Dabendorf
-(Zossen)», «Freiburg» e «Freiburg im Breisgau», «Dessau» e «Dessau-Roßlau»,
-«Neuenstadt A.k.» e «Neuenstadt am Kocher», «Goslar-Hahnenklee» e «Hahnenklee».
-Tira-se o que está entre parênteses, o que só qualifica («im», «am», «bad») e o
-que tem menos de três letras, e um nome dentro do outro é a mesma terra escrita
-com dois níveis de detalhe: um bairro, um município fundido, um desambiguador.
-Deixa «Frankfurt» casar com «Frankfurt (Oder)», que são duas cidades, e o que
-impede que isso vire fusão é tudo o resto que o par continua a ter de cumprir.
-
-**E o alemão cola a palavra «Lauf» ao que a prova é.** «Kannenstieglauf» é uma
-corrida no Kannenstieg e «Herbstlauf» é a mesma prova que a fonte seguinte
-escreve «Lauf in den Herbst», por isso compara-se o radical. Só quando fica
-radical: «Lauf» sozinho continua «Lauf», e «Halbmarathon» fica «halb» enquanto
-«Marathon» continua uma maratona. Pela mesma razão, «24h» lê-se «24 Stunden».
-
-**O dia pode diferir em dois, e só quando os nomes concordam.** Um evento que
-corre num fim de semana não tem um dia só, e cada fonte escolhe um: a Gerês
-Extreme Marathon corre de 27 a 29 de Novembro com as distâncias espalhadas pelos
-três dias, e um calendário datou o evento a 27 enquanto o outro datou os 42 km a
-29. A Maratona da Europa é 24 para uma fonte e 25 para a outra. Uma semana de
-diferença é outra edição, e onde o nome não é a prova o dia continua exacto.
-
-Duas fontes a datar o mesmo evento de forma diferente é o terreno mais fraco que
-temos, por isso aí volta a exigir-se a distância: o fim de semana da maratona de
-Berlim põe uns 5 km no sábado e a maratona no domingo, e os dois nomes reduzem-se
-a «marathon» de qualquer maneira.
-
-**Um número que separa dois nomes separa duas provas.** «Die Bergischen 5 Etappe
-1» e «Etappe 2» são duas etapas, «Ironman 5150» e «Ironman 70.3» são dois
-formatos, e uns «Berlin 5K» não são uns «Berlin 10K». O número da etapa tem um
-carácter, portanto todos os filtros por comprimento o deitam fora e os nomes
-saem iguais. Um lado sem número não diz nada: o «Neckarsteiglauf» e o
-«Neckarsteiglauf 126K» são a mesma prova.
-
-**As palavras da distância contam-se em qualquer língua.** «Maratona»,
-«Maraton» e «Marathon» são a mesma palavra, e «meia», «half», «halb», «media» e
-«mezza» também. A meia continua a não ser a maratona: «Halbmarathon» reduz-se a
-«half» e «Marathon» a «marathon».
-
-**E a cidade admite uma letra de diferença**, acrescentada ou tirada, nunca
-trocada, e nunca com menos de sete letras. É a diferença entre «Luxembourg» e
-«Luxemburg» de um lado e «Freiburg» e «Freiberg» do outro, que são duas cidades
-a quatrocentos quilómetros uma da outra.
-
-Os pares verificados por uma pessoa estão em
-[`fixtures/verified-duplicates.json`](../shared/eventDiscovery/fixtures/verified-duplicates.json),
-e o `verifiedDuplicates.test.ts` diz o que a regra faz com cada um. Acrescenta
-lá o par, em vez de o descrever em prosa.
-
-Fora disso ficam duas provas, como a «GENERALI 5K im Rahmen des BMW
-BERLIN-MARATHON» e a «R5K Tour Finale»: ambas 5 km, ambas em Berlim, ambas a
-26/09/2026, e duas corridas diferentes.
-
-**A fila da administração pergunta o resto, e só o que vale perguntar.** Um par
-entra na fila se, além do dia e da cidade, os nomes partilharem uma palavra com
-significado: nem a terra, nem uma palavra que todas as provas têm («run»,
-«lauf», «marathon», «5k»), nem nada com menos de quatro letras («Turkey Trails
-OKC» e «Veterans Voyage OKC» partilham a abreviatura da cidade). Sem esse
-filtro, um sábado de Setembro em Berlim gera dezenas de perguntas absurdas: num
-catálogo de 3062 entradas, a fila passou de 115 pares para 5.
-
-**E também se pergunta aos corredores.** Os mesmos pares aparecem na página de
-busca, numa linha discreta sob as duas linhas, porque quem está a ler as duas
-sabe mais depressa do que qualquer regra, e a lista está ordenada por data, o
-que põe as duas entradas da mesma prova uma ao lado da outra. A resposta de um
-corredor é um voto e não uma decisão: fica em `raceCatalogDuplicateVotes`, um
-documento por par e por votante, e não junta nada. Juntar aponta um id do
-catálogo a outro, e a prova de um corredor já pode referir qualquer dos dois,
-por isso continua a ser decisão de um administrador. O que o voto faz é ordenar
-a fila da administração, para que os pares que alguém já reconheceu cheguem ao
-topo e os outros deixem de se esconder atrás deles.
-
-### Acrescentar uma fonte
-
-1. Verifica o `robots.txt` e os termos. Se houver dúvida, pede autorização.
-2. Confirma que uma página de evento tem `application/ld+json` com um nó
-   `Event` ou `SportsEvent`.
-3. Guarda o bloco JSON-LD como fixture em `shared/eventDiscovery/fixtures/`.
-4. Acrescenta a fonte a `DISCOVERY_SOURCES` em
-   [`functions/src/discovery/sources.ts`](../functions/src/discovery/sources.ts)
-   com o `kind` e o que ele precisa.
-5. Um teste sobre o fixture. Se o parser precisar de mudar para a ler, é porque
-   a fonte não é tier 1 ou 2, e aí a conversa é outra.
-
-Nada corre sem `DISCOVERY_SOURCES` no `functions/.env`. Ver
-[`self-hosting.md`](./self-hosting.md).
-
-<a id="english"></a>
-
-## English
-
-How the app finds new races, and what it takes to add a source.
-
-### What counts as a source
-
-A source is a site that publishes upcoming races in a machine-readable way. Two
-things decide whether it qualifies, in this order:
-
-1. **Permission.** `robots.txt` allows the path, the sitemap is advertised, and
-   the terms do not forbid automated reading. A bot challenge (Cloudflare, say)
-   is an answer: no.
-2. **Data shape.** One of three, and nothing else:
+1. **Permission.** `robots.txt` allows the path and the terms do not forbid automated reading. A bot challenge (Cloudflare, Turnstile) is a no.
+2. **Data shape.** One of three `kind`s ([`shared/eventDiscovery/sources.ts`](../shared/eventDiscovery/sources.ts)):
 
    | `kind` | Shape | Cost per run |
    |---|---|---|
-   | `sitemap` | a page per event, each with `schema.org` | one fetch per event |
+   | `sitemap` | a page per event, read by a `PAGE_READERS` entry (`schema-org`, `marathon-de`) | one fetch per event |
    | `search` | a JSON calendar, plus a page per event | one fetch per event |
-   | `listing` | the whole calendar on one page | one fetch, total |
+   | `listing` | the calendar on one or a few pages, read by a `LISTING_READERS` entry | one fetch per page |
 
-   Anything that needs a browser to run before the data exists is not a source.
-   davengo's `/v3/event/register/…/overview` is a Vaadin app, and driving that
-   protocol is the same class of thing as a Livewire grid: a route that changes
-   per deploy, and the operator saying without saying that they do not want that
-   traffic.
+Anything that needs a browser to run before the data exists (Vaadin, Livewire, a registration widget) is not a source.
 
-We do not write one connector per calendar. There are hundreds and they largely
-list the same races, so the goal is not source coverage; it is picking the ones
-that are cheapest to read, then deduplicating.
+We do not write one connector per calendar. Most list the same races, so pick the cheapest to read and deduplicate.
 
-### The sources this codebase reads
+## Sources
 
-None of them runs unless `DISCOVERY_SOURCES` names it.
+Defined in [`functions/src/discovery/sources.ts`](../functions/src/discovery/sources.ts). None runs unless `DISCOVERY_SOURCES` in `functions/.env` names it (see [`self-hosting.md`](./self-hosting.md)).
 
-| id | `kind` | What it gives |
+| id | `kind` | Reader | Notes |
+|---|---|---|---|
+| `acorrer.pt` | `sitemap` | `schema-org` | Portugal |
+| `davengo.com` | `search` | own | Germany; distances from the starter list |
+| `scc-events.com` | `listing` | `scc-events` | Berlin timing operator |
+| `cologne-timing.de` | `listing` | `cologne-timing` | Rhineland timing operator; no distances, but events resolve to RaceResult and link the organiser |
+| `running.life` | `listing` | `schema-org` | Germany, 25 pages of 20; `delayMs: 3000` (429 at default pace) |
+| `running.life/half-marathons` | `listing` | `schema-org` | half marathons, 17 country calendars, 6 pages each |
+| `runme.de` | `listing` | `runme` | worldwide, one page per month (URLs roll forward) |
+| `kilometerliebe.de` | `listing` | `kilometerliebe` | Germany, whole year on one page; only `lauf` and `trail` |
+| `marathon.de` | `sitemap` | `marathon-de` | only source with a fee; no `lastmod`, so `rotatePages` reads 150 a week |
+| `planet-marathon.de` | `listing` | `planet-marathon` | marathons worldwide; HTTP only, ISO-8859-1, asserts 42.195 km |
+
+Reader quirks (distance parsing from prose, country spellings, postcodes) are documented in each reader in `shared/eventDiscovery/` and pinned by its tests.
+
+## Sources evaluated and not read
+
+| Source | Status | Reason |
 |---|---|---|
-| `acorrer.pt` | `sitemap` | races in Portugal, `schema.org` on every page |
-| `davengo.com` | `search` | races in Germany, distances read off the starter list |
-| `kilometerliebe.de` | `listing` | 447 German races on one page, with the exact distances |
-| `running.life` | `listing` | German races as `schema.org`, 20 a page, the nearest first |
-| `running.life/half-marathons` | `listing` | half marathons in 17 countries, a calendar each |
-| `runme.de` | `listing` | 2280 races in 60 countries, a month a page |
-| `scc-events.com` | `listing` | Berlin, a timing operator's own calendar |
-| `cologne-timing.de` | `listing` | 32 races in the Rhineland, the other timing operator |
-| `marathon.de` | `sitemap` | 406 races, with the city, the distances and a fee per distance |
-| `planet-marathon.de` | `listing` | marathons on every continent, three pages |
+| raceraves | blocked | refuses automated reading |
+| hdsports | blocked | refuses automated reading |
+| goandrace | not added | readable, but no Portuguese coverage |
+| runme.de fees | not available | fee, deadline and location are paywalled; the calendar itself is read |
+| parkrun | not a source | refuses bots by user agent; venues come from the parkrun catalog, and listings of them are dropped (`isParkrunListing`) |
 
-`planet-marathon.de` is a calendar one person keeps by hand (Franz Schwengler),
-and it is the widest reach we have: 386 marathons, 55 countries. Three things
-only it has:
+## The daily job
 
-- **The official distance only.** That is the site's own rule: nothing is listed
-  unless it has the official 42.195 km. So this reader parses no distance at
-  all, it asserts one.
-- **No HTTPS and no charset.** The server's TLS does not negotiate, and the
-  `Content-Type` is a bare `text/html` over ISO-8859-1 bytes. Without the source
-  declaring that, "Fränkische" enters the catalog as "Fr�nkische".
-- **Country codes typed from memory.** `JAP`, `MAY`, `SER`, `ROM`, and both
-  `SLK` and `SVK`. The table knows either spelling, and a row whose code does
-  not resolve is a row we drop: country is what dedup compares.
+`harvestRaceCatalog` ([`functions/src/discovery/harvest.ts`](../functions/src/discovery/harvest.ts)) runs `every day 05:00` with a 900 s timeout. It reads **one source per run**, picked by the day (`sourceForRun`), so each enabled source is read every N days. With no source enabled it returns before doing anything, including the steps below.
 
-It also drops the marathon that is a leg of a triathlon relay and the one run
-over three stages: neither is a marathon anybody can enter.
+In order, each step failing on its own without stopping the rest:
 
-`marathon.de` is the only source that gives a **fee**. No `schema.org`, but
-every event page is written the same way, with labels:
+1. `applyPendingProposals`: runner proposals (`raceCatalogProposals`) become entries.
+2. `applyPendingEditionReports`: runner reports (`raceCatalogEditionReports`) update editions.
+3. `refreshDiscoveryCatalog`: harvest the day's source (below).
+4. `resolveOrganiserLinks`: replace a listing URL with the organiser's site, up to 100 pages a run.
+5. `geocodeCatalogRaces`: Geoapify lookups for entries without coordinates, up to 300 a run. Skipped without `GEOAPIFY_API_KEY`.
+6. `writeDuplicateQueue`: pairs for a person to decide, written to `raceCatalogHarvest/duplicates`.
 
-```
-Datum: Samstag, 05.09.2026        (a two day range starts on the first)
-Ort: Wolgast, Deutschland         city and country, the country in German
-Distanzen: 21 km / 42 km
-Startgebühr: 21 km ... 16,00 - 25,00 Euro | 42 km ... 25,00 - 35,00 Euro
-```
+## The harvest
 
-Two consequences worth knowing:
+1. Fetch the source with its reader, with a delay between pages (`delayMs` per source). A page refused midway keeps what was read and marks the run `partial`.
+2. Drop past and cancelled races, races with no readable country, and parkrun listings (`isHarvestable`, `isParkrunListing`). Races with no distance are kept.
+3. Deduplicate within the run (`dedupeRaces`).
+4. Match each race against the catalog **and against what this run already wrote** (`findCatalogDuplicate`). A match gets the edition; the race's own id, if stored, is pointed at it.
+5. Write as `unreviewed`, `producer: 'harvest'`.
 
-- **The sitemap has no `lastmod`**, so a limit would read the same first pages
-  for ever. Each run reads a different slice (`rotatePages`), the offset moving
-  by week: 150 pages a week covers all 406 in three.
-- **The fee is the event's, not the distance's.** `lowPrice` is the cheapest the
-  page lists and `highPrice` the dearest, which is what those fields mean. For a
-  race selling a 5K and a marathon, the entry fee is not one number.
+Guards:
 
-`kilometerliebe.de` is the cheapest source we read and the one that finally
-pulls the catalog towards the short distances: one request, 447 races, 271 with
-a 10K, 242 with a 5K and 172 with a half. It hands the fields over as attributes
-rather than as prose:
+- **Never over a person.** A `curated` or `reviewed` entry only gains editions it was missing (`mergeIntoCatalog`). An entry retired for any reason other than `over` is not written.
+- **Collapse floor.** If a source returns under 80% of what it already has in the catalog, nothing is written (`isHarvestCollapse`). Partial runs are exempt: a harvest never deletes, so a short read only writes less.
+- **No country, no race.** A missing country would be stored as `XX` and merge unrelated races.
 
-```html
-<article data-event-card data-event-title="34. Fohlenhoflauf"
-  data-event-city="Homburg" data-event-state="Saarland"
-  data-event-date="2026-09-03" data-event-category="lauf">
-  <span class="distpill">4 km</span><span class="distpill">5 km</span>…
-```
+## Duplicates
 
-Two choices worth recording:
+All in [`shared/eventDiscovery/duplicates.ts`](../shared/eventDiscovery/duplicates.ts).
 
-- **The distances come from the pills, not the attribute.**
-  `data-event-distances` says `5k,10k`, which are the site's filter buckets; the
-  pills say 4, 5 and 10 km, which are the races.
-- **Only `lauf` and `trail`.** The calendar also carries triathlons and hikes,
-  and a triathlon's legs would enter the catalog as kilometres nobody ran. A run
-  measured in hours (a 24h, a backyard) is left out too: it has no distance.
+**Automatic merge** (`findCatalogDuplicate`): only when the names agree. `couldBeTheSameRace` first requires:
 
-`running.life` publishes `schema.org` on the calendar page itself, and the event
-page adds nothing, so none is fetched. There are 116 pages of 20 and we read the
-first 25: the calendar is ordered by date, so those are the races coming up, and
-the rest arrives on its own as the weeks pass.
+- the same country and town (one town's words may be a subset of the other's, and a word may differ by one added letter at seven letters or more),
+- days within two of each other; if they differ, distances that do not conflict (a side with none passes),
+- no number that separates the names ("Etappe 1" vs "Etappe 2", "5K" vs "10K"),
+- not marked `notDuplicateOf`, not retired, not already a copy.
 
-Three things it taught us, and all three are shared:
+Then `namesAgree`: once sponsors, edition and town are removed, every word of the shorter name is in the longer one, or they are the same letters without separators. Distance words are folded across languages and German "-lauf" compounds are stemmed. A reviewed entry is a better survivor, not evidence.
 
-- **It answers 429 at our pace.** Seven hundred milliseconds between pages is
-  too fast for this site and three seconds is not. A source can now ask for its
-  own pace (`delayMs`), and a page refused halfway through a calendar keeps what
-  was already read instead of throwing the run away.
-- **The country arrives as "Deutschland".** schema.org documents
-  `addressCountry` as ISO 3166-1 alpha-2 and sources publish whatever they like.
-  Upper-casing it filed races in the country "DEUTSCHLAND", which is the field
-  dedup compares.
-- **The distance only exists in the description**, and in prose a small number
-  is not a race: "auf der 400 m Bahn" is the lap of a track and "von 400 m bis
-  10 km" is the children's dash. Under 2 km, a number in prose does not count.
-  In a named offer ("1500 m") it always does. In prose a number is qualified by
-  what follows it, and only up to the next number: "1,5 km Schwimmen, 40 km
-  Radfahren und 10 km Laufen" gives a 10 km race and no 40 km one, and in "5 km,
-  10 km und 1 km Kids Run" the children's race is the 1 km and nothing else. A
-  number is deleted by children, by the legs of a triathlon that are not the
-  run, by elevation, and by a relay ("4 mal 3 Kilometer": nobody enters the
-  3 km). A lap counts as a distance only when the description names nothing
-  longer, because "eine 6,8 km Runde mit Zeitnahme" is the race while "100 km
-  auf einem flachen 5 km Rundkurs" is not a 5 km race. And a race measured in
-  time (a Stundenlauf, a backyard) keeps no distance at all: the lap is all the
-  description gives.
+**The queue** (`catalogDuplicateCandidates`) asks a person about pairs the rule did not merge:
 
-The half marathons outside Germany come from a second set of pages on the same
-site, one per country (`/halbmarathons/spanien`, `/half-marathons/portugal`,
-17 of them). Same `schema.org`, so no reader of their own, and the reason to
-read them instead of the general country calendars is measurable: on Spain's
-general calendar **one event in twenty** has a readable distance, because the
-description is too short; on the half-marathon pages the race's own name says
-"Media Maratón", "Meia Maratona", "Mezza Maratona", and 21.0975 comes out exact.
+- `couldBeTheSameRace` pairs whose names share a meaningful word (4+ letters, not the town, not in `GENERIC`),
+- `sameAnnualRace`: the same race stored for different years (names and place agree, within 21 days of the same time of year),
+- `oneOrganisersPage`: entries sharing an organiser page that stands behind only two or three entries, same country, names agree and share a word. Catches one race filed under neighbouring towns.
 
-Six pages per country, the nearest ones, and a calendar ends where it ends: a
-page past the end answers 200 with an empty list, which is how a calendar states
-its length without us hardcoding a page count.
+The admin answers "same race, keep this one", "keep the other one", or "different races" (written as `notDuplicateOf`). A copy is never deleted, only pointed at the survivor (`duplicateOfCatalogRaceId`), because `races.catalogRaceId` may reference it. Runners can vote on the same pairs from the search page (`raceCatalogDuplicateVotes`); votes order the admin queue and merge nothing.
 
-What we do not do is believe the page's title. It calls itself "Half Marathon
-Calendar Portugal" and the list includes a backyard ultra and a trail race, so
-asserting 21.0975 for every race whose name names no distance would be asserting
-what we do not know. Those arrive with no distance, and the distance is asked
-when somebody adds one.
+Hand-checked pairs live in [`fixtures/verified-duplicates.json`](../shared/eventDiscovery/fixtures/verified-duplicates.json), tested by `verifiedDuplicates.test.ts`. Add a pair there rather than describing it here. After changing the rule, `npm run backfill:catalog-duplicates` applies it to stored entries.
 
-`runme.de` has the widest reach we read and is the only source where Germany is
-the minority: 2280 races in 60 countries, 1532 of them in the United States, 458
-in Germany, then Switzerland, Austria, Italy, the UK, France, New Zealand, the
-Emirates, Antarctica. Twelve requests, one per month, in 27 seconds.
+## Coordinates
 
-The month in the URL is a word (`/laufkalender/oktober/`) rather than a date, so
-the same twelve addresses roll forward for ever.
+Entries store `latitude`/`longitude` when the source publishes them; the nightly geocoding pass fills the rest. The search page applies a radius in the browser (Firestore has no geo query), over-fetching 10x, and says how many results it could not place. The centre is the browser's location or a typed town resolved from catalog entries in that town.
 
-Every event carries its place with a country code already, and the distances
-come from the names of what the event sells, which is what separates this source
-from the others:
+## Adding a source
 
-```
-46499 Hamminkeln, Nordrhein-Westfalen, DE
-  5 km · 5 km-W/NW · 10 km
-```
-
-Two things the reader knows and that earn their comments: the postcode comes
-before the town in Germany and after it in the United States ("Mountain Home
-83647"), with letters in Andorra and Argentina; and a competition that is only a
-walk ("5 km-W", "1 Meilen-W") is not a race distance, while one that says both
-("5 km-Laufen & Walking") stays.
-
-`cologne-timing.de` is the second timing operator we read, and the only source
-that earns its place for a reason other than reach: 32 races in the Rhineland,
-which the other German sources already list in part. What it has is the join.
-These events already resolve to RaceResult, which this app imports, so an entry
-from here arrives with a working results path attached. And every row links the
-race's own site rather than the page of whoever listed it, which most calendars
-do not.
-
-It publishes no distances, and there are none worth chasing: the numbers live
-behind a registration widget that needs a browser, and by this document's own
-rule that is not a source. They arrive with no distance, and the name answers
-for the two marathons. Left out are the hikes and the swim and run the operator
-also times, and the virtual edition, which is dated to the operator's own town
-with nothing there on the day.
-
-### The coordinates, and what a radius can promise
-
-Some sources publish a `geo` node in their `schema.org`, and it is now stored
-(`latitude` and `longitude` on the entry). It is what a radius search needs, and
-it is kept as the source published it rather than derived from the town.
-
-Only some give it: running.life gives it on every event, and most of the others
-give a town and a country. So the radius **counts the races it could not place**
-and says so on the page, rather than treating them as far away: a race the
-source never placed may be the one in your street.
-
-The circle is applied after the query, in the browser, because Firestore cannot
-answer "within 40 km" without geohashes. The query brings ten times the rows it
-shows so the circle has something to keep, and the centre comes from the
-browser's location or from the town typed, resolved against the catalog itself:
-if a race in that town carries coordinates, that town has coordinates. No
-geocoder.
-
-### What the harvest does
-
-`harvestRaceCatalog` runs **once a day and reads one source**, picked by the
-day: with seven sources enabled each is read once a week, the same as when one
-run read them all, with a seventh of the work in any one invocation. Reading
-everything at once made the runtime grow with each source added, until the
-function's timeout was the limit on how many sources this app could have. This
-way a source that is down costs its own slot rather than the harvest.
-
-The day picks the source rather than a stored cursor: forcing a run on the same
-day reads the same source, and there is no state to get stuck.
-
-For the day's source:
-
-1. Reads the sitemap and picks the event pages, most recently changed first
-   (`lastmod` orders the work rather than filtering it).
-2. Fetches each page with a delay between requests and a `user-agent` that says
-   who it is and where to complain.
-3. Reads the `Event` nodes, recovers the distances from the names of what the
-   event sells, and drops the past, the cancelled and the distanceless.
-4. Deduplicates: name without its edition, plus the day, plus the country.
-5. Writes into `raceCatalog` as `unreviewed`, `producer: harvest`.
-
-### The two rules that protect the catalog
-
-- **Never over a person.** A `curated` or already `reviewed` entry only ever
-  gains an edition it was missing. Its name, entry method and reviewed dates
-  stay as they are.
-- **Collapse floor.** A harvest returning under 80% of what **that source**
-  already has in the catalog publishes nothing. These are scrapes: a template
-  change upstream costs a run, not the feature. Per source rather than per
-  catalog, because a run reads one source, and because a source going dark used
-  to be hidden by the volume of the others.
-
-  The floor applies only to a source read **whole**. One that reads a slice of
-  its pages by design (`rotatePages`), or that the site cut short, brings back
-  less for reasons we know, and the floor cannot tell a short read from a broken
-  parser. Exempting them is safe because a harvest never deletes: a short run
-  writes fewer entries, it does not remove the ones already there.
-
-Plus the rule from #249: an `unreviewed` entry may **suggest** (prefill a field
-the runner can see and correct) and may never **assert** (no reminders, no
-countdowns).
-
-And one race is dropped rather than filed: **a race whose country we cannot
-read**. A missing country is stored as `XX`, dedup compares country before
-anything else, and two `XX` races in a town called Porto would merge into one. A
-source spelling a country in a way the table does not know is a table to extend,
-not a race to file in the wrong place. A missing *distance* is the opposite call,
-and stays as it was.
-
-### Duplicates: when the catalog already holds the race
-
-The harvest compares each race against the whole catalog **and against what the
-run itself has just written**. The second half was missing, and it was the
-biggest hole: with seven sources read in one run, each compared itself to the
-catalog as it stood before the run, so two of them bringing "Wildman Harz" and
-"Wildman Harz - Ultra 55k" never saw each other and both were written.
-
-Two shapes count as the same race, and both need the same day and the same city:
-
-1. **An entry a person reviewed.** They checked it, and a harvest turning up
-   with the organiser's own name for it is not news. This is what joins "Berlin
-   Half Marathon" and "GENERALI BERLINER HALBMARATHON", which are one race and
-   share almost no letters.
-2. **Names that agree**, once the sponsors, the edition **and the town's name**
-   are gone. The city had to match for the pair to exist at all, and it moves
-   about: "28. Erfurter Zooparklauf" is "Zooparklauf Erfurt". They agree if one
-   name is inside the other, or if they are the same letters in the same order
-   without separators: "Sparkassen-City-Lauf" is "Sparkassen Citylauf". Equality
-   and not containment, or "Stundenlauf" inside "Viertelstundenlauf" would merge
-   two different races.
-
-And the distance can no longer block a merge: if either side publishes none, we
-do not know the distance, which is not the same as knowing a different one. Half
-the sources leave it out, and "Birkenfelder Firmenlauf" sat beside "Birkenfelder
-Firmenlauf - Die Wirtschaft läuft" for that reason alone. After eighteen pairs
-checked by hand it stopped blocking one when both sides publish, too: two
-sources reading one event publish different subsets of what it sells, and the
-subsets can be disjoint (one has the "wep Marathon", the other the "wep-Strom
-Lauf" over 5, 10 and 21 km). The distance is still asked for in one place, the
-entry a person checked, where the name is not the evidence: without it the
-"BT5K - New York City" merged into the New York City Marathon it shares a Sunday
-with.
-
-**The city is the same if one name is inside the other.** Equality was too
-strict and every verified pair says so: "Dabendorf" and "Dabendorf (Zossen)",
-"Freiburg" and "Freiburg im Breisgau", "Dessau" and "Dessau-Rosslau",
-"Neuenstadt A.k." and "Neuenstadt am Kocher", "Goslar-Hahnenklee" and
-"Hahnenklee". Drop what is in brackets, what only qualifies ("im", "am", "bad")
-and anything under three letters, and one name inside the other is the same
-place named at two levels of detail: a district, a merged municipality, a
-disambiguator. It does let "Frankfurt" match "Frankfurt (Oder)", which are two
-cities, and what keeps that from becoming a merge is everything else the pair
-still has to satisfy.
-
-**And German sticks the word "Lauf" onto what the race is about.**
-"Kannenstieglauf" is a run at the Kannenstieg, and "Herbstlauf" is the race the
-next source writes as "Lauf in den Herbst", so the stem is what gets compared.
-Only where a stem is left: "Lauf" on its own stays "Lauf", and "Halbmarathon"
-becomes "halb" while "Marathon" stays a marathon. For the same reason "24h"
-reads as "24 Stunden".
-
-**The day may differ by two, and only where the names agree.** An event that
-runs over a weekend has no single day and each source picks one: the Geres
-Extreme Marathon runs from 27 to 29 November with its distances spread across
-the three, and one calendar dated the event the 27th while the other dated the
-42 km the 29th. The Maratona da Europa is the 24th to one source and the 25th to
-the other. A week apart is a different edition, and where the name is not the
-evidence the day stays exact.
-
-Two sources dating one event differently is the weakest ground there is, so it
-asks for the distances back: the Berlin marathon weekend puts a 5 km on the
-Saturday and the marathon on the Sunday, and both names come down to "marathon".
-
-**A number that separates two names separates two races.** "Die Bergischen 5
-Etappe 1" and "Etappe 2" are two stages, "Ironman 5150" and "Ironman 70.3" are
-two formats, and "Berlin 5K" is not "Berlin 10K". The stage number is one
-character, so every filter that works on word length drops it and the names come
-out identical. One side with no number says nothing: "Neckarsteiglauf" and
-"Neckarsteiglauf 126K" are one race.
-
-**The distance words count in any language.** "Maratona", "Maraton" and
-"Marathon" are one word, and so are "meia", "half", "halb", "media" and
-"mezza". A half is still not a marathon: "Halbmarathon" reduces to "half" and
-"Marathon" to "marathon".
-
-**And the city takes one letter of difference**, added or removed, never
-swapped, and never under seven letters. That is the difference between
-"Luxembourg" and "Luxemburg" on one hand and "Freiburg" and "Freiberg" on the
-other, two cities four hundred kilometres apart.
-
-The pairs a person verified live in
-[`fixtures/verified-duplicates.json`](../shared/eventDiscovery/fixtures/verified-duplicates.json),
-and `verifiedDuplicates.test.ts` says what the rule does with each. Add a pair
-there rather than describing it in prose.
-
-**The queue in the admin area asks about the rest, and only what is worth
-asking.** A pair reaches it when, beyond the day and the city, the names share a
-word that means something: not the town, not a word every race has ("run",
-"lauf", "marathon", "5k"), and nothing under four letters ("Turkey Trails OKC"
-and "Veterans Voyage OKC" share the town's abbreviation). Without that filter
-one September Saturday in Berlin generates dozens of absurd questions: in a 3062
-entry catalog the queue went from 115 pairs to 5.
-
-Anything else stays two races. The Berlin marathon weekend shows why: "GENERALI
-5K im Rahmen des BMW BERLIN-MARATHON" and "R5K Tour Finale" are both 5 km, both
-in Berlin, both on 26/09/2026, and they are two different races.
-
-A copy is pointed at the survivor (`duplicateOfCatalogRaceId`) and never
-deleted: `races.catalogRaceId` may already point at it, and no Firestore rule
-can check for references.
-
-**The rest is a question, not a rule.** Two sources can bring the same race
-under two organiser names that agree on nothing, with nobody having checked
-either entry, and there is no evidence there to merge on. Those pairs, same day,
-same town, and no name or review to settle it, go to "Possibly the same race" at
-the top of the admin catalog, with three answers:
-
-- **Same race, keep this one.** The pair suggests a survivor, by what each entry
-  carries: reviewed or curated first, then a fee or a deadline, then the number
-  of editions.
-- **Same race, keep the other one.** The suggestion is a guess, and an operator
-  can prefer the other name for a reason no rule has: the organiser calls it
-  that, or the sponsor in the suggested name is last year's. Either way the
-  entry that goes points at the one that stays (`duplicateOfCatalogRaceId`) and
-  is never deleted.
-- **Different races**, which is written on both entries (`notDuplicateOf`) so the
-  next harvest neither merges them nor asks again.
-
-**And the runners are asked too.** The same pairs appear on the search page, as
-a quiet line under the two rows, because a person reading both knows faster than
-any rule and the list is ordered by date, so the two entries of one race land
-next to each other. A runner's answer is a vote and not a decision: it is stored
-in `raceCatalogDuplicateVotes`, one document per pair and voter, and it merges
-nothing. The merge points one catalog id at another and a runner's own race may
-already reference either, so that stays an admin's call. What a vote does is
-order the admin's queue, so the pairs somebody already recognised reach the top
-and the rest stop hiding behind them.
-
-### Adding a source
-
-1. Check `robots.txt` and the terms. If in doubt, ask for permission.
-2. Confirm an event page carries `application/ld+json` with an `Event` or
-   `SportsEvent` node.
-3. Save that JSON-LD block as a fixture in `shared/eventDiscovery/fixtures/`.
-4. Add the source to `DISCOVERY_SOURCES` in
-   [`functions/src/discovery/sources.ts`](../functions/src/discovery/sources.ts)
-   with its `kind` and whatever that kind needs.
-5. One test over the fixture. If the parser has to change to read it, the source
-   is not tier 1 or 2, and that is a different conversation.
-
-Nothing runs without `DISCOVERY_SOURCES` in `functions/.env`. See
-[`self-hosting.md`](./self-hosting.md).
+1. Check `robots.txt` and the terms. If in doubt, ask.
+2. Prefer `schema.org` (`Event` or `SportsEvent`): it needs no reader of its own.
+3. Save a sample as a fixture in `shared/eventDiscovery/fixtures/` and write the reader's test against it.
+4. Add the source to `DISCOVERY_SOURCES` in `functions/src/discovery/sources.ts` with its `kind`, reader and `pageLimit`.
+5. Enable it in `functions/.env`.

@@ -39,6 +39,7 @@ export const RESULTS_PLATFORMS: ResultsPlatform[] = [
   'wiclax',
   'timataka',
   'mikatiming',
+  'pacer',
   'stgk',
 ]
 

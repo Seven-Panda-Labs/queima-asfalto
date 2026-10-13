@@ -12,128 +12,57 @@
 
 **Português** · [English](#english)
 
----
+<p align="center">
+  <img src="assets/screenshots/dashboard.webp" alt="Painel: próximo evento, números do ano, conquistas e recordes pessoais" width="49%" />
+  <img src="assets/screenshots/goals.webp" alt="Objetivos agrupados por estado" width="49%" />
+  <br />
+  <img src="assets/screenshots/events-map.webp" alt="Eventos no mapa, com filtros por estado e ano" width="49%" />
+  <img src="assets/screenshots/event-detail.webp" alt="Detalhe de um evento com tempo, ritmo e classificação" width="49%" />
+  <br />
+  <img src="assets/screenshots/analysis-season.webp" alt="Análise da época" width="49%" />
+  <img src="assets/screenshots/analysis-season-by-season.webp" alt="Análise época a época" width="49%" />
+</p>
 
 <a id="portugues"></a>
 
 ## Português
 
-PWA para planear e acompanhar uma época de corrida: eventos, objetivos, resultados, ritmo e metas de performance. Funciona offline e sincroniza via Firebase.
+PWA para planear e acompanhar uma época de corrida. Funciona offline e sincroniza via Firebase. Instância oficial: [queima-asfalto.web.app](https://queima-asfalto.web.app).
 
-<p align="center">
-  <img src="assets/screenshots/dashboard.webp" alt="Painel: próximo evento, números do ano, conquistas e recordes pessoais" width="49%" />
-  <img src="assets/screenshots/goals.webp" alt="Objetivos agrupados por estado, com os cumpridos em destaque" width="49%" />
-  <br />
-  <img src="assets/screenshots/events-map.webp" alt="Eventos no mapa, com filtros por estado e ano" width="49%" />
-  <img src="assets/screenshots/event-detail.webp" alt="Detalhe de um evento com tempo, ritmo e classificação" width="49%" />
-  <br />
-  <img src="assets/screenshots/analysis-season.webp" alt="Análise da época: números do ano contra a anterior, curva de forma e posição no pelotão" width="49%" />
-  <img src="assets/screenshots/analysis-season-by-season.webp" alt="Análise época a época: km acumulados, épocas lado a lado e sazonalidade" width="49%" />
-</p>
-
-### Funcionalidades
-
-- Calendário de eventos com estados, localização e mapa
+- Planeamento da época e descoberta de corridas num catálogo partilhado
+- Calendário de eventos com estados e mapa, lembretes e notificações push
 - Objetivos anuais e metas de performance
-- Registo de resultados com importação de classificações oficiais (vários conectores de timing)
-- Análise de performance: curva de forma comparável entre distâncias, época a época e desde sempre
-- Partilha de eventos, objetivos e resultados entre utilizadores
-- PWA instalável com suporte offline (Firestore persistence)
-- Modo claro / escuro; interface em português (pt-PT) e inglês (en-GB)
+- Resultados com importação de classificações oficiais
+- Análise: curva de forma entre distâncias, época a época e desde sempre
+- Ferramentas: calculadora de ritmo e registo de peso
+- Partilha entre utilizadores; modo claro e escuro; seis idiomas (pt, en, es, de, fr, ar)
 
-### Stack
-
-React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Storage, Cloud Functions) · Leaflet · Chart.js
-
-### Desenvolvimento local
-
-**Requisitos:** Node.js 24 (Java 21+ se usares emuladores Firebase)
-
-**Sem projeto Firebase na cloud**, emuladores locais (recomendado para contribuir):
+**Arrancar** (Node.js 24, Java 21+ para os emuladores):
 
 ```bash
-git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
-cd queima-asfalto
-npm install
-npm --prefix functions install
+npm install && npm --prefix functions install
 cp .env.emulator.example .env.local
 npm run emulators    # terminal 1
 npm run dev          # terminal 2
 ```
 
-Guia completo: [`docs/emulators.md`](docs/emulators.md) (login «Entrar (emulador)», limitações, modo híbrido).
+Com um projeto Firebase teu: [`docs/self-hosting.md`](docs/self-hosting.md). Para contribuir: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-**Com projeto Firebase teu** (Google Sign-In, deploy):
+| Documento | Conteúdo |
+|-----------|----------|
+| [`architecture.md`](docs/architecture.md) | Como as peças encaixam |
+| [`configuration.md`](docs/configuration.md) | Variáveis de ambiente |
+| [`emulators.md`](docs/emulators.md) | Desenvolvimento local sem cloud |
+| [`self-hosting.md`](docs/self-hosting.md) | Deploy num projeto Firebase teu |
+| [`console-restrictions.md`](docs/console-restrictions.md) | Restrições de chaves no Console |
+| [`adding-a-results-connector.md`](docs/adding-a-results-connector.md) | Novo conector de resultados |
+| [`discovery-sources.md`](docs/discovery-sources.md) | Fontes do catálogo de corridas |
+| [`race-catalog.md`](docs/race-catalog.md) | Catálogo e regra de revisão |
+| [`planning-a-season.md`](docs/planning-a-season.md) | Do catálogo ao calendário |
+| [`visual-identity.md`](docs/visual-identity.md) | Paleta, tipografia e tokens |
+| [`voice.md`](docs/voice.md) | Tom de voz |
 
-```bash
-git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
-cd queima-asfalto
-npm install
-cp .env.example .env.local
-cp .firebaserc.example .firebaserc   # edita com o teu project ID
-# opcional, para deploy de Functions com service account dedicada:
-cp functions/.env.example functions/.env
-npm run dev
-```
-
-Preenche `.env.local` com as credenciais do teu projeto Firebase. Variáveis completas em [`docs/configuration.md`](docs/configuration.md).
-
-| Variável | Uso |
-|----------|-----|
-| `VITE_FIREBASE_*` | Configuração da Web App Firebase |
-| `VITE_FIREBASE_VAPID_KEY` | Notificações push (opcional em dev) |
-| `VITE_GEOAPIFY_API_KEY` | Autocomplete e geocodificação de locais |
-
-Abre [http://localhost:5173](http://localhost:5173). Adiciona `localhost` aos domínios autorizados em Firebase Authentication.
-
-Deploy completo (Firebase, Auth, Functions, FCM, Geoapify): [`docs/self-hosting.md`](docs/self-hosting.md).
-
-### Scripts
-
-| Comando | Descrição |
-|---------|-----------|
-| `npm run dev` | Servidor de desenvolvimento |
-| `npm run emulators` | Firebase Emulator Suite (Auth, Firestore, Functions, Storage) |
-| `npm run build` | Build de produção |
-| `npm run test` | Testes (Vitest) |
-| `npm run check` | Lint + testes + verificação do changelog |
-| `npm run setup:githooks` | Activa os git hooks: pre-commit + pre-push (uma vez por clone) |
-
-Alterações de versão devem actualizar `package.json`, `change-log.md` e `change-log.en.md`.
-
-### Documentação
-
-| Ficheiro | Conteúdo |
-|----------|----------|
-| [`AGENTS.md`](AGENTS.md) | Instruções para agentes de IA (branches, PRs, CI) |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | Como contribuir (setup, testes, changelog, PRs) |
-| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Código de conduta da comunidade (Contributor Covenant 2.1) |
-| [`SECURITY.md`](SECURITY.md) | Reportar vulnerabilidades |
-| [`docs/self-hosting.md`](docs/self-hosting.md) | Guia passo-a-passo de deploy (Firebase, FCM, Geoapify) |
-| [`docs/configuration.md`](docs/configuration.md) | Variáveis de ambiente e configuração de infra |
-| [`docs/emulators.md`](docs/emulators.md) | Desenvolvimento local com emuladores (sem projeto cloud) |
-| [`docs/privacy-policy-template.md`](docs/privacy-policy-template.md) | Modelo de política de privacidade (self-hosters, RGPD) |
-| [`docs/timing-scraping-disclaimer.md`](docs/timing-scraping-disclaimer.md) | Aviso sobre scraping de sites de timing e ToS de terceiros |
-| [`docs/architecture.md`](docs/architecture.md) | Arquitectura (PWA, Firestore, Cloud Functions, conectores) |
-| [`docs/adding-a-results-connector.md`](docs/adding-a-results-connector.md) | Guia para adicionar um conector de resultados oficiais |
-| [`docs/race-lifecycle.md`](docs/race-lifecycle.md) | Ciclo de vida de uma corrida (do desejo à análise), fases e lacunas |
-| [`docs/planning-a-season.md`](docs/planning-a-season.md) | Do catálogo ao calendário: favoritos, época e navegação |
-| [`docs/race-catalog.md`](docs/race-catalog.md) | Catálogo de corridas: formato, produtores e regra de revisão |
-| [`docs/console-restrictions.md`](docs/console-restrictions.md) | Restrições Firebase / Geoapify no Console |
-| [`docs/visual-identity.md`](docs/visual-identity.md) | Paleta, tipografia e tokens de UI |
-| [`docs/voice.md`](docs/voice.md) | Tom de voz da marca (copy e i18n) |
-
-Histórico de versões: [`change-log.md`](change-log.md) · [`change-log.en.md`](change-log.en.md)
-
-### Licença
-
-[GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
-
-### Contribuir
-
-Issues e pull requests são bem-vindos. Lê [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, estilo de PR). Agentes de IA: [`AGENTS.md`](AGENTS.md).
-
----
+Licença [AGPL-3.0](LICENSE). Segurança: [`SECURITY.md`](SECURITY.md).
 
 <a id="english"></a>
 
@@ -141,106 +70,39 @@ Issues e pull requests são bem-vindos. Lê [`CONTRIBUTING.md`](CONTRIBUTING.md)
 
 [Português](#portugues)
 
-PWA to plan and track a running season: events, goals, results, pacing, and performance targets. Works offline and syncs via Firebase.
+PWA to plan and track a running season. Works offline and syncs via Firebase. Official instance: [queima-asfalto.web.app](https://queima-asfalto.web.app).
 
-### Features
-
-- Event calendar with statuses, location, and map
+- Season planning and race discovery from a shared catalog
+- Event calendar with statuses and map, reminders and push notifications
 - Annual goals and performance targets
-- Results logging with official race import (multiple timing connectors)
-- Performance analysis: a form curve comparable across distances, season by season, and all time
-- Sharing events, goals, and results between users
-- Installable PWA with offline support (Firestore persistence)
-- Light / dark mode; UI in Portuguese (pt-PT) and English (en-GB)
+- Results with official race import
+- Analysis: form curve across distances, season by season and all time
+- Tools: pace calculator and weight log
+- Sharing between users; light and dark mode; six languages (pt, en, es, de, fr, ar)
 
-### Stack
-
-React 19 · TypeScript · Vite · Tailwind CSS · Firebase (Auth, Firestore, Storage, Cloud Functions) · Leaflet · Chart.js
-
-### Local development
-
-**Requirements:** Node.js 24 (Java 21+ if using Firebase emulators)
-
-**No cloud Firebase project**, local emulators (recommended for contributors):
+**Run it** (Node.js 24, Java 21+ for the emulators):
 
 ```bash
-git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
-cd queima-asfalto
-npm install
-npm --prefix functions install
+npm install && npm --prefix functions install
 cp .env.emulator.example .env.local
 npm run emulators    # terminal 1
 npm run dev          # terminal 2
 ```
 
-Full guide: [`docs/emulators.md`](docs/emulators.md) (“Sign in (emulator)”, limitations, hybrid mode).
+With your own Firebase project: [`docs/self-hosting.md`](docs/self-hosting.md). To contribute: [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
-**With your own Firebase project** (Google Sign-In, deploy):
+| Doc | Contents |
+|-----|----------|
+| [`architecture.md`](docs/architecture.md) | How the pieces fit |
+| [`configuration.md`](docs/configuration.md) | Environment variables |
+| [`emulators.md`](docs/emulators.md) | Local development without the cloud |
+| [`self-hosting.md`](docs/self-hosting.md) | Deploy to your own Firebase project |
+| [`console-restrictions.md`](docs/console-restrictions.md) | API key restrictions in the console |
+| [`adding-a-results-connector.md`](docs/adding-a-results-connector.md) | New results connector |
+| [`discovery-sources.md`](docs/discovery-sources.md) | Race catalog sources |
+| [`race-catalog.md`](docs/race-catalog.md) | Catalog and its review rule |
+| [`planning-a-season.md`](docs/planning-a-season.md) | From the catalog to the calendar |
+| [`visual-identity.md`](docs/visual-identity.md) | Palette, typography and tokens |
+| [`voice.md`](docs/voice.md) | Brand voice |
 
-```bash
-git clone https://github.com/Seven-Panda-Labs/queima-asfalto.git
-cd queima-asfalto
-npm install
-cp .env.example .env.local
-cp .firebaserc.example .firebaserc   # edit with your project ID
-# optional, for Functions deploy with a dedicated service account:
-cp functions/.env.example functions/.env
-npm run dev
-```
-
-Fill in `.env.local` with your Firebase credentials. Full variable reference in [`docs/configuration.md`](docs/configuration.md).
-
-| Variable | Purpose |
-|----------|---------|
-| `VITE_FIREBASE_*` | Firebase Web App configuration |
-| `VITE_FIREBASE_VAPID_KEY` | Push notifications (optional in dev) |
-| `VITE_GEOAPIFY_API_KEY` | Location autocomplete and geocoding |
-
-Open [http://localhost:5173](http://localhost:5173). Add `localhost` to authorized domains in Firebase Authentication.
-
-Full deploy guide (Firebase, Auth, Functions, FCM, Geoapify): [`docs/self-hosting.md`](docs/self-hosting.md).
-
-### Scripts
-
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Development server |
-| `npm run emulators` | Firebase Emulator Suite (Auth, Firestore, Functions, Storage) |
-| `npm run build` | Production build |
-| `npm run test` | Tests (Vitest) |
-| `npm run check` | Lint + tests + changelog verification |
-| `npm run setup:githooks` | Enable git hooks: pre-commit + pre-push (once per clone) |
-
-Version bumps must update `package.json`, `change-log.md`, and `change-log.en.md`.
-
-### Documentation
-
-| File | Contents |
-|------|----------|
-| [`AGENTS.md`](AGENTS.md) | Instructions for AI agents (branches, PRs, CI) |
-| [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to contribute (setup, tests, changelog, PRs) |
-| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Community code of conduct (Contributor Covenant 2.1) |
-| [`SECURITY.md`](SECURITY.md) | Report security vulnerabilities |
-| [`docs/self-hosting.md`](docs/self-hosting.md) | Step-by-step deploy guide (Firebase, FCM, Geoapify) |
-| [`docs/configuration.md`](docs/configuration.md) | Environment variables and infrastructure setup |
-| [`docs/emulators.md`](docs/emulators.md) | Local development with emulators (no cloud project) |
-| [`docs/privacy-policy-template.md`](docs/privacy-policy-template.md) | Privacy policy template (self-hosters, GDPR) |
-| [`docs/timing-scraping-disclaimer.md`](docs/timing-scraping-disclaimer.md) | Timing site scraping and third-party ToS notice |
-| [`docs/architecture.md`](docs/architecture.md) | Architecture (PWA, Firestore, Cloud Functions, connectors) |
-| [`docs/adding-a-results-connector.md`](docs/adding-a-results-connector.md) | How to add an official results connector |
-| [`docs/race-lifecycle.md`](docs/race-lifecycle.md) | The race lifecycle (wish to analysis), stages and gaps |
-| [`docs/planning-a-season.md`](docs/planning-a-season.md) | From the catalog to the calendar: favourites, season and navigation |
-| [`docs/race-catalog.md`](docs/race-catalog.md) | The race catalog: format, producers and the review rule |
-| [`docs/console-restrictions.md`](docs/console-restrictions.md) | Firebase / Geoapify console restrictions |
-| [`docs/visual-identity.md`](docs/visual-identity.md) | Palette, typography, and UI tokens |
-| [`docs/voice.md`](docs/voice.md) | Brand voice (copy and i18n) |
-
-Release history: [`change-log.md`](change-log.md) · [`change-log.en.md`](change-log.en.md)
-
-### License
-
-[GNU Affero General Public License v3.0](LICENSE) (AGPL-3.0).
-
-### Contributing
-
-Issues and pull requests are welcome. See [`CONTRIBUTING.md`](CONTRIBUTING.md) (setup, `npm run check`, changelog, PR style). AI agents: [`AGENTS.md`](AGENTS.md).
+License [AGPL-3.0](LICENSE). Security: [`SECURITY.md`](SECURITY.md).

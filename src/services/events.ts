@@ -21,6 +21,7 @@ import { deleteAllEventMedia } from './eventMedia'
 import type { Event, EventCreate, EventFilters } from '../types/Event'
 import { normalizeEventStatus, normalizeEventType } from '../domain/eventCodes'
 import { isOutcomeReason, type OutcomeReason } from '../domain/outcomeReasons'
+import { RESULTS_PLATFORMS, type ResultsPlatform } from '../../shared/officialResults'
 import { calculatePace } from '../utils/pace'
 import { normalizeTime } from '../utils/time'
 
@@ -59,27 +60,9 @@ function docToEvent(id: string, data: Record<string, unknown>): Event {
     pace: data.pace as string | undefined,
     classification: data.classification as string | undefined,
     resultsUrl: typeof data.resultsUrl === 'string' ? data.resultsUrl : undefined,
-    resultsPlatform:
-      data.resultsPlatform === 'parkrun' ||
-      data.resultsPlatform === 'davengo' ||
-      data.resultsPlatform === 'sporthive' ||
-      data.resultsPlatform === 'myraceresult' ||
-      data.resultsPlatform === 'sccevents' ||
-      data.resultsPlatform === 'maxfunsports' ||
-      data.resultsPlatform === 'myracepartner' ||
-      data.resultsPlatform === 'strassenlauf' ||
-      data.resultsPlatform === 'zielzeit' ||
-      data.resultsPlatform === 'eqtiming' ||
-      data.resultsPlatform === 'nsfberlin' ||
-      data.resultsPlatform === 'runczech' ||
-      data.resultsPlatform === 'ultimate' ||
-      data.resultsPlatform === 'vcrunning' ||
-      data.resultsPlatform === 'wiclax' ||
-      data.resultsPlatform === 'timataka' ||
-      data.resultsPlatform === 'mikatiming' ||
-      data.resultsPlatform === 'pacer'
-        ? data.resultsPlatform
-        : undefined,
+    resultsPlatform: RESULTS_PLATFORMS.includes(data.resultsPlatform as ResultsPlatform)
+      ? (data.resultsPlatform as ResultsPlatform)
+      : undefined,
     resultsVerified: data.resultsVerified === true,
     outcomeReason:
       typeof data.outcomeReason === 'string' && isOutcomeReason(data.outcomeReason)

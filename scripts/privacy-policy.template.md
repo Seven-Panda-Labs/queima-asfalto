@@ -81,7 +81,7 @@ Nos termos do RGPD, os utilizadores podem solicitar:
 
 **Pedidos:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Prazo de resposta recomendado: 30 dias.
 
-**Apagamento de conta:** o operador deve apagar `users/{uid}`, eventos, media em Storage e partilhas (Firebase Console ou script). O software não inclui ainda um botão «apagar conta» automático.
+**Apagamento de conta:** a pedido, o operador apaga a conta na área de administração. O perfil, os eventos, os ficheiros em Storage, as partilhas e os restantes dados da conta são apagados de uma só vez.
 
 #### 9. Segurança
 
@@ -180,7 +180,7 @@ Under GDPR, users may request:
 
 **Requests:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Recommended response time: 30 days.
 
-**Account deletion:** the operator must delete `users/{uid}`, events, Storage media, and shares (Firebase Console or script). The software does not yet include an automatic “delete account” button.
+**Account deletion:** on request, the operator deletes the account from the administration area. The profile, events, Storage files, shares and the rest of the account's data are deleted in one step.
 
 #### 9. Security
 
@@ -279,7 +279,7 @@ En virtud del RGPD, los usuarios pueden solicitar:
 
 **Solicitudes:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Plazo de respuesta recomendado: 30 días.
 
-**Supresión de cuenta:** el operador debe eliminar `users/{uid}`, eventos, multimedia en Storage y compartidos (Firebase Console o script). El software aún no incluye un botón automático de «eliminar cuenta».
+**Supresión de cuenta:** a petición, el operador elimina la cuenta desde el área de administración. El perfil, los eventos, los archivos en Storage, los compartidos y el resto de datos de la cuenta se eliminan de una vez.
 
 #### 9. Seguridad
 
@@ -378,7 +378,7 @@ Nach DSGVO können Nutzer Folgendes beantragen:
 
 **Anfragen:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Empfohlene Antwortfrist: 30 Tage.
 
-**Kontolöschung:** der Betreiber muss `users/{uid}`, Events, Storage-Medien und Freigaben löschen (Firebase Console oder Skript). Die Software enthält noch keinen automatischen „Konto löschen“-Button.
+**Kontolöschung:** auf Anfrage löscht der Betreiber das Konto im Administrationsbereich. Profil, Events, Dateien in Storage, Freigaben und alle übrigen Daten des Kontos werden in einem Schritt gelöscht.
 
 #### 9. Sicherheit
 
@@ -477,7 +477,7 @@ En vertu du RGPD, les utilisateurs peuvent demander :
 
 **Demandes :** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Délai de réponse recommandé : 30 jours.
 
-**Suppression du compte :** l'opérateur doit supprimer `users/{uid}`, les événements, les médias Storage et les partages (console Firebase ou script). Le logiciel n'inclut pas encore de bouton automatique « supprimer le compte ».
+**Suppression du compte :** sur demande, l'opérateur supprime le compte depuis l'espace d'administration. Le profil, les événements, les fichiers Storage, les partages et les autres données du compte sont supprimés en une seule fois.
 
 #### 9. Sécurité
 
@@ -575,7 +575,7 @@ Instance : {{HOSTING_URL}}
 
 **الطلبات:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). مدة الاستجابة الموصى بها: 30 يومًا.
 
-**حذف الحساب:** يجب على المشغّل حذف `users/{uid}` والفعاليات ووسائط Storage والمشاركات (عبر Firebase Console أو سكربت). لا تتضمن البرمجية حتى الآن زر «حذف الحساب» تلقائيًا.
+**حذف الحساب:** عند الطلب، يحذف المشغّل الحساب من منطقة الإدارة. يُحذف الملف الشخصي والفعاليات وملفات Storage والمشاركات وبقية بيانات الحساب دفعة واحدة.
 
 #### 9. الأمان
 
