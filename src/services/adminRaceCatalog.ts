@@ -299,11 +299,22 @@ export async function saveCatalogRaceForAdmin(
   }))
 }
 
-/** Firestore refuses a key whose value is undefined, so those keys go. */
+/**
+ * Firestore refuses a key whose value is undefined, so those keys go, at any
+ * depth: an edition with no results link holds one too.
+ */
 function withoutUndefined<T extends Record<string, unknown>>(data: T): Partial<T> {
+  return stripUndefined(data) as Partial<T>
+}
+
+function stripUndefined(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(stripUndefined)
+  if (value === null || typeof value !== 'object' || value.constructor !== Object) return value
   return Object.fromEntries(
-    Object.entries(data).filter(([, value]) => value !== undefined),
-  ) as Partial<T>
+    Object.entries(value)
+      .filter(([, inner]) => inner !== undefined)
+      .map(([key, inner]) => [key, stripUndefined(inner)]),
+  )
 }
 
 export async function catalogRaceIdExists(id: string): Promise<boolean> {

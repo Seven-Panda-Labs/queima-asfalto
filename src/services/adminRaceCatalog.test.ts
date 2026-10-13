@@ -62,4 +62,21 @@ describe('saving an entry by hand', () => {
     const [, written] = setDoc.mock.calls[0] as [unknown, Record<string, unknown>]
     expect(Object.entries(written).filter(([, value]) => value === undefined)).toEqual([])
   })
+
+  it('writes no such key inside an edition either', async () => {
+    // The form sets `resultsUrl: undefined` on every edition without a link,
+    // and Firestore refused the whole save.
+    await saveCatalogRaceForAdmin(
+      race({
+        editions: [
+          { year: 2026, raceDate: '2026-11-15', source: 'acorrer.pt', confirmedAt: '2026-10-13', resultsUrl: undefined },
+        ],
+      }),
+      'admin',
+    )
+
+    const [, written] = setDoc.mock.calls[0] as [unknown, { editions: Record<string, unknown>[] }]
+    expect(written.editions[0]).not.toHaveProperty('resultsUrl')
+    expect(written.editions[0].raceDate).toBe('2026-11-15')
+  })
 })
