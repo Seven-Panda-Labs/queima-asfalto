@@ -209,7 +209,9 @@ export function AdminCatalogForm() {
       await saveCatalogRaceForAdmin(withNormalizedUrls({ ...race, id: race.id || slugify(race.name) }), user.uid)
       toast.success(t('admin.catalogSaved'))
       navigate('/admin/catalogo')
-    } catch {
+    } catch (error) {
+      // The toast cannot say why, so the console has to.
+      console.error(error)
       toast.error(t('admin.catalogSaveError'))
     } finally {
       setSaving(false)
