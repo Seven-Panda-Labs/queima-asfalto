@@ -2,9 +2,7 @@
 
 **Public repository:** [github.com/Seven-Panda-Labs/queima-asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto)
 
-This file defines how AI agents (Claude Code, Cursor, Copilot, CI bots, etc.) should work in this repo. Humans: see [CONTRIBUTING.md](CONTRIBUTING.md) as well.
-
-It is the **single source of truth**, tool-specific files only point here, never restate rules:
+How AI agents (Claude Code, Cursor, Copilot, CI bots) work in this repo; humans follow it too, with setup in [CONTRIBUTING.md](CONTRIBUTING.md). It is the **single source of truth**: tool-specific files only point here.
 
 | Tool | File |
 |------|------|
@@ -15,7 +13,7 @@ It is the **single source of truth**, tool-specific files only point here, never
 
 **Nothing lands on `main` without a reviewed PR and green CI.** Do not push directly to `main`, except when the user explicitly requests an emergency hotfix **and** confirms they may bypass the normal flow.
 
-This is enforced, not just documented. See [Enforcement](#enforcement).
+Enforced by hooks, see [Enforcement](#enforcement).
 
 ## Mandatory Git workflow
 
@@ -35,7 +33,7 @@ This is enforced, not just documented. See [Enforcement](#enforcement).
    ```bash
    npm run check
    ```
-   If you changed `functions/src/`: `npm --prefix functions run build` (already included in `check`).
+   It runs the functions build, typecheck, lint, tests, Firestore rules tests and the changelog check. Read its exit status, not grepped output.
 5. **Commit** only when the user explicitly asks.
 6. Push the **branch** (not `main`):
    ```bash
@@ -51,11 +49,11 @@ This is enforced, not just documented. See [Enforcement](#enforcement).
 
 | Check | Command / note |
 |-------|----------------|
-| Lint + tests + rules + changelog | `npm run check` |
+| Build, typecheck, lint, tests, rules, changelog | `npm run check` |
 | Licenses (if deps changed) | `npm run check:licenses` |
 | No secrets | CI Gitleaks; never commit `.env.local`, keys, service accounts |
 | No PII in fixtures | Fictional names only (e.g. «Zé Ninguém») |
-| Changelog (on version bump) | `change-log.md` + `change-log.en.md` + `package.json` |
+| Changelog (on version bump) | `package.json` + all six `change-log{,.en,.es,.de,.fr,.ar}.md` (`## [X.Y.Z] - YYYY-MM-DD`) |
 | Scope | One topic per PR |
 
 ## What agents must **not** do
@@ -90,7 +88,7 @@ Local git hooks (enable once per clone with `npm run setup:githooks`):
 | Hook | Blocks |
 |------|--------|
 | `.githooks/pre-push` | Any push to `main` / `master`, including force-push and delete |
-| `.githooks/pre-commit` | `package.json` version bump without staged changelogs |
+| `.githooks/pre-commit` | `package.json` version bump without all six changelogs staged and in sync |
 
 The pre-push hook covers every agent and human that shells out to `git`. Emergency hotfix, only on explicit user instruction: `ALLOW_MAIN_PUSH=1 git push origin main`.
 
@@ -113,17 +111,10 @@ The pre-push hook covers every agent and human that shells out to `git`. Emergen
 | Architecture | [docs/architecture.md](docs/architecture.md) |
 | Connectors | [docs/adding-a-results-connector.md](docs/adding-a-results-connector.md) |
 | Discovery sources | [docs/discovery-sources.md](docs/discovery-sources.md) |
-| Race lifecycle (product) | [docs/race-lifecycle.md](docs/race-lifecycle.md) |
 | Planning a season (product) | [docs/planning-a-season.md](docs/planning-a-season.md) |
 | Race catalog and its review rule | [docs/race-catalog.md](docs/race-catalog.md) |
 | Self-hosting | [docs/self-hosting.md](docs/self-hosting.md) |
 
 ## GitHub CI
 
-Every PR and push to `main` runs:
-
-- **CI**: `npm run check`
-- **License check**
-- **Secret scan**: Gitleaks (org repos need `GITLEAKS_LICENSE`)
-
-The branch must pass CI before merge.
+Every PR and push to `main` runs `npm run check`, the license check and Gitleaks (org repos need `GITLEAKS_LICENSE`). The branch must pass before merge.

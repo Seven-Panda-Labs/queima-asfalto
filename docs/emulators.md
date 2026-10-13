@@ -1,317 +1,66 @@
-# Emuladores Firebase: desenvolvimento local
+# Firebase emulators
 
-**Português** · [English](#english)
+Develop without a cloud project using the [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite).
 
----
+Requirements: Node.js 24, Java JDK 21+ (Firestore emulator), `firebase-tools` (in `devDependencies`, run as `npx firebase`).
 
-<a id="portugues"></a>
-
-## Português
-
-Guia para desenvolver **sem projeto Firebase na cloud** (ou com dados locais isolados), usando o [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite).
-
-### Quando usar
-
-| Cenário | Abordagem |
-|---------|-----------|
-| Contribuir com UI / CRUD / partilhas sem tocar em produção | **Emuladores completos** (este guia) |
-| Testar só regras Firestore | `npm run test:rules` (sem app) |
-| Testar callables sem Auth/Firestore emulados | `VITE_FUNCTIONS_EMULATOR=true` + projeto real |
-| Deploy ou dados reais partilhados | Projeto Firebase (ver [`CONTRIBUTING.md`](../CONTRIBUTING.md)) |
-
-### Requisitos
-
-- Node.js 24
-- **Java JDK 21+** (exigido pelo `firebase-tools` para Firestore emulator)
-- `firebase-tools` (vem em `devDependencies`; chama-se com `npx firebase`)
-
-### Início rápido (sem projeto cloud)
-
-**Terminal 1, emuladores:**
+## Quick start
 
 ```bash
+# terminal 1
 npm run emulators
-```
 
-Isto arranca Auth (`9099`), Firestore (`8080`), Functions (`5001`), Storage (`9199`) e a **Emulator UI** em [http://localhost:4000](http://localhost:4000). O project ID é `demo-queima-asfalto` (não precisa de `.firebaserc`).
-
-**Terminal 2, frontend:**
-
-```bash
+# terminal 2
 cp .env.emulator.example .env.local
-npm install
-npm --prefix functions install
+npm install && npm --prefix functions install
 npm run dev
 ```
 
-Abre [http://localhost:5173](http://localhost:5173) e usa **«Entrar (emulador)»** no ecrã de login (não uses Google; OAuth não funciona contra o Auth emulator).
+Project ID is `demo-queima-asfalto` (no `.firebaserc` needed). Open http://localhost:5173 and use **"Sign in (emulator)"**: Google sign-in does not work against the Auth emulator. Dev account: `dev@queima-asfalto.local` / `devpassword`, created on first sign-in.
 
-Conta de desenvolvimento criada automaticamente:
+Ports (set in [`firebase.json`](../firebase.json), wired in [`src/services/firebase.ts`](../src/services/firebase.ts)): UI 4000, Auth 9099, Firestore 8080, Functions 5001, Storage 9199.
 
-- Email: `dev@queima-asfalto.local`
-- Password: `devpassword`
+## Demo data
 
-### Dados de demonstração
-
-Os emuladores começam vazios. Para uma época, com provas reais do catálogo e uma corredora fictícia, semeia o conjunto que também serve os screenshots do README:
+Sign in once, take the account uid from the Emulator UI, then:
 
 ```bash
-# 1. entra uma vez com «Entrar (emulador)» para a conta ser criada
-# 2. descobre o uid dessa conta (aparece em users/ na UI dos emuladores)
-# 3. o catálogo primeiro: cada prova da demo é uma entrada dele
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
-  npm run seed:race-catalog -- --confirm
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
-  npm run seed:demo-user -- --confirm --user-id <uid>
+export FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto
+npm run seed:race-catalog -- --confirm
+npm run seed:demo-user -- --confirm --user-id <uid>
 ```
 
-São 36 eventos, 8 objetivos, 6 objetivos de performance e 5 desejos, cada um ligado a uma prova do catálogo. O catálogo de arranque só tem 14 provas, por isso no emulador ficam 15 eventos e 4 desejos: o script salta, com aviso, o que aponta para uma entrada que o projeto não tem, e nunca inventa uma prova fora do catálogo. Junta `--dry-run` em vez de `--confirm` para ver o que faria sem escrever nada.
+The demo user only gets races present in the catalog; the rest are skipped with a warning. `--dry-run` writes nothing. The seed refuses an emulator project whose ID does not start with `demo-`.
 
-O script recusa-se a correr contra o emulador se o projeto não começar por `demo-`, para não haver forma de semear produção por engano.
+## Hybrid mode
 
-### Variáveis de ambiente
+Real project with emulated Functions only: real credentials in `.env.local`, `VITE_FUNCTIONS_EMULATOR=true` (without `VITE_USE_FIREBASE_EMULATORS`), then `npm run emulators`.
 
-Copia [`.env.emulator.example`](../.env.emulator.example) para `.env.local`.
+## Limitations
 
-| Variável | Descrição |
-|----------|-----------|
-| `VITE_USE_FIREBASE_EMULATORS=true` | Liga a app a Auth, Firestore, Storage e Functions emulados |
-| `VITE_FIREBASE_*` | Valores placeholder (devem coincidir com `demo-queima-asfalto`) |
-| `VITE_FUNCTIONS_EMULATOR=true` | **Só** Functions emuladas; Firestore/Auth continuam no projeto de `.env.local` |
+- No Google sign-in, Web Push or Analytics. Geoapify needs a real key.
+- Scheduled functions (e.g. `dispatchReminders`) do not fire on their own.
+- Results lookup makes real HTTP requests to timing sites.
+- Writing `events/.../media` documents fails: the rules require a production Storage `downloadUrl`, the emulator returns `127.0.0.1:9199`. Uploads and backup restores with files need a real project.
+- Firestore uses an in-memory cache (no offline persistence).
 
-Ver também [`configuration.md`](./configuration.md).
+## Rules tests
 
-### Portas (predefinição)
+`npm run test:rules` runs [`firestore.rules.test.ts`](../firestore.rules.test.ts) against the Firestore emulator. Part of `npm run check` and CI. For coverage, see the `describe` blocks in that file.
 
-| Serviço | Porta | Uso |
-|---------|-------|-----|
-| Emulator UI | 4000 | Consola web |
-| Auth | 9099 | Login emulador |
-| Firestore | 8080 | Dados + `npm run test:rules` |
-| Functions | 5001 | Callables (`lookupOfficialResults`, partilhas) |
-| Storage | 9199 | Media de eventos |
-| Vite dev server | 5173 | PWA |
-
-Configuração em [`firebase.json`](../firebase.json) → `emulators`.
-
-### O que funciona / limitações
-
-| Funcionalidade | Emuladores |
-|----------------|------------|
-| Auth (email dev) | Sim, botão «Entrar (emulador)» |
-| Google Sign-In | **Não**, OAuth não é suportado no Auth emulator |
-| Firestore + rules | Sim |
-| Storage + rules | Sim |
-| Cloud Functions callable | Sim |
-| `dispatchReminders` (agendado) | Não automático, disparo manual na UI ou ignorar |
-| Web Push (FCM) | **Não** |
-| Google Analytics | **Não** (eventos ignorados em dev) |
-| Geoapify (mapas) | Precisa de `VITE_GEOAPIFY_API_KEY` real (API externa) |
-| Importação resultados oficiais | Sim via Functions emulator (HTTP a sites de timing reais) |
-
-### Modo híbrido (projeto real + Functions emuladas)
-
-Útil para testar callables sem deploy:
-
-1. `.env.local` com credenciais reais do teu projeto Firebase
-2. `VITE_FUNCTIONS_EMULATOR=true` (sem `VITE_USE_FIREBASE_EMULATORS`)
-3. `npm run emulators` (ou `firebase emulators:start --only functions`)
-4. Login com Google contra o projeto real; dados em Firestore cloud
-
-### Testes automatizados (regras)
-
-```bash
-npm run test:rules
-```
-
-Corre Vitest contra o Firestore emulator (`firebase emulators:exec`). Incluído em `npm run check` e no CI. Requer Java 21+.
-
-Ficheiro: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Cobertura actual:
-
-| Área | O que valida |
-|------|----------------|
-| `users` | Só o dono lê/escreve o perfil |
-| `events` | CRUD por `userId`; `resultsPlatform`; campos de resultado |
-| `goals` / `performanceGoals` / `bucketListItems` | Isolamento por utilizador; validação de payload |
-| `shares` | Leitura para owner, grantee e convite pendente por email; **sem** writes no cliente |
-| `users/.../reminderDispatches` | Leitura pelo dono; writes só servidor |
-| `users/.../rateLimits` | Leitura pelo dono; writes só servidor (lookup de resultados) |
-| `events/.../media` | `storagePath` e `downloadUrl` alinhados com Firebase Storage; sem updates |
-
-> **Limitação conhecida:** `firestore.rules` exige que o `downloadUrl` tenha a forma de produção (`firebasestorage.googleapis.com` ou `*.firebasestorage.app`), mas o emulador de Storage devolve URLs `127.0.0.1:9199`. Por isso, **criar documentos em `events/.../media` falha contra os emuladores**, tanto no upload normal de fotos como no restauro de backup com ficheiros. O upload para o Storage em si funciona; só a escrita do documento é recusada. Testa esta parte num projeto Firebase real.
-
-### Persistir dados entre sessões (opcional)
+## Persist data
 
 ```bash
 firebase emulators:start --project demo-queima-asfalto --import=./emulator-data --export-on-exit=./emulator-data
 ```
 
-A pasta `emulator-data/` está no `.gitignore`.
+`emulator-data/` is gitignored.
 
-### Resolução de problemas
+## Troubleshooting
 
-| Problema | Solução |
-|----------|---------|
-| `Java version before 21` | Instala JDK 21+ (`sudo apt install openjdk-21-jdk` ou Temurin) |
-| Login Google falha em modo emulador | Usa «Entrar (emulador)», não o botão Google |
-| `connection refused` nas callables | Confirma `npm run emulators` a correr e `VITE_USE_FIREBASE_EMULATORS=true` |
-| Firestore persistence / offline estranho | Em modo emulador a app usa cache em memória (sem IndexedDB persistence) |
-| Callable `permission-denied` | Dados emulados vazios. Cria eventos de novo após reiniciar emuladores |
-
----
-
-<a id="english"></a>
-
-## English
-
-[Português](#portugues)
-
-Guide for developing **without a cloud Firebase project** (or with isolated local data) using the [Firebase Emulator Suite](https://firebase.google.com/docs/emulator-suite).
-
-### When to use
-
-| Scenario | Approach |
-|----------|----------|
-| Contribute on UI / CRUD / shares without touching production | **Full emulators** (this guide) |
-| Test Firestore rules only | `npm run test:rules` (no app) |
-| Test callables without emulated Auth/Firestore | `VITE_FUNCTIONS_EMULATOR=true` + real project |
-| Deploy or shared real data | Firebase project (see [`CONTRIBUTING.md`](../CONTRIBUTING.md)) |
-
-### Requirements
-
-- Node.js 24
-- **Java JDK 21+** (required by `firebase-tools` for the Firestore emulator)
-- `firebase-tools` (ships in `devDependencies`; call it with `npx firebase`)
-
-### Quick start (no cloud project)
-
-**Terminal 1, emulators:**
-
-```bash
-npm run emulators
-```
-
-Starts Auth (`9099`), Firestore (`8080`), Functions (`5001`), Storage (`9199`), and the **Emulator UI** at [http://localhost:4000](http://localhost:4000). Project ID is `demo-queima-asfalto` (no `.firebaserc` needed).
-
-**Terminal 2, frontend:**
-
-```bash
-cp .env.emulator.example .env.local
-npm install
-npm --prefix functions install
-npm run dev
-```
-
-Open [http://localhost:5173](http://localhost:5173) and click **“Sign in (emulator)”** on the login screen (do not use Google; OAuth does not work against the Auth emulator).
-
-Dev account (auto-created on first sign-in):
-
-- Email: `dev@queima-asfalto.local`
-- Password: `devpassword`
-
-### Demo data
-
-The emulators start empty. For a season, with real races from the catalog and a fictional runner, seed the same set the README screenshots use:
-
-```bash
-# 1. sign in once with "Sign in (emulator)" so the account exists
-# 2. find that account's uid (listed under users/ in the emulator UI)
-# 3. the catalog first: every demo race is an entry in it
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
-  npm run seed:race-catalog -- --confirm
-FIRESTORE_EMULATOR_HOST=127.0.0.1:8080 GCLOUD_PROJECT=demo-queima-asfalto \
-  npm run seed:demo-user -- --confirm --user-id <uid>
-```
-
-That is 36 events, 8 goals, 6 performance goals and 5 wishes, each linked to a catalog race. The bootstrap catalog holds only 14 races, so the emulator gets 15 events and 4 wishes: the script skips, with a warning, whatever points at an entry the project does not hold, and never invents a race outside the catalog. Pass `--dry-run` instead of `--confirm` to see what it would do without writing anything.
-
-The script refuses to run against the emulator unless the project id starts with `demo-`, so there is no way to seed production by accident.
-
-### Environment variables
-
-Copy [`.env.emulator.example`](../.env.emulator.example) to `.env.local`.
-
-| Variable | Description |
-|----------|-------------|
-| `VITE_USE_FIREBASE_EMULATORS=true` | Connect the app to emulated Auth, Firestore, Storage, and Functions |
-| `VITE_FIREBASE_*` | Placeholder values (must match `demo-queima-asfalto`) |
-| `VITE_FUNCTIONS_EMULATOR=true` | **Functions only**; Firestore/Auth still use the project from `.env.local` |
-
-See also [`configuration.md`](./configuration.md).
-
-### Ports (defaults)
-
-| Service | Port | Use |
-|---------|------|-----|
-| Emulator UI | 4000 | Web console |
-| Auth | 9099 | Emulator login |
-| Firestore | 8080 | Data + `npm run test:rules` |
-| Functions | 5001 | Callables (`lookupOfficialResults`, shares) |
-| Storage | 9199 | Event media |
-| Vite dev server | 5173 | PWA |
-
-Configured in [`firebase.json`](../firebase.json) → `emulators`.
-
-### What works / limitations
-
-| Feature | Emulators |
-|---------|-----------|
-| Auth (dev email) | Yes, “Sign in (emulator)” button |
-| Google Sign-In | **No**, OAuth is not supported on the Auth emulator |
-| Firestore + rules | Yes |
-| Storage + rules | Yes |
-| Callable Cloud Functions | Yes |
-| `dispatchReminders` (scheduled) | Not automatic, trigger manually in UI or skip |
-| Web Push (FCM) | **No** |
-| Google Analytics | **No** (events ignored in dev) |
-| Geoapify (maps) | Requires real `VITE_GEOAPIFY_API_KEY` (external API) |
-| Official results import | Yes via Functions emulator (real HTTP to timing sites) |
-
-### Hybrid mode (real project + emulated Functions)
-
-Useful to test callables without deploy:
-
-1. `.env.local` with real Firebase credentials
-2. `VITE_FUNCTIONS_EMULATOR=true` (without `VITE_USE_FIREBASE_EMULATORS`)
-3. `npm run emulators` (or `firebase emulators:start --only functions`)
-4. Sign in with Google against the real project; data stays in cloud Firestore
-
-### Automated tests (rules)
-
-```bash
-npm run test:rules
-```
-
-Runs Vitest against the Firestore emulator (`firebase emulators:exec`). Included in `npm run check` and CI. Requires Java 21+.
-
-File: [`firestore.rules.test.ts`](../firestore.rules.test.ts). Current coverage:
-
-| Area | What it validates |
-|------|-------------------|
-| `users` | Owner-only profile read/write |
-| `events` | CRUD scoped by `userId`; `resultsPlatform`; results fields |
-| `goals` / `performanceGoals` / `bucketListItems` | Per-user isolation; payload validation |
-| `shares` | Read for owner, grantee, pending invitee by email; **no** client writes |
-| `users/.../reminderDispatches` | Owner read; server-only writes |
-| `users/.../rateLimits` | Owner read; server-only writes (results lookup) |
-| `events/.../media` | `storagePath` and `downloadUrl` match Firebase Storage; no updates |
-
-> **Known limitation:** `firestore.rules` requires `downloadUrl` to have the production shape (`firebasestorage.googleapis.com` or `*.firebasestorage.app`), but the Storage emulator returns `127.0.0.1:9199` URLs. So **creating `events/.../media` documents fails against the emulators**, both for normal photo uploads and for restoring a backup that carries files. The Storage upload itself works; only the document write is denied. Test this part against a real Firebase project.
-
-### Persist data between sessions (optional)
-
-```bash
-firebase emulators:start --project demo-queima-asfalto --import=./emulator-data --export-on-exit=./emulator-data
-```
-
-The `emulator-data/` folder is gitignored.
-
-### Troubleshooting
-
-| Problem | Solution |
-|---------|----------|
-| `Java version before 21` | Install JDK 21+ (`sudo apt install openjdk-21-jdk` or Temurin) |
-| Google login fails in emulator mode | Use “Sign in (emulator)”, not the Google button |
-| `connection refused` on callables | Ensure `npm run emulators` is running and `VITE_USE_FIREBASE_EMULATORS=true` |
-| Odd Firestore offline behaviour | Emulator mode uses in-memory cache (no IndexedDB persistence) |
-| Callable `permission-denied` | Empty emulator data. Recreate events after restarting emulators |
+| Problem | Fix |
+|---------|-----|
+| `Java version before 21` | Install JDK 21+ |
+| Every Firestore query denied | `functions/.env` has `ACCOUNT_APPROVAL_REQUIRED=true`, so the dev account was created `pending`. Set `accountStatus` to `approved` on `users/{uid}` in the Emulator UI |
+| `connection refused` on callables | `npm run emulators` running and `VITE_USE_FIREBASE_EMULATORS=true` |
+| Callable `permission-denied` | Emulator data is wiped on restart; recreate the data |

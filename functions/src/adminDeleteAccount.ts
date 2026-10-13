@@ -2,7 +2,12 @@ import { HttpsError, onCall } from 'firebase-functions/v2/https'
 import { getAuth } from 'firebase-admin/auth'
 import { getFirestore, type Firestore, type Query } from 'firebase-admin/firestore'
 import { getStorage } from 'firebase-admin/storage'
+import { randomUUID } from 'node:crypto'
 import { callableFunctionOptions } from './functionOptions.js'
+import {
+  anonymizedContribution,
+  CONTRIBUTION_COLLECTIONS,
+} from './shared/raceCatalog/anonymize.js'
 
 const USERS_COLLECTION = 'users'
 const BATCH_SIZE = 400
@@ -21,6 +26,7 @@ const OWNED_COLLECTIONS = [
   'performanceGoals',
   'bucketListItems',
   'races',
+  'raceEntries',
   'weightEntries',
 ] as const
 
@@ -48,6 +54,8 @@ function storageBucketName(): string | undefined {
 export type DeleteAccountReport = {
   uid: string
   documents: Record<string, number>
+  /** Catalog contributions kept under a stand-in rather than deleted. */
+  anonymized: Record<string, number>
   storageFiles: number
   authUserDeleted: boolean
   /**
@@ -95,6 +103,26 @@ async function deleteQuery(db: Firestore, query: Query): Promise<number> {
   }
 }
 
+/** Rewrites one collection's contributions under a stand-in, returning how many. */
+async function anonymizeContributions(
+  db: Firestore,
+  name: string,
+  uid: string,
+  standIn: string,
+): Promise<number> {
+  const snapshot = await db.collection(name).where('uid', '==', uid).get()
+  for (let at = 0; at < snapshot.size; at += BATCH_SIZE / 2) {
+    const batch = db.batch()
+    for (const document of snapshot.docs.slice(at, at + BATCH_SIZE / 2)) {
+      const anonymized = anonymizedContribution(document.id, document.data(), uid, standIn)
+      batch.set(db.collection(name).doc(anonymized.id), anonymized.data)
+      if (anonymized.id !== document.id) batch.delete(document.ref)
+    }
+    await batch.commit()
+  }
+  return snapshot.size
+}
+
 /**
  * Everything one account owns, in an order that never leaves an orphan.
  *
@@ -131,6 +159,13 @@ export const adminDeleteAccount = onCall(callableOptions, async (request) => {
 
   for (const name of OWNED_COLLECTIONS) {
     documents[name] = await deleteQuery(db, db.collection(name).where('userId', '==', uid))
+  }
+
+  // The catalog keeps what these taught it, without saying who.
+  const anonymized: Record<string, number> = {}
+  const standIn = `deleted-${randomUUID()}`
+  for (const name of CONTRIBUTION_COLLECTIONS) {
+    anonymized[name] = await anonymizeContributions(db, name, uid, standIn)
   }
 
   for (const name of USER_SUBCOLLECTIONS) {
@@ -204,6 +239,7 @@ export const adminDeleteAccount = onCall(callableOptions, async (request) => {
   const report: DeleteAccountReport = {
     uid,
     documents,
+    anonymized,
     storageFiles,
     authUserDeleted,
     storageUnreachable,

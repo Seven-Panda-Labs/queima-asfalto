@@ -26,6 +26,8 @@ export async function listUsersForAdmin(): Promise<AdminUserList> {
 export type DeleteAccountReport = {
   uid: string
   documents: Record<string, number>
+  /** Catalog contributions kept without their author. */
+  anonymized: Record<string, number>
   storageFiles: number
   authUserDeleted: boolean
   /** The account had media, and the bucket held none of it. See the callable. */

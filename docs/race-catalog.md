@@ -1,250 +1,106 @@
-# Catálogo de corridas: formato e revisão
+# Race catalog
 
-**Português** · [English](#english)
+The races the app knows by name. It lives in the instance, in the Firestore `raceCatalog` collection, one document per race; types and pure functions are in [`shared/raceCatalog/`](../shared/raceCatalog/). It prefills races and, once dates are reviewed, feeds registration deadlines.
 
----
+There is no catalog in the repo. Each instance keeps its own, edited in the admin area. An empty catalog is a normal state. To bootstrap, `npm run seed:race-catalog -- --confirm` writes 14 reviewed races from [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts) and never overwrites (`--dry-run` to preview).
 
-<a id="portugues"></a>
+## Producers
 
-## Português
+| `producer` | Written by |
+|---|---|
+| `curated` | the admin area (default for entries older than the field) |
+| `harvest` | the daily job, see [discovery-sources.md](./discovery-sources.md) |
+| `runner` | a runner's proposal (`raceCatalogProposals`), applied by the daily job |
 
-O catálogo é a lista de provas que a app conhece por nome, e **vive na instância**, na colecção `raceCatalog` do Firestore, um documento por prova. Os tipos e as funções puras estão em [`shared/raceCatalog/`](../shared/raceCatalog/). Serve dois propósitos: preencher uma corrida sem a escrever à mão, e, quando as datas forem de confiança, alimentar os prazos de inscrição de #246.
+One collection, so "what needs a human" is one query and a harvest can see what a person checked. One document per race, so concurrent edits do not overwrite each other.
 
-Não há catálogo commitado no repo. Cada instância mantém o seu, editado na área de administração (#261), e uma instância que nunca o povoou tem um catálogo vazio, o que é um estado normal: o preenchimento não oferece nada.
+## The review rule
 
-Para começar com as provas já revistas, `npm run seed:race-catalog -- --confirm` escreve as 14 que existiam quando o catálogo mudou de casa. Corre uma vez, nunca sobrepõe o que já lá está, e a lista está em [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). É um arranque, não um catálogo.
+- **`unreviewed`**: assembled from listings or runners. It may **suggest** (prefill a field the runner sees and can correct), never **assert** (no deadline reminder, no countdown).
+- **`reviewed`**: checked against the official source.
 
-### Uma colecção, três produtores
+`canAssertDates()` enforces it. A wrong registration date is worse than none.
 
-| Produtor | O que escreve | Estado |
-|----------|---------------|--------|
-| Curadoria | entradas escritas na área de administração, `producer: 'curated'` | #261 |
-| Colheita agendada | candidatos escritos por uma função, `producer: 'harvest'` | #210 |
+## Editions
 
-Partilham a colecção de propósito: a fila de «o que precisa de um humano» é uma consulta só, e uma colheita nunca tem de adivinhar se está a sobrepor algo que alguém verificou.
+An edition is one year of an annual race: `raceDate`, the gates (`registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`), `typicalFee` with `feeCurrency`, and `resultsUrl`. An event links to its edition by the year of its date; there is no pointer field.
 
-Um documento por prova, e não um documento com todas: as entradas editam-se uma a uma, e ler-modificar-escrever um documento grande perdia a edição que chegasse em segundo. O catálogo do parkrun escolheu o contrário pela razão contrária, milhares de entradas que ninguém edita.
+**A recurring event has no editions.** A parkrun's occurrences follow from a rule and its details from its slug, so parkruns are not in this catalog: the two models diverge. Calendars that list parkrun venues are dropped at harvest and retired with reason `parkrun` (`npm run retire:parkruns`).
 
-Nada se apaga. O `races.catalogRaceId` aponta para um id e nenhuma regra do Firestore consegue verificar referências, logo uma entrada sai de circulação com `retired: true` e continua legível.
+## What runners give back
 
-### A regra da revisão
+Only facts about the race, never the runner: no time, pace, notes or whether they got in. One report per (race, year, user) in `raceCatalogEditionReports`, applied by the daily job (`applyEditionReports`):
 
-Cada entrada tem um campo `review`, e é este o ponto do formato:
+- **Day**: from a verified result (`resultsVerified` only comes from the official import). A year the catalog lacks goes in on one runner; a different day needs two runners agreeing and is marked `runnerConfirmedAt`, which the harvest then keeps. Linking an event to the catalog also reports past verified editions (`npm run backfill:edition-reports` for links made before).
+- **Results page**: travels with the day, through `shareableResultsUrl`, which drops anything naming the runner. The result editor offers it back to other runners for that year.
+- **Fee**: written when an entry becomes `registered`. One runner fills a missing fee; changing one needs two agreeing on amount and currency.
+- **Gates**: not built; they need a person ([#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328)).
 
-- **`unreviewed`**: a entrada foi montada a partir de listagens públicas e ninguém a confirmou junto do organizador. Pode **sugerir**, ou seja preencher um campo que o corredor vê e corrige. Não pode **afirmar**: nenhum lembrete de prazo, nenhuma contagem, nada que esteja errado em silêncio.
-- **`reviewed`**: alguém verificou a entrada na fonte oficial.
+A runner can **propose** a race the catalog lacks from the event page. The proposal carries their race and results page; the job creates an entry (or answers with an existing one through the duplicate rule) and links the runner's race to it.
 
-`canAssertDates()` é a função que separa as duas. Uma data de inscrição errada é pior do que não haver aviso nenhum.
+## Merging
 
-Um detalhe que vale a pena não confundir: o teste que garante que uma entrada não revista não tem `editions` é sobre o **ficheiro de seed** curado. Uma entrada colhida traz a data que leu e continua `unreviewed`, e é o `canAssertDates()` que a impede de disparar o que quer que seja, não a ausência de edições.
+A merge points the copy at the survivor (`duplicateOfCatalogRaceId`) and folds what the copy knew into it: editions with their days, gates, fee and results page, plus official site, entry method, typical month, distances and name words. The survivor wins every conflict. Entries that were copies of the dropped one are re-pointed at the survivor, so there are no chains. Admins can also join two entries by hand from the catalog search. `npm run fold:catalog-copies` folds and flattens merges made before folding existed.
 
-### Edições, e o que é uma edição
+Duplicate rules: see [discovery-sources.md](./discovery-sources.md#duplicates).
 
-Uma edição é **um ano de uma prova anual**: a data, os prazos de inscrição, o sorteio, o preço. É identificada pelo `year`, e o elo entre um evento e a sua edição é derivado do ano da data do evento. Não há campo nenhum no evento a apontar para a edição, de propósito: a edição já é definida pelo ano, o evento já tem a data, e um ponteiro seria uma segunda fonte de verdade a poder discordar da primeira.
+## URLs
 
-Isto só serve provas que acontecem uma vez por ano, e é assumido. **Um evento recorrente não tem edições**: um parkrun acontece todos os sábados, as suas ocorrências derivam de uma regra e não de uma lista, e o que se ignora sobre uma prova anual (a data, o preço, o link dos resultados) é derivável para um parkrun a partir do slug. Os dois modelos divergem porque precisam de coisas diferentes.
+`officialUrl` is the organiser's site; `sourceUrl` is the page the race was read from. Equal values mean the organiser link is not resolved yet. `readOrganiserLink` reads only marked anchors (running.life `data-out="website"`, runme.de `class="referer-link"`). The daily job resolves 100 a run; `npm run resolve:organiser-links -- --confirm [--limit N]` clears a backlog.
 
-### O que um corredor pode devolver ao catálogo
+## Stored names
 
-A qualidade dos dados partilhados pode subir com o que os corredores já sabem, e a fronteira é entre o passado e o futuro:
+`nameWithoutEdition` ([`shared/eventDiscovery/identity.ts`](../shared/eventDiscovery/identity.ts)) drops:
 
-- **O passado confirma-se, mas só até onde a prova alcança.** Um evento `completed` com `resultsVerified` é uma testemunha de outra qualidade, porque o `resultsVerified` só vem da importação oficial. Mas prova menos do que parece: os conectores escolhem a edição **pelo ano** e nenhum candidato traz dia nenhum. Portanto um resultado verificado prova que aquele corredor correu aquela prova naquele ano, e não prova o dia. O dia vem do evento, que desde o preenchimento automático pode ser o próprio palpite do catálogo a voltar. Daí a política: um ano que o catálogo não tinha entra com um corredor e fica sem marca; um dia que discorda do catálogo precisa de dois corredores a concordar; e um dia que concorda não escreve nada, porque concordância não é informação e marcá-la transformaria um palpite em facto.
-- **Os prazos perguntam-se.** As datas de abertura e fecho das inscrições vão para uma pessoa. São o que dispara lembretes, e um prazo errado está errado em silêncio: é exactamente o que a regra da revisão protege, e o `canAssertDates()` não muda.
-- **O preço segue a mesma corroboração que o dia.** Estava na fila de revisão porque a fronteira era «passado confia, futuro pergunta», e o preço que já se pagou é passado: é um facto sobre a prova e nenhuma fonte que lemos o publica. Onde o catálogo não tem preço, um corredor inscrito basta; para mudar um preço que já lá está, dois têm de concordar no mesmo valor e na mesma moeda.
+- a leading ordinal with a dot or bracket, Arabic or Roman ("33. Graz Marathon", "XXXIV. ..."),
+- a leading Portuguese ordinal ("3ª", "5.º"),
+- a trailing year near now ("Hermannslauf 2027", but not "Mattmark Memorial 1965").
 
-O que nunca sai da conta: o tempo, o ritmo, a classificação, as notas, a media, o traçado, e se o corredor entrou ou não.
+It keeps a bare leading number ("10 Marathon in 10 Tagen") and English or German suffixes ("1st Day 5K", "38er Run") on purpose. `nameWithoutTown` drops a trailing town when it is the whole appendix after a spaced separator and what is left still names a race.
 
-Uma contribuição segue a forma dos votos de duplicados: colecção própria, um documento por (prova, ano, utilizador) para que uma pessoa seja uma voz, e o que chega à edição partilhada são valores e contagens, nunca a identidade de quem contribuiu.
+Sponsors are never stripped automatically: `NOISE_WORDS` is used for comparing names only. `name` should be the race without its sponsor ("Berlin Marathon"), fixed by hand.
 
-Do que está acima, o **dia** já está construído. Quando um resultado volta verificado, o cliente escreve o relatório em `raceCatalogEditionReports`, e a colheita diária aplica a política acima: um relatório é uma observação, e a decisão de o aceitar vive no `applyEditionReports`. Um dia corroborado por dois corredores fica marcado com `runnerConfirmedAt`, e a colheita seguinte dessa fonte mantém-no em vez de o substituir pelo da listagem.
+`npm run clean:catalog-names -- --dry-run`, then `--confirm`, applies both to stored names.
 
-**E uma prova que o catálogo não tem pode entrar.** Nenhum dos nove calendários publica tudo, e uma prova que nenhum publica não tinha forma de entrar por muita gente que a corresse. Na página de um evento, quem não encontra a prova no catálogo pode propô-la: o corredor escreve a proposta em `raceCatalogProposals` e a colheita diária transforma-a numa entrada, com `producer: 'runner'`, `unreviewed`, e passando pelo mesmo piso e pela mesma regra de duplicados que a colheita aplica. Uma proposta que seja uma prova já no catálogo é respondida com essa entrada em vez de criar uma segunda.
+## Retiring
 
-O **preço** segue o mesmo caminho, escrito quando uma inscrição passa a `registered`: é o corredor a dizer que entrou, e um preço que lhe foi cotado e nunca pago não é um preço.
+Nothing is deleted: `races.catalogRaceId` may point at an entry, and the harvest would write it again. `retired: true` hides an entry from discovery, name search, the duplicate rule and the admin queue. `retiredReason`:
 
-O que **não** está construído: os prazos de inscrição, que vão precisar de uma pessoa, e o link dos resultados, que não tem hoje campo na edição nem sítio onde apareça. Ver [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
-
-### Revisar uma entrada
-
-`npm run catalog:review` lista o que precisa de trabalho, lendo a instância: nunca verificadas, verificadas mas sem edição futura, e em ordem. Depois, por entrada:
-
-1. Abre o site oficial da prova, o que está em `officialUrl`.
-2. Confirma nome, cidade, país, disciplinas, método de inscrição e mês típico.
-3. Acrescenta `editions` se houver datas publicadas: `raceDate`, e para o portão `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, com `timezone` IANA quando a hora importa. O `typicalFee` é o preço de referência dessa edição, com `feeCurrency` em ISO 4217; uma prova tem quase sempre vários preços, e este é o de entrada.
-4. Muda `review` para `reviewed` e actualiza `source` para dizer onde confirmaste.
-5. Grava. O `updatedAt` e o `updatedBy` ficam no documento.
-
-Uma entrada de cada vez, e não um lote: são factos verificáveis um a um, e um lote esconde o que não foi verificado.
-
-### O que entra no catálogo
-
-Uma prova entra quando a app pode fazer algo com ela, e o que a app faz é avisar antes de o portão fechar. Uma prova com sorteio, com esgotamento antecipado ou com tempo de qualificação tem portão; uma que abre inscrições e as mantém abertas até à véspera não tem, e no catálogo seria um nome e um mês que ninguém lê.
-
-Foi por isto que a primeira lista encolheu de 27 para 14 entradas: as provas de destino sem portão saíram, e o que ficou são as sete Majors mais Sydney, as seis SuperHalfs e o 10K de Lisboa.
-
-### Preços com vários níveis
-
-Muitas provas cobram menos a quem é do país. O `typicalFee` guarda o que **um corredor de fora** paga, porque é esse o utilizador que o catálogo serve: quem consulta uma prova a 2000 km de casa está a planear uma viagem. O outro preço vai para a nota.
-
-### Nomes sem patrocinador
-
-`name` guarda o nome da prova sem o patrocinador: «Berlin Marathon», não «BMW Berlin Marathon». O patrocinador muda de contrato para contrato e o nome no catálogo ficaria errado sem nada acontecer. Alguns organizadores usam eles próprios o nome simples, o que confirma que é o nome estável.
-
-### O `id` é para sempre
-
-`races.catalogRaceId` aponta para ele. Renomear um `id` orfana as corridas que já o referenciam, portanto o `id` não muda: corrige-se o `name` e deixa-se o `id` como está.
-
----
-
-<a id="english"></a>
-
-## English
-
-[Português](#portugues)
-
-The catalog is the list of races the app knows by name, and it **lives in the instance**, in the Firestore `raceCatalog` collection, one document per race. The types and pure functions are in [`shared/raceCatalog/`](../shared/raceCatalog/). It serves two purposes: filling in a race without typing it, and, once the dates can be trusted, feeding the registration deadlines of #246.
-
-There is no committed catalog in the repo. Each instance keeps its own, edited in the admin area (#261), and an instance that never populated one has an empty catalog, which is a normal state: the prefill offers nothing.
-
-To start with the races already reviewed, `npm run seed:race-catalog -- --confirm` writes the 14 that existed when the catalog moved. It runs once, never overwrites what is already there, and the list is in [`scripts/data/raceCatalogSeed.ts`](../scripts/data/raceCatalogSeed.ts). A bootstrap, not a catalog.
-
-### One collection, three producers
-
-| Producer | What it writes | State |
-|----------|----------------|-------|
-| Curation | entries written in the admin area, `producer: 'curated'` | #261 |
-| Scheduled harvest | candidates written by a function, `producer: 'harvest'` | #210 |
-
-They share the collection on purpose: the queue asking "what needs a human" is one query, and a harvest never has to guess whether it is about to overwrite something a person checked.
-
-One document per race, not one document holding all of them: entries are edited one at a time, and a read-modify-write of a big document would lose whichever edit landed second. The parkrun catalog chose the opposite for the opposite reason, thousands of entries nobody edits.
-
-Nothing is deleted. `races.catalogRaceId` points at an id and no Firestore rule can check for references, so an entry leaves circulation with `retired: true` and stays readable.
-
-### The review rule
-
-Every entry carries a `review` field, and this is the point of the format:
-
-- **`unreviewed`**: the entry was assembled from public listings and nobody has confirmed it with the organiser. It may **suggest**, meaning fill in a field the runner sees and can correct. It may never **assert**: no deadline reminder, no countdown, nothing that would be wrong in silence.
-- **`reviewed`**: somebody checked the entry against the official source.
-
-`canAssertDates()` is the function that separates them. A wrong registration date is worse than no warning at all.
-
-One detail worth not confusing: the test enforcing that an unreviewed entry carries no `editions` is about the curated **seed file**. A harvested entry carries the date it read and stays `unreviewed`, and it is `canAssertDates()` that keeps it from firing anything, not the absence of editions.
-
-### Editions, and what an edition is
-
-An edition is **one year of an annual race**: the date, the entry gates, the draw, the fee. It is identified by its `year`, and the link between an event and its edition is derived from the year of the event's date. There is deliberately no field on the event pointing at an edition: the edition is already defined by the year, the event already has the date, and a pointer would be a second source of truth free to disagree with the first.
-
-This only serves races that happen once a year, and that is assumed. **A recurring event has no editions**: a parkrun happens every Saturday, its occurrences follow from a rule rather than a list, and what is unknown about an annual race (the date, the fee, the results link) is derivable for a parkrun from its slug. The two models diverge because they need different things.
-
-### What a runner can give back to the catalog
-
-The quality of the shared data can rise on what runners already know, and the boundary runs between the past and the future:
-
-- **The past confirms itself, but only as far as the evidence reaches.** A `completed` event with `resultsVerified` is a witness of a different order, because `resultsVerified` only ever comes from the official import. It proves less than it looks like, though: the connectors pick the edition **by year** and no candidate carries a day at all. So a verified result proves that this runner ran this race that year, and proves nothing about the day. The day comes from the event, which since the prefill may be the catalog's own guess coming back around. Hence the policy: a year the catalog did not have goes in on one runner and stays unmarked; a day that disagrees with the catalog needs two runners agreeing; and a day that agrees writes nothing, because agreement is not information and marking it would turn a guess into a fact.
-- **The gates get asked.** When entries open and close goes to a person. They are what fires reminders, and a wrong deadline is wrong in silence: that is exactly what the review rule protects, and `canAssertDates()` does not change.
-- **The results page belongs to the edition.** A results page is one year's finishers, so the link a runner has for 2024 says nothing about 2026, and none of the nine calendars publishes one at all. It comes from the event a runner had verified, stripped of whatever named them: measured on a real instance, of 39 saved links three carried the runner, one as a search for their own surname and two as a single result row. What the catalog holds is the edition's page, and where it holds none, one runner is enough.
-- **The fee follows the same corroboration as the day.** It sat in the review queue while the boundary was "the past confirms itself, the future gets asked", and a fee already paid is past: it is a fact about the race, and no source we read publishes one. Where the catalog holds no fee, one registered runner is enough; to change a fee it already holds, two have to agree on the same amount and the same currency.
-
-What never leaves the account: the time, the pace, the classification, the notes, the media, the track, and whether the runner got in.
-
-A contribution follows the shape of the duplicate votes: a collection of its own, one document per (race, year, user) so one person is one voice, and what reaches the shared edition is values and counts, never the identity of whoever contributed.
-
-Of the above, the **day** is built. When a result comes back verified, the client writes a report to `raceCatalogEditionReports`, and the daily harvest applies the policy above: a report is an observation, and the decision to accept it lives in `applyEditionReports`. A day two runners corroborate is marked with `runnerConfirmedAt`, and the next harvest of that source keeps it instead of replacing it with the listing's.
-
-**Identifying a race reports what the runner has already run.** Reporting only happened as a result was saved, and until the race pointed at the catalog there was nothing to report to: the link is made afterwards, on the event's page, so years of verified results sat there contributing nothing. So the link also reports every edition of that race the runner has a verified result for, one report per year with the earliest day. It is the same floor and the same policy, applied to what was already there: measured on a real instance, thirteen editions across nine races that the catalog would otherwise never learn, since the harvest only ever writes the edition still ahead.
-
-**And a race the catalog does not hold can get in.** None of the nine calendars publishes everything, and a race none of them publishes had no way in however many people ran it. On an event's page, a runner who cannot find their race in the catalog can propose it: the proposal goes to `raceCatalogProposals` and the daily harvest turns it into an entry, with `producer: 'runner'`, `unreviewed`, and through the same floor and the same duplicate rule the harvest applies. A proposal that turns out to be a race already in the catalog is answered with that entry rather than creating a second one.
-
-**A merge moves the information, not just a pointer.** The survivor absorbs every edition the other entry knew, and with each edition its day, its gates, its timezone, its fee and its results page; it also takes the official site, the entry method, the typical month and the distances it did not have, and the words of the other name, so the race is still found by them. The survivor wins every conflict, because it was chosen: its name, its town and its review state stay its own. Without this a merge hid what it merged: on one instance four S25 entries were linked into one that showed a single 2023 edition, while three later editions, two results pages, a fee and the official site sat inside the copies. The same act also re-points whatever pointed at the entry that goes, so a copy never hangs off a copy.
-
-**Two entries can also be joined by hand**, from the catalog search in the admin area: pick the repeated one, search again, and say which entry stays. In two clicks rather than one because the two are hardly ever in the same list, and the pick survives the search in between. It exists because the queue cannot ask about every pair: "S 25 Berlin" and "S 25 Berlin 2027" are one race and, once the town is out of the name, nothing longer than two characters is left for any rule to compare. A copy is refused as the survivor, so the chain ends somewhere, and the row that becomes a copy carries the undo.
-
-**Only the names merge two entries.** The same day, the same town and an overlapping distance are necessary and never sufficient: every race in Berlin shares a day with some other race in Berlin. A checked entry used to be enough on its own, on the theory that a harvest arriving on its day with the organiser's own name for it was not news, and that turned out to be wrong in both directions. Measured on one instance: of 160 folds only six had a checked entry as the survivor and the names carried all six anyway, while the same branch offered to fold a triathlon, a 5 km club run and a lake swim into the Tierparklauf they share the 12th of September with. So a checked entry is a better **survivor**, not better evidence, and a pair like that is a question for the queue.
-
-**An entry is a race, and its editions are the years.** So two entries for the same race are duplicates however far apart their days are, and every comparison in `duplicates.ts` was built for the harvest, where two sources describe the same edition still ahead. `sameAnnualRace` is the same judgement without the day: the names agree once the sponsors, the edition and the town are gone, the place agrees, no number contradicts, and it is the same time of year within three weeks, which is how far an annual race drifts. It feeds the operator's queue, where it found the Copenhagen Half Marathon stored twice for 2026 and 2027, and the proposal path, because a runner proposes an edition they ran while the catalog lists the one ahead. A four-digit year in a name is read as the edition and not as a number that tells two races apart, which is what made "S 25 Berlin" and "S 25 Berlin 2027" two races. What none of this bridges is a town written in two languages: "Berlim" and "Berlin" are one place and the rule reads them as two.
-
-A proposal **carries the runner's race and the results page of the edition they ran**, and the job links the race to whichever entry answered it, created or found. Without that, a proposal was a gift with no return address: measured after the first five were applied, five entries existed with no race pointing at any of them and not one report, so nothing the proposers knew could ever reach the entries they had asked for, and their own events went on offering to say which race it was. The link is also why the job runs the proposals before the reports: a proposal writes a report of its own, and this way it lands in the same run.
-
-The **fee** takes the same path, written when an entry becomes `registered`: that is the runner saying they got in, and a fee they were quoted and never paid is not a fee.
-
-The **results page** travels with the day, from the same verified result, through `shareableResultsUrl`. That function is the privacy boundary and it is a denylist: a query parameter that names a person is dropped, a path that is one person's result is refused outright, and everything else, the event id, the category, the language, is what makes the link work. A denylist because a new timing platform's parameter cannot be known in advance, and the cost of guessing wrong on an allowlist is a link that works for nobody. `keepRunnerFacts` carries it across a harvest, since a fresh listing has no results page to replace it with.
-
-The results page also comes **back**: on an event with no link of its own, the result editor offers the one the catalog holds for that year, and applying it is the runner's click. That closes the loop the contribution exists for, since a link only one person can see is worth nothing, and it is what unlocks the automatic lookup for the next runner instead of making them find the timing company's page again.
-
-What is **not** built: the entry gates, which will need a person. See [#328](https://github.com/Seven-Panda-Labs/queima-asfalto/issues/328).
-
-### The site an entry points at
-
-`officialUrl` is the organiser's own site and `sourceUrl` is the page the race was read from. They were one field until now, which cost twice: an operator checking next season opened a calendar and clicked again to leave it, and two entries for one race, found on two calendars, hid the one thing that would have paired them, the same organiser on both. Measured: 5115 of 5585 live entries pointed at a listing.
-
-Both listings mark the link, so `readOrganiserLink` reads a marked anchor and never prose: running.life puts `data-out="website"` on the anchor, runme.de gives it `class="referer-link"` and the word Website, and the platform's own family of links is refused by host. A page with no such link keeps the listing as its official URL and is tried again another day, which is what an entry whose two URLs are equal means.
-
-### The name an entry is stored under
-
-Without the edition. A catalog entry is a race and its editions are the years, so "33. Graz Marathon" names the race wrong: the same race is the 34th next year, and every list showing it carries a number that is already out of date. `nameWithoutEdition` drops an ordinal with its dot at the front and a year at the end, and it is deliberately narrower than the `stripEdition` the duplicate rule compares with.
-
-The town goes the same way, when it is the whole appendix after a separator that has room around it and what is left still names a race. A hyphen glued to letters is part of a word, so "Volksbank-Münster Marathon" and "Spartan Race Zell am See-Kaprun" are never cut, and "Halve Marathon - Erpe-Mere" keeps its town because "Halve Marathon" is what every half marathon in the Netherlands is called. Ninety-six names ended in their own town, which a phone shows again in the field beside them.
-
-A sponsor is **not** in this. "BARMER CURREX Alsterlauf Hamburg" reads as a sponsored name to a person and as four words to a rule, and the only way to know is a list of brands. That list exists, as `NOISE_WORDS`, and it is used for comparing two names, where a wrong guess merely makes them look more alike and every other test still has to agree. Rewriting a name on the same guess would be visible to every runner, so a sponsor comes off only when a person takes it off.
-
-What it leaves alone is the interesting half. A **bare** leading number stays, because in almost every one of those the number is the race: measured on 698 names carrying an edition, 24 begin with a bare number and they are "10 Marathon in 10 Tagen", "20 Km de la Forêt de Beloeil", "24 Stunden Jubiläumslauf". A trailing year stays unless it is near enough to now to be an edition: "Mattmark Memorial 1965" is named after the year of the disaster it remembers.
-
-### Taking a race out of the catalog
-
-Nothing is deleted. `races.catalogRaceId` points at an id and no Firestore rule can check for references, so a hard delete would orphan whatever already points here, and an entry the harvest keeps finding would simply be written again on the next run. An entry goes out by being **retired**, which hides it from the discovery list, the name search, the duplicate rule and the operator's own work queue, and the harvest preserves that across a re-read.
-
-What was missing was **why**, and the reason decides what happens next:
-
-| reason | what it means | what follows |
+| Reason | Meaning | Harvest |
 |---|---|---|
-| `over` | the race is not held any more | history. Whoever ran it keeps their event, and an edition arriving later is worth a person's attention, so the harvest keeps writing to it |
-| `other_sport` | a triathlon, a walk or a bike ride read as a race | the source is wrong and will publish it again every week. The entry stays as a tombstone and the harvest stops writing to it |
-| `not_a_race` | an expo, or a listing page read as a race | the same, counted apart on purpose: twenty of these from one source is the argument for dropping that source |
+| `over` | race no longer held | keeps writing new editions |
+| `other_sport` | triathlon, walk or ride read as a race | tombstone, never written again |
+| `not_a_race` | expo or listing page | tombstone |
+| `parkrun` | parkrun venue listed as an event | tombstone |
 
-The panel offers a list to work from: `readsAsAnotherSport` reads a name and proposes. Ten words go to the server, since Firestore cannot match a pattern, and the reading decides among what comes back. On one instance it finds **80**: 49 whose name names another sport, and 31 that carry a walking word and no running one.
+The admin panel lists likely other sports (`readsAsAnotherSport`) for a person to decide; "yes, it is a race" is stored as `notAnotherSport` so it is not asked again. Never a rule: many running races have a walk beside them. `npm run set:retired-reason -- --confirm --set <id>=<reason>` fills reasons on old retirements.
 
-Both answers are recorded, and that is what keeps the list short. "Not a race" is `retiredReason`; "yes, this is a race" is `notAnotherSport`, which nothing but this list reads: it claims nothing about the race, asserts no date and is not a review. Without it the same rows come back every time the list is asked for, because a name does not change when somebody reads it.
+## Gates and timezones
 
-**Always a person's judgement, never a rule.** A name is not evidence: **225** live entries carry a walking word **and** a running one, and they are running races with a walk beside them, "Wiler-Herbstlauf + Nordic Walking", "Run and Walk Bern", "City cross run & walk". The reading leaves those out of the list precisely so that nobody is tempted to sweep them, and what it does list is still a question rather than an answer.
+A gate is a day, or an instant when the organiser publishes an hour. The form edits a day and an hour in the race's zone (`splitGate`/`joinGate`); without a zone, no hour is offered.
 
-### A gate is a day, and sometimes an hour
+The timezone belongs to the race (`RaceCatalogEntry.timezone`), stored only when the country cannot answer (`timezoneFor` returns a zone for single-zone countries). `raceTimezone` reads the legacy edition field, then the race, then the country. `npm run lift:catalog-timezones` moved old edition zones onto the race.
 
-The three gates take an instant when the organiser publishes a time and a plain day when only the day is known, and both are real: of 63 gate values in one instance, 40 carry an hour and 23 do not. The form edits the two parts rather than the stored string, a day on the app's own calendar and an hour in the race's own clock, and `splitGate`/`joinGate` turn that into what is stored and back. The offset is asked for twice when writing, because an hour on the night the clocks move sits on both sides of the boundary until the instant is known. Without a zone the hour is not offered at all: an hour in nobody's day is not a deadline.
+## Reviewing an entry
 
-### The zone a race's deadlines are in
+`npm run catalog:review` lists entries never checked and entries checked but out of editions, ordered by typical month. Per entry, one at a time:
 
-Asked of the country, not of an operator. A zone is a property of the place, and it earns its keep in one line of one reminder: a deadline firing on the day prints the organiser's own hour, because a window that opens at 11:00 in Tokyo opens at 03:00 in Lisbon. It used to be a field on every edition, repeated for each one, and it was filled in on 37 editions of 5327, four of which also had a gate with an hour in it.
+1. Open the `officialUrl`.
+2. Confirm name, city, country, disciplines, entry method and typical month.
+3. Add editions when dates are published. `typicalFee` is what a visiting runner pays at entry level; other prices go in the note.
+4. Set `review: 'reviewed'` and update `source` to say where it was confirmed.
 
-`timezoneFor` asks the platform for the country's zones and answers in two cases: one zone, or several that are the same clock under different names (Germany is `Europe/Berlin` and `Europe/Busingen`). Otherwise it says nothing, deliberately: the list comes back alphabetically, so taking the first would file a race in Lisbon under the Azores. Then the form asks, with that country's zones and no others, three for Portugal and twenty-nine for the United States. What gets stored is only what the country cannot say, on the race rather than on each edition, and `raceTimezone` reads the edition's first, then the race's, then the country's.
+What belongs: races with a gate (lottery, early sell-out, qualifying time). A race open until the day before has nothing to warn about.
 
-### Reviewing an entry
+**The `id` never changes.** `races.catalogRaceId` references it; fix the `name` instead.
 
-`npm run catalog:review` lists what needs work, reading the instance: never checked, checked but out of editions, and in order. Then, per entry:
+## Maintenance scripts
 
-1. Open the race's official site, the one in `officialUrl`.
-2. Confirm the name, city, country, disciplines, entry method and typical month.
-3. Add `editions` when dates are published: `raceDate`, and for the gate `registrationOpensAt`, `registrationClosesAt`, `lotteryDrawAt`, with an IANA `timezone` when the hour matters. `typicalFee` is that edition's headline price, with `feeCurrency` in ISO 4217; a race almost always has several prices and this is the entry one.
-4. Set `review` to `reviewed` and update `source` to say where it was confirmed.
-5. Save. `updatedAt` and `updatedBy` are written on the document.
+All take `--dry-run` and `--confirm`, and need credentials (or `FIRESTORE_EMULATOR_HOST` and `GCLOUD_PROJECT`).
 
-One entry at a time, not a batch: these are facts verifiable one at a time, and a batch hides what was not verified.
-
-### What belongs in the catalog
-
-A race belongs when the app can do something with it, and what the app does is warn before the gate closes. A race with a lottery, an early sell-out or a qualifying time has a gate; one that opens registration and keeps it open until the day before does not, and in the catalog it would be a name and a month nobody reads.
-
-That is why the first list shrank from 27 entries to 14: destination races with no gate came out, and what stayed is the seven Majors plus Sydney, the six SuperHalfs and the Lisbon 10K.
-
-### Tiered fees
-
-Plenty of races charge residents less. `typicalFee` holds what a **visiting runner** pays, because that is the user the catalog serves: someone looking up a race 2000 km from home is planning a trip. The other price goes in the note.
-
-### Names without sponsors
-
-`name` holds the race without its sponsor: "Berlin Marathon", not "BMW Berlin Marathon". Sponsors change from one contract to the next, and the catalog name would go quietly wrong. Some organisers use the plain name themselves, which is what makes it the stable one.
-
-### The `id` is forever
-
-`races.catalogRaceId` points at it. Renaming an `id` orphans the races already referencing it, so the `id` does not change: fix the `name` and leave the `id` alone.
+| Script | Does |
+|---|---|
+| `backfill:catalog-dates` | fills `nextRaceDate` and the country list |
+| `backfill:catalog-name-tokens` | fills `nameTokens` for name search |
+| `backfill:catalog-duplicates` | applies the current duplicate rule to stored entries |
+| `fix:catalog-days` | repairs malformed stored days |

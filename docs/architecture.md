@@ -1,303 +1,52 @@
-# Arquitectura: Queima Asfalto
+# Architecture
 
-**Português** · [English](#english)
-
----
-
-<a id="portugues"></a>
-
-## Português
-
-Visão geral da arquitectura da PWA, backend Firebase e integrações externas. Para deploy, ver [`self-hosting.md`](./self-hosting.md); para limites das Functions, [`cloud-functions-limits.md`](./cloud-functions-limits.md).
-
-### Diagrama principal
+How the PWA, the Firebase backend and external services fit together. Deploy: [`self-hosting.md`](./self-hosting.md).
 
 ```mermaid
 flowchart TB
-  subgraph Browser["Browser"]
+  subgraph Browser
     PWA["React PWA<br/>(Vite, TypeScript, Tailwind)"]
-    SW["Service Worker<br/>(offline cache)"]
-    PWA --- SW
-  end
-
-  subgraph Firebase["Firebase (projecto da instância)"]
-    HOST["Hosting<br/>(dist/)"]
-    AUTH["Authentication<br/>(Google Sign-In)"]
-    FS[("Firestore<br/>dados por utilizador")]
-    STG["Cloud Storage<br/>media de eventos"]
-    CF["Cloud Functions Gen 2<br/>(europe-west1)"]
-    FCM["FCM<br/>(Web Push)"]
-  end
-
-  subgraph External["Serviços externos"]
-    GEO["Geoapify<br/>(autocomplete / mapa)"]
-    TIMING["Sites de timing<br/>(resultados públicos)"]
-  end
-
-  PWA -->|HTTPS| HOST
-  PWA --> AUTH
-  PWA -->|SDK + regras| FS
-  PWA -->|upload| STG
-  PWA -->|callable HTTPS| CF
-  PWA -->|REST no browser| GEO
-  CF -->|Admin SDK| FS
-  CF -->|HTTP scrape / API| TIMING
-  CF --> FCM
-  FCM -->|push| PWA
-```
-
-A PWA fala **directamente** com Firestore e Storage (com regras de segurança no cliente). Operações sensíveis ou que exigem privilégios extra passam por **Cloud Functions** (callables autenticadas ou tarefas agendadas).
-
-### Camadas do código
-
-| Camada | Localização | Responsabilidade |
-|--------|-------------|------------------|
-| UI | `src/pages/`, `src/components/` | Rotas, formulários, dashboards, mapa |
-| Estado / hooks | `src/hooks/`, `src/contexts/` | Auth, partilhas, cooldown de lookup |
-| Serviços cliente | `src/services/` | Firestore, Storage, callables, Geoapify, backup zip |
-| Lógica partilhada | `shared/` | Detecção de plataforma, parsing de URLs, permissões de partilha, lembretes, usada pela app **e** pelas Functions |
-| Backend | `functions/src/` | Callables, agendador, conectores de timing |
-| Regras | `firestore.rules`, `storage.rules` | Isolamento por `userId`, validação de paths |
-
-### Como se relacionam: duas identidades
-
-Há duas metades, e tocam-se num ponto só.
-
-```
-      metade privada (por utilizador)                 metade partilhada
-   ┌────────────────────────────────────┐      ┌─────────────────────────┐
-   │  bucketListItems ──raceId──┐       │      │  raceCatalog/{id}       │
-   │  raceEntries ────raceId──► races ──┼──────┼─► editions[], review    │
-   │  events ─────────raceId────┘       │ cat. │                         │
-   │     ├── media/{id}                 │ Race │  parkrunCatalog (slug)  │
-   │     └── track/{id}                 │  Id  │                         │
-   └────────────────────────────────────┘      └─────────────────────────┘
-```
-
-O único ponto de contacto é `races.catalogRaceId`. **Um evento nunca aponta para
-o catálogo directamente**: chega lá pela corrida. É isso que permite que duas
-contas concordem sobre qual prova é, mantendo privado tudo o que cada uma fez
-nela.
-
-Cada entidade existe porque tem um tempo de vida diferente:
-
-| Entidade | Guarda | Vive |
-|----------|--------|------|
-| `races` | o que a prova é | para sempre |
-| `bucketListItems` | que a quero correr | até ser agendada |
-| `raceEntries` | uma tentativa de entrar, num ano | um ano |
-| `events` | uma corrida: data, resultado, media, traçado | uma edição |
-| `raceCatalog.editions[]` | um ano da prova, publicamente | por ano, partilhado |
-
-**Um resultado não é uma entidade.** São campos no evento (`time`, `pace`,
-`classification`, `resultsUrl`, `resultsPlatform`, `resultsVerified`,
-`outcomeReason`), mais as subcolecções `media` e `track`. O
-`trackPacingDriftSeconds` está desnormalizado no evento de propósito: a página
-de Análise lê os eventos numa consulta, e ir a uma subcolecção por evento
-crescia com cada prova já corrida.
-
-**O parkrun não passa por aqui.** Planear um parkrun cria o evento
-directamente, sem `raceId` e sem entrada no `raceCatalog`: a identidade viaja
-como `parkrunEventSlug` no evento, e o substrato partilhado é o
-`parkrunCatalog`. É deliberado, e as razões estão em
-[`race-lifecycle.md`](./race-lifecycle.md).
-
-### Fluxo: importação de resultados oficiais
-
-```mermaid
-sequenceDiagram
-  actor U as Utilizador
-  participant UI as React PWA
-  participant CF as lookupOfficialResults
-  participant FS as Firestore
-  participant SH as shared/officialResults
-  participant CN as Conectores
-  participant TS as Site de timing
-
-  U->>UI: Procurar resultado
-  UI->>CF: callable(eventId)
-  CF->>FS: rate limit (users/.../rateLimits)
-  CF->>FS: evento + perfil de resultados
-  CF->>SH: detectPlatform / canLookup
-  CF->>CN: lookupPlatform(platform, ...)
-  CN->>TS: HTTP (páginas/APIs públicas)
-  TS-->>CN: HTML / JSON / CSV
-  CN-->>CF: candidatos[]
-  CF-->>UI: candidatos[]
-  U->>UI: Aplicar resultado
-  UI->>FS: actualizar evento (regras Firestore)
-```
-
-- **Cliente:** `OfficialResultsLookup` → `src/services/officialResultsLookup.ts`
-- **Servidor:** `functions/src/lookupOfficialResults.ts` → `functions/src/connectors/`
-- **Parsing / testes:** `shared/officialResults/` (sincronizado para Functions no build)
-- **Aviso legal:** [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md)
-
-### Fluxo: partilhas entre utilizadores
-
-```mermaid
-sequenceDiagram
-  participant A as Utilizador A (PWA)
-  participant CF as Cloud Functions
-  participant FS as Firestore
-  participant B as Utilizador B (PWA)
-
-  A->>CF: inviteShare / updateSharePermissions
-  CF->>FS: shares/{id}, convites
-  B->>CF: acceptShare / listShares / getSharedSnapshot
-  CF->>FS: ler dados do dono
-  CF->>CF: redact (shared/shares/redact)
-  CF-->>B: snapshot redigido
-```
-
-Dados partilhados **não** são expostos em bruto no Firestore do convidado: a redacção acontece **no servidor** antes da resposta. Permissões em `shared/shares/permissions.ts`.
-
-### Fluxo: lembretes (notificações)
-
-```mermaid
-flowchart LR
-  SCH["Cloud Scheduler<br/>(cada 60 min)"] --> DR["dispatchReminders"]
-  DR --> FS[("Firestore<br/>users, events, raceEntries")]
-  DR --> FCM["FCM"]
-  FCM --> PWA["PWA<br/>(service worker)"]
-```
-
-Lógica de «quem deve receber o quê» em `shared/reminders/`; fila local opcional em `src/services/reminderQueue.ts`. Os prazos de inscrição têm cadência própria e fixa (`deadlineScheduler.ts`), a par dos lembretes de prova.
-
-### Firestore: coleções principais
-
-| Coleção | Dono | Conteúdo típico |
-|---------|------|-----------------|
-| `users/{uid}` | utilizador | Perfil, Parkrunner ID, prefs de notificação |
-| `users/{uid}/rateLimits/{id}` | utilizador | Cooldown de lookup (só servidor escreve) |
-| `users/{uid}/reminderDispatches/{id}` | utilizador | Idempotência de lembretes |
-| `events/{id}` | `userId` no doc | Eventos, resultados, localização |
-| `events/{id}/media/{id}` | mesmo `userId` | Metadados de fotos/vídeos |
-| `goals/{id}`, `performanceGoals/{id}` | `userId` | Objectivos |
-| `bucketListItems/{id}` | `userId` | Bucket list |
-| `races/{id}` | `userId` | Identidade de uma prova, o que se mantém de ano para ano |
-| `raceEntries/{id}` | `userId` | Uma tentativa de entrar numa prova: prazos, sorteio, estado |
-| `weightEntries/{id}` | `userId` | Registo de peso das Ferramentas: só peso e dia. Isolado do resto e nunca partilhado |
-| `events/{id}/track/{id}` | mesmo `userId` | O GPX/TCX/FIT carregado: splits, percurso, ritmo |
-| `shares/{id}` | participantes | Convites e permissões de partilha |
-| `raceCatalog/{id}` | ninguém | Identidade pública de uma prova, com as suas edições. Só admin e colheita escrevem |
-| `raceCatalogHarvest/status` | ninguém | Quando a colheita correu, por fonte, e a lista de países |
-| `raceCatalogDuplicateVotes/{id}` | `uid` no doc | O que um corredor disse sobre um par possivelmente duplicado |
-| `raceCatalogEditionReports/{id}` | `uid` no doc | O dia em que um corredor correu uma edição, de um resultado oficial verificado |
-| `parkrunCatalog/{id}` | ninguém | Os parkruns do mundo, por slug. Só o servidor escreve |
-
-Índices compostos: `firestore.indexes.json`. Testes de regras: `firestore.rules.test.ts`.
-
-O backup completo (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exporta `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems`, `races`, `raceEntries`, `weightEntries` e `users/{uid}` como JSON num `.zip`, preservando os IDs no restauro. Opcionalmente inclui as fotos e vídeos do Storage em `media/<eventId>/<mediaId>.<ext>`, até 300 MB (`MAX_BACKUP_MEDIA_TOTAL_BYTES`); com os ficheiros presentes o restauro volta a fazer upload e gera novos `downloadUrl`, o que permite recuperar media também no modo «substituir» e entre contas. `shares` só é exportado. Apenas as Cloud Functions o escrevem. Ficam de fora `reminderDispatches`, `rateLimits` e `fcmTokens`.
-
-### Cloud Functions
-
-| Função | Tipo | Papel |
-|--------|------|-------|
-| `lookupOfficialResults` | Callable | Importação de resultados via conectores |
-| `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable | Partilhas e bucket list partilhada |
-| `dispatchReminders` | Agendada | Envio de lembretes FCM |
-
-Todas as callables exigem `request.auth`. Limites de escala: [`functionOptions.ts`](../functions/src/functionOptions.ts).
-
-### Conectores de timing
-
-Router em [`functions/src/connectors/index.ts`](../functions/src/connectors/index.ts). Cada ficheiro implementa HTTP para uma plataforma; a detecção e parsing partilhados vivem em `shared/officialResults/`.
-
-Plataformas actuais (ver `RESULTS_PLATFORMS` em [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing, Pacer.
-
-### Serviços externos (fora do Firebase)
-
-| Serviço | Onde corre | Uso |
-|---------|------------|-----|
-| **Geoapify** | Browser (`src/services/geoapify.ts`) | Autocomplete e geocodificação de locais |
-| **Sites de timing** | Cloud Function | Scraping/API de resultados públicos |
-| **Google Analytics** | Browser (opcional) | `src/services/analytics.ts` |
-
-### Offline e PWA
-
-- Firestore **persistent cache** (multi-tab) quando IndexedDB está disponível, ver `src/services/firebase.ts`.
-- Service worker (Vite PWA) faz precache do shell da app; dados vivem no Firestore local.
-- Catálogo Parkrun em `parkrunCatalog/global` no Firestore, refrescado semanalmente pela função agendada `syncParkrunCatalog`; `src/data/parkrun-events.json` (gerado por `npm run sync:parkrun-events`) é a cópia de recurso quando esse documento falta ou está parado.
-
-### Desenvolvimento local
-
-Emuladores Firebase (Auth, Firestore, Functions, Storage). Ver [`emulators.md`](./emulators.md). O código em `src/config/emulators.ts` liga a PWA aos ports definidos em `firebase.json`.
-
-### Documentação relacionada
-
-| Tópico | Ficheiro |
-|--------|----------|
-| Deploy | [`self-hosting.md`](./self-hosting.md) |
-| Novos conectores | [`adding-a-results-connector.md`](./adding-a-results-connector.md) |
-| Variáveis de ambiente | [`configuration.md`](./configuration.md) |
-| Limites CF | [`cloud-functions-limits.md`](./cloud-functions-limits.md) |
-| Scraping / ToS | [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md) |
-| Segurança | [`SECURITY.md`](../SECURITY.md) |
-| Contribuir | [`CONTRIBUTING.md`](../CONTRIBUTING.md) |
-
----
-
-<a id="english"></a>
-
-## English
-
-[Português](#portugues)
-
-High-level view of the PWA, Firebase backend, and external integrations. For deployment, see [`self-hosting.md`](./self-hosting.md); for Function limits, [`cloud-functions-limits.md`](./cloud-functions-limits.md).
-
-### Main diagram
-
-```mermaid
-flowchart TB
-  subgraph Browser["Browser"]
-    PWA["React PWA<br/>(Vite, TypeScript, Tailwind)"]
-    SW["Service Worker<br/>(offline cache)"]
-    PWA --- SW
   end
 
   subgraph Firebase["Firebase (instance project)"]
-    HOST["Hosting<br/>(dist/)"]
-    AUTH["Authentication<br/>(Google Sign-In)"]
-    FS[("Firestore<br/>per-user data")]
-    STG["Cloud Storage<br/>event media"]
-    CF["Cloud Functions Gen 2<br/>(europe-west1)"]
-    FCM["FCM<br/>(Web Push)"]
+    AUTH["Authentication"]
+    FS[("Firestore")]
+    STG["Cloud Storage<br/>event media, tracks"]
+    CF["Cloud Functions Gen 2"]
+    FCM["FCM (Web Push)"]
   end
 
-  subgraph External["External services"]
-    GEO["Geoapify<br/>(autocomplete / map)"]
-    TIMING["Timing sites<br/>(public results)"]
+  subgraph External
+    GEO["Geoapify"]
+    OSM["OpenStreetMap tiles"]
+    TIMING["Timing sites"]
+    RESEND["Resend (email)"]
   end
 
-  PWA -->|HTTPS| HOST
   PWA --> AUTH
   PWA -->|SDK + rules| FS
-  PWA -->|upload| STG
-  PWA -->|callable HTTPS| CF
-  PWA -->|REST in browser| GEO
+  PWA --> STG
+  PWA -->|callables| CF
+  PWA --> GEO
+  PWA --> OSM
   CF -->|Admin SDK| FS
-  CF -->|HTTP scrape / API| TIMING
-  CF --> FCM
-  FCM -->|push| PWA
+  CF --> TIMING
+  CF --> GEO
+  CF --> RESEND
+  CF --> FCM -->|push| PWA
 ```
 
-The PWA talks **directly** to Firestore and Storage (with security rules on the client). Sensitive operations or those needing elevated privileges go through **Cloud Functions** (authenticated callables or scheduled jobs).
+The PWA reads and writes Firestore and Storage directly, guarded by `firestore.rules` and `storage.rules`. Anything needing elevated privileges or third-party HTTP runs in Cloud Functions.
 
-### Code layers
+## Code layout
 
-| Layer | Location | Responsibility |
-|-------|----------|----------------|
-| UI | `src/pages/`, `src/components/` | Routes, forms, dashboards, map |
-| State / hooks | `src/hooks/`, `src/contexts/` | Auth, shares, lookup cooldown |
-| Client services | `src/services/` | Firestore, Storage, callables, Geoapify, backup zip |
-| Shared logic | `shared/` | Platform detection, URL parsing, share permissions, reminders, used by the app **and** Functions |
-| Backend | `functions/src/` | Callables, scheduler, timing connectors |
-| Rules | `firestore.rules`, `storage.rules` | `userId` isolation, path validation |
+| Location | Holds |
+|----------|-------|
+| `src/` | The PWA: `pages/`, `components/`, `hooks/`, `contexts/`, `services/` (Firestore, Storage, callables, backup) |
+| `shared/` | Pure logic used by the app **and** Functions (results parsing, shares, reminders, catalog). Copied into `functions/src/shared` by the Functions `build` script |
+| `functions/src/` | Callables, scheduled jobs, timing connectors, catalog harvest |
 
-### How they relate: two identities
-
-There are two halves, and they meet at one point.
+## Two identities
 
 ```
       private half (per user)                        shared half
@@ -310,164 +59,66 @@ There are two halves, and they meet at one point.
    └────────────────────────────────────┘      └─────────────────────────┘
 ```
 
-The only point of contact is `races.catalogRaceId`. **An event never points at
-the catalog directly**: it gets there through the race. That is what lets two
-accounts agree on which race it is while everything each of them did in it
-stays private.
-
-Each entity exists because it has a different lifetime:
+The only link between the halves is `races.catalogRaceId`. An event never points at the catalog directly, so two accounts can agree on which race it is while what each did in it stays private.
 
 | Entity | Holds | Lives |
 |--------|-------|-------|
 | `races` | what the race is | forever |
-| `bucketListItems` | that I want to run it | until it is scheduled |
+| `bucketListItems` | that I want to run it | until scheduled |
 | `raceEntries` | one year's attempt at getting in | one year |
 | `events` | one running: date, result, media, track | one edition |
 | `raceCatalog.editions[]` | one year of the race, publicly | per year, shared |
 
-**A result is not an entity.** It is fields on the event (`time`, `pace`,
-`classification`, `resultsUrl`, `resultsPlatform`, `resultsVerified`,
-`outcomeReason`) plus the `media` and `track` subcollections.
-`trackPacingDriftSeconds` is denormalised onto the event on purpose: the
-Analysis page reads events with one query, and fanning out to a subcollection
-per event would grow with every race ever run.
+**A result is not an entity.** It is fields on the event (`time`, `pace`, `classification`, `resultsUrl`, `resultsPlatform`, `resultsVerified`, `outcomeReason`) plus the `media` and `track` subcollections. `trackPacingDriftSeconds` is denormalised onto the event so the Analysis page needs one query, not one per event.
 
-**parkrun does not go through any of this.** Planning a parkrun creates the
-event directly, with no `raceId` and no `raceCatalog` entry: the identity
-travels as `parkrunEventSlug` on the event, and the shared substrate is
-`parkrunCatalog`. That is deliberate, and the reasons are in
-[`race-lifecycle.md`](./race-lifecycle.md).
+**parkrun skips all of this.** Planning a parkrun creates the event directly, with no `raceId`: identity travels as `parkrunEventSlug`, and the shared substrate is `parkrunCatalog`.
 
-### Flow: official results import
+## Firestore
 
-```mermaid
-sequenceDiagram
-  actor U as User
-  participant UI as React PWA
-  participant CF as lookupOfficialResults
-  participant FS as Firestore
-  participant SH as shared/officialResults
-  participant CN as Connectors
-  participant TS as Timing site
+Rules and the full list of collections: [`firestore.rules`](../firestore.rules), tested in `firestore.rules.test.ts`. Indexes: `firestore.indexes.json`.
 
-  U->>UI: Search for result
-  UI->>CF: callable(eventId)
-  CF->>FS: rate limit (users/.../rateLimits)
-  CF->>FS: event + results profile
-  CF->>SH: detectPlatform / canLookup
-  CF->>CN: lookupPlatform(platform, ...)
-  CN->>TS: HTTP (public pages/APIs)
-  TS-->>CN: HTML / JSON / CSV
-  CN-->>CF: candidates[]
-  CF-->>UI: candidates[]
-  U->>UI: Apply result
-  UI->>FS: update event (Firestore rules)
-```
+Owned through a `userId` field: `events` (with `media` and `track` subcollections), `goals`, `performanceGoals`, `bucketListItems`, `races`, `raceEntries`, `weightEntries`. Under `users/{uid}`: `reminderDispatches` and `rateLimits` (server writes only). Catalog contributions (`raceCatalogProposals`, `raceCatalogEditionReports`, `raceCatalogDuplicateVotes`) carry a `uid` and are anonymized on deletion, not deleted. `adminDeleteAccount` keeps its own explicit copy of this list.
 
-- **Client:** `OfficialResultsLookup` → `src/services/officialResultsLookup.ts`
-- **Server:** `functions/src/lookupOfficialResults.ts` → `functions/src/connectors/`
-- **Parsing / tests:** `shared/officialResults/` (synced into Functions at build)
-- **Legal notice:** [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md)
+Shared: `raceCatalog` and its `raceCatalog*` companions (proposals, duplicate votes, edition reports, harvest status), see [`race-catalog.md`](./race-catalog.md), and `parkrunCatalog`, written only by the server. `shares` is written only by Functions.
 
-### Flow: sharing between users
+**Backup** (`src/services/backupFormat.ts`): a `.zip` of the user's collections and profile as JSON, ids preserved on restore, optionally with media files (up to `MAX_BACKUP_MEDIA_TOTAL_BYTES`) and raw track files. `shares` is export-only. `reminderDispatches`, `rateLimits` and `fcmTokens` are left out.
 
-```mermaid
-sequenceDiagram
-  participant A as User A (PWA)
-  participant CF as Cloud Functions
-  participant FS as Firestore
-  participant B as User B (PWA)
+## Cloud Functions
 
-  A->>CF: inviteShare / updateSharePermissions
-  CF->>FS: shares/{id}, invites
-  B->>CF: acceptShare / listShares / getSharedSnapshot
-  CF->>FS: read owner data
-  CF->>CF: redact (shared/shares/redact)
-  CF-->>B: redacted snapshot
-```
+Exported from [`functions/src/index.ts`](../functions/src/index.ts); limits and region in [`functionOptions.ts`](../functions/src/functionOptions.ts).
 
-Shared data is **not** exposed in plain form in the invitee’s Firestore: redaction runs **on the server** before the response. Permissions in `shared/shares/permissions.ts`.
+| Group | Functions |
+|-------|-----------|
+| Account approval | `accountApprovalBeforeUserCreated`, `accountApprovalBeforeUserSignedIn` (blocking auth), `accountApprovalAction` (HTTP, link from the approval email) |
+| Admin callables | `adminListUsers`, `adminSetAccountStatus`, `adminDeleteAccount`, `adminRecomputeTracks` |
+| Results | `lookupOfficialResults` (callable) |
+| Sharing | `inviteShare`, `acceptShare`, `getSharedSnapshot` and the rest from `shares.ts` |
+| Scheduled | `dispatchReminders` (hourly), `harvestRaceCatalog` (daily), `syncParkrunCatalog` (weekly) |
 
-### Flow: reminders (notifications)
+**Results lookup.** `src/services/officialResultsLookup.ts` calls `lookupOfficialResults`, which checks the per-user cooldown, resolves the platform and calls the router in [`functions/src/connectors/index.ts`](../functions/src/connectors/index.ts). It returns candidates; the user confirms and the client writes the event. Adding a platform: [`adding-a-results-connector.md`](./adding-a-results-connector.md).
 
-```mermaid
-flowchart LR
-  SCH["Cloud Scheduler<br/>(every 60 min)"] --> DR["dispatchReminders"]
-  DR --> FS[("Firestore<br/>users, events, raceEntries")]
-  DR --> FCM["FCM"]
-  FCM --> PWA["PWA<br/>(service worker)"]
-```
+**Sharing.** The guest never reads the owner's Firestore. Functions read it and redact on the server (`shared/shares/redact.ts`, permissions in `shared/shares/permissions.ts`).
 
-Scheduling logic in `shared/reminders/`; optional local queue in `src/services/reminderQueue.ts`.
+**Reminders.** Who gets what is decided in `shared/reminders/`; registration deadlines have their own cadence (`deadlineScheduler.ts`).
 
-### Firestore: main collections
+## External services
 
-| Collection | Owner | Typical content |
-|------------|-------|-----------------|
-| `users/{uid}` | user | Profile, Parkrunner ID, notification prefs |
-| `users/{uid}/rateLimits/{id}` | user | Lookup cooldown (server writes only) |
-| `users/{uid}/reminderDispatches/{id}` | user | Reminder idempotency |
-| `events/{id}` | `userId` on doc | Events, results, location |
-| `events/{id}/media/{id}` | same `userId` | Photo/video metadata |
-| `goals/{id}`, `performanceGoals/{id}` | `userId` | Goals |
-| `bucketListItems/{id}` | `userId` | Bucket list |
-| `races/{id}` | `userId` | Race identity, what stays true from year to year |
-| `raceEntries/{id}` | `userId` | One attempt at getting into a race: deadlines, draw, status |
-| `weightEntries/{id}` | `userId` | The Tools weight log: only weight and day. Isolated from the rest and never shared |
-| `events/{id}/track/{id}` | same `userId` | The uploaded GPX/TCX/FIT: splits, route, pace |
-| `shares/{id}` | participants | Share invites and permissions |
-| `raceCatalog/{id}` | nobody | A race's public identity, with its editions. Written only by an admin and the harvest |
-| `raceCatalogHarvest/status` | nobody | When the harvest ran, per source, and the list of countries |
-| `raceCatalogDuplicateVotes/{id}` | `uid` on doc | What a runner said about a possibly duplicate pair |
-| `raceCatalogEditionReports/{id}` | `uid` on doc | The day a runner ran an edition, from a verified official result |
-| `parkrunCatalog/{id}` | nobody | The world's parkruns, by slug. Written only by the server |
+| Service | Where | Use |
+|---------|-------|-----|
+| Geoapify | Browser (`src/services/geoapify.ts`) and Functions (`functions/src/discovery/geocode.ts`) | Place autocomplete, geocoding catalog races |
+| OpenStreetMap tiles | Browser (`src/components/EventMap/`) | Map background |
+| Timing sites | Functions | Public results pages and APIs |
+| Resend | Functions (`functions/src/email/send.ts`) | Account approval email |
+| Google Analytics | Browser, optional (`src/services/analytics.ts`) | Usage stats |
 
-Composite indexes: `firestore.indexes.json`. Rules tests: `firestore.rules.test.ts`.
+Operator and terms-of-service notes: [`self-hosting.md`](./self-hosting.md).
 
-The full backup (`src/services/backupFormat.ts`, `backupExport.ts`, `backupImport.ts`) exports `events`, `events/*/media`, `goals`, `performanceGoals`, `bucketListItems`, `races`, `raceEntries`, `weightEntries` and `users/{uid}` as JSON inside a `.zip`, preserving document ids on restore. It optionally includes the Storage photos and videos at `media/<eventId>/<mediaId>.<ext>`, up to 300 MB (`MAX_BACKUP_MEDIA_TOTAL_BYTES`); when the files are present the restore re-uploads them and mints fresh `downloadUrl`s, which is what makes media restorable in replace mode and across accounts. `shares` is export-only. Only Cloud Functions write it. `reminderDispatches`, `rateLimits` and `fcmTokens` are left out.
+## Offline
 
-### Cloud Functions
+- Firestore persistent multi-tab cache when IndexedDB is available (`src/services/firebase.ts`).
+- The Vite PWA service worker precaches the app shell.
+- `parkrunCatalog/global` is the parkrun list; `src/data/parkrun-events.json` (`npm run sync:parkrun-events`) is the fallback when it is missing or stale.
 
-| Function | Type | Role |
-|----------|------|------|
-| `lookupOfficialResults` | Callable | Results import via connectors |
-| `inviteShare`, `acceptShare`, `declineShare`, `revokeShare`, `updateSharePermissions`, `listShares`, `getSharedSnapshot`, `createSharedBucketListItem`, `updateSharedBucketListItem`, `deleteSharedBucketListItem` | Callable | Sharing and shared bucket list |
-| `dispatchReminders` | Scheduled | FCM reminder dispatch |
+## Local development
 
-All callables require `request.auth`. Scaling limits: [`functionOptions.ts`](../functions/src/functionOptions.ts).
-
-### Timing connectors
-
-Router in [`functions/src/connectors/index.ts`](../functions/src/connectors/index.ts). Each file implements HTTP for one platform; shared detection and parsing live in `shared/officialResults/`.
-
-Current platforms (see `RESULTS_PLATFORMS` in [`shared/officialResults/types.ts`](../shared/officialResults/types.ts)): Parkrun, Sporthive, Davengo, MyRaceResult, SCC Events, MaxFunSports, MyRacePartner, Strassenlauf.org, ZielZeit, EQ Timing, NSF Berlin, RunCzech, Ultimate, VCRunning, Wiclax, Tímataka, mika:timing, Pacer.
-
-### External services (outside Firebase)
-
-| Service | Where it runs | Use |
-|---------|---------------|-----|
-| **Geoapify** | Browser (`src/services/geoapify.ts`) | Location autocomplete and geocoding |
-| **Timing sites** | Cloud Function | Public results scraping/API |
-| **Google Analytics** | Browser (optional) | `src/services/analytics.ts` |
-
-### Offline and PWA
-
-- Firestore **persistent cache** (multi-tab) when IndexedDB is available, see `src/services/firebase.ts`.
-- Service worker (Vite PWA) precaches the app shell; data lives in local Firestore.
-- Parkrun catalog in Firestore at `parkrunCatalog/global`, refreshed weekly by the `syncParkrunCatalog` scheduled function; `src/data/parkrun-events.json` (built via `npm run sync:parkrun-events`) is the fallback when that document is missing or stalled.
-
-### Local development
-
-Firebase emulators (Auth, Firestore, Functions, Storage). See [`emulators.md`](./emulators.md). Code in `src/config/emulators.ts` connects the PWA to ports in `firebase.json`.
-
-### Related documentation
-
-| Topic | File |
-|-------|------|
-| Deploy | [`self-hosting.md`](./self-hosting.md) |
-| New connectors | [`adding-a-results-connector.md`](./adding-a-results-connector.md) |
-| Environment variables | [`configuration.md`](./configuration.md) |
-| CF limits | [`cloud-functions-limits.md`](./cloud-functions-limits.md) |
-| Scraping / ToS | [`timing-scraping-disclaimer.md`](./timing-scraping-disclaimer.md) |
-| Security | [`SECURITY.md`](../SECURITY.md) |
-| Contributing | [`CONTRIBUTING.md`](../CONTRIBUTING.md) |
+Emulators for Auth, Firestore, Functions and Storage: [`emulators.md`](./emulators.md). The ports are wired in `src/services/firebase.ts`; environment variables in [`configuration.md`](./configuration.md).

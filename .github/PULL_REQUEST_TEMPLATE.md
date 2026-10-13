@@ -1,25 +1,21 @@
-<!--
-Thank you for contributing! See [CONTRIBUTING.md](../CONTRIBUTING.md) for setup, checks, and changelog rules.
-Obrigado por contribuir! Ver [CONTRIBUTING.md](../CONTRIBUTING.md).
--->
+<!-- See CONTRIBUTING.md and AGENTS.md. -->
 
 ## Summary
 
-<!-- What changed and why (1-3 bullets) / O que mudou e porquê -->
+<!-- What changed and why, 1 to 3 bullets -->
 
 -
 
 ## Test plan
 
 - [ ] `npm run check`
-- [ ] `npm --prefix functions run build` (if `functions/src/` changed)
 - [ ] Manually tested: …
-- [ ] Changelog updated in `change-log.md` and `change-log.en.md` (if version bump)
+- [ ] Version bump only: all six `change-log{,.en,.es,.de,.fr,.ar}.md` updated
 
 ## Issues
 
-<!-- Fixes #NNN and/or Refs #NNN -->
+<!-- Fixes #NNN / Refs #NNN -->
 
 ## Screenshots
 
-<!-- UI changes only, optional -->
+<!-- UI changes only -->

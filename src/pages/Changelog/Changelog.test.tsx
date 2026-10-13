@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, fireEvent, render, screen } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { MemoryRouter } from 'react-router-dom'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import packageJson from '../../../package.json'
@@ -43,7 +43,8 @@ describe('Changelog', () => {
     const { container } = renderAt('/novidades#0.1.0')
 
     await screen.findByRole('link', { name: /\[0\.1\.0\]/ })
-    expect(scrollIntoView).toHaveBeenCalled()
+    // The scroll is an effect, which can run after the heading is in the DOM.
+    await waitFor(() => expect(scrollIntoView).toHaveBeenCalled())
     expect(scrollIntoView.mock.contexts[0]).toBe(container.querySelector('[id="0.1.0"]'))
   })
 })

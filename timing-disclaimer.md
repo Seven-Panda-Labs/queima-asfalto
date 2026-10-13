@@ -5,7 +5,7 @@
 
 #### O que faz esta funcionalidade
 
-O Queima Asfalto pode **procurar tempos e classificações** em sites de timing de terceiros (organizadores, plataformas de resultados, Parkrun, etc.) quando indicas um link público de resultados ou um identificador compatível e pedes uma pesquisa.
+O Queima Asfalto pode **procurar tempos e classificações** em sites de timing de terceiros (organizadores, plataformas de resultados, etc.) quando indicas um link público de resultados ou um identificador compatível e pedes uma pesquisa.
 
 Cada pesquisa é **iniciada por ti** e executa pedidos HTTP automatizados a partir da instância (normalmente via Cloud Function `lookupOfficialResults`) para páginas ou APIs **publicamente acessíveis**.
 
@@ -44,10 +44,9 @@ Se fazes deploy da tua própria instância, és responsável pelo uso que os teu
 
 - Informa os utilizadores (por exemplo com este aviso ou equivalente na tua política de privacidade).
 - Revisa os termos dos sites de timing que os teus utilizadores importam com frequência.
-- Ajusta limites em [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) se necessário.
 - Considera desactivar ou restringir a funcionalidade se não puderes cumprir os termos aplicáveis.
 
-Documentação completa para operadores: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Documentação completa para operadores: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### Software
 
@@ -60,7 +59,7 @@ O Queima Asfalto é software open source (AGPL-3.0), fornecido **«tal como est�
 
 #### What this feature does
 
-Queima Asfalto can **look up finish times and rankings** on third-party timing websites (race organisers, results platforms, Parkrun, etc.) when you provide a public results link or compatible identifier and request a search.
+Queima Asfalto can **look up finish times and rankings** on third-party timing websites (race organisers, results platforms, etc.) when you provide a public results link or compatible identifier and request a search.
 
 Each search is **initiated by you** and runs automated HTTP requests from the instance (usually via the `lookupOfficialResults` Cloud Function) against **publicly accessible** pages or APIs.
 
@@ -99,10 +98,9 @@ If you deploy your own instance, you are responsible for how your users use this
 
 - Inform users (for example with this notice or equivalent wording in your privacy policy).
 - Review the terms of timing sites your users import from frequently.
-- Tune limits in [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) if needed.
 - Consider disabling or restricting the feature if you cannot meet applicable terms.
 
-Full operator documentation: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Full operator documentation: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### Software
 
@@ -115,7 +113,7 @@ Queima Asfalto is open-source software (AGPL-3.0), provided **“as is”**. The
 
 #### Qué hace esta funcionalidad
 
-Queima Asfalto puede **buscar tiempos y clasificaciones** en sitios web de cronometraje de terceros (organizadores de carreras, plataformas de resultados, Parkrun, etc.) cuando indicas un enlace público de resultados o un identificador compatible y solicitas una búsqueda.
+Queima Asfalto puede **buscar tiempos y clasificaciones** en sitios web de cronometraje de terceros (organizadores de carreras, plataformas de resultados, etc.) cuando indicas un enlace público de resultados o un identificador compatible y solicitas una búsqueda.
 
 Cada búsqueda la **inicias tú** y ejecuta peticiones HTTP automatizadas desde la instancia (normalmente mediante la Cloud Function `lookupOfficialResults`) contra páginas o APIs **de acceso público**.
 
@@ -154,10 +152,9 @@ Si despliegas tu propia instancia, eres responsable de cómo tus usuarios usan e
 
 - Informa a los usuarios (por ejemplo con este aviso o un texto equivalente en tu política de privacidad).
 - Revisa los términos de los sitios de cronometraje desde los que tus usuarios importan con frecuencia.
-- Ajusta los límites en [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) si es necesario.
 - Considera desactivar o restringir la funcionalidad si no puedes cumplir los términos aplicables.
 
-Documentación completa para operadores: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Documentación completa para operadores: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### Software
 
@@ -170,7 +167,7 @@ Queima Asfalto es software de código abierto (AGPL-3.0), proporcionado **«tal 
 
 #### Was diese Funktion macht
 
-Queima Asfalto kann **Zielzeiten und Platzierungen** auf Timing-Websites von Drittanbietern (Veranstalter, Ergebnisplattformen, Parkrun usw.) **nachschlagen**, wenn du einen öffentlichen Ergebnislink oder eine kompatible Kennung angibst und eine Suche anforderst.
+Queima Asfalto kann **Zielzeiten und Platzierungen** auf Timing-Websites von Drittanbietern (Veranstalter, Ergebnisplattformen usw.) **nachschlagen**, wenn du einen öffentlichen Ergebnislink oder eine kompatible Kennung angibst und eine Suche anforderst.
 
 Jede Suche wird **von dir gestartet** und führt automatisierte HTTP-Anfragen von der Instanz aus (in der Regel über die Cloud Function `lookupOfficialResults`) gegen **öffentlich zugängliche** Seiten oder APIs aus.
 
@@ -209,10 +206,9 @@ Wenn du deine eigene Instanz betreibst, bist du dafür verantwortlich, wie deine
 
 - Informiere Nutzer (z. B. mit diesem Hinweis oder gleichwertigem Text in deiner Datenschutzerklärung).
 - Prüfe die Bedingungen der Timing-Websites, von denen deine Nutzer häufig importieren.
-- Passe Limits in [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) bei Bedarf an.
 - Erwäge, die Funktion zu deaktivieren oder einzuschränken, wenn du die geltenden Bedingungen nicht erfüllen kannst.
 
-Vollständige Dokumentation für Betreiber: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Vollständige Dokumentation für Betreiber: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### Software
 
@@ -225,7 +221,7 @@ Queima Asfalto ist Open-Source-Software (AGPL-3.0), bereitgestellt **„wie bese
 
 #### Ce que fait cette fonctionnalité
 
-Queima Asfalto peut **rechercher les temps d'arrivée et les classements** sur des sites de chronométrage tiers (organisateurs de courses, plateformes de résultats, Parkrun, etc.) lorsque tu fournis un lien public vers des résultats ou un identifiant compatible et que tu demandes une recherche.
+Queima Asfalto peut **rechercher les temps d'arrivée et les classements** sur des sites de chronométrage tiers (organisateurs de courses, plateformes de résultats, etc.) lorsque tu fournis un lien public vers des résultats ou un identifiant compatible et que tu demandes une recherche.
 
 Chaque recherche est **lancée par toi** et exécute des requêtes HTTP automatisées depuis l'instance (généralement via la Cloud Function `lookupOfficialResults`) vers des pages ou des API **accessibles publiquement**.
 
@@ -264,10 +260,9 @@ Si tu déploies ta propre instance, tu es responsable de la manière dont tes ut
 
 - Informe les utilisateurs (par exemple avec cet avis ou une formulation équivalente dans ta politique de confidentialité).
 - Consulte les conditions des sites de chronométrage depuis lesquels tes utilisateurs importent fréquemment.
-- Ajuste les limites dans [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) si nécessaire.
 - Envisage de désactiver ou de restreindre la fonctionnalité si tu ne peux pas respecter les conditions applicables.
 
-Documentation complète pour les opérateurs : [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+Documentation complète pour les opérateurs : [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### Logiciel
 
@@ -279,7 +274,7 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 
 #### ما الذي تقوم به هذه الميزة
 
-يمكن لـ Queima Asfalto **البحث عن أوقات الوصول والتصنيفات** في مواقع التوقيت التابعة لجهات خارجية (منظمو السباقات، منصات النتائج، Parkrun، وغيرها) عندما تقدّم رابطًا عامًا للنتائج أو معرّفًا متوافقًا وتطلب إجراء بحث.
+يمكن لـ Queima Asfalto **البحث عن أوقات الوصول والتصنيفات** في مواقع التوقيت التابعة لجهات خارجية (منظمو السباقات، منصات النتائج، وغيرها) عندما تقدّم رابطًا عامًا للنتائج أو معرّفًا متوافقًا وتطلب إجراء بحث.
 
 كل بحث **يبدأ بمبادرة منك** وينفّذ طلبات HTTP آلية من المثيل (عادةً عبر دالة السحابة `lookupOfficialResults`) على صفحات أو واجهات برمجة تطبيقات **متاحة للعموم**.
 
@@ -318,10 +313,9 @@ Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**
 
 - أعلِم المستخدمين (مثلًا عبر هذا التنبيه أو صياغة مكافئة في سياسة الخصوصية الخاصة بك).
 - راجع شروط مواقع التوقيت التي يستورد منها مستخدموك بشكل متكرر.
-- اضبط الحدود في [`docs/cloud-functions-limits.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/cloud-functions-limits.md) عند الحاجة.
 - فكّر في تعطيل الميزة أو تقييدها إذا لم تستطع الالتزام بالشروط المعمول بها.
 
-الوثائق الكاملة للمشغّلين: [`docs/timing-scraping-disclaimer.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/timing-scraping-disclaimer.md).
+الوثائق الكاملة للمشغّلين: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
 
 #### البرمجية
 
