@@ -14,12 +14,28 @@ describe('nameWithoutEdition', () => {
     expect(nameWithoutEdition('IX. Meia de Aveiro', NOW)).toBe('Meia de Aveiro')
   })
 
+  it('drops the ordinal Portuguese writes with a suffix', () => {
+    expect(nameWithoutEdition('3ª São Silvestre de Vila Nova de Santo André', NOW)).toBe(
+      'São Silvestre de Vila Nova de Santo André',
+    )
+    expect(nameWithoutEdition('5º Treino Trail Convívio', NOW)).toBe('Treino Trail Convívio')
+    expect(nameWithoutEdition('12.ª Meia Maratona de Sintra', NOW)).toBe('Meia Maratona de Sintra')
+    expect(nameWithoutEdition('7 º Grande Prémio de Atletismo', NOW)).toBe(
+      'Grande Prémio de Atletismo',
+    )
+  })
+
   it('keeps a number that is the race rather than its edition', () => {
     // No dot, and in almost every one of these the number is the name.
     expect(nameWithoutEdition('10 Marathon in 10 Tagen', NOW)).toBe('10 Marathon in 10 Tagen')
     expect(nameWithoutEdition('20 Km de la Forêt de Beloeil', NOW)).toBe(
       '20 Km de la Forêt de Beloeil',
     )
+    expect(nameWithoutEdition('10km de Lisboa', NOW)).toBe('10km de Lisboa')
+    expect(nameWithoutEdition('5 Milhas da Foz', NOW)).toBe('5 Milhas da Foz')
+    // English and German suffixes are as often the name: New Year's Day, "the 38 one".
+    expect(nameWithoutEdition('1st Day 5K', NOW)).toBe('1st Day 5K')
+    expect(nameWithoutEdition('38er Run', NOW)).toBe('38er Run')
     expect(nameWithoutEdition('24 Stunden Jubiläumslauf HaWei24', NOW)).toBe(
       '24 Stunden Jubiläumslauf HaWei24',
     )
