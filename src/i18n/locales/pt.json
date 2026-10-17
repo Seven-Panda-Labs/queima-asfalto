@@ -1405,7 +1405,7 @@
     "duplicatesHint": "Mesmo dia e mesma terra, ou o mesmo site do organizador, e nem o nome nem uma revisão o decidem. Escolhe com qual das duas ficar: a outra passa a apontar para essa e não é apagada. A resposta fica guardada em qualquer dos casos.",
     "duplicatesSameOrganiser": "Mesmo site do organizador: {{site}}",
     "duplicatesKeep": "sugerida",
-    "duplicatesMerge": "Mesma prova, ficar com {{name}}",
+    "duplicatesMerge": "Mesma prova, ficar com esta",
     "duplicatesSeparate": "Provas diferentes",
     "duplicatesUndo": "Separar de {{name}}",
     "duplicatesError": "Não foi possível guardar.",
@@ -1417,7 +1417,6 @@
       "copies": "Cópia de outra entrada ({{count}})"
     },
     "duplicatesVotes": "Votos: mesma prova {{same}}, diferentes {{different}}.",
-    "duplicatesMergeOther": "Ou ficar com {{name}}",
     "duplicatesOpenSource": "Abrir a origem em {{source}}",
     "proposalsTitle": "Propostas de utilizadores ({{count}})",
     "proposalsHint": "Provas que os corredores dizem faltar. A actualização diária transforma cada uma numa entrada não confirmada, ou liga-a à prova que o catálogo já tinha. Nada para decidir aqui.",

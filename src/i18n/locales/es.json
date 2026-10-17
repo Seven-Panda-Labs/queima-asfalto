@@ -1405,7 +1405,7 @@
     "duplicatesHint": "Mismo día y pueblo, o el mismo sitio del organizador, y ni el nombre ni una revisión lo deciden. Elige con cuál de las dos quedarte: la otra apunta a esa y no se borra. La respuesta se guarda en cualquier caso.",
     "duplicatesSameOrganiser": "Mismo sitio del organizador: {{site}}",
     "duplicatesKeep": "sugerida",
-    "duplicatesMerge": "Misma carrera, quedarse con {{name}}",
+    "duplicatesMerge": "Misma carrera, quedarse con esta",
     "duplicatesSeparate": "Carreras distintas",
     "duplicatesUndo": "Separar de {{name}}",
     "duplicatesError": "No se pudo guardar.",
@@ -1417,7 +1417,6 @@
       "copies": "Copia de otra entrada ({{count}})"
     },
     "duplicatesVotes": "Votos: misma carrera {{same}}, distintas {{different}}.",
-    "duplicatesMergeOther": "O quedarte con {{name}}",
     "duplicatesOpenSource": "Abrir el origen en {{source}}",
     "proposalsTitle": "Propuestas de usuarios ({{count}})",
     "proposalsHint": "Carreras que los corredores dicen que faltan. La actualización diaria convierte cada una en una entrada sin verificar, o la vincula a la carrera que el catálogo ya tenía. Nada que decidir aquí.",
