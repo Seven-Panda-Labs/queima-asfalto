@@ -1405,7 +1405,7 @@
     "duplicatesHint": "Gleicher Tag und Ort, oder dieselbe Seite des Veranstalters, und weder der Name noch eine Prüfung entscheidet es. Wähle, welchen der beiden du behältst: der andere zeigt darauf und wird nicht gelöscht. Die Antwort wird in beiden Fällen gespeichert.",
     "duplicatesSameOrganiser": "Dieselbe Seite des Veranstalters: {{site}}",
     "duplicatesKeep": "Vorschlag",
-    "duplicatesMerge": "Dasselbe Rennen, {{name}} behalten",
+    "duplicatesMerge": "Dasselbe Rennen, dieses behalten",
     "duplicatesSeparate": "Verschiedene Rennen",
     "duplicatesUndo": "Von {{name}} trennen",
     "duplicatesError": "Konnte nicht gespeichert werden.",
@@ -1417,7 +1417,6 @@
       "copies": "Kopie eines anderen Eintrags ({{count}})"
     },
     "duplicatesVotes": "Stimmen: dasselbe Rennen {{same}}, verschieden {{different}}.",
-    "duplicatesMergeOther": "Oder {{name}} behalten",
     "duplicatesOpenSource": "Die Quelle bei {{source}} öffnen",
     "proposalsTitle": "Vorschläge von Läufern ({{count}})",
     "proposalsHint": "Rennen, die Läufer als fehlend melden. Die tägliche Aktualisierung macht aus jedem einen ungeprüften Eintrag, oder verknüpft es mit dem Rennen, das der Katalog schon hatte. Hier ist nichts zu entscheiden.",

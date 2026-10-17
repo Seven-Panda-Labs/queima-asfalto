@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import { CatalogDuplicates } from './CatalogDuplicates'
@@ -61,6 +61,13 @@ function pairsOf(races: RaceCatalogEntry[]): RaceCatalogEntry[][] {
   return out
 }
 
+/** The keep button inside the card of the entry with that name. */
+function keepButton(name: string): HTMLElement {
+  return within(screen.getByRole('group', { name })).getByRole('button', {
+    name: 'Mesma prova, ficar com esta',
+  })
+}
+
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
@@ -112,7 +119,7 @@ describe('CatalogDuplicates', () => {
     render(<CatalogDuplicates adminUid="admin" onChanged={onChanged} />)
 
     await screen.findByText('Haspa Marathon Hamburg')
-    fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
+    fireEvent.click(keepButton('Haspa Halbmarathon Hamburg'))
 
     await waitFor(() =>
       expect(mergeCatalogRaces).toHaveBeenCalledWith(
@@ -131,12 +138,34 @@ describe('CatalogDuplicates', () => {
     await screen.findByText('Haspa Marathon Hamburg')
     // The suggestion is a guess, and the operator may know the organiser calls
     // the race by the name it did not pick.
-    fireEvent.click(screen.getByRole('button', { name: /Haspa Marathon Hamburg/ }))
+    fireEvent.click(keepButton('Haspa Marathon Hamburg'))
 
     await waitFor(() =>
       expect(mergeCatalogRaces).toHaveBeenCalledWith(
         'de-hamburg-haspa-marathon',
         'de-hamburg-haspa-halbmarathon',
+        'admin',
+      ),
+    )
+  })
+
+  it('keeps the entry whose card was clicked when both have the same name', async () => {
+    // The usual case in the queue, and the one where a button naming the race
+    // could not say which of the two it kept.
+    queue = pairsOf([
+      race({ id: 'us-chicago-marathon', name: 'Chicago Marathon', city: 'Chicago' }),
+      race({ id: 'us-chicago-chicago-marathon', name: 'Chicago Marathon', city: 'Chicago' }),
+    ])
+    render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
+
+    await screen.findAllByText('Chicago Marathon')
+    const second = screen.getAllByRole('group', { name: 'Chicago Marathon' })[1]!
+    fireEvent.click(within(second).getByRole('button', { name: 'Mesma prova, ficar com esta' }))
+
+    await waitFor(() =>
+      expect(mergeCatalogRaces).toHaveBeenCalledWith(
+        'us-chicago-chicago-marathon',
+        'us-chicago-marathon',
         'admin',
       ),
     )
@@ -178,7 +207,7 @@ describe('CatalogDuplicates', () => {
     render(<CatalogDuplicates adminUid="admin" onChanged={vi.fn()} />)
 
     await screen.findByText('Haspa Marathon Hamburg')
-    fireEvent.click(screen.getByRole('button', { name: /Haspa Halbmarathon Hamburg/ }))
+    fireEvent.click(keepButton('Haspa Halbmarathon Hamburg'))
 
     expect(await screen.findByText('Não foi possível guardar.')).toBeInTheDocument()
     expect(screen.getByText('Haspa Marathon Hamburg')).toBeInTheDocument()

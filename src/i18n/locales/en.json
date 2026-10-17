@@ -1405,7 +1405,7 @@
     "duplicatesHint": "Same day and town, or the same organiser site, and no name or review to settle it. Pick which of the two to keep: the other points at it and is not deleted. The answer is remembered either way.",
     "duplicatesSameOrganiser": "Same organiser site: {{site}}",
     "duplicatesKeep": "suggested",
-    "duplicatesMerge": "Same race, keep {{name}}",
+    "duplicatesMerge": "Same race, keep this one",
     "duplicatesSeparate": "Different races",
     "duplicatesUndo": "Separate from {{name}}",
     "duplicatesError": "Could not save that.",
@@ -1417,7 +1417,6 @@
       "copies": "A copy of another entry ({{count}})"
     },
     "duplicatesVotes": "Votes: same race {{same}}, different {{different}}.",
-    "duplicatesMergeOther": "Or keep {{name}}",
     "duplicatesOpenSource": "Open the source at {{source}}",
     "proposalsTitle": "Proposals from runners ({{count}})",
     "proposalsHint": "Races runners say are missing. The daily update turns each into an unreviewed entry, or links it to the race the catalog already had. Nothing to decide here.",
