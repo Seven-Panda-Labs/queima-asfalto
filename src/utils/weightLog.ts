@@ -1,8 +1,9 @@
 import type { WeightEntry } from '../types/WeightEntry'
 
-/** Mirrors the range in firestore.rules. */
+/** Mirrors the limits in firestore.rules. */
 export const MIN_WEIGHT_KG = 20
 export const MAX_WEIGHT_KG = 400
+export const MAX_NOTE_LENGTH = 80
 
 /** Accepts a decimal comma, and keeps one decimal: a bathroom scale reads no finer. */
 export function parseWeightKg(input: string): number | null {
@@ -12,9 +13,15 @@ export function parseWeightKg(input: string): number | null {
   return kg >= MIN_WEIGHT_KG && kg <= MAX_WEIGHT_KG ? kg : null
 }
 
-type Weighing = Pick<WeightEntry, 'date' | 'weightKg'>
+/** Blank means no note; a note longer than the limit is refused, not cut. */
+export function parseNote(input: string): string | null {
+  const trimmed = input.trim()
+  return trimmed !== '' && trimmed.length <= MAX_NOTE_LENGTH ? trimmed : null
+}
 
-export function sortByDate<T extends Weighing>(entries: readonly T[]): T[] {
+type Weighing = { date: string; weightKg: number }
+
+export function sortByDate<T extends Pick<WeightEntry, 'date'>>(entries: readonly T[]): T[] {
   return [...entries].sort((left, right) => left.date.localeCompare(right.date))
 }
 
@@ -37,8 +44,8 @@ export type WeightSummary = {
  * older weigh-in outside the window is not used: a gap of a month would
  * otherwise show as a week's change.
  */
-export function summarizeWeights(entries: readonly Weighing[]): WeightSummary | null {
-  const sorted = sortByDate(entries)
+export function summarizeWeights(entries: readonly Pick<WeightEntry, 'date' | 'weightKg'>[]): WeightSummary | null {
+  const sorted = sortByDate(weighIns(entries))
   const latest = sorted.at(-1)
   if (!latest) return null
 
@@ -54,6 +61,11 @@ export function summarizeWeights(entries: readonly Weighing[]): WeightSummary | 
     last30DaysKg: changeWithin(30),
     totalKg: sorted.length > 1 ? roundKg(latest.weightKg - sorted[0]!.weightKg) : null,
   }
+}
+
+/** The days that hold a weight; a day with only a note is left out of every number. */
+export function weighIns<T extends Pick<WeightEntry, 'date' | 'weightKg'>>(entries: readonly T[]): (T & Weighing)[] {
+  return entries.filter((entry): entry is T & Weighing => entry.weightKg !== undefined)
 }
 
 function roundKg(kg: number): number {

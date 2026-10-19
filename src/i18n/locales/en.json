@@ -863,7 +863,8 @@
       "invalid_entry_method": "Invalid entry method",
       "invalid_entry_status": "Invalid entry status",
       "invalid_date": "Invalid day",
-      "invalid_weight": "Invalid weight"
+      "invalid_weight": "Invalid weight",
+      "invalid_note": "Invalid note"
     }
   },
   "messages": {
@@ -1718,6 +1719,9 @@
       "title": "Weight log",
       "weightKg": "Weight (kg)",
       "day": "Day",
+      "note": "Note",
+      "noteOptional": "Note (optional)",
+      "notePlaceholder": "Training start, break, diet…",
       "kg": "{{weight}} kg",
       "current": "Current",
       "last7Days": "7 days",
@@ -1728,8 +1732,9 @@
       "entries": "Entries ({{count}})",
       "showAll": "Show all ({{count}})",
       "empty": "No entries yet.",
-      "saved": "Weight saved.",
-      "updated": "Weight for that day updated.",
+      "created": "Day saved.",
+      "updated": "Day updated.",
+      "deleted": "Day deleted.",
       "saveError": "Could not save the weight.",
       "deleteError": "Could not delete the entry.",
       "invalidWeight": "Enter a weight between 20 and 400 kg.",

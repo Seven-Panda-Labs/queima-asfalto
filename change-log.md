@@ -4,6 +4,14 @@
 
 ---
 
+## [1.90.0] - 2026-10-19
+
+### Adicionado
+
+- **Notas no registo de peso:** marca um dia com uma nota curta (início do treino, pausa, dieta), com ou sem peso. Aparece como uma bandeira no gráfico.
+
+---
+
 ## [1.89.0] - 2026-10-12
 
 ### Adicionado

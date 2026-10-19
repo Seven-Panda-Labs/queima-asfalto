@@ -863,7 +863,8 @@
       "invalid_entry_method": "Mode d'inscription invalide",
       "invalid_entry_status": "Statut d'inscription invalide",
       "invalid_date": "Jour invalide",
-      "invalid_weight": "Poids invalide"
+      "invalid_weight": "Poids invalide",
+      "invalid_note": "Note invalide"
     }
   },
   "messages": {
@@ -1718,6 +1719,9 @@
       "title": "Suivi du poids",
       "weightKg": "Poids (kg)",
       "day": "Jour",
+      "note": "Note",
+      "noteOptional": "Note (facultatif)",
+      "notePlaceholder": "Reprise, pause, alimentation…",
       "kg": "{{weight}} kg",
       "current": "Actuel",
       "last7Days": "7 jours",
@@ -1728,8 +1732,9 @@
       "entries": "Relevés ({{count}})",
       "showAll": "Tout afficher ({{count}})",
       "empty": "Pas encore de relevés.",
-      "saved": "Poids enregistré.",
-      "updated": "Poids de ce jour mis à jour.",
+      "created": "Jour enregistré.",
+      "updated": "Jour mis à jour.",
+      "deleted": "Jour supprimé.",
       "saveError": "Impossible d’enregistrer le poids.",
       "deleteError": "Impossible de supprimer le relevé.",
       "invalidWeight": "Indique un poids entre 20 et 400 kg.",

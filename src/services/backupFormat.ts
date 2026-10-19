@@ -7,7 +7,7 @@ import { EVENT_STATUSES, EVENT_TYPES } from '../domain/eventCodes'
 import { ENTRY_METHODS, ENTRY_STATUSES } from '../types/RaceEntry'
 import { RESULTS_PLATFORMS } from '../../shared/officialResults'
 import { parseFirestoreTimestamp } from '../utils/firestoreTimestamp'
-import { MAX_WEIGHT_KG, MIN_WEIGHT_KG } from '../utils/weightLog'
+import { MAX_NOTE_LENGTH, MAX_WEIGHT_KG, MIN_WEIGHT_KG } from '../utils/weightLog'
 
 /**
  * Backup v2 format: a zip of JSON files holding the raw Firestore documents.
@@ -24,8 +24,9 @@ export const BACKUP_KIND = 'user-backup'
  * 3 added the `races` section.
  * 4 added the `raceEntries` section.
  * 5 added the `weightEntries` section.
+ * 6 let a `weightEntries` day hold a note, with or without a weight.
  */
-export const BACKUP_SCHEMA_VERSION = 5
+export const BACKUP_SCHEMA_VERSION = 6
 export const BACKUP_MANIFEST_FILE = 'manifest.json'
 export const BACKUP_MEDIA_DIR = 'media'
 export const BACKUP_TRACKS_DIR = 'tracks'
@@ -862,6 +863,7 @@ export const RESTORE_REJECTION_CODES = [
   'invalid_media',
   'invalid_date',
   'invalid_weight',
+  'invalid_note',
   'unknown_event',
   'foreign_user',
 ] as const
@@ -1020,10 +1022,17 @@ function validateRace(data: Record<string, unknown>): RestoreRejectionCode | nul
 }
 
 function validateWeightEntry(data: Record<string, unknown>): RestoreRejectionCode | null {
-  if (!hasAll(data, ['userId', 'date', 'weightKg'])) return 'missing_required_field'
+  if (!hasAll(data, ['userId', 'date'])) return 'missing_required_field'
+  if (!('weightKg' in data) && !('note' in data)) return 'missing_required_field'
   if (typeof data.date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(data.date)) return 'invalid_date'
-  if (typeof data.weightKg !== 'number' || data.weightKg < MIN_WEIGHT_KG || data.weightKg > MAX_WEIGHT_KG) {
+  if (
+    'weightKg' in data &&
+    (typeof data.weightKg !== 'number' || data.weightKg < MIN_WEIGHT_KG || data.weightKg > MAX_WEIGHT_KG)
+  ) {
     return 'invalid_weight'
+  }
+  if ('note' in data && (typeof data.note !== 'string' || data.note.length === 0 || data.note.length > MAX_NOTE_LENGTH)) {
+    return 'invalid_note'
   }
   return null
 }

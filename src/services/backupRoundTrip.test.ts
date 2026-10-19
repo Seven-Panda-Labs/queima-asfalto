@@ -206,6 +206,16 @@ function rawFixture() {
           updatedAt: ts('2026-09-27T07:30:00Z'),
         },
       },
+      {
+        id: 'weight-2',
+        data: {
+          userId: USER_ID,
+          date: '2026-10-01',
+          note: 'Início do plano',
+          createdAt: ts('2026-10-01T07:30:00Z'),
+          updatedAt: ts('2026-10-01T07:30:00Z'),
+        },
+      },
     ],
     userProfile: [
       {

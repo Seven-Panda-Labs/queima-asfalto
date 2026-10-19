@@ -614,6 +614,14 @@ describe('validateRestoreDocument', () => {
     expect(check('weightEntries', { userId: 'user-ze', date: '2026-09-27' })).toBe('missing_required_field')
   })
 
+  it('validates a day with a note, with or without a weight', () => {
+    const day = { userId: 'user-ze', date: '2026-10-01', note: 'Início do plano' }
+    expect(check('weightEntries', day)).toBeNull()
+    expect(check('weightEntries', { ...day, weightKg: 94.1 })).toBeNull()
+    expect(check('weightEntries', { ...day, note: '' })).toBe('invalid_note')
+    expect(check('weightEntries', { ...day, note: 'x'.repeat(81) })).toBe('invalid_note')
+  })
+
   it('validates a race entry, and refuses a status or method it does not know', () => {
     const entry = {
       userId: 'user-ze',

@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseWeightKg, summarizeWeights } from './weightLog'
+import { parseNote, parseWeightKg, summarizeWeights } from './weightLog'
 
 describe('parseWeightKg', () => {
   it('reads a dot or a comma, to one decimal', () => {
@@ -17,7 +17,25 @@ describe('parseWeightKg', () => {
   })
 })
 
+describe('parseNote', () => {
+  it('trims, treats blank as no note and refuses one over the limit', () => {
+    expect(parseNote('  Início do plano ')).toBe('Início do plano')
+    expect(parseNote('   ')).toBeNull()
+    expect(parseNote('x'.repeat(81))).toBeNull()
+  })
+})
+
 describe('summarizeWeights', () => {
+  it('leaves out days with only a note', () => {
+    const summary = summarizeWeights([
+      { date: '2026-09-20', weightKg: 95 },
+      { date: '2026-09-25' },
+      { date: '2026-09-27', weightKg: 94.1 },
+    ])
+    expect(summary).toEqual({ latestKg: 94.1, last7DaysKg: -0.9, last30DaysKg: -0.9, totalKg: -0.9 })
+    expect(summarizeWeights([{ date: '2026-09-25' }])).toBeNull()
+  })
+
   it('is null without entries', () => {
     expect(summarizeWeights([])).toBeNull()
   })

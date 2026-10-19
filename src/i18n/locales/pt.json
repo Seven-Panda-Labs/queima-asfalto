@@ -863,7 +863,8 @@
       "invalid_entry_method": "Forma de inscrição inválida",
       "invalid_entry_status": "Estado de inscrição inválido",
       "invalid_date": "Dia inválido",
-      "invalid_weight": "Peso inválido"
+      "invalid_weight": "Peso inválido",
+      "invalid_note": "Nota inválida"
     }
   },
   "messages": {
@@ -1718,6 +1719,9 @@
       "title": "Registo de peso",
       "weightKg": "Peso (kg)",
       "day": "Dia",
+      "note": "Nota",
+      "noteOptional": "Nota (opcional)",
+      "notePlaceholder": "Início do treino, pausa, dieta…",
       "kg": "{{weight}} kg",
       "current": "Atual",
       "last7Days": "7 dias",
@@ -1728,8 +1732,9 @@
       "entries": "Registos ({{count}})",
       "showAll": "Mostrar todos ({{count}})",
       "empty": "Ainda não há registos.",
-      "saved": "Peso guardado.",
-      "updated": "Peso desse dia atualizado.",
+      "created": "Dia guardado.",
+      "updated": "Dia atualizado.",
+      "deleted": "Dia apagado.",
       "saveError": "Não foi possível guardar o peso.",
       "deleteError": "Não foi possível apagar o registo.",
       "invalidWeight": "Indica um peso entre 20 e 400 kg.",

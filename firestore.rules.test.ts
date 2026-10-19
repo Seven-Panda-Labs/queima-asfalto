@@ -592,6 +592,33 @@ describe('firestore.rules', () => {
       await assertFails(entry.set(validWeightEntryPayload(userId, { weightKg: 401 })))
       await assertFails(entry.set(validWeightEntryPayload(userId, { eventId: 'event-1' })))
     })
+
+    it('allows a day with only a note, and a note added to a weigh-in or removed from it', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertSucceeds(
+        db.collection('weightEntries').doc('note-only').set({ userId, date: '2026-10-01', note: 'Início do plano' }),
+      )
+      const entry = db.collection('weightEntries').doc('weight-1')
+      await assertSucceeds(entry.set(validWeightEntryPayload(userId)))
+      await assertSucceeds(entry.update({ note: 'Pausa por lesão' }))
+      await assertSucceeds(entry.update({ note: firebase.firestore.FieldValue.delete() }))
+    })
+
+    it('refuses a day with neither weight nor note, or a note empty or too long', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const entry = db.collection('weightEntries').doc('weight-1')
+
+      await assertFails(entry.set({ userId, date: '2026-10-01' }))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { note: '' })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { note: 'x'.repeat(81) })))
+      await assertFails(entry.set(validWeightEntryPayload(userId, { note: 42 })))
+
+      await assertSucceeds(entry.set(validWeightEntryPayload(userId)))
+      await assertFails(entry.update({ weightKg: firebase.firestore.FieldValue.delete() }))
+    })
   })
 
   describe('performanceGoals', () => {

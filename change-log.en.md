@@ -4,6 +4,14 @@
 
 ---
 
+## [1.90.0] - 2026-10-19
+
+### Added
+
+- **Notes in the weight log:** mark a day with a short note (training start, break, diet), with or without a weight. It shows as a flag on the chart.
+
+---
+
 ## [1.89.0] - 2026-10-12
 
 ### Added
