@@ -175,18 +175,19 @@ service cloud.firestore {
         && data.year is int;
     }
 
-    // A weigh-in: the only fields it may hold, so it can never grow a link to
-    // the rest of the app. The range mirrors MIN/MAX_WEIGHT_KG in weightLog.ts.
+    // A day in the weight log: the only fields it may hold, so it can never grow
+    // a link to the rest of the app. A weight, a note or both; never neither.
+    // The limits mirror weightLog.ts.
     function validWeightEntryWrite(data) {
-      return data.keys().hasOnly(['userId', 'date', 'weightKg', 'createdAt', 'updatedAt'])
-        && data.keys().hasAll(['userId', 'date', 'weightKg'])
+      return data.keys().hasOnly(['userId', 'date', 'weightKg', 'note', 'createdAt', 'updatedAt'])
+        && data.keys().hasAll(['userId', 'date'])
+        && data.keys().hasAny(['weightKg', 'note'])
         && isOwner(data.userId)
         && isApprovedUser(data.userId)
         && data.date is string
         && data.date.matches('^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
-        && data.weightKg is number
-        && data.weightKg >= 20
-        && data.weightKg <= 400;
+        && (!('weightKg' in data) || (data.weightKg is number && data.weightKg >= 20 && data.weightKg <= 400))
+        && (!('note' in data) || (data.note is string && data.note.size() > 0 && data.note.size() <= 80));
     }
 
     function validPerformanceGoalType(type) {

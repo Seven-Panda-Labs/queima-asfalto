@@ -4,6 +4,14 @@
 
 ---
 
+## [1.90.0] - 2026-10-19
+
+### Hinzugefügt
+
+- **Notizen im Gewichtsprotokoll:** markiere einen Tag mit einer kurzen Notiz (Trainingsbeginn, Pause, Ernährung), mit oder ohne Gewicht. Sie erscheint als Fähnchen im Diagramm.
+
+---
+
 ## [1.89.0] - 2026-10-12
 
 ### Hinzugefügt

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.90.0] - 2026-10-19
+
+### Ajouté
+
+- **Notes dans le suivi du poids :** marque un jour d’une courte note (reprise, pause, alimentation), avec ou sans poids. Elle apparaît comme un drapeau sur le graphique.
+
+---
+
 ## [1.89.0] - 2026-10-12
 
 ### Ajouté

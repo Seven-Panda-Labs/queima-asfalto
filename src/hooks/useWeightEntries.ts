@@ -9,7 +9,7 @@ import {
   updateWeightEntry,
   weightEntriesQuery,
 } from '../services/weightEntries'
-import type { WeightEntry } from '../types/WeightEntry'
+import type { WeightDay, WeightEntry } from '../types/WeightEntry'
 import { reportLoadError } from '../utils/loadError'
 import { sortByDate } from '../utils/weightLog'
 
@@ -42,24 +42,33 @@ export function useWeightEntries() {
     )
   }, [user])
 
-  /** One weigh-in per day: saving a day that already has one corrects it. */
-  const saveWeight = useCallback(
-    async (date: string, weightKg: number): Promise<'created' | 'updated'> => {
+  /**
+   * One document per day, written exactly as given: saving a day that already
+   * has one corrects it, and saving it empty removes it.
+   */
+  const saveDay = useCallback(
+    async (date: string, day: WeightDay): Promise<'created' | 'updated' | 'deleted' | 'unchanged'> => {
       if (!user) throw new Error(i18n.t('errors.notAuthenticated'))
       const existing = entries.find((entry) => entry.date === date)
+      const empty = day.weightKg === undefined && day.note === undefined
+      if (existing && empty) {
+        await deleteWeightEntry(existing.id)
+        return 'deleted'
+      }
+      if (empty) return 'unchanged'
       if (existing) {
-        await updateWeightEntry(existing.id, weightKg)
+        await updateWeightEntry(existing.id, day)
         return 'updated'
       }
-      await createWeightEntry(user.uid, date, weightKg)
+      await createWeightEntry(user.uid, date, day)
       return 'created'
     },
     [user, entries],
   )
 
-  const removeWeight = useCallback(async (entryId: string) => {
+  const removeDay = useCallback(async (entryId: string) => {
     await deleteWeightEntry(entryId)
   }, [])
 
-  return { entries, loading, error, saveWeight, removeWeight }
+  return { entries, loading, error, saveDay, removeDay }
 }

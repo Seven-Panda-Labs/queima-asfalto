@@ -875,7 +875,8 @@
       "invalid_entry_method": "طريقة تسجيل غير صالحة",
       "invalid_entry_status": "حالة تسجيل غير صالحة",
       "invalid_date": "يوم غير صالح",
-      "invalid_weight": "وزن غير صالح"
+      "invalid_weight": "وزن غير صالح",
+      "invalid_note": "ملاحظة غير صالحة"
     }
   },
   "messages": {
@@ -1750,6 +1751,9 @@
       "title": "سجل الوزن",
       "weightKg": "الوزن (كغ)",
       "day": "اليوم",
+      "note": "ملاحظة",
+      "noteOptional": "ملاحظة (اختياري)",
+      "notePlaceholder": "بداية التدريب، استراحة، نظام غذائي…",
       "kg": "{{weight}} كغ",
       "current": "الحالي",
       "last7Days": "7 أيام",
@@ -1760,8 +1764,9 @@
       "entries": "السجلات ({{count}})",
       "showAll": "عرض الكل ({{count}})",
       "empty": "لا توجد سجلات بعد.",
-      "saved": "تم حفظ الوزن.",
-      "updated": "تم تحديث وزن ذلك اليوم.",
+      "created": "تم حفظ اليوم.",
+      "updated": "تم تحديث اليوم.",
+      "deleted": "تم حذف اليوم.",
       "saveError": "تعذّر حفظ الوزن.",
       "deleteError": "تعذّر حذف السجل.",
       "invalidWeight": "أدخل وزنًا بين 20 و400 كغ.",

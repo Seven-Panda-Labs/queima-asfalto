@@ -863,7 +863,8 @@
       "invalid_entry_method": "Ungültige Anmeldeart",
       "invalid_entry_status": "Ungültiger Anmeldestatus",
       "invalid_date": "Ungültiger Tag",
-      "invalid_weight": "Ungültiges Gewicht"
+      "invalid_weight": "Ungültiges Gewicht",
+      "invalid_note": "Ungültige Notiz"
     }
   },
   "messages": {
@@ -1718,6 +1719,9 @@
       "title": "Gewichtsprotokoll",
       "weightKg": "Gewicht (kg)",
       "day": "Tag",
+      "note": "Notiz",
+      "noteOptional": "Notiz (optional)",
+      "notePlaceholder": "Trainingsbeginn, Pause, Ernährung…",
       "kg": "{{weight}} kg",
       "current": "Aktuell",
       "last7Days": "7 Tage",
@@ -1728,8 +1732,9 @@
       "entries": "Einträge ({{count}})",
       "showAll": "Alle anzeigen ({{count}})",
       "empty": "Noch keine Einträge.",
-      "saved": "Gewicht gespeichert.",
-      "updated": "Gewicht für diesen Tag aktualisiert.",
+      "created": "Tag gespeichert.",
+      "updated": "Tag aktualisiert.",
+      "deleted": "Tag gelöscht.",
       "saveError": "Das Gewicht konnte nicht gespeichert werden.",
       "deleteError": "Der Eintrag konnte nicht gelöscht werden.",
       "invalidWeight": "Gib ein Gewicht zwischen 20 und 400 kg an.",

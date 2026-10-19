@@ -12,15 +12,17 @@ vi.mock('../../contexts/ToastContext', () => ({
 }))
 
 let entries: WeightEntry[] = []
-const saveWeight = vi.fn(async () => 'created' as const)
-const removeWeight = vi.fn(async () => {})
+const saveDay = vi.fn(async () => 'created' as const)
+const removeDay = vi.fn(async () => {})
 vi.mock('../../hooks/useWeightEntries', () => ({
-  useWeightEntries: () => ({ entries, loading: false, error: null, saveWeight, removeWeight }),
+  useWeightEntries: () => ({ entries, loading: false, error: null, saveDay, removeDay }),
 }))
 
-function entry(date: string, weightKg: number): WeightEntry {
-  return { id: date, userId: 'user-ze', date, weightKg, createdAt: new Date(0), updatedAt: new Date(0) }
+function entry(date: string, weightKg?: number, note?: string): WeightEntry {
+  return { id: date, userId: 'user-ze', date, weightKg, note, createdAt: new Date(0), updatedAt: new Date(0) }
 }
+
+const today = toDateInputValue(new Date())
 
 function renderLog() {
   render(
@@ -33,7 +35,7 @@ function renderLog() {
 afterEach(() => {
   cleanup()
   entries = []
-  saveWeight.mockClear()
+  saveDay.mockClear()
 })
 
 describe('WeightLog', () => {
@@ -51,7 +53,38 @@ describe('WeightLog', () => {
     fireEvent.change(screen.getByLabelText('Peso (kg)'), { target: { value: '94,1' } })
     fireEvent.click(save)
 
-    await waitFor(() => expect(saveWeight).toHaveBeenCalledWith(toDateInputValue(new Date()), 94.1))
+    await waitFor(() => expect(saveDay).toHaveBeenCalledWith(today, { weightKg: 94.1, note: undefined }))
+  })
+
+  it('saves a day with only a note', async () => {
+    renderLog()
+    fireEvent.change(screen.getByLabelText('Nota (opcional)'), { target: { value: '  Início do plano ' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar' }))
+
+    await waitFor(() => expect(saveDay).toHaveBeenCalledWith(today, { weightKg: undefined, note: 'Início do plano' }))
+  })
+
+  it('loads the picked day, and saves it emptied so it can be removed', async () => {
+    entries = [entry(today, 94.1, 'Pausa por lesão')]
+    renderLog()
+
+    expect(screen.getByLabelText('Peso (kg)')).toHaveValue('94,1')
+    expect(screen.getByLabelText('Nota (opcional)')).toHaveValue('Pausa por lesão')
+
+    fireEvent.change(screen.getByLabelText('Peso (kg)'), { target: { value: '' } })
+    fireEvent.change(screen.getByLabelText('Nota (opcional)'), { target: { value: '' } })
+    fireEvent.click(screen.getByRole('button', { name: 'Guardar' }))
+
+    await waitFor(() => expect(saveDay).toHaveBeenCalledWith(today, { weightKg: undefined, note: undefined }))
+  })
+
+  it('lists a day with only a note, with no stats or chart until a weight exists', () => {
+    entries = [entry('2026-10-01', undefined, 'Início do plano')]
+    renderLog()
+
+    expect(screen.queryByText('Atual')).toBeNull()
+    expect(screen.queryByText('Ainda não há registos.')).toBeNull()
+    expect(screen.getAllByRole('listitem', { hidden: true })[0]).toHaveTextContent('Início do plano')
   })
 
   it('refuses an implausible weight', () => {
