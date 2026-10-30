@@ -2,7 +2,11 @@ import {
   DEFAULT_NOTIFICATION_PREFS,
   type NotificationPrefs,
 } from './notificationPrefs.js'
-import { buildReminderFireAt, getBrowserTimezoneOffsetMinutes } from './reminderScheduler.js'
+import {
+  buildReminderFireAt,
+  getBrowserTimezoneOffsetMinutes,
+  type TimezoneOffsetAt,
+} from './reminderScheduler.js'
 
 /**
  * The four gates worth waking somebody for.
@@ -104,8 +108,8 @@ function dateFor(entry: ReminderDeadlineEntry, kind: DeadlineKind): Date | undef
   }
 }
 
-function startOfDay(date: Date, timezoneOffsetMinutes: number): number {
-  const shifted = new Date(date.getTime() + timezoneOffsetMinutes * 60_000)
+function startOfDay(date: Date, offsetAt: TimezoneOffsetAt): number {
+  const shifted = new Date(date.getTime() + offsetAt(date) * 60_000)
   return Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), shifted.getUTCDate())
 }
 
@@ -120,11 +124,11 @@ export function computeDeadlineReminders(
   entries: readonly ReminderDeadlineEntry[],
   prefs: NotificationPrefs = DEFAULT_NOTIFICATION_PREFS,
   now: Date = new Date(),
-  timezoneOffsetMinutes: number = getBrowserTimezoneOffsetMinutes(now),
+  offsetAt: TimezoneOffsetAt = getBrowserTimezoneOffsetMinutes,
 ): DeadlineReminder[] {
   if (!prefs.notificationsEnabled || !prefs.deadlineRemindersEnabled) return []
 
-  const today = startOfDay(now, timezoneOffsetMinutes)
+  const today = startOfDay(now, offsetAt)
   const reminders: DeadlineReminder[] = []
 
   for (const entry of entries) {
@@ -134,10 +138,10 @@ export function computeDeadlineReminders(
       const at = dateFor(entry, kind)
       if (!at) continue
       // The gate has already passed: nothing to warn about.
-      if (startOfDay(at, timezoneOffsetMinutes) < today) continue
+      if (startOfDay(at, offsetAt) < today) continue
 
       for (const daysBefore of DEADLINE_OFFSETS[kind]) {
-        const fireAt = buildReminderFireAt(at, daysBefore, prefs.reminderTime, timezoneOffsetMinutes)
+        const fireAt = buildReminderFireAt(at, daysBefore, prefs.reminderTime, offsetAt)
         if (!fireAt || fireAt.getTime() > now.getTime()) continue
 
         reminders.push({

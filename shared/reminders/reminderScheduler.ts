@@ -22,15 +22,18 @@ export type Reminder = {
 
 export const MAX_SET_TIMEOUT_MS = 2_147_483_647
 
+/** Minutes east of UTC at an instant. */
+export type TimezoneOffsetAt = (date: Date) => number
+
 export function getBrowserTimezoneOffsetMinutes(date: Date = new Date()): number {
   return -date.getTimezoneOffset()
 }
 
 function calendarDateParts(
   date: Date,
-  timezoneOffsetMinutes: number,
+  offsetAt: TimezoneOffsetAt,
 ): { year: number; month: number; day: number } {
-  const shifted = new Date(date.getTime() + timezoneOffsetMinutes * 60_000)
+  const shifted = new Date(date.getTime() + offsetAt(date) * 60_000)
   return {
     year: shifted.getUTCFullYear(),
     month: shifted.getUTCMonth(),
@@ -44,16 +47,17 @@ function utcFromLocalDateTime(
   day: number,
   hours: number,
   minutes: number,
-  timezoneOffsetMinutes: number,
+  offsetAt: TimezoneOffsetAt,
 ): Date {
-  return new Date(
-    Date.UTC(year, month, day, hours, minutes) - timezoneOffsetMinutes * 60_000,
-  )
+  const local = Date.UTC(year, month, day, hours, minutes)
+  // The offset belongs to the instant being solved for: guess it, then correct once.
+  const guess = local - offsetAt(new Date(local)) * 60_000
+  return new Date(local - offsetAt(new Date(guess)) * 60_000)
 }
 
-function startOfCalendarDay(date: Date, timezoneOffsetMinutes: number): Date {
-  const { year, month, day } = calendarDateParts(date, timezoneOffsetMinutes)
-  return utcFromLocalDateTime(year, month, day, 0, 0, timezoneOffsetMinutes)
+function startOfCalendarDay(date: Date, offsetAt: TimezoneOffsetAt): Date {
+  const { year, month, day } = calendarDateParts(date, offsetAt)
+  return utcFromLocalDateTime(year, month, day, 0, 0, offsetAt)
 }
 
 function subtractCalendarDays(
@@ -86,12 +90,12 @@ export function buildReminderFireAt(
   eventDate: Date,
   daysBefore: number,
   reminderTime: string,
-  timezoneOffsetMinutes: number = getBrowserTimezoneOffsetMinutes(),
+  offsetAt: TimezoneOffsetAt = getBrowserTimezoneOffsetMinutes,
 ): Date | null {
   const timeParts = parseReminderTime(reminderTime)
   if (!timeParts) return null
 
-  const eventDay = calendarDateParts(eventDate, timezoneOffsetMinutes)
+  const eventDay = calendarDateParts(eventDate, offsetAt)
   const reminderDay = subtractCalendarDays(
     eventDay.year,
     eventDay.month,
@@ -105,22 +109,22 @@ export function buildReminderFireAt(
     reminderDay.day,
     timeParts.hours,
     timeParts.minutes,
-    timezoneOffsetMinutes,
+    offsetAt,
   )
 }
 
 export function isReminderEligibleEvent(
   event: ReminderEvent,
   now: Date = new Date(),
-  timezoneOffsetMinutes: number = getBrowserTimezoneOffsetMinutes(now),
+  offsetAt: TimezoneOffsetAt = getBrowserTimezoneOffsetMinutes,
 ): boolean {
   if (event.status !== 'planned' && event.status !== 'confirmed') {
     return false
   }
 
   return (
-    startOfCalendarDay(event.date, timezoneOffsetMinutes).getTime() >=
-    startOfCalendarDay(now, timezoneOffsetMinutes).getTime()
+    startOfCalendarDay(event.date, offsetAt).getTime() >=
+    startOfCalendarDay(now, offsetAt).getTime()
   )
 }
 
@@ -128,7 +132,7 @@ export function computeReminders(
   events: ReminderEvent[],
   prefs: NotificationPrefs = DEFAULT_NOTIFICATION_PREFS,
   now: Date = new Date(),
-  timezoneOffsetMinutes: number = getBrowserTimezoneOffsetMinutes(now),
+  offsetAt: TimezoneOffsetAt = getBrowserTimezoneOffsetMinutes,
 ): Reminder[] {
   if (!prefs.notificationsEnabled) {
     return []
@@ -137,13 +141,13 @@ export function computeReminders(
   const reminders: Reminder[] = []
 
   for (const event of events) {
-    if (!isReminderEligibleEvent(event, now, timezoneOffsetMinutes)) continue
+    if (!isReminderEligibleEvent(event, now, offsetAt)) continue
 
     const fireAt = buildReminderFireAt(
       event.date,
       prefs.reminderDaysBefore,
       prefs.reminderTime,
-      timezoneOffsetMinutes,
+      offsetAt,
     )
     if (!fireAt) continue
 
@@ -151,7 +155,7 @@ export function computeReminders(
       id: buildReminderId(event.id, prefs.reminderDaysBefore),
       eventId: event.id,
       eventName: event.name,
-      eventDate: startOfCalendarDay(event.date, timezoneOffsetMinutes),
+      eventDate: startOfCalendarDay(event.date, offsetAt),
       fireAt,
       isMissed: fireAt.getTime() <= now.getTime(),
     })

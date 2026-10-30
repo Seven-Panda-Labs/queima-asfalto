@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { zoneOffsetMinutes } from '../raceCatalog/gates'
 import { formatReminderBody, formatReminderTitle } from './reminderBody'
 import {
   buildReminderFireAt,
@@ -10,7 +11,7 @@ import {
   type ReminderEvent,
 } from './reminderScheduler'
 
-const LISBON_SUMMER_OFFSET = 60
+const LISBON = (date: Date) => zoneOffsetMinutes('Europe/Lisbon', date)
 
 function makeEvent(overrides: Partial<ReminderEvent> & Pick<ReminderEvent, 'id' | 'date'>): ReminderEvent {
   return {
@@ -23,13 +24,21 @@ function makeEvent(overrides: Partial<ReminderEvent> & Pick<ReminderEvent, 'id' 
 describe('buildReminderFireAt', () => {
   it('fires at reminder time N days before the event in user timezone', () => {
     const eventDate = new Date(Date.UTC(2026, 5, 20, 0, 0))
-    const fireAt = buildReminderFireAt(eventDate, 1, '08:00', LISBON_SUMMER_OFFSET)
+    const fireAt = buildReminderFireAt(eventDate, 1, '08:00', LISBON)
 
     expect(fireAt?.toISOString()).toBe('2026-06-19T07:00:00.000Z')
   })
 
+  it('takes each date at its own offset when the clocks change in between', () => {
+    // 30 March 00:00 in Lisbon, summer time; two days earlier is still winter time.
+    const eventDate = new Date(Date.UTC(2026, 2, 29, 23, 0))
+    const fireAt = buildReminderFireAt(eventDate, 2, '08:00', LISBON)
+
+    expect(fireAt?.toISOString()).toBe('2026-03-28T08:00:00.000Z')
+  })
+
   it('returns null for invalid reminder time', () => {
-    expect(buildReminderFireAt(new Date(2026, 5, 20), 1, '8:00', LISBON_SUMMER_OFFSET)).toBeNull()
+    expect(buildReminderFireAt(new Date(2026, 5, 20), 1, '8:00', LISBON)).toBeNull()
   })
 })
 
@@ -40,14 +49,14 @@ describe('isReminderEligibleEvent', () => {
       isReminderEligibleEvent(
         makeEvent({ id: 'a', date: new Date(Date.UTC(2026, 5, 20)), status: 'planned' }),
         now,
-        LISBON_SUMMER_OFFSET,
+        LISBON,
       ),
     ).toBe(true)
     expect(
       isReminderEligibleEvent(
         makeEvent({ id: 'b', date: new Date(Date.UTC(2026, 5, 20)), status: 'confirmed' }),
         now,
-        LISBON_SUMMER_OFFSET,
+        LISBON,
       ),
     ).toBe(true)
   })
@@ -58,14 +67,14 @@ describe('isReminderEligibleEvent', () => {
       isReminderEligibleEvent(
         makeEvent({ id: 'a', date: new Date(Date.UTC(2026, 5, 10)), status: 'confirmed' }),
         now,
-        LISBON_SUMMER_OFFSET,
+        LISBON,
       ),
     ).toBe(false)
     expect(
       isReminderEligibleEvent(
         makeEvent({ id: 'b', date: new Date(Date.UTC(2026, 5, 25)), status: 'completed' }),
         now,
-        LISBON_SUMMER_OFFSET,
+        LISBON,
       ),
     ).toBe(false)
   })
@@ -86,7 +95,7 @@ describe('computeReminders', () => {
         deadlineRemindersEnabled: true,
       },
       now,
-      LISBON_SUMMER_OFFSET,
+      LISBON,
     )
 
     expect(reminders.map((reminder) => reminder.eventId)).toEqual(['sooner', 'later'])

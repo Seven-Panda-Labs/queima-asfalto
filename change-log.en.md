@@ -4,6 +4,14 @@
 
 ---
 
+## [1.91.0] - 2026-10-30
+
+### Fixed
+
+- **Reminders and clock changes:** they arrive on the right day and at the right time, even if the clocks change before the race.
+
+---
+
 ## [1.90.0] - 2026-10-19
 
 ### Added

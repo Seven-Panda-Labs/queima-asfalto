@@ -12,7 +12,9 @@ import {
   parseReminderLocale,
   type ReminderDeadlineEntry,
   type ReminderEvent,
+  type TimezoneOffsetAt,
 } from './shared/reminders/index.js'
+import { zoneOffsetMinutes } from './shared/raceCatalog/gates.js'
 
 /**
  * The gate's own local hour, when the organiser published one.
@@ -45,6 +47,20 @@ const messaging = getMessaging()
 
 function parseTimezoneOffsetMinutes(value: unknown): number {
   return typeof value === 'number' && Number.isFinite(value) ? value : 0
+}
+
+/** Older clients saved only a fixed offset. */
+function parseTimezoneOffsetAt(userData: FirebaseFirestore.DocumentData): TimezoneOffsetAt {
+  const offset = parseTimezoneOffsetMinutes(userData.timezoneOffsetMinutes)
+  const zone = userData.timezone
+  if (typeof zone !== 'string') return () => offset
+  try {
+    zoneOffsetMinutes(zone, new Date())
+  } catch {
+    // A zone this runtime does not know.
+    return () => offset
+  }
+  return (date) => zoneOffsetMinutes(zone, date)
 }
 
 function parseFcmTokens(value: unknown): string[] {
@@ -148,14 +164,14 @@ async function dispatchRemindersForUser(
   if (tokens.length === 0) return
 
   const locale = parseReminderLocale(userData.appLanguage)
-  const timezoneOffsetMinutes = parseTimezoneOffsetMinutes(userData.timezoneOffsetMinutes)
+  const offsetAt = parseTimezoneOffsetAt(userData)
 
   const eventsSnap = await db.collection('events').where('userId', '==', userId).get()
   const events = eventsSnap.docs
     .map((docSnap) => parseReminderEvent(docSnap.id, docSnap.data()))
     .filter((event): event is ReminderEvent => event !== null)
 
-  const reminders = computeReminders(events, prefs, now, timezoneOffsetMinutes)
+  const reminders = computeReminders(events, prefs, now, offsetAt)
 
   const entriesSnap = await db.collection('raceEntries').where('userId', '==', userId).get()
   const raceIds = new Set(
@@ -178,7 +194,7 @@ async function dispatchRemindersForUser(
     deadlineEntries,
     prefs,
     now,
-    timezoneOffsetMinutes,
+    offsetAt,
   )
 
   const currentReminderIds = new Set([

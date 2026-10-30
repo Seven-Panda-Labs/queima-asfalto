@@ -51,6 +51,7 @@ export async function registerPushNotifications(userId: string): Promise<boolean
       fcmTokens: arrayUnion(token),
       appLanguage: language,
       timezoneOffsetMinutes: getBrowserTimezoneOffsetMinutes(),
+      timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       updatedAt: serverTimestamp(),
     },
     { merge: true },
