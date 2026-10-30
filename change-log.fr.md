@@ -4,6 +4,14 @@
 
 ---
 
+## [1.91.0] - 2026-10-30
+
+### Corrigé
+
+- **Rappels et changement d'heure :** ils arrivent le bon jour à la bonne heure, même si l'heure change avant la course.
+
+---
+
 ## [1.90.0] - 2026-10-19
 
 ### Ajouté

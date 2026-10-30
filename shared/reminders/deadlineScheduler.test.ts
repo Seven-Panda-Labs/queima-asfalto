@@ -6,8 +6,9 @@ import {
   isDeadlineRelevant,
   type ReminderDeadlineEntry,
 } from './deadlineScheduler.js'
+import { zoneOffsetMinutes } from '../raceCatalog/gates.js'
 
-const LISBON_SUMMER_OFFSET = 60
+const LISBON = (date: Date) => zoneOffsetMinutes('Europe/Lisbon', date)
 const NOW = new Date(Date.UTC(2026, 8, 2, 9, 0))
 
 const prefs: NotificationPrefs = {
@@ -34,7 +35,7 @@ function compute(entries: ReminderDeadlineEntry[], overrides: Partial<Notificati
     entries,
     { ...prefs, ...overrides },
     NOW,
-    LISBON_SUMMER_OFFSET,
+    LISBON,
   )
 }
 

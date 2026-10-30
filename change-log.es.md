@@ -4,6 +4,14 @@
 
 ---
 
+## [1.91.0] - 2026-10-30
+
+### Corregido
+
+- **Recordatorios y cambio de hora:** llegan el día y a la hora correctos, aunque cambie la hora antes de la carrera.
+
+---
+
 ## [1.90.0] - 2026-10-19
 
 ### Añadido

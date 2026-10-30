@@ -26,6 +26,7 @@ export {
   partitionReminders,
   type Reminder,
   type ReminderEvent,
+  type TimezoneOffsetAt,
 } from './reminderScheduler.js'
 export {
   buildDeadlineReminderId,

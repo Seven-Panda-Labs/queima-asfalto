@@ -4,6 +4,14 @@
 
 ---
 
+## [1.91.0] - 2026-10-30
+
+### Behoben
+
+- **Erinnerungen und Zeitumstellung:** sie kommen am richtigen Tag zur richtigen Uhrzeit, auch wenn vor dem Lauf die Uhren umgestellt werden.
+
+---
+
 ## [1.90.0] - 2026-10-19
 
 ### Hinzugefügt

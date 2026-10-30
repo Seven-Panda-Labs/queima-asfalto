@@ -4,6 +4,14 @@
 
 ---
 
+## [1.91.0] - 2026-10-30
+
+### Corrigido
+
+- **Lembretes e mudança de hora:** chegam no dia e à hora certos, mesmo que a hora mude antes da prova.
+
+---
+
 ## [1.90.0] - 2026-10-19
 
 ### Adicionado
