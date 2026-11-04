@@ -5,7 +5,7 @@ import { splitExtremes } from '../../utils/trackSplits'
 
 type TrackSplitsTableProps = {
   splits: TrackSplit[]
-  /** Heart rate has a column only when the file carried it, so GPX tables stay narrow. */
+  /** Heart rate has a column only when the file carried it. */
   showHeartRate: boolean
 }
 

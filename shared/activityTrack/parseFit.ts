@@ -16,14 +16,17 @@ const CADENCE = 4
 const DISTANCE = 5
 const ENHANCED_ALTITUDE = 78
 
-/** Lap fields, which the session shares. */
+/** Lap fields. */
 const START_TIME = 2
-const SPORT = 5
 const TOTAL_ELAPSED_TIME = 7
 const TOTAL_DISTANCE = 9
 const TOTAL_CALORIES = 11
-const AVG_HEART_RATE = 16
-const MAX_HEART_RATE = 17
+/** Not the session's 16 and 17: in a lap, 17 is the average cadence. */
+const AVG_HEART_RATE = 15
+const MAX_HEART_RATE = 16
+
+/** Session field. */
+const SPORT = 5
 
 /** Positions are signed 32 bit fractions of a half turn. */
 const DEGREES_PER_SEMICIRCLE = 180 / 2 ** 31

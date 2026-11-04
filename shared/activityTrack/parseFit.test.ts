@@ -1,4 +1,7 @@
+import { readFileSync } from 'node:fs'
+import { resolve } from 'node:path'
 import { describe, expect, it } from 'vitest'
+import garminTcx from '../../assets/sample-garmin-10k.tcx?raw'
 import { FIT_TIMESTAMP_FIELD } from './fit'
 import {
   buildFitFile,
@@ -12,7 +15,7 @@ import {
   type FitRecordSpec,
 } from './fixtures/fitFile'
 import { summarizeActivity } from './metrics'
-import { parseActivityBytes } from './parseActivityFile'
+import { parseActivityBytes, parseActivityXml } from './parseActivityFile'
 
 const START = '2026-07-04T08:46:36.000Z'
 const MOVING_POINTS = 300
@@ -67,12 +70,14 @@ function fitRun(): FitRecordSpec[] {
           { number: 7, baseType: UINT32, bytes: 4 },
           { number: 9, baseType: UINT32, bytes: 4 },
           { number: 11, baseType: UINT16, bytes: 2 },
+          { number: 15, baseType: UINT8, bytes: 1 },
           { number: 16, baseType: UINT8, bytes: 1 },
+          // Average cadence, where a session keeps its maximum heart rate.
           { number: 17, baseType: UINT8, bytes: 1 },
         ],
       },
     },
-    { data: { localNumber: 1, values: [t0, 300_000, 90_000, 61, 159, 169] } },
+    { data: { localNumber: 1, values: [t0, 300_000, 90_000, 61, 159, 169, 85] } },
     {
       define: {
         localNumber: 2,
@@ -187,5 +192,18 @@ describe('FIT edge cases', () => {
     const file = buildFitFile(fitRun())
     file[0] = 200
     expect(parseActivityBytes(file)).toEqual({ ok: false, code: 'malformed_xml' })
+  })
+})
+
+describe('a Garmin FIT', () => {
+  const fit = parseActivityBytes(
+    readFileSync(resolve(import.meta.dirname, '../../assets/sample-garmin-10k.fit')),
+  )
+  const tcx = parseActivityXml(garminTcx)
+  if (!fit.ok || !tcx.ok) throw new Error('Garmin samples must parse')
+
+  it('reads the same laps as the TCX of the same race', () => {
+    expect(fit.activity.laps).toHaveLength(11)
+    expect(fit.activity.laps).toEqual(tcx.activity.laps)
   })
 })

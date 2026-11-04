@@ -2,12 +2,16 @@ import type { ParsedActivity, TrackPoint } from './types.js'
 import {
   childNumber,
   descendantsByLocalName,
+  numberByLocalName,
   parseNumericAttribute,
   parseTimestamp,
   textByLocalName,
 } from './xml.js'
 
-/** GPX carries no sensor data of its own: anything beyond position is a vendor extension. */
+/**
+ * GPX carries no sensor data of its own. Heart rate, where present, comes from
+ * Garmin's `TrackPointExtension`.
+ */
 export function parseGpxDocument(document: Document): ParsedActivity | null {
   const points: TrackPoint[] = []
 
@@ -26,6 +30,9 @@ export function parseGpxDocument(document: Document): ParsedActivity | null {
 
     const elevation = childNumber(element, 'ele')
     if (elevation !== undefined) point.elevation = elevation
+
+    const heartRate = numberByLocalName(element, 'hr')
+    if (heartRate !== undefined) point.heartRate = heartRate
 
     points.push(point)
   }

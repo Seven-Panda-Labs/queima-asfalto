@@ -4,6 +4,14 @@
 
 ---
 
+## [1.92.0] - 2026-11-04
+
+### Behoben
+
+- **GPX Dateien von Garmin:** die Herzfrequenz wird jetzt gelesen, in der Übersicht und für jeden Kilometer.
+
+---
+
 ## [1.91.0] - 2026-10-30
 
 ### Behoben
