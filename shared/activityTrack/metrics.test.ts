@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import gpxSample from '../../assets/sample-parkrun.GPX?raw'
 import tcxSample from '../../assets/sample-parkrun.TCX?raw'
+import garminGpx from '../../assets/sample-garmin-10k.gpx?raw'
 import { parseActivityXml } from './parseActivityFile.js'
 import { summarizeActivity } from './metrics.js'
 import type { ParsedActivity } from './types.js'
@@ -272,6 +273,14 @@ describe('elevation', () => {
 describe('heart rate', () => {
   it('is absent from a GPX with no extensions', () => {
     expect(gpx.heartRate).toBeUndefined()
+  })
+
+  it('reads the Garmin extension of a GPX', () => {
+    expect(summarizeActivity(parse(garminGpx)).heartRate).toEqual({
+      average: 171,
+      minimum: 97,
+      maximum: 183,
+    })
   })
 
   it('summarises the TCX readings', () => {

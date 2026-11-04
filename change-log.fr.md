@@ -4,6 +4,14 @@
 
 ---
 
+## [1.92.0] - 2026-11-04
+
+### Corrigé
+
+- **GPX de Garmin :** la fréquence cardiaque est désormais lue, dans le résumé et pour chaque kilomètre.
+
+---
+
 ## [1.91.0] - 2026-10-30
 
 ### Corrigé

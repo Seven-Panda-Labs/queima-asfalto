@@ -4,6 +4,14 @@
 
 ---
 
+## [1.92.0] - 2026-11-04
+
+### Fixed
+
+- **Garmin GPX files:** heart rate is now read, in the summary and for each kilometre.
+
+---
+
 ## [1.91.0] - 2026-10-30
 
 ### Fixed
