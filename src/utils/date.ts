@@ -22,6 +22,17 @@ export function formatDatePt(date: Date): string {
   }).format(date)
 }
 
+export function formatDateTimePt(date: Date): string {
+  if (Number.isNaN(date.getTime())) return '-'
+  return new Intl.DateTimeFormat(getIntlLocale(), {
+    day: '2-digit',
+    month: '2-digit',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  }).format(date)
+}
+
 export function parseDateInput(value: string): Date {
   const [year, month, day] = value.split('-').map(Number)
   return new Date(year, month - 1, day)

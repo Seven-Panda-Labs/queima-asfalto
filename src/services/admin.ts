@@ -9,6 +9,8 @@ export type AdminUser = {
   accountStatus: AccountStatus
   admin: boolean
   createdAt: string | null
+  /** Last sign-in or token refresh, from Firebase Auth. */
+  lastSeenAt: string | null
 }
 
 export type AdminUserList = {

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.0] - 2026-11-15
+
+### Ajouté
+
+- **Dernière visite :** le tableau des comptes de l’Admin indique quand chaque compte a utilisé l’app pour la dernière fois, avec la date et l’heure au survol.
+
+---
+
 ## [1.94.0] - 2026-11-15
 
 ### Corrigé

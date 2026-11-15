@@ -1290,6 +1290,7 @@
     "columnAccount": "Account",
     "columnStatus": "Status",
     "columnSince": "Signed up",
+    "columnLastSeen": "Last seen",
     "approve": "Approve",
     "block": "Block",
     "approved": "Account approved.",

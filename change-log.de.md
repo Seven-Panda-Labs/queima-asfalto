@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.0] - 2026-11-15
+
+### Hinzugefügt
+
+- **Zuletzt gesehen:** die Kontentabelle im Admin zeigt, wann jedes Konto die App zuletzt genutzt hat, mit Datum und Uhrzeit beim Darüberfahren.
+
+---
+
 ## [1.94.0] - 2026-11-15
 
 ### Behoben

@@ -1290,6 +1290,7 @@
     "columnAccount": "Compte",
     "columnStatus": "Statut",
     "columnSince": "Inscription",
+    "columnLastSeen": "Dernière visite",
     "approve": "Approuver",
     "block": "Bloquer",
     "approved": "Compte approuvé.",
