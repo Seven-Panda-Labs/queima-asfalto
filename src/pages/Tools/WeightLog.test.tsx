@@ -7,6 +7,7 @@ import { toDateInputValue } from '../../utils/date'
 import { WeightLog } from './WeightLog'
 
 vi.mock('../../components/Charts/WeightChart', () => ({ WeightChart: () => null }))
+vi.mock('../../hooks/useEvents', () => ({ useEvents: () => ({ allEvents: [] }) }))
 vi.mock('../../contexts/ToastContext', () => ({
   useToast: () => ({ success: vi.fn(), error: vi.fn() }),
 }))

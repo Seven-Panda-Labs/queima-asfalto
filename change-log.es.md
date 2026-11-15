@@ -4,6 +4,19 @@
 
 ---
 
+## [1.93.0] - 2026-11-15
+
+### Añadido
+
+- **Carreras en el gráfico de peso:** cada carrera completada en el periodo registrado aparece como una línea verde, con su nombre al tocarla.
+
+### Corregido
+
+- **Acciones en las listas en el móvil:** en las listas de eventos y de planificación, las acciones quedan en un solo botón (⋯) que las abre con su nombre. La carrera vuelve a caber en la fila.
+- **Páginas más anchas que la pantalla:** eventos, planificación y privacidad ya no se desplazan hacia los lados en el móvil. El pie de página gana márgenes.
+
+---
+
 ## [1.92.0] - 2026-11-04
 
 ### Corregido

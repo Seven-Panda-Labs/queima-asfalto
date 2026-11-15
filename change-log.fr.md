@@ -4,6 +4,19 @@
 
 ---
 
+## [1.93.0] - 2026-11-15
+
+### Ajouté
+
+- **Courses sur le graphique du poids :** chaque course terminée pendant la période enregistrée apparaît comme une ligne verte, avec son nom au toucher.
+
+### Corrigé
+
+- **Actions des listes sur mobile :** dans les listes d’événements et de planification, les actions sont regroupées sous un seul bouton (⋯) qui les ouvre avec leur nom. La course tient de nouveau sur la ligne.
+- **Pages plus larges que l’écran :** les événements, la planification et la confidentialité ne glissent plus sur le côté sur mobile. Le pied de page gagne des marges.
+
+---
+
 ## [1.92.0] - 2026-11-04
 
 ### Corrigé

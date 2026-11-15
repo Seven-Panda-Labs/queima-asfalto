@@ -9,6 +9,7 @@ import {
   TrashIcon,
 } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { RowActions, type RowAction } from '../../components/RowActions/RowActions'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { ScheduleRaceDialog } from '../../components/ScheduleRaceDialog/ScheduleRaceDialog'
@@ -433,58 +434,28 @@ export function Planning() {
             catalog={markedEntries}
             season={isSharedView ? new Map() : season}
             anchorRaceIds={isSharedView ? new Set() : anchorIds}
-            actions={(item) => (
-              <>
-                {wishSite(item) ? (
-                  <a
-                    href={wishSite(item)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={t('common.officialSite')}
-                    title={t('common.officialSite')}
-                    className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                  >
-                    <ExternalLinkIcon />
-                  </a>
-                ) : null}
-                {canWrite ? (
-                  <>
-                    <Link
-                      to={
-                        activeOwnerId
+            actions={(item) => {
+              const site = wishSite(item)
+              const actions: RowAction[] = [
+                ...(site ? [{ label: t('common.officialSite'), icon: <ExternalLinkIcon />, href: site }] : []),
+                ...(canWrite
+                  ? [
+                      {
+                        label: t('common.edit'),
+                        icon: <PencilIcon />,
+                        to: activeOwnerId
                           ? `/planeamento/${item.id}/editar?owner=${activeOwnerId}`
-                          : `/planeamento/${item.id}/editar`
-                      }
-                      aria-label={t('common.edit')}
-                      title={t('common.edit')}
-                      className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                    >
-                      <PencilIcon />
-                    </Link>
-                    <button
-                      type="button"
-                      onClick={() => setItemToDelete(item)}
-                      aria-label={t('common.delete')}
-                      title={t('common.delete')}
-                      className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
-                    >
-                      <TrashIcon />
-                    </button>
-                  </>
-                ) : null}
-                {!isSharedView ? (
-                  <button
-                    type="button"
-                    onClick={() => void handleSchedule(item)}
-                    aria-label={t('common.schedule')}
-                    title={t('common.schedule')}
-                    className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                  >
-                    <CalendarPlusIcon />
-                  </button>
-                ) : null}
-              </>
-            )}
+                          : `/planeamento/${item.id}/editar`,
+                      },
+                      { label: t('common.delete'), icon: <TrashIcon />, danger: true, onClick: () => setItemToDelete(item) },
+                    ]
+                  : []),
+                ...(!isSharedView
+                  ? [{ label: t('common.schedule'), icon: <CalendarPlusIcon />, onClick: () => void handleSchedule(item) }]
+                  : []),
+              ]
+              return <RowActions title={wishSubject(item, isSharedView ? [] : races).name} actions={actions} />
+            }}
           />
         )}
           </>

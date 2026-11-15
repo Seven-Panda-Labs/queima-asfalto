@@ -4,6 +4,19 @@
 
 ---
 
+## [1.93.0] - 2026-11-15
+
+### Hinzugefügt
+
+- **Rennen im Gewichtsdiagramm:** jedes im erfassten Zeitraum abgeschlossene Rennen erscheint als grüne Linie, mit Namen beim Antippen.
+
+### Behoben
+
+- **Aktionen in Listen auf dem Handy:** in den Event- und Planungslisten liegen die Aktionen hinter einer Schaltfläche (⋯), die sie mit Namen öffnet. Das Rennen passt wieder in die Zeile.
+- **Seiten breiter als der Bildschirm:** Events, Planung und Datenschutz lassen sich auf dem Handy nicht mehr seitlich verschieben. Die Fußzeile bekommt Ränder.
+
+---
+
 ## [1.92.0] - 2026-11-04
 
 ### Behoben

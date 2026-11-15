@@ -76,6 +76,17 @@ export function CalendarPlusIcon() {
   )
 }
 
+/** Opens a row's actions where there is no room to show them. */
+export function MoreIcon() {
+  return (
+    <svg {...ICON_PROPS}>
+      <circle cx="5" cy="12" r="1" />
+      <circle cx="12" cy="12" r="1" />
+      <circle cx="19" cy="12" r="1" />
+    </svg>
+  )
+}
+
 /** Abrir o site da prova, noutro separador. */
 export function ExternalLinkIcon() {
   return (

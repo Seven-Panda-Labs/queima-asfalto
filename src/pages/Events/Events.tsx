@@ -18,6 +18,7 @@ import {
   TrashIcon,
 } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
+import { RowActions, type RowAction } from '../../components/RowActions/RowActions'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { useAuth } from '../../contexts/AuthContext'
@@ -64,7 +65,7 @@ const NO_EVENTS: Event[] = []
  */
 function actionsCellClass(isRecord: boolean): string {
   return [
-    'sticky end-0 bg-surface px-4 py-3',
+    'sticky end-0 bg-surface px-2 py-3 sm:px-4',
     isRecord ? 'before:pointer-events-none before:absolute before:inset-0 before:bg-accent/5' : '',
   ].join(' ')
 }
@@ -157,6 +158,27 @@ export function Events() {
     }
     return new Date()
   }, [yearFilter, events])
+
+  function eventActions(event: Event): RowAction[] {
+    const site = eventSites.get(event.id)
+    const siteAction: RowAction[] = site
+      ? [{ label: t('common.officialSite'), icon: <ExternalLinkIcon />, href: site }]
+      : []
+    if (isSharedView) return siteAction
+
+    const state = eventLinkState(returnTo).state
+    return [
+      { label: t('events.editEvent'), icon: <PencilIcon />, to: `/eventos/${event.id}/editar`, state },
+      ...siteAction,
+      ...(event.status === 'confirmed'
+        ? [{ label: t('events.registerResults'), icon: <StopwatchActionIcon />, to: `/eventos/${event.id}?resultado=editar`, state }]
+        : []),
+      ...(canRecoverEventToBucketList(event.status)
+        ? [{ label: t('events.recoverBucket'), icon: <BucketIcon />, onClick: () => setEventToRecover(event) }]
+        : []),
+      { label: t('events.deleteEvent'), icon: <TrashIcon />, danger: true, onClick: () => setEventToDelete(event) },
+    ]
+  }
 
   async function handleConfirmRecover() {
     if (!eventToRecover) return
@@ -296,7 +318,9 @@ export function Events() {
             </Suspense>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-lg border border-border bg-surface">
+          // Relative, so the screen-reader text in a cell is placed inside the scroll box:
+          // otherwise it sits off a phone's screen and widens the page.
+          <div className="relative overflow-x-auto rounded-lg border border-border bg-surface">
             <table className="min-w-full text-start text-sm">
               <thead className="border-b border-border bg-background text-muted">
                 <tr>
@@ -308,12 +332,11 @@ export function Events() {
                   ) : null}
                   <th className="px-4 py-3 font-semibold">{t('common.status')}</th>
                   {/* Pinned, so the actions stay in reach when a narrow screen scrolls. */}
-                  <th className="sticky end-0 bg-background px-4 py-3 font-semibold">
-                    {isSharedView ? (
-                      <span className="sr-only">{t('common.actions')}</span>
-                    ) : (
-                      t('common.actions')
-                    )}
+                  <th className="sticky end-0 bg-background px-2 py-3 font-semibold sm:px-4">
+                    {/* On a phone the heading would be wider than the one button below it. */}
+                    <span className={isSharedView ? 'sr-only' : 'sr-only sm:not-sr-only'}>
+                      {t('common.actions')}
+                    </span>
                   </th>
                 </tr>
               </thead>
@@ -377,82 +400,12 @@ export function Events() {
                         <StatusBadge status={event.status} />
                       )}
                     </td>
-                    {!isSharedView ? (
                     <td className={actionsCellClass(isRecord)}>
-                      <div className="flex flex-nowrap gap-1">
-                        <Link
-                          to={`/eventos/${event.id}/editar`}
-                          state={eventLinkState(returnTo).state}
-                          title={t('events.editEvent')}
-                          aria-label={t('events.editEvent')}
-                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                        >
-                          <PencilIcon />
-                        </Link>
-                        {eventSites.has(event.id) ? (
-                          <a
-                            href={eventSites.get(event.id)}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            title={t('common.officialSite')}
-                            aria-label={t('common.officialSite')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <ExternalLinkIcon />
-                          </a>
-                        ) : null}
-                        {event.status === 'confirmed' ? (
-                          <Link
-                            to={`/eventos/${event.id}?resultado=editar`}
-                            state={eventLinkState(returnTo).state}
-                            title={t('events.registerResults')}
-                          aria-label={t('events.registerResults')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <StopwatchActionIcon />
-                          </Link>
-                        ) : null}
-                        {canRecoverEventToBucketList(event.status) ? (
-                          <button
-                            type="button"
-                            onClick={() => setEventToRecover(event)}
-                            title={t('events.recoverBucket')}
-                          aria-label={t('events.recoverBucket')}
-                            className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                          >
-                            <BucketIcon />
-                          </button>
-                        ) : null}
-                        <button
-                          type="button"
-                          onClick={() => setEventToDelete(event)}
-                          title={t('events.deleteEvent')}
-                          aria-label={t('events.deleteEvent')}
-                          className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-danger"
-                        >
-                          <TrashIcon />
-                        </button>
-                      </div>
+                      <RowActions
+                        title={event.name}
+                        actions={eventActions(event)}
+                      />
                     </td>
-                    ) : null}
-                    {isSharedView ? (
-                      <td className={actionsCellClass(isRecord)}>
-                        <div className="flex flex-nowrap gap-1">
-                          {eventSites.has(event.id) ? (
-                            <a
-                              href={eventSites.get(event.id)}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              title={t('common.officialSite')}
-                              aria-label={t('common.officialSite')}
-                              className="rounded-md p-1.5 text-muted transition-colors hover:bg-background hover:text-primary"
-                            >
-                              <ExternalLinkIcon />
-                            </a>
-                          ) : null}
-                        </div>
-                      </td>
-                    ) : null}
                   </tr>
                   )
                 })}
