@@ -4,6 +4,15 @@
 
 ---
 
+## [1.94.0] - 2026-11-15
+
+### Corregido
+
+- **Deseos:** marcar una carrera del catálogo con el corazón, o devolver un evento a la bucket list, siempre daba error. Vuelve a funcionar, igual que guardar la nota de un deseo.
+- **Resultados de Davengo:** el enlace de la edición basta para encontrar tu resultado, sea cual sea la distancia que corriste. También sirve un enlace a otra distancia de la misma edición.
+
+---
+
 ## [1.93.0] - 2026-11-15
 
 ### Añadido

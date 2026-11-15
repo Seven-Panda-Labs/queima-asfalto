@@ -4,6 +4,15 @@
 
 ---
 
+## [1.94.0] - 2026-11-15
+
+### Corrigé
+
+- **Souhaits :** marquer une course du catalogue avec le cœur, ou remettre un événement dans la bucket list, échouait toujours. Cela fonctionne de nouveau, tout comme l’enregistrement de la note d’un souhait.
+- **Résultats Davengo :** le lien de l’édition suffit pour trouver ton résultat, quelle que soit la distance courue. Un lien vers une autre distance de la même édition fonctionne aussi.
+
+---
+
 ## [1.93.0] - 2026-11-15
 
 ### Ajouté

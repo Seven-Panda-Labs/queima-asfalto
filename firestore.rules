@@ -240,19 +240,32 @@ service cloud.firestore {
         || ('eventType' in data && validEventType(data.eventType));
     }
 
-    function validBucketListWrite(data) {
-      return data.keys().hasAll(['userId', 'name', 'location', 'realDistance'])
-        && isOwner(data.userId)
-        && isApprovedUser(data.userId)
+    /**
+     * A wish with no race to point at names the race itself: a watched parkrun,
+     * or one written before a wish became a marker on a race.
+     */
+    function validNamedWish(data) {
+      return data.keys().hasAll(['name', 'location', 'realDistance'])
         && validBucketListDisciplines(data)
         && data.realDistance is number
         && data.realDistance > 0
         && data.name is string
         && data.name.size() > 0
-        && data.location is string
+        && data.location is string;
+    }
+
+    function validWish(data) {
+      return (('raceId' in data && data.raceId is string) || validNamedWish(data))
         && validOptionalGeocodeFields(data)
         && validOptionalRaceId(data)
         && validOptionalSeasonFields(data);
+    }
+
+    function validBucketListWrite(data) {
+      return 'userId' in data
+        && isOwner(data.userId)
+        && isApprovedUser(data.userId)
+        && validWish(data);
     }
 
     function validBucketListUpdate() {
@@ -260,19 +273,11 @@ service cloud.firestore {
       return resource.data.userId == request.auth.uid
         && isApprovedUser(request.auth.uid)
         && data.userId == resource.data.userId
-        && data.name is string
-        && data.name.size() > 0
-        && data.location is string
-        && data.realDistance is number
-        && data.realDistance > 0
-        && validBucketListDisciplines(data)
-        && validOptionalGeocodeFields(data)
+        && validWish(data)
         && (!('targetMonth' in data) || data.targetMonth == null || data.targetMonth is string)
         && (!('link' in data) || data.link == null || data.link is string)
         && (!('emoji' in data) || data.emoji == null || data.emoji is string)
-        && (!('notes' in data) || data.notes == null || data.notes is string)
-        && validOptionalRaceId(data)
-        && validOptionalSeasonFields(data);
+        && (!('notes' in data) || data.notes == null || data.notes is string);
     }
 
     function validEntryMethod(method) {

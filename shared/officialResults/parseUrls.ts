@@ -18,8 +18,10 @@ import { parseRaceResultEmbedHash } from './raceresult.js'
 
 export type DavengoUrlParts = {
   eventSlug: string
-  category: string
+  /** The distance the link names. A link to the edition names none. */
+  category: string | null
   listUrl: string
+  overviewUrl: string
   pageUrl: string
 }
 
@@ -75,17 +77,20 @@ export function parseDavengoUrl(url: string): DavengoUrlParts | null {
     const parsed = new URL(url)
     if (!parsed.hostname.toLowerCase().includes('davengo.com')) return null
 
-    const match = /\/event\/result\/([^/]+)\/search\/?$/i.exec(parsed.pathname)
+    const match = /\/event\/result\/([^/]+)(?:\/search)?\/?$/i.exec(parsed.pathname)
     if (!match) return null
 
     const eventSlug = match[1]!
-    const category = parsed.searchParams.get('category')?.trim()
-    if (!category) return null
+    const category = parsed.searchParams.get('category')?.trim() || null
+    const searchUrl = `${parsed.origin}/event/result/${eventSlug}/search`
 
-    const pageUrl = parsed.toString()
-    const listUrl = `${parsed.origin}/event/result/${eventSlug}/search/list`
-
-    return { eventSlug, category, listUrl, pageUrl }
+    return {
+      eventSlug,
+      category,
+      listUrl: `${searchUrl}/list`,
+      overviewUrl: `${searchUrl}/overview`,
+      pageUrl: parsed.toString(),
+    }
   } catch {
     return null
   }
