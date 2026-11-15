@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.1] - 2026-11-15
+
+### Corregido
+
+- **Borrar una cuenta en Admin:** si los archivos de la cuenta no se pueden borrar, el aviso dice que pueden quedar, en lugar de contarlos como borrados.
+
+---
+
 ## [1.95.0] - 2026-11-15
 
 ### Añadido

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.1] - 2026-11-15
+
+### Corrigido
+
+- **Apagar uma conta no Admin:** se os ficheiros da conta não se conseguem apagar, o aviso diz que podem ter ficado, em vez de os contar como apagados.
+
+---
+
 ## [1.95.0] - 2026-11-15
 
 ### Adicionado

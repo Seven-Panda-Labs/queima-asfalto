@@ -32,7 +32,7 @@ export type DeleteAccountReport = {
   anonymized: Record<string, number>
   storageFiles: number
   authUserDeleted: boolean
-  /** The account had media, and the bucket held none of it. See the callable. */
+  /** The account had media, and none of it was deleted. See the callable. */
   storageUnreachable: boolean
 }
 
