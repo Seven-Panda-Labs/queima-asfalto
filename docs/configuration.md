@@ -44,7 +44,7 @@ Copy [`functions/.env.example`](../functions/.env.example) to `functions/.env`. 
 | Variable | Description |
 |----------|-------------|
 | `FUNCTIONS_REGION` | Default `europe-west1` |
-| `FUNCTIONS_SERVICE_ACCOUNT` | Runtime account for callable, blocking and HTTP functions (not scheduled). Default: project runtime account |
+| `FUNCTIONS_SERVICE_ACCOUNT` | Runtime account for callable, blocking and HTTP functions (not scheduled). Default: project runtime account. Roles: [`console-restrictions.md`](./console-restrictions.md#4-functions-service-account) |
 | `SCHEDULER_TIMEZONE` | Time zone of all scheduled functions (default `Europe/Lisbon`) |
 | `STORAGE_BUCKET` | Bucket for account deletion and track recompute. Set it if the project default differs from `VITE_FIREBASE_STORAGE_BUCKET` (e.g. `appspot.com` vs `firebasestorage.app`) |
 | `DISCOVERY_SOURCES` | Comma-separated sources for `harvestRaceCatalog`, or `all`. Unset: the harvest fetches nothing. See [`discovery-sources.md`](./discovery-sources.md) |
