@@ -27,6 +27,12 @@ export function MarkdownDocument({ language, markdown, fallback, components }: M
                 {children}
               </a>
             ),
+            // Scrolls on its own, so a wide table does not widen the page on a phone.
+            table: ({ children }) => (
+              <div className="overflow-x-auto">
+                <table>{children}</table>
+              </div>
+            ),
             ...components,
           }}
         >

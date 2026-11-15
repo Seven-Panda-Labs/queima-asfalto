@@ -4,6 +4,19 @@
 
 ---
 
+## [1.93.0] - 2026-11-15
+
+### Added
+
+- **Races on the weight chart:** each race completed in the logged period shows as a green line, with its name on tap.
+
+### Fixed
+
+- **Row actions on phones:** in the events and planning lists, the actions sit behind one button (⋯) that opens them with their names. The race fits on the row again.
+- **Pages wider than the screen:** events, planning and privacy no longer slide sideways on a phone. The footer gets margins.
+
+---
+
 ## [1.92.0] - 2026-11-04
 
 ### Fixed

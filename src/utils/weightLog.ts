@@ -1,4 +1,6 @@
+import type { Event } from '../types/Event'
 import type { WeightEntry } from '../types/WeightEntry'
+import { toDateInputValue } from './date'
 
 /** Mirrors the limits in firestore.rules. */
 export const MIN_WEIGHT_KG = 20
@@ -70,4 +72,23 @@ export function weighIns<T extends Pick<WeightEntry, 'date' | 'weightKg'>>(entri
 
 function roundKg(kg: number): number {
   return Math.round(kg * 10) / 10
+}
+
+export type WeightRace = { date: string; name: string; emoji?: string }
+
+/** The races run between the first and the last day logged; one outside them would only stretch the chart. */
+export function racesWithin(
+  events: readonly Pick<Event, 'date' | 'status' | 'name' | 'emoji'>[],
+  entries: readonly Pick<WeightEntry, 'date'>[],
+): WeightRace[] {
+  const days = entries.map((entry) => entry.date).sort()
+  const first = days[0]
+  const last = days.at(-1)
+  if (!first || !last) return []
+  return events.flatMap((event) => {
+    const date = toDateInputValue(event.date)
+    return event.status === 'completed' && date >= first && date <= last
+      ? [{ date, name: event.name, emoji: event.emoji }]
+      : []
+  })
 }

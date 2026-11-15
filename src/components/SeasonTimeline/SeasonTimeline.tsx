@@ -80,7 +80,7 @@ function Race({ race, language }: { race: SeasonRace; language: string }) {
   return (
     <span
       title={race.inSeason ? undefined : t('planning.otherSeason')}
-      className={`inline-flex shrink-0 items-baseline gap-1 rounded-md border px-2 py-1 ${
+      className={`inline-flex min-w-0 flex-wrap items-baseline gap-x-1 rounded-md border px-2 py-1 ${
         race.isAnchor ? 'border-accent bg-accent/10' : 'border-border bg-surface'
       } ${race.inSeason ? '' : 'opacity-50'}`}
     >
@@ -170,7 +170,7 @@ export function SeasonTimeline({
                 <Gap before={null} after={null} year={year} label={t('planning.gapAnywhere')} />
               ) : null}
               {races.map((race, position) => (
-                <span key={race.id} className="flex items-center">
+                <span key={race.id} className="flex min-w-0 items-center">
                   <Gap
                     before={races[position - 1] ?? null}
                     after={race}

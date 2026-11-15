@@ -89,7 +89,9 @@ export function Layout() {
   usePushRegistration()
 
   return (
-    <div className="flex min-h-screen flex-col bg-background">
+    // One element wider than a phone would let the whole app pan sideways.
+    // Clip, unlike hidden, keeps sticky working.
+    <div className="flex min-h-screen flex-col overflow-x-clip bg-background">
       <I18nSync />
       <GlobalEventTransitions />
       <OfflineIndicator />
@@ -162,7 +164,7 @@ export function Layout() {
         <Outlet />
       </main>
 
-      <footer className="border-t border-border py-4 text-center text-sm text-muted">
+      <footer className="border-t border-border px-4 py-4 text-center text-sm text-muted">
         <p>
           {t('footer.appName')} ·{' '}
           <Link

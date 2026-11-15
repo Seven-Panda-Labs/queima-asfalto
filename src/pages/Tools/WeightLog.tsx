@@ -6,9 +6,10 @@ import { DatePicker } from '../../components/DatePicker/DatePicker'
 import { TrashIcon } from '../../components/icons/actionIcons'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { useToast } from '../../contexts/ToastContext'
+import { useEvents } from '../../hooks/useEvents'
 import { useWeightEntries } from '../../hooks/useWeightEntries'
 import { formatDatePt, parseDateInput, toDateInputValue } from '../../utils/date'
-import { MAX_NOTE_LENGTH, parseNote, parseWeightKg, summarizeWeights } from '../../utils/weightLog'
+import { MAX_NOTE_LENGTH, parseNote, parseWeightKg, racesWithin, summarizeWeights } from '../../utils/weightLog'
 import { TOOLS_PATH } from './Tools'
 
 const RECENT_ENTRIES = 10
@@ -30,6 +31,7 @@ export function WeightLog() {
   const { t, i18n } = useTranslation()
   const toast = useToast()
   const { entries, loading, error, saveDay, removeDay } = useWeightEntries()
+  const { allEvents } = useEvents()
   const [weight, setWeight] = useState('')
   const [note, setNote] = useState('')
   const [day, setDay] = useState(() => toDateInputValue(new Date()))
@@ -166,7 +168,7 @@ export function WeightLog() {
                 ))}
               </dl>
 
-              <WeightChart entries={entries} />
+              <WeightChart entries={entries} races={racesWithin(allEvents, entries)} />
             </>
           ) : null}
 

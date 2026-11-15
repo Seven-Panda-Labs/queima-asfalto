@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseNote, parseWeightKg, summarizeWeights } from './weightLog'
+import { parseNote, parseWeightKg, racesWithin, summarizeWeights } from './weightLog'
 
 describe('parseWeightKg', () => {
   it('reads a dot or a comma, to one decimal', () => {
@@ -66,5 +66,31 @@ describe('summarizeWeights', () => {
     ])
     expect(summary?.last7DaysKg).toBeNull()
     expect(summary?.last30DaysKg).toBe(1.1)
+  })
+})
+
+describe('racesWithin', () => {
+  const race = (day: string, status: 'completed' | 'confirmed' | 'missed', name = day) => ({
+    date: new Date(`${day}T12:00:00`),
+    status,
+    name,
+  })
+
+  it('keeps the races run between the first and the last day logged, ends included', () => {
+    const races = racesWithin(
+      [
+        race('2026-08-31', 'completed'),
+        race('2026-09-01', 'completed', 'Corrida do Zé'),
+        race('2026-09-14', 'missed'),
+        race('2026-09-27', 'completed'),
+        race('2026-09-28', 'completed'),
+        race('2026-10-04', 'confirmed'),
+      ],
+      [{ date: '2026-09-20' }, { date: '2026-09-01' }, { date: '2026-09-27' }],
+    )
+    expect(races).toEqual([
+      { date: '2026-09-01', name: 'Corrida do Zé', emoji: undefined },
+      { date: '2026-09-27', name: '2026-09-27', emoji: undefined },
+    ])
   })
 })

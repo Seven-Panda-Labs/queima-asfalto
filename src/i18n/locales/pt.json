@@ -1720,6 +1720,7 @@
       "weightKg": "Peso (kg)",
       "day": "Dia",
       "note": "Nota",
+      "race": "Prova",
       "noteOptional": "Nota (opcional)",
       "notePlaceholder": "Início do treino, pausa, dieta…",
       "kg": "{{weight}} kg",

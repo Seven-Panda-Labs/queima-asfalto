@@ -4,6 +4,19 @@
 
 ---
 
+## [1.93.0] - 2026-11-15
+
+### Adicionado
+
+- **Provas no gráfico de peso:** cada prova concluída no período registado aparece como uma linha verde, com o nome ao tocar.
+
+### Corrigido
+
+- **Ações nas listas em telemóvel:** nas listas de eventos e de planeamento, as ações ficam num só botão (⋯) que as abre com nome. A prova volta a caber na linha.
+- **Páginas mais largas que o ecrã:** os eventos, o planeamento e a privacidade deixam de deslizar para o lado no telemóvel. O rodapé ganha margens.
+
+---
+
 ## [1.92.0] - 2026-11-04
 
 ### Corrigido
