@@ -4,6 +4,15 @@
 
 ---
 
+## [1.94.0] - 2026-11-15
+
+### Fixed
+
+- **Wishes:** marking a catalog race with the heart, or returning an event to the bucket list, always failed. It works again, and so does saving a wish's note.
+- **Davengo results:** the edition's link is enough to find your result, whichever distance you ran. A link to another distance of the same edition works too.
+
+---
+
 ## [1.93.0] - 2026-11-15
 
 ### Added

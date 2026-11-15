@@ -4,6 +4,15 @@
 
 ---
 
+## [1.94.0] - 2026-11-15
+
+### Behoben
+
+- **Wünsche:** ein Rennen aus dem Katalog mit dem Herz zu markieren oder ein Event zurück auf die Bucket List zu setzen, schlug immer fehl. Das geht wieder, ebenso das Speichern der Notiz zu einem Wunsch.
+- **Davengo-Ergebnisse:** der Link zur Ausgabe reicht, um dein Ergebnis zu finden, egal welche Distanz du gelaufen bist. Ein Link zu einer anderen Distanz derselben Ausgabe funktioniert auch.
+
+---
+
 ## [1.93.0] - 2026-11-15
 
 ### Hinzugefügt

@@ -48,31 +48,40 @@ function rowToCandidate(
   }
 }
 
-async function fetchDavengoPage(
-  parts: DavengoUrlParts,
-  offset: number,
-  term: string | null,
-): Promise<DavengoResponse> {
-  const response = await fetch(parts.listUrl, {
+type DavengoOverview = {
+  results?: Record<string, number>
+}
+
+async function postDavengo<T>(url: string, parts: DavengoUrlParts, body: object): Promise<T> {
+  const response = await fetch(url, {
     method: 'POST',
     headers: {
       accept: 'application/json, text/plain, */*',
       'content-type': 'application/json',
       Referer: parts.pageUrl,
     },
-    body: JSON.stringify({
-      type: 'simple',
-      term,
-      category: parts.category,
-      offset,
-    }),
+    body: JSON.stringify(body),
   })
 
   if (!response.ok) {
     throw new Error(`Davengo API error: ${response.status}`)
   }
 
-  const data = (await response.json()) as DavengoResponse & { status?: string; message?: string }
+  return (await response.json()) as T
+}
+
+async function fetchDavengoPage(
+  parts: DavengoUrlParts,
+  category: string,
+  offset: number,
+  term: string | null,
+): Promise<DavengoResponse> {
+  const data = await postDavengo<DavengoResponse>(parts.listUrl, parts, {
+    type: 'simple',
+    term,
+    category,
+    offset,
+  })
   if (!Array.isArray(data.results)) {
     throw new Error('Davengo API returned an unexpected response.')
   }
@@ -80,16 +89,30 @@ async function fetchDavengoPage(
   return data
 }
 
+/**
+ * The distances where the term has hits, the link's own first.
+ *
+ * Results are kept per distance, and a link to one distance may be another
+ * runner's from the same edition.
+ */
+async function davengoCategories(parts: DavengoUrlParts, term: string): Promise<string[]> {
+  const data = await postDavengo<DavengoOverview>(parts.overviewUrl, parts, { type: 'simple', term })
+  return Object.keys(data.results ?? {}).sort(
+    (a, b) => Number(b === parts.category) - Number(a === parts.category),
+  )
+}
+
 async function findDavengoCandidate(
   parts: DavengoUrlParts,
+  category: string,
+  term: string,
   profile: UserResultsProfile,
 ): Promise<OfficialResultCandidate | null> {
-  const term = buildDavengoSearchTerm(profile)
   let offset = 0
   let pages = 0
 
   while (pages < DAVENGO_MAX_PAGES) {
-    const data = await fetchDavengoPage(parts, offset, term)
+    const data = await fetchDavengoPage(parts, category, offset, term)
     const results = data.results ?? []
 
     for (const row of results) {
@@ -107,13 +130,16 @@ async function findDavengoCandidate(
   return null
 }
 
-async function fetchDavengoTotalParticipants(parts: DavengoUrlParts): Promise<number | undefined> {
+async function fetchDavengoTotalParticipants(
+  parts: DavengoUrlParts,
+  category: string,
+): Promise<number | undefined> {
   let offset = 0
   let pages = 0
   let totalParticipants: number | undefined
 
   while (pages < DAVENGO_MAX_PAGES) {
-    const data = await fetchDavengoPage(parts, offset, null)
+    const data = await fetchDavengoPage(parts, category, offset, null)
     const results = data.results ?? []
 
     const nextOffset = data.navigation?.nextOffset
@@ -138,13 +164,19 @@ export async function lookupDavengo(
   const parts = parseDavengoUrl(resultsUrl)
   if (!parts) return []
 
-  const candidate = await findDavengoCandidate(parts, profile)
-  if (!candidate) return []
+  const term = buildDavengoSearchTerm(profile)
+  if (!term) return []
 
-  const totalParticipants = await fetchDavengoTotalParticipants(parts)
-  if (totalParticipants) {
-    candidate.totalParticipants = totalParticipants
+  for (const category of await davengoCategories(parts, term)) {
+    const candidate = await findDavengoCandidate(parts, category, term, profile)
+    if (!candidate) continue
+
+    const totalParticipants = await fetchDavengoTotalParticipants(parts, category)
+    if (totalParticipants) {
+      candidate.totalParticipants = totalParticipants
+    }
+    return [candidate]
   }
 
-  return [candidate]
+  return []
 }

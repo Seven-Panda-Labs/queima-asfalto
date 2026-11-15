@@ -62,7 +62,16 @@ describe('parseDavengoUrl', () => {
       eventSlug: 'great-10k-2025',
       category: '10 km Lauf',
       listUrl: 'https://www.davengo.com/event/result/great-10k-2025/search/list',
+      overviewUrl: 'https://www.davengo.com/event/result/great-10k-2025/search/overview',
       pageUrl: 'https://www.davengo.com/event/result/great-10k-2025/search?category=10%20km%20Lauf',
+    })
+  })
+
+  it('reads a link to the whole edition, which names no distance', () => {
+    expect(parseDavengoUrl('https://www.davengo.com/event/result/great-10k-2025')).toMatchObject({
+      eventSlug: 'great-10k-2025',
+      category: null,
+      overviewUrl: 'https://www.davengo.com/event/result/great-10k-2025/search/overview',
     })
   })
 })

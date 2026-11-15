@@ -721,6 +721,28 @@ describe('firestore.rules', () => {
       )
     })
 
+    it('accepts a wish that only marks a race, and an edit to its note', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+      const wish = db.collection('bucketListItems').doc('item-marker')
+
+      // What createBucketListItem writes for a race from the catalog.
+      await assertSucceeds(wish.set({ userId, raceId: 'race-1', notes: null, recurring: false }))
+      await assertSucceeds(wish.update({ notes: 'Para o outono' }))
+    })
+
+    it('rejects a wish with neither a race nor a name', async () => {
+      const userId = 'user-alice'
+      const db = testEnv.authenticatedContext(userId).firestore()
+
+      await assertFails(
+        db
+          .collection('bucketListItems')
+          .doc('item-empty')
+          .set({ userId, notes: null, recurring: false }),
+      )
+    })
+
     it('allows owners to create bucket list items', async () => {
       const userId = 'user-alice'
       const db = testEnv.authenticatedContext(userId).firestore()
