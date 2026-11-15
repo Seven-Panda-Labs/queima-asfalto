@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.1] - 2026-11-15
+
+### Fixed
+
+- **Deleting an account in Admin:** when the account's files cannot be deleted, the warning says they may remain, instead of counting them as deleted.
+
+---
+
 ## [1.95.0] - 2026-11-15
 
 ### Added

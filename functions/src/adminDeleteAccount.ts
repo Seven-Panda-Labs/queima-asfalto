@@ -59,13 +59,14 @@ export type DeleteAccountReport = {
   storageFiles: number
   authUserDeleted: boolean
   /**
-   * True when the account had media or track documents and the bucket held no
-   * files for it.
+   * True when the account had media or track documents and no files were deleted
+   * for it.
    *
-   * Deleting nothing must not look like deleting everything. The usual cause is a
+   * Deleting nothing must not look like deleting everything. One cause is a
    * bucket mismatch: `getStorage().bucket()` resolves the project default, which
    * is not necessarily the bucket the app was configured to write to, and reading
-   * the wrong bucket succeeds with an empty list rather than failing.
+   * the wrong bucket succeeds with an empty list rather than failing. The other is
+   * a runtime account that can list the bucket but not delete from it.
    */
   storageUnreachable: boolean
 }
@@ -201,23 +202,24 @@ export const adminDeleteAccount = onCall(callableOptions, async (request) => {
     const name = storageBucketName()
     const bucket = name ? getStorage().bucket(name) : getStorage().bucket()
     const [files] = await bucket.getFiles({ prefix: `users/${uid}/` })
-    storageFiles = files.length
     storageRead = true
     await bucket.deleteFiles({ prefix: `users/${uid}/`, force: true })
+    // Counted after the delete: with `force`, `deleteFiles` tries every file and rejects at the end.
+    storageFiles = files.length
   } catch (error) {
     console.error('Failed to delete storage objects for account:', error)
   }
 
   // Media and track documents are the receipts for the files. If they existed and
-  // the bucket held nothing, the files are somewhere this function cannot see, and
-  // saying so is the whole point: an account whose photos survive its deletion is
-  // the failure that must never be silent.
+  // nothing was deleted, the files are still somewhere, and saying so is the whole
+  // point: an account whose photos survive its deletion is the failure that must
+  // never be silent.
   const expectedFiles = (documents['events/media'] ?? 0) + (documents['events/track'] ?? 0)
   const storageUnreachable = expectedFiles > 0 && storageFiles === 0
   if (storageUnreachable) {
     console.error(
-      `Account ${uid} had ${expectedFiles} media or track documents and the bucket held no files. ` +
-        `Check STORAGE_BUCKET: read ${storageRead ? 'succeeded' : 'failed'}.`,
+      `Account ${uid} had ${expectedFiles} media or track documents and no files were deleted. ` +
+        `Check STORAGE_BUCKET and delete access to it: read ${storageRead ? 'succeeded' : 'failed'}.`,
     )
   }
 

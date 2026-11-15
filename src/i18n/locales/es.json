@@ -1311,7 +1311,7 @@
     "deleteMessage": "Esto elimina la cuenta {{account}} y todo lo que contiene: carreras, resultados, fotos, archivos de actividad, objetivos y compartidos. No hay vuelta atrás.",
     "deleted": "Cuenta eliminada: {{documents}} documentos y {{files}} archivos.",
     "deleteError": "No se pudo eliminar la cuenta.",
-    "deletedStorageUnreachable": "Cuenta eliminada ({{documents}} documentos), pero sus archivos no se encontraron en el bucket y pueden quedar. Revisa los registros de la función.",
+    "deletedStorageUnreachable": "Cuenta eliminada ({{documents}} documentos), pero sus archivos no se borraron y pueden quedar. Revisa los registros de la función.",
     "tabsLabel": "Áreas de administración",
     "tabUsers": "Usuarios",
     "tabCatalog": "Catálogo",

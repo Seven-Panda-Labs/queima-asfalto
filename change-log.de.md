@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.1] - 2026-11-15
+
+### Behoben
+
+- **Konto im Admin löschen:** wenn sich die Dateien des Kontos nicht löschen lassen, sagt die Warnung, dass sie bleiben könnten, statt sie als gelöscht zu zählen.
+
+---
+
 ## [1.95.0] - 2026-11-15
 
 ### Hinzugefügt

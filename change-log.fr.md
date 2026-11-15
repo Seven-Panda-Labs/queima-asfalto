@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.1] - 2026-11-15
+
+### Corrigé
+
+- **Supprimer un compte dans l’Admin :** si les fichiers du compte ne peuvent pas être supprimés, l’avertissement indique qu’ils peuvent rester, au lieu de les compter comme supprimés.
+
+---
+
 ## [1.95.0] - 2026-11-15
 
 ### Ajouté

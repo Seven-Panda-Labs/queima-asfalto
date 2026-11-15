@@ -36,10 +36,20 @@ Callable functions are authorized by `request.auth`, not by this key.
 - **Browser key** (`VITE_GEOAPIFY_API_KEY`): HTTP referrer restriction to `http://localhost:*`, `https://your-project-id.web.app/*`, `https://your-project-id.firebaseapp.com/*`, and your custom domain. Geocoding API only.
 - **Server key** (`GEOAPIFY_API_KEY` in `functions/.env`): used by the catalog geocoding pass from Cloud Functions, so it must have no referrer restriction. Use a separate key.
 
-## 4. Other
+## 4. Functions service account
+
+Callable, blocking and HTTP functions run as `FUNCTIONS_SERVICE_ACCOUNT`, or as the project runtime account (`PROJECT_NUMBER-compute@developer.gserviceaccount.com`) when it is unset. If that account is not a project Editor, grant:
+
+| Role | Used by |
+|------|---------|
+| `roles/datastore.user` | Firestore, every function |
+| `roles/firebaseauth.admin` | Admin user list, share invites by email, account deletion |
+| `roles/storage.objectUser` on the Storage bucket | Track recompute, deleting an account's files |
+| `roles/logging.logWriter` | Function logs |
+
+## 5. Other
 
 | Area | Check |
 |------|-------|
 | Firestore, Storage | `firestore.rules` and `storage.rules` deployed |
-| Functions IAM | Minimal permissions for `FUNCTIONS_SERVICE_ACCOUNT` (callable, blocking and HTTP functions) |
 | Repository | No keys committed (`.env.local`, `functions/.env` are gitignored) |

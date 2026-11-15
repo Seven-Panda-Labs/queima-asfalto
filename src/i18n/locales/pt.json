@@ -1311,7 +1311,7 @@
     "deleteMessage": "Isto elimina a conta {{account}} e tudo o que ela tem: provas, resultados, fotos, ficheiros de actividade, objectivos e partilhas. Não há como voltar atrás.",
     "deleted": "Conta eliminada: {{documents}} documentos e {{files}} ficheiros.",
     "deleteError": "Não foi possível eliminar a conta.",
-    "deletedStorageUnreachable": "Conta eliminada ({{documents}} documentos), mas os ficheiros não foram encontrados no bucket e podem ter ficado. Ver os registos da função.",
+    "deletedStorageUnreachable": "Conta eliminada ({{documents}} documentos), mas os ficheiros não foram apagados e podem ter ficado. Ver os registos da função.",
     "tabsLabel": "Áreas de administração",
     "tabUsers": "Utilizadores",
     "tabCatalog": "Catálogo",
