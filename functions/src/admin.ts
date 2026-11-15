@@ -1,4 +1,5 @@
 import { HttpsError, onCall } from 'firebase-functions/v2/https'
+import { getAuth, type UserMetadata } from 'firebase-admin/auth'
 import { FieldValue, getFirestore, type Firestore, type Timestamp } from 'firebase-admin/firestore'
 import type { AccountStatus, AppLanguage } from './shared/account/types.js'
 import { resolveEffectiveAccountStatus } from './shared/account/types.js'
@@ -25,12 +26,21 @@ type AdminUser = {
   accountStatus: AccountStatus
   admin: boolean
   createdAt: string | null
+  lastSeenAt: string | null
   appLanguage?: AppLanguage
 }
 
 function timestampToIso(value: unknown): string | null {
   const timestamp = value as Timestamp | undefined
   return timestamp?.toDate ? timestamp.toDate().toISOString() : null
+}
+
+/**
+ * Read from Firebase Auth rather than written by the app: Auth stamps every
+ * sign-in and token refresh, so accounts from before this field have it too.
+ */
+function lastSeenAt(metadata: UserMetadata): string | null {
+  return metadata.lastRefreshTime ? new Date(metadata.lastRefreshTime).toISOString() : null
 }
 
 /**
@@ -75,11 +85,14 @@ export const adminListUsers = onCall(callableOptions, async (request) => {
   const db = getFirestore()
   await requireAdmin(request, db)
 
-  const snapshot = await db
-    .collection(USERS_COLLECTION)
-    .orderBy('createdAt', 'desc')
-    .limit(MAX_USERS + 1)
-    .get()
+  const [snapshot, accounts] = await Promise.all([
+    db.collection(USERS_COLLECTION).orderBy('createdAt', 'desc').limit(MAX_USERS + 1).get(),
+    // Auth's largest page.
+    getAuth().listUsers(1000),
+  ])
+  const lastSeen = new Map(
+    accounts.users.map((account) => [account.uid, lastSeenAt(account.metadata)]),
+  )
 
   const users: AdminUser[] = snapshot.docs.slice(0, MAX_USERS).map((document) => {
     const data = document.data() ?? {}
@@ -90,6 +103,7 @@ export const adminListUsers = onCall(callableOptions, async (request) => {
       accountStatus: resolveEffectiveAccountStatus(data),
       admin: data.admin === true,
       createdAt: timestampToIso(data.createdAt),
+      lastSeenAt: lastSeen.get(document.id) ?? null,
       appLanguage: data.appLanguage as AppLanguage | undefined,
     }
   })

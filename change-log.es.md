@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.0] - 2026-11-15
+
+### Añadido
+
+- **Última visita:** la tabla de cuentas de Admin muestra hace cuánto usó la app cada cuenta, con la fecha y la hora al pasar el ratón.
+
+---
+
 ## [1.94.0] - 2026-11-15
 
 ### Corregido

@@ -1302,6 +1302,7 @@
     "columnAccount": "الحساب",
     "columnStatus": "الحالة",
     "columnSince": "تاريخ التسجيل",
+    "columnLastSeen": "آخر ظهور",
     "approve": "اعتماد",
     "block": "حجب",
     "approved": "تم اعتماد الحساب.",

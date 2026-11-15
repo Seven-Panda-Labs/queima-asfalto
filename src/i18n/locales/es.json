@@ -1290,6 +1290,7 @@
     "columnAccount": "Cuenta",
     "columnStatus": "Estado",
     "columnSince": "Registro",
+    "columnLastSeen": "Última visita",
     "approve": "Aprobar",
     "block": "Bloquear",
     "approved": "Cuenta aprobada.",

@@ -36,6 +36,7 @@ function user(overrides: Partial<AdminUser>): AdminUser {
     accountStatus: 'pending',
     admin: false,
     createdAt: '2026-08-01T10:00:00.000Z',
+    lastSeenAt: null,
     ...overrides,
   }
 }
@@ -43,6 +44,7 @@ function user(overrides: Partial<AdminUser>): AdminUser {
 afterEach(() => {
   cleanup()
   vi.clearAllMocks()
+  vi.useRealTimers()
 })
 
 describe('AdminUsers', () => {
@@ -91,6 +93,20 @@ describe('AdminUsers', () => {
 
     await waitFor(() => expect(screen.getByText('É a tua conta')).toBeInTheDocument())
     expect(screen.queryByText('Bloquear')).not.toBeInTheDocument()
+  })
+
+  it('shows how long ago an account was seen, and the exact time on hover', async () => {
+    vi.useFakeTimers({ toFake: ['Date'] })
+    vi.setSystemTime(new Date('2026-11-15T12:00:00Z'))
+    listUsersForAdmin.mockResolvedValue({
+      users: [user({ lastSeenAt: '2026-11-13T10:00:00.000Z' })],
+      truncated: false,
+    })
+
+    render(<AdminUsers />)
+
+    const seen = await screen.findByText('há 2 dias')
+    expect(seen).toHaveAttribute('title', expect.stringContaining('13/11/2026'))
   })
 
   it('says so when the load fails, rather than showing an empty table', async () => {

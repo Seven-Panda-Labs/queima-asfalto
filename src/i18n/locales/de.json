@@ -1290,6 +1290,7 @@
     "columnAccount": "Konto",
     "columnStatus": "Status",
     "columnSince": "Registriert",
+    "columnLastSeen": "Zuletzt gesehen",
     "approve": "Freigeben",
     "block": "Sperren",
     "approved": "Konto freigegeben.",

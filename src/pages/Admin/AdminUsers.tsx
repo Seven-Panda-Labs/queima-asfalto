@@ -11,7 +11,7 @@ import {
   setAccountStatusForAdmin,
   type AdminUser,
 } from '../../services/admin'
-import { formatDatePt } from '../../utils/date'
+import { formatDatePt, formatDateTimePt, formatRelativeTimePt } from '../../utils/date'
 
 type Busy = { uid: string; action: 'approved' | 'rejected' } | null
 
@@ -111,6 +111,7 @@ export function AdminUsers() {
                 <th className="px-4 py-3 font-semibold">{t('admin.columnAccount')}</th>
                 <th className="px-4 py-3 font-semibold">{t('admin.columnStatus')}</th>
                 <th className="px-4 py-3 font-semibold">{t('admin.columnSince')}</th>
+                <th className="px-4 py-3 font-semibold">{t('admin.columnLastSeen')}</th>
                 <th className="px-4 py-3 font-semibold">{t('common.actions')}</th>
               </tr>
             </thead>
@@ -136,6 +137,18 @@ export function AdminUsers() {
                     </td>
                     <td className="px-4 py-3 text-muted">
                       {entry.createdAt ? formatDatePt(new Date(entry.createdAt)) : '-'}
+                    </td>
+                    <td className="px-4 py-3 text-muted">
+                      {entry.lastSeenAt ? (
+                        <time
+                          dateTime={entry.lastSeenAt}
+                          title={formatDateTimePt(new Date(entry.lastSeenAt))}
+                        >
+                          {formatRelativeTimePt(new Date(entry.lastSeenAt))}
+                        </time>
+                      ) : (
+                        '-'
+                      )}
                     </td>
                     <td className="px-4 py-3">
                       {isSelf ? (

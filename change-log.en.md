@@ -4,6 +4,14 @@
 
 ---
 
+## [1.95.0] - 2026-11-15
+
+### Added
+
+- **Last seen:** the Admin accounts table shows how long ago each account used the app, with the date and time on hover.
+
+---
+
 ## [1.94.0] - 2026-11-15
 
 ### Fixed
