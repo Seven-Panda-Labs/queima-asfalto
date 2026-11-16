@@ -690,7 +690,7 @@ export function EventDetail() {
 
         {projection ? <RaceProjection projection={projection} /> : null}
 
-        {courseComparison ? <CourseHistory comparison={courseComparison} /> : null}
+        {courseComparison ? <CourseHistory comparison={courseComparison} returnTo={returnTo} /> : null}
 
         {/* A race still ahead has no file to upload, and offering one invites a
             training run to be filed as the race itself. */}

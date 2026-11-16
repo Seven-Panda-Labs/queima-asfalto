@@ -275,16 +275,14 @@
     "subtitle_other": "You have run it {{count}} times.",
     "subtitleUpcoming_one": "You have run it once.",
     "subtitleUpcoming_other": "You have run it {{count}} times.",
-    "toBeat": "To beat",
     "lastTime": "Last time",
-    "target": "Your best pace over this distance is {{time}}. Beat it?",
-    "targetNote": "A target, not a time anyone has run: the same course is not always measured at the same distance.",
+    "result": "{{time}} · {{pace}}/km",
+    "pace": "{{pace}}/km",
     "thisRun": "This run",
     "best": "Best",
     "previous": "Previous",
     "bestEver": "your best here",
-    "rank": "{{rank}} of {{total}}",
-    "paceNote": "Compared by pace, because the same course is not always measured at the same distance."
+    "rank": "{{rank}} of {{total}}"
   },
   "celebration": {
     "bandTitle": "What this race marked",

@@ -1,5 +1,7 @@
 import '@testing-library/jest-dom/vitest'
-import { cleanup, render, screen } from '@testing-library/react'
+import { cleanup, render as renderDom, screen } from '@testing-library/react'
+import type { ReactElement } from 'react'
+import { MemoryRouter } from 'react-router-dom'
 import { afterEach, describe, expect, it } from 'vitest'
 import type { Event } from '../../types/Event'
 import { buildCourseComparison } from '../../utils/analytics/course'
@@ -8,6 +10,10 @@ import { CourseHistory } from './CourseHistory'
 afterEach(() => {
   cleanup()
 })
+
+function render(ui: ReactElement) {
+  renderDom(<MemoryRouter>{ui}</MemoryRouter>)
+}
 
 function race(id: string, date: string, time: string): Event {
   return {
@@ -41,7 +47,7 @@ const runs = [
 
 function renderFor(id: string) {
   const event = runs.find((run) => run.id === id)!
-  render(<CourseHistory comparison={buildCourseComparison(event, runs)!} />)
+  render(<CourseHistory returnTo="/analise" comparison={buildCourseComparison(event, runs)!} />)
 }
 
 describe('CourseHistory', () => {
@@ -52,16 +58,16 @@ describe('CourseHistory', () => {
 
   it('says it in the singular when the course was run once before', () => {
     const ahead = upcoming('next', '2027-01-01')
-    render(<CourseHistory comparison={buildCourseComparison(ahead, [runs[0], ahead])!} />)
+    render(<CourseHistory returnTo="/analise" comparison={buildCourseComparison(ahead, [runs[0], ahead])!} />)
     expect(screen.getByText('Já o correste uma vez.')).toBeInTheDocument()
   })
 
   it('ranks this run and shows the gap to the best', () => {
     renderFor('c')
     expect(screen.getByText('3ª de 3')).toBeInTheDocument()
-    expect(screen.getByText('5:27')).toBeInTheDocument()
+    expect(screen.getByText('5:27/km')).toBeInTheDocument()
     // Here the previous run is also the best, so both rows carry the same pace.
-    expect(screen.getAllByText('4:57')).toHaveLength(2)
+    expect(screen.getAllByText('4:57/km')).toHaveLength(2)
     expect(screen.getAllByText('+0:30')).toHaveLength(2)
   })
 
@@ -78,12 +84,18 @@ describe('CourseHistory', () => {
 
   it('offers a target instead of a ranking for a race still ahead', () => {
     const ahead = upcoming('next', '2027-01-01')
-    render(<CourseHistory comparison={buildCourseComparison(ahead, [...runs, ahead])!} />)
+    render(<CourseHistory returnTo="/analise" comparison={buildCourseComparison(ahead, [...runs, ahead])!} />)
 
     // Best pace here is 4:57, so five kilometres of it is 24:45.
-    expect(screen.getByText(/24:45/)).toBeInTheDocument()
-    expect(screen.getByText('A bater')).toBeInTheDocument()
+    expect(screen.getByText('A bater: 24:45 · 4:57/km')).toBeInTheDocument()
+    expect(screen.getByText('24:45 · 4:57/km')).toBeInTheDocument()
     expect(screen.queryByText('Esta vez')).not.toBeInTheDocument()
+  })
+
+  it('links each past running to its own page, but not the race being viewed', () => {
+    renderFor('c')
+    const links = screen.getAllByRole('link').map((link) => link.getAttribute('href'))
+    expect(links).toEqual(['/eventos/b?returnTo=%2Fanalise', '/eventos/b?returnTo=%2Fanalise'])
   })
 
   it('compares against the run immediately before, not only the best', () => {

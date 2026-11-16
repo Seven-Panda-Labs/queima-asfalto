@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.0] - 2026-11-16
+
+### Modifié
+
+- **« Ce parcours », plus clair :** les allures portent /km et ne se confondent plus avec des temps. Avant une course, les éditions passées montrent aussi le temps réalisé et l'objectif dit de quelle allure il vient. Chaque date ouvre cette édition.
+
+---
+
 ## [1.95.1] - 2026-11-15
 
 ### Corrigé

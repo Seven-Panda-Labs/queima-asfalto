@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.0] - 2026-11-16
+
+### Geändert
+
+- **„Diese Strecke“, klarer:** Paces tragen /km und sehen nicht mehr wie Zeiten aus. Vor einem Rennen zeigen frühere Ausgaben auch die gelaufene Zeit, und das Ziel sagt, aus welcher Pace es kommt. Jedes Datum öffnet diese Ausgabe.
+
+---
+
 ## [1.95.1] - 2026-11-15
 
 ### Behoben

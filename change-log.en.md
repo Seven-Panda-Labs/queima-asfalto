@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.0] - 2026-11-16
+
+### Changed
+
+- **A clearer "This course":** paces carry /km, so they no longer read as times. Before a race, past editions also show the time you ran and the target says which pace it comes from. Each date opens that edition.
+
+---
+
 ## [1.95.1] - 2026-11-15
 
 ### Fixed

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.0] - 2026-11-16
+
+### Cambiado
+
+- **«Este recorrido», más claro:** los ritmos llevan /km, para no confundirse con tiempos. Antes de una carrera, las ediciones anteriores muestran también el tiempo hecho y el objetivo dice de qué ritmo sale. Cada fecha abre esa edición.
+
+---
+
 ## [1.95.1] - 2026-11-15
 
 ### Corregido

@@ -275,16 +275,14 @@
     "subtitle_other": "Tu l'as couru {{count}} fois.",
     "subtitleUpcoming_one": "Tu l'as couru une fois.",
     "subtitleUpcoming_other": "Tu l'as couru {{count}} fois.",
-    "toBeat": "À battre",
     "lastTime": "La dernière fois",
-    "target": "Ta meilleure allure sur cette distance donne {{time}}. On la bat ?",
-    "targetNote": "Un objectif, pas un temps réalisé : le même parcours n'est pas toujours mesuré à la même distance.",
+    "result": "{{time}} · {{pace}}/km",
+    "pace": "{{pace}}/km",
     "thisRun": "Cette fois",
     "best": "Meilleure",
     "previous": "Précédente",
     "bestEver": "ta meilleure ici",
-    "rank": "{{rank}}e sur {{total}}",
-    "paceNote": "Comparé à l'allure, car le même parcours n'est pas toujours mesuré à la même distance."
+    "rank": "{{rank}}e sur {{total}}"
   },
   "celebration": {
     "bandTitle": "Ce que cette course a marqué",

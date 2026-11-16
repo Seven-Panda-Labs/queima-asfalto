@@ -275,16 +275,14 @@
     "subtitle_other": "Já o correste {{count}} vezes.",
     "subtitleUpcoming_one": "Já o correste uma vez.",
     "subtitleUpcoming_other": "Já o correste {{count}} vezes.",
-    "toBeat": "A bater",
     "lastTime": "Da última vez",
-    "target": "O teu melhor ritmo nesta distância dá {{time}}. Vamos bater?",
-    "targetNote": "É um alvo, não um tempo que alguém tenha feito: o mesmo percurso nem sempre é medido com a mesma distância.",
+    "result": "{{time}} · {{pace}}/km",
+    "pace": "{{pace}}/km",
     "thisRun": "Esta vez",
     "best": "Melhor",
     "previous": "Anterior",
     "bestEver": "a tua melhor aqui",
-    "rank": "{{rank}}ª de {{total}}",
-    "paceNote": "Comparado por ritmo, porque o mesmo percurso nem sempre é medido com a mesma distância."
+    "rank": "{{rank}}ª de {{total}}"
   },
   "celebration": {
     "bandTitle": "O que esta prova marcou",

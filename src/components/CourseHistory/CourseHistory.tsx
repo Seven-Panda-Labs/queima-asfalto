@@ -1,6 +1,8 @@
 import { useTranslation } from 'react-i18next'
-import type { CourseComparison } from '../../utils/analytics/course'
+import { Link } from 'react-router-dom'
+import type { CourseComparison, CourseRun } from '../../utils/analytics/course'
 import { formatDatePt } from '../../utils/date'
+import { buildEventDetailPath, eventLinkState } from '../../utils/eventNavigation'
 import {
   formatDurationSeconds,
   formatPaceDelta,
@@ -9,25 +11,40 @@ import {
 
 type CourseHistoryProps = {
   comparison: CourseComparison
+  returnTo: string
 }
 
 function Row({
   label,
-  pace,
-  date,
+  value,
+  run,
+  returnTo,
   note,
 }: {
   label: string
-  pace: string
-  date: string
+  value: string
+  run: CourseRun
+  /** Left out for the race being viewed, which needs no link to itself. */
+  returnTo?: string
   note?: string
 }) {
+  const date = formatDatePt(run.result.date)
   return (
     <div className="flex flex-wrap items-baseline justify-between gap-x-4 border-b border-border py-2 last:border-b-0">
       <span className="text-sm text-muted">{label}</span>
       <span className="text-sm text-foreground">
-        <span className="font-semibold">{pace}</span>
-        <span className="ms-2 text-muted">{date}</span>
+        <span className="font-semibold">{value}</span>
+        {returnTo ? (
+          <Link
+            to={buildEventDetailPath(run.result.event.id, { returnTo })}
+            state={eventLinkState(returnTo).state}
+            className="ms-2 text-primary hover:underline"
+          >
+            {date}
+          </Link>
+        ) : (
+          <span className="ms-2 text-muted">{date}</span>
+        )}
         {note ? <span className="ms-2 text-muted">{note}</span> : null}
       </span>
     </div>
@@ -40,9 +57,18 @@ function Row({
  * Pace, not time: the same course is not always measured at the same distance,
  * and a time comparison would reward the year it came up short.
  */
-export function CourseHistory({ comparison }: CourseHistoryProps) {
+export function CourseHistory({ comparison, returnTo }: CourseHistoryProps) {
   const { t } = useTranslation()
   const { best, runs } = comparison
+
+  // The target is a time, so a past running shows the time it took too.
+  const result = (run: CourseRun) =>
+    t('courseHistory.result', {
+      time: formatDurationSeconds(run.result.timeSeconds),
+      pace: formatPaceSeconds(run.result.paceSeconds),
+    })
+  const pace = (run: CourseRun) =>
+    t('courseHistory.pace', { pace: formatPaceSeconds(run.result.paceSeconds) })
 
   if (comparison.kind === 'upcoming') {
     return (
@@ -53,26 +79,23 @@ export function CourseHistory({ comparison }: CourseHistoryProps) {
         </p>
 
         <div className="mt-4">
-          <Row
-            label={t('courseHistory.toBeat')}
-            pace={formatPaceSeconds(best.result.paceSeconds)}
-            date={formatDatePt(best.result.date)}
-          />
+          <Row label={t('courseHistory.best')} value={result(best)} run={best} returnTo={returnTo} />
           {comparison.latest.result.event.id === best.result.event.id ? null : (
             <Row
               label={t('courseHistory.lastTime')}
-              pace={formatPaceSeconds(comparison.latest.result.paceSeconds)}
-              date={formatDatePt(comparison.latest.result.date)}
+              value={result(comparison.latest)}
+              run={comparison.latest}
+              returnTo={returnTo}
             />
           )}
         </div>
 
-        <p className="mt-4 rounded-md bg-background px-3 py-2 text-sm text-foreground">
-          {t('courseHistory.target', {
+        <p className="mt-4 rounded-md bg-background px-3 py-2 text-sm font-semibold text-foreground">
+          {t('dashboard.courseTarget', {
             time: formatDurationSeconds(comparison.targetSeconds),
+            pace: formatPaceSeconds(best.result.paceSeconds),
           })}
         </p>
-        <p className="mt-3 text-xs text-muted">{t('courseHistory.targetNote')}</p>
       </section>
     )
   }
@@ -90,8 +113,8 @@ export function CourseHistory({ comparison }: CourseHistoryProps) {
       <div className="mt-4">
         <Row
           label={t('courseHistory.thisRun')}
-          pace={formatPaceSeconds(current.result.paceSeconds)}
-          date={formatDatePt(current.result.date)}
+          value={pace(current)}
+          run={current}
           note={
             isBest
               ? t('courseHistory.bestEver')
@@ -102,8 +125,9 @@ export function CourseHistory({ comparison }: CourseHistoryProps) {
         {isBest ? null : (
           <Row
             label={t('courseHistory.best')}
-            pace={formatPaceSeconds(best.result.paceSeconds)}
-            date={formatDatePt(best.result.date)}
+            value={pace(best)}
+            run={best}
+            returnTo={returnTo}
             note={formatPaceDelta(current.result.paceSeconds - best.result.paceSeconds)}
           />
         )}
@@ -111,14 +135,13 @@ export function CourseHistory({ comparison }: CourseHistoryProps) {
         {previous ? (
           <Row
             label={t('courseHistory.previous')}
-            pace={formatPaceSeconds(previous.result.paceSeconds)}
-            date={formatDatePt(previous.result.date)}
+            value={pace(previous)}
+            run={previous}
+            returnTo={returnTo}
             note={formatPaceDelta(current.result.paceSeconds - previous.result.paceSeconds)}
           />
         ) : null}
       </div>
-
-      <p className="mt-3 text-xs text-muted">{t('courseHistory.paceNote')}</p>
     </section>
   )
 }
