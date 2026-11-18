@@ -10,6 +10,10 @@
 
 - **Anclas en la lista de eventos:** las pruebas ancla llevan un ⚓ después del nombre.
 
+### Cambiado
+
+- **Filtro de año más corto:** Eventos, Objetivos y Análisis muestran la temporada actual, las siguientes y la última ya pasada. Las más antiguas pasan a una lista «Anteriores».
+
 ---
 
 ## [1.96.1] - 2026-11-18

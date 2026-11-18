@@ -1,1 +1,1 @@
-export { FilterBar, FilterGroup, FilterPill } from './FilterBar'
+export { FilterBar, FilterGroup, FilterPill, FilterYears } from './FilterBar'

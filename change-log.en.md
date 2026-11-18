@@ -10,6 +10,10 @@
 
 - **Anchors in the events list:** anchor races carry a ⚓ after their name.
 
+### Changed
+
+- **A shorter year filter:** Events, Goals and Analysis show the current season, the ones ahead and the most recent past one. Older seasons move into an "Earlier" list.
+
 ---
 
 ## [1.96.1] - 2026-11-18

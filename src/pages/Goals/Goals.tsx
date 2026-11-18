@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { Link, useNavigate } from 'react-router-dom'
 import medalha from '../../../assets/medalha.svg'
 import { ConfirmDialog } from '../../components/ConfirmDialog/ConfirmDialog'
-import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import { FilterBar, FilterGroup, FilterYears } from '../../components/FilterBar'
 import { GoalBoardCard } from '../../components/GoalBoardCard'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
@@ -145,15 +145,12 @@ export function Goals() {
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <FilterBar>
                 <FilterGroup label={t('common.year')}>
-                  {availableYears.map((year) => (
-                    <FilterPill
-                      key={year}
-                      active={yearFilter === year}
-                      onClick={() => setYearFilter(year)}
-                    >
-                      {year}
-                    </FilterPill>
-                  ))}
+                  <FilterYears
+                    years={availableYears}
+                    currentYear={currentYear}
+                    value={yearFilter}
+                    onChange={setYearFilter}
+                  />
                 </FilterGroup>
                 {!isSharedView && !canModifyYear ? (
                   <p className="text-sm text-muted">{t('goals.readOnlyYear', { year: yearFilter })}</p>

@@ -9,7 +9,7 @@ import {
 } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
-import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import { FilterBar, FilterGroup, FilterPill, FilterYears } from '../../components/FilterBar'
 import {
   BucketIcon,
   ExternalLinkIcon,
@@ -258,15 +258,12 @@ export function Events() {
             <FilterPill active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
               {t('common.all')}
             </FilterPill>
-            {availableYears.map((year) => (
-              <FilterPill
-                key={year}
-                active={yearFilter === year}
-                onClick={() => updateFilters({ year })}
-              >
-                {year}
-              </FilterPill>
-            ))}
+            <FilterYears
+              years={availableYears}
+              currentYear={currentYear}
+              value={yearFilter}
+              onChange={(year) => updateFilters({ year })}
+            />
           </FilterGroup>
         </FilterBar>
 
