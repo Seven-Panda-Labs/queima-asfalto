@@ -4,6 +4,18 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Ajouté
+
+- **Courses ancres dans la liste des événements :** elles portent un ⚓ après leur nom.
+
+### Modifié
+
+- **Filtre d'année plus court :** Événements, Objectifs et Analyse affichent la saison en cours, les suivantes et la dernière passée. Les plus anciennes passent dans une liste « Antérieures ».
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Corrigé

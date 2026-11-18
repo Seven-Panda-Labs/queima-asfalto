@@ -4,6 +4,18 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Adicionado
+
+- **Âncoras na lista de eventos:** as provas âncora levam um ⚓ a seguir ao nome.
+
+### Alterado
+
+- **Filtro de ano mais curto:** em Eventos, Objetivos e Análise ficam à vista a época atual, as seguintes e a última já passada. As mais antigas passam para uma lista «Anteriores».
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Corrigido

@@ -4,6 +4,18 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Hinzugefügt
+
+- **Anker in der Eventliste:** Ankerrennen tragen ein ⚓ hinter dem Namen.
+
+### Geändert
+
+- **Kürzerer Jahresfilter:** Events, Ziele und Analyse zeigen die aktuelle Saison, die kommenden und die letzte vergangene. Ältere wandern in eine Liste „Frühere“.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Behoben

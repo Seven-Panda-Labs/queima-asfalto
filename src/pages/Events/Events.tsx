@@ -9,7 +9,7 @@ import {
 } from '../../components/PersonalRecordIndicator/PersonalRecordIndicator'
 import { VerifiedResultIndicator } from '../../components/VerifiedResultIndicator/VerifiedResultIndicator'
 import { StatusBadge } from '../../components/StatusBadge'
-import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import { FilterBar, FilterGroup, FilterPill, FilterYears } from '../../components/FilterBar'
 import {
   BucketIcon,
   ExternalLinkIcon,
@@ -28,6 +28,7 @@ import { useEventSites } from '../../hooks/useOfficialSites'
 import { useRaces } from '../../hooks/useRaces'
 import { useSharedEvents } from '../../hooks/useSharedEvents'
 import { useSharedSection } from '../../hooks/useSharedSection'
+import { isAnchorFor } from '../../domain/seasonAnchors'
 import type { Event } from '../../types/Event'
 import type { EventStatus } from '../../types/Event'
 import { EVENT_STATUSES } from '../../types/Event'
@@ -120,6 +121,7 @@ export function Events() {
   const error = isSharedView ? sharedEvents.error : ownEvents.error
   const removeEvent = ownEvents.removeEvent
   const { races } = useRaces()
+  const racesById = useMemo(() => new Map(races.map((race) => [race.id, race])), [races])
   // Only the table has a place for the link.
   const eventSites = useEventSites(viewMode === 'lista' ? events : NO_EVENTS, races, {
     readRaces: !isSharedView,
@@ -256,15 +258,12 @@ export function Events() {
             <FilterPill active={yearFilter === 'all'} onClick={() => updateFilters({ year: 'all' })}>
               {t('common.all')}
             </FilterPill>
-            {availableYears.map((year) => (
-              <FilterPill
-                key={year}
-                active={yearFilter === year}
-                onClick={() => updateFilters({ year })}
-              >
-                {year}
-              </FilterPill>
-            ))}
+            <FilterYears
+              years={availableYears}
+              currentYear={currentYear}
+              value={yearFilter}
+              onChange={(year) => updateFilters({ year })}
+            />
           </FilterGroup>
         </FilterBar>
 
@@ -343,6 +342,8 @@ export function Events() {
               <tbody>
                 {events.map((event) => {
                   const isRecord = personalRecordIds.has(event.id)
+                  const race = event.raceId ? racesById.get(event.raceId) : undefined
+                  const isAnchor = Boolean(race && isAnchorFor(race, event.date.getFullYear()))
 
                   return (
                   <tr
@@ -361,7 +362,18 @@ export function Events() {
                       >
                         {!isSharedView && isRecord ? <PersonalRecordIndicator /> : null}
                         {event.emoji ? <span aria-hidden>{event.emoji}</span> : null}
-                        <span>{event.name}</span>
+                        <span>
+                          {event.name}
+                          {isAnchor ? (
+                            <>
+                              {/* A space, not a margin, or the link's name reads "NameAnchor". */}
+                              {' '}
+                              <span role="img" aria-label={t('funnel.anchor')} title={t('funnel.anchor')} className="text-xs">
+                                ⚓
+                              </span>
+                            </>
+                          ) : null}
+                        </span>
                       </Link>
                       {event.location ? (
                         <span className="block text-xs text-muted">{event.location}</span>

@@ -8,7 +8,7 @@ import { RacePredictor } from '../../components/Analysis/RacePredictor'
 import { RecordProgression } from '../../components/Analysis/RecordProgression'
 import { SeasonHeader } from '../../components/Analysis/SeasonHeader'
 import { SeasonTable } from '../../components/Analysis/SeasonTable'
-import { FilterBar, FilterGroup, FilterPill } from '../../components/FilterBar'
+import { FilterBar, FilterGroup, FilterPill, FilterYears } from '../../components/FilterBar'
 import { PageShell } from '../../components/PageShell/PageShell'
 import { SharedDataLoading } from '../../components/SharedDataLoading/SharedDataLoading'
 import { ViewSwitcher } from '../../components/ViewSwitcher'
@@ -295,15 +295,12 @@ export function Results() {
               <FilterBar>
                 {horizon === 'epoca' && seasons.length > 0 ? (
                   <FilterGroup label={t('common.year')}>
-                    {seasons.map((value) => (
-                      <FilterPill
-                        key={value}
-                        active={season === value}
-                        onClick={() => updateFilters({ year: value })}
-                      >
-                        {value}
-                      </FilterPill>
-                    ))}
+                    <FilterYears
+                      years={seasons}
+                      currentYear={currentYear}
+                      value={season}
+                      onChange={(year) => updateFilters({ year })}
+                    />
                   </FilterGroup>
                 ) : null}
 
