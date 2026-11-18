@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.1] - 2026-11-18
+
+### Fixed
+
+- **Pacer and STGK results links:** an event with one of these links now saves instead of failing with an error.
+
+---
+
 ## [1.96.0] - 2026-11-16
 
 ### Changed

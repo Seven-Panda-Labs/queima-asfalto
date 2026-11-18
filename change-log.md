@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.1] - 2026-11-18
+
+### Corrigido
+
+- **Links de resultados do Pacer e do STGK:** um evento com um destes links já se guarda, em vez de dar erro.
+
+---
+
 ## [1.96.0] - 2026-11-16
 
 ### Alterado

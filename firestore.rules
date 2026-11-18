@@ -94,7 +94,7 @@ service cloud.firestore {
     }
 
     function validResultsPlatform(platform) {
-      return platform in ['parkrun', 'davengo', 'sporthive', 'myraceresult', 'sccevents', 'maxfunsports', 'myracepartner', 'strassenlauf', 'zielzeit', 'eqtiming', 'nsfberlin', 'runczech', 'ultimate', 'vcrunning', 'wiclax', 'timataka', 'mikatiming'];
+      return platform in ['parkrun', 'davengo', 'sporthive', 'myraceresult', 'sccevents', 'maxfunsports', 'myracepartner', 'strassenlauf', 'zielzeit', 'eqtiming', 'nsfberlin', 'runczech', 'ultimate', 'vcrunning', 'wiclax', 'timataka', 'mikatiming', 'pacer', 'stgk'];
     }
 
     function validOptionalResultsFields(data) {

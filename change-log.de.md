@@ -4,6 +4,14 @@
 
 ---
 
+## [1.96.1] - 2026-11-18
+
+### Behoben
+
+- **Ergebnislinks von Pacer und STGK:** ein Event mit einem dieser Links lässt sich jetzt speichern, statt einen Fehler zu zeigen.
+
+---
+
 ## [1.96.0] - 2026-11-16
 
 ### Geändert
