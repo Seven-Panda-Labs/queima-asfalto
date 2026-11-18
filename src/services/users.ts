@@ -87,7 +87,7 @@ export async function ensureUserProfile(user: User): Promise<void> {
 
 export async function updateUserAppLanguage(
   userId: string,
-  language: 'pt' | 'en' | 'es' | 'de' | 'fr' | 'ar',
+  language: 'pt' | 'en' | 'es' | 'de' | 'fr' | 'it' | 'ar',
 ): Promise<void> {
   await setDoc(
     doc(db, 'users', userId),

@@ -1,4 +1,4 @@
-export type ReminderLocale = 'pt' | 'en' | 'es' | 'de' | 'fr' | 'ar'
+export type ReminderLocale = 'pt' | 'en' | 'es' | 'de' | 'fr' | 'it' | 'ar'
 
 const TITLES: Record<ReminderLocale, string> = {
   pt: 'Queima Asfalto: Lembrete',
@@ -6,6 +6,7 @@ const TITLES: Record<ReminderLocale, string> = {
   es: 'Queima Asfalto: Recordatorio',
   de: 'Queima Asfalto: Erinnerung',
   fr: 'Queima Asfalto: Rappel',
+  it: 'Queima Asfalto: Promemoria',
   ar: 'Queima Asfalto: تذكير',
 }
 
@@ -23,6 +24,7 @@ export function formatReminderBody(
     if (locale === 'es') return `${eventName}, hoy`
     if (locale === 'de') return `${eventName}, heute`
     if (locale === 'fr') return `${eventName}, aujourd'hui`
+    if (locale === 'it') return `${eventName}, oggi`
     if (locale === 'ar') return `${eventName}، اليوم`
     return `${eventName}, hoje`
   }
@@ -31,6 +33,7 @@ export function formatReminderBody(
     if (locale === 'es') return `${eventName}, mañana`
     if (locale === 'de') return `${eventName}, morgen`
     if (locale === 'fr') return `${eventName}, demain`
+    if (locale === 'it') return `${eventName}, domani`
     if (locale === 'ar') return `${eventName}، غدًا`
     return `${eventName}, amanhã`
   }
@@ -38,12 +41,13 @@ export function formatReminderBody(
   if (locale === 'es') return `${eventName}, en ${daysBefore} días`
   if (locale === 'de') return `${eventName}, in ${daysBefore} Tagen`
   if (locale === 'fr') return `${eventName}, dans ${daysBefore} jours`
+  if (locale === 'it') return `${eventName}, tra ${daysBefore} giorni`
   if (locale === 'ar') return `${eventName}، بعد ${daysBefore} أيام`
   return `${eventName}, daqui a ${daysBefore} dias`
 }
 
 export function parseReminderLocale(value: unknown): ReminderLocale {
-  if (value === 'en' || value === 'es' || value === 'de' || value === 'fr' || value === 'ar') return value
+  if (value === 'en' || value === 'es' || value === 'de' || value === 'fr' || value === 'it' || value === 'ar') return value
   if (value === 'pt') return 'pt'
   return 'en'
 }
@@ -52,8 +56,8 @@ export function parseReminderLocale(value: unknown): ReminderLocale {
  * What a deadline notification says.
  *
  * The race name, then the gate, then when. Built from parts rather than a
- * sentence per case, because four gates times three day shapes times six
- * languages is 72 sentences nobody would keep true.
+ * sentence per case, because four gates times three day shapes times seven
+ * languages is 84 sentences nobody would keep true.
  */
 const DEADLINE_PHRASES: Record<
   ReminderLocale,
@@ -89,6 +93,12 @@ const DEADLINE_PHRASES: Record<
     lottery_draw: 'tirage au sort',
     registration_opens: 'les inscriptions ouvrent',
   },
+  it: {
+    place_confirm: 'conferma il tuo posto',
+    registration_closes: 'le iscrizioni chiudono',
+    lottery_draw: 'sorteggio',
+    registration_opens: 'le iscrizioni aprono',
+  },
   ar: {
     place_confirm: 'ثبّت مكانك',
     registration_closes: 'يغلق التسجيل',
@@ -103,6 +113,7 @@ const WHEN: Record<ReminderLocale, { today: string; tomorrow: string; days: (n: 
   es: { today: 'hoy', tomorrow: 'mañana', days: (n) => `en ${n} días` },
   de: { today: 'heute', tomorrow: 'morgen', days: (n) => `in ${n} Tagen` },
   fr: { today: "aujourd'hui", tomorrow: 'demain', days: (n) => `dans ${n} jours` },
+  it: { today: 'oggi', tomorrow: 'domani', days: (n) => `tra ${n} giorni` },
   ar: { today: 'اليوم', tomorrow: 'غدًا', days: (n) => `بعد ${n} أيام` },
 }
 

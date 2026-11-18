@@ -35,7 +35,7 @@ PWA para planear e acompanhar uma época de corrida. Funciona offline e sincroni
 - Resultados com importação de classificações oficiais
 - Análise: curva de forma entre distâncias, época a época e desde sempre
 - Ferramentas: calculadora de ritmo e registo de peso
-- Partilha entre utilizadores; modo claro e escuro; seis idiomas (pt, en, es, de, fr, ar)
+- Partilha entre utilizadores; modo claro e escuro; sete idiomas (pt, en, es, de, fr, it, ar)
 
 **Arrancar** (Node.js 24, Java 21+ para os emuladores):
 
@@ -78,7 +78,7 @@ PWA to plan and track a running season. Works offline and syncs via Firebase. Of
 - Results with official race import
 - Analysis: form curve across distances, season by season and all time
 - Tools: pace calculator and weight log
-- Sharing between users; light and dark mode; six languages (pt, en, es, de, fr, ar)
+- Sharing between users; light and dark mode; seven languages (pt, en, es, de, fr, it, ar)
 
 **Run it** (Node.js 24, Java 21+ for the emulators):
 

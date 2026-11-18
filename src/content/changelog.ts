@@ -6,6 +6,7 @@ const CHANGELOG_LOADERS: Record<AppLanguage, () => Promise<{ default: string }>>
   es: () => import('../../change-log.es.md?raw'),
   de: () => import('../../change-log.de.md?raw'),
   fr: () => import('../../change-log.fr.md?raw'),
+  it: () => import('../../change-log.it.md?raw'),
   ar: () => import('../../change-log.ar.md?raw'),
 }
 
@@ -13,7 +14,7 @@ const changelogCache = new Map<AppLanguage, string>()
 
 const VERSION_HEADING = /^## \[[^\]]+\]/m
 const APPENDIX_HEADING =
-  /^## (Legenda|Referências|Legend|References|Leyenda|Referencias|Legende|Referenzen|Légende|Références|وسيلة الإيضاح|المراجع)\s*$/m
+  /^## (Legenda|Referências|Legend|References|Leyenda|Referencias|Legende|Referenzen|Légende|Références|Riferimenti|وسيلة الإيضاح|المراجع)\s*$/m
 
 /** User-facing body: version history only (drops header and repo appendix sections). */
 export function prepareChangelogForDisplay(markdown: string): string {

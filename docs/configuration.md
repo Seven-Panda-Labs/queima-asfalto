@@ -34,7 +34,7 @@ Use the serving domain (e.g. `your-project.web.app`), not the `firebaseapp.com` 
 | Variable | Required | Description |
 |----------|----------|-------------|
 | `PRIVACY_INSTANCE_NAME`, `PRIVACY_CONTROLLER_NAME`, `PRIVACY_CONTACT_EMAIL`, `PRIVACY_HOSTING_URL` | Yes | Instance name, data controller (GDPR), contact, public URL |
-| `PRIVACY_RETENTION_POLICY_{PT,EN,ES,DE,FR,AR}` | No | Retention text per locale (has defaults) |
+| `PRIVACY_RETENTION_POLICY_{PT,EN,ES,DE,FR,IT,AR}` | No | Retention text per locale (has defaults) |
 | `PRIVACY_REQUIRED` | No | `true` fails the build if any required one is missing (CI) |
 
 ## Cloud Functions (`functions/.env`)

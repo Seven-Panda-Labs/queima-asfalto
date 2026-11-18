@@ -4,7 +4,7 @@
  * jsDelivr CDN it defaults to.
  *
  * Usage: npx tsx scripts/sync-emoji-data.ts
- * Output: public/emoji-data/{en,pt,es,de,fr}.json
+ * Output: public/emoji-data/{en,pt,es,de,fr,it}.json
  */
 import { copyFileSync, mkdirSync } from 'node:fs'
 import { createRequire } from 'node:module'
@@ -12,7 +12,7 @@ import { dirname, resolve } from 'node:path'
 
 const require = createRequire(import.meta.url)
 const OUTPUT_DIR = resolve(import.meta.dirname, '../public/emoji-data')
-const LOCALES = ['en', 'pt', 'es', 'de', 'fr']
+const LOCALES = ['en', 'pt', 'es', 'de', 'fr', 'it']
 
 mkdirSync(OUTPUT_DIR, { recursive: true })
 

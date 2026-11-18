@@ -4,6 +4,7 @@ import de from './locales/de.json'
 import en from './locales/en.json'
 import es from './locales/es.json'
 import fr from './locales/fr.json'
+import italian from './locales/it.json'
 import pt from './locales/pt.json'
 
 /** Sections nest: `eventMedia.errors` is an object, not a string. */
@@ -18,7 +19,7 @@ function sectionOf(bundle: Bundle, path: string): Record<string, unknown> {
   return current as Record<string, unknown>
 }
 
-const LOCALES: Record<string, Bundle> = { ar, de, en, es, fr, pt }
+const LOCALES: Record<string, Bundle> = { ar, de, en, es, fr, it: italian, pt }
 
 /**
  * Keys resolved with a `count`. i18next picks `key_<category>` for the count's

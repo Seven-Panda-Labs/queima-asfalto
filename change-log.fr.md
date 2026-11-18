@@ -1,6 +1,14 @@
 # Changelog
 
-[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md) | [Français](change-log.fr.md) | [العربية](change-log.ar.md)
+[Português](change-log.md) | [English](change-log.en.md) | [Español](change-log.es.md) | [Deutsch](change-log.de.md) | [Français](change-log.fr.md) | [Italiano](change-log.it.md) | [العربية](change-log.ar.md)
+
+---
+
+## [1.98.0] - 2026-11-18
+
+### Ajouté
+
+- **Italien :** l'application est désormais disponible en italien, e-mails et rappels compris. Choisis-le dans les Paramètres.
 
 ---
 

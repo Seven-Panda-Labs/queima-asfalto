@@ -1,7 +1,7 @@
 import timingDisclaimerSource from '../../timing-disclaimer.md?raw'
 import type { AppLanguage } from '../i18n/languages'
 
-const LOCALE_MARKER = /^---locale:(pt|en|es|de|fr|ar)---$/gm
+const LOCALE_MARKER = /^---locale:(pt|en|es|de|fr|it|ar)---$/gm
 
 function parseLocaleSections(template: string): Map<AppLanguage, string> {
   const sections = new Map<AppLanguage, string>()

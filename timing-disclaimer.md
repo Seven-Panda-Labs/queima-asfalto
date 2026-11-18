@@ -267,6 +267,59 @@ Documentation complète pour les opérateurs : [`docs/self-hosting.md`](https://
 #### Logiciel
 
 Queima Asfalto est un logiciel open source (AGPL-3.0), fourni **« tel quel »**. Les auteurs du code ne garantissent pas la disponibilité continue des connecteurs et ne sont pas responsables des violations de conditions de tiers découlant de l'utilisation de cette fonctionnalité.
+---locale:it---
+#### Avviso: importazione dei risultati ufficiali
+
+**Ultimo aggiornamento:** 2026-09-17
+
+#### Cosa fa questa funzionalità
+
+Queima Asfalto può **cercare tempi e classifiche** su siti di cronometraggio di terzi (organizzatori di gare, piattaforme di risultati, ecc.) quando fornisci un link pubblico ai risultati o un identificativo compatibile e richiedi una ricerca.
+
+Ogni ricerca è **avviata da te** ed esegue richieste HTTP automatizzate dall'istanza (di solito tramite la Cloud Function `lookupOfficialResults`) verso pagine o API **accessibili pubblicamente**.
+
+#### Nessuna affiliazione
+
+Non abbiamo alcuna affiliazione con organizzatori di gare o fornitori di cronometraggio (inclusi, tra gli altri, parkrun, mika:timing, Sporthive, MyRaceResult, EQ Timing, Davengo e piattaforme simili), non siamo da essi approvati e non li rappresentiamo. I nomi dei servizi e i marchi appartengono ai rispettivi titolari.
+
+#### Termini di servizio di terzi
+
+Ogni sito di cronometraggio ha i **propri termini d'uso**, informative sulla privacy e regole sull'accesso automatizzato, sulla copia dei dati o sull'uso commerciale dei risultati. **Potresti essere responsabile** di garantire che il tuo uso di questa funzionalità rispetti tali termini.
+
+Questo avviso **non costituisce consulenza legale**. In caso di dubbio, contatta il gestore dell'istanza o un consulente legale qualificato.
+
+#### Limitazioni
+
+- I dati importati provengono da fonti esterne: **possono essere incompleti, non aggiornati o errati**. Verifica sempre prima di applicare un risultato.
+- I siti possono **cambiare formato**, bloccare l'accesso o imporre limiti senza preavviso; la funzionalità può smettere di funzionare temporaneamente o in modo permanente.
+- L'app include **limiti di frequenza** tra una ricerca e l'altra per ridurre il carico sui siti; questo non sostituisce il rispetto dei termini di ciascun fornitore.
+
+#### Piattaforme chiuse alla ricerca automatica
+
+Alcuni siti di cronometraggio respingono deliberatamente qualsiasi lettore automatico. In questi casi il pulsante di ricerca non compare e registri il tempo a mano. Non perdi nulla: un tempo inserito da te vale allo stesso modo in tutta l'app, semplicemente non viene contrassegnato come verificato.
+
+Attualmente chiuse:
+
+- **parkrun:** risponde con un errore a tutto ciò che non è un browser.
+- **MaxFunSports:** le pagine dei risultati sono dietro una verifica Cloudflare, e l'host che serve la tabella chiede nel suo `robots.txt` di non essere letto in modo automatico.
+
+Per entrambe resta aperta la porta principale. MaxFunSports pubblica la classifica completa in un PDF ufficiale, che scarichi dal tuo browser. Per parkrun, apri la pagina dei risultati e stampala in PDF. Poi apri il file nell'app, nell'editor del risultato. Il file viene letto sul tuo dispositivo e non viene mai inviato da nessuna parte, e il tempo arriva contrassegnato come verificato.
+
+Non aggiriamo questi blocchi. Camuffare l'app da browser per eludere un controllo che esiste per respingerla violerebbe i termini sopra indicati, che sia o no tecnicamente possibile. Se un sito riapre, o pubblica un'API, la ricerca torna disponibile.
+
+#### Gestori di istanze self-hosted
+
+Se fai il deploy di una tua istanza, sei responsabile di come i tuoi utenti usano questa funzionalità. Raccomandazioni:
+
+- Informa gli utenti (per esempio con questo avviso o con una formulazione equivalente nella tua informativa sulla privacy).
+- Esamina i termini dei siti di cronometraggio da cui i tuoi utenti importano più spesso.
+- Valuta di disattivare o limitare la funzionalità se non puoi rispettare i termini applicabili.
+
+Documentazione completa per i gestori: [`docs/self-hosting.md`](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
+
+#### Software
+
+Queima Asfalto è software open source (AGPL-3.0), fornito **«così com'è»**. Gli autori del codice non garantiscono la disponibilità continuativa dei connettori e non sono responsabili delle violazioni di termini di terzi derivanti dall'uso di questa funzionalità.
 ---locale:ar---
 #### تنبيه: استيراد النتائج الرسمية
 

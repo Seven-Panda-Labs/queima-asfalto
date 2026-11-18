@@ -10,7 +10,7 @@
 
 - [ ] `npm run check`
 - [ ] Manually tested: …
-- [ ] Version bump only: all six `change-log{,.en,.es,.de,.fr,.ar}.md` updated
+- [ ] Version bump only: all seven `change-log{,.en,.es,.de,.fr,.it,.ar}.md` updated
 
 ## Issues
 

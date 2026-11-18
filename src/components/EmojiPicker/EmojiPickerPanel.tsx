@@ -14,11 +14,12 @@ const UI_TEXT_LOADERS: Partial<Record<AppLanguage, () => Promise<{ default: I18n
   es: () => import('emoji-picker-element/i18n/es.js'),
   de: () => import('emoji-picker-element/i18n/de.js'),
   fr: () => import('emoji-picker-element/i18n/fr.js'),
+  it: () => import('emoji-picker-element/i18n/it.js'),
   ar: () => import('emoji-picker-element/i18n/ar.js'),
 }
 
 function resolveAppLanguage(language: string): AppLanguage {
-  return language === 'pt' || language === 'es' || language === 'de' || language === 'fr' || language === 'ar'
+  return language === 'pt' || language === 'es' || language === 'de' || language === 'fr' || language === 'it' || language === 'ar'
     ? language : 'en'
 }
 

@@ -133,6 +133,10 @@ describe('getChangelogMarkdown', () => {
     await expect(getChangelogMarkdown('fr')).resolves.toMatch(versionPattern)
   })
 
+  it('includes the current package version in it changelog', async () => {
+    await expect(getChangelogMarkdown('it')).resolves.toMatch(versionPattern)
+  })
+
   it('includes the current package version in ar changelog', async () => {
     await expect(getChangelogMarkdown('ar')).resolves.toMatch(versionPattern)
   })

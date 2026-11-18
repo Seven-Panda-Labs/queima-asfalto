@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs'
 import { resolve } from 'node:path'
 
-export type PrivacyPolicyLocale = 'pt' | 'en' | 'es' | 'de' | 'fr' | 'ar'
+export type PrivacyPolicyLocale = 'pt' | 'en' | 'es' | 'de' | 'fr' | 'it' | 'ar'
 
 export type PrivacyPolicyValues = {
   INSTANCE_NAME: string
@@ -33,6 +33,8 @@ const DEFAULT_RETENTION_DE =
   'Löschanfragen per E-Mail; Antwort innerhalb von 30 Tagen.'
 const DEFAULT_RETENTION_FR =
   'Demandes de suppression par e-mail ; réponse sous 30 jours.'
+const DEFAULT_RETENTION_IT =
+  'Richieste di cancellazione via e-mail; risposta entro 30 giorni.'
 const DEFAULT_RETENTION_AR =
   'طلبات الحذف عبر البريد الإلكتروني؛ الرد في غضون 30 يومًا.'
 
@@ -85,6 +87,10 @@ function yesNoDe(enabled: boolean): string {
 
 function yesNoFr(enabled: boolean): string {
   return enabled ? 'oui' : 'non'
+}
+
+function yesNoIt(enabled: boolean): string {
+  return enabled ? 'sì' : 'no'
 }
 
 function yesNoAr(enabled: boolean): string {
@@ -168,6 +174,16 @@ export function resolvePrivacyPolicyValuesForLocale(
     }
   }
 
+  if (locale === 'it') {
+    return {
+      ...values,
+      USES_ANALYTICS: yesNoIt(usesAnalytics),
+      USES_GEOAPIFY: yesNoIt(usesGeoapify),
+      USES_PUSH: yesNoIt(usesPush),
+      RETENTION_POLICY: env.PRIVACY_RETENTION_POLICY_IT?.trim() || DEFAULT_RETENTION_IT,
+    }
+  }
+
   if (locale === 'ar') {
     return {
       ...values,
@@ -198,7 +214,7 @@ export function substitutePlaceholders(
 
 export function parseLocaleSections(template: string): Map<PrivacyPolicyLocale, string> {
   const sections = new Map<PrivacyPolicyLocale, string>()
-  const pattern = /^---locale:(pt|en|es|de|fr|ar)---$/gm
+  const pattern = /^---locale:(pt|en|es|de|fr|it|ar)---$/gm
   const matches = [...template.matchAll(pattern)]
 
   for (let i = 0; i < matches.length; i += 1) {

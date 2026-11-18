@@ -34,10 +34,11 @@ describe('parseRegistrationLocale', () => {
     expect(parseRegistrationLocale('pt-PT')).toBe('pt')
     expect(parseRegistrationLocale('en-US')).toBe('en')
     expect(parseRegistrationLocale('fr-FR')).toBe('fr')
+    expect(parseRegistrationLocale('it-IT')).toBe('it')
   })
 
   it('returns undefined for unsupported locales', () => {
-    expect(parseRegistrationLocale('it-IT')).toBeUndefined()
+    expect(parseRegistrationLocale('nl-NL')).toBeUndefined()
     expect(parseRegistrationLocale('')).toBeUndefined()
   })
 })

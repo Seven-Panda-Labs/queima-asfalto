@@ -11,12 +11,14 @@ describe('normalizeAppLanguage', () => {
     expect(normalizeAppLanguage('de')).toBe('de')
     expect(normalizeAppLanguage('fr')).toBe('fr')
     expect(normalizeAppLanguage('fr-CA')).toBe('fr')
+    expect(normalizeAppLanguage('it')).toBe('it')
+    expect(normalizeAppLanguage('it-CH')).toBe('it')
     expect(normalizeAppLanguage('ar')).toBe('ar')
     expect(normalizeAppLanguage('ar-MA')).toBe('ar')
   })
 
   it('falls back to en for unsupported languages', () => {
-    expect(normalizeAppLanguage('it')).toBe('en')
+    expect(normalizeAppLanguage('nl')).toBe('en')
   })
 })
 
@@ -24,7 +26,8 @@ describe('resolveIntlLocale', () => {
   it('maps each language to a formatting locale', () => {
     expect(resolveIntlLocale('pt-PT')).toBe('pt-PT')
     expect(resolveIntlLocale('en')).toBe('en-GB')
-    expect(resolveIntlLocale('it')).toBe('en-GB')
+    expect(resolveIntlLocale('it')).toBe('it-IT')
+    expect(resolveIntlLocale('nl')).toBe('en-GB')
   })
 
   it('keeps Latin digits in Arabic', () => {
