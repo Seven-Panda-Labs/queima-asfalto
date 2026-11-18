@@ -10,6 +10,7 @@ import firebase from 'firebase/compat/app'
 import 'firebase/compat/firestore'
 import { Timestamp } from 'firebase/firestore'
 import { afterAll, beforeAll, beforeEach, describe, it } from 'vitest'
+import { RESULTS_PLATFORMS } from './shared/officialResults/types.js'
 import { DEFAULT_SHARE_PERMISSIONS } from './shared/shares/types.js'
 
 const PROJECT_ID = 'queima-asfalto-rules-test'
@@ -466,18 +467,17 @@ describe('firestore.rules', () => {
       )
     })
 
-    it('allows create with a supported resultsPlatform', async () => {
-      const userId = 'user-alice'
-      const db = testEnv.authenticatedContext(userId).firestore()
-      await assertSucceeds(
-        db.collection('events').doc('event-1').set(
-          validEventPayload(userId, {
-            resultsPlatform: 'eqtiming',
-            resultsUrl: 'https://live.eqtiming.com/62417',
-          }),
-        ),
-      )
-    })
+    for (const platform of RESULTS_PLATFORMS) {
+      it(`allows create with resultsPlatform ${platform}`, async () => {
+        const userId = 'user-alice'
+        const db = testEnv.authenticatedContext(userId).firestore()
+        await assertSucceeds(
+          db.collection('events').doc('event-1').set(
+            validEventPayload(userId, { resultsPlatform: platform, resultsUrl: 'https://example.com/results' }),
+          ),
+        )
+      })
+    }
 
     it('denies other users from reading, updating, or deleting events', async () => {
       const ownerId = 'user-alice'
