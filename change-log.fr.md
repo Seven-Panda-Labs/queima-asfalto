@@ -4,6 +4,14 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Ajouté
+
+- **Courses ancres dans la liste des événements :** elles portent un ⚓ après leur nom.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Corrigé

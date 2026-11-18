@@ -4,6 +4,14 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Hinzugefügt
+
+- **Anker in der Eventliste:** Ankerrennen tragen ein ⚓ hinter dem Namen.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Behoben

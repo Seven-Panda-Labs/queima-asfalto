@@ -4,6 +4,14 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Añadido
+
+- **Anclas en la lista de eventos:** las pruebas ancla llevan un ⚓ después del nombre.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Corregido

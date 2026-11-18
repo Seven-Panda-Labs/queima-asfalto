@@ -4,6 +4,14 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Added
+
+- **Anchors in the events list:** anchor races carry a ⚓ after their name.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Fixed

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.97.0] - 2026-11-18
+
+### Adicionado
+
+- **Âncoras na lista de eventos:** as provas âncora levam um ⚓ a seguir ao nome.
+
+---
+
 ## [1.96.1] - 2026-11-18
 
 ### Corrigido
