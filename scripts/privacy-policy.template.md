@@ -492,6 +492,104 @@ Nous publierons la date de mise à jour en haut de cette page. Les changements i
 **{{CONTROLLER_NAME}}**  
 E-mail : [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
 Instance : {{HOSTING_URL}}
+---locale:it---
+#### Informativa sulla privacy: {{INSTANCE_NAME}}
+
+**Ultimo aggiornamento:** {{EFFECTIVE_DATE}}
+
+#### 1. Chi siamo
+
+Il titolare del trattamento per questa istanza è **{{CONTROLLER_NAME}}**, gestore di **{{HOSTING_URL}}** («noi» o «il gestore»).
+
+Il software [Queima Asfalto](https://github.com/Seven-Panda-Labs/queima-asfalto) è open source (AGPL-3.0). Gli autori del codice **non** sono titolari del trattamento per la tua istanza self-hosted.
+
+#### 2. Ambito di applicazione
+
+La presente informativa si applica agli utenti che creano un account e usano la PWA su **{{HOSTING_URL}}**.
+
+#### 3. Dati che possiamo trattare
+
+A seconda delle funzionalità attivate, l'istanza può trattare:
+
+| Categoria | Esempi | Dove |
+|-----------|--------|------|
+| **Account** | Nome, email, identificativo Google (Firebase Auth UID) | Firebase Authentication, Firestore `users/{uid}` |
+| **Profilo risultati** | Nome per le classifiche, alias, ID parkrunner, parkrun preferiti | Firestore `users/{uid}` |
+| **Contenuti dell'app** | Eventi, obiettivi, risultati, note, luoghi, coordinate GPS | Firestore (`events`, `goals`, `performanceGoals`, `bucketListItems`, …) |
+| **Registro del peso** (se usato) | Peso, giorno e nota facoltativa di ogni voce. Dati relativi alla salute, mai condivisi | Firestore `weightEntries` |
+| **Contenuti multimediali** | Foto e video degli eventi | Firebase Storage |
+| **Condivisione** | Email dell'invitato, permessi, dati condivisi oscurati | Firestore `shares`, Cloud Functions |
+| **Contributi al catalogo** | La coppia che hai segnato come la stessa gara, e il giorno in cui hai corso una gara che il catalogo conosce, collegati al tuo UID | Firestore `raceCatalogDuplicateVotes`, `raceCatalogEditionReports`. Il catalogo condiviso riceve il valore, mai chi l'ha inviato |
+| **Notifiche** (se attivate) | Token FCM, preferenze dei promemoria, lingua, fuso orario | Firestore `users/{uid}` |
+| **Preferenze locali** | Tema, lingua, modalità di visualizzazione | `localStorage` del browser (prefisso per utente) |
+| **Analytics** (se attivato) | Visualizzazioni di pagina, metadati del browser | Google Analytics tramite Firebase (`measurementId`) |
+| **Geocodifica** (se attivata) | Testo di ricerca dei luoghi, coordinate | Richieste del browser all'API Geoapify |
+| **Importazione dei risultati** | Nome/ID parkrunner, URL pubblico dell'evento | Cloud Function `lookupOfficialResults` → richieste HTTP a **siti di cronometraggio di terzi** |
+
+Non raccogliamo consapevolmente dati di minori di 16 anni. Contattaci se ritieni che un minore ci abbia fornito dati.
+
+#### 4. Finalità e basi giuridiche (GDPR)
+
+| Finalità | Base giuridica tipica |
+|----------|-----------------------|
+| Account e sincronizzazione tra dispositivi | Contratto / misure precontrattuali (art. 6(1)(b)) |
+| Condivisione tra utenti | Contratto |
+| Promemoria push (opt-in) | Consenso (art. 6(1)(a)), l'utente li attiva in Impostazioni |
+| Analytics (se attivato) | Consenso o legittimo interesse, secondo la tua configurazione e giurisdizione |
+| Sicurezza e prevenzione degli abusi | Legittimo interesse (art. 6(1)(f)) |
+| Importazione dei risultati ufficiali | Contratto (funzionalità richiesta dall'utente) |
+| Registro del peso (facoltativo) | Consenso esplicito (art. 9(2)(a)): esiste solo se registri un peso o una nota, e cancellare le voci lo revoca |
+
+#### 5. Sub-responsabili del trattamento e terze parti
+
+| Servizio | Fornitore | Dati tipici | Note |
+|----------|-----------|-------------|------|
+| Autenticazione, database, file, funzioni, push | Google Firebase / Google Cloud | Come da sezione 3 | Regione configurata: **{{FIREBASE_REGION}}**. [Privacy di Google](https://policies.google.com/privacy) |
+| Completamento automatico / mappa | Geoapify ({{USES_GEOAPIFY}}) | Ricerche di luoghi | [Privacy di Geoapify](https://www.geoapify.com/privacy-policy) |
+| Accesso | Google (OAuth) | Email, nome, foto del profilo Google | Informativa di Google |
+| Siti di cronometraggio | Vari (pubblici) | Nome o ID nelle pagine pubbliche dei risultati | Scraping solo di URL **pubblici**; soggetto ai termini di servizio di ciascun sito |
+
+Elenco completo delle dipendenze open source: `npm run licenses` nel repository.
+
+#### 6. Conservazione
+
+- **Account e contenuti:** finché l'account esiste o fino a una richiesta di cancellazione.
+- **Token FCM non validi:** rimossi automaticamente da `dispatchReminders` quando vengono rilevati.
+- **Log di Firebase/Google Cloud:** secondo la conservazione configurata nel tuo progetto GCP (consigliato: definirla e documentarla).
+
+**Politica di questa istanza:** {{RETENTION_POLICY}}
+
+#### 7. Trasferimenti internazionali
+
+Firebase e Google possono trattare i dati al di fuori del SEE (ad es. negli Stati Uniti), mediante clausole contrattuali standard o meccanismi equivalenti. Consulta la documentazione del tuo progetto Firebase / Google Cloud.
+
+#### 8. I tuoi diritti
+
+Ai sensi del GDPR, gli utenti possono richiedere:
+
+- Accesso, rettifica, cancellazione
+- Limitazione del trattamento od opposizione al trattamento
+- Portabilità (dati da loro forniti, in un formato strutturato), disponibile direttamente nell'app in Impostazioni → Dati → «Esporta backup (.zip)»
+- Revoca del consenso (ad es. notifiche push) senza pregiudicare il trattamento precedente
+- Reclamo a un'autorità di controllo (Portogallo: [CNPD](https://www.cnpd.pt))
+
+**Richieste:** [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}}). Tempo di risposta consigliato: 30 giorni.
+
+**Cancellazione dell'account:** su richiesta, il gestore cancella l'account dall'area di amministrazione. Il profilo, gli eventi, i file in Storage, le condivisioni e gli altri dati dell'account vengono cancellati in un'unica operazione.
+
+#### 9. Sicurezza
+
+Misure incluse nel software: regole Firestore/Storage per utente, autenticazione obbligatoria, oscuramento lato server nelle condivisioni, limiti di frequenza sulle ricerche dei risultati. Consulta [restrizioni della console](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/console-restrictions.md) e [self-hosting](https://github.com/Seven-Panda-Labs/queima-asfalto/blob/main/docs/self-hosting.md).
+
+#### 10. Modifiche
+
+Pubblicheremo la data di aggiornamento in cima a questa pagina. Le modifiche sostanziali potranno essere comunicate via email o con un avviso nell'app.
+
+#### 11. Contatti
+
+**{{CONTROLLER_NAME}}**  
+Email: [{{CONTACT_EMAIL}}](mailto:{{CONTACT_EMAIL}})  
+Istanza: {{HOSTING_URL}}
 ---locale:ar---
 #### سياسة الخصوصية: {{INSTANCE_NAME}}
 

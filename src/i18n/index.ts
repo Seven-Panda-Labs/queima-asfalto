@@ -21,6 +21,7 @@ const LOCALE_LOADERS: Record<
   es: () => import('./locales/es.json'),
   de: () => import('./locales/de.json'),
   fr: () => import('./locales/fr.json'),
+  it: () => import('./locales/it.json'),
   ar: () => import('./locales/ar.json'),
 }
 
@@ -31,7 +32,7 @@ const GUEST_LANGUAGE_KEY = guestStorageKey('language-guest')
 let initPromise: Promise<typeof i18n> | null = null
 
 function isAppLanguage(value: string | null): value is AppLanguage {
-  return value === 'pt' || value === 'en' || value === 'es' || value === 'de' || value === 'fr' || value === 'ar'
+  return value === 'pt' || value === 'en' || value === 'es' || value === 'de' || value === 'fr' || value === 'it' || value === 'ar'
 }
 
 export function resolveBrowserLanguage(): AppLanguage {

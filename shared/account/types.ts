@@ -2,7 +2,7 @@ export const ACCOUNT_STATUSES = ['pending', 'approved', 'rejected'] as const
 
 export type AccountStatus = (typeof ACCOUNT_STATUSES)[number]
 
-export const APP_LANGUAGES = ['pt', 'en', 'es', 'de', 'fr', 'ar'] as const
+export const APP_LANGUAGES = ['pt', 'en', 'es', 'de', 'fr', 'it', 'ar'] as const
 
 export type AppLanguage = (typeof APP_LANGUAGES)[number]
 

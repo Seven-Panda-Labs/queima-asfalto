@@ -53,7 +53,7 @@ Enforced by hooks, see [Enforcement](#enforcement).
 | Licenses (if deps changed) | `npm run check:licenses` |
 | No secrets | CI Gitleaks; never commit `.env.local`, keys, service accounts |
 | No PII in fixtures | Fictional names only (e.g. «Zé Ninguém») |
-| Changelog (on version bump) | `package.json` + all six `change-log{,.en,.es,.de,.fr,.ar}.md` (`## [X.Y.Z] - YYYY-MM-DD`) |
+| Changelog (on version bump) | `package.json` + all seven `change-log{,.en,.es,.de,.fr,.it,.ar}.md` (`## [X.Y.Z] - YYYY-MM-DD`) |
 | Scope | One topic per PR |
 
 ## What agents must **not** do
@@ -79,7 +79,7 @@ Applies to everything an agent writes: UI strings, i18n locales, code comments, 
 | **Comments only where the code is not self-evident.** Explain *why*, not *what* | A comment restating the line below it is noise that rots |
 | **Comments in English**, like commits | Public repo, mixed-language contributors |
 
-UI strings are user-facing and stay in the six locales (`src/i18n/locales/`); the rules above apply to each translation, not only the English one.
+UI strings are user-facing and stay in the seven locales (`src/i18n/locales/`); the rules above apply to each translation, not only the English one.
 
 ## Enforcement
 
@@ -88,7 +88,7 @@ Local git hooks (enable once per clone with `npm run setup:githooks`):
 | Hook | Blocks |
 |------|--------|
 | `.githooks/pre-push` | Any push to `main` / `master`, including force-push and delete |
-| `.githooks/pre-commit` | `package.json` version bump without all six changelogs staged and in sync |
+| `.githooks/pre-commit` | `package.json` version bump without all seven changelogs staged and in sync |
 
 The pre-push hook covers every agent and human that shells out to `git`. Emergency hotfix, only on explicit user instruction: `ALLOW_MAIN_PUSH=1 git push origin main`.
 

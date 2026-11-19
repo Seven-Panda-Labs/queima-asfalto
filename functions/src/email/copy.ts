@@ -56,6 +56,14 @@ const adminNewUser: Record<AppLanguage, AdminNewUserCopy> = {
     approveLabel: 'Approuver le compte',
     rejectLabel: 'Refuser le compte',
   },
+  it: {
+    subject: 'Nuova registrazione in attesa di approvazione',
+    title: 'Nuovo utente',
+    body: ({ name, email }) =>
+      `<p><strong>${escape(name || '-')}</strong> (${escape(email)}) ha chiesto l’accesso a questa istanza.</p><p>Approva o rifiuta questa registrazione:</p>`,
+    approveLabel: 'Approva l’account',
+    rejectLabel: 'Rifiuta l’account',
+  },
   ar: {
     subject: 'تسجيل جديد بانتظار الموافقة',
     title: 'مستخدم جديد',
@@ -97,6 +105,12 @@ const userApproved: Record<AppLanguage, UserDecisionCopy> = {
     body: '<p>Un administrateur a approuvé ton inscription. Tu peux te connecter et commencer à utiliser l’application.</p>',
     ctaLabel: 'Ouvrir l’application',
   },
+  it: {
+    subject: 'Il tuo account è stato approvato',
+    title: 'Account approvato',
+    body: '<p>Un amministratore ha approvato la tua registrazione. Puoi accedere e iniziare a usare l’app.</p>',
+    ctaLabel: 'Apri l’app',
+  },
   ar: {
     subject: 'تمت الموافقة على حسابك',
     title: 'تمت الموافقة على الحساب',
@@ -135,6 +149,12 @@ const userRejected: Record<AppLanguage, UserDecisionCopy> = {
     title: 'Compte non approuvé',
     body: '<p>Un administrateur n’a pas approuvé ton inscription sur cette instance. Contacte l’administrateur du site si tu penses qu’il s’agit d’une erreur.</p>',
     ctaLabel: 'Retour à l’accueil',
+  },
+  it: {
+    subject: 'Registrazione non approvata',
+    title: 'Account non approvato',
+    body: '<p>Un amministratore non ha approvato la tua registrazione su questa istanza. Se pensi che sia un errore, contatta l’amministratore del sito.</p>',
+    ctaLabel: 'Torna alla home',
   },
   ar: {
     subject: 'لم تتم الموافقة على التسجيل',

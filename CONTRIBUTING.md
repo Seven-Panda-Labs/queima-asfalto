@@ -30,7 +30,7 @@ Sign in with «Entrar (emulador)» / "Sign in (emulator)". Details: [docs/emulat
 
 ## Changelog
 
-Needed only when bumping `version` in `package.json` (docs, tests and refactors usually don't). Add a section at the top of all six files, `change-log{,.en,.es,.de,.fr,.ar}.md`:
+Needed only when bumping `version` in `package.json` (docs, tests and refactors usually don't). Add a section at the top of all seven files, `change-log{,.en,.es,.de,.fr,.it,.ar}.md`:
 
 ```markdown
 ## [1.11.0] - 2026-07-20

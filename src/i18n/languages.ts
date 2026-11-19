@@ -1,4 +1,4 @@
-export const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'de', 'fr', 'ar'] as const
+export const SUPPORTED_LANGUAGES = ['pt', 'en', 'es', 'de', 'fr', 'it', 'ar'] as const
 export type AppLanguage = (typeof SUPPORTED_LANGUAGES)[number]
 
 export const RTL_LANGUAGES: readonly AppLanguage[] = ['ar']
