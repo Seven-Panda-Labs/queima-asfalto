@@ -4,6 +4,14 @@
 
 ---
 
+## [1.99.0] - 2026-11-20
+
+### Ajouté
+
+- **Résultats de Berlin-Timing :** les courses chronométrées par Berlin-Timing sont désormais importables. Le lien de la page de la course suffit : la date de l'événement choisit l'édition. Les triathlons, les relais et les classements par équipes sont exclus.
+
+---
+
 ## [1.98.1] - 2026-11-20
 
 ### Corrigé

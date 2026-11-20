@@ -20,7 +20,7 @@ Replace `myplatform` with the slug (e.g. `eqtiming`).
 
 Connector rules: public pages and APIs only, never bypass a login, paywall or bot challenge; send a reasonable `User-Agent` and `Referer` like the existing connectors; return `[]` on no match and throw only on unexpected failures.
 
-References: `eqTiming` (simple JSON + CSV), `mikaTiming` (HTML forms, custom domains).
+References: `eqTiming` (simple JSON + CSV), `mikaTiming` (HTML forms, custom domains), `berlinTiming` (rankings named with no pattern: the event date picks the edition and every table is searched for the runner).
 
 ## Limits
 

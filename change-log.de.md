@@ -4,6 +4,14 @@
 
 ---
 
+## [1.99.0] - 2026-11-20
+
+### Hinzugefügt
+
+- **Ergebnisse von Berlin-Timing:** von Berlin-Timing gemessene Läufe lassen sich jetzt importieren. Der Link zur Seite des Laufs genügt: das Datum des Events wählt die Ausgabe. Triathlons, Staffeln und Mannschaftswertungen bleiben außen vor.
+
+---
+
 ## [1.98.1] - 2026-11-20
 
 ### Behoben

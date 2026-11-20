@@ -20,6 +20,7 @@ export type ResultsPlatform =
   | 'mikatiming'
   | 'pacer'
   | 'stgk'
+  | 'berlintiming'
 
 export const RESULTS_PLATFORMS: ResultsPlatform[] = [
   'parkrun',
@@ -41,6 +42,7 @@ export const RESULTS_PLATFORMS: ResultsPlatform[] = [
   'mikatiming',
   'pacer',
   'stgk',
+  'berlintiming',
 ]
 
 /**
@@ -85,6 +87,7 @@ export function resultsPlatformLabel(platform: ResultsPlatform): string {
   if (platform === 'mikatiming') return 'mika:timing'
   if (platform === 'pacer') return 'Pacer'
   if (platform === 'stgk') return 'STGK'
+  if (platform === 'berlintiming') return 'Berlin-Timing'
   return platform
 }
 
