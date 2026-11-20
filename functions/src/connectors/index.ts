@@ -18,6 +18,7 @@ import { lookupSccEvents } from './sccEvents.js'
 import { lookupSporthive } from './sporthive.js'
 import { lookupPacer } from './pacer.js'
 import { lookupStgk } from './stgk.js'
+import { lookupBerlinTiming } from './berlinTiming.js'
 
 export async function lookupPlatform(
   platform: ResultsPlatform,
@@ -82,6 +83,9 @@ export async function lookupPlatform(
     case 'stgk':
       if (!resultsUrl) return []
       return lookupStgk(resultsUrl, profile, eventName)
+    case 'berlintiming':
+      if (!resultsUrl) return []
+      return lookupBerlinTiming(resultsUrl, profile, eventDate)
     case 'parkrun':
       return lookupParkrun(profile, eventDate, eventName, resultsUrl, parkrunEvent)
     default:

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.99.0] - 2026-11-20
+
+### Added
+
+- **Results from Berlin-Timing:** races timed by Berlin-Timing can now be imported. The link to the race page is enough: the event date picks the edition. Triathlons, relays and team rankings are left out.
+
+---
+
 ## [1.98.1] - 2026-11-20
 
 ### Fixed

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.99.0] - 2026-11-20
+
+### Adicionado
+
+- **Resultados da Berlin-Timing:** as provas cronometradas pela Berlin-Timing já se podem importar. Basta o link da página da prova: a data do evento escolhe a edição. Triatlos, estafetas e classificações por equipas ficam de fora.
+
+---
+
 ## [1.98.1] - 2026-11-20
 
 ### Corrigido

@@ -8,6 +8,7 @@ import { isTimatakaHostname, isTimatakaResultsPath, parseTimatakaUrl } from './t
 import { isWiclaxResultsPath, parseWiclaxUrl } from './wiclax.js'
 import { parseRaceResultEmbedHash } from './raceresult.js'
 import { parsePacerUrl } from './pacer.js'
+import { isBerlinTimingHostname } from './berlinTiming.js'
 
 export function detectPlatformFromUrl(url: string): ResultsPlatform | null {
   try {
@@ -18,6 +19,7 @@ export function detectPlatformFromUrl(url: string): ResultsPlatform | null {
     if (hostname.includes('raceresult.com')) return 'myraceresult'
     if (hostname.includes('maxfunsports.com')) return 'maxfunsports'
     if (hostname.includes('stgk.de')) return 'stgk'
+    if (isBerlinTimingHostname(hostname)) return 'berlintiming'
     if (hostname.includes('myracepartner.com') && /ergebnisse/i.test(parsed.pathname)) {
       const normalized = new URL(normalizeMyRacePartnerUrl(url))
       const resultId =
