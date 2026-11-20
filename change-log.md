@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Corrigido
+
+- **Seta da lista «Anteriores»:** já não fica encostada à borda arredondada do botão.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Adicionado
