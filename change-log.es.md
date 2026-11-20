@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Corregido
+
+- **Flecha de la lista «Anteriores»:** ya no queda pegada al borde redondeado del botón.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Añadido

@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Fixed
+
+- **Arrow on the "Earlier" list:** it no longer sits against the button's rounded edge.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Added

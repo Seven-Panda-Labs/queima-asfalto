@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Corretto
+
+- **Freccia dell'elenco «Precedenti»:** non è più attaccata al bordo arrotondato del pulsante.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Aggiunto

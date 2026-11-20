@@ -80,21 +80,38 @@ export function FilterYears({
           </FilterPill>
         ))}
       {older.length > 0 ? (
-        <select
-          aria-label={t('common.earlierYears')}
-          value={olderActive ? value : ''}
-          onChange={(event) => onChange(Number(event.target.value))}
-          className={pillClass(olderActive)}
-        >
-          <option value="" disabled className="bg-surface text-foreground">
-            {t('common.earlierYears')}
-          </option>
-          {older.map((year) => (
-            <option key={year} value={year} className="bg-surface text-foreground">
-              {year}
+        // The native arrow hugs the border, inside the pill's rounded end.
+        <span className="relative inline-flex items-center">
+          <select
+            aria-label={t('common.earlierYears')}
+            value={olderActive ? value : ''}
+            onChange={(event) => onChange(Number(event.target.value))}
+            className={`peer appearance-none pe-8 ${pillClass(olderActive)}`}
+          >
+            <option value="" disabled className="bg-surface text-foreground">
+              {t('common.earlierYears')}
             </option>
-          ))}
-        </select>
+            {older.map((year) => (
+              <option key={year} value={year} className="bg-surface text-foreground">
+                {year}
+              </option>
+            ))}
+          </select>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={2.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+            className={`pointer-events-none absolute end-3 h-3.5 w-3.5 ${
+              olderActive ? 'text-white' : 'text-muted peer-hover:text-foreground'
+            }`}
+          >
+            <path d="m6 9 6 6 6-6" />
+          </svg>
+        </span>
       ) : null}
     </>
   )

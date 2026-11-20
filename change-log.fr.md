@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Corrigé
+
+- **Flèche de la liste « Antérieures » :** elle ne touche plus le bord arrondi du bouton.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Ajouté

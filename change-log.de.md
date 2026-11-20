@@ -4,6 +4,14 @@
 
 ---
 
+## [1.98.1] - 2026-11-20
+
+### Behoben
+
+- **Pfeil der Liste „Frühere“:** er klebt nicht mehr am runden Rand der Schaltfläche.
+
+---
+
 ## [1.98.0] - 2026-11-18
 
 ### Hinzugefügt
