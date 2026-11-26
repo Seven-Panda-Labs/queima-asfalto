@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Alterado
+
+- **Desejos já no calendário:** os que já estão agendados ou foram corridos passam para uma lista à parte, esbatida, com a data ou o ano. Em cima fica só o que falta.
+
+### Corrigido
+
+- **Uma prova, uma identidade:** ligar um evento ou um desejo ao catálogo já não cria uma segunda cópia da mesma prova. Uma âncora marcada no evento passa a aparecer também no desejo.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Adicionado

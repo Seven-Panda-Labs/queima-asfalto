@@ -527,7 +527,10 @@
       "weeks_other": "{{count}} أسابيع"
     },
     "otherSeason": "من موسم آخر، ضمن دورة هذا الموسم",
-    "typicalMonth": "عادةً في {{month}}"
+    "typicalMonth": "عادةً في {{month}}",
+    "inCalendar": "موجودة في التقويم",
+    "wishScheduled": "مجدولة",
+    "wishRan": "أُنجز في {{year}}"
   },
   "linkWishes": {
     "offer_one": "أمنية واحدة لا تقول بعد أيّ سباق هي. قلها الآن",

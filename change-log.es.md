@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Cambiado
+
+- **Deseos ya en el calendario:** los que ya están programados o se han corrido pasan a una lista aparte, atenuada, con su fecha o su año. Arriba queda solo lo que falta.
+
+### Corregido
+
+- **Una carrera, una identidad:** vincular un evento o un deseo al catálogo ya no crea una segunda copia de la misma carrera. Un ancla marcada en el evento ahora aparece también en el deseo.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Añadido

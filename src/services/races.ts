@@ -10,11 +10,13 @@ import {
   serverTimestamp,
   updateDoc,
   where,
+  writeBatch,
   type Timestamp,
 } from 'firebase/firestore'
 import { db } from './firebase'
 import type { Race, RaceCreate } from '../types/Race'
 import { findRaceByName } from '../domain/raceMatching'
+import { foldedRaceFields } from '../../shared/domain/raceFold'
 import { parseAnchorYears, toggleAnchorYear } from '../domain/seasonAnchors'
 import { isRaceRole, type RaceRole } from '../domain/seasonRules'
 
@@ -119,6 +121,38 @@ export async function findOrCreateRaceId(
   } catch {
     return null
   }
+}
+
+/**
+ * Makes `from` part of `into`: one race where there were two.
+ *
+ * Everything that pointed at `from` points at `into`, including the races
+ * prepared for it, and `from` is deleted. One batch, so a failure leaves both
+ * races as they were rather than half of the history on each.
+ */
+export async function foldRaceInto(userId: string, from: Race, into: Race): Promise<void> {
+  const pointingAt = (collectionName: string, field: string) =>
+    getDocs(query(collection(db, collectionName), where('userId', '==', userId), where(field, '==', from.id)))
+  const [events, wishes, entries, prepared] = await Promise.all([
+    pointingAt('events', 'raceId'),
+    pointingAt('bucketListItems', 'raceId'),
+    pointingAt('raceEntries', 'raceId'),
+    pointingAt(RACES_COLLECTION, 'servesRaceId'),
+  ])
+
+  const batch = writeBatch(db)
+  for (const document of [...events.docs, ...wishes.docs, ...entries.docs]) {
+    batch.update(document.ref, { raceId: into.id, updatedAt: serverTimestamp() })
+  }
+  for (const document of prepared.docs) {
+    batch.update(document.ref, { servesRaceId: into.id, updatedAt: serverTimestamp() })
+  }
+  batch.update(doc(db, RACES_COLLECTION, into.id), {
+    ...withoutUndefined(foldedRaceFields(into, from)),
+    updatedAt: serverTimestamp(),
+  })
+  batch.delete(doc(db, RACES_COLLECTION, from.id))
+  await batch.commit()
 }
 
 /**

@@ -35,6 +35,7 @@ import { useRaceEntries } from '../../hooks/useRaceEntries'
 import { useRaceEntryRollover } from '../../hooks/useRaceEntryRollover'
 import { anyAnchorRaceIds } from '../../domain/seasonAnchors'
 import { buildSeasonBoard } from '../../domain/seasonBoard'
+import { wishInCalendar, type WishInCalendar } from '../../domain/wishInCalendar'
 import { WishList } from './WishList'
 import { SeasonTimeline } from '../../components/SeasonTimeline'
 import { seasonYears } from '../../domain/seasonTimeline'
@@ -201,6 +202,42 @@ export function Planning() {
     [allEvents, ownBucketList.items, raceEntries, races],
   )
 
+  /**
+   * The wishes whose race is already in the calendar, ahead or run.
+   *
+   * Shown apart and faded, so the list on top is what is still to do. Only on
+   * your own list: the calendar read here is yours, not the owner's.
+   */
+  const placed = useMemo(() => {
+    const today = new Date()
+    const states = new Map<string, WishInCalendar>()
+    if (isSharedView) return states
+    for (const item of items) {
+      const state = wishInCalendar(item, allEvents, today)
+      if (state) states.set(item.id, state)
+    }
+    return states
+  }, [isSharedView, items, allEvents])
+
+  const openItems = useMemo(() => sortedItems.filter((item) => !placed.has(item.id)), [sortedItems, placed])
+
+  /** The next one first, then the ones already run, most recent first. */
+  const placedItems = useMemo(
+    () =>
+      sortedItems
+        .flatMap((item) => {
+          const state = placed.get(item.id)
+          return state ? [{ item, state }] : []
+        })
+        .sort((left, right) => {
+          if (left.state.kind !== right.state.kind) return left.state.kind === 'scheduled' ? -1 : 1
+          const byDate = left.state.event.date.getTime() - right.state.event.date.getTime()
+          return left.state.kind === 'scheduled' ? byDate : -byDate
+        })
+        .map(({ item }) => item),
+    [sortedItems, placed],
+  )
+
   // The place is the race's, so the map shows what the race identity knows.
   const pins = useMemo(
     () => wishPins(sortedItems, isSharedView ? [] : races),
@@ -302,6 +339,37 @@ export function Planning() {
     } finally {
       setScheduling(false)
     }
+  }
+
+  /** What both lists share: their rows differ only in where the race already is. */
+  const wishListProps = {
+    races: isSharedView ? [] : races,
+    catalog: markedEntries,
+    season: isSharedView ? new Map() : season,
+    anchorRaceIds: isSharedView ? new Set<string>() : anchorIds,
+    actions: (item: BucketListItem) => {
+      const site = wishSite(item)
+      const actions: RowAction[] = [
+        ...(site ? [{ label: t('common.officialSite'), icon: <ExternalLinkIcon />, href: site }] : []),
+        ...(canWrite
+          ? [
+              {
+                label: t('common.edit'),
+                icon: <PencilIcon />,
+                to: activeOwnerId
+                  ? `/planeamento/${item.id}/editar?owner=${activeOwnerId}`
+                  : `/planeamento/${item.id}/editar`,
+              },
+              { label: t('common.delete'), icon: <TrashIcon />, danger: true, onClick: () => setItemToDelete(item) },
+            ]
+          : []),
+        // Already in the calendar: scheduling it again would be a second running.
+        ...(!isSharedView && !placed.has(item.id)
+          ? [{ label: t('common.schedule'), icon: <CalendarPlusIcon />, onClick: () => void handleSchedule(item) }]
+          : []),
+      ]
+      return <RowActions title={wishSubject(item, isSharedView ? [] : races).name} actions={actions} />
+    },
   }
 
   return (
@@ -428,35 +496,15 @@ export function Planning() {
             </Suspense>
           </div>
         ) : (
-          <WishList
-            items={sortedItems}
-            races={isSharedView ? [] : races}
-            catalog={markedEntries}
-            season={isSharedView ? new Map() : season}
-            anchorRaceIds={isSharedView ? new Set() : anchorIds}
-            actions={(item) => {
-              const site = wishSite(item)
-              const actions: RowAction[] = [
-                ...(site ? [{ label: t('common.officialSite'), icon: <ExternalLinkIcon />, href: site }] : []),
-                ...(canWrite
-                  ? [
-                      {
-                        label: t('common.edit'),
-                        icon: <PencilIcon />,
-                        to: activeOwnerId
-                          ? `/planeamento/${item.id}/editar?owner=${activeOwnerId}`
-                          : `/planeamento/${item.id}/editar`,
-                      },
-                      { label: t('common.delete'), icon: <TrashIcon />, danger: true, onClick: () => setItemToDelete(item) },
-                    ]
-                  : []),
-                ...(!isSharedView
-                  ? [{ label: t('common.schedule'), icon: <CalendarPlusIcon />, onClick: () => void handleSchedule(item) }]
-                  : []),
-              ]
-              return <RowActions title={wishSubject(item, isSharedView ? [] : races).name} actions={actions} />
-            }}
-          />
+          <>
+            {openItems.length > 0 ? <WishList {...wishListProps} items={openItems} /> : null}
+            {placedItems.length > 0 ? (
+              <section className="flex flex-col gap-3">
+                <h3 className="text-sm font-semibold text-muted">{t('planning.inCalendar')}</h3>
+                <WishList {...wishListProps} items={placedItems} inCalendar={placed} />
+              </section>
+            ) : null}
+          </>
         )}
           </>
         )}

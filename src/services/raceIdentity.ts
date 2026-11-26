@@ -5,7 +5,8 @@ import { proposeCatalogRace } from './catalogProposals'
 import { reportEditionDates } from './editionReports'
 import { updateBucketListItem } from './bucketList'
 import { listEvents, updateEvent } from './events'
-import { findOrCreateRaceId, updateRace } from './races'
+import { findOrCreateRaceId, foldRaceInto, listRaces, updateRace } from './races'
+import type { RaceCreate } from '../types/Race'
 
 /**
  * Says that this event is a running of a race the shared catalog holds.
@@ -29,20 +30,13 @@ export async function identifyRaceInCatalog(
   event: Event,
   catalogRaceId: string,
 ): Promise<void> {
-  // An event from before the races collection has no identity yet, and there
-  // is nothing to hang a catalog id on until it does.
-  const raceId =
-    event.raceId ??
-    (await findOrCreateRaceId(userId, {
-      name: event.name,
-      location: event.location,
-      locationLat: event.locationLat,
-      locationLng: event.locationLng,
-    }))
-  if (!raceId) throw new Error('no race')
-
-  await updateRace(raceId, { catalogRaceId })
-  if (!event.raceId) await updateEvent(event.id, { raceId })
+  const raceId = await raceForCatalogEntry(userId, event.raceId, catalogRaceId, {
+    name: event.name,
+    location: event.location,
+    locationLat: event.locationLat,
+    locationLng: event.locationLng,
+  })
+  if (event.raceId !== raceId) await updateEvent(event.id, { raceId })
 
   await reportPastEditions(userId, raceId, catalogRaceId)
 }
@@ -151,16 +145,41 @@ export async function identifyWishInCatalog(
   item: BucketListItem,
   catalogRaceId: string,
 ): Promise<void> {
-  const raceId =
-    item.raceId ??
-    (await findOrCreateRaceId(userId, {
-      name: item.name ?? '',
-      location: item.location ?? '',
-      locationLat: item.locationLat,
-      locationLng: item.locationLng,
-    }))
-  if (!raceId) throw new Error('no race')
+  const raceId = await raceForCatalogEntry(userId, item.raceId, catalogRaceId, {
+    name: item.name ?? '',
+    location: item.location ?? '',
+    locationLat: item.locationLat,
+    locationLng: item.locationLng,
+  })
+  if (item.raceId !== raceId) await updateBucketListItem(item.id, { raceId })
+}
 
+/**
+ * The race a catalog entry is, for a document being linked to it.
+ *
+ * When another race of this runner already carries the entry, the document's
+ * own race is folded into that one. Stamping the id on both is how one race
+ * became two: a typo in an event's name minted a second race, linking it gave
+ * both the same entry, and an anchor set on one never reached a wish on the
+ * other. A document from before the races collection has no race yet and
+ * gets one here.
+ */
+async function raceForCatalogEntry(
+  userId: string,
+  ownRaceId: string | undefined,
+  catalogRaceId: string,
+  fallback: RaceCreate,
+): Promise<string> {
+  const races = await listRaces(userId)
+  const linked = races.find((race) => race.catalogRaceId === catalogRaceId)
+  if (linked) {
+    const own = races.find((race) => race.id === ownRaceId)
+    if (own && own.id !== linked.id) await foldRaceInto(userId, own, linked)
+    return linked.id
+  }
+
+  const raceId = ownRaceId ?? (await findOrCreateRaceId(userId, fallback))
+  if (!raceId) throw new Error('no race')
   await updateRace(raceId, { catalogRaceId })
-  if (!item.raceId) await updateBucketListItem(item.id, { raceId })
+  return raceId
 }

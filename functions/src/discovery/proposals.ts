@@ -12,6 +12,7 @@ import {
 } from '../shared/raceCatalog/index.js'
 import { findCatalogDuplicate, sameAnnualRace } from '../shared/eventDiscovery/duplicates.js'
 import { catalogId } from '../shared/eventDiscovery/identity.js'
+import { foldRaceInto } from '../raceFold.js'
 
 /**
  * Turns what runners proposed into catalog entries.
@@ -163,7 +164,17 @@ async function link(proposal: CatalogProposal, catalogRaceId: string, today: str
     const race = await db.collection('races').doc(proposal.raceId).get()
     // Their own race and nothing else: the id came from a browser.
     if (!race.exists || race.data()?.userId !== proposal.uid) return
-    await race.ref.update({ catalogRaceId })
+    // A race of theirs may already be this entry, under another name. Stamping
+    // the id on this one too is how one race became two.
+    const twin = (
+      await db
+        .collection('races')
+        .where('userId', '==', proposal.uid)
+        .where('catalogRaceId', '==', catalogRaceId)
+        .get()
+    ).docs.find((document) => document.id !== race.id)
+    if (twin) await foldRaceInto(db, proposal.uid, race.id, twin.id)
+    else await race.ref.update({ catalogRaceId })
 
     const year = Number(proposal.raceDate.slice(0, 4))
     const report: EditionReport = {

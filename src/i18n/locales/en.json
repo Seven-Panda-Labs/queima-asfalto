@@ -515,7 +515,10 @@
       "weeks_other": "{{count}} wks"
     },
     "otherSeason": "From another season, in this one's cycle",
-    "typicalMonth": "usually in {{month}}"
+    "typicalMonth": "usually in {{month}}",
+    "inCalendar": "Already in the calendar",
+    "wishScheduled": "Scheduled",
+    "wishRan": "Run in {{year}}"
   },
   "linkWishes": {
     "offer_one": "1 wish does not say which race it is. Say now",

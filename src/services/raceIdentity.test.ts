@@ -9,6 +9,8 @@ const findOrCreateRaceId = vi.fn()
 const reportEditionDates = vi.fn()
 const proposeCatalogRace = vi.fn()
 const updateBucketListItem = vi.fn()
+const listRaces = vi.fn()
+const foldRaceInto = vi.fn()
 
 vi.mock('./events', () => ({
   updateEvent: (...args: unknown[]) => updateEvent(...args),
@@ -17,6 +19,8 @@ vi.mock('./events', () => ({
 vi.mock('./races', () => ({
   updateRace: (...args: unknown[]) => updateRace(...args),
   findOrCreateRaceId: (...args: unknown[]) => findOrCreateRaceId(...args),
+  listRaces: (...args: unknown[]) => listRaces(...args),
+  foldRaceInto: (...args: unknown[]) => foldRaceInto(...args),
 }))
 vi.mock('./editionReports', () => ({
   reportEditionDates: (...args: unknown[]) => reportEditionDates(...args),
@@ -67,6 +71,7 @@ function event(overrides: Partial<Event> = {}): Event {
 beforeEach(() => {
   vi.clearAllMocks()
   listEvents.mockResolvedValue([])
+  listRaces.mockResolvedValue([])
 })
 
 describe('identifyRaceInCatalog', () => {
@@ -148,6 +153,42 @@ describe('identifyRaceInCatalog', () => {
     expect(updateRace).toHaveBeenCalledWith('race-1', {
       catalogRaceId: 'de-berlin-tierparklauf-berlin',
     })
+  })
+})
+
+describe('identifying a race another race of the runner already is', () => {
+  const napoli = 'it-napoli-napoli-city-half-marathon'
+  const typo = { id: 'race-typo', name: 'Napoli City Half Marahton', anchorYears: [2029] }
+  const linked = { id: 'race-wished', name: 'Napoli City Half Marathon', catalogRaceId: napoli }
+
+  it('folds the event s race into the one already linked, so the anchor reaches the wish', async () => {
+    listRaces.mockResolvedValue([typo, linked])
+
+    await identifyRaceInCatalog('u1', event({ raceId: 'race-typo', name: typo.name }), napoli)
+
+    expect(foldRaceInto).toHaveBeenCalledWith('u1', typo, linked)
+    expect(updateRace).not.toHaveBeenCalled()
+    expect(updateEvent).toHaveBeenCalledWith('event-2024', { raceId: 'race-wished' })
+  })
+
+  it('points a wish with no race at the race already linked, without minting one', async () => {
+    listRaces.mockResolvedValue([linked])
+
+    await identifyWishInCatalog('u1', wish(), napoli)
+
+    expect(findOrCreateRaceId).not.toHaveBeenCalled()
+    expect(foldRaceInto).not.toHaveBeenCalled()
+    expect(updateBucketListItem).toHaveBeenCalledWith('wish-1', { raceId: 'race-wished' })
+  })
+
+  it('leaves alone a document already on the linked race', async () => {
+    listRaces.mockResolvedValue([linked])
+
+    await identifyRaceInCatalog('u1', event({ raceId: 'race-wished' }), napoli)
+
+    expect(foldRaceInto).not.toHaveBeenCalled()
+    expect(updateRace).not.toHaveBeenCalled()
+    expect(updateEvent).not.toHaveBeenCalled()
   })
 })
 
