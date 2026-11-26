@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Changed
+
+- **Wishes already in the calendar:** those already scheduled or run move to a separate, faded list with their date or year. The list on top is what is still to do.
+
+### Fixed
+
+- **One race, one identity:** linking an event or a wish to the catalog no longer creates a second copy of the same race. An anchor marked on the event now shows on the wish too.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Added

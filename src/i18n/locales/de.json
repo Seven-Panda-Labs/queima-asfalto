@@ -515,7 +515,10 @@
       "weeks_other": "{{count}} Wo"
     },
     "otherSeason": "Aus einer anderen Saison, im Zyklus dieser",
-    "typicalMonth": "meist im {{month}}"
+    "typicalMonth": "meist im {{month}}",
+    "inCalendar": "Schon im Kalender",
+    "wishScheduled": "Geplant",
+    "wishRan": "{{year}} gelaufen"
   },
   "linkWishes": {
     "offer_one": "1 Wunsch sagt noch nicht, welches Rennen er ist. Jetzt sagen",

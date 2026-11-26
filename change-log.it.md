@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Modificato
+
+- **Desideri già in calendario:** quelli già in programma o corsi passano in un elenco a parte, attenuato, con la data o l'anno. In alto resta solo ciò che manca.
+
+### Corretto
+
+- **Una gara, un'identità:** collegare un evento o un desiderio al catalogo non crea più una seconda copia della stessa gara. Un'àncora segnata sull'evento ora compare anche sul desiderio.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Aggiunto

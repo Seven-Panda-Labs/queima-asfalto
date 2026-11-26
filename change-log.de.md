@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Geändert
+
+- **Wünsche schon im Kalender:** bereits geplante oder gelaufene stehen jetzt in einer eigenen, abgeblendeten Liste mit Datum oder Jahr. Oben steht nur noch, was fehlt.
+
+### Behoben
+
+- **Ein Lauf, eine Identität:** einen Event oder Wunsch mit dem Katalog zu verknüpfen legt keine zweite Kopie desselben Laufs mehr an. Ein am Event markierter Anker erscheint jetzt auch am Wunsch.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Hinzugefügt

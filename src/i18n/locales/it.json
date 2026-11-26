@@ -515,7 +515,10 @@
       "weeks_other": "{{count}} sett."
     },
     "otherSeason": "Da un'altra stagione, nel ciclo di questa",
-    "typicalMonth": "di solito in {{month}}"
+    "typicalMonth": "di solito in {{month}}",
+    "inCalendar": "Già in calendario",
+    "wishScheduled": "In programma",
+    "wishRan": "Corsa nel {{year}}"
   },
   "linkWishes": {
     "offer_one": "1 desiderio non dice di quale gara si tratta. Fallo ora",

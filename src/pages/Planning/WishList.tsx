@@ -1,10 +1,13 @@
 import type { ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
+import { Link, useLocation } from 'react-router-dom'
 import { formatEventTypeLabel } from '../../i18n/formatters'
 import { SeasonNotes } from '../../components/SeasonNotes'
 import type { SeasonAnnotation } from '../../domain/seasonBoard'
 import { wishSubject } from '../../domain/wishSubject'
 import { wishNextDate } from '../../domain/wishNextDate'
+import type { WishInCalendar } from '../../domain/wishInCalendar'
+import { eventLinkState } from '../../utils/eventNavigation'
 import { formatDatePt } from '../../utils/date'
 import type { RaceCatalogEntry } from '../../../shared/raceCatalog'
 import type { BucketListItem } from '../../types/BucketListItem'
@@ -20,6 +23,8 @@ type WishListProps = {
   season: Map<string, SeasonAnnotation>
   /** Anchors by race identity: the flag is on the race, not on the wish. */
   anchorRaceIds: ReadonlySet<string>
+  /** By wish id: those already in the calendar, shown faded with where they are. */
+  inCalendar?: ReadonlyMap<string, WishInCalendar>
   /** Rendered at the end of every row: the icons the page already had. */
   actions: (item: BucketListItem) => ReactNode
 }
@@ -38,9 +43,11 @@ export function WishList({
   catalog,
   season: seasonFor,
   anchorRaceIds,
+  inCalendar,
   actions,
 }: WishListProps) {
   const { t, i18n } = useTranslation()
+  const location = useLocation()
   const monthName = (month: number) =>
     new Intl.DateTimeFormat(i18n.language, { month: 'long' }).format(new Date(2026, month - 1, 1))
 
@@ -51,6 +58,7 @@ export function WishList({
         // A day when the edition has been published, the typical month while
         // it has not: the difference between a decision and a dream.
         const next = wishNextDate(item, races, catalog)
+        const placed = inCalendar?.get(item.id)
         const annotation = item.raceId ? seasonFor.get(item.raceId) : undefined
         const season =
           annotation &&
@@ -65,7 +73,7 @@ export function WishList({
           item.role && item.role !== 'none' ? t(`bucketList.roles.${item.role}`) : '',
         ].filter(Boolean)
         return (
-          <li key={item.id} className="flex items-center gap-3 px-4 py-3">
+          <li key={item.id} className={`flex items-center gap-3 px-4 py-3 ${placed ? 'opacity-60' : ''}`}>
             <div className="min-w-0 flex-1">
               <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <span className="inline-flex items-center gap-1.5 font-semibold text-foreground">
@@ -88,17 +96,36 @@ export function WishList({
               ) : null}
             </div>
 
-            <span
-              className={`w-28 shrink-0 text-end text-xs tabular-nums ${
-                next?.kind === 'day' ? 'font-semibold text-foreground' : 'text-muted'
-              }`}
-            >
-              {next
-                ? next.kind === 'day'
-                  ? formatDatePt(new Date(`${next.day}T12:00:00`))
-                  : t('planning.typicalMonth', { month: monthName(next.month) })
-                : null}
-            </span>
+            {placed ? (
+              <Link
+                to={`/eventos/${placed.event.id}`}
+                state={eventLinkState(`${location.pathname}${location.search}`).state}
+                className="w-28 shrink-0 text-end text-xs text-muted hover:underline"
+              >
+                {placed.kind === 'scheduled' ? (
+                  <>
+                    <span className="block">{t('planning.wishScheduled')}</span>
+                    <span className="font-semibold tabular-nums text-foreground">
+                      {formatDatePt(placed.event.date)}
+                    </span>
+                  </>
+                ) : (
+                  t('planning.wishRan', { year: placed.event.date.getFullYear() })
+                )}
+              </Link>
+            ) : (
+              <span
+                className={`w-28 shrink-0 text-end text-xs tabular-nums ${
+                  next?.kind === 'day' ? 'font-semibold text-foreground' : 'text-muted'
+                }`}
+              >
+                {next
+                  ? next.kind === 'day'
+                    ? formatDatePt(new Date(`${next.day}T12:00:00`))
+                    : t('planning.typicalMonth', { month: monthName(next.month) })
+                  : null}
+              </span>
+            )}
 
             <div className="flex shrink-0 flex-nowrap items-center gap-1">{actions(item)}</div>
           </li>

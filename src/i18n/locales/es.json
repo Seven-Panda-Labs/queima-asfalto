@@ -515,7 +515,10 @@
       "weeks_other": "{{count}} sem"
     },
     "otherSeason": "De otra temporada, en el ciclo de esta",
-    "typicalMonth": "suele ser en {{month}}"
+    "typicalMonth": "suele ser en {{month}}",
+    "inCalendar": "Ya en el calendario",
+    "wishScheduled": "Programada",
+    "wishRan": "Completada en {{year}}"
   },
   "linkWishes": {
     "offer_one": "1 deseo aún no dice qué prueba es. Decirlo ahora",

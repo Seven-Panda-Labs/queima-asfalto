@@ -4,6 +4,18 @@
 
 ---
 
+## [1.100.0] - 2026-11-26
+
+### Modifié
+
+- **Souhaits déjà au calendrier :** ceux déjà prévus ou courus passent dans une liste à part, estompée, avec leur date ou leur année. En haut ne reste que ce qui manque.
+
+### Corrigé
+
+- **Une course, une identité :** lier un événement ou un souhait au catalogue ne crée plus une deuxième copie de la même course. Une ancre marquée sur l'événement apparaît désormais aussi sur le souhait.
+
+---
+
 ## [1.99.0] - 2026-11-20
 
 ### Ajouté
